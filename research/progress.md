@@ -67,6 +67,20 @@
   computation rules; (3) pilot extraction on about 15 inference papers that report both quality
   and forward passes, with the extra fields listed in conjectures.md section 9, and compute the
   slack share by script; (4) debate round 7 with the pilot numbers; (5) user approval.
+- **Results 2026-10-14 (supersede the "Next" list above).** Stage-2 summaries saved
+  (`review/feasibility/stage2/summary-*.md`): pooling not supported for remasking or synergy,
+  borderline for steps; variance almost never reported. Novelty audit: H2 novel at 0.55 (closest
+  arXiv 2609.33947), H5 incremental (arXiv 2606.29228). **H2 pilot** (`review/pilot/
+  h2-pilot-summary.md`): claim (a) supported at pilot scale (2 of 9 papers publish the needed
+  baseline sweep), claim (b) not supported (slack share 0.00 in both computable papers).
+  Debate rounds 7 and 8: both models agree to organise the review around **claim evaluability**
+  with three separate pre-registered hypotheses E1 to E3; H2(b) moves to Paper 2 as an experiment.
+  **Waiting on the user:** approval of this direction. **Then:** (1) write the evaluability rubric
+  (one criterion per claim type, justified from the estimand) into `review/protocol.md` section 6;
+  (2) two-rater reliability check on about 40 stratified papers (Claude agent and Codex, plus the
+  human sample); (3) red-team and statistician sign the protocol; freeze; (4) database searches.
+  Note: auditor agents have no MCP tools, so the novelty-auditor could not use Exa; either add the
+  Exa tool names to AUDIT_TOOLS in `tools/build_agents.py` or have lit-scout run its searches.
 - **Agent definitions fixed:** hypothesis-smith, experiment-designer and method-architect had not
   loaded (unquoted colon in the description); `tools/build_agents.py` now quotes descriptions.
 - **Exemplar reading was structural only (E1).** Before drafting, paper-reader must read two

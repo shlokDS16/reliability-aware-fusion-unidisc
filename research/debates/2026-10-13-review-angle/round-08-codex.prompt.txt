@@ -1,0 +1,328 @@
+You are one of two senior researchers in a recorded debate. The other is Claude.
+Rules for your turn:
+1. Do not agree to be agreeable. Concede a point only when the argument or evidence compels it,
+   and say what compelled you.
+2. For each numbered claim in the latest turn answer ACCEPT, REJECT or NEEDS-EVIDENCE with a reason.
+3. Give the strongest counter-argument to the other side's main position, and the cheapest
+   observation that would settle the disagreement.
+4. Cite a paper only if you are sure it exists; otherwise write "unverified". Never invent IDs.
+5. You have no need to edit files or run experiments. Reason from the transcript.
+6. End with four short sections: POSITION, CONCESSIONS, OPEN DISAGREEMENTS, WHAT WOULD CHANGE MY MIND.
+Keep the turn under 700 words.
+
+TOPIC: Which systematic review of diffusion language models and unified multimodal diffusion to write for ACM Computing Surveys, and around which organising conjecture
+
+TRANSCRIPT SO FAR:
+===== round-01-claude =====
+# Claude, round 1: which review to write, and around which conjecture
+
+Context. Two students and a professor, one 12 GB laptop GPU, strong tooling for systematic
+reading. Goal: one review article on diffusion language models (masked or discrete diffusion LLMs
+such as LLaDA, Dream, MDLM, SEDD) and unified multimodal discrete-diffusion models (MMaDA, UniDisc,
+Show-o, FUDOKI, Lumina-DiMOO), aimed at ACM Computing Surveys (35 pages, surveys only, a new result
+is in scope only if it organises the material). Narrative surveys already exist: "A Survey on
+Diffusion Language Models" (arXiv 2508.10875) and a 2025 survey of discrete diffusion in language
+and multimodal models. A later research article will test the review's conjecture experimentally.
+
+My claims, for you to attack:
+
+1. A third narrative taxonomy would be rejected as redundant. The defensible contribution is a
+   systematic review: registered search and inclusion protocol, quantitative extraction of every
+   included paper's reported numbers and protocols, a reporting audit (seeds, intervals,
+   compute-matched baselines, claim-versus-table consistency), and one organising conjecture.
+
+2. Lead conjecture CA, "conditional synergy". In unified understanding-and-generation models,
+   cross-task benefit is not a consequence of unification itself. It appears only when both tasks
+   read and write one visual token space under one likelihood; it is bounded by the information
+   rate of that tokenisation; and at matched backbone size and data, models with decoupled visual
+   pathways (Janus-style) are not worse on either task. Evidence without training: meta-regression
+   of published understanding scores and generation scores on design factors across all unified
+   models found (shared or decoupled visual encoder, discrete or continuous tokens, autoregressive,
+   diffusion or hybrid objective), with backbone size and data as covariates; and a census of how
+   many synergy claims rest on a task-removal ablation.
+
+3. Alternative CB, "commitment trilemma". A sampler built on a factorised denoiser can have at
+   most two of: free generation order, few parallel steps, exact joint sampling. Evidence:
+   published speed and quality numbers collapse onto one frontier when expressed per function
+   evaluation per token; exact computation on small synthetic distributions.
+
+4. I rank CA above CB because (a) parallel-decoding theory is crowded (ParallelBench 2510.04767,
+   total-correlation bounds, "Breaking the Factorization Barrier" 2603.00045), so CB risks being a
+   restatement of known theorems, while causal evidence on synergy is sparse; (b) CA hands the
+   follow-up research article a clean causal test on a frozen model.
+
+5. A meta-regression over published tables is legitimate evidence for a review-level conjecture
+   even though the numbers come from heterogeneous protocols, provided heterogeneity is modelled
+   (random effects per benchmark and per paper) and the limitation is stated.
+
+6. Scope should cover both text DLMs and unified multimodal models in one article rather than
+   narrowing to multimodal only, because the journal rewards breadth and the multimodal models
+   inherit their objective and samplers from the text ones.
+
+Where I am least sure: claim 5 (whether published numbers are comparable enough to regress on),
+and whether CA is already an accepted view after benchmarks that test unified models for real
+synergy. Tell me where this plan fails.
+
+
+===== round-02-codex =====
+## Claim-by-claim
+
+1. **NEEDS-EVIDENCE.** A systematic protocol and reporting audit could distinguish this review, but redundancy is not established just by calling existing works “narrative.” Compare their search coverage, extraction, and audit methods against the proposed review before deciding the gap. Also, “every included paper’s reported numbers” needs a defined extraction scope to be feasible and reproducible.
+
+2. **NEEDS-EVIDENCE.** CA is a promising question, but its proposed mechanism bundles several claims: shared visual token space, shared likelihood, a tokenisation information-rate bound, and no task regression from decoupling. The transcript gives no evidence for these links. Published benchmark scores alone would not establish the causal “only when” claim; designs, data, and training differ together. The Janus comparison also needs a precise definition of “not worse” and matched training conditions.
+
+3. **REJECT.** As stated, the trilemma is too broad: “factorised denoiser,” “free generation order,” “few parallel steps,” and “exact joint sampling” are not operationally defined, and no assumptions delimit the sampler class. A counterexample under one plausible interpretation could invalidate the universal “at most two” claim. The proposed frontier plot would describe empirical tradeoffs, not prove the trilemma.
+
+4. **NEEDS-EVIDENCE.** The transcript’s citations and characterisation of the literature are not verified here, so they cannot support the ranking. Even if parallel-decoding theory is crowded, that does not show CA is novel or causally testable with a frozen model. A frozen-model test cannot isolate training-time effects of shared versus decoupled pathways.
+
+5. **REJECT.** Random effects for benchmark and paper do not make heterogeneous scores comparable. They do not correct differences in evaluation protocol, data contamination, prompt or decoding choices, or selective reporting. A regression could be a descriptive map, but treating its coefficients as evidence for CA would overstate what the data support. The review should first assess overlap and comparability, then report associations only where defensible.
+
+6. **NEEDS-EVIDENCE.** Breadth may suit the journal, but covering text DLMs and unified multimodal systems risks two adjacent reviews joined by a weak inheritance claim. The scope should follow a shared analytic question and a demonstrable gap in prior surveys, not presumed journal preference.
+
+## Strongest counter-argument
+
+The main position—lead with CA and use cross-paper meta-regression as review-level evidence—risks making the review’s central conjecture look empirically supported when the available comparisons are confounded. A disciplined systematic map, with CA framed as a hypothesis and the reporting audit as the contribution, is more defensible until comparable evidence exists.
+
+## Cheapest settling observation
+
+Build a small comparison matrix of the closest existing surveys and the proposed review: search protocol, included-paper coverage, quantitative extraction, and reporting-bias audit. It would quickly show whether the systematic-review contribution is genuinely distinct. For CA, first check whether published studies contain any matched shared-versus-decoupled comparisons; if not, the meta-regression cannot settle the causal claim.
+
+## POSITION
+
+Write a systematic review only if the coverage comparison confirms a gap. Frame CA as a conjecture, not a finding.
+
+## CONCESSIONS
+
+The review’s reporting audit could be a real contribution. Text DLMs and multimodal models may belong together if the organizing question genuinely connects them.
+
+## OPEN DISAGREEMENTS
+
+Whether CA is novel and whether published results support a useful quantitative synthesis remain unresolved.
+
+## WHAT WOULD CHANGE MY MIND
+
+A coverage matrix showing prior surveys lack this audit, plus a set of sufficiently matched comparisons that can test CA’s design-level predictions.
+
+===== round-03-claude =====
+# Claude, round 3: concessions, new evidence, a revised proposal
+
+## Concessions (you were right)
+- Claim 5. Random effects do not make scores from different protocols comparable. Cross-paper
+  regression of raw scores is dropped as evidence; it stays only as a descriptive map.
+- Claim 3. CB as I wrote it has no defined sampler class and proves nothing with a frontier plot.
+- Claim 2. CA bundled four claims, and "only when" is causal language that published tables cannot carry.
+- Claim 4. A frozen-model experiment cannot isolate training-time effects of shared against
+  decoupled pathways. The follow-up article can test mediation in a trained model, not the design counterfactual.
+
+## New evidence since round 1 (from a literature agent; levels stated)
+- Your settling test for claim 1 was run. 14 existing surveys in the area were scanned in full
+  text for protocol terms and headings (a keyword-and-heading scan, not a careful read): none has a
+  PRISMA-style protocol, none audits reporting practice. One (arXiv 2509.24435) calls itself
+  systematic but gives no search strings or screening counts. Two (2508.10875 Sec. VI, 2505.02567
+  Table IV) tabulate numbers without pooling or intervals. 18 further surveys were seen at abstract
+  level only. So the gap looks real but is not yet fully established.
+- CA is not new as a qualitative statement. arXiv 2609.01607 (1 Sep 2026) says synergy is
+  "possible but highly conditional"; 2607.04423 Sec. 3.2 reports transfer strongest with a shared
+  backbone and unified encoder and weak for separate pathways; RealUnify (2509.24897) reports no
+  genuine synergy. No pooled estimate and no census of task-removal ablations was found.
+- For CB the closest are 2602.00286 and ParallelBench Theorem 1; no three-way statement was found.
+
+## Revised proposal for you to attack
+1. The title is now fixed as "...: A Systematic Review and Meta-Analysis", so the quantitative
+   core must be a real meta-analysis. Unit of analysis: the matched within-paper contrast (an
+   ablation or controlled comparison where the paper itself holds everything else fixed),
+   converted to a standardised effect and pooled across papers per pre-registered question.
+2. Candidate questions: (Q1) effect on understanding of adding or removing the generation
+   objective; (Q2) shared against decoupled visual encoder; (Q3) quality against number of
+   denoising steps within one model; (Q4) remasking on against off; (Q5) reinforcement-learning
+   post-training against its own supervised baseline.
+3. New conjecture CD, "step-scaling law". Theory gives a sampling error of order 1/T for T
+   parallel steps, governed by dependence among tokens unmasked together. Conjecture: within-paper
+   step sweeps, re-expressed as quality gap to the many-step limit against tokens revealed per
+   step, collapse onto one curve with a common exponent, and the residual is explained by task
+   type (tasks with strong token dependence, such as arithmetic reasoning, deviate more than
+   captioning or classification-style answers). Falsified if exponents differ by model family
+   beyond their intervals or if task type does not order the residuals.
+4. CA is kept only as question Q1 and Q2 with a pooled estimate, credited to the 2026 papers above.
+
+Rank CD, a formalised CB, and quantified CA as the organising result, and say which pre-registered
+question you expect to have too few matched contrasts to pool.
+
+
+===== round-04-codex =====
+## Claim-by-claim
+
+1. **REJECT.** Fixing the title before establishing that comparable matched contrasts exist puts the method ahead of the evidence. Within-paper comparisons reduce confounding, but a standardized effect still needs suitable variance information and a defensible common outcome. If those are unavailable, calling the review a “meta-analysis” risks overstating what it can pool. Keep the systematic review title and make meta-analysis conditional on the evidence.
+
+2. **NEEDS-EVIDENCE.** These questions are clearer than raw cross-paper score regression, but they do not all target the same kind of effect. Q1, Q2, and Q5 are intervention contrasts; Q3 and Q4 concern sampling choices and may use different outcomes and protocols. Pre-register separate questions and pool only where outcomes and designs are sufficiently comparable. My expectation is that **Q2, shared versus decoupled visual encoders, will have too few matched contrasts**: the transcript describes sparse evidence and says the available comparisons may vary in more than encoder design.
+
+3. **REJECT.** The proposed collapse is an empirical hypothesis, not a consequence established by saying “theory gives” an error of order \(1/T\). That rate depends on assumptions about the sampler, dependence structure, error measure, and how steps translate into tokens revealed. “Tokens revealed per step” may also discard relevant differences in model, task, and sampler. The falsification criteria are directionally useful, but a common exponent and task ordering need precise estimands and enough within-model sweeps.
+
+4. **NEEDS-EVIDENCE.** Ranking CD first is premature until its theory assumptions and available sweeps are checked. “Formalised CB” is not yet specified, and CA’s pooled contrasts may be too sparse to organize the review. The claimed literature findings in the transcript are second-hand summaries, not enough to establish novelty or priority. I cannot verify the cited papers here.
+
+## Strongest counter-argument
+
+The main position appears to be that CD should organize the review because it offers a falsifiable scaling conjecture. But the review may have few compatible step sweeps, and a shared curve could be an artifact of choices about task, sampler, or quality metric. A sharp conjecture is not a strong organizing result if the available studies cannot meaningfully test it.
+
+## Cheapest settling observation
+
+Create an extraction table of all candidate within-paper contrasts and step sweeps, including outcome, uncertainty data, sampler, task, and controlled factors. Count how many meet pre-set comparability criteria for each question. That would quickly show whether a real meta-analysis is feasible and whether CD has enough evidence to lead.
+
+## POSITION
+
+Keep the systematic review as the core contribution. Treat meta-analysis and CD as conditional on the study inventory; do not fix the title around a pooled analysis yet.
+
+## CONCESSIONS
+
+The revised matched-contrast unit is a substantial improvement over regressing heterogeneous published scores. The transcript also gives a reasonable basis to investigate a reporting-audit gap, though the scan described does not establish it conclusively.
+
+## OPEN DISAGREEMENTS
+
+Whether CD is more useful than quantified CA as the organizing conjecture, and whether the literature supports any pooled estimates, remain unresolved.
+
+## WHAT WOULD CHANGE MY MIND
+
+A documented inventory showing enough comparable step sweeps across model families, with compatible quality measures and uncertainty data, would make CD a credible lead.
+
+===== round-05-claude =====
+# Claude, round 5: the inventory you asked for, and two candidates to lead
+
+## Your settling test was run (keyword level, then a reading sample is in progress)
+Captions of 535 papers were scanned by script. Papers with at least one caption on: a sweep over
+denoising or sampling steps 268; an ablation 401; a remasking contrast 53; an
+understanding-generation synergy contrast 18. Variation across runs is mentioned in 62 percent of
+papers, intervals or significance in 21 percent; only 21 of the 268 step-sweep papers mention
+seeds or error bars in a step caption. Two agents are now reading a stratified sample of 62 papers
+to count truly matched, numeric contrasts. So I concede round 4 in full: the title no longer says
+"meta-analysis" (it returns only if a question reaches 8 matched contrasts from 5 groups), synergy
+is dropped as an organising theme, and inverse-variance pooling is unlikely; expect slope and
+sign-based syntheses with intervals clustered by paper.
+
+The professor's instruction since then: a **critical** review matters most, with a quality
+appraisal of every included study. An independent agent proposed seven candidates. I select two.
+
+## H2, slack conjecture (inference papers; 99 of 164 have a step caption)
+For a paper reporting a speed-up at comparable quality: headline speed-up S_head = T_base /
+T_method in forward passes. Attributable speed-up S_att = T*_base(Q_method) / T_method, where
+T*_base(q) is the smallest step count at which the same paper's sweep of the baseline sampler
+reaches quality q minus eps (eps = reported seed standard deviation, else 0.5 points). Slack share
+sigma = 1 - log S_att / log S_head, clipped to [0, 1]. Claims: (a) fewer than one third of papers
+reporting a headline speed-up also sweep the baseline down to the method's step count; (b) where
+computable, median sigma is at least 0.5; (c) within a paper, sigma does not fall as generation
+length grows. Scope: training-free samplers on a frozen masked-diffusion checkpoint. Refuted if
+the proportion in (a) is at least one half or the median in (b) is below 0.25.
+
+## H5, noise-floor conjecture (rigour of the evidence base)
+A cell is (checkpoint, benchmark, metric, generation length, steps, sampler, shots). It qualifies
+if at least 5 papers with disjoint author lists report a baseline value for it. sigma_B is the
+standard deviation of that baseline value across papers. Delta is each paper's own favoured-method
+minus baseline in that cell. Claims: (a) in most qualifying cells median |Delta| is below
+2 sigma_B; (b) a paper's own baseline value falls below the cross-paper median of the cell in more
+than half of cases where it proposes a competing method; (c) sigma_B is at least twice the
+within-paper seed standard deviation. Candidate cells: LLaDA-8B and Dream-7B on GSM8K, MATH500,
+HumanEval, MBPP (captions naming LLaDA and GSM8K together: 61 papers).
+
+## My positions, for you to attack
+1. H5 does not break the rule we agreed in round 3. It regresses nothing; it uses the dispersion
+   of one nominally identical cell as a yardstick for within-paper contrasts. Protocol differences
+   hidden under one name are the finding, not a nuisance.
+2. H2 and H5 together give the review one organising claim that suits a critical review: reported
+   progress in this literature is typically smaller than two uncontrolled sources of variation,
+   the slack in the baseline's own step schedule and the between-paper spread of the baseline.
+3. Both are testable from published tables alone, and both can be checked later on frozen
+   checkpoints by rerunning baselines on one GPU.
+4. H2 leads and H5 supports, because H2's quantities come entirely from within one paper.
+5. The main risks: H2 may be anticipated by work on early answer convergence and by ParallelBench;
+   H5(b) may be confounded if papers pick cells where their method happens to win; cells may not
+   reach 5 disjoint papers once generation length and steps are matched exactly.
+
+Attack the definitions first. Which claim fails on a careful reading of real tables?
+
+
+===== round-06-codex =====
+## Claim-by-claim
+
+1. **NEEDS-EVIDENCE.** H5 is descriptive, not a regression, but using the spread of nominally matched cells as a “yardstick” assumes those cells are genuinely comparable. If protocol differences are the finding, the cell definition must first distinguish them; otherwise the dispersion mixes protocol variation with extraction or implementation differences. That is useful for an evidence-quality audit, but it does not show that individual method gains are smaller than that variation.
+
+2. **REJECT.** The combined claim does not follow from H2 and H5 as defined. H2’s \(\sigma\) measures slack in a baseline step schedule; H5’s \(\sigma_B\) measures between-paper spread in baseline scores. Neither directly measures “uncontrolled sources” in a way that makes them commensurable, and “progress is typically smaller than two sources” needs a pre-specified comparison and aggregation rule.
+
+3. **NEEDS-EVIDENCE.** The measures may be computable from tables, but the definitions leave material choices unresolved: how to interpolate \(T^*_{\text{base}}(q)\), handle non-monotonic sweeps or missing uncertainty, and define “same” H5 cells across papers. A later checkpoint rerun is not guaranteed to reproduce historical implementations or prompts.
+
+4. **ACCEPT, narrowly.** H2 is less exposed to cross-paper protocol differences because its core comparison is within one paper. That makes it the cleaner lead candidate, though it does not establish that H2 is sufficiently populated or valid.
+
+5. **ACCEPT.** These are real risks. In particular, H5(b) conditions on papers proposing a competing method, so selective benchmark or cell choice can bias the result. Exact matching on generation length, steps, sampler, shots, checkpoint, and metric may also leave too few qualifying cells.
+
+## Strongest counter-argument
+
+The main position is that H2 plus H5 supports a single claim: reported progress is typically smaller than slack and baseline variation. The strongest objection is that these quantities answer different questions. H2 can reveal whether a speed-up comparison used a weak step-count baseline; H5 can reveal instability in nominally shared benchmark cells. Neither, alone or together, establishes that the literature’s progress claims are generally overstated.
+
+The cheapest settling observation is a small, blinded extraction of actual tables for the proposed H2 and H5 samples. Record all required fields, apply frozen rules for interpolation and cell matching, and report how many estimates are computable and how sensitive they are to reasonable matching choices. The transcript’s caption counts cannot settle that.
+
+## POSITION
+
+Lead with H2 as a candidate for a critical review, not yet as its organising result. Keep H5 as a separate reporting-quality analysis unless table-level extraction shows a defensible link between baseline spread and claimed gains.
+
+## CONCESSIONS
+
+Within-paper step sweeps are a better foundation for H2 than cross-paper score regressions. The proposed risks around H2 anticipation and H5 selection bias deserve direct checks.
+
+## OPEN DISAGREEMENTS
+
+Whether H2 has enough valid sweeps, and whether H5 cells can be matched without conflating distinct protocols, remain unresolved. I cannot verify the cited literature from this transcript.
+
+## WHAT WOULD CHANGE MY MIND
+
+A table-level pilot showing robust H2 estimates under pre-specified interpolation rules, plus H5 matches that remain stable when protocol fields are tightened, would make the combined organizing claim credible.
+
+===== round-07-claude =====
+# Claude, round 7: the table-level pilot you asked for, and what it does to H2
+
+## What was done
+Rules for the slack share were frozen and committed (interpolation in log T, first crossing on
+non-monotone sweeps with an envelope variant, tolerance, edge cases, support and contradiction
+thresholds) before any pilot table was read. A fixed-seed sample of 15 inference papers was
+extracted by an agent that was not told the conjecture. A script computed everything.
+
+## Results (15 papers, 143 extracted units)
+- 6 papers claim only wall-clock gains; 9 claim a speed-up in forward passes or steps.
+- Claim (a): of those 9, only 2 give a baseline step sweep of 3 or more levels reaching down to
+  twice the method's own budget. 2 of 9 is below the pre-set one-third line.
+- Claim (b): the slack share is computable in those 2 papers only, and it is 0.00 in both. In 12
+  units the baseline never reaches the method's quality at any swept step count; 3 units are
+  interpolated; 1 has the baseline sufficient at the method's budget. Example: baseline GSM8K
+  accuracy 8.72, 12.43, 22.14, 44.81 at 8, 16, 32, 64 steps against the method's 45.26 at 16 steps.
+  By the pre-set rule this contradicts (b), on n = 2.
+- Claim (c): no paper varies generation length within a computable series.
+- Stage-2 reading of 62 other papers: 92 percent of matched contrasts in one batch report no
+  variance; a clean remasking on/off contrast exists in 1 to 2 papers; a real task-removal or
+  shared-versus-decoupled contrast exists in 3 to 4 of the 8 unified multimodal papers sampled.
+- Novelty audit: H2 novel at confidence 0.55 (closest: arXiv 2609.33947); H5 incremental
+  (arXiv 2606.29228 already reports cross-study discrepancy for one cell).
+
+## My reading
+1. H2(b), "most reported acceleration is slack", is not supported and I withdraw it as a claim of
+   the review. Two papers cannot refute it either: papers that publish a baseline sweep are
+   plausibly the ones whose method survives it. Published tables cannot settle it in either
+   direction, because 7 of 9 papers omit the comparison that would.
+2. What the pilot does show is the omission itself. So I propose a different organising result,
+   stated as a conjecture about the evidence base, not about the models:
+   **Control-deficit conjecture.** For each major claim type in this literature there is one
+   within-paper control without which the claim cannot be checked from the paper: a step-matched
+   baseline sweep for a forward-pass speed-up; a task-removal or decoupled-pathway arm for
+   synergy; an on/off arm at equal forward passes for remasking and other correctors; a
+   compute-matched supervised arm for reinforcement-learning post-training; repeated runs for any
+   gain under a stated size. Conjecture: (i) the share of claims that come with their required
+   control is below one half for every claim type; (ii) the share does not rise with publication
+   year or with peer-reviewed status; (iii) where the control is present, the claimed effect is
+   smaller in the controlled comparison than in the headline comparison of the same paper.
+3. (i) and (ii) are testable on the whole corpus with the quality appraisal the professor asked
+   for, with two independent raters and agreement reported. (iii) is a within-paper paired
+   comparison. None needs cross-paper pooling of scores.
+4. The follow-up research article then supplies one missing control experimentally: baseline step
+   sweeps at matched budgets on frozen checkpoints, which tests H2(b) properly.
+
+Attack this. In particular: is "required control" definable without circularity, is (iii) just
+regression to the mean or selective reporting, and is this a conjecture or merely an audit?
+
+
+Write your turn now.
