@@ -1,6 +1,6 @@
 ---
 name: data-steward
-description: Dataset and benchmark steward. Use to find datasets and benchmarks, check licence, provenance, splits, leakage and contamination, and to build versioned, deterministic preprocessing with checksums.
+description: "Dataset and benchmark steward. Use to find datasets and benchmarks, check licence, provenance, splits, leakage and contamination, and to build versioned, deterministic preprocessing with checksums."
 model: sonnet
 ---
 

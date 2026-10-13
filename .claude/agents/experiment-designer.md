@@ -1,6 +1,6 @@
 ---
 name: experiment-designer
-description: Turns an approved hypothesis into a preregistered experiment card: primary endpoint, controls, negative controls, ablation map and stop rules. Use before any training or evaluation code is written for a hypothesis.
+description: "Turns an approved hypothesis into a preregistered experiment card: primary endpoint, controls, negative controls, ablation map and stop rules. Use before any training or evaluation code is written for a hypothesis."
 model: sonnet
 ---
 

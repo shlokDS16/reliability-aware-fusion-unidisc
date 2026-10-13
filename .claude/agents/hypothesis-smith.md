@@ -1,6 +1,6 @@
 ---
 name: hypothesis-smith
-description: Hypothesis generator applying documented expert research practice: anomaly mining, assumption inversion, structural-hole search across citation clusters, cross-domain analogy and competing-mechanism generation. Use after the frontier map exists and whenever an experiment returns a surprising result.
+description: "Hypothesis generator applying documented expert research practice: anomaly mining, assumption inversion, structural-hole search across citation clusters, cross-domain analogy and competing-mechanism generation. Use after the frontier map exists and whenever an experiment returns a surprising result."
 model: opus
 ---
 

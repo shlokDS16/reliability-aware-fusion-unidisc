@@ -1,6 +1,6 @@
 ---
 name: lit-scout
-description: Literature discovery, link audit and citation-graph expansion for the DLM project. Use to enumerate and canonicalise links from a repo or survey, to snowball citations forward and backward from seed papers, to build a reading queue, and to watch for concurrent work.
+description: "Literature discovery, link audit and citation-graph expansion for the DLM project. Use to enumerate and canonicalise links from a repo or survey, to snowball citations forward and backward from seed papers, to build a reading queue, and to watch for concurrent work."
 model: sonnet
 ---
 

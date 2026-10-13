@@ -1,6 +1,6 @@
 ---
 name: figure-smith
-description: Figure and table engineer. Use to build publication-quality figures and LaTeX tables directly from run artifacts, and to check each rendered figure for overlap, spacing, legibility at column width and colour-blind safety.
+description: "Figure and table engineer. Use to build publication-quality figures and LaTeX tables directly from run artifacts, and to check each rendered figure for overlap, spacing, legibility at column width and colour-blind safety."
 model: sonnet
 ---
 

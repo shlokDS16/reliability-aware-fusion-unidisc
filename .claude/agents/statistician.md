@@ -1,6 +1,6 @@
 ---
 name: statistician
-description: Statistics owner. Use to write the analysis plan before outcomes are inspected (seeds, sample sizes, tests, multiplicity) and to compute confidence intervals, paired tests and effect sizes from raw per-example predictions afterwards.
+description: "Statistics owner. Use to write the analysis plan before outcomes are inspected (seeds, sample sizes, tests, multiplicity) and to compute confidence intervals, paired tests and effect sizes from raw per-example predictions afterwards."
 tools: Read, Grep, Glob, Bash, Write, WebSearch, WebFetch, ToolSearch
 model: sonnet
 ---

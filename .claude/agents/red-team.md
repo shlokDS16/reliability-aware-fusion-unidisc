@@ -1,6 +1,6 @@
 ---
 name: red-team
-description: Adversarial reviewer. Use to attack a hypothesis before compute is spent, a derivation before it is implemented, a result before it is scaled, and the finished manuscript as a hostile area chair would. Finds problems only.
+description: "Adversarial reviewer. Use to attack a hypothesis before compute is spent, a derivation before it is implemented, a result before it is scaled, and the finished manuscript as a hostile area chair would. Finds problems only."
 tools: Read, Grep, Glob, Bash, Write, WebSearch, WebFetch, ToolSearch
 model: opus
 ---

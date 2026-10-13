@@ -1,6 +1,6 @@
 ---
 name: method-architect
-description: Method and theory designer. Use to turn an approved hypothesis into a precise objective, sampler, estimator or analysis: derivations with stated assumptions, limiting cases, complexity, and a staged algorithm specification ready for implementation.
+description: "Method and theory designer. Use to turn an approved hypothesis into a precise objective, sampler, estimator or analysis: derivations with stated assumptions, limiting cases, complexity, and a staged algorithm specification ready for implementation."
 model: opus
 ---
 

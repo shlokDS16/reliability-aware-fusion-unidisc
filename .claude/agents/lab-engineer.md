@@ -1,6 +1,6 @@
 ---
 name: lab-engineer
-description: Training, inference and systems engineer for the local RTX 5070 Ti laptop GPU (12 GB). Use to implement specified methods, run and babysit GPU jobs, recover from out-of-memory errors, profile throughput, and estimate cost before any scale-up.
+description: "Training, inference and systems engineer for the local RTX 5070 Ti laptop GPU (12 GB). Use to implement specified methods, run and babysit GPU jobs, recover from out-of-memory errors, profile throughput, and estimate cost before any scale-up."
 model: sonnet
 ---
 

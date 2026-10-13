@@ -5,9 +5,10 @@ Edit the ROSTER below, never the generated files.
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT =Path(__file__).resolve().parent.parent
 OUT = ROOT / ".claude" / "agents"
 
 # Auditors cannot Edit project files: proposer != validator is enforced by tooling.
@@ -294,7 +295,8 @@ ROSTER = [
 
 
 def render(a: dict) -> str:
-    head = ["---", f"name: {a['name']}", f"description: {a['description']}"]
+    # JSON-quoted so a colon inside the description cannot break the YAML frontmatter
+    head = ["---", f"name: {a['name']}", f"description: {json.dumps(a['description'])}"]
     if a.get("tools"):
         head.append(f"tools: {a['tools']}")
     head += [f"model: {a['model']}", "---", ""]

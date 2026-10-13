@@ -1,6 +1,6 @@
 ---
 name: clarity-editor
-description: Scholarly clarity and research-integrity editor. Use after a section is drafted to edit prose for precision and readability with the research-humanizer skill, to verify that no number, citation or claim strength changed, and to check the venue's AI-use disclosure.
+description: "Scholarly clarity and research-integrity editor. Use after a section is drafted to edit prose for precision and readability with the research-humanizer skill, to verify that no number, citation or claim strength changed, and to check the venue's AI-use disclosure."
 model: sonnet
 ---
 

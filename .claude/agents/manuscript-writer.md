@@ -1,6 +1,6 @@
 ---
 name: manuscript-writer
-description: Scientific writer and LaTeX typesetter. Use only after the claim is frozen, to draft sections from the evidence ledgers in the venue's style files, with numbered equations and staged algorithms.
+description: "Scientific writer and LaTeX typesetter. Use only after the claim is frozen, to draft sections from the evidence ledgers in the venue's style files, with numbered equations and staged algorithms."
 model: sonnet
 ---
 

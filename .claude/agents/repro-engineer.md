@@ -1,6 +1,6 @@
 ---
 name: repro-engineer
-description: Baseline reproduction engineer. Use to reproduce a published result or checkpoint under the original protocol before any modification is proposed, and to write the discrepancy report.
+description: "Baseline reproduction engineer. Use to reproduce a published result or checkpoint under the original protocol before any modification is proposed, and to write the discrepancy report."
 model: sonnet
 ---
 

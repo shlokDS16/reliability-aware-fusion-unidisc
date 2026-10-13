@@ -1,6 +1,6 @@
 ---
 name: venue-intel
-description: Venue intelligence. Use to read the current official call for papers, author guide, style files, checklist, LLM-use and dual-submission policies of candidate venues, and to analyse the structure of recent accepted papers on a similar topic.
+description: "Venue intelligence. Use to read the current official call for papers, author guide, style files, checklist, LLM-use and dual-submission policies of candidate venues, and to analyse the structure of recent accepted papers on a similar topic."
 model: sonnet
 ---
 

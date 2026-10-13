@@ -1,6 +1,6 @@
 ---
 name: eval-harness
-description: Evaluation harness owner. Use to build and freeze benchmark evaluation with matched preprocessing and decoding budgets, verified metric definitions and stored per-example predictions.
+description: "Evaluation harness owner. Use to build and freeze benchmark evaluation with matched preprocessing and decoding budgets, verified metric definitions and stored per-example predictions."
 model: sonnet
 ---
 

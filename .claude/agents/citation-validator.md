@@ -1,6 +1,6 @@
 ---
 name: citation-validator
-description: Reference and DOI validator. Use to verify every bibliography entry against Crossref, OpenAlex, arXiv or the publisher, check retraction status, and confirm that each cited source supports the sentence that cites it.
+description: "Reference and DOI validator. Use to verify every bibliography entry against Crossref, OpenAlex, arXiv or the publisher, check retraction status, and confirm that each cited source supports the sentence that cites it."
 tools: Read, Grep, Glob, Bash, Write, WebSearch, WebFetch, ToolSearch
 model: haiku
 ---

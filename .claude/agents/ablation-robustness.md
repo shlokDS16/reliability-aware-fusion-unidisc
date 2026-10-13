@@ -1,6 +1,6 @@
 ---
 name: ablation-robustness
-description: Mechanism, ablation and robustness analyst. Use after a positive pilot to separate cause from correlation with factorial ablations, and to stress the result under prompt variation, distribution shift, contamination and reward or metric hacking.
+description: "Mechanism, ablation and robustness analyst. Use after a positive pilot to separate cause from correlation with factorial ablations, and to stress the result under prompt variation, distribution shift, contamination and reward or metric hacking."
 model: sonnet
 ---
 

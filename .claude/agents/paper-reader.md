@@ -1,6 +1,6 @@
 ---
 name: paper-reader
-description: Forensic full-text reader. Use to read one paper (or up to three closely related ones) end to end, including appendix, tables and released code, and to extract a claim-evidence matrix with exact page, table and equation locations.
+description: "Forensic full-text reader. Use to read one paper (or up to three closely related ones) end to end, including appendix, tables and released code, and to extract a claim-evidence matrix with exact page, table and equation locations."
 model: sonnet
 ---
 

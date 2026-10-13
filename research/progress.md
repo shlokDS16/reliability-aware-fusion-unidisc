@@ -54,6 +54,21 @@
   `survey-landscape.md` section on prior CA and CB statements, and the four debate turns, to
   propose conjectures that the available within-paper data can test; (3) novelty-auditor on its
   top two; (4) debate round 5 with Codex; (5) user approval; then freeze the protocol.
+- **Conjecture work (2026-10-13, late night).** `review/conjectures.md` holds seven candidates
+  H1 to H7 (all E0). Orchestrator selected **H2 (slack conjecture)** and **H5 (noise-floor
+  conjecture)**; ruling: H5's between-paper spread is allowed as a dispersion yardstick, not as a
+  regression. Codex round 6: accepts H2 as lead candidate, rejects merging H2 and H5 into one
+  claim (they measure different things), keeps H5 as a separate RQ6 analysis, and asks for a
+  table-level pilot with frozen rules (interpolation of the baseline sweep, non-monotonic sweeps,
+  missing variance, exact cell matching) before either organises the review. Agreed.
+  Running at this point: novelty-auditor on H2 and H5 (`review/novelty-H2-H5.md`), and two
+  stage-2 readers (`review/feasibility/stage2/summary-*.md`).
+  **Next:** (1) read the three reports; (2) write `review/pilot-rules.md` freezing the H2 and H5
+  computation rules; (3) pilot extraction on about 15 inference papers that report both quality
+  and forward passes, with the extra fields listed in conjectures.md section 9, and compute the
+  slack share by script; (4) debate round 7 with the pilot numbers; (5) user approval.
+- **Agent definitions fixed:** hypothesis-smith, experiment-designer and method-architect had not
+  loaded (unquoted colon in the description); `tools/build_agents.py` now quotes descriptions.
 - **Exemplar reading was structural only (E1).** Before drafting, paper-reader must read two
   exemplar surveys in full.
 - **Waiting on the user:** approval of the conjecture once audited; VIT reimbursement cap.
