@@ -16,6 +16,44 @@
   within-paper contrasts, split CA); (3) experiment-designer plus statistician write
   `review/protocol.md` (PRISMA 2020, inclusion rules, extraction form, meta-analysis plan);
   (4) novelty-auditor on CA; (5) database searches beyond the repo, then dual screening.
+- **Update after lit-scout and Codex round 4 (2026-10-13, evening); this replaces steps 2 to 4:**
+  - `review/survey-landscape.md` is done (96 papers rows). No existing survey has a PRISMA-style
+    protocol or a reporting audit (14 scanned at keyword level, 18 at abstract level only).
+  - **CA is not new as a qualitative claim**: arXiv 2609.01607 (2026-09-01), 2607.04423 Sec. 3.2
+    and RealUnify 2509.24897 already say synergy is conditional or absent. CA survives only as
+    pooled questions Q1 and Q2, credited to them. New candidate CD (step-scaling law) and the
+    questions Q1 to Q5 are in debate round 3.
+  - Codex round 4 rejects fixing "Meta-Analysis" in the title before poolable contrasts are shown
+    to exist, and rejects CD as untested. Agreed settling step, **do this first**: a feasibility
+    inventory. paper-reader agents extract every within-paper matched contrast and step sweep
+    (outcome, variance information, sampler, task, what was held fixed) from the 28 multimodal
+    records plus a stratified sample of about 40 inference and training records, then count how
+    many meet pre-set comparability rules per question. Output `review/feasibility-inventory.md`.
+    The protocol is frozen and the conjecture chosen only after that count.
+  - If fewer than about 8 poolable contrasts exist for every question, tell the user: the
+    subtitle "and Meta-Analysis" must change before submission.
+- **Professor's guidance received 2026-10-13 (late):** critical review matters most; full PRISMA
+  protocol with exact dates, database-specific strings, exclusion reasons, reviewer agreement and
+  a quality appraisal table; consistent table categories; RQ1 to RQ6 answered from evidence;
+  "check Discrete Diffusion too" (title or scope, meaning to be confirmed). Draft protocol
+  written: `review/protocol.md` v0.1 (not frozen). Samples in `Sample papers/`: an Artificial
+  Intelligence Review survey of multimodal **video** diffusion (s10462-026-11699-z; not about
+  DLMs; has a "research gap analysis" section and ends with a proposed framework) and arXiv
+  2506.13759v5 (closest existing survey). Both converted to `research/sources/md/`; paper-reader
+  should extract their anatomy into the dossier.
+- **Decisions delegated to Claude by the user (2026-10-13, night). D0007:** working title is now
+  "Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review of
+  Discrete and Continuous Approaches". Budget check: weekly limit 41 percent used with 14 percent
+  of the week elapsed (FRUGAL), so no agents were dispatched; a script did the work instead.
+- **Running at handoff:** `tools/table_inventory.py` over all 540 arXiv records (captions flagged
+  for ablations, step sweeps, remasking, AR comparisons, synergy; text flagged for seeds,
+  intervals, code), then the arXiv metadata rerun. Log: `review/feasibility-run.log`; output:
+  `review/feasibility/captions.jsonl`. HTML is cached, so rerunning the command resumes.
+- **First actions next session:** (1) read the summary table at the end of
+  `review/feasibility-run.log`; (2) dispatch hypothesis-smith (opus) with the inventory counts,
+  `survey-landscape.md` section on prior CA and CB statements, and the four debate turns, to
+  propose conjectures that the available within-paper data can test; (3) novelty-auditor on its
+  top two; (4) debate round 5 with Codex; (5) user approval; then freeze the protocol.
 - **Exemplar reading was structural only (E1).** Before drafting, paper-reader must read two
   exemplar surveys in full.
 - **Waiting on the user:** approval of the conjecture once audited; VIT reimbursement cap.
