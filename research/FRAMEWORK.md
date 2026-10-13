@@ -162,11 +162,22 @@ thresholds set, budget cap written, and a reason the larger run answers what the
 
 ## 10. Venue strategy
 
-Decision today: **primary ICML 2027 or IJCAI 2027 (January 2027), fallback NeurIPS 2027 (May
-2027)**; ACL 2027 (ARR, 4 January) if the result is language-specific. A mechanism or theory
-result with broad evidence goes to ICML; a narrower but solid result goes to IJCAI. One venue at a
-time: dual submission is prohibited everywhere. The choice is frozen at G7 by venue-intel from the
-official CFPs, which are not yet posted for IJCAI, ICML and NeurIPS 2027.
+**Revised 2026-10-13 (D0004, supersedes D0002): journal first.** VIT reimburses journal charges
+and a journal has no deadline, which suits a 12 GB machine.
+
+| Step | Journal | 2025 JIF | Cost | Source checked 2026-10-13 |
+|---|---|---|---|---|
+| 1 | Nature Machine Intelligence | 29.8 | subscription route free; gold OA 12,850 USD | journal metrics and publishing-options pages |
+| 2 | IEEE TPAMI | 20.4 | subscription route free; OA 2,800 USD; over-length pages 220 USD each | IEEE 2026 APC list (official); JIF from a third-party page, recheck |
+| 2b | Nature Communications | 18.1 | 7,350 USD, no free route | third-party page quoting the journal page, recheck |
+| 3 | Q1 fallback chosen at G7 (Information Fusion, IJCV, TNNLS, Pattern Recognition) | not yet verified | | |
+
+One journal at a time. The same work cannot also go to ICML, IJCAI or NeurIPS proceedings; those
+remain the route only if steps 1 and 2 both fail. An arXiv preprint is posted at submission.
+What step 1 demands of the evidence: a finding about how unified diffusion models work, shown
+with interventions on at least three model families, at full precision for the headline numbers,
+with code and data released. venue-intel reads the live author guide at G7 (word limit, number of
+main display items, Extended Data rules); figures beyond the main limit move to Extended Data.
 
 ## 11. Paper build rules
 

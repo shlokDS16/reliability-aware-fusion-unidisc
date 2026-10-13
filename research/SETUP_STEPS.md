@@ -41,6 +41,22 @@ About 6 to 8 GB: Python 3.12 through `uv`, PyTorch with a CUDA build that suppor
 series, transformers, bitsandbytes, accelerate, datasets. The exact wheel index is checked against
 the PyTorch install page on the day, then locked in `uv.lock`.
 
+## 6. Restricted datasets (start only the ones with a long approval time)
+Restricted data raises the paper's chances in two specific cases, not in general:
+- **Training-corpus access for the memorisation direction (T2).** To show a model reproduces its
+  training data, the training sets themselves are needed. Which sets MMaDA and the other unified
+  models used is extracted at Gate 1 from the papers; gated ones are then requested on their
+  Hugging Face dataset page (open the page while logged in and accept the access form).
+- **A real-world domain check for a general-audience journal.** Nature Machine Intelligence
+  rewards a finding that holds outside benchmark images. Credentialed medical image-text data
+  (MIMIC-CXR on PhysioNet) is the standard choice and has the longest lead time: an account at
+  https://physionet.org, the CITI "Data or Specimens Only Research" course, a credentialing
+  application with a reference (your guide), then signing the data use agreement on the dataset
+  page. Start this now if you want the option; approval can take a week or more. Steps on the
+  site may have changed, so follow the page's own checklist.
+Restricted data that readers cannot obtain weakens reproducibility, so every headline result must
+also hold on open data.
+
 ## 5. Optional, not blocking
 - **Plugin MCP logins** (Exa plugin, GitHub plugin, Hugging Face plugin) need `/mcp` in an
   interactive `claude` terminal. Not required: the Exa connector, `gh` CLI and `hf` CLI already
