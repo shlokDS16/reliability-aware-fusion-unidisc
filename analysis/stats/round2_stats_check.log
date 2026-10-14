@@ -1,0 +1,121 @@
+
+== EXP-001 H-A1: P(95% lower limit of the ratio >= 1.5 | true 1.75), delta method, r = 0.3 [A], by cv of the window-pair average
+n=256: cv=0.6: SE(ln)=0.0444 P=0.935 | cv=0.8: SE(ln)=0.0592 P=0.741 | cv=1.0: SE(ln)=0.0740 P=0.550 | cv=1.5: SE(ln)=0.1109 P=0.284
+n=384: cv=0.6: SE(ln)=0.0362 P=0.989 | cv=0.8: SE(ln)=0.0483 P=0.891 | cv=1.0: SE(ln)=0.0604 P=0.723 | cv=1.5: SE(ln)=0.0906 P=0.398
+n=512: cv=0.6: SE(ln)=0.0314 P=0.998 | cv=0.8: SE(ln)=0.0418 P=0.958 | cv=1.0: SE(ln)=0.0523 P=0.838 | cv=1.5: SE(ln)=0.0784 P=0.502
+Three-part conjunction (two H-A1 ratios and H-A2) at n = 256 if parts independent: cv=0.6: 0.817, cv=1.0: 0.166, cv=1.5: 0.023
+
+== EXP-001 H-A1: simulated percentile-bootstrap ratio of means, n = 256 (gamma values, share of zeros, early/late independent)
+cv=0.6, zero share=0.0: P(lower >= 1.5 | 1.5) = 0.030 (nominal 0.025); P(lower >= 1.5 | 1.75) = 0.838
+cv=1.0, zero share=0.0: P(lower >= 1.5 | 1.5) = 0.028 (nominal 0.025); P(lower >= 1.5 | 1.75) = 0.422
+cv=1.0, zero share=0.3: P(lower >= 1.5 | 1.5) = 0.032 (nominal 0.025); P(lower >= 1.5 | 1.75) = 0.245
+cv=1.5, zero share=0.3: P(lower >= 1.5 | 1.5) = 0.030 (nominal 0.025); P(lower >= 1.5 | 1.75) = 0.173
+
+== EXP-001 G5 as written: 'median relative difference > 0.3' between g = 4 and g = 32 when there is NO chunk bias
+Each I->T estimate carries Monte Carlo error from R = 8 draws; relative SD c per probe-trajectory [A]; 8 trajectories x 2 probes = 16 values
+c=0.15: P(median |rel diff| > 0.3) = 0.000; P(|median signed| > 0.3) = 0.000; P(|ratio of means - 1| > 0.3) = 0.000
+c=0.25: P(median |rel diff| > 0.3) = 0.169; P(|median signed| > 0.3) = 0.008; P(|ratio of means - 1| > 0.3) = 0.002
+c=0.35: P(median |rel diff| > 0.3) = 0.623; P(|median signed| > 0.3) = 0.047; P(|ratio of means - 1| > 0.3) = 0.022
+c=0.5: P(median |rel diff| > 0.3) = 0.921; P(|median signed| > 0.3) = 0.160; P(|ratio of means - 1| > 0.3) = 0.110
+
+== EXP-001 NC-6' as written: P(pass) under its exact null (Lift = 0 in every arm, all contrasts 0), n = 128
+Statements: 4 arm Lifts (J, Alt, DA, TF) and contrasts vs J (3) or all pairs (6); pass = every 95% CI contains 0 and every |estimate| < 0.3
+sigma_L=2.5 [A], rho_arm=0.0 [A]: contrast SE=0.312; P(pass) as written: 0.340 (3 contrasts) / 0.205 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.961
+sigma_L=2.5 [A], rho_arm=0.3 [A]: contrast SE=0.261; P(pass) as written: 0.449 (3 contrasts) / 0.266 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.959
+sigma_L=2.5 [A], rho_arm=0.6 [A]: contrast SE=0.198; P(pass) as written: 0.632 (3 contrasts) / 0.404 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.959
+sigma_L=3.0 [A], rho_arm=0.0 [A]: contrast SE=0.375; P(pass) as written: 0.235 (3 contrasts) / 0.122 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.961
+sigma_L=3.0 [A], rho_arm=0.3 [A]: contrast SE=0.314; P(pass) as written: 0.330 (3 contrasts) / 0.157 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.958
+sigma_L=3.0 [A], rho_arm=0.6 [A]: contrast SE=0.237; P(pass) as written: 0.512 (3 contrasts) / 0.255 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.959
+sigma_L=4.0 [A], rho_arm=0.0 [A]: contrast SE=0.500; P(pass) as written: 0.119 (3 contrasts) / 0.047 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.960
+sigma_L=4.0 [A], rho_arm=0.3 [A]: contrast SE=0.418; P(pass) as written: 0.181 (3 contrasts) / 0.062 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.958
+sigma_L=4.0 [A], rho_arm=0.6 [A]: contrast SE=0.316; P(pass) as written: 0.316 (3 contrasts) / 0.107 (6 pairs, bound on arms too); Bonferroni 7 statements, no point bound: 0.959
+Achieved equivalence bound of one contrast (half-width of its 90% CI + |estimate|), median under the null: SE=0.31: 0.72, SE=0.40: 0.93, SE=0.50: 1.16
+
+== EXP-001 PG-1 operating characteristics [A: per-item SD of raw matched CLIP 3.0 points, per-seed SD of Lift_i 4.0, lift 8.0 at 1,024 px]
+as written (32 vs 16, unpaired): true raw deficit 0.0, true lift ratio 1.0: P(raw ok)=0.985, P(lift ok)=0.933, P(pass) ~ 0.919
+as written (32 vs 16, unpaired): true raw deficit 1.0, true lift ratio 0.9: P(raw ok)=0.862, P(lift ok)=0.773, P(pass) ~ 0.666
+as written (32 vs 16, unpaired): true raw deficit 2.0, true lift ratio 0.8: P(raw ok)=0.500, P(lift ok)=0.500, P(pass) ~ 0.250
+as written (32 vs 16, unpaired): true raw deficit 3.0, true lift ratio 0.6: P(raw ok)=0.138, P(lift ok)=0.067, P(pass) ~ 0.009
+paired, 32 vs 32, rho 0.5: true raw deficit 0.0, true lift ratio 1.0: P(raw ok)=1.000, P(lift ok)=0.993, P(pass) ~ 0.993
+paired, 32 vs 32, rho 0.5: true raw deficit 1.0, true lift ratio 0.9: P(raw ok)=0.970, P(lift ok)=0.891, P(pass) ~ 0.865
+paired, 32 vs 32, rho 0.5: true raw deficit 2.0, true lift ratio 0.8: P(raw ok)=0.500, P(lift ok)=0.500, P(pass) ~ 0.250
+paired, 32 vs 32, rho 0.5: true raw deficit 3.0, true lift ratio 0.6: P(raw ok)=0.030, P(lift ok)=0.007, P(pass) ~ 0.000
+
+== EXP-001 PG-2: P(at least 12 of 16 captions with >= 4 non-special tokens) by true rate p
+p=0.5: 0.038, p=0.6: 0.167, p=0.7: 0.450, p=0.75: 0.630, p=0.8: 0.798, p=0.9: 0.983
+
+== EXP-002 constants (z_{1-0.025/(2M)} + z_0.80)^2 and illustrations
+M=5: z=2.8070 constant=13.313 SE at sized n = 0.00822  n_B(0.25,0.40,0.60) = 925, 2367, 5326
+M=4: z=2.7344 constant=12.788 SE at sized n = 0.00839  n_B(0.25,0.40,0.60) = 889, 2274, 5116
+M=3: z=2.6383 constant=12.110 SE at sized n = 0.00862  n_B(0.25,0.40,0.60) = 841, 2153, 4844
+M=2: z=2.4977 constant=11.151 SE at sized n = 0.00898  n_B(0.25,0.40,0.60) = 775, 1983, 4461
+M=1: z=2.2414 constant=9.505 SE at sized n = 0.00973  n_B(0.25,0.40,0.60) = 661, 1690, 3803
+
+== EXP-002 12.5 arithmetic: n_B affordable = (36 - fixed - S4 - N5b) / (S5 + S6 per n_B)
+bf16 R0: n_B affordable = 378, sigma_up max = 0.160, sigma_c max = 0.141
+bf16 R1: n_B affordable = 929, sigma_up max = 0.256, sigma_c max = 0.226
+bf16 R2: n_B affordable = 2510, sigma_up max = 0.450, sigma_c max = 0.398
+bf16 R3: n_B affordable = 6502, sigma_up max = 0.785, sigma_c max = 0.694
+fp32 R0: n_B affordable = 64, sigma_up max = 0.066, sigma_c max = 0.058
+fp32 R1: n_B affordable = 334, sigma_up max = 0.153, sigma_c max = 0.136
+fp32 R2: n_B affordable = 1175, sigma_up max = 0.308, sigma_c max = 0.272
+fp32 R3: n_B affordable = 3248, sigma_up max = 0.555, sigma_c max = 0.491
+
+== EXP-002 P(H1 negative | G_cp = 0 at every k in K_R), 95% (card rule) and 97.5% intervals, bivariate/multivariate normal, corr between k
+R0 (4 k, M=5, SE=0.0082, sigma = sigma_up): rho_k=0.0: 95% 0.682, 97.5% 0.500 | rho_k=0.3: 95% 0.701, 97.5% 0.528 | rho_k=0.6: 95% 0.754, 97.5% 0.604
+R0 (4 k, M=5, SE=0.0073, sigma = sigma_up / 1.13): rho_k=0.0: 95% 0.885, 97.5% 0.781 | rho_k=0.3: 95% 0.891, 97.5% 0.796 | rho_k=0.6: 95% 0.909, 97.5% 0.832
+R1 (3 k, M=4, SE=0.0084, sigma = sigma_up): rho_k=0.0: 95% 0.715, 97.5% 0.548 | rho_k=0.3: 95% 0.728, 97.5% 0.568 | rho_k=0.6: 95% 0.764, 97.5% 0.623
+R1 (3 k, M=4, SE=0.0074, sigma = sigma_up / 1.13): rho_k=0.0: 95% 0.893, 97.5% 0.800 | rho_k=0.3: 95% 0.896, 97.5% 0.810 | rho_k=0.6: 95% 0.909, 97.5% 0.836
+R2 (2 k, M=2, SE=0.0090, sigma = sigma_up): rho_k=0.0: 95% 0.693, 97.5% 0.530 | rho_k=0.3: 95% 0.700, 97.5% 0.540 | rho_k=0.6: 95% 0.726, 97.5% 0.576
+R2 (2 k, M=2, SE=0.0079, sigma = sigma_up / 1.13): rho_k=0.0: 95% 0.865, 97.5% 0.765 | rho_k=0.3: 95% 0.869, 97.5% 0.772 | rho_k=0.6: 95% 0.880, 97.5% 0.790
+R3 (k = 16 only, SE=0.0097): P('practically 0 at k = 16' | 0) = 95%: 0.739, 97.5%: 0.600
+Card 9.5 states 0.80 at two k (95%) and 0.67 (97.5%); those are 0.895^2 and 0.819^2 from the M = 4 SE 0.0084, not R2's SE 0.0090
+
+== EXP-002 N2: TOST 90% CI inside +-m with m = 3.29 sigma_up sqrt(2/n_1); P(pass | exact null) by sigma_true / sigma_up
+sigma_true/sigma_up=0.7: P(pass)=0.998  (with m = 3.886 SE_up: 1.000)
+sigma_true/sigma_up=0.85: P(pass)=0.974  (with m = 3.886 SE_up: 0.997)
+sigma_true/sigma_up=1.0: P(pass)=0.900  (with m = 3.886 SE_up: 0.975)
+sigma_true/sigma_up=1.2: P(pass)=0.727  (with m = 3.886 SE_up: 0.889)
+sigma_true/sigma_up=1.5: P(pass)=0.417  (with m = 3.886 SE_up: 0.656)
+bf16 n_1=300: demotion m_H > 0.06 <=> sigma_up,H > 0.223 <=> raw pilot SD_H > 0.165; m_Y > 0.10 <=> sigma_up,Y > 0.372 <=> raw pilot SD_Y > 0.274
+   sigma_up,Y=0.25: m_Y = 0.067 (P(pass | true |Y(A1)-Y(A3)| = 0.03) = 0.569)
+   sigma_up,Y=0.3: m_Y = 0.081 (P(pass | true |Y(A1)-Y(A3)| = 0.03) = 0.661)
+   sigma_up,Y=0.4: m_Y = 0.107 (P(pass | true |Y(A1)-Y(A3)| = 0.03) = 0.761)
+fp32 n_1=150: demotion m_H > 0.06 <=> sigma_up,H > 0.158 <=> raw pilot SD_H > 0.116; m_Y > 0.10 <=> sigma_up,Y > 0.263 <=> raw pilot SD_Y > 0.194
+   sigma_up,Y=0.25: m_Y = 0.095 (P(pass | true |Y(A1)-Y(A3)| = 0.03) = 0.724)
+   sigma_up,Y=0.3: m_Y = 0.114 (P(pass | true |Y(A1)-Y(A3)| = 0.03) = 0.776)
+   sigma_up,Y=0.4: m_Y = 0.152 (P(pass | true |Y(A1)-Y(A3)| = 0.03) = 0.829)
+Primary power after N2-Y (independent k = 1 samples): P(supported and N2-Y passes | G_cp = 0.03 at one k) = 0.80 x 0.90 = 0.72 (0.80 x 0.975 = 0.78 with m = 3.886 SE)
+
+== EXP-002 IR8 (iv) curvature flag: WLS quadratic on stage-A cells (|E-h*| <= 0.3, n_A = 64) plus two stage-B cells (+-0.05, n_B)
+E per grid step 0.1 [A], sigma_y=0.3 [A]: cells used A1 6, A3 5; SE(kappa) A1 0.42, A3 0.67; SD(b_theta)=0.0020; P(flag | equal curvature)=0.000; P(flag | curvature diff 6)=0.994
+E per grid step 0.1 [A], sigma_y=0.5 [A]: cells used A1 6, A3 5; SE(kappa) A1 0.71, A3 1.12; SD(b_theta)=0.0033; P(flag | equal curvature)=0.003; P(flag | curvature diff 6)=0.934
+E per grid step 0.15 [A], sigma_y=0.3 [A]: cells used A1 4, A3 4; SE(kappa) A1 0.54, A3 0.54; SD(b_theta)=0.0019; P(flag | equal curvature)=0.000; P(flag | curvature diff 6)=0.996
+E per grid step 0.15 [A], sigma_y=0.5 [A]: cells used A1 4, A3 4; SE(kappa) A1 0.90, A3 0.90; SD(b_theta)=0.0032; P(flag | equal curvature)=0.002; P(flag | curvature diff 6)=0.942
+E per grid step 0.2 [A], sigma_y=0.3 [A]: cells used A1 3, A3 3; SE(kappa) A1 0.61, A3 0.61; SD(b_theta)=0.0022; P(flag | equal curvature)=0.000; P(flag | curvature diff 6)=0.989
+E per grid step 0.2 [A], sigma_y=0.5 [A]: cells used A1 3, A3 3; SE(kappa) A1 1.02, A3 1.02; SD(b_theta)=0.0036; P(flag | equal curvature)=0.006; P(flag | curvature diff 6)=0.916
+
+== EXP-002 N5(b): flag if 95% CI of the paired Y difference excludes 0 and |diff| >= 0.01, n = 512, by paired SD [A]
+paired SD=0.05: SE=0.0022; true diff 0.0: P(flag)=0.000
+paired SD=0.05: SE=0.0022; true diff 0.01: P(flag)=0.500
+paired SD=0.05: SE=0.0022; true diff 0.03: P(flag)=1.000
+paired SD=0.1: SE=0.0044; true diff 0.0: P(flag)=0.024
+paired SD=0.1: SE=0.0044; true diff 0.01: P(flag)=0.500
+paired SD=0.1: SE=0.0044; true diff 0.03: P(flag)=1.000
+paired SD=0.2: SE=0.0088; true diff 0.0: P(flag)=0.050
+paired SD=0.2: SE=0.0088; true diff 0.01: P(flag)=0.205
+paired SD=0.2: SE=0.0088; true diff 0.03: P(flag)=0.924
+paired SD=0.42: SE=0.0186; true diff 0.0: P(flag)=0.050
+paired SD=0.42: SE=0.0186; true diff 0.01: P(flag)=0.084
+paired SD=0.42: SE=0.0186; true diff 0.03: P(flag)=0.366
+
+== EXP-002 H4 (i): TOST 90% inside +-0.05 on H(A1)-H(A3) pooled over 5 taus, n_A = 64 per tau, P(pass | true 0)
+sigma_H=0.1 [A], corr across taus within s=0.0 [A]: SE=0.0079, P(pass | 0)=1.000; single cell SE=0.0177, P=0.763
+sigma_H=0.1 [A], corr across taus within s=0.5 [A]: SE=0.0137, P(pass | 0)=0.955; single cell SE=0.0177, P=0.763
+sigma_H=0.1 [A], corr across taus within s=0.8 [A]: SE=0.0162, P(pass | 0)=0.850; single cell SE=0.0177, P=0.763
+sigma_H=0.15 [A], corr across taus within s=0.0 [A]: SE=0.0119, P(pass | 0)=0.990; single cell SE=0.0265, P=0.190
+sigma_H=0.15 [A], corr across taus within s=0.5 [A]: SE=0.0205, P(pass | 0)=0.570; single cell SE=0.0265, P=0.190
+sigma_H=0.15 [A], corr across taus within s=0.8 [A]: SE=0.0243, P(pass | 0)=0.320; single cell SE=0.0265, P=0.190
+sigma_H=0.2 [A], corr across taus within s=0.0 [A]: SE=0.0158, P(pass | 0)=0.871; single cell SE=0.0354, P=0.000
+sigma_H=0.2 [A], corr across taus within s=0.5 [A]: SE=0.0274, P(pass | 0)=0.143; single cell SE=0.0354, P=0.000
+sigma_H=0.2 [A], corr across taus within s=0.8 [A]: SE=0.0324, P(pass | 0)=-0.081; single cell SE=0.0354, P=0.000
