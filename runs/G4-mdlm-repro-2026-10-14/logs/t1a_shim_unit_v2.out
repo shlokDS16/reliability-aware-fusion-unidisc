@@ -1,0 +1,39 @@
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+{
+ "shim": "v2",
+ "summary": {
+  "rotary_fp32_max_abs": 8.345841013834843e-07,
+  "rotary_fp64_max_abs": 1.7763568394002505e-15,
+  "rotary_fp32_max_elem_rel": 8.938943205851943e-06,
+  "rotary_fp64_max_elem_rel": 1.0339150970399261e-14,
+  "attention_fp32_max_abs": 2.053369562160512e-05,
+  "attention_fp64_max_abs": 2.808864252301646e-14,
+  "attention_fp32_max_elem_rel": 0.0011362085802935162,
+  "attention_fp64_max_elem_rel": 1.5748603669045587e-12,
+  "n_cases": 116
+ },
+ "self_check": {
+  "complex_vs_loop": 0.0,
+  "flashattn_torch_vs_loop": 0.0,
+  "partial_rotary_rd4_of_d8": 0.0
+ },
+ "rotary_vs_repo_unfused_fp32": {
+  "shape": [
+   2,
+   1024,
+   3,
+   12,
+   64
+  ],
+  "max_abs": 0.0,
+  "max_abs_over_max_ref": 0.0,
+  "max_elem_rel": 0.0,
+  "ref_rms": 0.9999893971541338,
+  "v_channel_equal": true
+ }
+}
+{'op': 'rotary_qkv_', 'dtype': 'bf16', 'device': 'cuda', 'shape': [1, 1024, 12, 64], 'max_abs_vs_exact': 0.030735015869140625, 'max_abs_kernel_emulation_vs_exact': 0.030735015869140625, 'shim_vs_kernel_emulation_max_abs': 0.0, 'shim_vs_kernel_emulation_frac_elements_different': 0.0, 'max_err_in_bf16_spacings': 0.9961089494163424, 'rms_err': 0.0033128092797795185, 'rms_err_kernel_emulation': 0.0033128092797795185}
+{'op': 'rotary_qkv_', 'dtype': 'bf16', 'device': 'cuda', 'shape': [4, 1024, 12, 64], 'max_abs_vs_exact': 0.0311279296875, 'max_abs_kernel_emulation_vs_exact': 0.0311279296875, 'shim_vs_kernel_emulation_max_abs': 0.0, 'shim_vs_kernel_emulation_frac_elements_different': 0.0, 'max_err_in_bf16_spacings': 0.9961089494163424, 'rms_err': 0.0033142950467910186, 'rms_err_kernel_emulation': 0.0033142950467910186}
+{'op': 'attention', 'dtype': 'bf16', 'device': 'cuda', 'causal': False, 'shape': [1, 1024, 12, 64], 'max_abs_vs_exact': 0.012302611377303485, 'rms_err': 0.0013104046391133367, 'kernel_emulation_rms_err': 0.0012861578522828454, 'max_err_in_bf16_spacings': 55.7973312160145}
+{'op': 'attention', 'dtype': 'bf16', 'device': 'cuda', 'causal': False, 'shape': [4, 1024, 12, 64], 'max_abs_vs_exact': 0.01528798660704922, 'rms_err': 0.001313055157058819, 'kernel_emulation_rms_err': 0.0012886604401357942, 'max_err_in_bf16_spacings': 66.0174369325146}

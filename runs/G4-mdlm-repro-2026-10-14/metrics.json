@@ -1,0 +1,214 @@
+{
+ "gate": "G4",
+ "exp": "EXP-002",
+ "date": "2026-10-14",
+ "repo_sha_mdlm": "c112c526d193436838c98d81455ee51f90309470",
+ "repo_sha_remdm": "f830d659fb98d9b2c79ff71bfa12d578312b688a",
+ "checkpoint": "kuleshov-group/mdlm-owt@d0958fa851335ece6c15260ce0025f030673c0fb",
+ "shim": "v2 (runs/env-2026-10-14/scripts/shims); v1 kept in scripts/shim_v1",
+ "T1": {
+  "unit_test_summary_v2": {
+   "rotary_fp32_max_abs": 8.345841013834843e-07,
+   "rotary_fp64_max_abs": 1.7763568394002505e-15,
+   "rotary_fp32_max_elem_rel": 8.938943205851943e-06,
+   "rotary_fp64_max_elem_rel": 1.0339150970399261e-14,
+   "attention_fp32_max_abs": 2.053369562160512e-05,
+   "attention_fp64_max_abs": 2.808864252301646e-14,
+   "attention_fp32_max_elem_rel": 0.0011362085802935162,
+   "attention_fp64_max_elem_rel": 1.5748603669045587e-12,
+   "n_cases": 116
+  },
+  "t1a_files": [
+   "t1a_shim_unit_v1.json",
+   "t1a_shim_unit_v2.json"
+  ],
+  "full_forward": {
+   "fp32_S_vs_X_logit_max_abs": 5.7697296142578125e-05,
+   "fp32_logit_rms": 4.197769641876221,
+   "bf16_S_vs_X_logit_max_abs": 0.375,
+   "file": "t1b_full_forward.json"
+  },
+  "shim_fix": "rotary computed in fp32 for bf16/fp16 inputs (single rounding), as flash-attn 2.5.6 triton kernel; v1 bf16 rotary rms err 4.70e-3 vs 3.31e-3",
+  "verdict": "shim correct to float round-off"
+ },
+ "T2": {
+  "root_cause_of_setup_note_disagreement": "dropout active (backbone left in train mode after restore_model_and_sample)",
+  "engineer_state_train_mode": {
+   "top1": 0.7485713958740234,
+   "ent_absdiff": 0.3093343075285209,
+   "max_p_diff": 0.5437997281551361
+  },
+  "engineer_state_eval_mode": {
+   "top1": 0.977142870426178,
+   "ent_absdiff": 0.08500501436098527,
+   "max_p_diff": 0.058810651302337646
+  },
+  "state_level_vs_fp64_truth": {
+   "A_official_bf16": {
+    "top1_agree": 0.9776824034334763,
+    "ent_abs_diff_raw": 0.06712723717876809,
+    "ent_abs_diff_renorm": 0.020520905113050446,
+    "kl_ref_to_var": 0.0005190007338784369,
+    "max_abs_p_diff": 0.1314123379849509,
+    "rowsum_min": 0.8933611901004274,
+    "rowsum_max": 1.1094441811487976
+   },
+   "C_bf16_trunk_fp32_normalise": {
+    "top1_agree": 0.9776824034334763,
+    "ent_abs_diff_raw": 0.02052772978023831,
+    "ent_abs_diff_renorm": 0.020527719737096592,
+    "kl_ref_to_var": 0.0005150326228749242,
+    "max_abs_p_diff": 0.1291652038258002,
+    "rowsum_min": 0.9999965278177808,
+    "rowsum_max": 1.0000037306434595
+   },
+   "B_bf16_trunk_fp32_output_layer": {
+    "top1_agree": 0.9912936848559166,
+    "ent_abs_diff_raw": 0.013935483214388335,
+    "ent_abs_diff_renorm": 0.013935486838332553,
+    "kl_ref_to_var": 0.00023808783910354622,
+    "max_abs_p_diff": 0.11670121133864642,
+    "rowsum_min": 0.9999964027292554,
+    "rowsum_max": 1.0000035998379837
+   },
+   "D_bf16_with_v1_shim_rotary": {
+    "top1_agree": 0.9781115879828326,
+    "ent_abs_diff_raw": 0.0670046335541476,
+    "ent_abs_diff_renorm": 0.020813675396916812,
+    "kl_ref_to_var": 0.0005348998709330154,
+    "max_abs_p_diff": 0.11698369909568351,
+    "rowsum_min": 0.8933594038843162,
+    "rowsum_max": 1.0965353238697564
+   },
+   "G_bf16_attention_in_fp32": {
+    "top1_agree": 0.9776824034334763,
+    "ent_abs_diff_raw": 0.06712723717876809,
+    "ent_abs_diff_renorm": 0.020520905113050446,
+    "kl_ref_to_var": 0.0005190007338784369,
+    "max_abs_p_diff": 0.1314123379849509,
+    "rowsum_min": 0.8933611901004274,
+    "rowsum_max": 1.1094441811487976
+   },
+   "E_fp32_all": {
+    "top1_agree": 1.0,
+    "ent_abs_diff_raw": 5.570565803344101e-06,
+    "ent_abs_diff_renorm": 5.333998665268249e-06,
+    "kl_ref_to_var": 4.023908642597003e-11,
+    "max_abs_p_diff": 3.267859975519816e-05,
+    "rowsum_min": 0.9999961226023376,
+    "rowsum_max": 1.0000038186367257
+   }
+  },
+  "paired_elbo": {
+   "A_official_bf16": {
+    "ppl_2000": 22.731068734551812,
+    "diff_nats_vs_fp32": -0.0013616047005478795,
+    "se": 9.329180890264422e-05,
+    "rel_ppl_pct": -0.13606781374528865
+   },
+   "C_bf16_trunk_fp32_normalise": {
+    "ppl_2000": 22.775992303169957,
+    "diff_nats_vs_fp32": 0.0006127519019977924,
+    "se": 5.440965107783143e-05,
+    "rel_ppl_pct": 0.06129396727947434
+   },
+   "B_bf16_trunk_fp32_output_layer": {
+    "ppl_2000": 22.769621349358427,
+    "diff_nats_vs_fp32": 0.0003329904346618389,
+    "se": 3.773347605840381e-05,
+    "rel_ppl_pct": 0.033304588213090014
+   },
+   "D_bf16_with_v1_shim_rotary": {
+    "ppl_2000": 22.729410411134385,
+    "diff_nats_vs_fp32": -0.001434561407090634,
+    "se": 8.854091859427256e-05,
+    "rel_ppl_pct": -0.1433532915745439
+   },
+   "G_bf16_attention_in_fp32": {
+    "ppl_2000": 22.731068734551812,
+    "diff_nats_vs_fp32": -0.0013616047005478795,
+    "se": 9.329180890264422e-05,
+    "rel_ppl_pct": -0.13606781374528865
+   },
+   "E_fp32_all": {
+    "ppl_2000": 22.76204054548587,
+    "diff_nats_vs_fp32": 0.0,
+    "se": 0.0,
+    "rel_ppl_pct": 0.0
+   }
+  },
+  "timing_L1024_s": {
+   "bf16_official_batch1": 0.025958950000131154,
+   "fp32_all_batch1": 0.03405574999987948,
+   "fp32_all_tf32_batch1": 0.025092650000033245,
+   "bf16_official_batch8": 0.10013145000016266,
+   "fp32_all_batch8": 0.2706559499999912,
+   "fp32_all_tf32_batch8": 0.18170229999986987
+  },
+  "recommended_precision": "fp32 everywhere (autocast off, TF32 off), eval mode; fallback bf16 blocks + fp32 output layer + fp32 normalisation"
+ },
+ "T3": {
+  "ppl": 22.93453079055811,
+  "ppl_ci95": [
+   22.861114928559836,
+   23.007148358061027
+  ],
+  "nll": 3.1326436696126168,
+  "n_sequences": 110473,
+  "n_tokens": 113124352,
+  "seed": 1,
+  "batch_size": 8,
+  "paper_reference": 23.05,
+  "paper_location": "arXiv:2406.07524 Table 12 / Table 11 (T=inf), MDLM w/o time-conditioning (cached extraction, E1); Table 2 = 23.21 with time conditioning (live arXiv v2)",
+  "rel_gap_pct": -0.5009510171014808,
+  "rel_gap_ci_pct": [
+   -0.8194580105863936,
+   -0.1859073402992406
+  ],
+  "rel_gap_vs_table2_pct": -1.1868557063416274,
+  "tolerance_pct": 2.0,
+  "verdict": "reproduced",
+  "file": "t3_ppl_seed1_v2_bs8.json",
+  "log": "logs/pipeline.out"
+ },
+ "T4": {
+  "official_mdlm_1000steps": {
+   "gen_ppl": 47.838226318359375,
+   "geomean_ci95": [
+    42.358573008011774,
+    53.54437205526559
+   ],
+   "entropy": 5.342122167348862,
+   "n": 16,
+   "file": "t4_genppl_mdlm_steps1000_n16_seed1.json"
+  },
+  "remdm_code_1024steps_nucleus0p9": {
+   "gen_ppl": 56.29765838180736,
+   "geomean_ci95": [
+    48.324260361784305,
+    65.28726989541353
+   ],
+   "entropy": 5.510339677333832,
+   "n": 16,
+   "file": "t4_genppl_remdm_steps1024_n16_seed1_nuc0.9.json"
+  },
+  "published_reference": {
+   "remdm_table1_mdlm_nucleus_T1024": {
+    "gen_ppl": 51.3,
+    "entropy": 5.46
+   },
+   "data": {
+    "gen_ppl": 14.8,
+    "entropy": 5.44
+   }
+  }
+ },
+ "telemetry": {
+  "max_temp_c": 78.0,
+  "mean_power_w": 63.8,
+  "max_power_sample_w": 183.01,
+  "n_samples": 1395,
+  "temperature_stops": 0,
+  "unguarded_runs": "t1a unit tests (~1 min each), official-MDLM T4 (~8 min), killed first t1b/t2 attempt"
+ }
+}

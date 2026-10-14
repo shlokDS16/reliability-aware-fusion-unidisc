@@ -1,0 +1,63 @@
+{
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "free_system_commit_gb_at_start": 32.28
+  },
+  "shim": "v2",
+  "note": "median of 8 after 2 warm-up; 5 s sleeps between measurements",
+  "timing_L1024": {
+    "bf16_official_batch1": {
+      "median_s": 0.025958950000131154,
+      "min_s": 0.02354909999985466,
+      "max_s": 0.029862299999876996,
+      "iters": 8,
+      "peak_alloc_gb": 1.081036288,
+      "peak_reserved_gb": 1.235222528
+    },
+    "fp32_all_batch1": {
+      "median_s": 0.03405574999987948,
+      "min_s": 0.033597199999803706,
+      "max_s": 0.03476109999974142,
+      "iters": 8,
+      "peak_alloc_gb": 1.103003648,
+      "peak_reserved_gb": 1.650458624
+    },
+    "fp32_all_tf32_batch1": {
+      "median_s": 0.025092650000033245,
+      "min_s": 0.02447699999993347,
+      "max_s": 0.026380499999959284,
+      "iters": 8,
+      "peak_alloc_gb": 1.103003648,
+      "peak_reserved_gb": 1.650458624
+    },
+    "bf16_official_batch8": {
+      "median_s": 0.10013145000016266,
+      "min_s": 0.09287610000001223,
+      "max_s": 0.10755990000006932,
+      "iters": 8,
+      "peak_alloc_gb": 2.339802624,
+      "peak_reserved_gb": 2.9360128
+    },
+    "fp32_all_batch8": {
+      "median_s": 0.2706559499999912,
+      "min_s": 0.2662953999997626,
+      "max_s": 0.287083100000018,
+      "iters": 8,
+      "peak_alloc_gb": 3.98514944,
+      "peak_reserved_gb": 6.232735744
+    },
+    "fp32_all_tf32_batch8": {
+      "median_s": 0.18170229999986987,
+      "min_s": 0.17916390000027604,
+      "max_s": 0.1849859000003562,
+      "iters": 8,
+      "peak_alloc_gb": 3.98514944,
+      "peak_reserved_gb": 6.232735744
+    }
+  }
+}

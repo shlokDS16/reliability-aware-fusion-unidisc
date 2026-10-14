@@ -1,0 +1,40 @@
+{
+  "tag": "seed1_v2_bs8",
+  "seed": 1,
+  "shim": "v2",
+  "fp32_ablation": false,
+  "ppl": 22.93453079055811,
+  "nll": 3.1326436696126168,
+  "n_batches": 13810,
+  "batch_size": 8,
+  "n_sequences": 110473,
+  "n_tokens": 113124352,
+  "ppl_bootstrap_95": [
+    22.861114928559836,
+    23.007148358061027
+  ],
+  "nll_per_batch_sd": 0.19510607871479116,
+  "nll_se": 0.0016602518053930283,
+  "repo_sha": "c112c526d193436838c98d81455ee51f90309470",
+  "ckpt": "kuleshov-group/mdlm-owt",
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "free_system_commit_gb_at_start": 30.7
+  },
+  "torch": "2.11.0+cu130",
+  "config": {
+    "T": 0,
+    "noise": "loglinear",
+    "time_conditioning": false,
+    "parameterization": "subs",
+    "backbone": "hf_dit",
+    "model_length": 1024,
+    "antithetic": true,
+    "sampling_eps": 0.001
+  }
+}

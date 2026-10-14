@@ -1,0 +1,59 @@
+{
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "free_system_commit_gb_at_start": 30.97
+  },
+  "shim": "v2",
+  "n_sequences": 2000,
+  "batch": 8,
+  "note": "identical x0, t and mask per sequence across variants; nll in nats/token",
+  "variants": {
+    "A_official_bf16": {
+      "mean_nll": 3.1237326554371467,
+      "ppl": 22.731068734551812,
+      "paired_diff_vs_fp32_all_nats": -0.0013616047005478795,
+      "paired_diff_se": 9.329180890264422e-05,
+      "rel_ppl_diff_pct": -0.13606781374528865
+    },
+    "C_bf16_trunk_fp32_normalise": {
+      "mean_nll": 3.125707012039692,
+      "ppl": 22.775992303169957,
+      "paired_diff_vs_fp32_all_nats": 0.0006127519019977924,
+      "paired_diff_se": 5.440965107783143e-05,
+      "rel_ppl_diff_pct": 0.06129396727947434
+    },
+    "B_bf16_trunk_fp32_output_layer": {
+      "mean_nll": 3.125427250572356,
+      "ppl": 22.769621349358427,
+      "paired_diff_vs_fp32_all_nats": 0.0003329904346618389,
+      "paired_diff_se": 3.773347605840381e-05,
+      "rel_ppl_diff_pct": 0.033304588213090014
+    },
+    "D_bf16_with_v1_shim_rotary": {
+      "mean_nll": 3.123659698730604,
+      "ppl": 22.729410411134385,
+      "paired_diff_vs_fp32_all_nats": -0.001434561407090634,
+      "paired_diff_se": 8.854091859427256e-05,
+      "rel_ppl_diff_pct": -0.1433532915745439
+    },
+    "G_bf16_attention_in_fp32": {
+      "mean_nll": 3.1237326554371467,
+      "ppl": 22.731068734551812,
+      "paired_diff_vs_fp32_all_nats": -0.0013616047005478795,
+      "paired_diff_se": 9.329180890264422e-05,
+      "rel_ppl_diff_pct": -0.13606781374528865
+    },
+    "E_fp32_all": {
+      "mean_nll": 3.1250942601376948,
+      "ppl": 22.76204054548587,
+      "paired_diff_vs_fp32_all_nats": 0.0,
+      "paired_diff_se": 0.0,
+      "rel_ppl_diff_pct": 0.0
+    }
+  }
+}

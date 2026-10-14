@@ -1,0 +1,20 @@
+{
+  "mode": "eval",
+  "backbone_training_flag": false,
+  "n_masked": 525,
+  "p_dtype": "torch.bfloat16",
+  "p32_dtype": "torch.float32",
+  "top1_agree_engineer_bf16_vs_fp32": 0.977142870426178,
+  "top1_agree_bf16_vs_truth": 0.977142870426178,
+  "top1_agree_fp32_vs_truth": 1.0,
+  "ent_absdiff_engineer_bf16_vs_fp32": 0.08500501436098527,
+  "ent_absdiff_two_bf16_calls": 0.0,
+  "top1_agree_two_bf16_calls": 1.0,
+  "ent_absdiff_bf16_vs_truth": 0.08500473188040517,
+  "ent_absdiff_fp32_vs_truth": 4.09144945820568e-06,
+  "max_abs_p_diff_engineer": 0.058810651302337646,
+  "max_abs_p_diff_fp32_vs_truth": 9.045635183224654e-06,
+  "max_abs_p_diff_bf16_vs_truth": 0.05881206319502996,
+  "bf16_call_reproducible": true,
+  "rotary_module": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\dlm-discovery-resume-ca3357\\runs\\env-2026-10-14\\scripts\\shims\\flash_attn\\layers\\rotary.py"
+}

@@ -1,0 +1,49 @@
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 17:57:48.385000 107228 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\mdlm\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+Seed set to 1
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\mdlm\diffusion.py:315: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float32):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:397: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:147: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:285: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+sample 0: 21.3s  gen-ppl 31.95  unigram-entropy 5.003  distinct 355
+sample 1: 24.4s  gen-ppl 39.61  unigram-entropy 5.301  distinct 440
+sample 2: 20.5s  gen-ppl 51.58  unigram-entropy 5.427  distinct 454
+sample 3: 21.3s  gen-ppl 44.06  unigram-entropy 5.402  distinct 456
+sample 4: 21.4s  gen-ppl 48.40  unigram-entropy 5.444  distinct 452
+sample 5: 21.2s  gen-ppl 71.08  unigram-entropy 5.424  distinct 466
+sample 6: 22.6s  gen-ppl 50.92  unigram-entropy 5.490  distinct 468
+sample 7: 20.8s  gen-ppl 36.12  unigram-entropy 5.255  distinct 402
+sample 8: 19.0s  gen-ppl 35.27  unigram-entropy 5.093  distinct 359
+sample 9: 20.9s  gen-ppl 60.96  unigram-entropy 5.435  distinct 465
+sample 10: 19.8s  gen-ppl 39.37  unigram-entropy 5.377  distinct 467
+sample 11: 21.6s  gen-ppl 36.26  unigram-entropy 5.032  distinct 350
+sample 12: 22.0s  gen-ppl 67.64  unigram-entropy 5.516  distinct 491
+sample 13: 20.5s  gen-ppl 56.90  unigram-entropy 5.490  distinct 478
+sample 14: 19.3s  gen-ppl 54.25  unigram-entropy 5.417  distinct 500
+sample 15: 19.8s  gen-ppl 64.66  unigram-entropy 5.368  distinct 400
+{
+ "repo": "mdlm",
+ "repo_sha": "c112c526d193436838c98d81455ee51f90309470",
+ "seed": 1,
+ "n_samples": 16,
+ "steps": 1000,
+ "predictor": "ddpm_cache",
+ "nucleus_p": null,
+ "gen_ppl_official_metric": 47.838226318359375,
+ "gen_ppl_per_sample_geomean": 47.84552453767511,
+ "geomean_bootstrap_95": [
+  42.358573008011774,
+  53.54437205526559
+ ],
+ "unigram_entropy_mean": 5.342122167348862,
+ "unigram_entropy_sd": 0.16333247506965104,
+ "evaluator": "gpt2-large",
+ "shim": "v2"
+}

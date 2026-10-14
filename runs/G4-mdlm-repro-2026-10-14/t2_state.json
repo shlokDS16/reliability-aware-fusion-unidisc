@@ -1,0 +1,133 @@
+{
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "free_system_commit_gb_at_start": 27.89
+  },
+  "shim": "v2",
+  "repo_sha": "c112c526d193436838c98d81455ee51f90309470",
+  "n_sequences": 32,
+  "mask_rate": 0.5,
+  "variants": {
+    "A_official_bf16": {
+      "desc": "bf16 trunk + bf16 output layer + SUBS normalisation on bf16 logits (what the repo does)",
+      "vs_fp64_truth": {
+        "n_masked": 16310,
+        "top1_agree": 0.9776824034334763,
+        "ent_abs_diff_raw": 0.06712723717876809,
+        "ent_abs_diff_renorm": 0.020520905113050446,
+        "ent_signed_raw": -0.005312366599718135,
+        "kl_ref_to_var": 0.0005190007338784369,
+        "true_token_lp_abs_diff": 0.03596539664609041,
+        "true_token_lp_signed": 0.0011216246911882432,
+        "mean_ent_ref": 2.569531328914453,
+        "max_abs_p_diff": 0.1314123379849509,
+        "rowsum_min": 0.8933611901004274,
+        "rowsum_max": 1.1094441811487976
+      }
+    },
+    "C_bf16_trunk_fp32_normalise": {
+      "desc": "as A but logits upcast to fp32 before the SUBS log-sum-exp",
+      "vs_fp64_truth": {
+        "n_masked": 16310,
+        "top1_agree": 0.9776824034334763,
+        "ent_abs_diff_raw": 0.02052772978023831,
+        "ent_abs_diff_renorm": 0.020527719737096592,
+        "ent_signed_raw": -0.004382828165995063,
+        "kl_ref_to_var": 0.0005150326228749242,
+        "true_token_lp_abs_diff": 0.02261353967842255,
+        "true_token_lp_signed": -0.001016482954769231,
+        "mean_ent_ref": 2.569531328914453,
+        "max_abs_p_diff": 0.1291652038258002,
+        "rowsum_min": 0.9999965278177808,
+        "rowsum_max": 1.0000037306434595
+      }
+    },
+    "B_bf16_trunk_fp32_output_layer": {
+      "desc": "bf16 blocks; final modulation+linear in fp32; fp32 normalisation",
+      "vs_fp64_truth": {
+        "n_masked": 16310,
+        "top1_agree": 0.9912936848559166,
+        "ent_abs_diff_raw": 0.013935483214388335,
+        "ent_abs_diff_renorm": 0.013935486838332553,
+        "ent_signed_raw": -0.006209253997160224,
+        "kl_ref_to_var": 0.00023808783910354622,
+        "true_token_lp_abs_diff": 0.014710707502675351,
+        "true_token_lp_signed": -0.0004525563866297474,
+        "mean_ent_ref": 2.569531328914453,
+        "max_abs_p_diff": 0.11670121133864642,
+        "rowsum_min": 0.9999964027292554,
+        "rowsum_max": 1.0000035998379837
+      }
+    },
+    "D_bf16_with_v1_shim_rotary": {
+      "desc": "A with the ORIGINAL shim rotary (bf16 arithmetic)",
+      "vs_fp64_truth": {
+        "n_masked": 16310,
+        "top1_agree": 0.9781115879828326,
+        "ent_abs_diff_raw": 0.0670046335541476,
+        "ent_abs_diff_renorm": 0.020813675396916812,
+        "ent_signed_raw": -0.005181905468217483,
+        "kl_ref_to_var": 0.0005348998709330154,
+        "true_token_lp_abs_diff": 0.03593942813999869,
+        "true_token_lp_signed": 0.0010718086274236816,
+        "mean_ent_ref": 2.569531328914453,
+        "max_abs_p_diff": 0.11698369909568351,
+        "rowsum_min": 0.8933594038843162,
+        "rowsum_max": 1.0965353238697564
+      }
+    },
+    "G_bf16_attention_in_fp32": {
+      "desc": "A but SDPA attention computed in fp32",
+      "vs_fp64_truth": {
+        "n_masked": 16310,
+        "top1_agree": 0.9776824034334763,
+        "ent_abs_diff_raw": 0.06712723717876809,
+        "ent_abs_diff_renorm": 0.020520905113050446,
+        "ent_signed_raw": -0.005312366599718135,
+        "kl_ref_to_var": 0.0005190007338784369,
+        "true_token_lp_abs_diff": 0.03596539664609041,
+        "true_token_lp_signed": 0.0011216246911882432,
+        "mean_ent_ref": 2.569531328914453,
+        "max_abs_p_diff": 0.1314123379849509,
+        "rowsum_min": 0.8933611901004274,
+        "rowsum_max": 1.1094441811487976
+      }
+    },
+    "E_fp32_all": {
+      "desc": "no autocast anywhere, fp32 weights and activations (TF32 off)",
+      "vs_fp64_truth": {
+        "n_masked": 16310,
+        "top1_agree": 1.0,
+        "ent_abs_diff_raw": 5.570565803344101e-06,
+        "ent_abs_diff_renorm": 5.333998665268249e-06,
+        "ent_signed_raw": 5.624298429270847e-07,
+        "kl_ref_to_var": 4.023908642597003e-11,
+        "true_token_lp_abs_diff": 6.066718401265283e-06,
+        "true_token_lp_signed": 4.978413681528969e-08,
+        "mean_ent_ref": 2.569531328914453,
+        "max_abs_p_diff": 3.267859975519816e-05,
+        "rowsum_min": 0.9999961226023376,
+        "rowsum_max": 1.0000038186367257
+      }
+    }
+  },
+  "official_bf16_vs_fp32_all": {
+    "n_masked": 16310,
+    "top1_agree": 0.9776824034334763,
+    "ent_abs_diff_raw": 0.06712722803437703,
+    "ent_abs_diff_renorm": 0.020521034747936814,
+    "ent_signed_raw": -0.005312929029561063,
+    "kl_ref_to_var": 0.0005190473084090845,
+    "true_token_lp_abs_diff": 0.03596554784815711,
+    "true_token_lp_signed": 0.0011215749070514279,
+    "mean_ent_ref": 2.569531891344296,
+    "max_abs_p_diff": 0.131409914788721,
+    "rowsum_min": 0.8933611901004274,
+    "rowsum_max": 1.1094441811487976
+  }
+}

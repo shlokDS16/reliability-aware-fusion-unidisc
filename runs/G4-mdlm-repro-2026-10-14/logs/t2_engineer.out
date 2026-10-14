@@ -1,0 +1,98 @@
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 21:21:16.474000 55932 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\mdlm\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:397: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:147: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:285: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\G4-mdlm-repro-2026-10-14\scripts\t1b_t2_forward.py:55: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+{
+ "n_masked": 525,
+ "note": "same tokens and mask as runs/env-2026-10-14/scripts/mdlm_smoke.py; sequence is a MODEL SAMPLE (128 steps), not OWT text",
+ "A_vs_E": {
+  "n": 525,
+  "top1_agree": 0.9771428571428571,
+  "ent_abs_diff_raw": 0.08504503922366374,
+  "ent_abs_diff_renorm": 0.02249218083169703,
+  "ent_signed_raw": -5.060916647843209,
+  "kl_ref_to_var": 0.0005670765966557907,
+  "true_token_lp_abs_diff": 19.448955535888672,
+  "true_token_lp_signed": -3.613443374633789,
+  "max_abs_p_diff": 0.06026769150689426,
+  "rowsum_min": 0.9319090294244725,
+  "rowsum_max": 1.0720875932952052,
+  "mean_ent_ref": 3.1883013327109433
+ },
+ "vs_truth": {
+  "A_official_bf16": {
+   "n": 525,
+   "top1_agree": 0.9771428571428571,
+   "ent_abs_diff_raw": 0.08504486771098435,
+   "ent_abs_diff_renorm": 0.022491552316166702,
+   "ent_signed_raw": -5.060794479128228,
+   "kl_ref_to_var": 0.0005670076486163086,
+   "true_token_lp_abs_diff": 19.449219488158768,
+   "true_token_lp_signed": -3.613360795656229,
+   "max_abs_p_diff": 0.06026613339469977,
+   "rowsum_min": 0.9319090294244725,
+   "rowsum_max": 1.0720875932952052,
+   "mean_ent_ref": 3.188301100008629
+  },
+  "C_bf16_trunk_fp32_normalise": {
+   "n": 525,
+   "top1_agree": 0.9771428571428571,
+   "ent_abs_diff_raw": 0.022500091280234377,
+   "ent_abs_diff_renorm": 0.02250022807264537,
+   "ent_signed_raw": -3.464588423146388,
+   "kl_ref_to_var": 0.0005618280408063793,
+   "true_token_lp_abs_diff": 13.419074132743235,
+   "true_token_lp_signed": -2.819833192506815,
+   "max_abs_p_diff": 0.03495639998577105,
+   "rowsum_min": 0.9999989469681981,
+   "rowsum_max": 1.0000029586287282,
+   "mean_ent_ref": 3.188301100008629
+  },
+  "B_bf16_trunk_fp32_output_layer": {
+   "n": 525,
+   "top1_agree": 0.9942857142857143,
+   "ent_abs_diff_raw": 0.014219878385028549,
+   "ent_abs_diff_renorm": 0.014219926744342339,
+   "ent_signed_raw": -3.8683656271984006,
+   "kl_ref_to_var": 0.00023321057322518948,
+   "true_token_lp_abs_diff": 8.24127022784081,
+   "true_token_lp_signed": -2.7802442642841587,
+   "max_abs_p_diff": 0.026808352482542902,
+   "rowsum_min": 0.9999975959884237,
+   "rowsum_max": 1.0000018325133953,
+   "mean_ent_ref": 3.188301100008629
+  },
+  "D_bf16_with_v1_shim_rotary": {
+   "n": 525,
+   "top1_agree": 0.9733333333333334,
+   "ent_abs_diff_raw": 0.0844187138807199,
+   "ent_abs_diff_renorm": 0.022489785643479292,
+   "ent_signed_raw": -5.697383554064552,
+   "kl_ref_to_var": 0.0005878774449253763,
+   "true_token_lp_abs_diff": 20.28042002979584,
+   "true_token_lp_signed": -3.175860795656229,
+   "max_abs_p_diff": 0.06775452596851428,
+   "rowsum_min": 0.9335294815997348,
+   "rowsum_max": 1.070208273701886,
+   "mean_ent_ref": 3.188301100008629
+  },
+  "G_bf16_attention_in_fp32": {
+   "n": 525,
+   "top1_agree": 0.9771428571428571,
+   "ent_abs_diff_raw": 0.08504486771098435,
+   "ent_abs_diff_renorm": 0.022491552316166702,
+   "ent_signed_raw": -5.060794479128228,
+   "kl_ref_to_var": 0.0005670076486163086,
+   "true_token_lp_abs_diff": 19.4492194881587
+gpu_guard: child exited 3221226505; telemetry in runs\G4-mdlm-repro-2026-10-14\telemetry-engineer.csv
+[run_stage] engineer chunk exit 127 at 21:21:36
+[run_stage] engineer DONE

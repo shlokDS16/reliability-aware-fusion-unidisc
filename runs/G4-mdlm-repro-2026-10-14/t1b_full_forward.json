@@ -1,0 +1,65 @@
+{
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "free_system_commit_gb_at_start": 39.53
+  },
+  "shim": "v2",
+  "shim_file": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\dlm-discovery-resume-ca3357\\runs\\env-2026-10-14\\scripts\\shims\\flash_attn\\layers\\rotary.py",
+  "fp32": {
+    "S_vs_X": {
+      "logit_max_abs": 5.7697296142578125e-05,
+      "logit_mean_abs": 3.464793280727463e-06,
+      "logit_rms": 4.197769641876221,
+      "logp_masked_max_abs": 9.1552734375e-05,
+      "top1_agree_min": 1.0,
+      "n_sequences": 4
+    },
+    "M_vs_X": {
+      "logit_max_abs": 5.817413330078125e-05,
+      "logit_mean_abs": 3.541828164088656e-06,
+      "logit_rms": 4.197769641876221,
+      "logp_masked_max_abs": 8.392333984375e-05,
+      "top1_agree_min": 1.0,
+      "n_sequences": 4
+    },
+    "S_vs_M": {
+      "logit_max_abs": 8.392333984375e-05,
+      "logit_mean_abs": 3.8062745488787186e-06,
+      "logit_rms": 4.197769641876221,
+      "logp_masked_max_abs": 9.5367431640625e-05,
+      "top1_agree_min": 1.0,
+      "n_sequences": 4
+    }
+  },
+  "bf16": {
+    "S_vs_X": {
+      "logit_max_abs": 0.375,
+      "logit_mean_abs": 0.017132002394646406,
+      "logit_rms": 4.199892520904541,
+      "logp_masked_max_abs": 0.4999656677246094,
+      "top1_agree_min": 0.9901961088180542,
+      "n_sequences": 4
+    },
+    "M_vs_X": {
+      "logit_max_abs": 0.5,
+      "logit_mean_abs": 0.016878354363143444,
+      "logit_rms": 4.199892520904541,
+      "logp_masked_max_abs": 0.49999427795410156,
+      "top1_agree_min": 0.9855072498321533,
+      "n_sequences": 4
+    },
+    "S_vs_M": {
+      "logit_max_abs": 0.5,
+      "logit_mean_abs": 0.01727504236623645,
+      "logit_rms": 4.2000651359558105,
+      "logp_masked_max_abs": 0.5,
+      "top1_agree_min": 0.9862745404243469,
+      "n_sequences": 4
+    }
+  }
+}

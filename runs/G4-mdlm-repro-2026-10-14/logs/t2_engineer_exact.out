@@ -1,0 +1,32 @@
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 21:22:30.578000 42604 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\mdlm\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\mdlm\diffusion.py:315: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float32):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:397: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:147: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+C:\Users\Shlok\.cache\huggingface\modules\transformers_modules\kuleshov-group\mdlm-owt\d0958fa851335ece6c15260ce0025f030673c0fb\modeling_mdlm.py:285: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=False):
+{
+ "n_masked": 525,
+ "p_dtype": "torch.bfloat16",
+ "p32_dtype": "torch.float32",
+ "top1_agree_engineer_bf16_vs_fp32": 0.977142870426178,
+ "top1_agree_bf16_vs_truth": 0.977142870426178,
+ "top1_agree_fp32_vs_truth": 1.0,
+ "ent_absdiff_engineer_bf16_vs_fp32": 0.08500501436098527,
+ "ent_absdiff_bf16_vs_truth": 0.08500473188040517,
+ "ent_absdiff_fp32_vs_truth": 4.09144945820568e-06,
+ "max_abs_p_diff_engineer": 0.058810651302337646,
+ "max_abs_p_diff_fp32_vs_truth": 9.045635183224654e-06,
+ "max_abs_p_diff_bf16_vs_truth": 0.05881206319502996,
+ "bf16_call_reproducible": true,
+ "rotary_module": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\dlm-discovery-resume-ca3357\\runs\\env-2026-10-14\\scripts\\shims\\flash_attn\\layers\\rotary.py"
+}
+gpu_guard: child exited 3221226505; telemetry in runs\G4-mdlm-repro-2026-10-14\telemetry-engexact.csv
+[run_stage] engexact chunk exit 127 at 21:22:51
+[run_stage] engexact DONE
