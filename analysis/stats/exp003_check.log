@@ -1,0 +1,16 @@
+Analytic check of card table (sigma_d 0.45, n 150):
+ SE=0.0367; power(0.10)=0.777; P(null|0)=0.718; n(0.90 power)=213
+ sigma_d=0.30: SE=0.0245 power@0.10=0.983 P(null|true 0)=0.985 P(null|true 0.05)=0.654
+ sigma_d=0.35: SE=0.0286 power@0.10=0.938 P(null|true 0)=0.936 P(null|true 0.05)=0.542
+ sigma_d=0.45: SE=0.0367 power@0.10=0.777 P(null|true 0)=0.718 P(null|true 0.05)=0.381
+ sigma_d=0.55: SE=0.0449 power@0.10=0.605 P(null|true 0)=0.439 P(null|true 0.05)=0.252
+ sigma_d=0.65: SE=0.0531 power@0.10=0.470 P(null|true 0)=0.189 P(null|true 0.05)=0.122
+ sigma_d=0.80: SE=0.0653 power@0.10=0.334 P(null|true 0)=0.000 P(null|true 0.05)=0.000
+Simulation, 150 prefixes (nd = mean discordant nouns per sample; stated bootstrap B=1000, 400 reps):
+plenty of nouns, null              P=150 nd/sample A=4.0 B=4.0 trueD=0.00 | sd_diff(prefix influence) mean=0.316 | mean est=+0.000 (bias +0.000) emp SE=0.027 | P(reject95)=0.055 P(null90)=0.973 cover90=0.887
+G sparse (2 vs 4), null            P=150 nd/sample A=2.0 B=4.0 trueD=0.00 | sd_diff(prefix influence) mean=0.386 | mean est=+0.001 (bias +0.001) emp SE=0.033 | P(reject95)=0.058 P(null90)=0.850 cover90=0.887
+G very sparse (1 vs 3), null       P=150 nd/sample A=1.0 B=3.0 trueD=0.00 | sd_diff(prefix influence) mean=0.515 | mean est=+0.001 (bias +0.001) emp SE=0.043 | P(reject95)=0.068 P(null90)=0.545 cover90=0.897
+G sparse, true 0.10                P=150 nd/sample A=2.0 B=4.0 trueD=0.10 | sd_diff(prefix influence) mean=0.399 | mean est=+0.098 (bias -0.002) emp SE=0.033 | P(reject95)=0.840 P(null90)=0.075 cover90=0.885
+plenty of nouns, true 0.10         P=150 nd/sample A=4.0 B=4.0 trueD=0.10 | sd_diff(prefix influence) mean=0.323 | mean est=+0.102 (bias +0.002) emp SE=0.026 | P(reject95)=0.970 P(null90)=0.045 cover90=0.895
+G very sparse, true 0.10           P=150 nd/sample A=1.0 B=3.0 trueD=0.10 | sd_diff(prefix influence) mean=0.534 | mean est=+0.100 (bias +0.000) emp SE=0.043 | P(reject95)=0.637 P(null90)=0.050 cover90=0.892
+n=60 very sparse, null             P=60 nd/sample A=1.0 B=3.0 trueD=0.00 | sd_diff(prefix influence) mean=0.511 | mean est=-0.001 (bias -0.001) emp SE=0.068 | P(reject95)=0.043 P(null90)=0.037 cover90=0.883
