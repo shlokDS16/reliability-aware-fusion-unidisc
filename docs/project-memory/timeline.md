@@ -30,3 +30,8 @@ in `claude/`. End-of-session routine runs before any session finishes.
 - Measured hardware: 12 GB laptop GPU, 66.7 GB free disk. ICLR 2027 and AAAI-27 already closed.
 - First frontier sweep (E1): causal understanding-generation coupling and mechanistic interpretability are the sparse areas.
 - Next: Python environment, then Gate 1.
+
+## 2026-10-14 (late) - Primer chapters for the Gaussian family and unified multimodal models
+- Two paper-reader agents, one at a time (FRUGAL budget; user's choice): `research/review/dossier/primer-gaussian.md` and `primer-multimodal.md`, each with an exact-enumeration check script that reruns cleanly.
+- Discoveries: Gaussian samplers carry a final-rounding factorisation term the framework lacked; corollary 3 is unattested in six papers; the multimodal E_fact splits exactly into within-text, within-image and cross-modal CMI, which makes P5 as worded near an identity, so it is split into P5a/P5b (D0010). No paper measures a cross-modal quantity per step. Released MMaDA-Parallel-A code differs from the paper's "parallel at every step" (E3).
+- Implications: framework-v1 must apply 25 edits; the cross-modal CMI per step is the most promising untested measurement for Paper 2. User set a two-week horizon with quality first.
