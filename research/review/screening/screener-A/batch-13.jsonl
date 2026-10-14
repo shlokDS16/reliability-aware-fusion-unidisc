@@ -1,0 +1,100 @@
+{"sid": "R1201", "decision": "include", "code": "", "reason": "KV caching method for rollback-capable diffusion LMs."}
+{"sid": "R1202", "decision": "exclude", "code": "X0", "reason": "VLM hallucination suppression; no diffusion component."}
+{"sid": "R1203", "decision": "include", "code": "", "reason": "Confidence calibration gap in diffusion LMs under noise."}
+{"sid": "R1204", "decision": "include", "code": "", "reason": "Prefix-conditioned diffusion training to reduce pretraining-generation mismatch."}
+{"sid": "R1205", "decision": "include", "code": "", "reason": "Diffusion-native runtime for tool-augmented reasoning in dLLMs."}
+{"sid": "R1206", "decision": "include", "code": "", "reason": "Simplex augmentation for uniform discrete diffusion, OpenWebText results."}
+{"sid": "R1207", "decision": "include", "code": "", "reason": "Training-free confidence gating for diffusion LM inference."}
+{"sid": "R1208", "decision": "include", "code": "", "reason": "Diffusion LMs for lossless text compression."}
+{"sid": "R1209", "decision": "include", "code": "", "reason": "Training-free parallel decoding search for diffusion LLMs."}
+{"sid": "R1210", "decision": "unclear", "code": "", "reason": "Generation as auxiliary supervision in MLLM; diffusion use not stated."}
+{"sid": "R1211", "decision": "include", "code": "", "reason": "Parameter-efficient fine-tuning for diffusion language models."}
+{"sid": "R1212", "decision": "include", "code": "", "reason": "Speculative decoding with diffusion drafters and draft trees."}
+{"sid": "R1213", "decision": "include", "code": "", "reason": "Consistency distillation for parallel decoding in diffusion LLMs."}
+{"sid": "R1214", "decision": "include", "code": "", "reason": "Hallucination detection from denoising trajectories in diffusion LLMs."}
+{"sid": "R1215", "decision": "unclear", "code": "", "reason": "Existing diffusion LMs scoring labels for classification; no new model, output labels."}
+{"sid": "R1216", "decision": "include", "code": "", "reason": "Verifier skipping in speculative diffusion decoding for code."}
+{"sid": "R1217", "decision": "exclude", "code": "X1", "reason": "Single-cell gene expression perturbation prediction; no text."}
+{"sid": "R1218", "decision": "exclude", "code": "X1", "reason": "Sokoban puzzle grids with discrete diffusion; no text."}
+{"sid": "R1219", "decision": "exclude", "code": "X1", "reason": "Time series imputation; no text."}
+{"sid": "R1220", "decision": "include", "code": "", "reason": "Nested SMC inference-time control for discrete diffusion LMs."}
+{"sid": "R1221", "decision": "include", "code": "", "reason": "Draft tree construction for diffusion LM drafters."}
+{"sid": "R1222", "decision": "unclear", "code": "", "reason": "Minimax theory for score-entropy discrete diffusion; text only mentioned generally."}
+{"sid": "R1223", "decision": "include", "code": "", "reason": "Watermarking method for diffusion language models."}
+{"sid": "R1224", "decision": "unclear", "code": "", "reason": "Semantic-operator denoising of reasoning text; diffusion link unclear."}
+{"sid": "R1225", "decision": "include", "code": "", "reason": "Length-adaptive decoding for masked diffusion machine translation."}
+{"sid": "R1226", "decision": "include", "code": "", "reason": "Training-free convergence-aware inference for diffusion LMs."}
+{"sid": "R1227", "decision": "exclude", "code": "X1", "reason": "RNA sequence foundation model; no diffusion, no text."}
+{"sid": "R1228", "decision": "include", "code": "", "reason": "Self-distillation framework for diffusion language models."}
+{"sid": "R1229", "decision": "include", "code": "", "reason": "Structured suffix modeling for efficient diffusion LM inference."}
+{"sid": "R1230", "decision": "unclear", "code": "", "reason": "Discrete diffusion over semantic item IDs for recommendation; not natural text."}
+{"sid": "R1231", "decision": "include", "code": "", "reason": "Embedding-space flow-based language model with convergence proof."}
+{"sid": "R1232", "decision": "include", "code": "", "reason": "Characterization study of masked diffusion LLM serving."}
+{"sid": "R1233", "decision": "include", "code": "", "reason": "Discrete diffusion LLM framework for radiology report generation."}
+{"sid": "R1234", "decision": "include", "code": "", "reason": "Test-time verification via prefix regeneration for diffusion LMs."}
+{"sid": "R1235", "decision": "include", "code": "", "reason": "Draft-conditioned global correction with masked diffusion models for reasoning."}
+{"sid": "R1236", "decision": "unclear", "code": "", "reason": "Theory of adaptive parallel sampling of discrete vectors; text not stated."}
+{"sid": "R1237", "decision": "include", "code": "", "reason": "Cross-request cache reuse for diffusion LLM inference."}
+{"sid": "R1238", "decision": "include", "code": "", "reason": "Survival-based length control for diffusion LMs."}
+{"sid": "R1239", "decision": "include", "code": "", "reason": "Revocable decoding for diffusion LLMs, text and multimodal."}
+{"sid": "R1240", "decision": "exclude", "code": "X1", "reason": "Reward steering evaluated on DNA, protein and molecule benchmarks only."}
+{"sid": "R1241", "decision": "include", "code": "", "reason": "Bidirectional image-text diffusion bridge covering image-to-text generation."}
+{"sid": "R1242", "decision": "include", "code": "", "reason": "Acceleration of unified understanding-generation models with diffusion head."}
+{"sid": "R1243", "decision": "exclude", "code": "X1", "reason": "Image translation with discrete diffusion; no text."}
+{"sid": "R1244", "decision": "include", "code": "", "reason": "Discrete diffusion LM for PDE solver code repair."}
+{"sid": "R1245", "decision": "include", "code": "", "reason": "Variable-length generation algorithm for masked diffusion LMs."}
+{"sid": "R1246", "decision": "include", "code": "", "reason": "Safety alignment analysis across denoising steps in diffusion LLMs."}
+{"sid": "R1247", "decision": "include", "code": "", "reason": "Membership inference on fine-tuned diffusion LMs."}
+{"sid": "R1248", "decision": "include", "code": "", "reason": "Committed reveal sampler for uniform discrete diffusion language models."}
+{"sid": "R1249", "decision": "exclude", "code": "X1", "reason": "Robot manipulation actions with flow matching; no text generation."}
+{"sid": "R1250", "decision": "unclear", "code": "", "reason": "Multimodal encoder pretrained with masked diffusion text objective; used for retrieval."}
+{"sid": "R1251", "decision": "include", "code": "", "reason": "Adaptive-length infilling method for diffusion LMs."}
+{"sid": "R1252", "decision": "unclear", "code": "", "reason": "Diffusion over token role tags for information extraction; not generated text."}
+{"sid": "R1253", "decision": "unclear", "code": "", "reason": "Masked diffusion over semantic item IDs for recommendation; not natural text."}
+{"sid": "R1254", "decision": "unclear", "code": "", "reason": "Image generator with frozen diffusion-LM understanding module; unified framing weak."}
+{"sid": "R1255", "decision": "include", "code": "", "reason": "Diffusion-augmented AR LLMs for lossless parallel decoding."}
+{"sid": "R1256", "decision": "include", "code": "", "reason": "Distilled continuous diffusion language model for code generation."}
+{"sid": "R1257", "decision": "exclude", "code": "X3", "reason": "Survey of diffusion LMs for edge agents."}
+{"sid": "R1258", "decision": "exclude", "code": "X1", "reason": "Genomic sequence diffusion; no natural language text."}
+{"sid": "R1259", "decision": "include", "code": "", "reason": "Visual jailbreak attack on discrete diffusion vision-language models."}
+{"sid": "R1260", "decision": "include", "code": "", "reason": "Expert composition for restoring mixed prose and code with discrete flow matching."}
+{"sid": "R1261", "decision": "include", "code": "", "reason": "One-step block generation distillation for diffusion LMs on TinyStories."}
+{"sid": "R1262", "decision": "include", "code": "", "reason": "In-place instruction following benchmark and training for diffusion LLMs."}
+{"sid": "R1263", "decision": "include", "code": "", "reason": "Duality of continuous and discrete flow matching with language modeling pilot."}
+{"sid": "R1264", "decision": "include", "code": "", "reason": "Constant-size cache for block diffusion language models at scale."}
+{"sid": "R1265", "decision": "include", "code": "", "reason": "Representation-guided masked diffusion model for text generation."}
+{"sid": "R1266", "decision": "include", "code": "", "reason": "Omnimodal masked-diffusion model with language tokens for robot policies."}
+{"sid": "R1267", "decision": "include", "code": "", "reason": "Curriculum RL framework for diffusion language models."}
+{"sid": "R1268", "decision": "include", "code": "", "reason": "Block-wise diffusion vision-language GUI agent."}
+{"sid": "R1269", "decision": "include", "code": "", "reason": "Semantic watermarking for diffusion language models."}
+{"sid": "R1270", "decision": "unclear", "code": "", "reason": "Thesis on self-orchestrating LMs; diffusion only one of several systems."}
+{"sid": "R1271", "decision": "include", "code": "", "reason": "Token dependency modeling for diffusion language models."}
+{"sid": "R1272", "decision": "include", "code": "", "reason": "Temporal self-distillation for faster discrete diffusion LM inference."}
+{"sid": "R1273", "decision": "include", "code": "", "reason": "One-step discrete transport model for language modeling and reasoning."}
+{"sid": "R1274", "decision": "include", "code": "", "reason": "Joint multi-stream discrete diffusion for one-to-many translation."}
+{"sid": "R1275", "decision": "include", "code": "", "reason": "Register tokens carrying reasoning state in diffusion LMs."}
+{"sid": "R1276", "decision": "include", "code": "", "reason": "Learnable block sizes and parallel sampling for dLLM decoding."}
+{"sid": "R1277", "decision": "unclear", "code": "", "reason": "Open-source library for AR, masked diffusion and flow LMs; no result stated."}
+{"sid": "R1278", "decision": "include", "code": "", "reason": "KV cache management system for long-context diffusion LLMs."}
+{"sid": "R1279", "decision": "include", "code": "", "reason": "Distributed training parallelism for block diffusion language models."}
+{"sid": "R1280", "decision": "include", "code": "", "reason": "Probe guidance for continuous diffusion language models."}
+{"sid": "R1281", "decision": "include", "code": "", "reason": "Hybrid autoregressive and masked diffusion language model."}
+{"sid": "R1282", "decision": "include", "code": "", "reason": "Theory of parallelism across diffusion language model paradigms."}
+{"sid": "R1283", "decision": "unclear", "code": "", "reason": "Theory of confidence-based discrete diffusion sampling; text not specific."}
+{"sid": "R1284", "decision": "include", "code": "", "reason": "Adapting hybrid-attention Qwen3.5 into diffusion language models."}
+{"sid": "R1285", "decision": "include", "code": "", "reason": "Causal latent revision framework for diffusion LM reasoning."}
+{"sid": "R1286", "decision": "unclear", "code": "", "reason": "Schedule theory for masked discrete diffusion tau-leaping; text not stated."}
+{"sid": "R1287", "decision": "include", "code": "", "reason": "Training data detection method for diffusion LLMs."}
+{"sid": "R1288", "decision": "include", "code": "", "reason": "Optimizer benchmark across discrete diffusion formulations including text."}
+{"sid": "R1289", "decision": "include", "code": "", "reason": "Graph-guided parallel decoding of diffusion LMs for GraphRAG."}
+{"sid": "R1290", "decision": "include", "code": "", "reason": "Quantum-augmented branches added to a masked diffusion LM."}
+{"sid": "R1291", "decision": "include", "code": "", "reason": "Unified embodied understanding-generation model with flow matching experts."}
+{"sid": "R1292", "decision": "include", "code": "", "reason": "Informed masking for RL in diffusion LLMs."}
+{"sid": "R1293", "decision": "include", "code": "", "reason": "Evolutionary heuristic denoising scheduler for dLLMs."}
+{"sid": "R1294", "decision": "include", "code": "", "reason": "Elastic block decoding for diffusion LMs via confidence cliffs."}
+{"sid": "R1295", "decision": "include", "code": "", "reason": "IO-aware caching and draft-verify decoding for diffusion LLMs."}
+{"sid": "R1296", "decision": "include", "code": "", "reason": "Detecting and repairing wrong lock-in in diffusion LMs."}
+{"sid": "R1297", "decision": "include", "code": "", "reason": "Causal shortcut learning for diffusion LM reasoning."}
+{"sid": "R1298", "decision": "include", "code": "", "reason": "Scaling continuous diffusion LMs to reasoning and code."}
+{"sid": "R1299", "decision": "exclude", "code": "X1", "reason": "Text image super-resolution; image output only."}
+{"sid": "R1300", "decision": "include", "code": "", "reason": "Diffusion language model for mental health counseling dialogue."}
