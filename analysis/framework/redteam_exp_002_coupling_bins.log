@@ -1,0 +1,76 @@
+Q1  pairwise MI (nats) between two members of the SF-selected set, exact Prop. 4 law, V = 256
+    N     k   regime    mean pairwise MI   max      sum over pairs (proxy for TC_A, mean)
+      4    2   diffuse   2.08e-02        6.38e-02   2.08e-02
+      4    2   same      2.79e-02        3.07e-02   2.79e-02
+      4    2   mid       9.11e-03        2.98e-02   9.11e-03
+     32    2   diffuse   2.61e-02        5.71e-02   2.61e-02
+     32    2   same      6.12e-02        9.05e-02   6.12e-02
+     32    2   mid       2.81e-05        3.36e-04   2.81e-05
+   1024    2   diffuse   7.86e-52        4.71e-51   7.86e-52
+   1024    2   same      3.08e-13        1.85e-12   3.08e-13
+   1024    2   mid       0.00e+00        0.00e+00   0.00e+00
+   1024    2   late      0.00e+00        0.00e+00   0.00e+00
+   1024    8   diffuse   5.32e-16        1.85e-14   1.49e-14
+   1024    8   same      4.49e-16        2.69e-15   1.26e-14
+   1024    8   mid       0.00e+00        0.00e+00   0.00e+00
+   1024   16   diffuse   5.17e-13        1.86e-11   6.20e-11
+   1024   16   same      8.03e-19        4.50e-18   9.63e-17
+   1024   16   mid       -2.90e-313        0.00e+00   -3.48e-311
+   1024   16   late      0.00e+00        0.00e+00   0.00e+00
+
+Q2  A3 recipe: exact-score kappa_i(.|A) against binned (2048 log bins on [1e-12,1]); top regular bin is [0.98660, 1)
+    within-bin convention w_eq: 0 = same-bin competitor counts as not below; 0.5 = half; 1 = below
+    N     k  regime   w_eq   mean TV (eps_3)  p95 TV    mean signed d E[log P_i]   share of members with max prob in top bin
+   1024    2  diffuse  0.0     0.0000        0.0000      +0.0000                  0.00
+   1024    2  diffuse  0.5     0.0000        0.0000      +0.0000                  0.00
+   1024    2  diffuse  1.0     0.0000        0.0000      -0.0000                  0.00
+   1024   16  diffuse  0.0     0.0000        0.0000      -0.0000                  0.00
+   1024   16  diffuse  0.5     0.0006        0.0000      -0.0003                  0.00
+   1024   16  diffuse  1.0     0.0000        0.0000      +0.0000                  0.00
+   1024   16  same     0.0     0.0000        0.0000      +0.0000                  0.00
+   1024   16  same     0.5     0.0000        0.0000      +0.0000                  0.00
+   1024   16  same     1.0     0.0000        0.0000      +0.0000                  0.00
+   1024   16  mid      0.0     0.0000        0.0000      +0.0000                  0.11
+   1024   16  mid      0.5     0.0000        0.0000      -0.0000                  0.02
+   1024   16  mid      1.0     0.0000        0.0000      -0.0000                  0.14
+    512   16  late     0.0     0.0000        0.0000      +0.0000                  1.00
+    512   16  late     0.5     0.0000        0.0000      +0.0000                  1.00
+    512   16  late     1.0     0.0000        0.0000      +0.0000                  1.00
+
+Q2b bins ladder (N5(a) analogue): TV between 1024-bin and 4096-bin laws vs TV of 2048-bin law to exact
+  N=1024 k=16 regime=diffuse: ladder TV(1024 vs 4096 bins) mean 0.0008 p95 0.0004;  TV(2048 bins vs exact) mean 0.0005 p95 0.0000
+  N=1024 k=16 regime=same: ladder TV(1024 vs 4096 bins) mean 0.0000 p95 0.0000;  TV(2048 bins vs exact) mean 0.0000 p95 0.0000
+  N=1024 k=16 regime=mid: ladder TV(1024 vs 4096 bins) mean 0.0000 p95 0.0000;  TV(2048 bins vs exact) mean 0.0000 p95 0.0000
+
+Q1b where the coupling lives: small N / k (the last steps of a trajectory); also the per-position sharpening
+    N     k   N/k  regime    mean pairwise MI  sum over pairs   mean H(P_i)  mean H(kappa_i | A)
+     16    8    2  diffuse   7.66e-03          2.15e-01        4.604        3.335
+     16    8    2  same      1.39e-02          3.90e-01        4.486        2.971
+     16    8    2  mid       7.76e-03          2.17e-01        2.756        1.519
+     24    8    3  diffuse   1.02e-02          2.85e-01        4.387        2.654
+     24    8    3  same      2.01e-02          5.62e-01        4.376        2.038
+     24    8    3  mid       9.98e-03          2.79e-01        2.449        0.896
+     32    8    4  diffuse   1.31e-02          3.68e-01        4.484        2.344
+     32    8    4  same      2.33e-02          6.51e-01        4.540        1.857
+     32    8    4  mid       6.52e-03          1.83e-01        2.528        0.483
+     64    8    8  diffuse   1.18e-02          3.31e-01        4.391        1.061
+     64    8    8  same      3.56e-02          9.96e-01        4.506        0.759
+     64    8    8  mid       4.20e-05          1.18e-03        1.409        0.029
+    256    8   32  diffuse   2.89e-03          8.09e-02        3.744        0.294
+    256    8   32  same      3.68e-03          1.03e-01        4.500        0.012
+    256    8   32  mid       1.94e-60          5.42e-59        0.757        0.000
+     32   16    2  diffuse   5.37e-03          6.45e-01        4.561        3.255
+     32   16    2  same      8.32e-03          9.98e-01        4.420        2.731
+     32   16    2  mid       6.54e-03          7.85e-01        2.789        1.484
+     48   16    3  diffuse   7.52e-03          9.02e-01        4.593        2.592
+     48   16    3  same      1.18e-02          1.42e+00        4.566        2.302
+     48   16    3  mid       3.97e-03          4.76e-01        2.283        0.711
+     64   16    4  diffuse   8.75e-03          1.05e+00        4.156        2.000
+     64   16    4  same      1.56e-02          1.87e+00        4.339        1.440
+     64   16    4  mid       2.11e-03          2.53e-01        2.204        0.407
+    128   16    8  diffuse   6.21e-03          7.45e-01        4.042        1.170
+    128   16    8  same      1.71e-02          2.05e+00        4.478        0.794
+    128   16    8  mid       3.64e-09          4.37e-07        1.572        0.031
+    512   16   32  diffuse   3.04e-06          3.65e-04        3.676        0.116
+    512   16   32  same      3.16e-07          3.80e-05        4.521        0.000
+    512   16   32  mid       2.22e-92          2.67e-90        0.811        0.000

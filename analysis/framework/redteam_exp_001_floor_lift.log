@@ -1,0 +1,23 @@
+Part 1: pure numerical floor of the mixture estimator (no dependence by construction)
+  s       scale   H(mbar)  TV(two requeries)  I_hat per position   x 32 positions (committed set)
+  0.005    0.5     9.58     0.0029            7.75e-05           2.48e-03
+  0.005    1.5     8.60     0.0029            6.47e-05           2.07e-03
+  0.005    3.0     5.40     0.0024            3.71e-05           1.19e-03
+  0.005    5.0     2.46     0.0019            1.67e-05           5.34e-04
+  0.010    0.5     9.58     0.0058            1.55e-04           4.97e-03
+  0.010    1.5     8.56     0.0058            1.27e-04           4.06e-03
+  0.010    3.0     5.91     0.0058            8.57e-05           2.74e-03
+  0.010    5.0     2.30     0.0045            4.19e-05           1.34e-03
+  0.020    0.5     9.58     0.0113            3.16e-04           1.01e-02
+  0.020    1.5     8.58     0.0113            2.78e-04           8.90e-03
+  0.020    3.0     5.81     0.0108            2.23e-04           7.14e-03
+  0.020    5.0     2.16     0.0133            1.35e-04           4.33e-03
+
+Part 2: lift (100 x cosine) at fixed pair consistency a, varying topic diversity (concentration c)
+  a     c     Lift    raw matched (100 C)   mean pairwise image cosine
+  0.60  1.00    6.96    -4.74                 0.348    (vs first row: dLift +0.00, d image cosine +0.000)
+  0.60  0.90    7.85    -5.12                 0.336    (vs first row: dLift +0.88, d image cosine -0.012)
+  0.60  0.80    8.54    -5.84                 0.323    (vs first row: dLift +1.58, d image cosine -0.025)
+  0.55  0.80    7.90    -6.47                 0.323    (vs first row: dLift +0.94, d image cosine -0.025)
+  0.55  0.70    8.67    -7.10                 0.308    (vs first row: dLift +1.71, d image cosine -0.040)
+  0.50  0.60    8.62    -8.66                 0.294    (vs first row: dLift +1.66, d image cosine -0.054)
