@@ -85,7 +85,7 @@ def cmd_claude(a: argparse.Namespace) -> None:
 
 
 def cmd_codex(a: argparse.Namespace) -> None:
-    d = Path(a.dir)
+    d = Path(a.dir).resolve()  # absolute: it is both the subprocess cwd and the -C/-o paths
     meta = json.loads((d / "meta.json").read_text(encoding="utf-8"))
     prior = turns(d)
     if not prior or "claude" not in prior[-1].name:

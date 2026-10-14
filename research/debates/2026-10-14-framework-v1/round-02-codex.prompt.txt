@@ -1,0 +1,68 @@
+You are one of two senior researchers in a recorded debate. The other is Claude.
+Rules for your turn:
+1. Do not agree to be agreeable. Concede a point only when the argument or evidence compels it,
+   and say what compelled you.
+2. For each numbered claim in the latest turn answer ACCEPT, REJECT or NEEDS-EVIDENCE with a reason.
+3. Give the strongest counter-argument to the other side's main position, and the cheapest
+   observation that would settle the disagreement.
+4. Cite a paper only if you are sure it exists; otherwise write "unverified". Never invent IDs.
+5. You have no need to edit files or run experiments. Reason from the transcript.
+6. End with four short sections: POSITION, CONCESSIONS, OPEN DISAGREEMENTS, WHAT WOULD CHANGE MY MIND.
+Keep the turn under 700 words.
+
+TOPIC: Attack framework-v1 of the ACM CSUR review: E_sel definition, cross-modal E_fact^X, P1-P5b identifiability, memory claim
+
+TRANSCRIPT SO FAR:
+===== round-01-claude =====
+# Claude, round 1: framework-v1 for the review, and where I want you to hit it
+
+Read first (absolute path, read-only): C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\research\review\framework-v1.md
+Supporting checks: ...\research\review\dossier\primer-samplers.md (section 4), primer-gaussian.md (sections 0, 5), primer-multimodal.md (sections 0, 4, 6).
+
+Context. Paper 1 is a critical systematic review for ACM Computing Surveys. Its core is an
+integrating framework: generation as a commitment process (five choices C1-C5: channel, reveal
+law, predictor, commitment policy, revision) and an error budget used as a taxonomy. The
+factorisation identity KL(q||p) = E_fact + E_learn is published (EB-sampler 2505.24857 Eq. 7 and
+App. A.1; ARDM; Li and Cai; ParallelBench; Feng; Zhang), and we cite it. What we would claim:
+the design space, the budget-as-taxonomy, separating position rules from value rules, the
+named terms E_sel (commitment-selection bias) and E_approx (stale computation), the cross-modal
+split E_fact = E_fact^T + E_fact^I + E_fact^X with E_fact^X the summed conditional mutual
+information of co-committed text and image tokens, and propositions P1, P2, P3, P5a, P5b.
+
+My position, which I want you to break:
+1. E_sel is a real and separate term. Sample-then-filter selection (sample every masked
+   position, keep the most confident samples), argmax and low temperature violate the identity's
+   condition that the policy not look at the values being committed. In an exact toy with exact
+   marginals and k = 1, keeping the single most confident sample gives KL 1.288 nats and
+   entropy 2.163 against data 3.505, while the state-only policy gives KL 3e-16. I currently
+   also file classifier-free guidance under "E_sel-like". I suspect that last move is wrong,
+   because guidance does not look at sampled values; it deliberately changes the marginals.
+2. P1 identification: for a position lever at matched forward passes, sampled values at
+   temperature 1 and guidance fixed, the gain remaining at k = 1 estimates the E_learn part and
+   its growth with k estimates the E_fact part.
+3. P2: an improvement at fixed steps with output entropy BELOW a reference (data or many-step
+   sampled sampler) indicates E_sel or mode-seeking E_learn, because lowering E_fact moves
+   entropy down toward the reference from above. I know the "from above" part is exact only for
+   a one-shot product of marginals; for multi-step samplers the per-step entropies average over
+   the sampler's own trajectories.
+4. P3: when T >= L, a revision sampler's gain at matched passes comes through E_learn on visited
+   states or E_sel, and the E_sel share shows as entropy below reference (ReMDM entropy falls
+   5.38 to 5.20 with T, data 5.44, under top-p 0.9).
+5. P5a/P5b: cross-modal CMI is front-loaded (weak indirect evidence from UniDisc's per-step
+   guidance ablation); joint commitment pays about E_fact^X at matched passes, and
+   modality-sequential schedules pay within-modality TC instead (toy: 0.51 to 0.73 nats
+   sequential against 0.01 to 0.23 interleaved).
+6. Memory: with self-conditioning or caches, the identity holds on the augmented path and is an
+   equality for x only when the memory is a deterministic function of the revealed path.
+
+What I want from you, as a hostile expert reviewer and not a collaborator:
+(a) the single strongest objection to each of 1 to 6, with a counterexample where possible;
+(b) whether a CSUR editor would see the framework as a contribution or as a restatement of
+    EB-sampler plus ParallelBench with new names, and what would change that verdict;
+(c) the one result the review needs to be "significant" rather than a catalogue, and whether
+    E_sel or E_fact^X is the better candidate, judged on novelty risk and testability on a 12 GB
+    laptop GPU with frozen checkpoints.
+Disagree where you disagree. Do not soften. Give equation-level reasons.
+
+
+Write your turn now.
