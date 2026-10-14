@@ -1,7 +1,24 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-14, evening, same session continued; newest block, overrides all older).**
+- **CURRENT STATE (2026-10-14, night; newest block, overrides all older).**
+  Laptop crashed twice under sustained GPU load (bugcheck 0x20001; memory `laptop-gpu-crashes`);
+  user chose guarded runs: every GPU job through `tools/gpu_guard.py` (15-min chunks, 85 C stop,
+  telemetry), checkpointed, duty cycle about 50 percent, batch <= 8. Python child processes exit
+  0xC0000409 at teardown after finishing (results written); watch it.
+  D0013: EXP-002 demoted (coupling negligible at N = 1024; red-team check reproduced). EXP-001 is
+  the single preregistered experiment: card v0.4 "draft for signature" (commit 7bce081), task =
+  prefix-conditioned joint completion (D0014), core path about 27.3 wall-clock GPU-hours.
+  Novelty: per-step cross-modal measurement novel (audit 0.60 plus full-text check of VRCD,
+  VIG-Sampler, PUNT: not reported); dependence-aware schedule incremental (DAPD 2603.12996).
+  **Running:** statistician round 4 and red-team round 3 (signature checks); repro-engineer G4
+  (MDLM, guarded; gates EXP-002's optional check only); Codex census coder B (86+ coded);
+  LLaDA download (4 connections).
+  **Next:** signatures -> ledger rows (hypotheses H-A, H-B, H-C; experiment EXP-001) -> lab-engineer
+  implements EXP-001 (samplers with custom commit plans, S_theta estimator, gates PG-1, PG-2,
+  PG-V) -> gates -> pilot -> core path. Budget: weekly 76 percent at 2026-10-14 night; Claude
+  census coder A and manuscript drafting wait for the 2026-10-19 reset.
+- **Superseded (2026-10-14, evening).**
   User: no download size limit; continue in this session to about 850k context (D0012).
   **Experiments (the significant result):** EXP-001 (cross-modal dependence on UniDisc) and EXP-002
   (sample-then-filter decomposed into sharpening and coupling at k >= 2; new: 2605.12522 and
