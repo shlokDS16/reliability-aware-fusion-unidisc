@@ -1,7 +1,27 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-14, end of build session; newest block, overrides all older ones).**
+- **CURRENT STATE (2026-10-14, evening, same session continued; newest block, overrides all older).**
+  User: no download size limit; continue in this session to about 850k context (D0012).
+  **Experiments (the significant result):** EXP-001 (cross-modal dependence on UniDisc) and EXP-002
+  (sample-then-filter decomposed into sharpening and coupling at k >= 2; new: 2605.12522 and
+  2609.34509 are k = 1 only, `review/dossier/prior-art-2605.12522-experiments.md`) are drafted in
+  `research/preregistration/`; statistician: "sign with 12 required changes" each
+  (`review-statistician-2026-10-14.md`). Toy prior `analysis/framework/check_coupling_k2.py`.
+  Lab engineer (running) is setting up UniDisc and MDLM: `runs/env-2026-10-14/` (MDLM 21 ms per
+  pass at L = 1024; UniDisc OOM issues, layout may be 1024 px). **Next:** apply statistician
+  changes plus setup facts as card v0.2, red-team sign-off, pilots.
+  **Census (Paper 1 contribution 2):** 47-model census reconciled (`review/coverage/census-
+  result-v1.md`: 37 of 45 headlines use a non-plain value rule or do not state one; 12 report
+  entropy; 10 of 37 sweeps state the rule fixed; blind kappa before reconciliation in
+  `analysis/census/agreement.log`). Codebook v1.1 for the corpus. **Screening done:** 1453 records
+  (`review/screening/`), A (Claude) vs B (Codex) pass/exclude kappa 0.728, 1123 pass both, 120
+  disagreements for the human (`disagreements.csv`); human validation sample of 218 waiting for the
+  user (`HUMAN-SCREENING-INSTRUCTIONS.md`). **Random-sample census:** order seed 20261015 over 1106
+  records (`review/census/census-order.csv`), texts in main checkout `research/sources/
+  census-text/`; Codex coder B running to 150 eligible (`review/census/coder-B.jsonl`); then a
+  Claude coder A on the same ranks, blind; then agreement and adjudication.
+- **Superseded (2026-10-14, end of build session).**
   Handoff because controller context passed 250k. Read `review/framework-v2.md` first (sections A
   and D), then decision D0011.
   **Outcome of the build:** the selection term failed. Red-team (`review/audits/2026-10-14-red-
