@@ -1,7 +1,44 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-15, early; newest block, overrides all older).**
+- **HANDOFF (2026-10-15, about 01:50 IST; newest block, overrides all older). Start here.**
+  **Running now, unattended:** EXP-003 driver, PID 54920 (`runs/EXP-003/DRIVER_PID.txt`, log
+  `runs/EXP-003/driver.log`). Card `research/preregistration/EXP-003-value-rule-consistency.md`
+  v0.3.2 SIGNED (statistician and red-team; ledger H0004-H0006, X0002). Implementation and how to
+  check, stop or resume after a reboot: `runs/EXP-003/IMPLEMENTATION.md` (sections 4, 5; restart
+  with the PowerShell `Start-Process` form, not `run_all.bat`). The driver runs pilot -> firewalled
+  pilot analysis with the n rule and stop rules 9.1-9.3, 9.6 by script -> controls (NC-1 stop) ->
+  M1-M3 -> analysis freeze -> scoring. It writes `runs/EXP-003/STOPPED.txt` (exit 3) if a stop
+  rule fires, `DONE.txt` when finished.
+  **First actions next session:** (1) `tasklist /FI "PID eq 54920"`; tail `driver.log`; if
+  STOPPED.txt exists, read it: the likely trigger is stop rule 9.1 (scoring costs more than the
+  card's 10.6 s per prefix: cross-prefix queries, placebo nouns for four arms and CLIP). The
+  engineer's suggested remedy, scoring placebo for P64 and G only, needs a dated card amendment
+  before any change. (2) Review and record the engineer's interpretation calls (IMPLEMENTATION.md
+  section 5: noun-key -es rule, PC-2 derangement seed 5303, placebo pool smaller than |D|, the
+  "such samples" definition in 9.2, the constant 1.21 in the n rule) and the factual correction
+  that UniDisc's unconditional branch masks every observed position (system prompt, markers,
+  prefix), not only the prefix (card 1.2 says prefix only). (3) Firewall disclosure to record: the
+  engineer's smoke tests used pilot prefixes 0-1 in the scratchpad and printed a 2-prefix Delta1
+  class; nothing entered `runs/`; pilot data never enter tests. (4) After DONE.txt:
+  `python analysis/EXP-003/frozen_analysis.py main`, then gate-auditor check of the numbers.
+  (5) Not implemented: tail-entropy hook, G-low/M4, CLIP lift bootstrap (embeddings stored).
+  **State of the science.** EXP-001 stopped at PG-V (D0016): under plain T = 1 sampling UniDisc's
+  joint completions show no completion-specific image link (textures). EXP-002 demoted (D0013).
+  MDLM reproduced (G4, -0.50%). Framework v2 (`review/framework-v2.md`, D0011): E_sel/E_tilt
+  withdrawn; contributions = design space (47 models), value-rule census (37 of 45 headlines
+  non-plain or unstated; `review/coverage/census-result-v1.md`), budget as taxonomy, open
+  problems. Screening done (1453 records, kappa 0.728); random-sample census: Codex coded 86 (66
+  eligible) before its limit (until 2026-11-10, D0015).
+  **After the 2026-10-19 17:00 UTC reset:** census coder B (Claude Opus) for the rest of the
+  150-eligible sample, coder A (Claude Sonnet) blind on all, agreement, adjudication; novelty audit
+  of EXP-003 before any claim; then manuscript drafting. **Human tasks for Shlok:** 218-record
+  screening sample (`review/screening/HUMAN-SCREENING-INSTRUCTIONS.md`), 120 disagreements
+  (`review/screening/disagreements.csv`).
+  **Safety and process rules now in force:** every GPU job through `tools/gpu_guard.py`
+  (two HYPERVISOR_ERROR crashes on 2026-10-14); Codex tools resume one read-only thread per 20
+  calls; downloads have no size limit; hand off at about 850k context. Budget: weekly 86 percent.
+- **Superseded (2026-10-15, early).**
   EXP-001 v0.5 was signed, implemented (130 tests pass; `exp001/`, `analysis/EXP-001/`,
   `runs/EXP-001/IMPLEMENTATION.md`) and STOPPED at its construct gate PG-V under preregistered
   rule 11.1 (D0016): under plain sampling at T = 1 UniDisc's joint completions show no

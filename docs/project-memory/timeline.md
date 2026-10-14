@@ -40,3 +40,9 @@ in `claude/`. End-of-session routine runs before any session finishes.
 - framework-v1 applied 25 primer edits; a 47-model design-space table tested coverage (36 fit, 11 partly, 0 no).
 - method-architect formalised E_sel; red-team found 2 fatal flaws (the tilt/selection split is not a law property; per-step impossibility depends on the coupling) and full-text prior art (2605.12522, Hayakawa et al. 2510.04525) already covers the k = 1 law and the resample fix. D0011 withdraws E_sel and E_tilt as new terms; framework-v2 keeps one signed value slot V.
 - Implication: Paper 1's weight moves to the design space, an independently coded census of value rules and reporting, and stated open problems; the controlled four-arm value-rule result or the cross-modal measurement is the experiment that would carry Paper 2.
+
+## 2026-10-14/15 (long session) - From theory to preregistered experiments
+- Selection term withdrawn after red-team and prior art (D0011); framework-v2. Census reconciled with blind second coding; screening of 1453 records (kappa 0.728).
+- MDLM reproduced (-0.50%). EXP-002 demoted (coupling negligible at N = 1024). EXP-001 signed after five review rounds, implemented, and stopped at its construct gate: under plain sampling UniDisc's joint text-image completions carry no image-specific link (D0016).
+- EXP-003 (plain vs guided consistency) preregistered, signed and launched unattended under the GPU guard.
+- Incidents: two laptop crashes under sustained GPU load (gpu_guard introduced); Codex usage exhausted by per-call sessions (tools fixed); a network outage interrupted agents (resumed).
