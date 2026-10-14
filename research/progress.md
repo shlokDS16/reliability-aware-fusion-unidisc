@@ -81,6 +81,15 @@
   human sample); (3) red-team and statistician sign the protocol; freeze; (4) database searches.
   Note: auditor agents have no MCP tools, so the novelty-auditor could not use Exa; either add the
   Exa tool names to AUDIT_TOOLS in `tools/build_agents.py` or have lit-scout run its searches.
+- **Direction approved by the user 2026-10-14:** review organised around claim evaluability;
+  slack conjecture H2(b) becomes Paper 2's experiment. Rubric and two reliability rounds done:
+  `review/reliability/RESULTS.md`. Round 2 (rubric v0.2): claim identification kappa 0.71
+  (passes), evaluable flag kappa 0.33 (fails); Codex is systematically stricter. Debate round 10:
+  rounds 1 and 2 are development only; v0.3 must be frozen before a fresh validation sample.
+  **Blocked on the user:** blind human rating of `review/reliability/round2/human-adjudication.csv`
+  (30 claims; ideally a second human too). **Then:** write rubric v0.3 (extractive items, computed
+  budgets, wording fixes), freeze, validate on a fresh sample, then red-team and statistician sign
+  the protocol. The first-round `reliability/human-sheet.csv` is superseded.
 - **Agent definitions fixed:** hypothesis-smith, experiment-designer and method-architect had not
   loaded (unquoted colon in the description); `tools/build_agents.py` now quotes descriptions.
 - **Exemplar reading was structural only (E1).** Before drafting, paper-reader must read two

@@ -1,0 +1,198 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# LoSA: Locality Aware Sparse Attention for Block-Wise Diffusion Language Models
+
+record AW0366 | arXiv:2604.12056 | first version 2026-04-13
+
+**Abstract.** Block-wise diffusion language models (DLMs) generate multiple tokens in any order, offering a promising alternative to the autoregressive decoding pipeline. However, they still remain bottlenecked by memory-bound attention in long-context scenarios. Naive sparse attention fails on DLMs due to a KV Inflation problem, where different queries select different prefix positions, making the union of accessed KV pages large. To address this, we observe that between consecutive denoising steps, only a small fraction of active tokens exhibit significant hidden-state changes, while the majority of stable tokens remain nearly constant. Based on this insight, we propose LOSA (Locality-aware Sparse Attention), which reuses cached prefix-attention results for stable tokens and applies sparse attention only to active tokens. This substantially shrinks the number of KV indices that must be loaded, yielding both higher speedup and higher accuracy. Across multiple block-wise DLMs and benchmarks, LOSA preserves near-dense accuracy while significantly improving efficiency, achieving up to +9 points in average accuracy at aggressive sparsity levels while maintaining 1.54x lower attention density. It also achieves up to 4.14x attention speedup on RTX A6000 GPUs, demonstrating the effectiveness of the proposed method.
+
+## All captions
+
+- Figure 1 : Illustration of the KV-union effect: in block diffusion, each query selects a small set of prefix KV positions, but the effective cost is determined by the union across the block, inflating KV access. Our method computes sparse attention only for se
+- Figure 2 : Visualizing representation change locality across denoising steps. Left and middle plots show the L2 norm of query vectors at timesteps t-1 and t respectively. The right plot shows the per-token MSE between query vectors across the two timesteps. On
+- Figure 3 : KV-cache load reduction with locality-aware sparse prefix attention. X-axis: number of active query tokens in the block; Y-axis: percentage of the full KV cache that must be loaded. Evaluated on Trado-8B-Instruct on TriviaQA with block size 16 and 6
+- Figure 4 : Visualizing locality across denoising steps. We plot the distribution of per-token MSE changes in queries between steps t\!-\!1 and t . For each layer, we sort the tokens in decreasing order of MSE changes from top to bottom in this heatmap. We obse
+- Figure 5 : Overview of the locality-aware sparse prefix attention workflow. We (i) measure per-token query changes and select the changed-token set \mathcal{A} , (ii) run QUEST to obtain per-token prefix indices and take their union \mathcal{I} , (iii) load pr
+- Table 1 : Accuracy (%) on LongBench under different retrieval budgets for Trado-8B-Instruct . LoSA consistently outperforms QUEST across all budget settings, with particularly large gains at low budgets (e.g., +10.43 at budget 128). The \Delta shown is the imp
+- Table 2 : KV-cache density (percentage of prefix tokens selected) on LongBench under different budgets. On all datasets and budget configurations, LoSA achieves an average of 1.54\times lower KV-cache density than the baseline.
+- Table 3 : Accuracy (%) on LongBench under different retrieval budgets for SDAR-8B-Chat . Results are consistent with Trado-8B (Table 1 ): LoSA consistently outperforms QUEST, with the largest gains at low budgets (+8.38 at budget 128). Full comparison includin
+- Table 4 : LongBench accuracy (%) for Trado-4B-Instruct under two block sizes. LoSA consistently outperforms QUEST across model sizes and block-size configurations, confirming that the locality-aware approach generalizes beyond the 8B scale.
+- Table 5: Accuracy (%) on three commonsense reasoning benchmarks for Trado-8B-Instruct. LoSA performs comparably to QUEST; the slight gap at budget 256 is within statistical variance on these short-context tasks ( < 1K tokens) where the KV Inflation problem is 
+- Figure 6 : Latency breakdown comparison on prefix attention using Trado-8B-Instruct on TriviaQA with RTX A6000. Left: 64K context length with block size 16. Right: 32K context length with block size 32. LoSA and QUEST (Adapted) achieve 4.14\times and 3.26\time
+- Table 6 : Full LongBench accuracy comparison including SparseD. The \Delta shown is the improvement of LoSA over the best competing method at each budget. At budget 1024 on Trado-8B and budget 512 on SDAR-8B, SparseD slightly outperforms LoSA in average accura
+- Figure 7 : Visualizing representation change locality across denoising steps for query, keys and values of the token in the block that is being decoded. (Top) L2 norm of vectors at step t\!-\!1 . (Middle) L2 norm of vectors at step t . (Bottom) Per-token chang
+- Figure 8 : Combined QKV Normalized MSE Heatmap with Threshold Selection ( \tau=0.5 ) for Data Sample 0. The red line indicates the boundary where cumulative normalized MSE reaches 50% of the layer total. Tokens above the line are selected; tokens below are dim
+- Figure 9 : Combined QKV Normalized MSE Heatmap with Threshold Selection ( \tau=0.5 ) for Data Sample 100.
+- Figure 10 : Combined QKV Normalized MSE Heatmap with Threshold Selection ( \tau=0.5 ) for Data Sample 200.
+- Figure 11 : Combined QKV Normalized MSE Heatmap with Threshold Selection ( \tau=0.5 ) for Data Sample 300.
+
+## Tables as text
+
+### Table 1 : Accuracy (%) on LongBench under different retrieval budgets for Trado-8B-Instruct . LoSA consistently outperforms QUEST across all budget settings, with particularly large gains at low budgets (e.g., +10.43 at budget 128). The \Delta shown is the improvement over QUEST. Full comparison inc
+
+KV Cache |  | LongBench Accuracy (Trado-8B-Instruct)
+Per-Query Budget | Method | HotPotQA | TriviaQA | NarrativeQA | Qasper | MultiFieldQA | Average ( \uparrow )
+- | Dense | 49.45% | 84.79% | 19.04% | 17.75% | 53.29% | 44.86%
+128 | QUEST | 29.17% | 69.21% | 7.46% | 13.64% | 38.21% | 31.54%
+LoSA | 48.27% | 83.79% | 17.19% | 15.58% | 45.00% | 41.97% (+10.43)
+256 | QUEST | 32.95% | 75.23% | 8.50% | 14.04% | 42.46% | 34.64%
+LoSA | 44.53% | 81.82% | 19.42% | 17.11% | 47.81% | 42.14% (+7.50)
+512 | QUEST | 34.58% | 79.33% | 8.99% | 16.57% | 44.04% | 36.70%
+LoSA | 44.19% | 84.97% | 18.39% | 13.30% | 50.14% | 42.20% (+5.50)
+1024 | QUEST | 39.88% | 78.84% | 7.37% | 17.35% | 45.00% | 37.69%
+LoSA | 48.45% | 82.32% | 18.89% | 15.78% | 48.94% | 42.88% (+5.19)
+
+### Table 2 : KV-cache density (percentage of prefix tokens selected) on LongBench under different budgets. On all datasets and budget configurations, LoSA achieves an average of 1.54\times lower KV-cache density than the baseline.
+
+KV Cache |  | LongBench KV-Cache Density
+Per-Query Budget | Method | HotPotQA | TriviaQA | NarrativeQA | Qasper | MultiFieldQA | Average ( \downarrow )
+128 | QUEST | 2.93% | 3.80% | 1.90% | 6.72% | 5.87% | 4.24%
+LoSA | 1.71% | 2.29% | 0.98% | 4.15% | 3.77% | 2.58% ( 1.64\times )
+256 | QUEST | 5.84% | 7.07% | 3.89% | 12.47% | 11.14% | 8.08%
+LoSA | 3.37% | 4.47% | 2.05% | 7.90% | 7.43% | 5.04% ( 1.60\times )
+512 | QUEST | 10.74% | 13.06% | 7.24% | 23.13% | 19.71% | 14.78%
+LoSA | 6.63% | 8.54% | 3.99% | 15.39% | 14.00% | 9.71% ( 1.52\times )
+1024 | QUEST | 19.10% | 22.85% | 13.06% | 39.06% | 34.21% | 25.66%
+LoSA | 12.57% | 16.24% | 7.50% | 28.81% | 26.04% | 18.23% ( 1.41\times )
+
+### Table 3 : Accuracy (%) on LongBench under different retrieval budgets for SDAR-8B-Chat . Results are consistent with Trado-8B (Table 1 ): LoSA consistently outperforms QUEST, with the largest gains at low budgets (+8.38 at budget 128). Full comparison including SparseD is in Table 6 .
+
+KV Cache |  | LongBench Accuracy (SDAR-8B-Chat)
+Per-Query Budget | Method | HotPotQA | TriviaQA | NarrativeQA | Qasper | MultiFieldQA | Average ( \uparrow )
+- | Dense | 49.35% | 85.72% | 19.06% | 18.25% | 49.49% | 44.37%
+128 | QUEST | 27.31% | 70.40% | 6.44% | 17.29% | 41.40% | 32.57%
+LoSA | 43.36% | 80.32% | 18.69% | 15.63% | 46.74% | 40.95% (+8.38)
+256 | QUEST | 32.57% | 78.36% | 8.73% | 18.21% | 43.20% | 36.21%
+LoSA | 45.68% | 83.16% | 15.65% | 13.17% | 48.33% | 41.20% (+4.99)
+512 | QUEST | 32.50% | 78.43% | 9.80% | 19.36% | 43.08% | 36.63%
+LoSA | 47.77% | 83.29% | 17.37% | 14.12% | 49.90% | 42.49% (+5.86)
+1024 | QUEST | 32.59% | 80.92% | 11.00% | 19.28% | 42.30% | 37.22%
+LoSA | 47.84% | 85.93% | 18.44% | 14.70% | 48.43% | 43.07% (+5.85)
+
+### Table 4 : LongBench accuracy (%) for Trado-4B-Instruct under two block sizes. LoSA consistently outperforms QUEST across model sizes and block-size configurations, confirming that the locality-aware approach generalizes beyond the 8B scale.
+
+ |  | Block Size = 16 | Block Size = 32
+Budget | Method | HotPotQA | TriviaQA | NarrativeQA | Qasper | MFieldQA | Avg. ( \uparrow ) | HotPotQA | TriviaQA | NarrativeQA | Qasper | MFieldQA | Avg. ( \uparrow )
+- | Dense | 38.16% | 75.61% | 18.80% | 29.57% | 35.42% | 39.51% | 36.22% | 75.23% | 19.58% | 13.40% | 31.52% | 35.19%
+128 | QUEST | 30.01% | 69.14% | 9.83% | 26.05% | 30.79% | 33.16% | 25.55% | 70.83% | 9.53% | 11.20% | 27.30% | 28.88%
+LoSA | 33.65% | 66.46% | 14.78% | 24.71% | 30.07% | 33.93% | 28.62% | 69.50% | 12.15% | 13.78% | 28.25% | 30.46%
+256 | QUEST | 33.06% | 73.49% | 12.34% | 29.25% | 34.67% | 36.56% | 31.61% | 72.10% | 10.87% | 12.85% | 29.10% | 31.31%
+LoSA | 36.33% | 72.74% | 15.99% | 28.11% | 34.27% | 37.49% | 32.14% | 72.20% | 15.99% | 14.80% | 28.68% | 32.76%
+
+### Table 5: Accuracy (%) on three commonsense reasoning benchmarks for Trado-8B-Instruct. LoSA performs comparably to QUEST; the slight gap at budget 256 is within statistical variance on these short-context tasks ( < 1K tokens) where the KV Inflation problem is less severe.
+
+Budget | Method | HellaSwag | WinoGrande | BoolQ | Avg.
+– | Dense | 69.60 | 63.60 | 72.92 | 68.71
+128 | QUEST | 67.60 | 66.80 | 73.96 | 69.45
+LoSA | 70.80 | 66.00 | 72.92 | 69.91
+256 | QUEST | 73.60 | 63.20 | 75.00 | 70.60
+LoSA | 70.40 | 65.20 | 73.96 | 69.85
+
+### Table 6 : Full LongBench accuracy comparison including SparseD. The \Delta shown is the improvement of LoSA over the best competing method at each budget. At budget 1024 on Trado-8B and budget 512 on SDAR-8B, SparseD slightly outperforms LoSA in average accuracy.
+
+KV Cache |  | LongBench Accuracy – Comparison with SparseD
+Per-Query Budget | Method | HotPotQA | TriviaQA | NarrativeQA | Qasper | MultiFieldQA | Average ( \uparrow )
+Trado-8B-Instruct
+- | Dense | 49.45% | 84.79% | 19.04% | 17.75% | 53.29% | 44.86%
+128 | QUEST | 29.17% | 69.21% | 7.46% | 13.64% | 38.21% | 31.54%
+SparseD | 38.97% | 64.64% | 13.70% | 7.95% | 39.55% | 32.96%
+LoSA | 48.27% | 83.79% | 17.19% | 15.58% | 45.00% | 41.97% (+9.01)
+256 | QUEST | 32.95% | 75.23% | 8.50% | 14.04% | 42.46% | 34.64%
+SparseD | 43.84% | 73.63% | 15.33% | 13.26% | 49.44% | 39.10%
+LoSA | 44.53% | 81.82% | 19.42% | 17.11% | 47.81% | 42.14% (+3.04)
+512 | QUEST | 34.58% | 79.33% | 8.99% | 16.57% | 44.04% | 36.70%
+SparseD | 47.84% | 80.78% | 14.08% | 13.85% | 52.16% | 41.74%
+LoSA | 44.19% | 84.97% | 18.39% | 13.30% | 50.14% | 42.20% (+0.46)
+1024 | QUEST | 39.88% | 78.84% | 7.37% | 17.35% | 45.00% | 37.69%
+SparseD | 48.98% | 80.25% | 19.43% | 15.77% | 50.11% | 42.91%
+LoSA | 48.45% | 82.32% | 18.89% | 15.78% | 48.94% | 42.88%
+SDAR-8B-Chat
+- | Dense | 49.35% | 85.72% | 19.06% | 18.25% | 49.49% | 44.37%
+128 | QUEST | 27.31% | 70.40% | 6.44% | 17.29% | 41.40% | 32.57%
+SparseD | 42.09% | 63.08% | 12.94% | 9.04% | 36.24% | 32.68%
+LoSA | 43.36% | 80.32% | 18.69% | 15.63% | 46.74% | 40.95% (+8.27)
+256 | QUEST | 32.57% | 78.36% | 8.73% | 18.21% | 43.20% | 36.21%
+SparseD | 48.39% | 73.28% | 15.83% | 14.84% | 47.37% | 39.94%
+LoSA | 45.68% | 83.16% | 15.65% | 13.17% | 48.33% | 41.20% (+1.26)
+512 | QUEST | 32.50% | 78.43% | 9.80% | 19.36% | 43.08% | 36.63%
+SparseD | 50.52% | 81.83% | 15.44% | 18.52% | 48.93% | 43.05%
+LoSA | 47.77% | 83.29% | 17.37% | 14.12% | 49.90% | 42.49%
+1024 | QUEST | 32.59% | 80.92% | 11.00% | 19.28% | 42.30% | 37.22%
+SparseD | 48.25% | 83.44% | 15.60% | 16.15% | 48.97% | 42.48%
+LoSA | 47.84% | 85.93% | 18.44% | 14.70% | 48.43% | 43.07% (+0.59)
+

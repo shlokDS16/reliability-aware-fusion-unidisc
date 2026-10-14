@@ -1,0 +1,278 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# LaDiR: Latent Diffusion Enhances LLMs for Text Reasoning
+
+record AW0201 | arXiv:2510.04573 | first version 2025-10-06
+
+**Abstract.** Large Language Models (LLMs) demonstrate their reasoning ability through chain-of-thought (CoT) generation. However, LLM's autoregressive decoding may limit the ability to revisit and refine earlier tokens in a holistic manner, which can also lead to inefficient exploration for diverse solutions. In this paper, we propose LaDiR} (Latent Diffusion Reasoner), a novel reasoning framework that unifies the expressiveness of continuous latent representation with the iterative refinement capabilities of latent diffusion models for an existing LLM. We first construct a structured latent reasoning space using a Variational Autoencoder (VAE) that encodes text reasoning steps into blocks of thought tokens, preserving semantic information and interpretability while offering compact but expressive representations. Subsequently, we utilize a latent diffusion model that learns to denoise a block of latent thought tokens with a blockwise bidirectional attention mask, enabling longer horizon and iterative refinement with adaptive test-time compute. This design, combined with explicit diversity guidance during diffusion inference, enables the generation of multiple diverse reasoning trajectories that explore distinct regions of the latent space, rather than producing repetitive solutions as often occurs in standard autoregressive sampling. We conduct evaluations on a suite of mathematical reasoning, code generation and puzzle planning benchmarks. Empirical results show that LaDiR consistently improves accuracy, diversity, and interpretability over existing autoregressive, diffusion-based, and latent reasoning methods, revealing a new paradigm for text reasoning with latent diffusion.
+
+## All captions
+
+- Figure 1: Comparison of reasoning paradigms: autoregressive CoT and latent CoT generate discrete or continuous tokens sequentially; diffusion LMs iteratively convert [MASK] tokens to discrete text tokens in parallel in a semi-autoregressive way; and our propos
+- Figure 2: Illustration of our block-wise latent reasoning framework. A question Q is first input as condition to generate latent blocks, each delimited by <BOT> and <EOT> . For each block, the model iteratively denoises latent tokens \hat{\mathbf{Z}}^{(b)} acr
+- Table 1: Math reasoning results across in-domain and out-of-domain benchmarks. Each cell reports Pass@1 (left) / Pass@100 (right) accuracy. \alpha is the decoding temperature of LLMs. ∗ Results are taken from the original paper; missing Pass@100 results (denot
+- Table 2: Code generation performance on MBPP and HumanEval benchmarks (including their Plus versions). We report Pass@1 accuracy (%). The best results for each metric are highlighted in bold .
+- Table 3: Results on Countdown tasks. We report Pass@1, Pass@100, and Diversity (Div.). Diversity is measured as the number of unique valid solutions discovered among 100 samples. Best results are in bold , and second-best are underlined . ∗ Dream 7B Base refer
+- (a) Effect of Initial Noise Scale \tilde{\sigma}^{2} ( \gamma_{max}=0.8 ).
+- (b) Effect of Max Diversity Scale \gamma_{max} ( \tilde{\sigma}^{2}=2 ).
+- Figure 3: Ablation study on parameters for diversity during inference on the Countdown-4 dataset.
+- Table 4: Examples of iterative self-refinement of decoded text from the VAE decoder on the Countdown-4 dataset across different denoising timesteps ( t ).
+- Figure 4: Effect of number of denoising steps on downstream reasoning performance on the math reasoning tasks.
+- Table 5: Ablation study on latent prediction objectives on the Countdown-4 dataset.
+- Figure 5: Ablation analysis of block size on the GSM8K benchmark.
+- Table 6: Ablation study on VAE robustness augmentations on GSM8K.
+- Table 7: Ablation study on blockization strategy (sentences per block).
+- Figure 6: Results for pass@k performance on Countdown-4 with k\in\{1,10,25,50,100\} .
+- Table 8: Example of interpretable continuous thought tokens: each latent block Z^{i} is able to be decoded to human-readable text through the VAE decoder. Each latent block is decoded individually, so the entire latent thought is represented by the block in is
+- Table 9: Inference latency (seconds/example) comparison on MATH dataset.
+- Table 10: An example of self-refinement during inference on the GSM8k dataset, showing how reasoning becomes progressively clearer as t decreases. Later denoising steps correct arithmetic errors while maintaining earlier structure, demonstrating semantic self-
+- Table 11: An qualitative example in GSM8K illustrating the long reasoning blocks generated by our method compared to the baseline SFT.
+- Table 12: Summary of datasets used in our experiments. We use DART-MATH ( Tong et al., 2024b ) , MATH ( Hendrycks et al., 2021 ) , GSM8K ( Cobbe et al., 2021 ) , College-Math ( Tang et al., 2024b ) , DeepMind-Math ( Saxton et al., 2019 ) , OlympiaBench-Math ( 
+- Table 13: Complete hyperparameter settings for all training and inference stages.
+- Figure 7: Detailed architecture of the variational autoencoder for latent reasoning. The encoder is a finetuned LLM that takes both original text embeddings e(w_{i}) and learnable embeddings e_{z}(z_{i}) , producing mean and variance vectors through linear pro
+
+## Tables as text
+
+### Table 1: Math reasoning results across in-domain and out-of-domain benchmarks. Each cell reports Pass@1 (left) / Pass@100 (right) accuracy. \alpha is the decoding temperature of LLMs. ∗ Results are taken from the original paper; missing Pass@100 results (denoted as “–”) indicate that the codebase is
+
+Method | In-Domain | Out-of-Domain | Avg.
+MATH | GSM8K | Gaokao | DM-Math | College | Olympia | TheoremQA
+Masked Diffusion Methods — LLaDA 8B
+Base Model | 36.2 / 48.6 | 77.3 / 82.9 | 10.2 / 18.5 | 29.8 / 36.2 | 30.2 / 49.1 | 3.0 / 7.7 | 16.6 / 21.6 | 29.0 / 37.8
+CoT SFT | 39.0 / 51.0 | 82.3 / 88.2 | 20.1 / 36.0 | 43.7 / 50.7 | 38.9 / 48.3 | 5.9 / 10.2 | 20.9 / 26.3 | 35.8 / 44.3
+Autoregressive Methods — LLaMA 3.1 8B
+Sol-Only SFT | 13.3 / 18.9 | 16.4 / 20.7 | 0.0 / 2.8 | 18.2 / 23.3 | 15.9 / 20.6 | 4.7 / 10.9 | 16.9 / 22.2 | 12.2 / -
+SFT ( \alpha=0.1 ) | 43.8 / 46.8 | 84.9 / 86.2 | 31.2 / 34.7 | 48.4 / 49.3 | 46.5 / 51.0 | 10.5 / 11.1 | 22.0 / 22.8 | 41.3 / 42.6
+SFT ( \alpha=0.7 ) | 42.9 / 49.4 | 84.2 / 88.6 | 30.4 / 37.5 | 47.5 / 51.6 | 45.3 / 54.3 | 9.9 / 12.6 | 20.9 / 24.6 | 40.1 / 45.4
+SFT ( \alpha=1 ) | 42.1 / 51.0 | 83.5 / 90.1 | 29.7 / 39.0 | 46.6 / 53.1 | 44.6 / 56.0 | 9.4 / 13.5 | 20.3 / 26.0 | 39.3 / 47.1
+SFT ( \alpha=1.2 ) | 41.2 / 52.5 | 82.6 / 91.8 | 28.9 / 40.6 | 45.5 / 54.6 | 43.6 / 57.8 | 8.9 / 14.6 | 19.5 / 27.5 | 38.4 / 48.8
+Pause Token | 27.2 / 31.4 | 62.4 / 67.2 | 21.3 / 25.7 | 26.7 / 30.8 | 27.2 / 32.1 | 3.5 / 7.8 | 8.3 / 12.9 | 25.2 / 29.7
+iCoT | 35.2 / 37.9 | 61.8 / 63.9 | 30.0 / 32.9 | 30.6 / 33.0 | 32.6 / 34.8 | 4.3 / 7.1 | 11.5 / 14.0 | 29.4 / 31.9
+Coconut | 37.3 / 39.3 | 68.3 / 74.3 | 26.8 / 29.3 | 33.5 / 36.9 | 40.2 / 42.9 | 5.8 / 6.3 | 11.4 / 14.9 | 31.9 / 34.8
+CODI | 38.5 / 45.1 | 76.3 / 81.7 | 27.5 / 35.2 | 38.8 / 44.9 | 43.2 / 49.0 | 7.6 / 14.8 | 8.8 / 15.7 | 34.3 / 40.9
+Discrete Latent | 43.2 / 47.3 | 83.9 / 88.6 | 33.3 / 39.7 | 44.7 / 49.5 | 47.1 / 53.7 | 13.3 / 17.8 | 20.3 / 28.5 | 40.8 / 46.4
+Soft Token ∗ | 44.7 / - | 83.9 / - | - / - | - / - | - / - | - / - | - / - | - / -
+Soft Think | 44.3 / 46.7 | 83.7 / 86.6 | 31.2 / 33.4 | 49.1 / 51.7 | 45.9 / 48.0 | 10.4 / 13.1 | 22.2 / 24.7 | 41.0 / 43.5
+TaH+ | 46.1 / 49.4 | 85.9 / 89.7 | 30.9 / 34.0 | 48.2 / 51.8 | 46.7 / 50.1 | 12.2 / 15.2 | 24.5 / 28.4 | 42.0 / 45.5
+Latent Diffusion Methods — LLaMA 3.1 8B
+LD4LG | 9.1 / 15.3 | 32.9 / 38.4 | 13.2 / 20.1 | 24.5 / 29.6 | 17.9 / 24.3 | 2.8 / 8.6 | 9.6 / 15.7 | 15.7 / 21.7
+PLANNER | 5.7 / 13.1 | 18.7 / 24.6 | 15.1 / 21.3 | 19.9 / 27.6 | 23.6 / 29.1 | 2.2 / 9.0 | 10.3 / 17.3 | 13.6 / 20.3
+LaDiR | 46.2 / 63.7 | 84.8 / 93.7 | 35.4 / 45.8 | 52.3 / 54.2 | 48.6 / 60.3 | 12.9 / 15.3 | 24.7 / 30.7 | 43.5 / 52.0
+–w/o Stage 2 | 30.7 / 35.8 | 57.8 / 62.6 | 24.7 / 30.2 | 32.0 / 36.9 | 32.8 / 38.0 | 5.9 / 10.5 | 11.9 / 16.9 | 27.9 / 33.0
+
+### Table 2: Code generation performance on MBPP and HumanEval benchmarks (including their Plus versions). We report Pass@1 accuracy (%). The best results for each metric are highlighted in bold .
+
+Method | MBPP | MBPP+ | HumanEval | HumanEval+ | Avg.
+AR Coding Models
+Qwen 2.5 Coder 7B | 61.6 | 53.0 | 76.9 | 62.9 | 63.6
+OpenCoder | 79.9 | 70.4 | 66.5 | 63.4 | 70.1
+Masked Diffusion Models
+LLaDA | 50.1 | 42.1 | 35.4 | 30.5 | 39.5
+Dream | 68.7 | 57.4 | 56.7 | 50.0 | 58.2
+Diffu-Coder | 75.1 | 61.9 | 72.0 | 65.2 | 68.6
+Looped Latent Reasoning Models
+Ouro 2.6B | 80.4 | 66.6 | 78.2 | 70.7 | 74.0
+Reasoning Methods
+AR SFT | 63.2 | 52.8 | 84.6 | 76.5 | 69.3
+Soft Thinking | 64.2 | 53.1 | 85.0 | 75.2 | 69.4
+TaH+ | 65.6 | 56.5 | 85.8 | 79.3 | 71.8
+LaDiR | 66.8 | 59.5 | 87.4 | 84.2 | 74.5
+
+### Table 3: Results on Countdown tasks. We report Pass@1, Pass@100, and Diversity (Div.). Diversity is measured as the number of unique valid solutions discovered among 100 samples. Best results are in bold , and second-best are underlined . ∗ Dream 7B Base refers to the open-sourced base model without
+
+Model | CD-4 P@1 | CD-4 P@100 | CD-4 Div. | CD-5 P@1 | CD-5 P@100 | CD-5 Div.
+Dream 7B Base ∗ | 16.0 | 24.7 | 4.1 | 4.2 | 10.3 | 5.6
+MGDM † | 91.5 | 95.2 | 3.2 | 46.6 | 70.4 | 4.9
+LLaDA 8B SFT | 51.2 | 75.2 | 5.4 | 34.4 | 45.2 | 6.2
+LLaMA 8B SFT | 46.7 | 65.3 | 3.0 | 8.9 | 15.4 | 3.5
+LaDiR | 76.6 | 96.4 | 7.3 | 38.5 | 75.2 | 8.9
+
+### Table 4: Examples of iterative self-refinement of decoded text from the VAE decoder on the Countdown-4 dataset across different denoising timesteps ( t ).
+
+Input | 43, 9, 54, 25, 81
+GT Answer | 43+9=52, 54-25=29, 52+29=81
+Decode( \hat{Z}_{t=1} ) | “I .. ex1 …” (random noise)
+Decode( \hat{Z}_{t=0.8} ) | 43+8=51, 54-24=30, 51+30=81
+Decode( \hat{Z}_{t=0.7} ) | 43+10=53, 54-25=28, 53+28=81
+Decode( \hat{Z}_{t=0.6} ) | 43+9=52, 54-27=27, 52+27=79
+Decode( \hat{Z}_{t=0.5} ) | 43+9=52, 54-25=29, 52+28=80
+Decode( \hat{Z}_{t=0.4} ) | 43+9=52, 54-25=29, 52+30=82
+Decode( \hat{Z}_{t=0.25} ) | 43+9=52, 54-25=29, 52+29=81
+Decode( \hat{Z}_{t=0} ) | 43+9=52, 54-25=29, 52+29=81
+
+### Table 5: Ablation study on latent prediction objectives on the Countdown-4 dataset.
+
+Objective | CD-4 Pass@1 (%)
+MSE Loss | 46.0
+x_{0} | 53.0
+\epsilon | 58.0
+v | 62.0
+u (ours) | 73.5
+
+### Table 6: Ablation study on VAE robustness augmentations on GSM8K.
+
+Gaussian Noise (p=0.3) | Token Substitution (k=3)
+k (std) | Acc. (%) | p (prob.) | Acc. (%)
+0 | 68.3 | 0.0 | 70.2
+1 | 73.4 | 0.1 | 78.3
+3 | 84.2 | 0.3 | 84.2
+5 | 79.4 | 0.5 | 64.0
+– | – | 0.7 | 32.4
+
+### Table 7: Ablation study on blockization strategy (sentences per block).
+
+# Sentences | # Latent Tokens | GSM8K | MATH
+1 | 4 | 84.2 | 45.2
+2 | 8 | 78.4 | 39.6
+3 | 12 | 72.0 | 36.1
+
+### Table 8: Example of interpretable continuous thought tokens: each latent block Z^{i} is able to be decoded to human-readable text through the VAE decoder. Each latent block is decoded individually, so the entire latent thought is represented by the block in isolation. This allows for clear interpret
+
+Block | Text
+Question | Billy sells DVDs. He has 8 customers on Tuesday. The first 3 buy one DVD each, the next 2 buy two DVDs each, the last 3 buy none. How many DVDs did Billy sell?
+Decode (Z^{(1)}) : | Billy’s first 3 customers buy one DVD each, so that’s 3*1=\langle\langle 3*1=3\rangle\rangle 3 DVDs.
+Decode (Z^{(2)}) : | His next 2 customers buy 2 DVDs each, so that’s 2 \times 2 = 4 DVDs.
+Decode (Z^{(3)}) : | His last 3 customers don’t buy any DVDs, so that’s 0 DVDs sold.
+Decode (Z^{(4)}) : | Therefore, Billy sold a total of 3 + 4 + 0 = 7 DVDs on Tuesday.
+Answer | The answer is: 7.
+
+### Table 9: Inference latency (seconds/example) comparison on MATH dataset.
+
+Method | Latency | Pass@1 | Pass@100
+LLaMA CoT SFT | 4.7 | 43.1 | 89.0
+LaDiR (10 steps) | 4.9 | 42.9 | 90.7
+LaDiR (30 steps) | 14.8 | 44.9 | 92.8
+
+### Table 10: An example of self-refinement during inference on the GSM8k dataset, showing how reasoning becomes progressively clearer as t decreases. Later denoising steps correct arithmetic errors while maintaining earlier structure, demonstrating semantic self-refinement. Pink segments highlight refi
+
+Question | Brandon’s iPhone is four times as old as Ben’s iPhone. Ben’s iPhone is two times older than Suzy’s iPhone. If Suzy’s iPhone is 1 year old, how old is Brandon’s iPhone?
+SFT (Baseline) | Suzy’s iPhone is 1 year old. Ben’s iPhone would be 1+1=2 years old. Since Brandon’s iPhone is four times as old as Ben’s, we compute 4\times 1=4 . Therefore, Brandon’s iPhone is 4 years old. The answer is: 4.
+LaDiR (Ours) | Block 1 | Block 2
+Decode( \hat{Z}_{t=1.0} ) | 10 and 10 10.... | [garbled tokens] & ˆ * _
+Decode( \hat{Z}_{t=0.9} ) | If Alice is 1 year old , then Bob’s age is 2 years older than Alice, which means Bob is 2 = 1 + 1 years old . | ://@natechandra’s Instagram is four times as old as Ben’s Instagram , so Ben’s Instagram is 1 * 4 = 4 years old .
+Decode( \hat{Z}_{t=0.8} ) | If Suzy’s age is 1 year old , then Ben’s age is two times older than Suzy’s age, which is 2 * 1 = 2 years old . | If Brandon’s phone is four times as old as Ben’s phone , then Brandon’s phone is 2 * 4 = 8 years old . 1nbsp;nbsp;nbsp…
+Decode( \hat{Z}_{t\leq 0.7} ) | If Suzy’s iPhone is 1 year old , then Ben’s iPhone is two times older than Suzy’s iPhone, so Ben’s iPhone is 2 * 1 = 2 years old . | If Brandon’s iPhone is four times as old as Ben’s iPhone , then Brandon’s iPhone is 2 * 4 = 8 years old .
+Answer | The answer is: 8.
+
+### Table 11: An qualitative example in GSM8K illustrating the long reasoning blocks generated by our method compared to the baseline SFT.
+
+Question | Gretchen has 110 coins. There are 30 more gold coins than silver coins. How many gold coins does Gretchen have?
+SFT (Baseline) | Let’s assume Gretchen has 110 coins in total and 30 more gold than silver. Half of the coins plus 30 should be gold, so 110/2+30=85 gold coins.
+LaDiR (Ours) | 
+Decode (Z^{(1)}) | Let’s assume the number of silver coins Gretchen has is x silver coins.
+Decode (Z^{(2)}) | We also know that there are 30 more gold coins than silver coins, so the number of silver coins is x+30 gold coins.
+Decode (Z^{(3)}) | The total number of coins Gretchen has is x+(x+30)=110 .
+Decode (Z^{(4)}) | Combining like terms, we get 2x+30=110 .
+Decode (Z^{(5)}) | Subtracting 30 from both sides, we get 2x=80 .
+Decode (Z^{(6)}) | Dividing both sides by 2 , we get x=40 .
+Decode (Z^{(7)}) | Therefore, Gretchen has 30+40=70 gold coins.
+Answer | The answer is: 70 .
+
+### Table 12: Summary of datasets used in our experiments. We use DART-MATH ( Tong et al., 2024b ) , MATH ( Hendrycks et al., 2021 ) , GSM8K ( Cobbe et al., 2021 ) , College-Math ( Tang et al., 2024b ) , DeepMind-Math ( Saxton et al., 2019 ) , OlympiaBench-Math ( He et al., 2024 ) , TheoremQA ( Chen et 
+
+Dataset | # Samples | Domain / Level | Notes
+DART-MATH | 585k | Mixed math (train) | Synthesized for reasoning, based on GSM8K/MATH
+MATH | 500 | High school / competition | In-domain benchmark
+GSM8K | 1.3k | Grade school arithmetic | In-domain benchmark
+College-Math | 2.8k | College-level | Linear algebra, differential equations, etc.
+DM-Math | 1k | K–12 curriculum | Out-of-domain generalization
+OlympiaBench-Math | 675 | Olympiad-level | Advanced competition problems
+TheoremQA | 800 | STEM / theorem-driven | Math, physics, engineering
+Fresh-Gaokao-Math-2023 | 30 | Gaokao exam | Real-world test distribution
+
+### Table 13: Complete hyperparameter settings for all training and inference stages.
+
+Component | Hyperparameter | Value
+VAE Pretraining | Latent dimension ( d_{z} ) | 512
+# latent tokens per block | 4
+KL weight \beta | 1\times 10^{-5}
+Learning rate | 2\times 10^{-5}
+Batch size | 128
+# of Epochs | 2
+Stage-1 Teacher-Forcing | Flow-matching loss weight ( \lambda_{\mathrm{FM}} ) | 5
+CE loss weight ( \lambda_{\mathrm{Ans}} ) | 1
+Special-token loss weight ( \lambda_{\mathrm{Spec}} ) | 1
+Learning rate | 1\times 10^{-5}
+Batch size | 64
+# of Epochs | 20
+Stage-2 Rollout Training | Learning rate | 1\times 10^{-5}
+Batch size | 12
+# of Epochs | 20
+Inference | Classifier-free guidance scale | 4
+Answer token decoding temperature | 0.7
+

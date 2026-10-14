@@ -1,0 +1,195 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Step-Aware Policy Optimization for Reasoning in Diffusion Large Language Models
+
+record AW0298 | arXiv:2510.01544 | first version 2025-10-02
+
+**Abstract.** Diffusion-based large language models offer a non-autoregressive alternative for text generation, but enabling them to perform complex reasoning remains challenging. Reinforcement learning has recently emerged as an effective post-training strategy for improving their performance; however, existing methods rely primarily on outcome-based rewards, which provide no direct supervision over the denoising process and often result in poorly structured reasoning that is difficult to interpret and inconsistently supports the final prediction. To address this limitation, we introduce \emph{denoising process reward}, a process-level reinforcement signal defined over the denoising trajectory of diffusion language models. This reward is obtained by estimating the contribution of intermediate denoising intervals to the final task outcome, encouraging the model to favor reasoning trajectories that consistently guide generation toward correct predictions. We further propose an efficient stochastic estimator that reuses standard training rollouts, enabling practical process-level supervision at scale. Experiments on challenging reasoning benchmarks demonstrate that our approach yields consistent improvements in reasoning stability, interpretability, and overall task performance.
+
+## All captions
+
+- Figure 1: Limitations of outcome-only rewards and motivation for the proposed denoising process reward (DPR). Under outcome-only supervision, intermediate denoising steps are often spent on repetitive or vacuous content and are not effectively utilized to info
+- Figure 2: Illustration of the denoising process reward (DPR). We estimate the contribution of intermediate denoising steps by comparing outcome rewards from rollouts initialized at different timesteps. Larger differences indicate greater impact on the final an
+- Figure 3: Comparison of generated responses across models. LLaDA ( Nie et al., 2025 ) and diffu-GRPO ( Zhao et al., 2025a ) both produce incorrect answers to the evaluation question. LLaDA’s response includes a brief but partially meaningful reasoning step tow
+- Table 1: Performance comparison on COUNTDOWN, GSM8K, SUDOKU, and MATH at different sequence lengths. “–” denotes unreported results; “ \times ” denotes unsupported tasks.
+- Table 2: Ablation of design choices and efficiency.
+- Table 3: Generalization ability comparison. The models are evaluated on unseen datasets: the reasoning benchmark SVAMP ( Patel et al., 2021 ) and the commonsense benchmark ARC ( Clark et al., 2018 ) .
+- Table 4: Accuracy of intermediate answers with sequence length 128 and 64 diffusion steps. Intermediate answers are obtained by decoding normally up to a target step and then decoding all remaining tokens in one pass.
+- Figure 4: Two failure modes arise when using a pretrained PRM as the training-time reward: instability and potential reward hacking. Unlike our rule-based reward, the PRM must process the entire model-generated response through a large pretrained network. As a
+- Figure 5: Model reasoning–outcome alignment ratio.
+- Figure 6: Ablation study.
+- Figure 7: Reward curves during GRPO training.
+- Figure 8: The training curve of our proposed reward.
+- Table 5: Examples on the COUNTDOWN dataset with 128 mask tokens where diffu-GRPO prematurely jumps to a final expression without valid intermediate reasoning, or exhibits incorrect reasoning that violates the task constraints, while Ours consistently produces 
+- Table 6: Examples on the SUDOKU dataset with 512 mask tokens where Ours produces solutions closer to the ground truth than diffu-GRPO .
+- Table 7: Intermediate responses generated by decoding all mask tokens at step 32 on GSM8K with 128 mask tokens, comparing diffu-GRPO and Ours . With our proposed reward, Ours produces higher-quality reasoning at early decoding steps, which translates into high
+
+## Tables as text
+
+### Table 1: Performance comparison on COUNTDOWN, GSM8K, SUDOKU, and MATH at different sequence lengths. “–” denotes unreported results; “ \times ” denotes unsupported tasks.
+
+ | COUNTDOWN | GSM8K | SUDOKU | MATH
+Model / Seq Len | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512
+LLaDA ( Nie et al., 2025 ) | 20.7 | 19.5 | 16.0 | 68.7 | 76.7 | 78.2 | 11.7 | 6.7 | 5.5 | 26.0 | 32.4 | 36.2
+diffu-GRPO ( Zhao et al., 2025a ) | 33.2 | 31.3 | 37.1 | 72.6 | 79.8 | 81.9 | 18.4 | 12.9 | 11.0 | 33.2 | 37.2 | 39.2
+TSE ( Wang et al., 2025c ) | 25.0 | 23.4 | 16.4 | 70.1 | 78.7 | 78.9 | \times | \times | \times | 28.4 | 35.6 | 36.2
+WINO ( Hong et al., 2025 ) | - | 33.2 | - | - | 75.8 | - | - | 15.2 | - | - | 34.2 | -
+diffu-GRPO+PRM | \times | \times | \times | 71.7 | 80.9 | 81.5 | \times | \times | \times | 30.8 | 36.0 | 36.0
+Ours | 51.6 | 52.0 | 56.3 | 72.9 | 82.2 | 82.4 | 22.4 | 20.3 | 16.1 | 32.0 | 40.0 | 38.4
+
+### Table 2: Ablation of design choices and efficiency.
+
+Model/Seq Len | COUNTDOWN | sec/it
+128 | 256 | 512 | 
+diffu-GRPO | 33.2 | 31.3 | 37.1 | 3.19
+diffu-GRPO+PRM | - | - | - | 7.58
+Ours-NoUpweight | 41.0 | 41.4 | 50.4 | 3.42
+Ours-Cover | 55.1 | 59.4 | 58.2 | 6.23
+Ours-Random | 55.4 | 54.7 | 59.8 | 4.76
+Ours | 51.6 | 52.0 | 56.3 | 3.42
+
+### Table 3: Generalization ability comparison. The models are evaluated on unseen datasets: the reasoning benchmark SVAMP ( Patel et al., 2021 ) and the commonsense benchmark ARC ( Clark et al., 2018 ) .
+
+Model | Training | SVAMP | ARC
+LLaDA | - | 83.3 | 90.2
+diffu-GRPO | GSM8K | 83.0 | 89.8
+Ours | GSM8K | 84.0 | 90.2
+diffu-GRPO | MATH | 83.7 | 91.8
+Ours | MATH | 85.7 | 93.0
+diffu-GRPO | COUNTDOWN | 84.0 | 90.6
+Ours | COUNTDOWN | 84.0 | 87.5
+diffu-GRPO | SUDOKU | 85.0 | 91.0
+Ours | SUDOKU | 86.7 | 90.6
+
+### Table 4: Accuracy of intermediate answers with sequence length 128 and 64 diffusion steps. Intermediate answers are obtained by decoding normally up to a target step and then decoding all remaining tokens in one pass.
+
+Step | COUNTDOWN | GSM8K
+diffu-GRPO | Ours | diffu-GRPO | Ours
+1 | 1.56 | 1.17 | 12.81 | 16.53
+8 | 2.73 | 1.56 | 9.48 | 16.91
+16 | 3.12 | 2.34 | 13.04 | 19.33
+24 | 4.69 | 1.95 | 17.21 | 21.61
+32 | 6.64 | 27.34 | 24.26 | 30.86
+40 | 12.50 | 33.98 | 39.27 | 41.17
+48 | 19.53 | 37.11 | 49.96 | 50.57
+64 | 33.2 | 51.6 | 72.6 | 72.9
+
+### Table 5: Examples on the COUNTDOWN dataset with 128 mask tokens where diffu-GRPO prematurely jumps to a final expression without valid intermediate reasoning, or exhibits incorrect reasoning that violates the task constraints, while Ours consistently produces correct reasoning processes and valid fi
+
+Example 1: Numbers: [10, 36, 8] Target: 38
+Model | diffu-GRPO | Ours
+Generation | \nTo reach the target of 38 using the numbers 10, 36, and 8, we need to find a combination of operations that, when applied to these numbers, result in 38. We can start by considering the operations of addition, subtraction, multiplication, and division. We can try different combinations of numbers and operations to see if we can reach the target.\n </reasoning>\n <answer>\n \\boxed{36 - 10 + 8}\n </answer><|eot_id|>|> | \nTo create an arithmetic expression that evaluates to exactly the target number 38 using the numbers 10, 36, and 8, we need to consider the operations +, -, *, and /. Let’s try different combinations:\n \n 1. 36 + 8 - 10 = 34\n 2. 36 - 8 + 10 = 38\n \nThe combination that works is 36 - 8 + 10. \n \n </reasoning>\n \n \\boxed{36 - 8 + 10}<|eot_id|><|endoftext|>
+Evaluation | Answer: ✗ Reasoning: ✗ | Answer: ✓ Reasoning: ✓
+Example 2: Numbers: [12, 71, 32] Target: 91
+Model | diffu-GRPO | Ours
+Generation | \nTo reach the target of 91 using the numbers 12, 71, and 32, we need to find the correct combination of operations. Let’s start by considering the largest number, 71, and see if we can combine it with the other numbers to get 91. We can try adding 71 and 12, which gives us 83. Then, subtracting 32 from 83 gives us 91.\n </reasoning>\n <answer>\n \\boxed{71+12-32}\n </answer><|eot_id|><|endoftext|> | \nTo find an arithmetic expression that evaluates to exactly 91 using the numbers 12, 71, 32, we need to consider the operations +, -, *, and /. Let’s try different combinations:\n \n 1. 71 + 32 - 12 = 91\n \n .\n \nThis , we with the expression 71 + 32 - 12, which evaluates to exactly 91.\n </reasoning>\n <answer>\n \\boxed{71 + 32 - 12}\n </answer><|eot_id|><|endoftext|>
+Evaluation | Answer: ✗ Reasoning: ✗ | Answer: ✓ Reasoning: ✓
+Example 3: Numbers: [14, 69, 24] Target: 31
+Model | diffu-GRPO | Ours
+Generation | \nTo find an expression that evaluates to 31 using the numbers 14, 69, and 24, we can to start with the largest number and subtract to get the closest number. We can use 69 - 14 = 55, which is close to 31. Then, we can subtract 24 from 55 to get 31. Therefore, the expression is 69 - 14 - 24.\n </reasoning>\n <answer>\n \\boxed{69-14-24\n </answer><|eot_id|><|endoftext|> } | \nTo create an arithmetic expression that evaluates to exactly the target number 31 using the numbers 14, 69, and 24, we need to consider the operations +, -, *, and /. Let’s try different combinations:\n \n 1. 69 - 24 - 14 = 31\n \nThis combination uses each number exactly once and evaluates to the target number 31. Therefore, the expression is meets.\n </reasoning>\n \n <answer>\n \\boxed{69 - 24 - 14}\n </answer><|eot_id|><|endoftext|>
+Evaluation | Answer: ✗ Reasoning: ✓ | Answer: ✓ Reasoning: ✓
+Example 4: Numbers: [15, 78, 62] Target: 1
+Model | diffu-GRPO | Ours
+Generation | \nTo achieve the target of 1 using the numbers 15, 78, and 62, we need to find a combination of op
+
+### Table 6: Examples on the SUDOKU dataset with 512 mask tokens where Ours produces solutions closer to the ground truth than diffu-GRPO .
+
+Example 1: Solve the following Sudoku puzzle: 2000104040233010
+Model | diffu-GRPO | Ours
+Generation | \nTo solve the 4x4 Sudoku puzzle, we need to fill in the grid with digits 1-4 such that each row, column, and 2x2 box contains all the digits exactly once. Let’s proceed step-by-step:\n \n 1. **Identify the constraints**: The puzzle is a 4x4 grid with digits 1, 2, 3, and 4. The constraints require each row, column, and 2x2 box to contain all the digits exactly once.\n \n 2. **Analyze the initial grid**: The initial grid is \"2000104040233010\". We need to fill in the empty cells while maintaining the constraints.\n \n 3. **Fill in the grid**:\n - Start with the first row: \"2000104040233010\".\n - The the first row is missing the digits 1, 2, 3, and 4.\n - The the first column is missing the digits 1, 2, 3, and 4.\n - The first 2x2 box is missing the digits 1, 2, 3, and 4.\n \n 4. **Complete the grid**:\n - The first row should be filled in as: \"1234\".\n - The first column should be filled in as: \"1234\".\n - The first 2x2 box should be filled in as: \"1234\".\n \n 5. **Verify the solution**:\n - The first row: \"1234\" contains the digits 1, 2, 3, and 4 exactly once.\n - The first column: \"1234\" contains the digits 1, 2, 3, and 4 exactly once.\n - The first 2x2 box: \"1234\" contains the digits 1, 2, 3, and 4 exactly once.\n \n 6. **Construct the final grid**:\n - The final grid is: \"21234104040233010\".\n \n </reasoning>\n \n <answer>\n 21234104040233233010\n </answer><|eot_id|><|endoftext|> | \nTo solve the 4x4 Sudoku puzzle, we need to fill in empty cells with digits 1-4 such that each row, column, and 2x2 box contains all digits exactly once. We can start by analyzing the given digits and using them to in the empty cells while maintaining the Sudoku rules.\n \n 1. **Identify the given digits**: The given digits are 2, 0, 0, 1, 0, 4, 0, 2, 3, 3, 0, 1, 0.\n \n 2. **Fill the grid**: We need to fill the digits 1-4 in the empty cells such that each row, column, and 2x2 box contains all digits exactly once.\n \n 3. **Check the constraints**: After filling the grid, we need to verify that each row, column, and 2x2 box contains all digits 1-4 exactly once.\n \nLet ’s start filling the grid:\n \n :\n 2 0 0 0\n 1 0 4 0\n 4 0 2 3\n 3 0 1 0\n :\n \nWe can start by filling the first row and column:\n \n :\n 2 0 0 0\n 1 0 4 0\n 4 0 2 3\n 3 0 1 0\n :\n \nNext , we can fill the second row and column:\n \n :\n 2 0 0 0\n 1 0 4 0\n 4 0 2 3\n 3 0 1 0\n :\n \nFinally , we can fill the third row and column:\n \n :\n 2 0 0 0\n 1 0 4 0\n 4 0 2 3\n 3 0 1 0\n :\n \nNow , we can fill the fourth row and column:\n \n :\n 2 0 0 0\n 1 0 4 0\n 4 0 2 3\n 3 0 1 4\n :\n \nAfter filling the grid, we verify that each row, column, and 2x2 box contains all digits 1-4 exactly once.\n \n </reasoning>\n <answer>\n 2000104040233014\n </answer><|eot_id|><|endoftext|>
+Evaluation | Correct cells: 2 / 16 | Correct cells: 9 / 16
+Example 2: Solve the following Sudoku puzzle: 00403412
+
+### Table 7: Intermediate responses generated by decoding all mask tokens at step 32 on GSM8K with 128 mask tokens, comparing diffu-GRPO and Ours . With our proposed reward, Ours produces higher-quality reasoning at early decoding steps, which translates into higher prediction accuracy.
+
+Problem: Carver just turned 45 years old, which makes him 5 years less than twice the age of his son. How old is his son, in years?
+Model | diffu-GRPO | Ours
+Generation | "\nLet \\( x \\) be the age of Carver’s son. According to the problem, Carver is 45 years old, which is 5 years less than twice the age of his son. This can be expressed as:\n \\[ 45 = 2x - 5 \\]\nSolving for \\( x \\):\n \\[ 55 = 2x = 2 \\ \\]]\\[\\[ = =2 \\ \\]\n \n ,,ver’s son is 25 \\]\n </</ing>\n <<>\n \\boxed{{5}}\n </answer<|eot_id|><|endoftext|> | \nLet \\( x \\) be the age of Carver’s son. According to the problem, Carver is 45 years old, which is 5 years less than twice the age of his son. This can be expressed as:\n \\[ 45 = 2x - 5 \\]\nSolving for \\( x \\):\n \\[ 45 + 5 = 2x \\]\n \\[ 50 = 2x \\]\n \n ,,’s son 2 years \\]\n </reasoning>\n <answer>\n \\boxed{25}\n </answer><|eot_id|><|endoftext|>
+Evaluation | Answer: ✗ Reasoning: ✗ | Answer: ✓ Reasoning: ✓
+Problem: The employees of Google went on a day trip. 4 buses were rented that have the capacity of holding 60 employees. 6 minibusses that can hold 30 employees, and 10 minivans that can hold 15 employees. How many employees can join the day trip?
+Model | diffu-GRPO | Ours
+Generation | The total of the 4 buses is 4 * 60 = 220 employees. \n The total of the 6 minibusses is 6 * 30 = 180 employees. \n The total of the 10 minivans is 10 * 15 = 150 employees. \n The total the of of join day day 220 + 18 + 1550 =5550.\n </</ing>\n <answer>\n \\boxed{{50}\n </</><|eot_id|><|endoftext|>} | \nThe capacity of the 4 buses is \\(4 \\times 60 = 240\\) employees. The capacity of the 6 minibusses is \\(6 \\times 30 = 180\\) employees. The capacity of the 10 minivans is \\(10 \\times 15 = 150\\) employees. Adding these together, the of employees \\(220 + 18 + + 10 = 577 employees employees\n \n </reasoning>\n <answer>\n \\boxed{570}\n </answer><|eot_id|><|endoftext|> \par
+Evaluation | Answer: ✗ Reasoning: ✗ | Answer: ✓ Reasoning: ✓
+Problem: Jana has 27 puppies. Two thirds of Jana’s puppies are Pomeranians. One third of the Pomeranians are girls. How many girl Pomeranians does Jana have?
+Model | diffu-GRPO | Ours
+Generation | \n First, we need to determine how many Pomeranians Jana has. Since two thirds of her puppies are Pomeranians, we calculate:\n \\[\n \\frac{2}{3} \\times 27 = 18\n \\]\n Next, we find to how many of these are Pomeranians are girls.\n \n \\[\\[\n \n \\[\\frac11{}{}{}66666666\\]\n </</ing>\n <<>\n \\boxed{66}\n </><|eot_id|><|endoftext|> | \nJana has 27 puppies in total two thirds of them are Pomeranians, so she has 27 * 2/3 = 18 Pomeranians.\nOne third of the Pomeranians are girls, so she has 18 * 1/3 = 6 girl Pomeranians.\n </,ing>\n <>>6boxed\n 6>><|eot_id|>
+Evaluation | Answer: ✗ Reasoning: ✗ | Answer: ✗ Reasoning: ✓
+Problem: Lani baked 55 cookies. She ate 5 five cookies and placed the rest equally into five jars. How many cookies were in each jar?
+Model | diffu-GRPO | Ours
+Generation | \nLani baked 555 coo
+

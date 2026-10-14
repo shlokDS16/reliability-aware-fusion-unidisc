@@ -1,0 +1,234 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Muddit: Liberating Generation Beyond Text-to-Image with a Unified Discrete Diffusion Model
+
+record AW0255 | arXiv:2505.23606 | first version 2025-05-29
+
+**Abstract.** Unified generation models aim to handle diverse tasks across modalities -- such as text generation, image generation, and vision-language reasoning -- within a single architecture and decoding paradigm. Autoregressive unified models suffer from slow inference due to sequential decoding, and non-autoregressive unified models suffer from weak generalization due to limited pretrained backbones. We introduce the second-generation Meissonic: Muddit, a unified discrete diffusion transformer that enables fast and parallel generation across both text and image modalities. Unlike prior unified diffusion models trained from scratch, Muddit integrates strong visual priors from a pretrained text-to-image backbone with a lightweight text decoder, enabling flexible and high-quality multimodal generation under a unified architecture. Empirical results show that Muddit achieves competitive or superior performance compared to significantly larger autoregressive models in both quality and efficiency. The work highlights the potential of purely discrete diffusion, when equipped with strong visual priors, as a scalable and effective backbone for unified generation.
+
+## All captions
+
+- Figure 1: Four types of unified generative models. More details can be found in Sec. A .
+- Figure 2: The training and inference architecture of Muddit. (a) During training, we randomly mask tokens from one of the two modalities. MM-DiT is trained to predict the masked tokens using a re-weighted cross-entropy loss, which jointly optimizes both the MM
+- Figure 3: Samples of Text-to-Image Generation by Muddit.
+- Figure 4: Samples of Visual Question Answering by Muddit.
+- Table 1: Evaluation of text-to-image generation performance on the GenEval ( Ghosh et al., 2024 ) .
+- Figure 5: Samples of Image-to-Text Generation by Muddit.
+- Table 2: Evaluation of image captioning, visual question answering on multimodal benchmarks.
+- Table 3: Impact of text loss weight. We apply the same text loss weight during both pretraining and instruction tuning.
+- Table 4: Effect of joint training. We denote text-to-image as T2I and image-to-text as I2T, respectively.
+- Table 5: Performance across different diffusion timesteps.
+- Table 6: Training hyperparameters across different training stages.
+- Table 7: Quantitative comparison with other unified models.
+- Figure 6: Image-to-text generated results.
+- Figure 7: Text-to-image generation results.
+- Figure 8: Visual question answering results.
+- Figure 9: Image-guided text editing results.
+- Figure 10: Image-to-text generated results in each step.
+- Figure 11: Image-to-text generated results in each step.
+- Table 8: Detailed MME results.
+- Table 9: Ablation study on the effect of classifier-free guidance (CFG) scale.
+- Table 10: Comparison of model efficiency across different resolutions and steps. We report throughput for both text-to-image generation (images per second) and image-to-text tasks (tokens per second). Muddit achieves the best overall balance, matching the high
+- Figure 12: Inference speed comparison. We use 32 inference steps for Muddit and fix the sequence length to 77 across all models.
+
+## Tables as text
+
+### Table 1: Evaluation of text-to-image generation performance on the GenEval ( Ghosh et al., 2024 ) .
+
+Model | Text Gen Arch | Image Gen Arch | Params (B) | Overall \uparrow | Objects \uparrow | Counting \uparrow | Colors \uparrow | Position \uparrow | Color \uparrow Attribution
+Single | Two
+PixArt- \alpha ( Chen et al., 2024b ) | - | Diffusion | 0.6 | 0.48 | 0.98 | 0.50 | 0.44 | 0.80 | 0.08 | 0.07
+SD 2.1 ( Rombach et al., 2022 ) | - | Diffusion | 0.9 | 0.50 | 0.98 | 0.51 | 0.44 | 0.85 | 0.07 | 0.17
+DALL-E 2 ( Ramesh et al., 2022 ) | - | Diffusion | 6.5 | 0.52 | 0.94 | 0.66 | 0.49 | 0.77 | 0.10 | 0.19
+SDXL ( Podell et al., 2023 ) | - | Diffusion | 2.6 | 0.55 | 0.98 | 0.74 | 0.39 | 0.85 | 0.15 | 0.23
+DALL-E 3 ( Betker et al., 2023 ) | - | Diffusion | - | 0.67 | 0.96 | 0.87 | 0.47 | 0.83 | 0.43 | 0.45
+SD 3 ( Esser et al., 2024 ) | - | Diffusion | 2 | 0.62 | 0.98 | 0.74 | 0.63 | 0.67 | 0.34 | 0.36
+LWM ( Liu et al., 2024c ) | AR | AR | 7 | 0.47 | 0.93 | 0.41 | 0.46 | 0.79 | 0.09 | 0.15
+SEED-X ( Ge et al., 2024 ) | AR | AR | 17 | 0.49 | 0.97 | 0.58 | 0.26 | 0.80 | 0.19 | 0.14
+Chameleon ( Team, 2024 ) | AR | AR | 7 | 0.39 | - | - | - | - | - | -
+Show-O ( Xie et al., 2024 ) | AR | Discrete Diff. | 1.3 | 0.68 | 0.98 | 0.80 | 0.66 | 0.84 | 0.31 | 0.50
+Transfusion ( Zhou et al., 2024 ) | AR | Diffusion | 8 | 0.67 | - | - | - | - | - | -
+D-DiT ( Li et al., 2024b ) | Discrete Diff. | Diffusion | 2 | 0.65 | 0.97 | 0.80 | 0.54 | 0.76 | 0.32 | 0.50
+Monetico ( 512\times 512 ) ( Bai et al., 2025b ) | - | Discrete Diff. | 1 | 0.44 | 0.92 | 0.48 | 0.26 | 0.78 | 0.06 | 0.13
+Meissonic ( 1024\times 1024 ) ( Bai et al., 2025b ) | - | Discrete Diff. | 1 | 0.54 | 0.99 | 0.66 | 0.42 | 0.86 | 0.10 | 0.22
+UniDisc ( 512\times 512 ) ( Swerdlow et al., 2025b ) | Discrete Diff. | Discrete Diff. | 1.4 | 0.42 | 0.92 | 0.47 | 0.15 | 0.67 | 0.13 | 0.19
+Muddit ( 512\times 512 ) | Discrete Diff. | Discrete Diff. | 1 | 0.61 | 0.98 | 0.72 | 0.54 | 0.82 | 0.19 | 0.41
+
+### Table 2: Evaluation of image captioning, visual question answering on multimodal benchmarks.
+
+Model | Params (B) | Text Gen Arch | Image Gen Arch | MS-COCO CIDEr \uparrow | VQAv2 Acc. \uparrow | MME Acc. \uparrow | GQA Acc. \uparrow | MMMU Acc. \uparrow
+InternVL-2.0 ( Chen et al., 2025e ) | 8 | AR | - | - | - | 1648.1 | 61.0 | 49.3
+LLaVA-Next ( Liu et al., 2024d ) | 13 | AR | - | - | 82.8 | 1575.0 | 65.4 | 36.2
+BLIP-2 ( Li et al., 2023 ) | 13 | AR | - | - | 65.0 | 1293.8 | 41.0 | 34.4
+QWEN-VL ( Bai et al., 2023 ) | 7 | AR | - | - | 78.2 | 1487.5 | 57.5 | 35.9
+OpenFlamingo ( Awadalla et al., 2023 ) | 9 | AR | - | 65.5 | 43.5 | - | - | 28.7
+Flamingo ( Alayrac et al., 2022 ) | 9 | AR | - | 79.4 | 51.8 | - | - | -
+Chameleon ( Team, 2024 ) | 7 | AR | AR | 18.0 | - | - | - | -
+LWM ( Liu et al., 2024c ) | 7 | AR | AR | - | 55.8 | - | - | -
+Show-O (256 \times 256) ( Xie et al., 2024 ) | 1.3 | AR | Discrete Diff. | - | 64.7 | 1014.9 | 54.2 | -
+Show-O (512 \times 512) ( Xie et al., 2024 ) | 1.3 | AR | Discrete Diff. | - | 69.4 | 1097.2 | 58.0 | 27.4
+Transfusion ( Zhou et al., 2024 ) | 7 | AR | Diffusion | 29.0 | - | - | - | -
+D-DiT (256 \times 256) ( Li et al., 2024b ) | 2 | Discrete Diff. | Diffusion | - | 59.5 | 897.5 | 55.1 | -
+D-DiT (512 \times 512) ( Li et al., 2024b ) | 2 | Discrete Diff. | Diffusion | 56.2 | 60.1 | 1124.7 | 59.2 | -
+UniDisc ( Swerdlow et al., 2025b ) | 1.4 | Discrete Diff. | Discrete Diff. | 46.8 | - | - | - | -
+Muddit (512 \times 512) | 1 | Discrete Diff. | Discrete Diff. | 59.9 | 68.2 | 1107.4 | 57.5 | 27.6
+Muddit (1024 \times 1024) | 1 | Discrete Diff. | Discrete Diff. | 60.1 | 70.2 | 1139.2 | 57.8 | 28.7
+
+### Table 3: Impact of text loss weight. We apply the same text loss weight during both pretraining and instruction tuning.
+
+Benchmark | 0.2 | 0.4 | 0.6 | 0.8 | 1.0
+GenEval | 60.1 | 60.5 | 61.6 | 60.8 | 58.3
+MS-COCO | 51.4 | 52.1 | 59.9 | 58.8 | 59.4
+VQAv2 | 62.7 | 66.2 | 68.2 | 68.4 | 69.2
+
+### Table 4: Effect of joint training. We denote text-to-image as T2I and image-to-text as I2T, respectively.
+
+Benchmark | T2I only | I2T only | Joint training
+GenEval | 59.3 | 28.3 | 61.6
+MS-COCO | - | 60.1 | 59.9
+VQAv2 | - | 69.1 | 68.2
+
+### Table 5: Performance across different diffusion timesteps.
+
+Sample steps | GenEval | CIDEr | VQAv2
+T=8 | 51.6 | 43.6 | 53.9
+T=16 | 58.5 | 59.3 | 57.4
+T=24 | 59.3 | 59.4 | 62.3
+T=32 | 61.9 | 59.7 | 65.4
+T=40 | 61.7 | 60.1 | 66.8
+T=64 | 61.1 | 59.9 | 68.2
+
+### Table 6: Training hyperparameters across different training stages.
+
+Hyperparameters | Stage-I (Pre-training) | Stage-II (Instruction-tuning)
+Learning Rate | 1.0\times 10^{-4} | 1.0\times 10^{-4}
+LR Scheduler | Constant | Constant
+Weight Decay | 0.01 | 0.01
+Max Gradient Norm | 10.0 | 10.0
+Optimizer | AdamW ( \beta_{1}=0.9,\ \beta_{2}=0.999 )
+Batch Size | 512 | 512
+Training Steps | 100K | 15K
+Training GPUs | 16 \times H100 | 16 \times H100
+Gen. Resolution | 1024 | 1024
+Under. Resolution | 1024 | 1024
+
+### Table 7: Quantitative comparison with other unified models.
+
+Model | Params | Base model | Architecture | Data scale | Geneval w/ TTS | VQAv2 | MME | MMMU
+Lumina-DiMOO ( Xin et al., 2025b ) | 8B | LLaDA | Discrete Diff. | 80M | 0.92 | – | 1534.2 | 58.6
+MMaDA ( 512\times 512 ) ( Yang et al., 2025a ) | 8B | LLaDA | Discrete Diff. | Unknown | 0.66 | 76.7 | 1410.7 | 30.2
+Show-O (512 \times 512) ( Xie et al., 2024 ) | 1.3B | Phi-1.5 | AR + Discrete Diff | 35M | – | 69.4 | 1097.2 | 27.4
+D-DiT (512 \times 512) ( Li et al., 2024b ) | 2B | SD3-medium | Discrete Diff. + Diff. | 40M | – | 60.1 | 1124.7 | –
+Muddit (512 \times 512) | 1B | Meissonic | Discrete Diff. | 10M | 0.64 | 68.2 | 1107.4 | 27.6
+Muddit (1024 \times 1024) | 1B | Meissonic | Discrete Diff | 16M | 0.67 | 70.2 | 1139.2 | 28.7
+
+### Table 8: Detailed MME results.
+
+Category | Task | Score
+Perception | Existence | 135.00
+Count | 78.33
+Position | 53.33
+Color | 140.00
+Posters | 62.24
+Celebrity | 56.18
+Scene | 107.25
+Landmark | 94.50
+Artwork | 76.00
+OCR | 52.50
+Total | 855.34
+Cognition | Commonsense Reasoning | 78.57
+Numerical Calculation | 90.00
+Text Translation | 57.89
+Code Reasoning | 57.50
+Total | 283.97
+
+### Table 9: Ablation study on the effect of classifier-free guidance (CFG) scale.
+
+Dataset | CFG = 1 | CFG = 1.5 | CFG = 2 | CFG = 2.5 | CFG = 3
+MS-COCO | 57.2 | 59.9 | 58.2 | 51.3 | 47.2
+VQAv2 | 65.8 | 68.2 | 64.7 | 55.4 | 49.2
+
+### Table 10: Comparison of model efficiency across different resolutions and steps. We report throughput for both text-to-image generation (images per second) and image-to-text tasks (tokens per second). Muddit achieves the best overall balance, matching the highest text-to-image throughput while signi
+
+Model | Image Res | Steps | Text-to-Image (img/s) | Image-to-Text (token/s)
+Meissonic | 1024 | 32 | 0.23 | –
+UniDisc | 512 | 32 | 0.89 | 79.36
+Monetico | 512 | 32 | 1.00 | –
+D-DiT | 512 | 28 | 0.62 | 26.89
+Muddit | 512 | 32 | 1.00 | 99.98
+

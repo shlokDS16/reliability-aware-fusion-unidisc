@@ -1,0 +1,142 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Nemotron-Labs-TwoTower: Diffusion Language Modeling with Pretrained Autoregressive Context
+
+record AW0040 | arXiv:2606.26493 | first version 2026-06-25
+
+**Abstract.** Diffusion language models offer a promising alternative to autoregressive models due to their potential for parallel and iterative generation. However, existing approaches use a single network for both context representation and iterative denoising, forcing one model to serve both roles and limiting its capacity for either role. We propose TwoTower, a block-wise autoregressive diffusion model that decouples these roles into two towers: a frozen AR context tower that causally processes clean tokens, and a trainable diffusion denoiser tower with bidirectional block attention that refines noisy blocks via cross-attention to the context. Built on Nemotron-3-Nano-30B-A3B, an open-weight 30B hybrid Mamba-Transformer MoE model, and trained on approximately 2.1T tokens, Nemotron-Labs-TwoTower retains 98.7% of the autoregressive baseline's quality while offering 2.42X higher wall-clock generation throughput. We release the code and model weights at https://huggingface.co/collections/nvidia/nemotron-labs-twotower.
+
+## All captions
+
+- (a) Two-tower architecture: a frozen AR context tower conditions a diffusion denoiser tower over each noisy block.
+- (b) Quality–throughput curve across confidence thresholds and denoising budgets, normalized to the AR baseline.
+- Figure 1 : Overview of Nemotron-Labs-TwoTower. (a) The frozen AR context tower runs causally over the prompt and committed tokens, preserving the pretrained backbone and maintaining reusable KV cache and Mamba states. The trainable diffusion denoiser tower ite
+- Algorithm 1 TwoTower block-wise generation.
+- Algorithm 2 Single-block confidence unmasking.
+- Figure 2 : Category-level comparison between the Nemotron-3-Nano-30B-A3B autoregressive baseline and Nemotron-Labs-TwoTower. Left: average accuracy by benchmark category. Right: relative wall-clock throughput for generative evaluations. Nemotron-Labs-TwoTower 
+- Table 1: Design choices for Nemotron-Labs-TwoTower using block size S{=}32 on an internal Nemotron-3-Nano-30B-A3B base checkpoint. We start with bidirectional attention, causal Mamba, and the phase-1 data blend, then add bidirectional Mamba, adaLN time conditi
+- Table 2 : Tower-decoupling ablation after \sim 167 B phase-1 tokens, reported as relative accuracy change from Nemotron-3-Nano-30B-A3B. Nemotron-Labs-TwoTower keeps the context tower frozen and trains a separate denoiser. Alternative rows continue backbone AR 
+- Table 3: Training block-size ablations on an internal Nemotron-3-Nano-30B-A3B checkpoint. The first three rows sweep phase-1 training block size; the next three rows continue training on the phase-2 blend. Training and inference use the same block size. Throug
+- Table 4: Sampling block-size sensitivity. We fix the Nemotron-Labs-TwoTower checkpoint trained at block size S{=}16 on the phase-2 blend and vary only the sampling block size.
+- Figure 3 : Sampling dynamics for the released Nemotron-Labs-TwoTower checkpoint ( \gamma{=}0.8 , S{=}16 ). Statistics are computed from generation traces over 100 problems per task and include only blocks that contribute to the extracted answer; Appendix A sho
+- Figure 4 : Average committed tokens per diffusion step. The first diffusion step commits the most tokens, after which the count drops as the sampler focuses on the remaining low-confidence positions.
+- Figure 5 : Average diffusion step at which block b completes. Plots terminate at different block indices because different tasks generate different numbers of blocks.
+- Figure 6 : Percentage of generated blocks that complete at each diffusion step across the full task set. Most blocks finish in the first few steps, with task-dependent completion tails.
+- Figure 7 : Distribution of token commitments by position and diffusion step across all generated blocks. Earlier positions are typically committed earlier, producing a left-to-right upper-left triangular pattern with task-dependent strength.
+
+## Tables as text
+
+### Table 1: Design choices for Nemotron-Labs-TwoTower using block size S{=}32 on an internal Nemotron-3-Nano-30B-A3B base checkpoint. We start with bidirectional attention, causal Mamba, and the phase-1 data blend, then add bidirectional Mamba, adaLN time conditioning, and continued training on the pha
+
+ |  |  | Accuracy (%)
+Config | Causal Mamba | Blend | Gen. | Code | Math
+Bidirectional Attention | ✓ | phase1 | 72.94 | 68.64 | 80.57
++ Bidirectional Mamba | \times | phase1 | 72.96 | 68.05 | 79.78
++ Time Conditioning | ✓ | phase1 | 74.12 | 69.61 | 81.30
++ Phase 2 Stage | ✓ | phase2 | 75.11 | 71.51 | 82.08
+
+### Table 2 : Tower-decoupling ablation after \sim 167 B phase-1 tokens, reported as relative accuracy change from Nemotron-3-Nano-30B-A3B. Nemotron-Labs-TwoTower keeps the context tower frozen and trains a separate denoiser. Alternative rows continue backbone AR training or tie the two towers under a j
+
+ | Training Updates |  | Inference | Relative Accuracy (%)
+Config | Context | Denoiser | Weights Shared | Decoding Mode | Gen. | Code | Math
+Nemotron-3-Nano-30B-A3B | – | – | n/a | AR | +0.0 | +0.0 | +0.0
+\hookrightarrow Continued AR training | ✓ | – | n/a | AR | -10.5 | -8.3 | -17.8
+Nemotron-Labs-TwoTower | \times | ✓ | \times | Diffusion | -6.2 | -10.5 | -11.3
+\hookrightarrow Joint loss, tied towers | ✓ | ✓ | ✓ | AR | -26.2 | -21.0 | -26.4
+\hookrightarrow Joint loss, tied towers | ✓ | ✓ | ✓ | Diffusion | -27.9 | -27.8 | -27.0
+
+### Table 3: Training block-size ablations on an internal Nemotron-3-Nano-30B-A3B checkpoint. The first three rows sweep phase-1 training block size; the next three rows continue training on the phase-2 blend. Training and inference use the same block size. Throughput is reported as wall-clock speedup o
+
+ |  | Accuracy (%) | 
+Block size | Blend | Gen. | Code | Math | Throughput ( \times AR)
+128 | phase1 | 69.59 | 63.56 | 75.73 | 2.23
+64 | phase1 | 71.97 | 66.61 | 79.47 | 2.28
+32 | phase1 | 72.94 | 68.64 | 80.57 | 2.17
+32 | phase2 | 76.36 | 73.84 | 82.24 | 2.25
+16 | phase2 | 77.10 | 74.56 | 85.45 | 2.02
+8 | phase2 | 77.23 | 73.79 | 85.98 | 1.71
+
+### Table 4: Sampling block-size sensitivity. We fix the Nemotron-Labs-TwoTower checkpoint trained at block size S{=}16 on the phase-2 blend and vary only the sampling block size.
+
+ | Accuracy (%)
+Block size | MMLU | HumanEval | GSM8K | MATH-500 | Multilingual
+64 | 78.10 | 19.85 | 2.20 | 2.20 | 37.75
+32 | 78.19 | 33.60 | 61.71 | 46.95 | 65.22
+16 | 78.32 | 76.40 | 89.84 | 81.05 | 77.15
+8 | 78.37 | 73.14 | 90.30 | 81.65 | 77.58
+

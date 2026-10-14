@@ -1,0 +1,144 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# OPTD: On-Policy Transition Distillation with Consistency-Guided Adaptive Compression for Few-Step Diffusion Language Models
+
+record AW0263 | arXiv:2608.02942 | first version 2026-08-03
+
+**Abstract.** Diffusion language models (dLLMs) can predict many tokens in parallel, but accurate generation still requires many iterative denoising steps. Few-step distillation accelerates decoding by compressing multiple teacher steps into a single student transition. However, existing methods construct supervision on off-policy trajectories. At inference, the student's early parallel commitments alter the context of later predictions, so the states it actually visits drift away from the supervised ones--precisely when step compression is most aggressive. On-policy distillation is a natural remedy for this mismatch, but it leaves open how far each transition should advance: matching only the teacher's next action limits compression, while indiscriminately merging future actions can violate intermediate dependencies. To address this limitation, we propose OPTD, On-Policy Transition Distillation with consistency-guided adaptive compression. It samples partial states from the few-step student's own trajectories, uses a frozen, question-only teacher to identify outcome-aligned future candidates, and orders them by current-state confidence. The method then selects the longest prefix whose joint commitment preserves the teacher's rollout outcome. A set-bottleneck objective promotes every verified future candidate to the decoder's release threshold, while a frozen-teacher KL anchor regularizes all other active positions. Neither target construction nor training uses a gold response. Across four mathematical reasoning and code-generation benchmarks, OPTD consistently improves the quality--efficiency trade-off and attains the strongest overall quality-constrained AUP among the evaluated few-step baselines.
+
+## All captions
+
+- Figure 1: Quality–efficiency frontier. Average quality-constrained AUP across four benchmarks. OPTD achieves 313.18 AUP: 6.69 \times that of vanilla LLaDA and 27.5% above the highest-AUP prior method, TAD-S. The gain comes from higher parallelism with a modest
+- Figure 2: Overview of OPTD . The current student supplies on-policy partial states. A frozen, question-only teacher rolls forward from each state and proposes future releases. OPTD retains candidate actions whose joint commitment preserves the teacher’s rollou
+- Table 1: Full-benchmark complete-stack results using each method’s native decoder; MBPP uses all 500 test problems. AUP anchors the conservative endpoint at algorithmic TPF =1 and may use a quality-constrained threshold-sweep endpoint from the same decoder fam
+- Figure 3: Single-seed matched state-source learning curves. Accuracy is the macro average over full GSM8K, MATH-500, MBPP-500, and HumanEval; TPF uses the same decoder. The on-policy accuracy gap grows with training while efficiency remains matched.
+- Table 2: Matched loss ablation at 1,024 updates and \tau=0.8 . Benchmark columns report full-set accuracy; Avg. and TPF are four-benchmark macro means.
+- Figure 4: Student states leave teacher support (a,b), while transferred teacher actions become unreliable (c) over matched rollouts; shading gives 95% intervals.
+- Table 3: Decoder-matched full-benchmark results under confidence Multi-Block decoding (no explicit active-block cap, \tau=0.8 ); TAD-S has no OPTD adapter.
+- Table 4: Transfer from base LLaDA. Vanilla is the TPF- 1 conservative decode of the trained checkpoint; “fast valid” reports Acc./TPF at each task’s fastest endpoint within the five-point quality constraint.
+- Table 5: Single-seed fixed versus adaptive compression, with four-benchmark macro Acc. and \Delta TPF relative to fixed.
+
+## Tables as text
+
+### Table 1: Full-benchmark complete-stack results using each method’s native decoder; MBPP uses all 500 test problems. AUP anchors the conservative endpoint at algorithmic TPF =1 and may use a quality-constrained threshold-sweep endpoint from the same decoder family (technical appendix). The displayed 
+
+Method | GSM8K | MATH-500 | HumanEval | MBPP | Average
+Acc. | TPF | AUP | Acc. | TPF | AUP | Acc. | TPF | AUP | Acc. | TPF | AUP | Acc. | TPF | AUP
+LLaDA (vanilla) † ( Nie et al. 2025 ) | 76.50 | 1.00 | 76.50 | 34.20 | 1.00 | 34.20 | 36.59 | 1.00 | 36.59 | 40.00 | 1.00 | 40.00 | 46.82 | 1.00 | 46.82
+Fast-dLLM ( Wu et al. 2025 ) | 79.53 | 3.25 | 256.47 | 35.60 | 2.14 | 69.18 | 37.80 | 2.50 | 56.79 | 38.60 | 2.25 | 48.93 | 47.88 | 2.54 | 107.84
+D2F ( Wang et al. 2026 ) | 68.54 | 2.97 | 161.92 | 20.40 | 2.75 | 26.25 | 32.32 | 2.73 | 50.41 | 38.80 | 2.34 | 51.37 | 40.01 | 2.70 | 72.49
+dParallel ( Chen et al. 2025 ) | 75.74 | 5.85 | 392.77 | 30.60 | 4.46 | 79.57 | 37.20 | 7.50 | 97.73 | 39.80 | 2.36 | 55.84 | 45.84 | 5.04 | 156.48
+d3LLM ( Qian et al. 2026 ) | 76.35 | 8.62 | 616.04 | 30.00 | 6.61 | 116.77 | 35.98 | 7.07 | 106.99 | 39.20 | 5.46 | 82.20 | 45.38 | 6.94 | 230.50
+TAD-Q ( Zhou et al. 2026 ) | 79.76 | 6.29 | 481.72 | 46.80 | 4.41 | 197.39 | 40.24 | 6.06 | 108.54 | 40.80 | 3.75 | 84.61 | 51.90 | 5.13 | 218.07
+TAD-S ( Zhou et al. 2026 ) | 80.21 | 8.34 | 576.34 | 40.80 | 5.10 | 216.26 | 40.85 | 5.94 | 115.53 | 40.60 | 3.42 | 74.23 | 50.62 | 5.70 | 245.59
+OPTD | 78.85 | 10.85 | 848.31 | 34.00 | 7.41 | 185.19 | 37.20 | 9.24 | 136.67 | 38.80 | 3.98 | 82.56 | 47.21 | 7.87 | 313.18
+
+### Table 2: Matched loss ablation at 1,024 updates and \tau=0.8 . Benchmark columns report full-set accuracy; Avg. and TPF are four-benchmark macro means.
+
+Loss | GSM | MATH | MBPP | HE | Avg. | TPF
+Mean | 76.57 | 35.00 | 34.80 | 37.80 | 46.04 | 7.44
+Proj. KL | 76.80 | 33.60 | 37.20 | 37.20 | 46.20 | 7.19
+Set bottleneck (ours) | 77.86 | 36.20 | 37.40 | 39.02 | 47.62 | 7.20
+
+### Table 3: Decoder-matched full-benchmark results under confidence Multi-Block decoding (no explicit active-block cap, \tau=0.8 ); TAD-S has no OPTD adapter.
+
+ | TAD-S | OPTD
+Benchmark | Acc. | TPF | Acc. | TPF
+GSM8K | 77.79 | 9.74 | 77.86 | 10.04
+MATH-500 | 34.40 | 6.66 | 37.20 | 6.96
+HumanEval | 37.80 | 7.18 | 38.41 | 7.66
+MBPP-500 | 39.20 | 3.87 | 38.40 | 3.99
+Average | 47.30 | 6.86 | 47.97 | 7.16
+
+### Table 4: Transfer from base LLaDA. Vanilla is the TPF- 1 conservative decode of the trained checkpoint; “fast valid” reports Acc./TPF at each task’s fastest endpoint within the five-point quality constraint.
+
+Task | Vanilla Acc. | Fast valid | AUP
+GSM8K | 79.53 | 79.98/4.21 | 332.40
+MATH-500 | 35.60 | 32.20/3.37 | 78.62
+HumanEval | 40.85 | 41.46/4.06 | 77.59
+MBPP-500 | 41.40 | 38.20/3.48 | 66.47
+Average | 49.35 | 47.96/3.78 | 138.77
+
+### Table 5: Single-seed fixed versus adaptive compression, with four-benchmark macro Acc. and \Delta TPF relative to fixed.
+
+H | Acc. | TPF | \Delta TPF
+ | Fixed | Adaptive | Fixed | Adaptive | 
+2 | 46.77 | 46.85 | 4.824 | 5.172 | +7.2%
+4 | 47.08 | 46.03 | 4.634 | 5.594 | +20.7%
+8 | 46.68 | 45.15 | 4.116 | 5.318 | +29.2%
+

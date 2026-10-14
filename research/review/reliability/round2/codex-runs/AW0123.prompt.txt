@@ -1,0 +1,247 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Ultra-Fast Language Generation via Discrete Diffusion Divergence Instruct
+
+record AW0123 | arXiv:2509.25035 | first version 2025-09-29
+
+**Abstract.** Fast and high-quality language generation is the holy grail that people pursue in the age of AI. In this work, we introduce Discrete Diffusion Divergence Instruct (DiDi-Instruct), a training-based method that initializes from a pre-trained diffusion large language model (dLLM) and distills a few-step student for fast generation. The model distilled with DiDi-Instruct matches or surpasses its dLLM teacher and the GPT-2 baseline while providing up to 64$\times$ acceleration. The theoretical foundation of DiDi-Instruct is a novel framework based on integral KL-divergence minimization, which leads to a practical training algorithm. We further introduce grouped reward normalization, intermediate-state matching, and the reward-guided ancestral sampler to improve training stability, model coverage, and inference quality. On the OpenWebText benchmark, DiDi-Instruct achieves perplexity ranging from 62.2 (8 NFEs) to 18.4 (128 NFEs), outperforming prior accelerated dLLMs and the GPT-2 baseline. These gains incur a negligible entropy loss (around $1$%) and reduce additional training wall-clock time by more than $20\times$ compared to competing dLLM distillation methods. We further validate the robustness and effectiveness of DiDi-Instruct through extensive ablation studies, model scaling, downstream task evaluations, and unconditional protein sequence generation. In conclusion, DiDi-Instruct enables efficient and effective distillation for language generation in the blink of an eye.
+
+## All captions
+
+- Figure 1: Perplexity vs. NFEs 1 1 1 Baselines include GPT-2, masked diffusion language models (MDLM; Sahoo et al. (2024) ), diffusion duality (DUO; Sahoo et al. (2025) ), and self-distillation through time (SDTT; Deschenaux and Gulcehre (2025) ). .
+- Figure 2: The visualized pipeline of DiDi-Instruct (summarized in Algorithm 1 ). Given a fully masked input \mathbf{z}_{t} ( t=1 ), both the student \mathbf{p}_{\nu} and the teacher (assistant model) \mathbf{p}_{\theta} produce clean samples \mathbf{x} and \ma
+- Table 1: Cumulative ablation study. We start from a baseline model and progressively add the listed tricks on top of the previous row (top \rightarrow bottom). Metrics are reported as PPL \downarrow and Entropy \uparrow for different NFEs. The teacher with 102
+- Table 2: Leave-one-out ablation study. Each row shows performance without (w/o) one trick while keeping the others unchanged. Metrics are PPL \downarrow and Entropy \uparrow over different NFEs. The lowest PPL in each NFE column is underlined .
+- Table 3: Model Architecture Specifications (169M).
+- Table 4: Model Architecture Specifications (424M).
+- Table 5: Pre-Training and Distillation Hyperparameters.
+- Table 6: Additional generation metrics: MAUVE ( \uparrow , higher is better) and Self-BLEU ( \downarrow , lower indicates more diversity). Comparison across varying NFEs.
+- Table 7: Practical latency and throughput comparison on one H100 GPU.
+- Table 8: Evaluation of zero-shot generalization on out-of-domain datasets. We report PPL to assess whether DiDi-Instruct preserves general language understanding after being distilled for sampling efficiency. This test is crucial to verify that the model avoid
+- Table 9: Domain adaptation on MMLU dataset.
+- Table 10: Domain adaptation on PubMed dataset.
+- Table 11: Frozen feature evaluation on GLUE MRPC dataset.
+- Figure 3: Sensitivity analysis of RGAS hyperparameters at 16 NFEs. We visualize the landscape of PPL (left) and Sequence Entropy (right) across varying gradient scales h , and candidate counts M . The heatmap indicates that increasing both h and M consistently
+- Table 12: Variance decomposition of PPL via fANOVA.
+- Figure 4: Scaling results for the 424M models. DiDi-Instruct significantly lowers PPL compared to the MDLM baseline across all NFEs.
+- Figure 5: pLDDT comparison between DiDi-Instruct and the DPLM-150M across different sequence lengths ( L=100,200,300,400,500 ) and numbers of function evaluations (NFEs). Our method consistently outperforms the teacher, achieving up to +10 pLDDT gains at short
+- Figure 6: Visualization examples of low-confidence protein sequences ( \text{pLDDT}<70 ) generated by the teacher model with lengths ranging from 50 to 500, under 8, 16, and 32 NFEs
+- Figure 7: Visualization examples of high-confidence protein sequences ( \text{pLDDT}>70 ) generated by the DiDi-Instruct model, with lengths ranging from 50 to 500 across different numbers of function evaluations (NFEs).
+- Table 13: Protein sequence diversity evaluation using MMseqs2 clustering. We compare the Average Cluster Size and Cluster Entropy across different NFEs.
+
+## Tables as text
+
+### Table 1: Cumulative ablation study. We start from a baseline model and progressively add the listed tricks on top of the previous row (top \rightarrow bottom). Metrics are reported as PPL \downarrow and Entropy \uparrow for different NFEs. The teacher with 1024 NFEs yields entropy 5.22.
+
+Configurations | 8 NFEs | 16 NFEs | 32 NFEs | 64 NFEs | 128 NFEs
+PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow
+Baseline (no tricks) | 803.922 | 5.85 | 311.450 | 5.76 | 174.789 | 5.70 | 113.112 | 5.61 | 96.649 | 5.59
++ Score Decompose | 667.830 | 5.83 | 289.720 | 5.76 | 165.809 | 5.70 | 105.880 | 5.61 | 89.350 | 5.59
++ Coupled Time t | 101.019 | 5.16 | 75.188 | 5.46 | 48.441 | 5.35 | 35.833 | 5.37 | 30.574 | 5.33
++ \omega(t) Correction | 94.955 | 5.21 | 75.607 | 5.22 | 31.651 | 5.20 | 25.271 | 5.16 | 20.980 | 5.12
++ \pi(t) Weighting | 92.100 | 5.15 | 43.997 | 5.17 | 32.276 | 5.21 | 26.079 | 5.21 | 21.377 | 5.13
++ Regularization | 88.274 | 5.11 | 43.980 | 5.16 | 28.444 | 5.12 | 21.946 | 5.06 | 18.325 | 5.00
++ Guided Inference | 62.236 | 5.17 | 38.188 | 5.21 | 24.971 | 5.18 | 21.905 | 5.15 | 18.446 | 5.15
+Configurations | 8 NFEs | 16 NFEs | 32 NFEs | 64 NFEs | 128 NFEs
+PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow | PPL \downarrow | Entropy \uparrow
+w/o Score Decompose | 33584 | 6.77 | 28962 | 6.77 | 23134 | 6.75 | 14634 | 6.64 | 7983 | 6.51
+w/o Coupled Time t | 360.75 | 5.42 | 159.43 | 5.43 | 94.859 | 5.45 | 64.639 | 5.35 | 51.121 | 5.39
+w/o \omega(t) Correction | 82.489 | 5.12 | 41.034 | 5.13 | 30.313 | 5.09 | 25.125 | 5.04 | 18.806 | 5.02
+w/o \pi(t) Weighting | 69.656 | 5.22 | 40.499 | 5.17 | 25.799 | 5.15 | 21.503 | 5.16 | 19.616 | 5.14
+w/o Regularization | 84.594 | 5.20 | 30.994 | 5.22 | 23.603 | 5.20 | 19.609 | 5.18 | 17.499 | 5.17
+w/o Guided Inference | 88.274 | 5.11 | 43.980 | 5.16 | 28.444 | 5.12 | 21.946 | 5.06 | 18.325 | 5.00
+Baseline (with all tricks) | 62.236 | 5.17 | 38.188 | 5.21 | 24.971 | 5.18 | 21.905 | 5.15 | 18.446 | 5.15
+
+### Table 3: Model Architecture Specifications (169M).
+
+Hyperparameter | Teacher/Student | Discriminator Model
+Model Type | MDLM | MDLM
+Total Parameters | 169M | 131M
+Num Layers | 12 | 12
+Hidden Size | 768 | 768
+Num Attention Heads | 12 | 12
+Positional Encoding | RoPE | RoPE
+Context Length | 1024 | 1024
+Vocabulary Size | 50257 | 50257
+Classification Head | - | 2 linear layers (SpecNorm)
+
+### Table 4: Model Architecture Specifications (424M).
+
+Hyperparameter | Teacher/Student | Discriminator Model
+Model Type | MDLM | MDLM
+Total Parameters | 424M | 373M
+Num Layers | 24 | 24
+Hidden Size | 1024 | 1024
+Num Attention Heads | 16 | 16
+Positional Encoding | RoPE | RoPE
+Context Length | 1024 | 1024
+Vocabulary Size | 50257 | 50257
+Classification Head | - | 2 linear layers (SpecNorm)
+
+### Table 5: Pre-Training and Distillation Hyperparameters.
+
+Hyperparameter | Pre-training (Teacher) | Distillation (Student)
+Optimizer | AdamW | AdamW
+Learning Rate | 1.0\times 10^{-4} | 1.0\times 10^{-6}
+LR Schedule | Cosine Decay | Linear Decay
+Warm-up Steps | 2,500 | 0
+Decay Rate \beta_{1} | 0.9 | 0.9
+Decay Rate \beta_{2} | 0.95 | 0.999
+Weight Decay | 0.05 | 0.01
+Global Batch Size | 336 (42 per GPU) | 8
+Training Iterations | 200,000 | 10,000
+EMA Decay | 0.9999 | 0.9999
+DiDi-Instruct Specific Parameters
+\omega(t) weight schedules | We test linear schedule \omega(t)=1 and \omega(t)=-\alpha_{t}/(1-\alpha_{t}+10^{-8}) .
+\pi(t) sampling schedules | We test linear schedule Beta( 1,1 ) , Beta( 2,5 ) , and Beta( 5,2 ) .
+
+### Table 6: Additional generation metrics: MAUVE ( \uparrow , higher is better) and Self-BLEU ( \downarrow , lower indicates more diversity). Comparison across varying NFEs.
+
+Metrics | Methods | 8 NFEs | 16 NFEs | 32 NFEs | 64 NFEs | 128 NFEs
+MAUVE ( \uparrow ) | MDLM | 4.77 | 6.76 | 6.46 | 5.50 | 5.97
+( \times 10^{-3} ) | SDTT | 5.60 | 5.38 | 5.70 | 5.04 | 5.96
+ | DUO | 5.75 | 5.15 | 5.99 | 5.85 | 6.05
+ | DiDi-Instruct (Ours) | 5.84 | 6.55 | 6.54 | 6.14 | 6.31
+Self-BLEU ( \downarrow ) | MDLM | 2.91 | 4.58 | 6.36 | 7.97 | 9.33
+( \times 10^{-2} ) | SDTT | 5.02 | 7.98 | 10.09 | 12.49 | 12.92
+ | DUO | 8.26 | 9.28 | 9.62 | 8.84 | 8.94
+ | DiDi-Instruct (Ours) | 4.82 | 4.64 | 5.24 | 6.25 | 8.24
+
+### Table 7: Practical latency and throughput comparison on one H100 GPU.
+
+Models | NFEs | Tokens/sec | Latency per 1K tokens (sec)
+AR | 1024 | 179.042 | 5.719
+MDLM | 512 | 111.146 | 9.213
+SDTT | 64 | 806.498 | 1.269
+DiDi-Instruct (Ours) | 16 | 2366.604 | 0.432
+
+### Table 8: Evaluation of zero-shot generalization on out-of-domain datasets. We report PPL to assess whether DiDi-Instruct preserves general language understanding after being distilled for sampling efficiency. This test is crucial to verify that the model avoids mode collapse. Lower PPL ( \downarrow 
+
+Models | PTB | Wikitext | LM1B | Lambada | AG News | Pubmed | Arxiv
+AR | GPT2 †‡ | 82.05 | 41.60 | 51.25 | 45.04 | 52.09 | 49.01 | 41.73
+MDMs | SEDD †‡ | 100.09 | 40.62 | 68.20 | 50.92 | 62.09 | 44.53 | 38.48
+MDLM ‡ | 95.26 | 32.83 | 67.01 | 47.52 | 61.15 | 41.89 | 37.37
+USDMs | SEDD † ¶ | 105.51 | 49.60 | 82.62 | 65.40 | 82.64 | 55.89 | 50.86
+UDLM ¶ | 112.82 | 39.42 | 77.59 | 53.57 | 80.96 | 50.98 | 44.08
+DUO base ¶ | 89.35 | 33.57 | 73.86 | 49.78 | 67.81 | 44.48 | 40.39
+Distilled | DUO distilled § | 112.27 | 42.53 | 89.45 | 61.17 | 88.70 | 56.17 | 50.27
+DiDi-Instruct (Ours) | 107.03 | 35.20 | 80.58 | 53.62 | 78.36 | 47.56 | 45.35
+
+### Table 9: Domain adaptation on MMLU dataset.
+
+Models | NLL (pre) | NLL (post) \downarrow | \Delta NLL \uparrow | Acc (pre) | Acc (post) \uparrow | \Delta Acc \uparrow
+MDLM | 9.879 | 2.814 | 7.065 | 20.6% | 25.3% | 4.7%
+SDTT | 9.773 | 2.844 | 6.929 | 21.2% | 24.3% | 3.1%
+DiDi-Instruct (Ours) | 9.960 | 2.815 | 7.145 | 21.6% | 25.1% | 3.5%
+
+### Table 10: Domain adaptation on PubMed dataset.
+
+Models | NLL (pre) | PPL (pre) | NLL (post) \downarrow | PPL (post) \downarrow
+MDLM | 3.761 | 42.983 | 3.217 | 24.944
+SDTT | 3.938 | 51.336 | 3.243 | 25.602
+DUO | 4.028 | 56.174 | 3.338 | 27.734
+DiDi-Instruct (Ours ) | 3.879 | 47.563 | 3.215 | 24.894
+
+### Table 11: Frozen feature evaluation on GLUE MRPC dataset.
+
+Models | Accuracy \uparrow | F1 Score \uparrow
+MDLM | 59.6% | 72.2%
+SDTT | 59.1% | 72.0%
+DiDi-Instruct (Ours) | 62.3% | 73.3%
+
+### Table 12: Variance decomposition of PPL via fANOVA.
+
+Parameter | 8 NFEs | 16 NFEs | 32 NFEs
+Gradient Scale ( h ) | 92.7% | 90.0% | 63.7%
+Candidate Count ( M ) | 7.3% | 6.0% | 36.3%
+
+### Table 13: Protein sequence diversity evaluation using MMseqs2 clustering. We compare the Average Cluster Size and Cluster Entropy across different NFEs.
+
+NFEs | Methods | Cluster Entropy \uparrow | Average Cluster Size \downarrow
+100 | 200 | 300 | 400 | 500
+32 | DPLM | 3.68 | 3.68 | 3.55 | 3.65 | 3.68 | 1.02
+DiDi-Instruct (Ours ) | 3.68 | 3.52 | 3.15 | 3.58 | 3.55 | 1.11
+64 | DPLM | 3.68 | 3.51 | 3.45 | 3.68 | 3.53 | 1.07
+DiDi-Instruct (Ours) | 3.68 | 3.65 | 3.45 | 3.45 | 3.54 | 1.09
+128 | DPLM | 3.68 | 3.65 | 3.50 | 3.52 | 3.61 | 1.05
+DiDi-Instruct (Ours) | 3.62 | 3.20 | 3.42 | 3.45 | 3.38 | 1.21
+256 | DPLM | 3.61 | 3.42 | 3.41 | 3.19 | 3.44 | 1.19
+DiDi-Instruct (Ours) | 3.61 | 3.11 | 3.41 | 2.87 | 3.07 | 1.40
+512 | DPLM | 3.58 | 3.23 | 3.02 | 3.11 | 2.97 | 1.41
+DiDi-Instruct (Ours) | 3.54 | 3.11 | 2.95 | 2.77 | 2.79 | 1.53
+

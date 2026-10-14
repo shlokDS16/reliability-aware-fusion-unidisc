@@ -1,0 +1,167 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Improving Diffusion Language Model Decoding through Joint Search in Generation Order and Token Space
+
+record AW0405 | arXiv:2601.20339 | first version 2026-01-28
+
+**Abstract.** Diffusion Language Models (DLMs) offer order-agnostic generation that can explore many possible decoding trajectories. However, current decoding methods commit to a single trajectory, limiting exploration in trajectory space. We introduce Order-Token Search to explore this space through jointly searching over generation order and token values. Its core is a likelihood estimator that scores denoising actions, enabling stable pruning and efficient exploration of diverse trajectories. Across mathematical reasoning and coding benchmarks, Order-Token Search consistently outperforms baselines on GSM8K, MATH500, Countdown, and HumanEval (3.1%, 3.8%, 7.9%, and 6.8% absolute over backbone), matching or surpassing diffu-GRPO post-trained d1-LLaDA. Our work establishes joint search as a key component for advancing decoding in DLMs.
+
+## All captions
+
+- Figure 1 : Why heuristic remasking fails, and how Order-Token Search helps. (a) Low-confidence remasking greedily fixes high-confidence tokens early and only revises low-confidence positions, which effectively commits to a narrow set of decoding trajectories a
+- Figure 2 : Standard DLM decoders reveal an exploration–exploitation trade-off. Empirical pass@ k curves for LLaDA-8B-Instruct and LLaDA-1.5 on mathematical reasoning and coding benchmarks. Low-confidence remasking often achieves higher pass@ 1 by exploiting lo
+- Figure 3 : Illustration of a pruning stage in Order‑Token Search for DLMs. At a search step, we have 2 fully denoised sequences (on the leftmost), with yellow tokens unmasked in previous steps. We then mask the current block (the middle 3 tokens) and measure i
+- Table 1 : Model Performance on Mathematics and Coding Benchmarks. We report accuracy across four benchmarks and multiple generation lengths for two base models (LLaDA and LLaDA-1.5). Bolded values indicate the best performance, and underlined values indicate t
+- Table 2 : Accuracy of search algorithms with OTS or AR-style likelihood estimate (Seq Len 256). Bolded values indicate best performance. OTS consistently outperforms both Order Search and Token Search that adopt an AR-style likelihood estimate.
+- Figure 4 : Countdown accuracy versus test-time compute (NFE) for OTS and majority-voting baselines. For each method, we sweep beam size (OTS) or the number of samples (AR+MV, Random+MV), and set the largest configuration so the right-most points have approxima
+- Algorithm 1 Order-Token Search for Diffusion Language Models
+- Table S1 : Wall-clock time (in seconds) comparison on the Countdown dataset, averaged over all problems. This demonstrates that OTS (4 beams) is roughly 2-3x slower than a single heuristic-based remasking run, but about 2x faster than majority voting with 5 sa
+- Table S2 : Countdown task performance under different configurations.
+- Table S3 : 4 \times 4 Sudoku result. We report Sudoku average per-cell accuracy across multiple generation lengths for two base models (LLaDA and LLaDA-1.5). Bolded values indicate the best performance, and underlined values indicate the second best. We treat 
+- Figure S1 : Effect of block size on OTS accuracy on MATH500 with generation length 128. Accuracy remains stable for block sizes 2–64, while the degenerate settings of block size 1 and 128 significantly underperform, confirming that block size mainly acts as an
+- Figure S2 : Case study of search trajectories for a sampled Countdown problem. Each box depicts a independently generated candidate sequence with arrows denoting the parent-child relationship in block diffusion. Order-Token Search evaluates each candidate and 
+
+## Tables as text
+
+### Table 1 : Model Performance on Mathematics and Coding Benchmarks. We report accuracy across four benchmarks and multiple generation lengths for two base models (LLaDA and LLaDA-1.5). Bolded values indicate the best performance, and underlined values indicate the second best. Order-Token Search achie
+
+ |  | GSM8K | MATH500 | Countdown | HumanEval | Average
+ | Method / Seq Len | 64 | 128 | 256 | 512 | Avg | 64 | 128 | 256 | 512 | Avg | 64 | 128 | 256 | 512 | Avg | 64 | 128 | 256 | 512 | Avg | 
+LLaDA | Low-confidence | 44.3 | 68.7 | 76.7 | 78.2 | 67.0 | 21.2 | 26.0 | 32.4 | 36.2 | 29.0 | 25.8 | 20.7 | 19.5 | 16.0 | 20.5 | 10.4 | 18.9 | 26.2 | 26.8 | 20.6 | 34.3
+ | Low-conf + MV | 46.4 | 72.5 | 80.9 | 83.1 | 70.7 | 20.2 | 27.4 | 35.0 | 36.2 | 29.7 | 22.7 | 23.8 | 18.4 | 18.0 | 20.7 | 11.6 | 18.9 | 26.2 | 26.8 | 20.9 | 35.5
+ | Random remasking | 33.4 | 56.5 | 63.6 | 63.1 | 54.2 | 14.7 | 20.6 | 23.7 | 22.8 | 20.5 | 8.0 | 13.3 | 10.9 | 11.7 | 11.0 | 12.3 | 19.3 | 27.0 | 25.9 | 21.1 | 26.7
+ | Random + MV | 43.1 | 70.7 | 80.2 | 80.3 | 68.6 | 17.2 | 26.2 | 31.8 | 31.8 | 26.8 | 6.3 | 15.2 | 14.1 | 15.2 | 12.7 | 15.9 | 17.1 | 29.9 | 28.1 | 22.7 | 32.7
+ | AR | 34.0 | 62.7 | 75.7 | 76.9 | 62.3 | 18.8 | 23.4 | 27.4 | 34.4 | 26.0 | 10.6 | 12.9 | 13.3 | 14.1 | 12.7 | 10.4 | 20.1 | 29.9 | 31.7 | 23.0 | 31.0
+ | AR + MV | 41.0 | 69.1 | 81.7 | 86.4 | 69.6 | 17.4 | 23.0 | 32.2 | 39.9 | 28.1 | 10.2 | 13.3 | 11.3 | 13.7 | 12.1 | 9.8 | 20.1 | 29.9 | 31.7 | 22.9 | 33.2
+ | AR + beam-search | 40.3 | 70.4 | 81.1 | 82.9 | 68.7 | 22.2 | 26.6 | 35.4 | 39.8 | 31.0 | 18.4 | 23.1 | 21.5 | 21.9 | 21.2 | 15.9 | 22.6 | 36.0 | 34.8 | 27.3 | 37.1
+ | OTS All Blocks | 42.8 | 68.4 | 74.5 | 74.8 | 65.1 | 21.0 | 27.2 | 32.8 | 33.0 | 28.5 | 11.7 | 16.8 | 19.9 | 16.4 | 16.2 | 11.6 | 18.3 | 23.8 | 28.1 | 20.4 | 32.6
+ | OTS Future Blocks | 43.3 | 66.8 | 76.2 | 78.9 | 66.3 | 22.1 | 28.4 | 31.6 | 36.8 | 29.7 | 15.2 | 18.0 | 20.3 | 16.0 | 17.4 | 12.8 | 16.5 | 28.1 | 31.7 | 22.3 | 33.9
+ | Order-Token Search | 45.6 | 71.6 | 79.8 | 83.3 | 70.1 | 22.4 | 30.4 | 36.0 | 42.4 | 32.8 | 27.7 | 34.4 | 26.2 | 25.4 | 28.4 | 15.2 | 23.2 | 34.2 | 37.2 | 27.4 | 39.7
+LLaDA-1.5 | Low-confidence | 44.2 | 69.6 | 77.5 | 79.4 | 67.7 | 20.2 | 26.4 | 32.5 | 36.2 | 28.8 | 19.8 | 19.7 | 17.9 | 21.8 | 19.8 | 11.0 | 15.9 | 31.1 | 28.7 | 21.7 | 34.5
+ | Low-conf + MV | 49.1 | 74.4 | 84.1 | 84.2 | 73.0 | 21.2 | 30.0 | 34.8 | 39.3 | 31.3 | 20.7 | 23.8 | 20.3 | 25.4 | 22.5 | 11.6 | 16.5 | 31.1 | 28.7 | 22.0 | 37.2
+ | Random remasking | 45.0 | 60.6 | 65.6 | 66.9 | 59.5 | 19.6 | 21.1 | 27.9 | 28.8 | 24.4 | 8.5 | 11.8 | 10.1 | 11.4 | 10.5 | 11.8 | 17.6 | 26.8 | 26.5 | 20.7 | 28.8
+ | Random + MV | 47.7 | 74.8 | 81.2 | 82.8 | 71.6 | 22.4 | 26.2 | 31.0 | 30.4 | 27.5 | 5.5 | 16.4 | 9.0 | 14.5 | 11.4 | 13.4 | 15.9 | 29.9 | 27.4 | 21.7 | 33.1
+ | AR | 37.5 | 67.7 | 77.3 | 79.1 | 65.4 | 17.2 | 23.5 | 31.2 | 35.0 | 26.7 | 12.3 | 15.2 | 14.5 | 15.7 | 14.4 | 13.4 | 22.7 | 30.5 | 30.5 | 24.2 | 32.7
+ | AR + MV | 40.7 | 72.9 | 83.8 | 84.2 | 70.4 | 18.4 | 26.4 | 33.6 | 37.9 | 29.1 | 12.5 | 17.2 | 14.8 | 16.0 | 15.1 | 12.8 | 22.6 | 30.5 | 30.5 | 24.1 | 34.7
+ | AR + beam-search | 45.1 | 73.2 | 82.0 | 84.9 | 71.3 | 19.0 | 26.4 | 35.2 | 38.8 | 29.9 | 14.8 | 21.1 | 16.0 | 20.3 | 18.1 | 12.2 | 20.7 | 32.8 | 33.8 | 24.9 | 36.1
+ | OTS All Blocks | 45.
+
+### Table 2 : Accuracy of search algorithms with OTS or AR-style likelihood estimate (Seq Len 256). Bolded values indicate best performance. OTS consistently outperforms both Order Search and Token Search that adopt an AR-style likelihood estimate.
+
+Decoding Method (Compute) | GSM8K | MATH500 | Countdown | HumanEval
+Token Search (3x) | 8.5 | 3.8 | 0.0 | 0.6
+Order Search (3x) | 79.2 | 35.8 | 15.2 | 32.9
+Order-Token Search (1x) | 79.8 | 36.0 | 26.2 | 34.2
+
+### Table S1 : Wall-clock time (in seconds) comparison on the Countdown dataset, averaged over all problems. This demonstrates that OTS (4 beams) is roughly 2-3x slower than a single heuristic-based remasking run, but about 2x faster than majority voting with 5 samples.
+
+Method / Generation length | 64 | 128 | 256 | 512
+Heuristic-based remasking | 1.55 | 3.19 | 6.60 | 14.52
++ Majority-voting (5 samples) | 7.73 | 15.94 | 32.99 | 72.59
+Order-Token Search (4 beams) | 3.52 | 7.46 | 16.64 | 40.41
+
+### Table S2 : Countdown task performance under different configurations.
+
+Seq Len( L ), Diffusion Steps( S ), Beam Size( K ), Temperature( T ) | Accuracy (%)
+L=128,S=64,K=1,T=0.0 | 20.7
+L=128,S=64,K=1,T=0.4 | 22.7
+L=128,S=64,K=5,T=0.4 | 34.4
+
+### Table S3 : 4 \times 4 Sudoku result. We report Sudoku average per-cell accuracy across multiple generation lengths for two base models (LLaDA and LLaDA-1.5). Bolded values indicate the best performance, and underlined values indicate the second best. We treat Sudoku as an outlier relative to the mat
+
+ |  | Sudoku
+Model | Method / Seq Len | 64 | 128 | 256 | 512 | Avg
+LLaDA | Low-confidence | 8.5 | 11.7 | 6.5 | 5.5 | 8.1
+ | Low-conf + MV | 8.9 | 10.3 | 8.5 | 7.2 | 8.7
+ | Random + MV | 6.4 | 6.5 | 8.4 | 6.9 | 7.1
+ | AR | 14.7 | 15.9 | 13.6 | 12.0 | 14.1
+ | AR + MV | 14.4 | 15.9 | 12.1 | 14.3 | 14.2
+ | AR + beam-search | 13.2 | 17.7 | 10.6 | 8.2 | 12.4
+ | OTS All Blocks | 6.5 | 6.9 | 7.5 | 6.9 | 6.9
+ | OTS Future Blocks | 7.0 | 7.7 | 7.4 | 6.9 | 7.3
+ | Order-Token Search | 10.1 | 11.7 | 8.5 | 7.4 | 9.4
+LLaDA-1.5 | Low-confidence | 13.5 | 15.6 | 11.4 | 10.3 | 12.7
+ | Low-conf + MV | 13.7 | 14.9 | 10.8 | 12.6 | 13.0
+ | Random + MV | 11.1 | 11.3 | 9.3 | 9.2 | 10.2
+ | AR | 14.5 | 15.8 | 14.5 | 13.6 | 14.6
+ | AR + MV | 14.6 | 16.6 | 13.2 | 13.1 | 14.4
+ | AR + beam-search | 17.5 | 16.8 | 13.5 | 11.0 | 14.7
+ | OTS All Blocks | 9.3 | 10.5 | 9.6 | 9.7 | 9.8
+ | OTS Future Blocks | 9.6 | 11.1 | 8.3 | 8.5 | 9.4
+ | Order-Token Search | 13.8 | 16.1 | 11.2 | 9.9 | 12.8
+

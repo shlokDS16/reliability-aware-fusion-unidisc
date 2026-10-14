@@ -1,0 +1,240 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Guidance Is Not a Hyperparameter: Learning Dynamic Control in Diffusion Language Models
+
+record AW0281 | arXiv:2605.07701 | first version 2026-05-08
+
+**Abstract.** Classifier-Free Guidance (CFG) is a widely used mechanism for controlling diffusion-based generative models, yet its guidance scale is typically treated as a fixed hyperparameter throughout generation. This static design yields a suboptimal controllability and quality tradeoff, as the optimal degree of guidance varies across tasks and across different stages of the diffusion process, especially in NLP domain. We recast CFG scale selection as a sequential decision-making problem and propose to learn dynamic guidance trajectories via reinforcement learning. Specifically, we model the guidance scale as a discrete control action selected at each generation step based on the evolving diffusion state, and optimize a policy using Proximal Policy Optimization (PPO) under task-level rewards. Experiments on three controlled NLP generation tasks using discrete diffusion language models demonstrate that adaptive guidance consistently achieves a better balance between controllability and generation quality than fixed-scale strategies. Further analysis of the learned policies reveals distinct and interpretable guidance trajectories across tasks, underscoring the importance of treating guidance as a dynamic control process rather than a static design choice.
+
+## All captions
+
+- Figure 1: Mean guidance trajectories learned by the RL policy across diffusion progress for different tasks under 60-step sampling.
+- Table 1: Main results on three controlled text generation tasks with 60 diffusion sampling steps. Fixed CFG on keywords, Length, Pos2Neg and Neg2Pos are 1.5, 1, 1.5, 1.5 respective to achieve the best results over all fixed CFG scales. Other heuristic CFG scal
+- Figure 2: Seven heuristic guidance schedules used as baselines. All schedules operate within [0,\gamma_{\max}] where \gamma_{\max}=3.0 . Fixed CFG uses a constant scale of 1.5. Increasing and decreasing variants are defined for linear and cosine families. The 
+- Figure 3: Ablation study on policy sampling temperature. We report controllability, fluency (GPT-2 perplexity), and content preservation across tasks.
+- Figure 4: Controllability–fluency Pareto front under different reward weight ratios ( \lambda_{1}/\lambda_{2} ) across four tasks. Each task traces a trade-off curve: higher \lambda_{1}/\lambda_{2} improves controllability at the cost of fluency.
+- Figure 5: Mean guidance trajectories learned by the RL policy across diffusion progress for different tasks under 30-step sampling.
+- Table 2: Main results on three controlled text generation tasks with 30 diffusion sampling steps.
+- Table 3: Qualitative results for the keyword-conditioned generation task with 30 diffusion steps . All methods are evaluated under the same keyword prompt. Adaptive guidance (RL-Mean and RL-Freq) produces more coherent sentences with fewer repetitions compared
+- Table 4: Qualitative results for the keyword-conditioned generation task with 60 diffusion steps . Compared to 30-step sampling, longer diffusion trajectories amplify the differences between guidance strategies. Learned adaptive guidance yields more fluent and
+- Table 5: Qualitative results for the length-controlled rewriting task with 30 diffusion steps . All methods are prompted to rewrite the input sentence within the target length range (40%–80% of the original). Adaptive guidance better preserves semantic content
+- Table 6: Qualitative results for the length-controlled rewriting task with 60 diffusion steps . With longer diffusion trajectories, adaptive guidance produces more concise and faithful rewrites, while heuristic schedules often introduce redundancy or fragmenta
+- Table 7: Qualitative results for sentiment style transfer from positive to negative with 30 diffusion steps . All methods are evaluated on the same input sentence. Adaptive guidance achieves correct sentiment transfer with minimal distortion of the original co
+- Table 8: Qualitative results for sentiment style transfer from positive to negative with 60 diffusion steps . Compared to shorter trajectories, longer sampling further stabilizes sentiment control under adaptive guidance.
+- Table 9: Qualitative results for sentiment style transfer from negative to positive with 30 diffusion steps . Heuristic guidance often leads to inconsistent polarity or repetitive artifacts, whereas adaptive guidance yields clearer sentiment reversal.
+- Table 10: Qualitative results for sentiment style transfer from negative to positive with 60 diffusion steps . Adaptive guidance produces more stable and semantically faithful sentiment inversion under longer diffusion trajectories.
+
+## Tables as text
+
+### Table 1: Main results on three controlled text generation tasks with 60 diffusion sampling steps. Fixed CFG on keywords, Length, Pos2Neg and Neg2Pos are 1.5, 1, 1.5, 1.5 respective to achieve the best results over all fixed CFG scales. Other heuristic CFG scales ranges from 0 to 3.
+
+Method | Keyword Generation | Length Control | Sentiment Transfer(Pos2Neg) | Sentiment Transfer(Neg2Pos)
+Ctrl(%) \uparrow | PPL \downarrow | Acc(%) \uparrow | Content(%) \uparrow | PPL \downarrow | Acc(%) \uparrow | Content(%) \uparrow | PPL \downarrow | Acc(%) \uparrow | Content(%) \uparrow | PPL \downarrow
+Fixed CFG | 71.4 | 61.3 | 76.0 | 90.4 | 301.9 | 99.0 | 66.8 | 184.7 | 32.8 | 68.7 | 137.2
+Linear Increase | 73.8 | 62.0 | 85.4 | 89.8 | 374.8 | 98.6 | 74.6 | 345.9 | 38.0 | 71.9 | 301.3
+Linear Decrease | 66.2 | 89.2 | 65.6 | 86.8 | 396.5 | 98.4 | 59.9 | 164.9 | 27.0 | 62.9 | 98.7
+Cosine Increase | 70.6 | 66.7 | 87.2 | 90.0 | 378.9 | 98.2 | 74.3 | 339.4 | 38.2 | 72.1 | 326.2
+Cosine Decrease | 68.0 | 88.3 | 63.2 | 86.1 | 398.9 | 98.6 | 58.7 | 150.8 | 26.0 | 62.1 | 95.4
+Beta | 73.8 | 65.0 | 78.0 | 90.0 | 294.7 | 97.6 | 71.7 | 199.3 | 38.6 | 72.7 | 163.1
+Inverted Beta | 68.8 | 76.3 | 75.0 | 86.5 | 542.9 | 97.8 | 60.6 | 241.0 | 29.8 | 63.5 | 141.2
+RL-Mean(ours) | 74.6 | 56.2 | 92.8 | 91.8 | 205.6 | 99.4 | 67.2 | 145.2 | 40.2 | 75.9 | 110.1
+RL-Freq(ours) | 74.2 | 54.6 | 92.2 | 91.7 | 211.0 | 99.6 | 63.2 | 150.7 | 40.6 | 76.1 | 106.6
+
+### Table 2: Main results on three controlled text generation tasks with 30 diffusion sampling steps.
+
+Method | Keyword Generation | Length Control | Sentiment Transfer(Pos2Neg) | Sentiment Transfer(Neg2Pos)
+Ctrl(%) \uparrow | PPL \downarrow | Acc(%) \uparrow | Content(%) \uparrow | PPL \downarrow | Acc(%) \uparrow | Content(%) \uparrow | PPL \downarrow | Acc(%) \uparrow | Content(%) \uparrow | PPL \downarrow
+Fixed CFG | 74.2 | 107.6 | 70.8 | 89.4 | 395.4 | 98.4 | 63.9 | 196.2 | 31.2 | 66.1 | 162.7
+Linear Increase | 76.8 | 150.1 | 83.0 | 88.9 | 522.5 | 98.4 | 73.0 | 412.7 | 41.8 | 72.5 | 378.9
+Linear Decrease | 72.6 | 111.9 | 54.6 | 85.6 | 393.2 | 99.6 | 56.6 | 122.3 | 19.6 | 60.0 | 96.4
+Cosine Increase | 74.8 | 169.3 | 84.2 | 88.3 | 551.4 | 97.8 | 73.7 | 422.0 | 41.8 | 71.6 | 391.6
+Cosine Decrease | 70.6 | 110.6 | 53.4 | 84.7 | 406.0 | 99.6 | 56.6 | 127.7 | 22.8 | 59.9 | 96.7
+Beta | 78.8 | 157.2 | 68.0 | 89.0 | 406.4 | 97.8 | 70.3 | 249.7 | 39.2 | 70.4 | 212.6
+Inverted Beta | 75.2 | 86.9 | 67.0 | 86.0 | 550.5 | 99.0 | 57.7 | 179.6 | 26.2 | 60.4 | 130.7
+RL-Mean(ours) | 78.8 | 87.6 | 83.8 | 91.5 | 222.7 | 98.6 | 59.5 | 116.6 | 40.1 | 72.6 | 126.7
+RL-Freq(ours) | 77.0 | 81.0 | 90.0 | 90.1 | 228.8 | 99.6 | 62.0 | 122.6 | 39.4 | 61.2 | 121.1
+
+### Table 3: Qualitative results for the keyword-conditioned generation task with 30 diffusion steps . All methods are evaluated under the same keyword prompt. Adaptive guidance (RL-Mean and RL-Freq) produces more coherent sentences with fewer repetitions compared to fixed and heuristic guidance schedul
+
+Keyword Generation Prompt. Use the following 10 keywords to generate one fluent sentence: entered, tons, long, flooding, meaning, hole, wounded, ship, water, men .
+Method | Generated Text
+Fixed CFG | As the ship entered entered into the long ocean, carrying tons tons long tons of valuable cargo, a sudden storm caused flooding flooding flooding meaning meaning that the ship was at risk of water water water water due to a hidden hole hole that threatened to wounded men men men among the ship ship’s water water wounded men.
+Linear Increase | As the old ship entered the treacherous waters, it encountered tons upon tons of debris, causing a long and relentless flooding that meant a significant hole where it had once sturdy, ultimately leaving leaving the wounded and injured ship clinging to a precarious existence, while its brave men desperately fought for survival amidst the encroaching water.
+Linear Decrease | As the ship entered entered into the long long long ocean carrying tons tons long tons tons, it encountered a long flooding long flooding event, meaning meaning that the ship ship had entered entered a hole hole long hole hole where wounded men wounded men had been surrounded by water water long water water water wounded men wounded men.
+Cosine Increase | As the long ship entered the treacherous waters, it massive hull began to flood with tons of water, meaning that it had encountered a catastrophic hole that threatened to engulf the entire vessel, leaving its wounded men to scramble desperately for safety as they fought desperately to keep the ship afloat amidst the relentless, encroaching water.
+Cosine Decrease | As the ship entered entered the long tons tons tons long tons tons of water, it began flooding flooding revealing flooding flooding revealing flooding flooding revealing revealing revealing revealing flooding revealing revealing revealing a hidden hole meaning hole filled hole filled men wounded men men men men men men men wounded men men who were desperately in need of help.
+Beta | As the old ship entered entered the treacherous coastline, it encountered tons tons long long long term flooding flooding, meaning meaning that once a small hole gaping hole in the hole was now spilling ship tons water water and threatening ship men wounded men who had been bravely fighting but were injured during the harrowing ordeal.
+Inverted Beta | As the ship entered entered into the long long coastline, it was flooded with tons tons of water, causing a large hole in the hull, which meant that the ship was at risk of being further wounded by water rising water rising water, while the crew worked tirelessly to repair the hole to save the wounded men.
+RL-Mean (ours) | As the old ship entered the treacherous waters, it encountered tons upon tons of water that threatened to create a long and dangerous hole in the hole, which meant that the ship was flooding at an alarming rate, posing a significant danger to the wounded men who were desperately trying to
+
+### Table 4: Qualitative results for the keyword-conditioned generation task with 60 diffusion steps . Compared to 30-step sampling, longer diffusion trajectories amplify the differences between guidance strategies. Learned adaptive guidance yields more fluent and semantically consistent outputs.
+
+Keyword Generation Prompt. Use the following 10 keywords to generate one fluent sentence: entered, tons, long, flooding, meaning, hole, wounded, ship, water, men .
+Method | Generated Text
+Fixed CFG | As the old ship entered the stormy waters, carrying tons of water and causing severe flooding due to a long hole in its hull, it meant that the wounded men on board desperately needed to find a way to escape the rising water before the ship could completely sink, meaning their very lives hung in the balance.
+Linear Increase | As the long ship entered the treacherous waters, it encountered tons of water that threatened to cause catastrophic flooding, meaning that a significant hole had developed in its hull, severely endangering the wounded men who were desperately navigating the ship’s survival amidst the relentless influx of water threatening to engulf their beloved vessel.
+Linear Decrease | As the ship entered entered tons of water during its long and harrowing journey, a sudden flooding occurred, meaning that a gaping hole had developed in its fragile hull, forcing the wounded men to scramble for safety amidst the rising water engulfing the ship, as they desperately tried to navigate through the treacherous waters.
+Cosine Increase | As the old ship entered the treacherous waters, a massive hole in its hull began to frantically swallowing tons of water, causing a long and alarming flooding that meant imminent danger for the men on board, including several wounded men as they desperately fought to stabilize the stricken vessel amidst the relentless, encroaching water.
+Cosine Decrease | As the ship entered entered the harbor, carrying tons of cargo, its long hull was suddenly compromised by a flooding breach, meaning that a gaping hole had developed, allowing massive amounts of water to enter, threatening the safety of the men on board, including wounded individuals who desperately needed to escape the treacherous situation.
+Beta | As the old ship entered the treacherous stormy sea, tons of water began to pour in due to a disarmingly long hole, which meant that the-mean-meaning crew members, including several wounded men, were desperately trying to navigate the treacherous vessel while also fighting for their lives amidst the perilous flooding.
+Inverted Beta | As the ship entered entered the harbor, it was carrying tons of cargo and long passengers, but unfortunately, a large hole had developed in its hull, causing severe flooding, which meant that the wounded men on the ship were now in grave danger as they desperately fought to escape and stay afloat amidst the rising water.
+RL-Mean (ours) | As the wounded ship entered the treacherous waters, a long hole began to widen, causing tons of water to flood in and threatening the lives of the men on board, meaning that the vessel was now in dire need of immediate attention to prevent further damage and ensure the safety of its crew amidst the perilous situation.
+RL-Freq (ours) | As the long ship entered t
+
+### Table 5: Qualitative results for the length-controlled rewriting task with 30 diffusion steps . All methods are prompted to rewrite the input sentence within the target length range (40%–80% of the original). Adaptive guidance better preserves semantic content while satisfying length constraints.
+
+Length Control Prompt. Rewrite the input sentence so that the output length is within 40%–80% of the original length. Input: “Pennsylvania Representative Joseph Ingersoll , a Whig , spoke against the bill , noting that Patterson opposed the new denominations , and that the idea had been repeatedly turned down , whenever considered.”
+Method | Generated Text
+Fixed CFG | Pennsylvania Representative Joseph Ingersoll spoke against the bill, noting Patterson Patterson Patterson Patterson Patterson opposed the new denominations, and the idea had been repeatedly turned down whenever considered.
+Linear Increase | ’unsylvania Whig Ingersoll criticized the bill, citing Patterson’s opposition to new denominations and repeated idea idea whenever considered.’
+Linear Decrease | Representative Ingersgersoll opposed Whig denominations bill, citing Patterson Patterson’s opposition and noting the idea had been repeatedly rejected.
+Cosine Increase | Wh Pennsylvania Whig Ingersoll spoke against bill, citing Patterson’s opposition to new denominations and noting the idea idea’d repeatedly turned down whenever considered.
+Cosine Decrease | Representative Ingersgersoll opposed Whig denominations bill, citing Patterson Patterson’s opposition, noting the idea repeatedly repeatedly rejected.
+Beta | Representative Ingersoll Pennsylvania Whig bill bill. Patterson opposed Patterson new denominations. Idea turned down repeatedly whenever repeatedly whenever considered.
+Inverted Beta | Representative Ingersgersoll Joseph Whig Pennsylvania spoke bill, noting Patterson Patterson opposed new denominations. Idea had idea repeatedly turned down repeatedly whenever considered.
+RL-Mean (ours) | Representative Joseph Ingersoll, a Whig, spoke against the bill bill, citing Patterson’s opposition to new denominations and repeated rejections.
+RL-Freq (ours) | Whig Representative Joseph Ingersoll opposed the bill, citing Patterson’s stance and repeated rejections.
+
+### Table 6: Qualitative results for the length-controlled rewriting task with 60 diffusion steps . With longer diffusion trajectories, adaptive guidance produces more concise and faithful rewrites, while heuristic schedules often introduce redundancy or fragmentation.
+
+Length Control Prompt. Rewrite the input sentence so that the output length is within 40%–80% of the original length. Input: “Pennsylvania Representative Joseph Ingersoll , a Whig , spoke against the bill , noting that Patterson opposed the new denominations , and that the idea had been repeatedly turned down , whenever considered.”
+Method | Generated Text
+Fixed CFG | Whig Rep Joseph Ingersoll opposed Pennsylvania bill, citing Patterson Patterson’s opposition to new denominations and noting the idea had been repeatedly rejected.
+Linear Increase | ’unsylvania Whig Ingersoll spoke against bill, referencing Patterson’s opposition to new denominations and noting idea turned down repeatedly whenever considered.’
+Linear Decrease | Representative Ingersoll opposed Patterson bill, stating Patterson disapproved of new denominations, idea repeatedly rejected.
+Cosine Increase | ’unsylvania Whig Ingersoll spoke against bill, referencing Patterson’s opposition to new denominations and noting idea turned down repeatedly whenever considered.’
+Cosine Decrease | Representative Ingersoll opposed Patterson bill, stating Patterson disapproved of new denominations, idea repeatedly rejected.
+Beta | Representative Ingersoll (Whig) opposed Pennsylvania bill, citing Patterson’s opposition to new denominations and noting the idea was repeatedly rejected.
+Inverted Beta | Representative Ingersoll opposed Pennsylvania bill, citing Patterson’s stance to new denominations and noting the idea was repeatedly rejected.
+RL-Mean (ours) | Representative Ingersoll spoke against the bill, citing Patterson’s opposition to new denominations and noting that the idea had been repeatedly rejected.
+RL-Freq (ours) | Representative Ingersoll spoke against the bill, citing Patterson’s opposition to new denominations and noting that the idea had been repeatedly rejected.
+
+### Table 7: Qualitative results for sentiment style transfer from positive to negative with 30 diffusion steps . All methods are evaluated on the same input sentence. Adaptive guidance achieves correct sentiment transfer with minimal distortion of the original content.
+
+Sentiment Transfer (Pos \rightarrow Neg). Rewrite the sentence to negative sentiment while preserving content. Input: “the pepper steak is another good one .”
+Method | Generated Text
+Fixed CFG | pepper steak is another bad one .
+Linear Increase | The pepper steak is not another good one .
+Linear Decrease | pepper steak is another bad one .
+Cosine Increase | the pepper steak lacks another good one .
+Cosine Decrease | pepper steak is another bad one .
+Beta | The pepper steak is not another good one.
+Inverted Beta | pepper steak: another mediocre one .
+RL-Mean (ours) | pepper steak is another bad one .
+RL-Freq (ours) | pepper steak is another bad one .
+
+### Table 8: Qualitative results for sentiment style transfer from positive to negative with 60 diffusion steps . Compared to shorter trajectories, longer sampling further stabilizes sentiment control under adaptive guidance.
+
+Sentiment Transfer (Pos \rightarrow Neg). Rewrite the sentence to negative sentiment while preserving content. Input: “the pepper steak is another good one .”
+Method | Generated Text
+Fixed CFG | pepper steak is another bad one .
+Linear Increase | the pepper steak is not another good one .
+Linear Decrease | pepper steak is another bad one .
+Cosine Increase | the pepper steak isn’t another good one .
+Cosine Decrease | pepper steak is another bad one .
+Beta | The pepper steak isn’t another good one.
+Inverted Beta | pepper steak: another mediocre one .
+RL-Mean (ours) | pepper steak is another bad one .
+RL-Freq (ours) | pepper steak is another bad one .
+
+### Table 9: Qualitative results for sentiment style transfer from negative to positive with 30 diffusion steps . Heuristic guidance often leads to inconsistent polarity or repetitive artifacts, whereas adaptive guidance yields clearer sentiment reversal.
+
+Sentiment Transfer (Neg \rightarrow Pos). Rewrite the sentence to positive sentiment while preserving content. Input: “never will i be back to this place ”
+Fixed CFG | I will revisit revisit this place at some point.AlternativelyAlternatively:Positive: I will definitely be back to this place in the future, although it may not be under the original circumstances.Both rewritten sentences change the negative sentence into a positive sentence while preserving the original meaning.
+Linear Increase | I shall never revisit this place.
+Linear Decrease | Positive: revisit revisit revisit revisit this place .(I chose this rewritten sentence to preserve the original meaning of the negative sentence by using r̈eisitẗo convey that the speaker speaker will not return or revisit the place. This replaces the negative word n̈everẅith a positive action of revisiting.)
+Cosine Increase | I shall never revisit this place.
+Cosine Decrease | Positive: never revisit revisit revisit this place .Or can be rewritten as: I will not return to this place.Or can be rewritten as: I will not return to this place.(Note, I have rewritten the negative sentence into a positive sentence while preserving the original meaning)
+Beta | I will definitely return revisit this place.
+Inverted Beta | Positive: never revisit revisit revisit this place .Alternatively, you could also use:Positive: I will not return to this location.OrPositive: I will not be here again.These sentences transform the negative sentence into a positive sentence while preserving its original meaning.
+RL-Mean (ours) | I will never revisit this place.
+RL-Freq (ours) | I will never revisit this place.
+
+### Table 10: Qualitative results for sentiment style transfer from negative to positive with 60 diffusion steps . Adaptive guidance produces more stable and semantically faithful sentiment inversion under longer diffusion trajectories.
+
+Sentiment Transfer (Neg \rightarrow Pos). Rewrite the sentence to positive sentiment while preserving content. Input: “never will i be back to this place ”
+Fixed CFG | I will never revisit this place.
+Linear Increase | I no longer revisit this place.
+Linear Decrease | I revisit revisit this place.
+Cosine Increase | I shall never revisit this place.
+Cosine Decrease | Positive: I revisit revisit this place.
+Beta | I will not revisit this place. I reaffirm my intention to never return to this place or Positive: I choose not to return .
+Inverted Beta | I revisit revisit this place.
+RL-Mean (ours) | I will never revisit this place.
+RL-Freq (ours) | Positive: I will not revisit this place.In this rewritten sentence, n̈everïs replaced with n̈ot revisitẗo preserve the original meaning that the person will not return to the place. The positive sentence Ï will not revisit this placec̈onveys the same idea as the original negative sentence.
+

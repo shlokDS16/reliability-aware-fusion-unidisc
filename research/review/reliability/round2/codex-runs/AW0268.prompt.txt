@@ -1,0 +1,232 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# SLIM-RL: Risk-Budgeted Random-Masking RL for Diffusion LLMs Without Trajectory Slicing
+
+record AW0268 | arXiv:2607.00208 | first version 2026-06-30
+
+**Abstract.** Reinforcement learning for diffusion large language models (dLLMs) has largely moved to trajectory-aware methods. The current state of the art, TraceRL, holds that random masking is mismatched with the model's inference trajectory, and it reconstructs that trajectory during training by slicing each rollout into up to K/s trajectory-aligned training samples, a cost that grows with the block size K. We show that this mismatch can be mitigated without reconstructing the trajectory. Our method, SLIM-RL, bounds the commit risk of each rollout step with a tau-budget decoder, reducing aggregate commit risk in the training data. During optimization, SLIM-RL trains on these risk-controlled rollouts with a trace-free random-masking objective that adapts variance-reduction tools, combining sequence-level importance sampling, deterministic quadrature over masking levels under a mean-preserving, monotonically decreasing per-block mask schedule that we introduce. On SDAR-4B, SLIM-RL matches TraceRL's best MATH500 accuracy on only 0.46x its training samples at block size 16, improving over TraceRL by 6.32% on MATH500 and 11.05% on GSM8K under matched dynamic sampling. At block size 4, the 4B SLIM-RL surpasses the larger LLaDA-8B and Dream-7B dLLMs on math, exceeding LLaDA-8B by 10.76% on MATH500 while staying below the autoregressive Qwen2.5-7B. On code, it improves over TraceRL by 4.20% on MBPP and 3.65% on HumanEval. The tau-budget decoder transfers training-free across LLaDA, Dream, and SDAR. The source code is available at https://github.com/laolaorkkkkk/SLIM-RL .
+
+## All captions
+
+- Figure 1: Dynamic sampling versus \tau -budget unmasking at one denoising step. Both rules start from the same partially denoised block and the same above-threshold candidate set \mathcal{A}_{s} , the three positions whose confidence exceeds \tau{=}0.9 . (A) D
+- Table 1: Main results (accuracy, %). For each benchmark the paired sub-columns dynamic and \tau are two test-time decoders applied to every row: dynamic sampling and our \tau -budget decoder. Ours = SLIM-RL, which collects its training rollouts with the \tau -
+- Table 2: Leave-one-out ablations of SLIM-RL on MATH500 and ablation to TraceRL.
+- Table 3: Block-size dependence of SLIM-RL’s advantage over TraceRL (dynamic sampling); block size 4 uses models trained natively at block size 4.
+- Table 4: Training-free \tau -budget decoding across architectures.
+- Table 5: Native block size 4 evaluation of the SDAR-4B family (both methods trained and decoded at block size 4).
+- Figure 2: MATH500 accuracy versus cumulative training samples at block size 16. Random masking (gray) is near the base model; SLIM-RL (blue) overtakes TraceRL (red), reaching TraceRL’s best accuracy on 0.46\times the training samples.
+- Table 6: Training cost of SLIM-RL relative to the TraceRL baseline (TraceRL =1.00\times ; <1 is cheaper). SLIM-RL needs less data to reach TraceRL’s best MATH500 accuracy, and less total-run data, at every scale.
+- Figure 3: Cross-scale training dynamics at 1.7 B and block size 4. SLIM-RL (blue) overtakes TraceRL (red) on training accuracy over cumulative data, reaching TraceRL’s best MATH500 accuracy on 0.76\times the training samples (Table 6 ).
+- Figure 4: Training dynamics at block size 16. Left. SLIM-RL maintains a stable tokens-per-forward (TPF) while TraceRL’s declines, so SLIM-RL ends higher. Middle. Generation length shortens over training for all methods. Right. Mask ratio: SLIM-RL and random ma
+- Figure 5: Expected wrong commitments per step, \sum_{i}(1-p_{i}) over committed positions. The \tau -budget rollouts (SLIM-RL, blue) commit fewer than TraceRL’s dynamic sampling rollouts, 0.17 vs. 0.22 at block size 16 and 0.15 vs. 0.21 at block size 4.
+- Algorithm 1 SLIM-RL Training
+- Algorithm 2 TauBudgetDecode ( \tau -Budget Dynamic Unmasking)
+- Table 7: SLIM-RL hyperparameters for the SDAR-4B-Chat math-RL runs.
+
+## Tables as text
+
+### Table 1: Main results (accuracy, %). For each benchmark the paired sub-columns dynamic and \tau are two test-time decoders applied to every row: dynamic sampling and our \tau -budget decoder. Ours = SLIM-RL, which collects its training rollouts with the \tau -budget decoder; the dynamic and \tau col
+
+ | MATH500 | GSM8K | MBPP | HumanEval
+Method | dynamic | \tau | dynamic | \tau | dynamic | \tau | dynamic | \tau
+Reference models
+Qwen2.5-7B-Instruct ( Qwen et al., 2025 ) | 49.67 | 90.65 | 61.07 | 78.66
+LLaDA-8B-Instruct ( Nie et al., 2026 ) | 36.33 | 37.40 | 82.34 | 82.59 | 37.56 | 37.47 | 40.85 | 41.67
+Dream-7B-Instruct ( Ye et al., 2025 ) | 33.40 | 33.47 | 55.52 | 54.41 | 36.93 | 37.33 | 35.57 | 36.18
+From SDAR-4B-Chat, block size 16 (math RL)
+SDAR-4B-Chat ( Cheng et al., 2026 ) | 12.18 | 12.07 | 43.54 | 45.14 | 38.80 | 40.56 | 54.48 | 56.49
++ Random-masking RL ( Zhao et al., 2026 ) | 12.82 | 13.36 | 47.71 | 48.14 | 38.69 | 40.07 | 55.22 | 55.76
++ TraceRL ( Wang et al., 2025b ) | 25.04 | 26.09 | 59.99 | 64.19 | 35.96 | 36.96 | 44.65 | 48.78
++ Ours | 31.36 | 32.91 | 71.04 | 75.03 | 38.84 | 39.20 | 53.39 | 53.32
+From SDAR-4B-Chat, block size 4 (math RL, then code RL continued from math)
+SDAR-4B-Chat (base) | 10.73 | 10.47 | 62.62 | 62.09 | 50.96 | 51.29 | 66.89 | 66.40
++ TraceRL (math RL) | 46.76 | 46.40 | 88.07 | 88.32 | 50.71 | 50.64 | 67.89 | 67.01
++ Ours (math RL) | 47.09 | 46.02 | 88.30 | 87.87 | 51.09 | 49.93 | 68.77 | 67.48
++ TraceRL (code RL) | 46.58 | 45.89 | 88.11 | 88.59 | 50.22 | 50.76 | 68.50 | 67.41
++ Ours (code RL) | 46.91 | 47.40 | 88.16 | 88.08 | 54.42 | 55.73 | 72.15 | 73.78
+From SDAR-1.7B-Chat, block size 4 (math RL)
+SDAR-1.7B-Chat (base) | 11.40 | 11.40 | 61.08 | 62.12 | 39.04 | 39.60 | 51.02 | 50.75
++ TraceRL (math RL) | 35.29 | 35.78 | 76.35 | 76.50 | 40.22 | 40.96 | 50.47 | 50.20
++ Ours (math RL) | 36.71 | 36.47 | 76.50 | 77.48 | 40.64 | 41.09 | 50.88 | 53.73
+
+### Table 2: Leave-one-out ablations of SLIM-RL on MATH500 and ablation to TraceRL.
+
+ | MATH500
+Full recipe | 32.91
+Importance-ratio granularity
+sequence-level (adopted, = full) | 32.91
+token-level | 28.09
+Rollout decoder
+\tau -budget ( = full) | 32.91
+dynamic | 27.09
+Per-block mask schedule
+monotonic ( = full) | 32.91
+random masking | 27.00
+Quadrature points Q
+Q{=}3 ( = full) | 32.91
+Q{=}2 | 26.56
+Rollout decoder on TraceRL
+dynamic | 26.09
+\tau -budget | 22.91
+
+### Table 3: Block-size dependence of SLIM-RL’s advantage over TraceRL (dynamic sampling); block size 4 uses models trained natively at block size 4.
+
+ | MATH500 | GSM8K
+Block size | Random | TraceRL | Ours | Random | TraceRL | Ours
+block size 16 | 12.82 | 25.04 | 31.36 | 47.71 | 59.99 | 71.04
+block size 4 | 15.36 | 46.76 | 47.09 | 71.75 | 88.07 | 88.30
+\Delta at block size 16 | +6.32 | +11.05
+\Delta at block size 4 | +0.33 | +0.23
+
+### Table 4: Training-free \tau -budget decoding across architectures.
+
+ |  |  | MATH500 | GSM8K | MBPP | HumanEval
+Model / ckpt | Decoder | K | acc | TPF | acc | TPF | acc | TPF | acc | TPF
+Full-attention dLLMs
+LLaDA-8B-Instruct | dynamic | 32 | 36.33 | 4.07 | 82.34 | 3.20 | 37.56 | 6.34 | 40.85 | 5.08
+ | \tau -budget | 32 | 37.40 | 3.79 | 82.59 | 2.86 | 37.47 | 5.69 | 41.67 | 4.66
+Dream-7B-Instruct | dynamic | 4 | 33.40 | 2.19 | 55.52 | 2.61 | 36.93 | 4.45 | 35.57 | 5.46
+ | \tau -budget | 4 | 33.47 | 2.21 | 54.41 | 2.60 | 37.33 | 4.59 | 36.18 | 5.72
+Block-causal SDAR-4B
+SDAR-4B-Chat (base) | dynamic | 16 | 12.18 | 2.07 | 43.54 | 1.98 | 38.80 | 1.60 | 54.48 | 1.75
+ | \tau -budget | 16 | 12.07 | 1.95 | 45.14 | 1.87 | 40.56 | 1.47 | 56.49 | 1.60
+ | dynamic | 4 | 10.73 | 2.09 | 62.62 | 1.92 | 50.96 | 1.55 | 66.89 | 1.68
+ | \tau -budget | 4 | 10.47 | 2.03 | 62.09 | 1.85 | 51.29 | 1.48 | 66.40 | 1.59
++ Random-masking RL | dynamic | 16 | 12.82 | 2.09 | 47.71 | 2.08 | 38.69 | 1.61 | 55.22 | 1.76
+ | \tau -budget | 16 | 13.36 | 1.97 | 48.14 | 1.94 | 40.07 | 1.48 | 55.76 | 1.64
++ TraceRL | dynamic | 16 | 25.04 | 1.80 | 59.99 | 2.05 | 35.96 | 1.61 | 44.65 | 1.76
+ | \tau -budget | 16 | 26.09 | 1.71 | 64.19 | 1.93 | 36.96 | 1.49 | 48.78 | 1.63
+ | dynamic | 4 | 46.76 | 1.72 | 88.07 | 2.02 | 50.71 | 1.50 | 67.89 | 1.64
+ | \tau -budget | 4 | 46.40 | 1.66 | 88.32 | 1.95 | 50.64 | 1.42 | 67.01 | 1.56
++ SLIM-RL (w/o \tau ) | dynamic | 16 | 26.29 | 1.97 | 67.73 | 2.30 | 37.56 | 1.66 | 52.91 | 1.90
+ | \tau -budget | 16 | 27.09 | 1.85 | 70.38 | 2.13 | 38.80 | 1.53 | 54.81 | 1.73
+ | dynamic | 4 | 47.22 | 1.95 | 88.07 | 2.08 | 51.18 | 1.56 | 68.70 | 1.73
+ | \tau -budget | 4 | 46.84 | 1.85 | 88.07 | 2.01 | 50.78 | 1.49 | 68.09 | 1.64
+
+### Table 5: Native block size 4 evaluation of the SDAR-4B family (both methods trained and decoded at block size 4).
+
+ |  |  | MATH500 | GSM8K | MBPP | HumanEval
+Method | Decoder | K | acc | TPF | acc | TPF | acc | TPF | acc | TPF
+SLIM-RL (ours) | dynamic | 4 | 47.09 | 1.94 | 88.30 | 2.13 | 51.09 | 1.56 | 68.77 | 1.72
+ | \tau -budget | 4 | 46.02 | 1.87 | 87.87 | 2.06 | 49.93 | 1.49 | 67.48 | 1.65
+TraceRL (baseline) | dynamic | 4 | 46.76 | 1.72 | 88.07 | 2.02 | 50.71 | 1.50 | 67.89 | 1.64
+ | \tau -budget | 4 | 46.40 | 1.66 | 88.32 | 1.95 | 50.64 | 1.42 | 67.01 | 1.56
+
+### Table 6: Training cost of SLIM-RL relative to the TraceRL baseline (TraceRL =1.00\times ; <1 is cheaper). SLIM-RL needs less data to reach TraceRL’s best MATH500 accuracy, and less total-run data, at every scale.
+
+Setting | Data to reach ( \times ) | Total-run data ( \times )
+TraceRL (baseline) | 1.00 | 1.00
+SLIM-RL, SDAR-4B block 16 | \mathbf{0.46} | 0.85
+SLIM-RL, SDAR-4B block 4 | 0.81 | \mathbf{0.70}
+SLIM-RL, SDAR-1.7B block 4 | 0.76 | 0.74
+
+### Table 7: SLIM-RL hyperparameters for the SDAR-4B-Chat math-RL runs.
+
+Hyperparameter | Value
+Rollout / \tau -budget decoding
+Block size K | 16
+Confidence threshold \tau | 0.90
+Risk-budget schedule m | 1 (constant)
+effective step budget \mathcal{B}_{s}=m(1-\tau) | 0.10
+Response length L | 256
+Denoising steps per block | 16
+Sampling temperature | 1.0
+Nucleus / top- k | top- p\,{=}\,1.0 , top- k\,{=}\,0
+Tasks per step | 128
+Responses per task (group size G ) | 8
+Masking schedule (decreasing per block)
+Quadrature nodes Q | 3
+Quadrature rule | Gauss–Legendre on (0,1)
+nodes \{t_{q}\} | \{0.1127,\,0.5,\,0.8873\}
+weights \{\omega_{q}\} (sum to 1 ) | \{0.2778,\,0.4444,\,0.2778\}
+Per-block mask-rate spread \delta | 0.2
+Optimization (SLIM-RL update)
+Clip range (low / high) | [1{-}0.1,\,1{+}0.1]
+KL coefficient \beta | 0.01
+KL estimator | k_{3}
+Optimizer | AdamW
+Learning rate (constant) \eta | 1{\times}10^{-6}
+AdamW (\beta_{1},\beta_{2},\text{wd},\varepsilon) | (0.9,\,0.999,\,0,\,1{\times}10^{-8})
+LR schedule / warmup | cosine, 0 warmup, \min -scale 1.0
+Max gradient norm | 1.0
+Mixed precision | bf16 (TF32 enabled)
+Outer RL steps T | 160
+Update epochs per step E | 1
+Random seed | 10086
+Hardware | 8\times A100 40 GB, 2 nodes \times 4
+

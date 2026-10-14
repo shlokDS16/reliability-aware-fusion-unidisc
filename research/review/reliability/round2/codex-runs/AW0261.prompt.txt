@@ -1,0 +1,191 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# Unified Multimodal Discrete Diffusion
+
+record AW0261 | arXiv:2503.20853 | first version 2025-03-26
+
+**Abstract.** Multimodal generative models that can understand and generate across multiple modalities are dominated by autoregressive (AR) approaches, which process tokens sequentially from left to right, or top to bottom. These models jointly handle images, text, video, and audio for various tasks such as image captioning, question answering, and image generation. In this work, we explore discrete diffusion models as a unified generative formulation in the joint text and image domain, building upon their recent success in text generation. Discrete diffusion models offer several advantages over AR models, including improved control over quality versus diversity of generated samples, the ability to perform joint multimodal inpainting (across both text and image domains), and greater controllability in generation through guidance. Leveraging these benefits, we present the first Unified Multimodal Discrete Diffusion (UniDisc) model which is capable of jointly understanding and generating text and images for a variety of downstream tasks. We compare UniDisc to multimodal AR models, performing a scaling analysis and demonstrating that UniDisc outperforms them in terms of both performance and inference-time compute, enhanced controllability, editability, inpainting, and flexible trade-off between inference time and generation quality. Code and additional visualizations are available at https://unidisc.github.io.
+
+## All captions
+
+- Figure 1 : We show UniDisc ’s ability to jointly inpaint image & text pairs . We do not explicitly optimize for this objective but it is intrinsic to UniDisc ’s unified diffusion objective.
+- Figure 2 : UniDisc is a unified multimodal discrete diffusion model that can jointly process and generate text and images. Each modality is converted into a sequence of discrete tokens and we jointly denoise, supervising with a weighted cross-entropy loss. At 
+- Figure 3 : Scaling Analysis for AR and UniDisc models : (Left) IsoFLOP curves for UniDisc , plotting varying model size for a fixed FLOP budget. (Right) Estimating optimal parameter size for each budget - minima of fitted parabola, we plot scaling laws for bot
+- Figure 4 : Conditional generation results for both FID and CLIP metrics, across a range of CFG values. We find that AR is more sensitive to the CFG weighting, with a narrower optimal range.
+- Figure 5 : Inference Comparisons for UniDisc and AR baseline : (a) Chameleon Perplexity (Text+Image) vs. Time - we perform similar to best AR method, (b) Chameleon Perplexity vs. Entropy - UniDisc has high diversity and low perplexity, while AR has significant
+- Figure 6 : Uniform Concept Generation : We perform joint generation given only masked text input (left). We use a language conditioned segmentation model and find that UniDisc generates uniformly in concept space (right).
+- Figure 7 : Image-Text Reasoning measured by QA and retrieval accuracy across datasets.
+- Figure 8 : Zero-shot Image Editing : UniDisc can take corrupted and mismatched image/text pairs (left) and produce an aligned, high-quality pair (right), using the model’s own likelihood as a scoring function.
+- Algorithm 1 UniDisc Training
+- Algorithm 2 MaskGIT Sampling
+- Figure 9 : Conditional generation results for both FID and CLIP metrics, across a range of CFG values. We find that AR is more sensitive to the CFG weighting, with a narrower optimal range.
+- Figure 10 : Unconditional multimodal generation results for UniDisc and AR baseline at 115M parameters - both models perform similarly.
+- Figure 11 : Conditional generation results for UniDisc and AR baseline. Our model significantly outperforms the AR model when classifier free guidance is used.
+- Table 1 : We demonstrate how generative perplexity is an imperfect metric requiring calibration with entropy.
+- Figure 12 : We compare UniDisc with an AR model fine-tuned for joint inpainting and evaluate on a subset of DataComp1B.
+- Figure 13 : Joint Retrieval Accuracy on DataComp1B. We outperform AR given the task of retrieving one correct image-text pair out of 16 possible pairs, implying better learnt representations.
+- Table 2 : Model variants. The FFN hidden size is always 4x the overall \operatorname{d\_model}
+- Figure 14 : Fine-tuning a pre-trained 270M parameter AR model on LM1B.
+- Figure 15 : Training Loss Curve vs. Tokens on our 1.4B model.
+- Table 3 : Ablation w/115M parameter model of QK Norm, zero initialization of linear layers, RMSNorm, setting invalid tokens to -\infty during training and generation, and Softmin SNR.
+- Table 4 : Ablation w/115M parameter model on different objective level decisions such as noising schedule, loss weighting and whether to use discrete time.
+- Figure 16 : UniDisc ’s ability to generate an image, given unseen text as input.
+- Figure 17 : UniDisc ’s ability to generate text (captioning), given unseen image as input.
+- Figure 18 : Zero-shot text-conditioned inpainting. UniDisc inpaints a masked region given a user-provided text prompt.
+- Figure 19 : Zero-shot multimodal inpainting. UniDisc jointly inpaints in both image and text spaces.
+- Figure 20 : Zero-shot multimodal editing. We provide a clean image and text pair and UniDisc automatically enhances both the image and text. In the final row, we fix the text and allow only the image to change.
+- Figure 21 : We show how UniDisc jointly infills both image and text. \operatorname{argmax}p_{\theta}(x_{0}\mid x_{t})
+- Figure 22 : We demonstrate that UniDisc uniformly generates all concepts at once.
+- Figure 23 : We train UniDisc on 512x512 resolution images but demonstrate zero-shot inpainting at 1024x1024.
+- Table 5: We evaluate UniDisc on the GenEval Ghosh et al. (2023) benchmark.
+- Table 6 : We evaluate the 1.4B version of UniDisc on FID. We use evaluate on MS-COCO 30K Chen et al. (2015) and MJHQ-30K Li et al. (2024a) .
+- Table 7 : We compare our model to Hu et al. (2023) on CUB200.
+- Figure 24 : L2 distance between unconditional and conditional logits on currently masked tokens as sampling steps increase.
+- Figure 25 : Comparing CLIP scores by applying CFG only on specific steps. This shows CFG has the most impact on the initial denoising steps (total steps = 24).
+- Figure 26 : We show the effect of classifier-free guidance from left-to-right, starting with w=0 , and increasing linearly to w=8 on the right, where output logits are l_{\operatorname{cfg}}=(1+w)l_{\operatorname{cond}}+w*l_{\operatorname{uncond}} . Caption: "
+- Figure 27 : Generative Perplexity vs. Time with various models and sampling strategies.
+
+## Tables as text
+
+### Table 1 : We demonstrate how generative perplexity is an imperfect metric requiring calibration with entropy.
+
+Text | Chameleon Perplexity | GPT2 Perplexity
+"ICLR is globally renowned for presenting…" (Continued) | 32.836 | 35.780
+"This is simple. This is simple." (Repeated) | 8.423 | 3.930
+"Words Words Words Words" (Repeated) | 2.226 | 3.583
+"AAAAAAAAAAAA" (Repeated) | 2.732 | 1.904
+"(Spaces Repeated)" | 80.240 | 1.095
+
+### Table 2 : Model variants. The FFN hidden size is always 4x the overall \operatorname{d\_model}
+
+Parameters (M) | n_layers | n_heads | d_model
+34 | 11 | 6 | 384
+67 | 11 | 9 | 576
+116 | 12 | 12 | 768
+172 | 20 | 12 | 768
+228 | 20 | 14 | 896
+343 | 24 | 16 | 1024
+484 | 22 | 10 | 1280
+543 | 17 | 12 | 1536
+622 | 29 | 10 | 1280
+713 | 23 | 12 | 1536
+826 | 27 | 12 | 1536
+1074 | 26 | 14 | 1792
+1290 | 24 | 16 | 2048
+
+### Table 3 : Ablation w/115M parameter model of QK Norm, zero initialization of linear layers, RMSNorm, setting invalid tokens to -\infty during training and generation, and Softmin SNR.
+
+ | DataComp1B Validation PPL
+UniDisc | 93.8
+w/o QK Norm | 92.7
+w/ Zero-linear init | 93.8
+w/o RMSNorm | 93.8
+w/o -inf for invalid tokens | 94.7
+w/o Softmin SNR | 109.6
+None | 111.2
+
+### Table 4 : Ablation w/115M parameter model on different objective level decisions such as noising schedule, loss weighting and whether to use discrete time.
+
+ | DataComp1B Validation FID
+UniDisc | 11.4
+w/cosine noising schedule | 11.5
+w/o CE loss weighting | 11.35
+w/discrete time (T=1000) | 13.8
+
+### Table 5: We evaluate UniDisc on the GenEval Ghosh et al. (2023) benchmark.
+
+Method | Sing. Obj. | Two Obj. | Counting | Colors | Position | Color Attr. | Overall
+SDv1.5 Rombach et al. (2022) | 0.97 | 0.38 | 0.35 | 0.76 | 0.04 | 0.06 | 0.43
+CoDI Tang et al. (2024) | 0.89 | 0.16 | 0.16 | 0.65 | 0.02 | 0.01 | 0.31
+Lumina-mGPT Liu et al. (2024) | - | - | - | - | - | - | 0.32
+UniDisc | 0.92 | 0.47 | 0.15 | 0.67 | 0.13 | 0.19 | 0.42
+
+### Table 6 : We evaluate the 1.4B version of UniDisc on FID. We use evaluate on MS-COCO 30K Chen et al. (2015) and MJHQ-30K Li et al. (2024a) .
+
+Method | MSCOCO-30K FID \downarrow | MJHQ-30K FID \downarrow
+SDv1.5 Rombach et al. (2022) | 11.12 | -
+CoDi Tang et al. (2024) | 22.26 | 19.87
+UniD3 Hu et al. (2023) 2 2 2 Correspondence to: aswerdlow@cmu.edu, mprabhud@andrew.cmu.edu | 25.11 | -
+UniDisc (Ours) | 23.86 | 18.67
+
+### Table 7 : We compare our model to Hu et al. (2023) on CUB200.
+
+Method | Params | CUB200 FID \downarrow
+UniD3 Hu et al. (2023) | 637M | 17.38
+UniDisc (Ours) | 330M | 11.03
+

@@ -1,0 +1,360 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.2, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: record which kinds of advantage a paper's abstract asserts and, for each, whether the
+paper's own tables contain the comparison needed to check it. The rater sees the abstract, every
+table and figure caption, and the tables as text. The rater does not judge whether a claim is true.
+
+## Change log
+- v0.1 failed its preset reliability threshold on 40 papers (claim type kappa 0.57, criterion
+  weighted kappa 0.29, uncertainty kappa 0.64; `reliability/`). Cause: abstracts carry several
+  claims and the two raters often chose different "primary" ones; the three-level criterion mixed
+  several conditions, some not observable in tables (hardware, training budget).
+- v0.2: every claim type is coded separately as asserted or not; each criterion is split into
+  yes/no items that can be seen in a table or caption; unobservable conditions are removed.
+
+## Step 1. For each claim type, is it asserted in the abstract? (yes or no, all six)
+
+Judge from the abstract only. A type is asserted if the abstract states that advantage for the
+paper's own method or model, with or without a number.
+
+| Code | Asserted if the abstract says | Not enough |
+|---|---|---|
+| CT1 steps | fewer denoising steps, sampling steps, forward passes or function evaluations; or a reduction expressed in steps | "efficient" or "fast" with no mention of steps |
+| CT2 time | faster in time, a speed-up factor, higher throughput, lower latency | fewer steps only |
+| CT3 inference quality | better output quality or accuracy from a technique applied at generation time without training (a sampler, decoding or remasking rule, guidance, constrained decoding; "training-free") | quality gains from a method that trains anything |
+| CT4 training quality | better output quality or accuracy from anything that involves training (a new model, objective, fine-tuning, reinforcement learning, distillation, architecture) | a quality gain with no training involved |
+| CT5 unification | that tasks, modalities or objectives help each other, or that unifying them improves performance | reporting results on several tasks without saying one helps another |
+| CT6 versus autoregressive | matches, approaches, is competitive with or outperforms autoregressive models, named as a class or by a specific autoregressive model | comparison only with other diffusion models |
+
+Several types can be `yes` for one paper. A paper with no method (pure analysis, theory, benchmark
+or dataset) has all six `no`.
+
+## Step 2. For each asserted type, answer its items (yes or no) from captions and tables
+
+Answer `yes` only if you can point to the table or figure. If the relevant table is cut off in the
+extract, answer `no`. A comparison shown only in a figure counts if its caption names what is compared.
+
+| Type | Item a | Item b |
+|---|---|---|
+| CT1 | a baseline sampler (not the proposed method) is reported at two or more different step or forward-pass counts on one task and metric | at least one of those baseline counts is no more than twice the proposed method's count on that task |
+| CT2 | a time, throughput or latency figure for the proposed method appears in the same table row as a quality metric | the same table gives the time, throughput or latency of a baseline as well |
+| CT3 | a table compares the same model on the same task with and without the technique | that table also gives steps, forward passes or time for both arms |
+| CT4 | a table compares the proposed model or training method against a version of itself without the proposed component (an ablation) | that ablation is on a benchmark that also appears in the paper's main results table |
+| CT5 | a table compares the model trained with and without the other task, modality or objective, or shared against decoupled pathways | the comparison reports a metric for each of the two task kinds involved |
+| CT6 | a results table includes an autoregressive model whose parameter count is stated and within a factor of two of the diffusion model's | the diffusion model's number of steps or forward passes is stated in that table or its caption |
+
+Items for types not asserted are `na`.
+
+## Step 3. Uncertainty
+`yes` if any results table reports repeated runs (three or more seeds), a standard deviation, a
+confidence interval or a significance test that the paper defines. An undefined plus-minus is `no`.
+
+## Output, one JSON object per paper
+```json
+{"record_id": "...",
+ "claims": {"CT1": {"asserted": "yes|no", "a": "yes|no|na", "b": "yes|no|na"},
+            "CT2": {...}, "CT3": {...}, "CT4": {...}, "CT5": {...}, "CT6": {...}},
+ "uncertainty": "yes|no",
+ "evidence": "table or figure labels used, at most 20 words"}
+```
+
+## Reliability threshold for v0.2 (set before round 2 is rated)
+On a fresh 40-paper sample (`reliability/round2/`, no overlap with round 1): Cohen's kappa of at
+least 0.60 for `asserted` pooled over the six types, and at least 0.60 for the evaluable flag
+pooled over claims both raters marked asserted. Item-level and per-type figures are reported too.
+If either pooled figure is below 0.60 the rubric is not adopted in this form.
+
+## How the items are used
+An asserted claim is **evaluable** if both of its items are `yes`. Hypothesis E1 concerns the share
+of asserted claims that are evaluable, per claim type. The items are a floor: a paper can satisfy
+them and still be confounded, and a control described only in running text is not credited here
+(a stated limitation of rating from tables).
+
+
+=== PAPER ===
+# FLARE: Diffusion for Hybrid Language Model
+
+record AW0048 | arXiv:2606.01774 | first version 2026-06-01
+
+**Abstract.** Autoregressive (AR) large language models (LLMs) have achieved broad practical success, but sequential decoding remains a key bottleneck for low-latency deployment. Recent efficient-inference work has progressed along two axes: reducing the cost of each model invocation through efficient architectures, and reducing serial decoding steps through parallel generation. Hybrid attention backbones address the former, while diffusion language models (dLLMs) pursue the latter via iterative parallel denoising. Combining these advantages remains challenging: AR-to-dLLM conversion often fails to preserve seed-checkpoint capability, and hybrid-attention recurrent states and masking constraints make diffusion training and serving nontrivial. We present FLARE, a systematic conversion framework for hybrid-attention LLMs. Our analysis identifies transfer data quality as the primary determinant of capability preservation, outweighing loss formulation and attention-mask design. The resulting framework combines a token-equal AR-and-diffusion objective, hardware-aware kernels, and unified inference, enabling one checkpoint to support both AR-style verified decoding and diffusion-style parallel denoising. Starting from strong AR checkpoints with limited post-training data, FLARE is competitive with leading open-source dLLMs across model scales and delivers consistent throughput gains over open-source dLLM baselines in single-GPU concurrent serving. Our results further suggest that practical dLLMs are limited not only by decoding algorithms, but also by transfer data quality and the training inefficiency of current block-diffusion objectives, motivating joint design of data, objectives, architectures, and inference systems.
+
+## All captions
+
+- Figure 1 : FLARE is a state-of-the-art dLLM with high sampling throughput and near AR performance.
+- Figure 2 : Timeline of open-source LLM architectures. FLARE is a fast and competent LLM as a confluence of algorithmic efficiency (diffusion) and architectural efficiency (hybrid attention).
+- Figure 3 : FLARE document-packed clean/noisy mask: causal clean attention (yellow), bidirectional noisy blocks (orange), noisy-to-clean visibility (blue), and document boundaries (red dashed).
+- Figure 4 : Analytical decoding-speed regimes. AR-Trust varies with acceptance rate \alpha and horizon K ; Diffusion-Trust scales with the block-to-step ratio B/S .
+- Figure 5 : Transfer performance across data compositions and capability groups. Panel (a) shows the per-mix sampling weights (mix composition); panels (b)–(d) plot scores for all four transfer recipes under the same Qwen3-1.7B seed and training budget on Math 
+- Figure 6 : Controlled ablations of AR-to-dLLM transfer ingredients on the fixed Mix 1 ( Long-CoT ) data condition. (a) The left panel follows a cumulative recipe: AR fine-tuning, pure block-diffusion transfer, adding a causal clean stream, adding clean-stream 
+- Table 1 : Benchmark performance of FLARE-9B . Bold : best open-source dLLM; underline : second best; * : potentially under-reported.
+- Table 2 : Benchmark performance of FLARE-2B and FLARE-4B . Bold : best open-source dLLM; underline : second best; * : potentially under-reported.
+- Figure 7 : Route-level kernel microbenchmark on Qwen3.5-2B shapes. Horizontal paired bars compare Route I and Route II for the Gated Delta Rule and ShortConv kernels across diffusion block sizes B\in\{1,4,16\} . Labels on Route II report the relative change fr
+- Figure 8 : Training-time MFU of FLARE -2B at B{=}4 on 8{\times} A100-80GB (bf16), as a horizontal waterfall. Bar (1) is the unoptimized baseline (Route I for both kernels, local batch 1 ); bars (2)–(4) show the cumulative MFU lift after each kernel-stack chang
+- Figure 9 : High-concurrency fixed-output throughput. Bars report tokens/s at C{=}8 on 1{\times} A100-80GB with bf16 and the SGLang serving stack; max_new_tokens =2048 and ignore_eos = true. The full 3{\times}3 grid over benchmarks and C\in\{1,4,8\} is in Table
+- (a) (a) GDR
+- (b) (b) 1D Causal ShortConv
+- Figure 10 : Challenge 1: the clean/noisy asymmetric visibility for the two GDN sub-components. (a) GDR. A single-stream kernel materializes the clean state only at chunk boundaries ( blue , \mathbf{S}_{0},\mathbf{S}_{C},\mathbf{S}_{2C},\ldots ). Each noisy blo
+- (a) (a) GDR noisy-seed reset
+- (b) (b) ShortConv cross-doc lag mask
+- Figure 11 : Challenge 2: document packing requires state resets at document boundaries. A packed sequence holds Doc 1 and Doc 2 back to back (red boundary). (a) GDR. The noisy recurrence for Doc 2’s first block must be seeded from a zeroed state ( \mathbf{0} )
+- Table 3 : Symbols used in this appendix. Clean-side quantities are plain; noisy-side quantities carry a tilde, matching the main text.
+- Figure 12 : Backward dataflow for one noisy block b of chunk c under the block-end readout of Eq. ( 6 ). Level 1 (output \to state) folds the B per-token output gradients into the single block-end state accumulator \mathbf{d}\tilde{\mathbf{S}}_{bB} and produce
+- (a) Forward dataflow. Route I materializes every \mathbf{S}_{(b-1)B} in HBM before the noisy blocks run; Route II replays each in registers from \mathbf{S}_{[c]} , writing only strided checkpoints for the backward.
+- (b) Backward dataflow. Route I chains three kernels through two HBM hand-off tensors; Route II collapses the first two into a single fused kernel and emits only \mathbf{dh}^{\text{inject}}_{[c]} before ChunkBwd .
+- Figure 13 : Dataflow of the two implementation routes (forward, a; backward, b). Each box is a single Triton kernel launch. Both routes leave the clean-side kernels of § A.2.1 and § A.2.3 untouched.
+- Algorithm 3 Route I noisy backward (one program per block b ).
+- Algorithm 4 Route I fill-in backward (one program per chunk c ).
+- Algorithm 5 Chunk-then-Refine (pipeline).
+- Figure 14 : Dense ( S{=}1 , top) versus strided ( S{=}4 , bottom) checkpointing of the block-boundary clean states inside one chunk ( M{=}8 ). Solid boxes are stored in HBM; dashed boxes are reconstructed in registers at backward time by applying \leq S{-}1 co
+- Algorithm 6 Strided clean-state checkpoint build (one program per chunk c ).
+- Algorithm 7 Route II forward kernel (one program per chunk c ).
+- Algorithm 8 Route II backward kernel (one program per chunk c , value tile i_{V} ).
+- Figure 15 : Route II backward kernel dataflow for a single program (one chunk c , one value-dimension tile). Five inputs are read from HBM (top); the reverse sweep of Alg. 8 runs entirely in registers (middle); three outputs are written back to HBM (bottom). C
+- Table 4 : GDR: Route I (Chunk-then-Refine) vs. Route II (Fused Two-Stream) wall-clock and peak memory at varying diffusion-block size B . One A100-80GB, bf16, L=8192 (half clean, half noisy) on the Qwen3.5-2B GDN shape ( H=16 , d_{k}=d_{v}=128 ). Wall-clock is
+- Figure 16 : Two-stream read pattern of the width- W{=}4 causal 1D ShortConv for a noisy output \tilde{y}_{\ell} , shown under three regimes: (a) interior ( j\geq W{-}1 ); (b) straddle ( j<W{-}1 , clean lags in the single preceding block); (c) small- B ( B{=}1 
+- Algorithm 9 ShortConv Route I forward.
+- Algorithm 10 ShortConv Route II forward (one program tile per (\ell\text{-chunk},D\text{-tile}) pair).
+- Table 5 : 1D Causal ShortConv: Route I (batched initial-state) vs. Route II (fused two-stream) wall-clock and peak memory at varying B . Same hardware and setup as Table 4 , on the Qwen3.5-2B ShortConv shape ( D=6144 , W=4 , t -dimension tile size BT=64 ). Bol
+- Table 6 : Incremental MFU ablation for FLARE-2B on 8{\times} A100-80GB (bf16). Each row adds one kernel-path change on top of the row above. GDR is the GDR kernel; ShortConv is the 1 D causal ShortConv kernel (§ A.3 ); local batch is the per-GPU batch; B is th
+- Figure 17 : Two decoding procedures supported by a single trained FLARE checkpoint. Left: Diffusion-Trust. The noisy stream is trusted: a masked block is denoised in parallel over one or more refinement steps and then committed once finalized. Right: AR-Trust.
+- Figure 18 : Attention patterns presented to the hybrid backbone during decoding. AR-Trust uses an anchor token and token-causal verify rows for clean-stream verification, followed by bidirectional draft rows whose noisy-stream logits propose the next speculati
+- Algorithm 11 AR-Trust serving round (implementation details).
+- Algorithm 12 Diffusion-Trust serving loop (implementation details).
+- Figure 19 : Two candidate mechanisms for producing the recurrent state \mathbf{S}[\mathcal{K}] after a verify round that accepts r{=}2 of K{=}3 speculative steps; we adopt path (b) . (a) Replay. Re-execute the recurrence on the r accepted tokens after the veri
+- Table 7: Mixing weights for the four transfer mixes. Each row is one paper-facing mix; the Components column lists, for each component, the source pool and the sampling weight passed to the trainer. All four mixes are trained with a 4096-token context, global 
+- Table 8: Auto-selected SFT mixture: target domain shares (eval-driven design) and realized bucket counts after the six-step pipeline. Targets are the budget passed to the cluster-balanced sampler; realized counts are the number of unique prompts in the curated
+- Table 9: SFT comparison between the unfiltered baseline mixture and the auto-selected mixture under the same Qwen3-1.7B seed, training budget, and 16 K evaluation harness. The first row is the original Qwen3-1.7B checkpoint evaluated at 8 K context as a refere
+- Table 10 : Fixed-output throughput (tokens/s). Measured on 1 \times A100 80GB (bf16, SGLang serving stack, max_new_tokens =2048 , ignore_eos = true, temperature 1.0 , top- p 0.95 , top- k 50 ). Columns give the concurrency level C . Results other than FLARE ar
+- Table 11 : Full-family FLARE comparison on the Long-CoT+Math+IF transfer mix. * : potentially under-reported due to answer extraction or length limits, consistent with the markers in Table 2 .
+- Table 12 : Ablation on the algorithmic design space. Rows (b)–(e) add one ingredient at a time: (a) AR next-token finetune baseline; (b) block diffusion with block-causal clean stream and no clean-stream loss; (c) adds a token-causal clean stream attention mas
+- Table 13 : Training mask sampling distribution and logit-shift ablation on Long-CoT , built on top of (c)+(d) of Table 12 . All-masked (AM) represents diffusion loss computed with deterministic pure mask sampling; Diffusion (D) represents diffusion loss comput
+- Table 14 : Ablation of data recipe. Methods: AR-SFT , continued finetuning in standard AR fashion; AM-Causal , all-mask noisy stream with pure causal attention both for clean stream and within noisy blocks; AM-Bidir , all-mask noisy stream with pure causal att
+- Table 15 : Per-benchmark numbers behind Table 13
+- Table 16 : Per-benchmark numbers behind Table 14 : the four transfer data mixes \times four methods, all decoded under AR-mode. Each row block is one data mix; within a block, the four rows are AR-SFT / AM-Causal / AM-Bidir / FLARE respectively.
+
+## Tables as text
+
+### Table 1 : Benchmark performance of FLARE-9B . Bold : best open-source dLLM; underline : second best; * : potentially under-reported.
+
+ | Mercury-2 | LLaDA-2.0 | LLaDA-2.1 | LLaDA-2.0 | LLaDA-2.1 | SDAR | FLARE | FLARE | Qwen3.5
+ |  | -mini | -mini | -flash | -flash | 30B-A3B | -9B | -9B | -9B
+Params | Commercial | 16B-A1B | 16B-A1B | 100B-A5B | 100B-A5B | 30B-A3B | 9B | 9B | 9B
+Sampling mode | Diffusion | Diffusion | Diffusion | Diffusion | Diffusion | Diffusion | AR-Trust | Diffusion-Trust | AR
+Knowledge & Instruction Following
+ARC-Challenge | — | 93.56 | — | 95.93 | — | 93.2 | 96.33 | 95.65 | 97.70
+MMLU | — | 80.53 | — | 87.69 | — | 82.8 | 84.80 | 80.75 | 88.21
+MMLU-Pro | — | 63.22 | 63.42 | 73.36 | 75.31 | 61.5 | 77.39 | 74.73 | 81.39
+GPQA-Diamond | 73.00 | 47.98 | 48.36 | 61.98 | 66.67 | 36.7 | 71.21 | 64.65 | 80.30
+IFEval | — | 80.78 | 81.33 | 81.70 | 83.36 | 60.6 | 71.35 | 63.22 | 91.31
+Math
+GSM8K | 90.62 | 94.24 | — | 96.06 | — | 91.4 | 93.33 | 93.10 | 89.16
+MATH-500 | 81.00 | — | — | — | — | 77.8 | 95.20 | 93.60 | 96.60
+AIME-24 | 51.10 | — | — | — | — | 16.7 | 63.33 | 60.00 | 65.56
+AIME-25 | — | 36.67 | 36.67 | 60.00 | 63.33 | 10.8 | 54.44 | 53.33 | 60.00
+Code
+HumanEval | — | 86.59 | — | 94.51 | — | 87.2 | 92.07 | 82.32 * | 95.12
+MBPP | — | 81.50 | — | 88.29 | — | 71.6 | 91.05 | 82.10 * | 89.11
+LiveCodeBench v6 | 67.30 | 31.50 | 28.85 | 42.29 | 44.05 | 21.7 | 49.71 | 5.71 * | 49.71
+
+### Table 2 : Benchmark performance of FLARE-2B and FLARE-4B . Bold : best open-source dLLM; underline : second best; * : potentially under-reported.
+
+ | SDAR | SDAR | SDAR | FLARE | FLARE | Qwen3.5 | FLARE | FLARE | Qwen3.5
+ | 1.7B | 4B | 8B | -2B | -2B | -2B | -4B | -4B | -4B
+Params | 1.7B | 4B | 8B | 2B | 2B | 2B | 4B | 4B | 4B
+Sampling mode | Diffusion | Diffusion | Diffusion | AR-Trust | Diffusion-Trust | AR | AR-Trust | Diffusion-Trust | AR
+Knowledge & Instruction Following
+ARC-Challenge | 85.4 | 90.5 | 91.9 | 85.07 | 85.84 | 92.15 | 93.52 | 94.62 | 96.33
+MMLU | 62.9 | 74.9 | 78.6 | 67.60 | 64.14 | 73.59 | 78.73 | 79.54 | 85.22
+MMLU-Pro | 37.0 | 50.9 | 56.9 | 53.57 | 53.63 | 59.53 | 71.14 | 70.95 | 77.88
+GPQA-Diamond | 29.8 | 33.0 | 40.2 | 37.37 | 35.35 | 62.12 | 63.64 | 64.65 | 80.30
+IFEval | 43.4 | 56.6 | 61.4 | 68.95 | 62.66 | 79.48 | 73.20 | 73.57 | 90.02
+Math
+GSM8K | 80.1 | 89.9 | 91.3 | 84.46 | 82.79 | 77.63 * | 91.05 | 91.58 | 89.16
+MATH-500 | 63.2 | 72.8 | 78.6 | 84.40 | 82.20 | 72.20 * | 94.20 | 91.60 | 95.40
+AIME-24 | 10.0 | 10.0 | 10.0 | 31.11 | 31.11 | 8.89 * | 58.89 | 55.56 | 63.33
+AIME-25 | 2.1 | 7.5 | 10.0 | 26.67 | 26.67 | 12.22 * | 43.33 | 46.67 | 48.89
+Code
+HumanEval | 61.6 | 72.8 | 78.7 | 64.02 | 50.61 * | 48.17 | 93.29 | 83.54 * | 87.80
+MBPP | 61.1 | 65.4 | 72.0 | 68.09 | 55.25 * | 53.31 | 89.11 | 77.82 * | 82.49
+LiveCodeBench v6 | 5.7 | 13.1 | 16.6 | 15.43 | 9.71 * | 17.71 | 41.71 | 12.57 * | 50.86
+
+### Table 3 : Symbols used in this appendix. Clean-side quantities are plain; noisy-side quantities carry a tilde, matching the main text.
+
+Symbol | Meaning
+Lengths, indices, and tiling
+L | sequence length (one stream)
+B | diffusion-block size
+C | chunk size for chunkwise-parallel training; C=64
+M=C/B | blocks per chunk
+N_{C}=L/C | chunks per stream
+d_{k},d_{v} | per-head key / value dimension
+H | number of linear-attention heads per layer
+b_{v} | kernel tile width in the value dimension ( b_{v}\leq d_{v} )
+c\in\{0,\ldots,N_{C}{-}1\} | chunk index
+b\in\{1,\ldots,L/B\} | block index; block b covers positions (b{-}1)B{+}1,\ldots,bB
+Per-position quantities
+x^{\mathrm{c}}_{t}\in\mathbb{R}^{D} | clean-stream input to the 1D causal ShortConv at position t (§ A.3 )
+\tilde{x}_{\ell}\in\mathbb{R}^{D} | noisy-stream input to the 1D causal ShortConv at position \ell
+\mathbf{q}_{t},\mathbf{k}_{t},\mathbf{v}_{t} | clean query / key / value at position t
+\tilde{\mathbf{q}}_{\ell},\tilde{\mathbf{k}}_{\ell},\tilde{\mathbf{v}}_{\ell} | noisy query / key / value at position \ell
+\tilde{g}_{\ell},\tilde{\beta}_{\ell},\tilde{\boldsymbol{\delta}}_{\ell} | noisy log-gate / step-size / delta update at position \ell
+g_{t}\in\mathbb{R} | scalar log-gate at position t (clean); \exp(g_{t}) is the multiplicative gate \alpha_{t} of Eq. ( 3 )
+\beta_{t}\in\mathbb{R} | delta-rule step-size at position t (clean)
+G_{t}=\sum_{i\leq t}g_{i} | cumulative log-gate at position t (clean)
+\exp\,(G_{j}-G_{i}) | decay factor from position i to position j (clean)
+u_{t} | per-step prediction error u_{t}=\mathbf{v}_{t}-(\mathbf{S}_{t}^{\text{pre}})^{\!\top}\mathbf{k}_{t}
+\boldsymbol{\delta}_{t} | per-step delta update \boldsymbol{\delta}_{t}=\beta_{t}u_{t}
+\hat{\mathbf{v}}_{t} | chunk-corrected clean value (effective value produced by the chunkwise-parallel pre-step; see § A.2.1 )
+States and gradients
+\mathbf{S}_{t} | clean state after position t (after gating and delta update)
+\mathbf{S}^{\text{pre}}_{t} | clean state after gating, before the delta update, at position t
+\tilde{\mathbf{S}}_{\ell} | noisy state after position \ell
+\mathbf{S}_{[c]}\equiv\mathbf{S}_{cC} | chunk- c -boundary clean state
+\tilde{\mathbf{S}}_{b,\text{init}}\equiv\mathbf{S}_{(b-1)B} | block- b noisy-recurrence initial state (seeded from clean)
+\mathbf{o}_{t} | clean-stream output at position t (Eq. ( 9 )); the full-sequence clean output is the stack \mathbf{o}=(\mathbf{o}_{t})_{t=1}^{L}
+\tilde{\mathbf{o}}_{\ell} | noisy-stream output at position \ell under the block-end readout (Eq. ( 12 )); the full-sequence noisy output is \tilde{\mathbf{o}}=(\tilde{\mathbf{o}}_{\ell})_{\ell=1}^{L}
+\mathbf{O}_{[c]} | stacked per-token clean outputs of chunk c (the chunk-level clean output tensor)
+\mathbf{do}_{t}\equiv\partial\mathcal{L}/\partial\mathbf{o}_{t} | output-gradient input to the clean-side backward at position t ; \mathbf{do}=(\mathbf{do}_{t})_{t=1}^{L} denotes the full-sequence clean output gradient
+\mathbf{d}\tilde{\mathbf{o}}_{\ell}\equiv\partial\mathcal{L}/\partial\tilde{\mathbf{o}}_{\ell} | output-gradient input to the noisy-side backward at position \
+
+### Table 4 : GDR: Route I (Chunk-then-Refine) vs. Route II (Fused Two-Stream) wall-clock and peak memory at varying diffusion-block size B . One A100-80GB, bf16, L=8192 (half clean, half noisy) on the Qwen3.5-2B GDN shape ( H=16 , d_{k}=d_{v}=128 ). Wall-clock is mean \pm std (ms) over three outer runs
+
+Block size B | Route | fwd (ms) | bwd (ms) | total (ms) | peak (MiB)
+1 | Route I | 26.36\pm 0.72 | 108.74\pm 15.27 | 135.10 | 18\,576
+1 | Route II | \mathbf{15.99\pm 1.10} | \mathbf{21.70\pm 0.19} | \mathbf{37.69} | \mathbf{456}
+2 | Route I | \mathbf{16.70\pm 1.10} | 61.45\pm 0.37 | 78.14 | 9\,360
+2 | Route II | 19.19\pm 1.63 | \mathbf{21.22\pm 0.29} | \mathbf{40.42} | \mathbf{456}
+4 | Route I | \mathbf{13.80\pm 0.66} | 48.35\pm 3.35 | 62.14 | 4\,752
+4 | Route II | 17.64\pm 1.31 | \mathbf{20.61\pm 0.02} | \mathbf{38.26} | \mathbf{712}
+8 | Route I | \mathbf{12.00\pm 0.89} | 39.07\pm 1.29 | 51.07 | 2\,448
+8 | Route II | 15.65\pm 1.46 | \mathbf{23.19\pm 0.36} | \mathbf{38.84} | \mathbf{378}
+16 | Route I | \mathbf{6.61\pm 0.71} | \mathbf{12.07\pm 0.50} | \mathbf{18.68} | 1\,296
+16 | Route II | 20.00\pm 4.59 | 28.61\pm 2.16 | 48.61 | \mathbf{378}
+32 | Route I | \mathbf{9.27\pm 1.27} | \mathbf{11.76\pm 2.29} | \mathbf{21.03} | 720
+32 | Route II | 16.08\pm 0.78 | 36.96\pm 0.34 | 53.04 | \mathbf{378}
+
+### Table 5 : 1D Causal ShortConv: Route I (batched initial-state) vs. Route II (fused two-stream) wall-clock and peak memory at varying B . Same hardware and setup as Table 4 , on the Qwen3.5-2B ShortConv shape ( D=6144 , W=4 , t -dimension tile size BT=64 ). Bold marks the faster / smaller of the two 
+
+Block size B | Route | fwd (ms) | bwd (ms) | total (ms) | peak (MiB)
+1 | Route I | 13.41\pm 0.86 | 42.65\pm 0.66 | 56.06 | 1\,452
+1 | Route II | \mathbf{6.26\pm 0.60} | \mathbf{3.40\pm 0.11} | \mathbf{9.65} | \mathbf{294}
+2 | Route I | \mathbf{11.99\pm 1.12} | 21.07\pm 0.22 | 33.06 | 816
+2 | Route II | 13.22\pm 10.73 | \mathbf{4.25\pm 1.09} | \mathbf{17.47} | \mathbf{294}
+4 | Route I | 12.38\pm 7.43 | 11.06\pm 0.08 | 23.44 | 372
+4 | Route II | \mathbf{7.00\pm 0.98} | \mathbf{3.56\pm 0.34} | \mathbf{10.55} | \mathbf{294}
+8 | Route I | 11.44\pm 0.54 | 6.30\pm 0.08 | 17.74 | 330
+8 | Route II | \mathbf{6.86\pm 0.51} | \mathbf{3.09\pm 0.15} | \mathbf{9.95} | \mathbf{294}
+16 | Route I | 16.72\pm 10.98 | 3.64\pm 0.01 | 20.36 | 309
+16 | Route II | \mathbf{6.71\pm 0.14} | \mathbf{2.93\pm 0.27} | \mathbf{9.64} | \mathbf{294}
+32 | Route I | 9.11\pm 1.39 | \mathbf{2.43\pm 0.01} | 11.54 | 299
+32 | Route II | \mathbf{6.86\pm 0.20} | 2.86\pm 0.12 | \mathbf{9.72} | \mathbf{294}
+
+### Table 6 : Incremental MFU ablation for FLARE-2B on 8{\times} A100-80GB (bf16). Each row adds one kernel-path change on top of the row above. GDR is the GDR kernel; ShortConv is the 1 D causal ShortConv kernel (§ A.3 ); local batch is the per-GPU batch; B is the diffusion-block size. Bold marks the b
+
+Setting | GDR | ShortConv | local batch | MFU (%) at block size B | Peak HBM (GiB) at block size B
+1 | 4 | 8 | 16 | 1 | 4 | 8 | 16
+AR reference (Qwen3.5-2B) | — | — | 1 | 24.04\pm 0.06 (single-stream) | 20.5
+(1) baseline | Route I | Route I | 1 | — | 13.80 | 16.73 | 22.06 | — | 18.3 | 13.8 | 12.7
+(2) + GDR Route II | Route II | Route I | 1 | 12.56 | 17.93 | 18.51 | 18.36 | 12.7 | 12.7 | 12.7 | 12.7
+(3) + local-batch 1\to 8 | Route II | Route I | 8 | 14.20 | 21.40 | 22.26 | 22.14 | 49.0 | 45.8 | 45.9 | 45.6
+(4) + ShortConv Route II (FLARE) | Route II | Route II | 8 | \mathbf{24.20} | \mathbf{24.81} | \mathbf{23.69} | \mathbf{22.55} | 45.0 | 45.0 | 45.0 | 45.0
+
+### Table 7: Mixing weights for the four transfer mixes. Each row is one paper-facing mix; the Components column lists, for each component, the source pool and the sampling weight passed to the trainer. All four mixes are trained with a 4096-token context, global batch size 256, and 9000 optimiser steps
+
+Mix | Components (source pool \to weight)
+Long-CoT | Long-CoT pool (§ C.3.1 ) \to 1.0
+Short-CoT+Math | Post-Training-v2 (English) \to 0.5 ; Math pool (§ C.3.2 ) \to 0.5
+Long-CoT+Math | Long-CoT pool \to 0.5 ; Math pool \to 0.5
+Long-CoT+Math+IF | Long-CoT pool \to 0.4 ; Math pool \to 0.4 ; IF pool (§ C.3.4 ) \to 0.2
+
+### Table 8: Auto-selected SFT mixture: target domain shares (eval-driven design) and realized bucket counts after the six-step pipeline. Targets are the budget passed to the cluster-balanced sampler; realized counts are the number of unique prompts in the curated split.
+
+Bucket | Target share | Prompts | Realized share
+math_direct | 22\% | 252{,}060 | 15.49\%
+math_tool | 8\% | 85{,}120 | 5.23\%
+code | 18\% | 100{,}328 | 6.16\%
+precise_if | 12\% | 476{,}567 | 29.28\%
+science | 12\% | 335{,}153 | 20.59\%
+chat | 15\% | 167{,}156 | 10.27\%
+tool_multi_turn | 8\% | 85{,}308 | 5.24\%
+safety | 3\% | 66{,}368 | 4.08\%
+multilingual | 2\% | 59{,}646 | 3.66\%
+Total | 100\% | 1{,}627{,}706 | 100\%
+
+### Table 9: SFT comparison between the unfiltered baseline mixture and the auto-selected mixture under the same Qwen3-1.7B seed, training budget, and 16 K evaluation harness. The first row is the original Qwen3-1.7B checkpoint evaluated at 8 K context as a reference. Bold marks the better of the two SF
+
+Run | GSM8K | MATH-500 | IFEval | HumanEval | MBPP | ARC-C
+Qwen3-1.7B reference ( 8 K eval) | 88.93 | 85.80 | 71.72 | 81.71 | 75.49 | 89.16
+Baseline SFT, 16 K eval | 82.79 | \mathbf{84.40} | \mathbf{67.10} | 66.46 | 58.37 | 82.51
+Auto-selected SFT, 16 K eval | \mathbf{85.14} | 79.80 | 63.59 | \mathbf{70.12} | \mathbf{66.54} | \mathbf{85.58}
+\Delta Auto-selected - baseline | +2.35 | -4.60 | -3.51 | +3.66 | +8.17 | +3.07
+
+### Table 10 : Fixed-output throughput (tokens/s). Measured on 1 \times A100 80GB (bf16, SGLang serving stack, max_new_tokens =2048 , ignore_eos = true, temperature 1.0 , top- p 0.95 , top- k 50 ). Columns give the concurrency level C . Results other than FLARE are run under each model’s recommended dec
+
+ | GSM8K | HumanEval | GPQA Diamond
+Model | C{=}1 | C{=}4 | C{=}8 | C{=}1 | C{=}4 | C{=}8 | C{=}1 | C{=}4 | C{=}8
+SDAR-1.7B | 137.0 | 376.6 | 438.3 | 135.6 | 364.7 | 427.0 | 130.4 | 383.1 | 461.5
+SDAR-4B | 102.8 | 327.3 | 426.9 | 105.1 | 326.1 | 398.3 | 95.7 | 313.6 | 441.7
+SDAR-8B | 83.0 | 267.5 | 388.9 | 83.8 | 276.8 | 372.1 | 72.2 | 229.6 | 379.3
+SDAR-30B-A3B | 43.9 | 124.6 | 216.4 | 39.8 | 122.3 | 214.1 | 43.2 | 120.6 | 210.2
+LLaDA-2.0-mini | 185.6 | 408.7 | 518.7 | 234.2 | 496.7 | 626.1 | 182.6 | 264.2 | 373.2
+LLaDA-2.1-mini | 524.5 | 1224.1 | 963.0 | 472.4 | 1471.4 | 1646.5 | 226.9 | 283.9 | 401.2
+FLARE -2B | 487.0 | 1314.7 | 2087.0 | 373.5 | 1113.3 | 1763.9 | 330.7 | 949.0 | 1440.8
+FLARE -4B | 292.1 | 868.7 | 1293.2 | 268.2 | 812.2 | 1178.9 | 237.4 | 649.3 | 990.4
+FLARE -9B | 217.4 | 696.1 | 1096.5 | 203.2 | 642.8 | 1007.1 | 170.8 | 499.0 | 786.5
+
+### Table 11 : Full-family FLARE comparison on the Long-CoT+Math+IF transfer mix. * : potentially under-reported due to answer extraction or length limits, consistent with the markers in Table 2 .
+
+ | Knowledge & Instruction Following | Math | Code
+Model | ARC-C | MMLU | MMLU-Pro | GPQA-D | IFEval | GSM8K | MATH-500 | AIME-24 | AIME-25 | HumanEval | MBPP | LCBv6
+Qwen3.5-2B (released) | 92.15 | 73.59 | 59.53 | 62.12 | 79.48 | 77.63 * | 72.20 * | 8.89 * | 12.22 * | 48.17 | 53.31 | 17.71
++ AR-SFT | 88.74 | 68.63 | 56.67 | 47.98 | 67.65 | 83.93 | 85.80 | 27.78 | 22.22 | 67.07 | 71.60 | 21.14
+FLARE -2B | 85.07 | 67.60 | 53.57 | 37.37 | 68.95 | 84.46 | 84.40 | 31.11 | 26.67 | 64.02 | 68.09 | 15.43
+Qwen3.5-4B (released) | 96.33 | 85.22 | 77.88 | 80.30 | 90.02 | 89.16 | 95.40 | 63.33 | 48.89 | 87.80 | 82.49 | 50.86
++ AR-SFT | 93.86 | 80.75 | 71.70 | 61.11 | 72.46 | 91.66 | 94.40 | 62.22 | 46.67 | 92.68 | 91.83 | 45.71
+FLARE -4B | 93.52 | 78.73 | 71.14 | 63.64 | 73.20 | 91.05 | 94.20 | 58.89 | 43.33 | 93.29 | 89.11 | 41.71
+Qwen3.5-9B (released) | 97.70 | 88.21 | 81.39 | 80.30 | 91.31 | 89.16 | 96.60 | 65.56 | 60.00 | 95.12 | 89.11 | 49.71
++ AR-SFT | 96.25 | 86.07 | 77.66 | 71.21 | 76.52 | 94.01 | 95.00 | 66.67 | 61.11 | 96.34 | 93.77 | 46.29
+FLARE -9B | 96.33 | 84.80 | 77.39 | 71.21 | 71.35 | 93.33 | 95.20 | 63.33 | 54.44 | 92.07 | 91.05 | 49.71
+
+### Table 12 : Ablation on the algorithmic design space. Rows (b)–(e) add one ingredient at a time: (a) AR next-token finetune baseline; (b) block diffusion with block-causal clean stream and no clean-stream loss; (c) adds a token-causal clean stream attention mask on top of (b); (d) adds the clean-stre
+
+Setting | Math + Reasoning | Knowledge + IF | Code
+(a) AR-SFT | 51.93 | 57.29 | 54.81
+(b) Block Diffusion | 40.98 | 31.29 | 26.47
+(c) + causal context | 43.09 | 48.42 | 49.19
+(d) + NTP loss | 52.70 | 54.53 | 51.41
+(e) + logit shift ( FLARE ) | 51.00 | 56.91 | 51.93
+
+### Table 13 : Training mask sampling distribution and logit-shift ablation on Long-CoT , built on top of (c)+(d) of Table 12 . All-masked (AM) represents diffusion loss computed with deterministic pure mask sampling; Diffusion (D) represents diffusion loss computed with random mask sampling. Per-benchm
+
+Noisy loss | Shift | Math + Reasoning | Knowledge + IF | Code
+All-masked (AM) | ✗ | 52.83 | 55.67 | 51.59
+All-masked (AM) | ✓ | 52.05 | 56.44 | 52.45
+Diffusion (D) | ✗ | 52.70 | 54.53 | 51.41
+Diffusion (D; full FLARE ) | ✓ | 51.00 | 56.91 | 51.93
+
+### Table 14 : Ablation of data recipe. Methods: AR-SFT , continued finetuning in standard AR fashion; AM-Causal , all-mask noisy stream with pure causal attention both for clean stream and within noisy blocks; AM-Bidir , all-mask noisy stream with pure causal attention for clean stream and bidirectiona
+
+Data mix | Method | Math + Reasoning | Knowledge + IF | Code
+(reference) | Qwen3-1.7B | 64.70 | 66.74 | 65.60
+Long-CoT | AR-SFT | 51.93 | 57.29 | 54.81
+AM-Causal | 50.81 | 57.57 | 53.86
+AM-Bidir | 52.05 | 56.44 | 52.45
+FLARE | 51.00 | 56.91 | 51.93
+Short-CoT+Math | AR-SFT | 48.64 | 57.25 | 50.69
+AM-Causal | 54.71 | 56.35 | 33.99
+AM-Bidir | 54.30 | 55.92 | 36.64
+FLARE | 54.03 | 56.70 | 41.17
+Long-CoT+Math | AR-SFT | 52.55 | 55.84 | 53.62
+AM-Causal | 53.23 | 54.73 | 51.16
+AM-Bidir | 51.80 | 54.95 | 51.91
+FLARE | 51.48 | 55.54 | 54.17
+Long-CoT+Math+IF | AR-SFT | 53.31 | 59.35 | 54.43
+AM-Causal | 47.88 | 57.57 | 50.35
+AM-Bidir | 49.09 | 59.14 | 52.06
+FLARE | 53.09 | 59.19 | 52.66
+
