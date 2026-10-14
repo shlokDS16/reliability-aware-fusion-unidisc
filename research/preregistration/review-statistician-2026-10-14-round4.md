@@ -158,3 +158,46 @@ false-positive rate for a flat profile.
 ## Not checked
 Construct validity of the source rule (whether a* tracks "content"), the caption-end heuristic, PC-D', PG-V (d) and the
 s_sp interval: these are the red-team's. Every [A] value is replaced by D0 or D1.
+
+---
+
+## v0.5 check (appended 2026-10-14; card at commit 4809632, diff against 7bce081; the text above is unchanged)
+
+Read: the v0.4-to-v0.5 change log; section 2 (a)-(g) of the composition-standardised statistic; 10.3 H-A1 and the E4
+paragraph; the dynamic-range gate in 6. Script: `analysis/stats/round5_exp001_check.py`, log `round5_exp001_check.log`
+(SHA-256 script d7b47ac29da326e84bc741726651f9090b3a879f31ab9ff7745f0afa898504f1, log 059af17ddb428f58fbc1a2e95345366015b7dab62e93808bb9bda80c40ccb844; about 5 min on CPU; [A] model: 3 strata, early and late compositions that
+differ, cv about 0.8, late sources missing at random).
+
+**U1 and U2: applied.** (e) is my U2 option (a). (f) is U1, tightened so that a negative also needs both standardised ratios
+to fail.
+
+**Standardised estimator and bootstrap.** Direct standardisation with fixed pooled weights is correct. Holding omega_s at its
+full-sample value inside the replicates is also correct: the weights define the target composition, so they are part of the
+estimand, not noise. [C] Size at a true ratio of 1.5 is at most 0.027 for each member and at most 0.007 for the pair. Three
+points are under-specified, and the card should fix them in text (V1):
+(i) for I->T the stratum mean has to be taken over receiving positions (I_hat_j^c of the positions in stratum s), not over the
+probe-level S-bar, which mixes strata;
+(ii) the complete-case member must use the same full-sample weights, so that both members target the same composition;
+(iii) nothing is said about a stratum with no early or no late observation, in the full sample or in a replicate (strata
+with omega_s < 0.10 are not covered by the thin-strata rule). [C] At 20 or more observations a replicate is empty about 0.05
+percent of the time.
+
+**Coherence of the intersection-union read with U1.** Coherent. The positive needs both lower limits >= 1.5. The negative needs
+both upper limits < 1.5 and R_Q2 failing. The two regions are disjoint, and everything else is inconclusive. One loose end:
+10.3 still defines weak falsification as "the 97.5 percent upper limit of any of the three ratios < 1.5", and reversal
+likewise. For the H-A1 parts these must point to (f) (V1 iv).
+
+**Power.** [C] At a true ratio of 1.75 the pair's power equals that of the complete-case member: 0.78, 0.57 and 0.27 at late source
+availability 1.0, 0.8 and 0.5, against 0.79, 0.78 and 0.62 for the pooled standardised ratio alone. At a true ratio of 2.0 it is
+0.99, 0.99 and 0.77. The raw ratio has power 0 here because composition confounds it by construction. Under these assumptions
+the pair costs nothing at full availability, and it falls to about a third of the pooled figure at availability 0.5; my round-4
+figures (0.46-0.61 for the balanced panel) fall in the same range. D1's projection on the pair (10.3) is the figure to quote.
+
+**V1 (minimal fix, text only).** Add to 2 (c)-(f): "For I->T the stratum means are over receiving positions; for T->I over
+sources. Both members of the pair use the full-sample pooled weights. Before estimation, strata with omega_s < 0.10 are merged
+into 'other content'. A bootstrap replicate in which a stratum is empty at the early or the late probes is redrawn, and the
+share of redrawn replicates is reported. For the H-A1 parts, 'weak falsification' and 'reversed' in 10.3 and 11.7 mean the
+rule of (f) at the limits 1.5 and 1.0."
+
+**Verdict: SIGNED on condition that V1 is applied as stated.** V1 changes no threshold, arm or cost, so the card needs no
+further statistical review.
