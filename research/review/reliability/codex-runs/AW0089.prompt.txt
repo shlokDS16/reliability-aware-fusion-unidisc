@@ -1,0 +1,141 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Unlocking the Potentials of Retrieval-Augmented Generation for Diffusion Language Models
+
+record AW0089 | arXiv:2601.11342 | first version 2026-01-16
+
+**Abstract.** Diffusion Language Models (DLMs) have recently demonstrated remarkable capabilities in natural language processing tasks. However, the potential of Retrieval-Augmented Generation (RAG), which shows great successes for enhancing large language models (LLMs), has not been well explored, due to the fundamental difference between LLM and DLM decoding. To fill this critical gap, we systematically test the performance of DLMs within the RAG framework. Our findings reveal that DLMs coupled with RAG show promising potentials with stronger dependency on contextual information, but suffer from limited generation precision. We identify a key underlying issue: Response Semantic Drift (RSD), where the generated answer progressively deviates from the query's original semantics, leading to low precision content. We trace this problem to the denoising strategies in DLMs, which fail to maintain semantic alignment with the query throughout the iterative denoising process. To address this, we propose Semantic-Preserving REtrieval-Augmented Diffusion (SPREAD), a novel framework that introduces a query-relevance-guided denoising strategy. By actively guiding the denoising trajectory, SPREAD ensures the generation remains anchored to the query's semantics and effectively suppresses drift. Experimental results demonstrate that SPREAD significantly enhances the precision and effectively mitigates RSD of generated answers within the RAG framework.
+
+## All captions
+
+- Table 1: Performance comparison of LLMs and DLMs equipped with RAG. CR indicates copy rate. DLMs in RAG achieve high F1 scores and exhibit high copy rates from the provided context.
+- Figure 1: Precision and recall of DLMs equipped with RAG. While both LLaDA and Dream achieve high recall, their precision is consistently relatively low.
+- Figure 2: An illustration comparing different denoising strategies in DLMs. (a) Context-Based Confidence. The model relies on its internal confidence score, which is potentially biased by the global retrieved context, causing the model to generate irrelevant i
+- Figure 3: An overview and illustrative comparison of our proposed method: (a) Confidence-based Strategy: The existing methods rely on local model confidence for token selection, lacking guidance from the global query semantics and leading to semantic drift dur
+- Table 2: The results of different methods for the question answering task. P indicates Precision ( \uparrow ) and RSD indicates Response Semantic Drift ( \downarrow ). The best results are in bold and the second-best results are underlined .
+- Figure 4: A comparative analysis of Copy Rate and Redundancy across different denoising strategies.
+- Figure 5: The results of multi-dimensional comparison of different masking strategies.
+- Table 3: Efficiency comparison of different denoising strategies. The best results are in bold .
+- Table 4: The Pearson correlation of RSD with Precision, Copy Rate and Redundancy.
+- Table 5: Dataset Statistics
+- Algorithm 1 Semantic-Preserving Retrieval-Augmented Diffusion (SPREAD)
+
+## Tables as text
+
+### Table 1: Performance comparison of LLMs and DLMs equipped with RAG. CR indicates copy rate. DLMs in RAG achieve high F1 scores and exhibit high copy rates from the provided context.
+
+Method | NQ | Trivia | HotpotQA | MuSiQue | Multihop | UltraDomain
+\mathrm{F1} | \mathrm{CR} | \mathrm{F1} | \mathrm{CR} | \mathrm{F1} | \mathrm{CR} | \mathrm{F1} | \mathrm{CR} | \mathrm{F1} | \mathrm{CR} | \mathrm{F1} | \mathrm{CR}
+Qwen2.5-7B | 28.33 | 77.59 | 40.95 | 82.68 | 47.44 | 77.79 | 22.25 | 64.87 | 26.98 | 58.67 | 22.21 | 45.42
+Qwen2.5-32B | 23.17 | 71.69 | 33.19 | 78.58 | 38.42 | 72.80 | 20.56 | 59.76 | 24.32 | 58.07 | 22.33 | 44.28
+Llama3-8B | 21.59 | 70.14 | 36.73 | 62.36 | 39.77 | 61.91 | 17.24 | 59.18 | 15.11 | 57.78 | 28.85 | 59.59
+LLaDA-8B | 33.09 | 81.01 | 39.80 | 82.24 | 44.36 | 79.82 | 27.03 | 72.36 | 46.34 | 63.39 | 30.91 | 61.78
+Dream-7B | 38.42 | 84.81 | 46.47 | 84.41 | 52.40 | 81.88 | 30.56 | 77.65 | 38.46 | 58.63 | 36.92 | 71.35
+
+### Table 2: The results of different methods for the question answering task. P indicates Precision ( \uparrow ) and RSD indicates Response Semantic Drift ( \downarrow ). The best results are in bold and the second-best results are underlined .
+
+Model | NQ | Trivia | HotpotQA | MuSiQue | Multihop | UltraDomain
+\mathrm{P} | \mathrm{RSD} | \mathrm{P} | \mathrm{RSD} | \mathrm{P} | \mathrm{RSD} | \mathrm{P} | \mathrm{RSD} | \mathrm{P} | \mathrm{RSD} | \mathrm{P} | \mathrm{RSD}
+LLM | Qwen2.5-7B | 21.02 | 32.88 | 37.81 | 16.47 | 45.40 | 26.41 | 19.61 | 40.50 | 25.53 | 49.95 | 13.42 | 72.42
+Qwen2.5-32B | 15.25 | 47.80 | 28.42 | 28.42 | 33.77 | 43.72 | 16.47 | 60.95 | 22.62 | 54.66 | 13.47 | 71.86
+LLaMA3-8B | 14.47 | 59.21 | 32.55 | 29.23 | 35.22 | 38.45 | 13.19 | 55.78 | 12.99 | 61.79 | 18.97 | 71.37
+DLM | LLaDA (random) | 20.63 | 29.35 | 30.38 | 16.09 | 35.60 | 27.19 | 19.28 | 28.16 | 28.07 | 37.37 | 21.58 | 63.60
+LLaDA (low-conf) | 26.05 | 23.01 | 36.04 | 11.12 | 41.38 | 24.40 | 23.91 | 20.92 | 44.91 | 24.28 | 23.89 | 65.57
+LLaDA (SPREAD) | 30.37 | 21.79 | 42.46 | 8.91 | 48.71 | 19.26 | 26.67 | 17.82 | 48.73 | 19.79 | 29.33 | 61.48
+Dream (maskgit-plus) | 37.11 | 12.60 | 47.08 | 3.48 | 52.42 | 6.04 | 31.35 | 4.51 | 37.05 | 32.13 | 36.24 | 62.62
+Dream (entropy) | 35.25 | 12.61 | 44.30 | 3.44 | 50.16 | 5.54 | 29.33 | 4.02 | 35.85 | 32.12 | 41.69 | 59.27
+Dream (SPREAD) | 52.79 | 4.83 | 55.71 | 1.29 | 59.37 | 4.05 | 37.78 | 1.13 | 59.09 | 9.46 | 58.19 | 24.66
+
+### Table 3: Efficiency comparison of different denoising strategies. The best results are in bold .
+
+Model | Strategy | Avg Time (s) | Tokens/sec
+Dream | maskgit-plus | 19.64 | 30.72
+entropy | 18.34 | 32.41
+SPREAD | 19.02 | 31.49
+LLaDA | random | 27.33 | 21.08
+low-confidence | 27.39 | 21.03
+SPREAD | 27.56 | 20.90
+
+### Table 4: The Pearson correlation of RSD with Precision, Copy Rate and Redundancy.
+
+Metric Pair | LLaDA | Dream
+RSD-Precision | -0.36 | -0.24
+RSD-Redundancy | 0.46 | 0.55
+RSD-Copy Rate | -0.30 | -0.16
+
+### Table 5: Dataset Statistics
+
+Dataset | NQ | Trivia | HotpotQA | MuSiQue | MultiHop | UltraDomain
+Num of Queries | 1,000 | 1,000 | 1,000 | 1,000 | 1,000 | 958
+Num of Passages | 7,830 | 1,432 | 66,581 | 29,898 | 609 | 161
+Average Length of Question | 9.19 | 13.21 | 16.17 | 13.96 | 45.99 | 12.74
+Average Length of Answer | 2.61 | 2.02 | 2.44 | 2.73 | 1.30 | 39.31
+

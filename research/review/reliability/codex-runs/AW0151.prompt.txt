@@ -1,0 +1,181 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Insertion Language Models: Sequence Generation with Arbitrary-Position Insertions
+
+record AW0151 | arXiv:2505.05755 | first version 2025-05-09
+
+**Abstract.** Autoregressive models (ARMs), which predict subsequent tokens one-by-one ``from left to right,'' have achieved significant success across a wide range of sequence generation tasks. However, they struggle to accurately represent sequences that require satisfying sophisticated constraints or whose sequential dependencies are better addressed by out-of-order generation. Masked Diffusion Models (MDMs) address some of these limitations, but the process of unmasking multiple tokens simultaneously in MDMs can introduce incoherences, and MDMs cannot handle arbitrary infilling constraints when the number of tokens to be filled in is not known in advance. In this work, we introduce Insertion Language Models (ILMs), which learn to insert tokens at arbitrary positions in a sequence -- that is, they select jointly both the position and the vocabulary element to be inserted. By inserting tokens one at a time, ILMs can represent strong dependencies between tokens, and their ability to generate sequences in arbitrary order allows them to accurately model sequences where token dependencies do not follow a left-to-right sequential structure. To train ILMs, we propose a tailored network parameterization and use a simple denoising objective. Our empirical evaluation demonstrates that ILMs outperform both ARMs and MDMs on common planning tasks. Furthermore, we show that ILMs outperform MDMs and perform on par with ARMs in an unconditional text generation task while offering greater flexibility than MDMs in arbitrary-length text infilling. The code is available at: https://dhruveshp.com/projects/ilm .
+
+## All captions
+
+- Figure 1 : ARMs (top) generate variable-length sequences in a fixed left-to-right order. MDMs (middle) can add tokens in arbitrary order but require a fixed number of tokens to be masked. ILMs (bottom) generate sequences of arbitrary lengths in arbitrary order
+- Figure 2 : ILM Training. {\bm{x}} is a training sequence, {\bm{x}}[{\bm{b}}] is a subsequence obtained after dropping tokens. d is the target insertion distribution, computed by counting the number of times each token appears in {\bm{x}} between the i_{k} -th 
+- Algorithm 1 ILM training
+- Algorithm 2 One step of ILM prediction
+- Figure 3 : Given the edges of a directed star graph (expressed as a sequence of connected node pairs in a random order), and the start and the target node, the goal is to predict the path from the start to the target node.
+- Table 1 : Performance (in terms of accuracy) on the star graph planning task.
+- Figure 4 : The box contains a compact string representation of a zebra puzzle and its solution. The input is a sequence of constraints in arbitrary order. The solution is a sequence of house,entity, attribute triples, sorted by house number. The complete input
+- Table 2 : Evaluation of unconditional generation quality using per-token NLL under Llama 3.2 3B. The rows with the dataset names contain the NLL and entropy of the examples in the training data.
+- Figure 5 : Evaluation of unconditional generation quality using Prometheus 2 7B model as the LLM Judge. Legend: Coh.=coherence, Con.=consistency, Flu.=fluency, Gram.=grammaticality, Red.=non-redundancy.
+- Figure 6 : Per-token generation time vs. NLL for the MDM and the ILM trained on the stories dataset.
+- Table 3 : \Delta\text{NLL} and \Delta\text{Entropy} denote the percentage change in per-token negative log-likelihood and entropy after infilling, respectively, where subscript gt and inp denote the change with respect to the ground truth and input (sample wit
+- Table 4 : Different star graph datasets used in the experiments. All the datasets use asymmetric graphs, meaning the start and the goal nodes both are away from the junction, and the target path passed through the junction. VStar version additionally has varia
+- Table 5 : Example inputs and outputs for the zebra puzzles. Each example is a concatenation of the input and output strings. The strings are tokenized using space and the tokenizer uses a custom vocabulary as shown in the table. The output string is entity-hou
+- Table 6 : Rubric for NLG Evaluation through LLM-As-Judge
+- Figure 7 : Generation trajectories for ILM on 10 test examples from the Star hard task. Lighter color indicates that the token was generated earlier than the ones with the darker color.
+- Figure 8 : Unconditional generation trajectories for ILM trained on LM1B dataset. Lighter color indicates that the token was generated earlier than the ones with the darker color.
+
+## Tables as text
+
+### Table 1 : Performance (in terms of accuracy) on the star graph planning task.
+
+Model | Star easy | Star medium | Star hard | Zebra
+Sequence Acc. | Token Acc. | Sequence Acc. | Token Acc. | Sequence Acc. | Token Acc. | Sequence Acc.
+ARMO | 100.0 | 100.0 | - | - | - | - | 91.2
+ARM | 32.3 | 81.7 | 75.0 | 81.4 | 23.0 | 43.2 | 81.2
+MDM | 100.0 | 100.0 | 36.5 | 90.6 | 21.0 | 54.9 | 82.6
+IT | 35.2 | 98.2 | 22.1 | 80.9 | 17.5 | 79.9 | -
+ILM | 100.0 | 100.0 | 100.0 | 100.0 | 99.1 | 99.7 | 90.0
+
+### Table 2 : Evaluation of unconditional generation quality using per-token NLL under Llama 3.2 3B. The rows with the dataset names contain the NLL and entropy of the examples in the training data.
+
+ | NLL \blacktriangledown | Ent \blacktriangle | \overline{\text{len}}
+Stories | 1.65 | 4.19 | 205
+ARM | 2.11 | 4.06 | 201
+MDM | 2.54 | 4.55 | 985
+ILM (Ours) | 2.14 | 3.76 | 119
+LM1B | 3.71 | 3.08 | 28
+ARM | 3.94 | 3.12 | 30
+MDM | 4.81 | 3.70 | 85
+ILM (Ours) | 4.67 | 2.80 | 21
+
+### Table 3 : \Delta\text{NLL} and \Delta\text{Entropy} denote the percentage change in per-token negative log-likelihood and entropy after infilling, respectively, where subscript gt and inp denote the change with respect to the ground truth and input (sample with the segments removed), respectively.
+
+ | \Delta\text{NLL}_{\text{gt}} \blacktriangledown | \Delta\text{Entropy}_{\text{gt}} \blacktriangle | \Delta\text{NLL}_{\text{inp}} \blacktriangledown | \Delta\text{Entropy}_{\text{inp}} \blacktriangle
+TinyStories single-segment |  |  |  | 
+MDM | +14.36 | -3.82 | +3.63 | +1.48
+ILM (Ours) | +12.27 | -4.18 | +1.79 | +0.04
+LM1B single-segment
+MDM | +25.31 | -0.05 | -0.49 | +4.56
+ILM (Ours) | +20.47 | -1.71 | -3.57 | +2.64
+LM1B multi-segment
+MDM | +25.64 | +0.15 | -6.02 | +3.97
+ILM (Ours) | +23.52 | -0.79 | -7.93 | +2.98
+
+### Table 4 : Different star graph datasets used in the experiments. All the datasets use asymmetric graphs, meaning the start and the goal nodes both are away from the junction, and the target path passed through the junction. VStar version additionally has variable arm lengths a in the same input star
+
+Name | Degree | \min(a) | \min(l) | \max(l) | |{\mathbb{V}}| | #Train | #Test
+Star easy | 3 | 1 | 5 | 5 | 20 | 50k | 5k
+Star medium | 2 | 2 | 3 | 6 | 20 | 50k | 5k
+Star hard | 5 | 5 | 6 | 12 | 56 | 50k | 5k
+
+### Table 5 : Example inputs and outputs for the zebra puzzles. Each example is a concatenation of the input and output strings. The strings are tokenized using space and the tokenizer uses a custom vocabulary as shown in the table. The output string is entity-house-attribute.
+
+(m,n) | Inputs | Outputs
+(3,3) | left-of LHS c 2 2 RHS c 2 1 CLUE_END = LHS c 2 1 RHS c 1 2 CLUE_END ends LHS c 1 2 RHS CLUE_END = LHS c 1 1 RHS c 2 2 CLUE_END nbr LHS c 2 1 RHS c 0 2 CLUE_END inbetween LHS c 0 1 RHS c 1 1 c 2 1 CLUE_END | 0 0 1 1 0 0 2 0 0 0 1 2 1 1 1 2 1 2 0 2 0 1 2 2 2 2 1
+Vocab: 0, 1, 2, 3, 4, 5, nbr, left-of, inbetween, immedate-left, end, !=, =, CLUE_END, RHS, LHS
+
+### Table 6 : Rubric for NLG Evaluation through LLM-As-Judge
+
+Rubric Item | Rubric Text
+Coherence | (Is the text coherent and logically organized?)
+ | Score of 1: Very incoherent. The generation lacks structure, has sudden jumps, and is difficult to follow.
+ | Score of 2: Somewhat incoherent. The generation has some semblance of structure, but has significant flaws in flow and organization.
+ | Score of 3: Neutral. The generation is decently organized, with minor issues in flow and structure.
+ | Score of 4: Mostly coherent. The generation is well-structured with very few minor coherence issues.
+ | Score of 5: Highly coherent. The generation is excellently organized, flows seamlessly, and builds information logically from start to end.
+Consistency | (Is the text consistent in terms of style, tone, and tense?)
+ | Score of 1: The text is inconsistent in style, tone, and tense, leading to confusion.
+ | Score of 2: The text shows occasional inconsistencies in style, tone, and tense.
+ | Score of 3: The text is mostly consistent in style, tone, and tense, with minor lapses.
+ | Score of 4: The text is consistent in style, tone, and tense, with rare inconsistencies.
+ | Score of 5: The text is highly consistent in style, tone, and tense throughout.
+Fluency | (Is the text fluent and easy to read?)
+ | Score of 1: The text is disjointed and lacks fluency, making it hard to follow.
+ | Score of 2: The text has limited fluency with frequent awkward phrasing.
+ | Score of 3: The text is moderately fluent, with some awkward phrasing but generally easy to follow.
+ | Score of 4: The text is fluent with smooth transitions and rare awkward phrases.
+ | Score of 5: The text is highly fluent, with natural and smooth expression throughout.
+Spelling Accuracy | (Does the text demonstrate correct spelling?)
+ | Score of 1: The text contains frequent spelling errors, making it difficult to understand.
+ | Score of 2: The text has multiple spelling errors that affect readability and clarity.
+ | Score of 3: The text has occasional spelling errors, but they do not significantly impact comprehension.
+ | Score of 4: The text is mostly free of spelling errors, with only rare mistakes that do not affect understanding.
+ | Score of 5: The text has perfect spelling accuracy, with no errors present.
+Grammaticality | (Does the text demonstrate proper grammatical usage?)
+ | Score of 1: The text contains frequent grammatical errors, making it difficult to understand.
+ | Score of 2: The text shows occasional grammatical errors, which disrupt the flow and clarity of the text.
+ | Score of 3: The text generally adheres to grammatical rules, though minor errors are present.
+ | Score of 4: The text demonstrates good grammaticality with rare errors that do not affect comprehension.
+ | Score of 5: The text excels in grammatical usage, with clear and correct grammar throughout.
+Non-Redundancy | (Does the text avoid unnecessary repetition?)
+ | Score of 1: The text is highly redundant, with excessive repetition of words, phrases, or ideas that make it difficult to 
+

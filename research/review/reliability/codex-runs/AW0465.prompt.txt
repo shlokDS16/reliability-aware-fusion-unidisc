@@ -1,0 +1,184 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# dKV-Cache: The Cache for Diffusion Language Models
+
+record AW0465 | arXiv:2505.15781 | first version 2025-05-21
+
+**Abstract.** Diffusion Language Models (DLMs) have been seen as a promising competitor for autoregressive language models. However, diffusion language models have long been constrained by slow inference. A core challenge is that their non-autoregressive architecture and bidirectional attention preclude the key-value cache that accelerates decoding. We address this bottleneck by proposing a KV-cache-like mechanism, delayed KV-Cache, for the denoising process of DLMs. Our approach is motivated by the observation that different tokens have distinct representation dynamics throughout the diffusion process. Accordingly, we propose a delayed and conditioned caching strategy for key and value states. We design two complementary variants to cache key and value step-by-step: (1) dKV-Cache-Decode, which provides almost lossless acceleration, and even improves performance on long sequences, suggesting that existing DLMs may under-utilise contextual information during inference. (2) dKV-Cache-Greedy, which has aggressive caching with reduced lifespan, achieving higher speed-ups with quadratic time complexity at the cost of some performance degradation. dKV-Cache, in final, achieves from 2-10x speedup in inference, largely narrowing the gap between ARs and DLMs. We evaluate our dKV-Cache on several benchmarks, delivering acceleration across general language understanding, mathematical, and code-generation benchmarks. Experiments demonstrate that cache can also be used in DLMs, even in a training-free manner from current DLMs.
+
+## All captions
+
+- Figure 1 : Illustration of dKV-Cache. At step t , no prior cache would be activated though the token D_{t-1} has been decoded. \mathbf{K} and \mathbf{V} are delayed to the next step to be reordered and reused.
+- Figure 2 : (a) We present a heatmap illustrating the pairwise similarities among the key states across different timesteps. Here we use LLaDA with L=128 , T=128 and the block size is set to 64. We then compute the Euclidean distance between consecutive steps t
+- Table 1 : Benchmark results on LLaDA-8B-Instruct. We use zero-shot evaluation here. Detailed configuration is listed in the Appendix. We set the cache refresh step for dKV-Cache-Decode to be 8 and dKV-Cache-Greedy to be 2. The window size of dKV-Cache-Greedy i
+- Table 2 : Benchmark results on Dream-Base-7B. We use the few-shot ICL here and the configuration is in Appendix. We set the cache refresh interval for dKV-Cache-Decode and dKV-Cache-PD to 4.
+- Table 3 : Results on long prefill settings. dKV-Cache-Decode uses a refresh step of 4; dKV-Cache-Prefill never refreshes.
+- Figure 3 : Effect of one-step delayed caching
+- Figure 4 : dKV-Cache-Decode(left) and dKV-Cache-Greedy(right) on GSM8K with different settings: decoding length L , sampling steps S , refresh intervals and the window size.
+- Figure 5 : Speed and memory for dKV-Cache-Decode and dKV-Cache-Greedy. The number (2 and 8) means that in every n steps, the cache would be refreshed.
+- Algorithm 1 Pseudo code for dKV-Cache-Decode. We take step t as an example.
+- Figure 6 : Three variants for the caching strategy for diffusion language models adapted from auto-regressive language models, which would have shifted output position.
+- Table 4 : Comparison between different types of caching strategy for Dream-Base-7B.
+- Table 5 : Configurations of experiments on LLaDA-Instruct.
+- Figure 7 : Impact of batch size on decoding speed. Evaluated on LLaDA with a single NVIDIA H20; prefill length fixed at 100 tokens.
+- Table 6 : Case study on LLaDA-8B-Instruct. Question: Lily can run 12 kilometers per hour for 4 hours. After that, she runs 6 kilometers per hour. How many kilometers can she run in 8 hours?
+- Table 7 : Case study on Dream-Instruct-7B. Request: Write a story that ends with "Finally, Joey and Rachel get married."
+- Table 8 : Case study on Dream-Instruct-7B. Question: Lily can run 12 kilometers per hour for 4 hours. After that, she runs 6 kilometers per hour. How many kilometers can she run in 8 hours?
+
+## Tables as text
+
+### Table 1 : Benchmark results on LLaDA-8B-Instruct. We use zero-shot evaluation here. Detailed configuration is listed in the Appendix. We set the cache refresh step for dKV-Cache-Decode to be 8 and dKV-Cache-Greedy to be 2. The window size of dKV-Cache-Greedy is listed in the bracket.
+
+ | Base | Few-Steps | dKV-Cache-Greedy | dKV-Cache-Greedy | Base | Half-Steps | dKV-Cache-Decode
+Remasking | (random) | (random) | (random) | w/ Window (random) | (confidence) | (confidence) | (confidence)
+MMLU | 51.79 | 43.19 | 45.77 | 47.70 (4) | 51.11 | 51.11 | 51.00
+ | 30.20 | 47.49 (1.67 \times ) | 50.56 (1.57 \times ) | 45.72 (1.51 \times ) | 28.27 | 55.80 (1.97 \times ) | 66.52 (2.35 \times )
+GSM8K | 72.25 | 65.58 | 67.93 | 68.23 (4) | 77.56 | 77.91 | 78.85
+ | 15.16 | 24.08 (1.59 \times ) | 25.47 (1.68 \times ) | 24.76 (1.63 \times ) | 14.31 | 28.71 (2.00 \times ) | 27.50 (1.92 \times )
+Math500 | 27.4 | 21.8 | 26.0 | 27.0 (4) | 36.6 | 34.2 | 36.8
+ | 12.00 | 19.36 (1.61 \times ) | 20.34 (1.70 \times ) | 19.86 (1.66 \times ) | 11.53 | 23.10 (2.00 \times ) | 24.46 (2.12 \times )
+GPQA | 27.46 | 24.78 | 26.79 | 28.35 (4) | 30.80 | 27.68 | 28.13
+ | 11.40 | 18.59 (1.63 \times ) | 19.27 (1.69 \times ) | 18.26 (1.60 \times ) | 11.86 | 23.88 (2.01 \times ) | 28.73 (2.42 \times )
+HumanEval | 19.88 | 15.61 | 15.13 | 15.37 (4) | 39.63 | 33.54 | 46.34
+ | 7.50 | 12.50 (1.67 \times ) | 12.31 (1.64 \times ) | 12.13 (1.62 \times ) | 7.08 | 14.18 (2.00 \times ) | 13.76 (1.83 \times )
+MBPP | 21.4 | 15.6 | 17.8 | 20.4 (2) | 40.4 | 33.8 | 40.4
+ | 7.51 | 12.97 (1.73 \times ) | 12.55 (1.67 \times ) | 12.44 (1.66 \times ) | 7.50 | 15.01 (2.00 \times ) | 13.93 (1.86 \times )
+
+### Table 2 : Benchmark results on Dream-Base-7B. We use the few-shot ICL here and the configuration is in Appendix. We set the cache refresh interval for dKV-Cache-Decode and dKV-Cache-PD to 4.
+
+ |  | Dream-7B | Half-Steps | dKV-Cache-Decode | dKV-Cache-Prefill | dKV-Cache-PD
+GSM8K (8-shot) L = 256 | T = 256 | 76.88 | 68.08 | 76.57 | 75.66 | 74.07
+15.1 (1.00 \times ) | 30.3 (2.00 \times ) | 31.6 (2.09 \times ) | 53.6 (3.55 \times ) | 50.2 (3.32 \times )
+T = 128 | 68.81 | 46.63 | 65.35 | 65.96 | 63.31
+30.3 (2.01 \times ) | 60.5 (4.01 \times ) | 62.31 ( 4.13\times ) | 107.4 ( 7.11\times ) | 99.5 ( 6.6\times )
+MBPP (3-shot) L = 512 | T = 512 | 55.8 | 45.2 | 53.4 | 55.2 | 51.0
+5.4 (1.00 \times ) | 10.8 (2.00 \times ) | 10.4 (1.93 \times ) | 13.6 (2.52 \times ) | 14.5 (2.69 \times )
+T = 256 | 45.2 | 26.2 | 43.4 | 41.8 | 42.6
+10.8 (2.00 \times ) | 21.5 (3.98 \times ) | 20.6 (3.81 \times ) | 27.1 (5.02 \times ) | 28.9 (5.35 \times )
+HumanEval (0-shot) L = 512 | T = 512 | 57.93 | 37.20 | 57.32 | 56.10 | 59.76
+10.3 (1.00 \times ) | 20.5 (1.99 \times ) | 15.5 (1.50 \times ) | 14.4 (1.40 \times ) | 17.4 (1.69 \times )
+T = 256 | 37.20 | 18.29 | 31.70 | 33.54 | 31.70
+20.5 (1.99 \times ) | 40.9 (3.97 \times ) | 31.1 (3.02 \times ) | 28.7 (2.79 \times ) | 34.8 (3.38 \times )
+
+### Table 3 : Results on long prefill settings. dKV-Cache-Decode uses a refresh step of 4; dKV-Cache-Prefill never refreshes.
+
+ |  | Dream-7B | Half-Steps | dKV-Cache-Decode | dKV-Cache-Prefill
+MMLU (5-shot) L = 8 | T = 8 | 72.19 | 72.21 | 71.74 | 71.76
+9.1 (1.00 \times ) | 18.1 (1.99 \times ) | 25.2 (2.77 \times ) | 57.6 (6.33 \times )
+T = 4 | 72.21 | 71.63 | 71.69 | 71.71
+18.1 (1.99 \times ) | 36.1 (3.97 \times ) | 49.2 (5.41 \times ) | 67.3 (7.40 \times )
+GPQA (5-shot) L = 128 | T = 128 | 36.83 | 35.49 | 35.71 | 35.27
+7.4 (1.00 \times ) | 14.7 (1.99 \times ) | 18.2 (2.46 \times ) | 75.40 (10.19 \times )
+T = 64 | 35.49 | 35.27 | 34.15 | 35.27
+14.7 (1.99 \times ) | 29.4 (3.97 \times ) | 36.8 (4.97 \times ) | 139.9 (18.91 \times )
+
+### Table 4 : Comparison between different types of caching strategy for Dream-Base-7B.
+
+ | Un-Shift | Right-Shift | Un&Right Shift
+MMLU | 71.78 | 64.60 | 71.73
+GSM8K | 76.34 | 32.68 | 77.71
+
+### Table 5 : Configurations of experiments on LLaDA-Instruct.
+
+ | Base | Few-Steps | dKV-Cache-Greedy | dKV-Cache-Greedy | Half-Steps | dKV-Cache-Decode
+Remasking | (random / confidence) | (random) | (random) | (random) | (confidence) | (confidence)
+ | Configuration | Steps T | Cache Interval | Window Size | Steps T | Cache Interval
+MMLU | L=32, T=32, B=16 | T=20 | 2 | 4 | T=16 | 8
+GSM8K | L=256, T=256, B=32 | T=160 | 2 | 4 | T=128 | 8
+Math500 | L=256, T=256, B=64 | T=160 | 2 | 4 | T=128 | 8
+GPQA | L=128, T=128, B=64 | T=80 | 2 | 4 | T=64 | 8
+HumanEval | L=512, T=512, B=32 | T=320 | 2 | 4 | T=256 | 8
+MBPP | L=512, T=512, B=32 | T=320 | 2 | 2 | T=256 | 8
+
+### Table 6 : Case study on LLaDA-8B-Instruct. Question: Lily can run 12 kilometers per hour for 4 hours. After that, she runs 6 kilometers per hour. How many kilometers can she run in 8 hours?
+
+Model | Generate Text (L=128, T=128, B=64)
+LLaDA-8B-Instruct (low confidence) | 1. Calculate the distance Lily runs in the first 4 hours: - Speed: 12 kilometers per hour - Time: 4 hours - Distance: 12 km/h * 4 h = 48 km 2. Calculate the distance Lily runs in the next 4 hours: - Speed: 6 kilometers per hour - Time: 4 hours - Distance: 6 km/h * 4 h = 24 km 3. Add the distances together: - Total distance: \boxed{72} km
+dKV-Cache-Decode, Refresh = 4 | 1. Calculate the distance Lily runs in the first 4 hours: - Distance = Speed × Time = 12 km/h × 4 h = 48 km 2. Calculate the distance Lily runs in the next 4 hours: - Distance = Speed × Time = 6 km/h × 4 h = 24 km 3. Add the distances from both periods to find the total distance Lily runs in 8 hours: - Total Distance = 48 km + 24 km = 72 km \boxed{72 km}
+dKV-Cache-Decode, Refresh=16 | 1. Calculate the distance Lily runs in the first 4 hours: 12 km/hour * 4 hours = 48 km 2. Calculate the distance Lily runs in the next 4 hours: 6 km/hour * 4 hours = 24 km 3. Add the distances from the first 4 hours and the next 4 hours to find the total distance she runs: 48 km + 24 km = 72 km Therefore, Lily can run \boxed{72} kilometers in 8 hours.
+dKV-Cache-Greedy, Refresh = 2 | To determine how many kilometers Lily can run in 8 hours, we need to break down her running schedule and sum the distances. First, calculate the distance she runs at 12 kilometers per hour for 4 hours: 12*4=48 After 4 hours, she runs 6 kilometers per hour for the remaining 4 hours: 6*4=24 Now, add the distances: 48+24=72 \boxed{72}
+dKV-Cache-Greedy, Refresh = 4 (random) | For the first 4 hours Lily runs at 12 kilometers per hour, so she runs 12 * 4 = 48 kilometers. 8 hours - 4 hours are left after the first 4 (8 - 4 = 4 hours). For the next 4 hours, she runs at 6 kilometers per hour, so she runs 6 * 4 = 24 kilometers. Adding the two distances together, Lily can run 48 + 24 = 72 kilometers in 8 hours. Answer: \boxed{72}
+
+### Table 7 : Case study on Dream-Instruct-7B. Request: Write a story that ends with "Finally, Joey and Rachel get married."
+
+Model | Generate Text (L=256, T=256)
+Dream-Instruct-7B (Entropy) | Once upon a time, there was a young man named Joey who lived in a small town in the middle of nowhere. He was a kind and gentle soul who loved to sing and play the guitar. One day, he met a beautiful girl named Rachel who was also a talented singer and musician. They fell in love and decided to get married. However, there was a problem. Joey’s parents were against the marriage because they didn’t know Rachel well enough. They thought that she was not a good match for their son. Rachel, on the other hand, was not worried about Joey’s parents’ opinion. She knew that she loved Joey and that he was the one for her. She decided to try and win over Joey’s parents by showing them how much she cared about him. She started by cooking for them and inviting them to her house for dinner. She also took them on a trip to the mountains where they could enjoy the scenery and the fresh air. After a while, Joey’s parents started to see Rachel in a different light. They realized that she was a good person and that she loved Joey very much. They decided to give their blessing to the marriage. Finally, Joey and Rachel got married and lived happily ever after.
+dKV-Cache-Decode, Refresh = 16 | Once upon a time, in a small town called New York, there lived a young man named Joey and a young woman named Rachel. They were both very happy with their lives, but they were also very different from each other. Joey was a very outgoing person who loved to be around people, while Rachel was a very introverted person who loved to be alone. One day, Joey and Rachel met at a coffee shop and fell in love. They spent hours talking and laughing together, and they realized that they were perfect for each other. They decided to be together and build their lives together. As the years went by, Joey and Rachel grew closer and closer. They shared their dreams and their fears, and they supported each other through thick and thin. They were a perfect match, and they knew that they were meant to be together. Finally, Joey and Rachel got married. They had a beautiful wedding with all their friends and family in attendance. They were so happy to be together, and they knew that they would always be together.
+dKV-Cache-Prefill | Once upon a time, in a small town called New York, there lived a young man named Joey. Joey was a kind and caring person who always tried to help others. He had a beautiful girlfriend named Rachel, who was also kind and caring. They were in love with each other and wanted to spend their lives together. One day, Joey and Rachel decided to get married. They planned their wedding for a long time, and everyone in the town was excited to attend. On the day of the wedding, Joey and Rachel exchanged vows and promised to love each other forever. After the wedding, Joey and Rachel moved into a beautiful house in the countryside. They were happy and content with their lives, and they had two children, a boy and a gi
+
+### Table 8 : Case study on Dream-Instruct-7B. Question: Lily can run 12 kilometers per hour for 4 hours. After that, she runs 6 kilometers per hour. How many kilometers can she run in 8 hours?
+
+Model | Generate Text (L=128, T=128)
+Dream-Instruct-7B (Entropy) | In the first 4 hours, Lily runs 12 kilometers per hour, so she runs a total of 12 * 4 = 48 kilometers. In the next 4 hours, Lily runs 6 kilometers per hour, so she runs a total of 6 * 4 = 24 kilometers. Therefore, in 8 hours, Lily can run a total of 48 + 24 = 72 kilometers. #### 72
+dKV-Cache-Decode, Refresh = 4 | In the first 4 hours, Lily can run 12 kilometers per hour, so she can run a total of 12 * 4 = 48 kilometers. In the next 4 hours, Lily can run 6 kilometers per hour, so she can run a total of 6 * 4 = 24 kilometers. Therefore, in 8 hours, Lily can run a total of 48 + 24 = 72 kilometers. #### 72
+dKV-Cache-Decode, Refresh = 16 | In the first 4 hours, Lily runs 12 kilometers per hour, so she runs a total of 12 * 4 = 48 kilometers. In the next 4 hours, Lily runs 6 kilometers per hour, so she runs a total of 6 * 4 = 24 kilometers. Therefore, in 8 hours, Lily can run a total of 48 + 24 = 72 kilometers. The answer is: 72
+dKV-Cache-Prefill, No refresh | In the first 4 hours, Lily runs 12 kilometers per hour, so she runs a total of 12\times 4=48 kilometers. In the next 4 hours, she runs 6 kilometers per hour, so she runs a total of 6\times 4=24 kilometers. Therefore, in 8 hours, Lily can run a total of 48+24=\textbackslash boxed\{72\} kilometers.The answer is: 72
+

@@ -1,0 +1,128 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# DLLM-TTS: Block Discrete Diffusion Language Model for Text-to-Speech Synthesis
+
+record AW0239 | arXiv:2608.00011 | first version 2026-06-19
+
+**Abstract.** Current text-to-speech systems face a trade-off: autoregres- sive codec language models produce highly intelligible speech but require large-scale models and training data and decode tokens sequentially, while non-autoregressive approaches im- prove speed at the cost of linguistic accuracy. We present DLLM-TTS, a framework that formulates TTS as conditional block discrete diffusion over X-Codec2 neural audio codec to- kens. The model decomposes sequences into blocks and applies masked diffusion within each block while processing blocks se- quentially, learning both local acoustic coherence and global text-speech alignment. During inference, parallel token pre- diction within blocks enables efficient generation with a real- time factor (RTF) of 0.15. A 0.6B-parameter model trained on 20K hours achieves competitive performance on the Seed- TTS-eval benchmark, demonstrating that block discrete diffu- sion language models enable practical and data-efficient speech synthesis with parallel generation.
+
+## All captions
+
+- Figure 1: Overview of DLLM-TTS. Text and reference codec tokens are concatenated with generation text and [MASK] L targets, then processed by the Block Discrete Diffusion Transformer using staircase attention (bidirectional/causal). Each block is iteratively d
+- Table 1: Model architecture hyperparameters.
+- Table 2: Results on Seed-TTS-eval (English). MOS collected from 25 listeners under the CodecMOS-Accent protocol. Bold : best. Underline : second best.
+- Figure 2: Visualization of the block-wise denoising process. ( B=32 , T=32 )
+- Table 3: Ablation studies. Top : denoising steps T (at B=32 ). Bottom : block size B (at T=B ). Bold : best.
+
+## Tables as text
+
+### Table 1: Model architecture hyperparameters.
+
+Hyperparameter | Value
+Layers | 28
+Hidden dim ( d ) | 896
+Attention heads ( H ) | 14
+Head dim ( d/H ) | 64
+Text vocab (Qwen tokenizer) | 151 936
+Codec vocab ( |\mathcal{V}| ) | 6 561
+Max sequence length | 2 048
+Block size ( B ) | 32
+
+### Table 2: Results on Seed-TTS-eval (English). MOS collected from 25 listeners under the CodecMOS-Accent protocol. Bold : best. Underline : second best.
+
+Model | Params | WER \downarrow | CER \downarrow | SIM \uparrow | MOS \uparrow
+Autoregressive Models
+LLASA-3B | 3B | 3.14 | 1.59 | 0.579 | 4.28
+Qwen2.5-Omni | 7B | 2.72 | 1.70 | 0.632 | 3.85
+Non-Autoregressive Models
+F5-TTS | 0.3B | 2.00 | 1.53 | 0.670 | 4.05
+MaskGCT | – | 2.62 | 2.27 | 0.717 | 3.76
+OpenAudio-s1-mini | 0.5B | 1.94 | 1.18 | 0.550 | 4.29
+Hybrid Models
+DiTAR | 0.6B | 1.69 | 1.02 | 0.735 | 4.20
+CosyVoice3 | 0.5B | 2.02 | 1.16 | 0.718 | 4.10
+IndexTTS2 | 1.5B | 2.23 | 1.08 | 0.706 | 3.98
+Block Diffusion (Ours)
+DLLM-TTS | 0.6B | 2.25 | 1.05 | 0.750 | 4.25
+
+### Table 3: Ablation studies. Top : denoising steps T (at B=32 ). Bottom : block size B (at T=B ). Bold : best.
+
+Config | WER \downarrow | CER \downarrow | SIM \uparrow
+Denoising steps ( T ), B=32
+T{=}8 | 14.58 | 7.86 | 0.748
+T{=}16 | 3.84 | 1.25 | 0.765
+T{=}32 | 2.25 | 1.05 | 0.750
+T{=}64 | 8.83 | 6.76 | 0.746
+Block size ( B ), T=B
+B{=}8 | 4.19 | 2.06 | 0.725
+B{=}16 | 3.04 | 1.43 | 0.746
+B{=}32 | 2.25 | 1.05 | 0.750
+

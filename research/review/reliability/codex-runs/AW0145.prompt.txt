@@ -1,0 +1,193 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Accelerating Diffusion Large Language Models with SlowFast Sampling: The Three Golden Principles
+
+record AW0145 | arXiv:2506.10848 | first version 2025-06-12
+
+**Abstract.** Diffusion-based language models (dLLMs) have emerged as a promising alternative to traditional autoregressive LLMs by enabling parallel token generation and significantly reducing inference latency. However, existing sampling strategies for dLLMs, such as confidence-based or semi-autoregressive decoding, often suffer from static behavior, leading to suboptimal efficiency and limited flexibility. In this paper, we propose SlowFast Sampling, a novel dynamic sampling strategy that adaptively alternates between exploratory and accelerated decoding stages. Our method is guided by three golden principles: certainty principle, convergence principle, and positional principle, which govern when and where tokens can be confidently and efficiently decoded. We further integrate our strategy with dLLM-Cache to reduce redundant computation. Extensive experiments across benchmarks and models show that SlowFast Sampling achieves up to 15.63$\times$ speedup on LLaDA with minimal accuracy drop, and up to 34.22$\times$ when combined with caching. Notably, our approach outperforms strong autoregressive baselines like LLaMA3 8B in throughput, demonstrating that well-designed sampling can unlock the full potential of dLLMs for fast and high-quality generation.
+
+## All captions
+
+- Figure 1: The Three Golden Principles for sampling in diffusion LLMs. (a) Convergence Principle : As decoding proceeds, the confidence values of tokens largely converge to high values, while a few tokens converge to lower values. (b) The confidence map over 25
+- Figure 2: Throughput and accuracy comparison on GPQA (8-shot, Length=1024) on LLaDA with our method, including (1) vanilla decoding, (2) SlowFast Sampling , and (3) SlowFast Sampling further enhanced by dLLM-Cache . Compared to the vanilla setting, SlowFast Sa
+- Figure 3: Overview of the SlowFast Sampling Pipeline. The method alternates between a Slow (Exploratory) stage and a Fast (Accelerated) stage for efficient token generation. In the Slow phase (left), the model conducts cautious decoding by selecting top- k hig
+- Table 1: Performance of LLaDA 8B and Dream 7B with SlowFast Sampling on 8 benchmarks.
+- Table 2: Performance of LLaDA 8B and Dream 7B with SlowFast Sampling and dLLM-Cache.
+- Table 3: Comparison of Sampling Strategies on inference efficiency and generation performance.
+- Table 4: Comparison of LLaDA 8B Base with other representative LLMs . Compared to LLaMA3 8B, LLaDA with SlowFast Sampling and dLLM-Cache achieves significantly higher throughput (up to +20.96 TPS) while maintaining comparable accuracy.
+- Figure 4: Case study of sentence generation with SlowFast Sampling. The figure illustrates the dynamic evolution of the confidence map across three phases, where exploratory and accelerated decoding are alternated. Blue tokens denote those generated in the cur
+- Figure 5: The sensitivity study on hyper-parameters in the stability-Check. Accuracy and TPS vary with K_{max} , \sigma^{2}_{stable} , and W_{hist} . The chosen defaults ( K_{max}=8 , \sigma^{2}_{stable}=1.0 , W_{hist}=2 ) offer strong speed-quality trade-offs
+- Figure 6: Effect of Confidence Thresholds on GSM8K. \tau_{min\_conf} controls the exploratory range, and \tau_{high\_conf} balances accuracy and speed during fast decoding. Other hyperparameters follow the default settings in Section 4.2 .
+- Table 5: Experimental settings for LLaDA across benchmarks.
+- Table 6: Experimental settings for Dream across benchmarks.
+- Figure 7: Parameter Robustness and Sensitivity Across Multiple Benchmarks. Figure shows sensitivity across MATH, MBPP, and HumanEval. Our setting is shown to be highly robust across all tasks.
+- Figure 8: Parameter Stability Across Model Variants on Dream 7B. Sensitivity analysis for \tau_{min\_conf} , \tau_{high\_conf} , and \sigma^{2}_{stable} was conducted on Dream 7B using the GSM8K benchmark. The findings confirm that the unified set of hyperpara
+- Figure 9: Performance Efficiency Trade-off on GPQA.
+- Figure 10: Case Study I: Dynamic Span Coverage During Positional Jumps. This case study illustrates a scenario where the model exhibits a positional jump between decoded tokens, confirming that the dynamic search window of SlowFast successfully identifies and 
+- Figure 11: Case Study II: SlowFast’s Adaptive Response to Induced Non-Contiguous Blocks. This case study demonstrates the adaptive capability of the SlowFast framework. By manually inducing a positional jump, the figure shows how the dynamic adjustment mechani
+- Algorithm 1 SlowFast Sampling Strategy
+
+## Tables as text
+
+### Table 1: Performance of LLaDA 8B and Dream 7B with SlowFast Sampling on 8 benchmarks.
+
+Task | Method | Inference Efficiency | Performance | Method | Inference Efficiency | Performance
+TPS \uparrow | Speed \uparrow | Score \uparrow | TPS \uparrow | Speed \uparrow | Score \uparrow
+Mathematics & Science
+GSM8K | LLaDA | 4.55 | 1.00 \times | 69.83 | Dream | 8.16 | 1.00 \times | 77.02
++ Fast-dLLM (Parallel) | 7.45 +2.90 | 1.64 \times_{{\color[rgb]{0,0.7,0}+0.64}} | 69.60 -0.23 | + Fast-dLLM (Parallel) | 12.72 +4.56 | 1.55 \times_{{\color[rgb]{0,0.7,0}+0.55}} | 73.09 -3.93
++ SlowFast | 14.57 +10.02 | 3.20 \times_{{\color[rgb]{0,0.7,0}+2.20}} | 69.59 -0.27 | + SlowFast | 17.15 +8.99 | 2.10 \times_{{\color[rgb]{0,0.7,0}+1.10}} | 76.50 -0.52
+GPQA | LLaDA | 3.31 | 1.00 \times | 31.47 | Dream | 5.43 | 1.00 \times | 35.93
++ Fast-dLLM (Parallel) | 11.72 +8.41 | 3.54 \times_{{\color[rgb]{0,0.7,0}+2.54}} | 32.13 +0.66 | + Fast-dLLM (Parallel) | 15.88 +10.45 | 2.92 \times_{{\color[rgb]{0,0.7,0}+1.92}} | 31.01 -4.92
++ SlowFast | 16.36 +13.05 | 4.94 \times_{{\color[rgb]{0,0.7,0}+3.94}} | 31.91 +0.44 | + SlowFast | 16.56 +11.13 | 3.05 \times_{{\color[rgb]{0,0.7,0}+2.05}} | 35.94 +0.01
+Math | LLaDA | 5.14 | 1.00 \times | 30.16 | Dream | 8.48 | 1.00 \times | 38.68
++ Fast-dLLM (Parallel) | 8.94 +3.80 | 1.74 \times_{{\color[rgb]{0,0.7,0}+0.74}} | 30.52 +0.36 | + Fast-dLLM (Parallel) | 22.51 +14.03 | 2.65 \times_{{\color[rgb]{0,0.7,0}+1.65}} | 34.14 -4.54
++ SlowFast | 11.27 +6.13 | 2.19 \times_{{\color[rgb]{0,0.7,0}+1.19}} | 29.64 -0.52 | + SlowFast | 23.00 +14.52 | 2.71 \times_{{\color[rgb]{0,0.7,0}+1.71}} | 38.24 -0.44
+General Tasks
+MMLU-pro | LLaDA | 9.16 | 1.00 \times | 23.30 | Dream | 14.97 | 1.00 \times | 24.14
++ Fast-dLLM (Parallel) | 15.62 +6.46 | 1.71 \times_{{\color[rgb]{0,0.7,0}+0.71}} | 23.50 +0.20 | + Fast-dLLM (Parallel) | 25.50 +10.53 | 1.70 \times_{{\color[rgb]{0,0.7,0}+0.70}} | 19.53 -4.61
++ SlowFast | 23.14 +13.98 | 2.53 \times_{{\color[rgb]{0,0.7,0}+1.53}} | 23.85 +0.55 | + SlowFast | 22.80 +7.83 | 1.52 \times_{{\color[rgb]{0,0.7,0}+0.52}} | 22.91 -1.23
+MMLU | LLaDA | 5.02 | 1.00 \times | 62.11 | Dream | 8.46 | 1.00 \times | 72.61
++ Fast-dLLM (Parallel) | 12.94 +7.92 | 2.58 \times_{{\color[rgb]{0,0.7,0}+1.58}} | 61.67 -0.44 | + Fast-dLLM (Parallel) | 17.39 +8.93 | 2.05 \times_{{\color[rgb]{0,0.7,0}+1.05}} | 64.59 -8.02
++ SlowFast | 16.81 +11.79 | 3.35 \times_{{\color[rgb]{0,0.7,0}+2.35}} | 66.56 +4.45 | + SlowFast | 18.43 +9.97 | 2.18 \times_{{\color[rgb]{0,0.7,0}+1.18}} | 75.13 +2.52
+BBH | LLaDA | 4.04 | 1.00 \times | 44.97 | Dream | 6.93 | 1.00 \times | 51.83
++ Fast-dLLM (Parallel) | 10.73 +6.69 | 2.66 \times_{{\color[rgb]{0,0.7,0}+1.66}} | 44.13 -0.84 | + Fast-dLLM (Parallel) | 27.84 +20.91 | 4.01 \times_{{\color[rgb]{0,0.7,0}+3.01}} | 52.28 +0.45
++ SlowFast | 21.19 +17.15 | 5.24 \times_{{\color[rgb]{0,0.7,0}+4.24}} | 44.60 -0.37 | + SlowFast | 28.14 +21.21 | 4.06 \times_{{\color[rgb]{0,0.7,0}+3.06}} | 50.55 -1.28
+Code
+MBPP | LLaDA | 4.98 | 1.00 \times | 40.80 | Dream | 8.92 | 1.00 \times | 54.20
++ Fast-dLLM (Parallel) | 8.15 +3.17 | 
+
+### Table 2: Performance of LLaDA 8B and Dream 7B with SlowFast Sampling and dLLM-Cache.
+
+Task | Method | Inference Efficiency | Performance | Method | Inference Efficiency | Performance
+TPS \uparrow | Speed(TPS) \uparrow | Score \uparrow | TPS \uparrow | Speed(TPS) \uparrow | Score \uparrow
+Mathematics & Science
+GSM8K | LLaDA | 4.55 | 1.00 \times | 69.83 | Dream | 8.16 | 1.00 \times | 77.02
++ Fast-dLLM (Parallel+Cache) | 15.50 +10.95 | 3.41 \times_{{\color[rgb]{0,0.7,0}+2.41}} | 68.77 -1.06 | + Fast-dLLM (Parallel+Cache) | 31.07 +22.91 | 3.81 \times_{{\color[rgb]{0,0.7,0}+2.81}} | 69.45 -7.57
++ SlowFast + Cache | 26.99 +22.44 | 5.93 \times_{{\color[rgb]{0,0.7,0}+4.93}} | 69.60 -0.23 | + SlowFast + Cache | 46.17 +38.01 | 5.66 \times_{{\color[rgb]{0,0.7,0}+4.66}} | 72.10 -4.92
+GPQA | LLaDA | 3.31 | 1.00 \times | 31.47 | Dream | 5.43 | 1.00 \times | 35.93
++ Fast-dLLM (Parallel+Cache) | 30.21 +26.90 | 9.13 \times_{{\color[rgb]{0,0.7,0}+8.13}} | 33.03 +1.56 | + Fast-dLLM (Parallel+Cache) | 40.98 +35.55 | 7.54 \times_{{\color[rgb]{0,0.7,0}+6.54}} | 32.37 -3.56
++ SlowFast + Cache | 29.06 +25.75 | 8.78 \times_{{\color[rgb]{0,0.7,0}+7.78}} | 33.48 +2.01 | + SlowFast + Cache | 39.63 +34.20 | 7.30 \times_{{\color[rgb]{0,0.7,0}+6.30}} | 34.82 -1.11
+Math | LLaDA | 5.14 | 1.00 \times | 30.16 | Dream | 8.48 | 1.00 \times | 38.68
++ Fast-dLLM (Parallel+Cache) | 21.50 +16.36 | 4.18 \times_{{\color[rgb]{0,0.7,0}+3.18}} | 28.34 -1.82 | + Fast-dLLM (Parallel+Cache) | 46.80 +38.32 | 5.52 \times_{{\color[rgb]{0,0.7,0}+4.52}} | 33.24 -5.44
++ SlowFast + Cache | 26.50 +21.36 | 5.16 \times_{{\color[rgb]{0,0.7,0}+4.16}} | 29.42 -0.74 | + SlowFast + Cache | 56.44 +47.96 | 6.66 \times_{{\color[rgb]{0,0.7,0}+5.66}} | 37.10 -1.58
+General Tasks
+MMLU-pro | LLaDA | 9.16 | 1.00 \times | 23.30 | Dream | 14.97 | 1.00 \times | 24.14
++ Fast-dLLM (Parallel+Cache) | 27.85 +18.69 | 3.04 \times_{{\color[rgb]{0,0.7,0}+2.04}} | 27.66 +4.36 | + Fast-dLLM (Parallel+Cache) | 42.73 +27.76 | 2.85 \times_{{\color[rgb]{0,0.7,0}+1.85}} | 22.57 -1.57
++ SlowFast + Cache | 33.38 +24.22 | 3.64 \times_{{\color[rgb]{0,0.7,0}+2.64}} | 25.53 +2.23 | + SlowFast + Cache | 43.50 +28.53 | 2.91 \times_{{\color[rgb]{0,0.7,0}+1.91}} | 21.81 -2.33
+MMLU | LLaDA | 5.02 | 1.00 \times | 62.11 | Dream | 8.46 | 1.00 \times | 72.61
++ Fast-dLLM (Parallel+Cache) | 32.36 +27.34 | 6.45 \times_{{\color[rgb]{0,0.7,0}+5.45}} | 61.45 -0.66 | + Fast-dLLM (Parallel+Cache) | 44.73 +36.27 | 5.28 \times_{{\color[rgb]{0,0.7,0}+4.28}} | 64.46 -8.15
++ SlowFast + Cache | 38.42 +33.40 | 7.65 \times_{{\color[rgb]{0,0.7,0}+6.65}} | 61.20 -0.91 | + SlowFast + Cache | 44.18 +35.72 | 5.22 \times_{{\color[rgb]{0,0.7,0}+4.22}} | 71.57 -1.04
+BBH | LLaDA | 4.04 | 1.00 \times | 44.97 | Dream | 6.93 | 1.00 \times | 51.83
++ Fast-dLLM (Parallel+Cache) | 22.56 +18.52 | 5.58 \times_{{\color[rgb]{0,0.7,0}+4.58}} | 45.35 +0.38 | + Fast-dLLM (Parallel+Cache) | 57.02 +50.09 | 8.22 \times_{{\color[rgb]{0,0.7,0}+7.22}} | 44.95 -6.88
+ | + SlowFast + Cache | 36.04 +32.00 | 8.92 \times_{{\color[rgb]{0,0.7,0}+7.92}} | 44.81 -0.16 | + SlowFast + Cache 
+
+### Table 3: Comparison of Sampling Strategies on inference efficiency and generation performance.
+
+Sampling Strategy | TPS \uparrow | Score \uparrow
+Autoregressive (AR) | 5.25 | 60.80
+Diffusion Sampling | 4.55 | 69.83
+Semi-Autoregressive | 5.44 | 66.41
+SlowFast Sampling | 9.87 | 69.59
+
+### Table 4: Comparison of LLaDA 8B Base with other representative LLMs . Compared to LLaMA3 8B, LLaDA with SlowFast Sampling and dLLM-Cache achieves significantly higher throughput (up to +20.96 TPS) while maintaining comparable accuracy.
+
+Method | TPS \uparrow | Speed(TPS) \uparrow | Accuracy \uparrow
+LLaMA3 8B ( Dubey et al., 2024 ) | 33.79 | 21.12 \times | 31.92
+LLaDA | 1.60 -32.19 | 1.00 \times | 31.47 -0.45
++ SlowFast | 25.00 -8.79 | 15.63 \times | 31.47 -0.45
++ SlowFast + Cache ( K_{p}=100,K_{r}=5 ) | 48.80 +15.01 | 30.50 \times | 30.13 -1.79
++ SlowFast + Cache ( K_{p}=500,K_{r}=30 ) | 54.75 +20.96 | 34.22 \times | 28.79 -3.13
+
+### Table 5: Experimental settings for LLaDA across benchmarks.
+
+Task | Steps | Block Length | Generation Length | Few-shot
+MMLU | 3 | 3 | 3 | 5
+MMLU-pro | 256 | 256 | 256 | 0
+GSM8K | 256 | 256 | 256 | 4
+Math | 256 | 256 | 256 | 0
+GPQA | 256 | 256 | 256 | 5
+HumanEval | 256 | 256 | 256 | 0
+MBPP | 256 | 256 | 256 | 3
+BBH | 256 | 256 | 256 | 3
+
+### Table 6: Experimental settings for Dream across benchmarks.
+
+Task | Steps | Generation Length | Few-shot
+MMLU | 3 | 3 | 5
+MMLU-pro | 256 | 256 | 0
+GSM8K | 256 | 256 | 8
+Math | 256 | 256 | 4
+GPQA | 256 | 256 | 5
+HumanEval | 256 | 256 | 0
+MBPP | 256 | 256 | 3
+BBH | 256 | 256 | 3
+

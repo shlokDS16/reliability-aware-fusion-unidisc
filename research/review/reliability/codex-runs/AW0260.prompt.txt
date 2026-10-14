@@ -1,0 +1,202 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# MMaDA: Multimodal Large Diffusion Language Models
+
+record AW0260 | arXiv:2505.15809 | first version 2025-05-21
+
+**Abstract.** We introduce MMaDA, a novel class of multimodal diffusion foundation models designed to achieve superior performance across diverse domains such as textual reasoning, multimodal understanding, and text-to-image generation. The approach is distinguished by three key innovations: (i) MMaDA adopts a unified diffusion architecture with a shared probabilistic formulation and a modality-agnostic design, eliminating the need for modality-specific components. This architecture ensures seamless integration and processing across different data types. (ii) We implement a mixed long chain-of-thought (CoT) fine-tuning strategy that curates a unified CoT format across modalities. By aligning reasoning processes between textual and visual domains, this strategy facilitates cold-start training for the final reinforcement learning (RL) stage, thereby enhancing the model's ability to handle complex tasks from the outset. (iii) We propose UniGRPO, a unified policy-gradient-based RL algorithm specifically tailored for diffusion foundation models. Utilizing diversified reward modeling, UniGRPO unifies post-training across both reasoning and generation tasks, ensuring consistent performance improvements. Experimental results demonstrate that MMaDA-8B exhibits strong generalization capabilities as a unified multimodal foundation model. It surpasses powerful models like LLaMA-3-7B and Qwen2-7B in textual reasoning, outperforms Show-o and SEED-X in multimodal understanding, and excels over SDXL and Janus in text-to-image generation. These achievements highlight MMaDA's effectiveness in bridging the gap between pretraining and post-training within unified diffusion architectures, providing a comprehensive framework for future research and development. We open-source our code and trained models at: https://github.com/Gen-Verse/MMaDA
+
+## All captions
+
+- Table 1 : Specific design choices employed by different unified multimodal foundation model families, including their core loss functions. The next-token prediction loss is defined as \mathcal{L}_{\text{NTP}}=\mathbb{E}_{x_{i}}\left[-\log P_{\theta}(x_{i}\mid 
+- Figure 1 : Qualitative comparison across three tasks (more results in section ˜ 10 and section ˜ 11 .).
+- Figure 2 : An overview of MMaDA pipeline.
+- Algorithm 1 UniGRPO Policy Gradient Optimization
+- Table 2 : Evaluation on Multimodal Understanding Benchmarks.
+- Table 3 : Evaluation on Image Generation Benchmarks.
+- Table 4 : Evaluation on LLM Benchmarks.
+- Figure 3 : Comparison of different masking strategies on GSM8K reward trends during training.
+- Figure 4 : Comparison of different random masking strategies on GSM8K reward trends during training.
+- Figure 5 : Qualitative Illustration of Synergy Across Modalities.
+- Table 5 : Ablations on Mixed Long-CoT fine-tuning and UniGRPO
+- Figure 6 : Key Performance Metrics Across Three Tasks.
+- Table 6 : Generation performance of MMaDA under different denoising steps. * Metrics: CLIP Score for image generation and multimodal understanding, MMLU accuracy for text generation.
+- Figure 7 : Inpainting Task Extension.
+
+## Tables as text
+
+### Table 1 : Specific design choices employed by different unified multimodal foundation model families, including their core loss functions. The next-token prediction loss is defined as \mathcal{L}_{\text{NTP}}=\mathbb{E}_{x_{i}}\left[-\log P_{\theta}(x_{i}\mid x_{<i})\right] , representing the standa
+
+ | AR
+(One Model)
+AR + Diffusion
+(Two Models)
+AR + Diffusion
+(One Model)
+Ours MMaDA
+(One Model)
+Network Architecture
+Language | AR | AR | AR | Diffusion
+Vision | AR | Diffusion | Diffusion | Diffusion
+Pre-training
+Loss for Language | \mathcal{L}_{\text{NTP}} | \mathcal{L}_{\text{NTP}} | \mathcal{L}_{\text{NTP}} | \mathcal{L}_{\text{Diff-disc}}
+Loss for Vision | \mathcal{L}_{\text{NTP}} | \mathcal{L}_{\text{Diff-cont}} | \mathcal{L}_{\text{Diff-cont}} or \mathcal{L}_{\text{Diff-disc}} | \mathcal{L}_{\text{Diff-disc}}
+Sampling
+Language | x_{i}\sim P_{\theta}(x_{i}\mid x_{<i}) | x_{i}\sim P_{\theta}(x_{i}\mid x_{<i}) | x_{i}\sim P_{\theta}(x_{i}\mid x_{<i}) | x_{t-1}=\mathcal{F}_{\theta}(x_{t},t)
+Vision | x_{i}\sim P_{\theta}(x_{i}\mid x_{<i}) | x_{t-1}=\mathcal{F}_{\theta}(x_{t},t) | x_{t-1}=\mathcal{F}_{\theta}(x_{t},t) | x_{t-1}=\mathcal{F}_{\theta}(x_{t},t)
+Language Scheduler | - | - | - | Semi-AR Remask [ 22 ]
+Vision Scheduler | - | DDPM [ 23 ] | DDPM [ 23 ] /Cosine [ 24 ] | Cosine Remask [ 24 ]
+Post-Training
+Language CoT | - | - | - | Mixed Long-CoT
+Language RL | - | - | - | UniGRPO with Diversified RM
+Vision CoT | - | - | - | Mixed Long-CoT
+Vision RL | DPO [ 25 ] | - | - | UniGRPO with Diversified RM
+Tasks
+Und. (with Reasoning) | ✓(✗) | ✓(✗) | ✓(✗) | ✓(✓)
+Image Gen. (with Reasoning) | ✓(✗) | ✓(✗) | ✓(✗) | ✓(✓)
+Text Gen. (with Reasoning) | ✗(✗) | ✗(✗) | ✗(✗) | ✓(✓)
+Representative Models | Emu3 [ 25 ] , Janus [ 13 , 14 ] | DreamLLM [ 16 ] | Transfusion [ 21 ] , Show-o [ 20 ] | MMaDA (Ours)
+
+### Table 2 : Evaluation on Multimodal Understanding Benchmarks.
+
+Model | POPE \uparrow | MME \uparrow | Flickr30k \uparrow | VQAv2 {}_{\text{(test)}} \uparrow | GQA \uparrow | MMMU \uparrow | MMB \uparrow | SEED \uparrow
+Understanding-Only |  | 
+LLaVA-v1.5 [ 32 ] | 85.9 | 1510.7 | - | 78.5 | 62.0 | 35.4 | 64.3 | 58.6
+InstructBLIP [ 33 ] | 78.9 | 1212.8 | - | - | 49.5 | - | - | -
+Qwen-VL-Chat [ 34 ] | - | 1487.5 | - | 78.2 | 57.5 | - | 60.6 | 58.2
+mPLUG-Owl2 [ 35 ] | 85.8 | 1450.2 | - | 79.4 | 56.1 | - | - | -
+LLaVA-Phi [ 36 ] | 85.0 | 1335.1 | - | 71.4 | - | - | 59.8 | -
+Unified Understanding & Generation |  | 
+DreamLLM [ 16 ] | - | - | - | 72.9 | - | - | - | -
+SEED-X [ 19 ] | 84.2 | 1435.7 | 52.3 | - | 47.9 | 35.6 | - | -
+Chameleon [ 8 ] | - | - | 74.7 | 66.0 | - | - | - | -
+LWM [ 9 ] | 75.2 | 948.4 | - | 55.8 | 44.8 | - | - | -
+Emu [ 11 ] | - | - | 77.4 | 57.2 | - | - | - | -
+Show-o [ 20 ] | 80.0 | 1097.2 | 62.5 | 69.4 | 58.0 | 26.7 | - | -
+Gemini-Nano-1 [ 12 ] | - | - | - | 62.7 | - | 26.3 | - | -
+MMaDA (Ours) | 86.1 | 1410.7 | 67.6 | 76.7 | 61.3 | 30.2 | 68.5 | 64.2
+
+### Table 3 : Evaluation on Image Generation Benchmarks.
+
+Model | Wise
+(Cultural)
+Image
+Reward
+CLIP
+Score
+Single Obj. | Two Obj. | Counting | Colors | Position | Color Attr. | Overall
+Generation-Only | 
+LlamaGen [ 58 ] | - | 0.79 | 13.43 | 0.71 | 0.34 | 0.21 | 0.58 | 0.07 | 0.04 | 0.32
+SDv1.5 [ 55 ] | 0.34 | 0.84 | 23.54 | 0.97 | 0.38 | 0.35 | 0.76 | 0.04 | 0.06 | 0.43
+SDv2.1 [ 55 ] | 0.30 | 0.95 | 27.41 | 0.98 | 0.51 | 0.44 | 0.85 | 0.07 | 0.17 | 0.50
+DALL-E 2 [ 56 ] | - | 0.83 | 25.20 | 0.94 | 0.66 | 0.49 | 0.77 | 0.10 | 0.19 | 0.52
+SDXL [ 57 ] | 0.43 | 1.13 | 32.12 | 0.98 | 0.74 | 0.39 | 0.85 | 0.15 | 0.23 | 0.55
+Unified Understanding & Generation |  |  |  | 
+DreamLLM [ 16 ] | - | 0.76 | 18.33 | - | - | - | - | - | - | -
+SEED-X [ 19 ] | - | 0.77 | 23.15 | 0.97 | 0.58 | 0.26 | 0.80 | 0.19 | 0.14 | 0.49
+Chameleon [ 8 ] | - | 0.83 | 20.32 | - | - | - | - | - | - | 0.39
+LWM [ 9 ] | - | 0.78 | 26.21 | 0.93 | 0.41 | 0.46 | 0.79 | 0.09 | 0.15 | 0.47
+Emu [ 11 ] | - | 0.81 | 22.29 | - | - | - | - | - | - | 
+Show-o [ 20 ] | 0.28 | 0.92 | 28.94 | 0.95 | 0.52 | 0.49 | 0.82 | 0.11 | 0.28 | 0.53
+Janus [ 13 ] | 0.16 | 1.03 | 29.45 | 0.97 | 0.68 | 0.30 | 0.84 | 0.46 | 0.42 | 0.61
+Gemini-Nano-1 [ 12 ] | - | 0.89 | 24.58 | - | - | - | - | - | - | -
+VAR-GPT [ 59 ] | - | 0.94 | 28.85 | 0.96 | 0.53 | 0.48 | 0.83 | 0.13 | 0.21 | 0.53
+MMaDA (Ours) | 0.67 | 1.15 | 32.46 | 0.99 | 0.76 | 0.61 | 0.84 | 0.20 | 0.37 | 0.63
+
+### Table 4 : Evaluation on LLM Benchmarks.
+
+Model | Arch | MMLU | ARC-C | TruthfulQA | GSM8K | MATH | GPQA
+LLaMA-2-7B | AR | 45.9 | 46.3 | 39.0 | 14.3 | 3.2 | 25.7
+LLaMA-3-8B | AR | 64.5 | 53.1 | 44.0 | 53.1 | 15.1 | 25.9
+Qwen2-7B | AR | 70.3 | 60.6 | 54.2 | 80.2 | 43.5 | 30.8
+LLaDA-8B | Diffusion | 65.9 | 47.9 | 46.4 | 70.7 | 27.3 | 26.1
+MMaDA-8B(Ours) | Diffusion | 68.4 | 57.4 | 43.1 | 73.4 | 36.0 | 28.4
+
+### Table 5 : Ablations on Mixed Long-CoT fine-tuning and UniGRPO
+
+Model | GSM8K | MATH500 | GeoQA | CLEVR | CLIP Score | ImageReward
+MMaDA After Stage 1 | 17.4 | 4.2 | 8.3 | 10.3 | 23.1 | 0.69
++ Mixed Long-CoT Finetuning | 65.2 | 26.5 | 15.9 | 27.5 | 29.4 | 0.84
++ UniGRPO ( MMaDA ) | 73.4 | 36.0 | 21.0 | 34.5 | 32.5 | 1.15
+
+### Table 6 : Generation performance of MMaDA under different denoising steps. * Metrics: CLIP Score for image generation and multimodal understanding, MMLU accuracy for text generation.
+
+Task | Denoising Steps | Metrics*
+Image Generation | 1024 | 32.8
+50 | 32.0
+15 | 31.7
+Multimodal Understanding | 1024 | 35.5
+512 | 36.1
+256 | 35.4
+Text Generation | 1024 | 66.9
+512 | 66.3
+256 | 65.7
+

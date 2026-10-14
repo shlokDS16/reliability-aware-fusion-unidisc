@@ -1,0 +1,131 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# TRIMS: Trajectory-Ranked Instruction Masked Supervision for Diffusion Language Models
+
+record AW0283 | arXiv:2604.00666 | first version 2026-04-01
+
+**Abstract.** Diffusion language models (DLMs) offer a promising path toward low-latency generation through parallel decoding, but their practical efficiency depends heavily on the decoding trajectory. In practice, this advantage often fails to fully materialize because standard training does not provide explicit supervision over token reveal order, creating a train-inference mismatch that leads to suboptimal decoding behavior. We propose Trajectory-Ranked Instruction Masked Supervision (TRIMS), a simple trajectory-guided supervised fine-tuning framework that injects trajectory supervision into standard Masked Diffusion Language Model (MDLM) training with minimal overhead. Instead of relying on costly DLM-based distillation, TRIMS uses lightweight signals from an autoregressive teacher to guide a trajectory-aware masking strategy, encouraging the model to learn more effective decoding orders. Experiments on LLaDA and Dream across math and coding benchmarks show that TRIMS significantly improves the accuracy-parallelism trade-off over both standard MDLM training and train-free acceleration baselines, while achieving competitive performance with prior distillation-based approaches at substantially lower training cost. Further analysis shows that TRIMS leads to better decoding trajectories, validating the effectiveness of trajectory-guided supervision for DLMs.
+
+## All captions
+
+- Figure 1: TRIMS improves the accuracy-parallelism trade-off on both LLaDA-Instruct (left) and Dream-Instruct (right), achieving higher TPS (tokens predicted per step) while maintaining competitive accuracy, with much lower training cost than distillation-based
+- Figure 2: TRIMS consists of three stages: (1) an AR teacher estimates token-level difficulty scores, (2) scores are discretized into ordered buckets, and (3) bucket assignments drive trajectory-aware masking that simulates a hard-to-easy decoding order during 
+- Algorithm 1 Trajectory-Ranked Instruction Masked Supervision
+- Figure 3: Accuracy-parallelism trade-off of TRIMS and baselines on LLaDA-Instruct. The upper-right region indicates better performance with higher accuracy and parallelism.
+- Table 1: Comparison of TRIMS with baseline methods on LLaDA-Instruct. TPS denotes tokens per step and higher values indicate better parallelism.
+- Figure 4: Accuracy-parallelism trade-off of TRIMS and baselines on Dream-Instruct.
+- Table 2: Comparison of TRIMS with baseline methods on Dream-Instruct. TPS denotes tokens per step and higher values indicate better parallelism.
+- Table 3: Training overhead comparison. All GPU hours are measured on NVIDIA A100-80GB. Distillation-based methods require expensive DLM sampling for dataset curation and are trained on substantially larger datasets. TRIMS needs almost no data curation cost wit
+- (a) LLaDA.
+- (b) Dream.
+- Figure 5: Effect of trajectory supervision compared with standard MDLM training. TRIMS consistently improves the accuracy-parallelism trade-off on most benchmarks, with especially clear gains on coding tasks.
+- (a) LLaDA.
+- (b) Dream.
+- Figure 6: Effect of trajectory ordering under random, hard-to-easy, and easy-to-hard supervision. Hard-to-easy achieves the best overall performance, while all orderings improve over standard MDLM training.
+- Figure 7: Per-step token NLL during decoding across TRIMS variants and original DLM baselines, showing how uncertainty evolves over the generation process.
+- (a) LLaDA.
+- (b) Dream.
+- Figure 8: Effect of bucket granularity with K\in\{4,8,16\} difficulty buckets. K=8 achieves the best performance, while all settings yield similar results, indicating robustness to this hyperparameter.
+- (a) LLaDA.
+- (b) Dream.
+- Figure 9: Comparison of NLL and entropy as difficulty metrics. The two metrics produce comparable results on math benchmarks, while NLL yields a noticeably better accuracy-parallelism trade-off on coding tasks.
+
+## Tables as text
+
+### Table 1: Comparison of TRIMS with baseline methods on LLaDA-Instruct. TPS denotes tokens per step and higher values indicate better parallelism.
+
+Method | GSM8K | MATH | MBPP | HumanEval
+Acc (\uparrow) | TPS (\uparrow) | Acc (\uparrow) | TPS (\uparrow) | Acc (\uparrow) | TPS (\uparrow) | Acc (\uparrow) | TPS (\uparrow)
+LLaDA | 72.6 | 1.00 | \underline{32.2} | 1.00 | \underline{41.7} | 1.00 | 38.3 | 1.00
+Fast-dLLM | \underline{74.7} | 2.77 | 30.8 | 1.97 | 38.6 | 2.13 | 37.8 | 2.56
+D2F | 73.2 | 2.88 | 28.7 | 2.38 | 38.0 | 1.94 | 36.6 | 2.69
+dParallel | 72.6 | \underline{5.14} | 30.2 | 3.17 | 40.0 | 2.35 | \underline{39.0} | \underline{4.93}
+d3LLM | 73.1 | 9.11 | 30.4 | 5.74 | 40.6 | 4.21 | 39.6 | 5.95
+TRIMS | 74.9 | \underline{6.26} | 34.3 | \underline{4.72} | 41.8 | \underline{2.81} | 37.2 | 3.98
+
+### Table 2: Comparison of TRIMS with baseline methods on Dream-Instruct. TPS denotes tokens per step and higher values indicate better parallelism.
+
+Method | GSM8K | MATH | MBPP | HumanEval
+Acc (\uparrow) | TPS (\uparrow) | Acc (\uparrow) | TPS (\uparrow) | Acc (\uparrow) | TPS (\uparrow) | Acc (\uparrow) | TPS (\uparrow)
+Dream | 83.9 | 1.00 | 39.6 | 1.00 | 57.2 | 1.00 | 55.2 | 1.00
+Fast-dLLM | 79.0 | 1.44 | 38.3 | 1.78 | 53.2 | 1.20 | 54.3 | 1.33
+Fast-dLLM-v2 | 77.5 | 2.21 | 48.7 | 2.61 | 50.1 | 2.04 | 61.7 | \underline{2.58}
+dParallel | \underline{82.1} | \underline{3.02} | 38.7 | \underline{2.94} | 55.4 | 2.24 | 54.3 | 2.57
+d3LLM | 81.4 | 4.94 | 38.2 | 3.92 | 55.6 | \underline{2.96} | 57.1 | 3.20
+TRIMS | 80.3 | \underline{4.11} | \underline{42.6} | 2.54 | \underline{56.6} | 6.31 | \underline{57.3} | 2.21
+
+### Table 3: Training overhead comparison. All GPU hours are measured on NVIDIA A100-80GB. Distillation-based methods require expensive DLM sampling for dataset curation and are trained on substantially larger datasets. TRIMS needs almost no data curation cost with far less training data requirements.
+
+Method | Supervision | Curation Compute | Train Data | Epochs
+TRIMS | AR teacher | 0.6 GPU Hours | 1K | 30
+dParallel | DLM distillation | 287 GPU Hours * N(model) | 93K | 6
+d3LLM | DLM distillation | 287 GPU Hours * N(model) | 93K | 6
+

@@ -1,0 +1,160 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Back on Track: Aligning Rewards and States for Reasoning in Diffusion Large Language Models
+
+record AW0273 | arXiv:2606.08501 | first version 2026-06-07
+
+**Abstract.** Reinforcement learning (RL) holds immense promise for enhancing the reasoning capabilities of diffusion large language models (dLLMs). However, progress is fundamentally constrained by a dual misalignment between authentic generation trajectory and the gradient update process: (i) Process-reward misalignment. Sparse, terminal rewards are indiscriminately assigned to all intermediate steps of the generation process, failing to provide discriminative credit assignment. (ii) State-trajectory misalignment. Policy updates are often diverted toward artificial, out-of-trajectory states, squandering gradients on less informative samples. To address these limitations, we introduce Process Aligned Policy Optimization (PAPO), a novel framework that holistically aligns the RL update with the dLLM's generative trajectory via Step-Aware Process Rewards (SPR) that transform sparse terminal rewards into dense, step-wise credit, and Entropy-Guided Historical Re-enactment (EHR) that replays authentic trajectories at high-uncertainty steps. Extensive experiments on four benchmarks demonstrate that PAPO significantly outperforms baselines, achieving gains of 4.5% on GSM8K, 4.8% on MATH500, 42.2% on Countdown and 16.1% on Sudoku.
+
+## All captions
+
+- Figure 1: Comparison of RL Frameworks for dLLMs. (a) Iterative denoising during the authentic rollout. (b) Existing methods perform policy updates by constructing artificial states from the final completion, introducing dual misalignment: the artificial contex
+- Algorithm 1 PAPO Training Process
+- Figure 2: Detailed Rollout Process of PAPO: Trajectory Recording and Process Reward Computation. This figure illustrates how PAPO captures the complete generative trajectory \tau=(x_{T},\dots,x_{t},\dots,x_{0}) while concurrently computing Step-Aware Process R
+- Table 1: Performance Comparison on Four Benchmarks. Bold numbers indicate the top performance in each category. Underlined numbers denote the best performance among methods without additional Supervised Fine-Tuning (SFT). Green values show the absolute improve
+- Figure 3: Reward Curves during RL Training. Comparison of our method (PAPO) and diffu-GRPO across four benchmarks. PAPO consistently achieves higher reward trajectories, demonstrating superior sample efficiency.
+- Table 2: Ablation Study on the contributions of Step-Aware Process Rewards (SPR) and Entropy-Guided Historical Re-enactment (EHR), where HR denotes Historical Re-enactment without entropy guidance.
+- Figure 4: Training Dynamics of Step-Aware Process Rewards. The consistent upward trend of the process reward across all benchmarks confirms that the policy is learning to generate higher-quality intermediate reasoning steps.
+- Table 3: Multi-step SPR Comparison on GSM8K. Increasing the lookahead steps yields diminishing accuracy gains at prohibitive computational cost. {\color[rgb]{0.91,0.33,0.5}\diamond} denotes the improvement over 1-step.
+- (a) Multi-step comparison
+- (b) Early reward clipping
+- Figure 5: SPR Fidelity-Efficiency Analysis. (a) Multi-step SPR training dynamics on GSM8K. (b) Clipping early-stage rewards ( t<32 ) degrades performance, confirming the importance of early supervision.
+- Figure 6: Analysis of Entropy-Guided Historical Re-enactment. (a) Average token-level entropy exhibits a clear downward trend as the number of sampling steps increases. (b) The impact of the entropy-weighting hyperparameter \alpha on the reward trajectory. (c)
+- Table 4: Generalization to LLaDA-1.5. PAPO consistently outperforms diffu-GRPO across all benchmarks, with the largest gains on planning tasks.
+- Table 5: Generalization to Code Task. PAPO achieves competitive or superior performance on HumanEval and MBPP with execution-based rewards.
+- Table 6: Generalization to Larger-Scale Sudoku. Accuracy (%) on 9 \times 9 Sudoku based on LLaDA-8B-Instruct. {\dagger} indicates our re-implementation.
+- (a) Impact of \mu
+- (b) Efficiency on code tasks
+- Figure 7: Training Efficiency Analysis. (a) Impact of policy update steps \mu on reward convergence. (b) Reward convergence comparison on code generation tasks under the same GPU budgets.
+- Figure 8: Training Efficiency and Reward Convergence over Wall Time. Comparison of reward trajectories for PAPO and the diffu-GRPO baseline across four benchmarks. The results illustrate PAPO’s superior training efficiency, as it consistently converges to a hi
+- Figure 9: Dynamics of Completion Length and Token Efficiency. Evolution of average completion length during training across four benchmarks. PAPO converges to more concise outputs, demonstrating superior token efficiency while achieving higher rewards.
+- Figure 10: Impact of Policy Optimization Updates Values \mu on Performance and Stability. PAPO demonstrates superior performance compared to diffu-GRPO across various values of \mu . This advantage is particularly evident at \mu=24 , where our approach maintai
+- Figure 11: Comparison of Generated Responses on the GSM8K Benchmark.
+- Figure 12: Comparison of Generated Responses on the Countdown Benchmark.
+
+## Tables as text
+
+### Table 1: Performance Comparison on Four Benchmarks. Bold numbers indicate the top performance in each category. Underlined numbers denote the best performance among methods without additional Supervised Fine-Tuning (SFT). Green values show the absolute improvement of our method over the LLaDA-8B-Ins
+
+ | GSM8K | MATH500 | Countdown | Sudoku
+Model / Seq Len | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512
+LLaDA-8B-Instruct Nie et al. (2025) | 68.7 | 76.7 | 78.2 | 26.0 | 32.4 | 36.2 | 20.7 | 19.5 | 16.0 | 11.7 | 6.7 | 5.5
+diffu-GRPO Zhao et al. (2025b) | 72.6 | 79.8 | 81.9 | 33.2 | 37.2 | 39.2 | 33.2 | 31.3 | 37.1 | 18.4 | 12.9 | 11.0
+TSE-Vote Wang et al. (2025c) | 70.1 | 78.7 | 78.9 | 28.4 | 35.6 | 36.2 | 25.0 | 23.4 | 16.4 | \times | \times | \times
+WINO Hong et al. (2025) | - | 75.8 | - | - | 34.2 | - | - | 33.2 | - | - | 15.2 | -
+UniGRPO † Yang et al. (2025) | 73.2 | 79.8 | 79.4 | 33.0 | 37.0 | 39.8 | 51.6 | 53.9 | 43.8 | 23.9 | 19.2 | 14.1
+SAPO Xie et al. (2025) | 72.9 | 82.2 | 82.4 | 32.0 | 40.0 | 38.4 | 51.6 | 52.0 | 56.3 | 22.4 | 20.3 | 16.1
+SFT | 66.5 | 78.8 | 81.1 | 26.2 | 32.6 | 34.8 | 20.3 | 14.5 | 23.8 | 16.5 | 8.5 | 4.6
+SFT + diffu-GRPO Zhao et al. (2025b) | 73.2 | 81.1 | 82.1 | 33.8 | 38.6 | 40.2 | 34.8 | 32.0 | 42.2 | 22.1 | 16.7 | 9.5
+SFT + TSE-Reward Wang et al. (2025c) | 72.1 | 80.0 | 83.0 | 31.2 | 35.4 | 41.4 | 41.5 | 42.6 | 54.7 | \times | \times | \times
+Ours | 73.8 | 82.4 | 80.8 | 33.4 | 35.6 | 40.0 | 52.0 | 65.6 | 65.2 | 27.2 | 25.0 | 20.2
++5.1 | +5.7 | +2.6 | +7.4 | +3.2 | +3.8 | +31.3 | +46.1 | +49.2 | +15.5 | +18.3 | +14.7
+
+### Table 2: Ablation Study on the contributions of Step-Aware Process Rewards (SPR) and Entropy-Guided Historical Re-enactment (EHR), where HR denotes Historical Re-enactment without entropy guidance.
+
+ | GSM8K | MATH500 | Countdown | Sudoku
+Model / Seq Len | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512
+LLaDA-8B-Instruct | 68.7 | 76.7 | 78.2 | 26.0 | 32.4 | 36.2 | 20.7 | 19.5 | 16.0 | 11.7 | 6.7 | 5.5
++ SPR | 71.6 | 80.2 | 79.3 | 32.6 | 37.2 | 37.8 | 47.7 | 55.5 | 55.1 | 24.8 | 23.3 | 17.2
++ HR | 73.8 | 80.1 | 80.2 | 32.2 | 36.8 | 36.4 | 51.9 | 56.6 | 55.5 | 25.3 | 22.6 | 18.7
++ HR + SPR | 74.0 | 81.3 | 79.8 | 32.2 | 37.6 | 38.0 | 51.6 | 60.6 | 58.2 | 25.8 | 23.6 | 18.9
++ EHR | 73.2 | 81.1 | 80.5 | 32.8 | 36.4 | 37.0 | 51.2 | 57.5 | 56.3 | 25.7 | 23.4 | 17.3
++ EHR + SPR (PAPO) | 73.8 | 82.4 | 80.8 | 33.4 | 35.6 | 40.0 | 52.0 | 65.6 | 65.2 | 27.2 | 25.0 | 20.2
+
+### Table 3: Multi-step SPR Comparison on GSM8K. Increasing the lookahead steps yields diminishing accuracy gains at prohibitive computational cost. {\color[rgb]{0.91,0.33,0.5}\diamond} denotes the improvement over 1-step.
+
+ | 1-step | 4-step | 8-step | 16-step
+Seq Len=128 | 73.8 | 74.2 \diamond 0.4% | 74.7 \diamond 0.9% | 75.4 \diamond 1.6%
+GPU Hours | 177 | 187 \diamond 5.6% | 200 \diamond 13.0% | 255 \diamond 44%
+
+### Table 4: Generalization to LLaDA-1.5. PAPO consistently outperforms diffu-GRPO across all benchmarks, with the largest gains on planning tasks.
+
+ | GSM8K | MATH500 | Countdown | Sudoku
+Model / Seq Len | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512 | 128 | 256 | 512
+LLaDA-1.5 | 69.8 | 79.4 | 81.1 | 29.0 | 32.4 | 35.4 | 21.5 | 21.1 | 20.7 | 12.4 | 8.7 | 7.3
+diffu-GRPO | 73.0 | 78.9 | 83.1 | 29.8 | 36.2 | 40.2 | 38.7 | 29.7 | 39.1 | 23.5 | 18.3 | 13.1
+Ours | 75.9 | 81.7 | 81.8 | 31.2 | 36.6 | 39.4 | 40.6 | 68.8 | 66.0 | 44.8 | 26.8 | 24.2
+
+### Table 5: Generalization to Code Task. PAPO achieves competitive or superior performance on HumanEval and MBPP with execution-based rewards.
+
+ | HumanEval | MBPP
+Model / Seq Len | 128 | 256 | 512 | 128 | 256 | 512
+LLaDA + SFT | 21.3 | 32.3 | 32.9 | 40.1 | 39.7 | 41.2
+diffu-GRPO | 31.1 | 32.9 | 37.8 | 40.5 | 44.7 | 42.8
+Ours | 31.7 | 34.8 | 40.2 | 42.1 | 43.2 | 47.1
+
+### Table 6: Generalization to Larger-Scale Sudoku. Accuracy (%) on 9 \times 9 Sudoku based on LLaDA-8B-Instruct. {\dagger} indicates our re-implementation.
+
+Model / Seq. Len. | 128 | 256 | 512 | Avg.
+LLaDA-8B-Instruct | 0.60 | 0.99 | 0.21 | 0.60
+diffu-GRPO † | 3.48 | 4.52 | 2.67 | 3.56
+Ours | 7.15 | 8.06 | 6.76 | 7.32
+

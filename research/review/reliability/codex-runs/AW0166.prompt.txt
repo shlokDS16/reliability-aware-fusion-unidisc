@@ -1,0 +1,211 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Beyond Autoregression: Discrete Diffusion for Complex Reasoning and Planning
+
+record AW0166 | arXiv:2410.14157 | first version 2024-10-18
+
+**Abstract.** Autoregressive language models, despite their impressive capabilities, struggle with complex reasoning and long-term planning tasks. We introduce discrete diffusion models as a novel solution to these challenges. Through the lens of subgoal imbalance, we demonstrate how diffusion models effectively learn difficult subgoals that elude autoregressive approaches. We propose Multi-Granularity Diffusion Modeling (MGDM), which prioritizes subgoals based on difficulty during learning. On complex tasks like Countdown, Sudoku, and Boolean Satisfiability Problems, MGDM significantly outperforms autoregressive models without using search techniques. For instance, MGDM achieves 91.5\% and 100\% accuracy on Countdown and Sudoku, respectively, compared to 45.8\% and 20.7\% for autoregressive models. Our work highlights the potential of diffusion-based approaches in advancing AI capabilities for sophisticated language understanding and problem-solving tasks. All associated codes are available at \href{https://github.com/HKUNLP/diffusion-vs-ar}{https://github.com/HKUNLP/diffusion-vs-ar}.
+
+## All captions
+
+- Figure 1: The planning task.
+- Figure 2: (Left) Accuracy of different method given 50k training data. (Right) Minimum data size required to solve (i.e., accuracy above 90%) subgoal at each planning distance.
+- Figure 3: Loss for a specific hard subgoal, i.e., PD = 3, in Diffusion and AR modeling. We also show the unweighted loss u({\mathbf{x}}_{0},{\mathbf{x}}_{t},n;{\bm{\theta}}) at different timestep t and context {\mathbf{x}}_{t} in diffusion modeling.
+- Table 1: Results on the Countdown (CD) task with increasing complexity.
+- Table 2: Accuracy and token cost on game of 24.
+- Figure 4: (Left) Accuracy on Sudoku. (Right) Accuracy on boolean satisfiability problem with increasing difficulty.
+- Table 3: Ablation on training reweighting strategies and inference decoding methods.
+- Figure 5: Evaluation accuracy throughout the training process for AR and MGDM with different reweighting strategies.
+- Figure 6: (a) Accuracy and speed (samples per second) trade-off by varying the diffusion timesteps on Countdown 4 (left y-axis) and 5 (right y-axis). (b) Ratio of planning (left y-axis) and calculation (right y-axis) error at each reasoning step on Countdown 4
+- Algorithm 1 Training MGDM
+- Algorithm 2 Sampling from MGDM
+- Table 4: Dataset statistics. Minimal and CD are short for the minimal planning task and Countdown, respectively.
+- Table 5: Model parameters with varying model size.
+- Table 6: Detailed accuracy and token consumption on game of 24.
+- Table 7: Results of AR with token reweighting.
+- Table 8: Results of scaling both model and data size.
+- Table 9: Example predictions on Countdown 4. For each sub-equation, we mark the planning error in red and the calculation error in bold . AR exhibits more calculation errors in the last equation due to incorrect planning in the previous steps.
+- Table 10: Task details by showing example input and output for each dataset.
+
+## Tables as text
+
+### Table 1: Results on the Countdown (CD) task with increasing complexity.
+
+ | Params | CD 3 | CD 4 | CD 5
+Autoregressive |  |  |  | 
+GPT-2 Scratch | 6M | 94.1 | 31.9 | 4.3
+85M | 95.9 | 45.8 | 5.1
+303M | 96.4 | 41.3 | 4.5
+Stream-of-Search | 250M | - | 54.2 | -
+LLaMA | 7B | 95.7 | 41.1 | 6.7
+13B | 96.5 | 51.1 | 7.4
+Diffusion |  |  |  | 
+VDM | 85M | 99.1 | 73.4 | 16.3
+D3PM | 85M | 99.4 | 83.1 | 27.6
+RDM | 85M | 99.5 | 87.0 | 45.8
+MGDM (Ours) | 6M | 98.1 | 52.0 | 27.0
+85M | 99.5 | 91.5 | 46.6
+303M | 99.9 | 88.3 | 39.0
+
+### Table 2: Accuracy and token cost on game of 24.
+
+ | Acc. | # Token
+Prompting
+GPT-4 IO | 7.3 | x28
+GPT-4 CoT | 4.0 | x61
+GPT-4 CoT-SC | 9.0 | x241
+GPT-4 ToT | 74.0 | x186
+Supervised training
+GPT-2 Scratch | 18.8 | x1
+MGDM | 76.0 | x1
+
+### Table 3: Ablation on training reweighting strategies and inference decoding methods.
+
+ | Random | TopK
+No reweighting | 82.1 | 87.3
+Original sequence-reweighting | 83.1 | 88.5
++ token-reweighting ( \alpha =0.25, \beta =1) | 84.9 | 90.4
++ token-reweighting ( \alpha =1, \beta =1) | 82.4 | 89.3
++ token-reweighting ( \alpha =0.25, \beta =2) | 82.4 | 87.9
+Linear sequence-reweighting | 79.6 | 87.0
++ token-reweighting ( \alpha =0.25, \beta =1) | 83.2 | 88.0
++ token-reweighting ( \alpha =1, \beta =1) | 86.7 | 90.4
++ token-reweighting ( \alpha =0.25, \beta =2) | 85.6 | 91.5
+
+### Table 4: Dataset statistics. Minimal and CD are short for the minimal planning task and Countdown, respectively.
+
+ | Minimal | CD3 | CD4 | CD5 | Sudoku | 3-SAT 5v | 3-SAT 7v | 3-SAT 9v
+Train Instance | 50k | 500k | 500k | 500k | 100k | 50k | 50k | 100k
+Test Instance | 1k | 1k | 1k | 1k | 1k | 1k | 1k | 1k
+Avg Input Token | 47 | 11 | 13 | 16 | 81 | 245 | 269 | 305
+Avg Output Token | 21 | 16 | 25 | 35 | 81 | 9 | 13 | 17
+Max Input Token | 49 | 12 | 15 | 18 | 81 | 245 | 269 | 305
+Max Output Token | 23 | 22 | 35 | 52 | 81 | 9 | 13 | 17
+
+### Table 5: Model parameters with varying model size.
+
+ | Tiny | Base | Medium
+Parameters | 6M | 85M | 303M
+Num of Layer | 3 | 12 | 24
+Num of Head | 12 | 12 | 16
+Hidden Dim | 384 | 768 | 1024
+
+### Table 6: Detailed accuracy and token consumption on game of 24.
+
+ | Accuracy | Prompt Tokens | Generate Tokens
+GPT-4 IO | 7.3 | 1k | 18
+GPT-4 CoT | 4.0 | 2.2k | 67
+GPT-4 CoT-SC | 9.0 | 2.2k | 6.7k
+GPT-4 ToT | 74.0 | 1.4k | 2.5k
+GPT2-Scratch | 18.8 | 11 | 26
+MGDM | 76.0 | 11 | 26
+
+### Table 7: Results of AR with token reweighting.
+
+Planning Distance | AR | AR with token reweighting
+0 | 100 | 100
+1 | 100 | 100
+2 | 51.1 | 52.1
+3 | 46.9 | 51.5
+4 | 52.0 | 50.3
+5 | 49.9 | 51.9
+
+### Table 8: Results of scaling both model and data size.
+
+ | AR | MGDM
+85M model, 500k data | 45.8 | 91.5
+303M model, 500k data | 41.3 | 88.3
+303M model, 1M data | 53.3 | 95.6
+
+### Table 9: Example predictions on Countdown 4. For each sub-equation, we mark the planning error in red and the calculation error in bold . AR exhibits more calculation errors in the last equation due to incorrect planning in the previous steps.
+
+Numbers | Goal | Groundtruth | AR Prediction | MGDM Prediction
+64,36,52,42 | 14 | 64-52=12,36/12=3,42/3=14 | 64/36=2 ,52/2=26, 42-26=14 | 64-52=12,36/12=3,42/3=14
+9,73,99,75 | 81 | 75-73=2,9*2=18,99-18=81 | 99+75=174, 174/9=16,73+16=81 | 75-73=2,9*2=18,99-18=81
+2,52,20,73 | 57 | 52-20=32,32/2=16,73-16=57 | 2*20=40,73-52=21, 40+21=57 | 52-20=32,32/2=16,73-16=57
+9,80,4,5 | 89 | 9+80=89,5-4=1,89*1=89 | 9-5=4,4/4=1,80+1=81 | 9+80=89,5-4=1,89*1=89
+65,2,61,22 | 96 | 65-61=4,2+22=24,4*24=96 | 65-61=4, 22*4=88,2+88=90 | 65-61=4,2+22=24,4*24=96
+42,47,9,14 | 81 | 47-42=5,14-5=9,9*9=81 | 47-42=5, 14*5=70, 9+70=89 | 47-42=5, 14*5=70, 9+70=81
+41,4,48,20 | 96 | 41*4=164,48+20=68,164-68=96 | 48-41=7,20-7=13, 4*13=92 | 4*20=80, 41-40=2 ,48*2=96
+21,36,3,42 | 39 | 42-36=6,3*6=18,21+18=39 | 36-21=15,15/3=5,42-5=37 | 42-21=21,36/3=12, 21-12=39
+
+### Table 10: Task details by showing example input and output for each dataset.
+
+Task | Input Example | Output Example
+Minimal Planning | 2,10/10,4/11,5/2,0/8,2/0,11/6,2/1,9/5,3/4,1-8,3 | 8,2/2,0/0,11/11,5/5,3
+Countdown 3 | 15,44,79,50 | 44-15=29,79-29=50
+Countdown 4 | 86,28,13,31,96 | 86+28=114,31-13=18,114-18=96
+Countdown 5 | 50,36,82,44,31,51 | 44-36=8,82*31=2542, 8+2542=2550,2550/50=51
+Sudoku | 080050060 460907108 005000029 970006500 000872031 300049000 004025003 010000480 603100007 | 789251364 462937158 135468729 978316542 546872931 321549876 894725613 217693485 653184297
+3-SAT 5v | 1,4,5/1,-4,-5/2,-4,5/-1,-2,5/3,4,5/-2,-4,-5/2,3,-4/-2,-3,5/1,2,4/1,-2,3/-1,3,5/1,-2,-4/1,4,-5/1,-2,-5/1,2,-5/-1,-3,-4/-1,3,-5/-1,3,4/2,-4,-5/-1,-4,5/1,-3,-5/1,3,-5/1,-3,-4/-2,3,5/1,2,5/-1,2,-4/1,-2,4/1,-4,5/3,4,-5/-1,2,-3/1,-3,5/-2,4,5/1,-2,5/-1,2,5/1,3,-4/-1,-4,-5/-2,-3,-4/2,4,5/-2,3,-4/-3,4,5/2,-3,5 | 1,2,3,-4,5
+3-SAT 7v | -2,-3,-7/2,-4,-7/-3,4,-5/1,2,-3/1,5,-7/-5,-6,-7/2,-5,6/2,-5,-6/-3,-4,6/-1,2,-4/-3,6,7/-2,-5,6/2,3,-7/-1,2,3/-2,3,-4/-1,3,7/1,-2,-7/2,4,6/1,2,-7/2,-3,-6/1,-2,6/-1,5,7/3,-6,-7/2,6,7/-2,-6,-7/-2,3,-5/3,5,-6/-2,6,-7/-1,-2,-7/5,-6,-7/2,-6,-7/-2,5,7/-3,-4,5/2,3,-4/-3,5,-7/3,-4,5/-2,3,-6/1,2,-6/1,4,-7/1,4,7/2,4,5/1,5,-6/1,3,4/2,3,7/1,-2,4 | 1,2,3,4,5,6,-7
+3-SAT 9v | 3,-4,-6/1,3,5/2,-7,8/1,-3,6/2,-3,-8/-4,-5,-7/1,-6,-9/1,8,-9/2,3,-9/3,-5,9/-3,7,9/-2,-3,9/-1,-5,-9/-2,-7,-9/-1,3,5/2,-5,-9/4,-7,-9/-2,3,-8/2,3,7/2,-4,6/-2,3,5/-2,-6,-8/-3,-4,-8/-2,6,7/-3,4,6/-3,-6,9/2,7,-9/2,4,-5/-3,-5,8/-4,5,-7/-4,-6,-8/2,-6,9/2,-5,9/1,4,-9/5,8,9/1,-6,7/-3,6,-9/1,4,-5/4,-6,9/-1,2,6/1,-2,-5/1,-2,-9/-4,7,9/-1,-4,-7/-3,5,-8/-1,-3,6/-2,-3,6/-3,6,9/-1,-5,8/1,-5,-9/1,4,8 | 1,2,3,4,-5,6,-7,-8,9
+

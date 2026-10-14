@@ -1,0 +1,117 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Activation Steering for Masked Diffusion Language Models
+
+record AW0410 | arXiv:2512.24143 | first version 2025-12-30
+
+**Abstract.** Masked diffusion language models (MDLMs) generate text via iterative masked-token denoising, enabling mask-parallel decoding and distinct controllability and efficiency tradeoffs from autoregressive LLMs. Yet, efficient representation-level mechanisms for inference-time control in MDLMs remain largely unexplored. To address this gap, we introduce an activation steering primitive for MDLMs: we extract a single low-dimensional direction from contrastive prompt sets using one prompt-only forward pass, and apply a global intervention on residual-stream activations throughout reverse diffusion, without performing optimization or altering the diffusion sampling procedure. Using safety refusal as a deployment-relevant case study, we find that refusal behavior in multiple MDLMs is governed by a consistent, approximately one-dimensional activation subspace. Applying the corresponding direction yields large and systematic behavioral shifts and is substantially more effective than prompt-based and optimization-based baselines. We further uncover diffusion-specific accessibility: effective directions can be extracted not only from post-instruction tokens, but also from pre-instruction tokens that are typically ineffective in autoregressive models due to causal attention. Ablations localize maximal leverage to early denoising steps and mid-to-late transformer layers, with early diffusion blocks contributing disproportionately. Finally, in an MDLM trained on English and Chinese, extracted directions transfer strongly between English and Chinese, but do not reliably generalize to an autoregressive architecture, highlighting architecture-dependent representations of safety constraints.
+
+## All captions
+
+- Figure 1: Example chat template and token indexing conventions used for steering, shown for LLaDA-8B-Instruct and LLaDA-1.5 . Non-negative indices are counted from the start of the template, while negative indices are counted backward from the prompt boundary.
+- Figure 2: The predefined set of ”refusal substrings” used to assess the refusal score for a given completion.
+- Figure 3: Heatmap of LLaMA Guard 2 safety scores on the validation set across source layers and token positions. The top region corresponds to pre-instruction tokens (\mathcal{I}_{\mathrm{pre}}) , while the bottom region corresponds to post-instruction tokens 
+- Table 1: Keywords-based refusal and LLaMA Guard 2 safety scores (%) on harmful prompts across three models. Lower values indicate fewer refusals or safety flags. We compare direct prompting, prior jailbreak baselines (GCG, PAIR, Slice), and activation steering
+- Figure 4: Ablation of intervention scheduling over denoising steps. LLaMA Guard 2 safety rate as a function of the number of intervention steps \kappa for different schedules: First- \kappa , Last- \kappa , and Every- \kappa applied across all diffusion blocks
+- Figure 5: Logit-lens analysis for English input prompts. Left: Fraction of top-1 predicted tokens by script (Chinese, Latin, other, non-letter) across layers. Right: Token-level logit-lens heatmap showing top-1 predictions and associated probabilities at inter
+- Table 2: Cross-lingual steering results for English and Chinese. Steering vectors are computed in the source language (left of arrow) and applied to inputs in the target language (right of arrow). Lower values indicate fewer keyword-based refusals and reduced 
+- Algorithm 1 Activation steering for MDLMs
+- (a) Token-position effects of activation steering.
+- (b) Layer-wise effects of activation steering.
+- Figure 6: Token- and layer-level localization of activation steering effects. (a) Token-position ablation comparing steering applied to input tokens, output tokens, or all tokens. (b) Layer-wise ablation showing keyword-based refusal rates and LLaMA Guard 2 sa
+- Figure 7: Heatmap of LLaMA Guard 2 safety scores on the validation set when applying steering vectors extracted from Chinese prompts on LLaDA-8B-Instruct . Each cell corresponds to a steering direction defined by a source layer and post-instruction token index
+- Figure 8: Logit-lens analysis for Chinese input prompts. The same script-level transition is observed as in the English case: intermediate layers predominantly predict Chinese-script tokens, followed by a shift toward the input script near the output layer.
+- (a) LLaDA-8B-Instruct
+- (b) LLaDA-1.5
+- (c) MMaDA-8B-MixCoT
+- Figure 9: Qualitative jailbreak comparisons across MDLMs. Each subfigure shows the shared harmful prompt (italic), followed by responses under direct prompting, prior jailbreak baselines (GCG, PAIR, Slice), and activation steering (ours).
+
+## Tables as text
+
+### Table 1: Keywords-based refusal and LLaMA Guard 2 safety scores (%) on harmful prompts across three models. Lower values indicate fewer refusals or safety flags. We compare direct prompting, prior jailbreak baselines (GCG, PAIR, Slice), and activation steering applied via pre- or post-instruction to
+
+ | LLaDA-8B-Instruct | LLaDA-1.5 | MMaDA-8B-MixCoT
+Method | Keywords-Refusal \downarrow | LLaMA Guard \downarrow | Keywords-Refusal \downarrow | LLaMA Guard \downarrow | Keywords-Refusal \downarrow | LLaMA Guard \downarrow
+Direct | 97.0 | 99.0 | 98.0 | 100.0 | 26.0 | 50.0
+GCG | 96.0 | 99.0 | 97.0 | 99.0 | 12.0 | 45.0
+PAIR | 34.0 | 64.0 | 35.0 | 79.0 | 8.0 | 29.0
+Slice | 0.0 | 57.0 | 0.0 | 63.0 | 0.0 | 29.0
+Activation Steering |  |  |  |  |  | 
+Pre Instruction | 4.0 | 19.0 | 6.0 | 20.0 | 12.0 | 25.0
+Post Instruction | 0.0 | 16.0 | 7.0 | 19.0 | 16.0 | 31.0
+
+### Table 2: Cross-lingual steering results for English and Chinese. Steering vectors are computed in the source language (left of arrow) and applied to inputs in the target language (right of arrow). Lower values indicate fewer keyword-based refusals and reduced LLaMA Guard 2 safety score.
+
+ | EN \rightarrow ZH | ZH \rightarrow EN
+Setting | Keywords-Refusal \downarrow | LLaMA Guard \downarrow | Keywords-Refusal \downarrow | LLaMA Guard \downarrow
+Direct | 97.00 | 99.00 | 86.00 | 100.00
+Post Instruction Steering | 1.00 | 31.00 | 3.00 | 9.00
+

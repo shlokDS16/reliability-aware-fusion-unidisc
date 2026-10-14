@@ -1,0 +1,194 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Residual Context Diffusion Language Models
+
+record AW0078 | arXiv:2601.22954 | first version 2026-01-30
+
+**Abstract.** Diffusion Large Language Models (dLLMs) have emerged as a promising alternative to purely autoregressive language models because they can decode multiple tokens in parallel. However, state-of-the-art block-wise dLLMs rely on a "remasking" mechanism that decodes only the most confident tokens and discards the rest, effectively wasting computation. We demonstrate that recycling computation from the discarded tokens is beneficial, as these tokens retain contextual information useful for subsequent decoding iterations. In light of this, we propose Residual Context Diffusion (RCD), a module that converts these discarded token representations into contextual residuals and injects them back for the next denoising step. RCD uses a decoupled two-stage training pipeline to bypass the memory bottlenecks associated with backpropagation. We validate our method on both long CoT reasoning (SDAR) and short CoT instruction following (LLaDA) models. We demonstrate that a standard dLLM can be efficiently converted to the RCD paradigm with merely ~300 million tokens. RCD consistently improves frontier dLLMs by 4-11 percentage points in accuracy with minimal extra computation overhead across a wide range of benchmarks. Notably, on the most challenging AIME tasks, RCD nearly doubles baseline accuracy and attains up to 4-5x fewer denoising steps at baseline's peak accuracy.
+
+## All captions
+
+- Figure 1 : Overview of the residual denoising mechanism in Residual Context Diffusion (RCD). Remasking happens during each denoising step, discarding low-confidence token even though they are already explicitly computed. To recycle computation from previous st
+- Figure 2 : Average token recall across LLaDA GSM8K sampling steps. For each step k (x-axis), recall@5 (y-axis) is the fraction of final decoded tokens that appear in the step- k top-5 predictions at the same position.High early-step recall@5 indicates that int
+- Figure 3 : (Left) In vanilla dLLM inference, tokens not selected are reverted to static mask embeddings for the next step, discarding the predicted probability information. (Center) RCD Inference preserves this information by calculating a weighted summation o
+- Table 1 : Accuracy comparison of SDAR models across mathematical reasoning benchmarks. Results are reported at a confidence threshold of 0.85, grouped by model size (4B, 8B) and block size ( b=32,64 for KV cache-reuse). The Chat variant serves as the initializ
+- Table 2 : Performance of LLaDA on GSM8K and MinervaMath. We evaluate RCD against the Base and SeqD versions of LLaDA. Here, we use a sequence length of 512 with single-token-per-step decoding. RCD achieves consistent improvements, particularly on the MinervaMa
+- Table 3 : Throughput-matched accuracy comparison. We use Fastdllm for LLaDA and D2F for SDAR. By aligning the throughput (Token per Second) of RCD and Sequential Denoising baselines, RCD achieves superior accuracy across all settings.
+- Table 4 : Comparison of RCD and Loopholing under a constrained training budget. Both methods are trained on SDAR-4B-b64 for a single epoch ( \sim 300M tokens). “NA” indicates that the model failed to generate valid, evaluatable mathematical sequences. RCD exhi
+- Figure 4 : Accuracy vs. Token per Step Pareto frontiers for SDAR models. Curves are generated by sweeping confidence thresholds from 0.5 to 1.0. Token per Step measures the average number of tokens generated in each parallel iteration; higher Token per Step in
+- Figure 5 : Ablation on the interpolation strategy \alpha_{i}^{(t)} in Eq. ( 2 ), evaluated with SDAR-1.7B-b64 as the draft model and SDAR-8B-b64 as the target. We compare eight variants: (1) Normalized Entropy (Ours): \alpha_{i}^{(t)}=\hat{H}(\hat{x}_{i}^{(t)}
+- Table 5 : Initialization strategy ablation on MATH500 (finetuned SDAR-8B-b64 at confidence 0.85). We compare different strategies for initializing the residual context prior distribution. Dirichlet initialization eliminates the reference model while achieving 
+- Table 6 : Saturation analysis on SDAR-8B-b64. RCD (5 epochs) is compared against an extended SeqD baseline (8 epochs). RCD significantly surpasses the saturated baseline, confirming that residual context usage provides gains beyond simple continual training.
+- Algorithm 1 RCD Training
+- Algorithm 2 RCD Inference
+- Table 7 : Hyperparameters for SDAR and LLaDA Fine-tuning.
+- Table 8 : Accuracy of SDAR-Chat models across three GSM variants. The significant performance drop from GSM8K to GSM1K/Plus indicates potential data contamination.
+
+## Tables as text
+
+### Table 1 : Accuracy comparison of SDAR models across mathematical reasoning benchmarks. Results are reported at a confidence threshold of 0.85, grouped by model size (4B, 8B) and block size ( b=32,64 for KV cache-reuse). The Chat variant serves as the initialization for both standard Sequential Denoi
+
+Model | Variant | GSM8K † | MATH500 | AIME24 | AIME25
+SDAR-4B-b32 | Chat ‡ | 86.13 | 50.20 | 5.83 | 2.50
+SeqD | 81.73 | 61.20 | 6.04 | 11.88
+RCD | 84.91 | 65.40 | 9.17 | 17.08
+SDAR-4B-b64 | Chat ‡ | 85.90 | 49.80 | 6.25 | 1.67
+SeqD | 78.85 | 56.80 | 4.17 | 7.29
+RCD | 87.04 | 68.40 | 11.04 | 14.79
+SDAR-8B-b32 | Chat ‡ | 88.40 | 50.00 | 6.46 | 4.17
+SeqD | 86.50 | 65.80 | 11.67 | 14.79
+RCD | 90.45 | 76.20 | 18.96 | 20.00
+SDAR-8B-b64 | Chat ‡ | 88.32 | 51.60 | 5.20 | 2.50
+SeqD | 82.87 | 64.20 | 7.08 | 9.79
+RCD | 86.05 | 74.40 | 18.75 | 16.04
+
+### Table 2 : Performance of LLaDA on GSM8K and MinervaMath. We evaluate RCD against the Base and SeqD versions of LLaDA. Here, we use a sequence length of 512 with single-token-per-step decoding. RCD achieves consistent improvements, particularly on the MinervaMath benchmark, where it realizes a nearly
+
+Model | Variant | GSM8K | MinervaMath
+LLaDA | Base ∗ | 70.30 | 31.40
+SeqD | 75.74 | 31.10
+RCD | 78.09 | 37.00
+
+### Table 3 : Throughput-matched accuracy comparison. We use Fastdllm for LLaDA and D2F for SDAR. By aligning the throughput (Token per Second) of RCD and Sequential Denoising baselines, RCD achieves superior accuracy across all settings.
+
+Dataset | Variant | Block | Len | TPSec | Acc. (%)
+LLaDA Model (Inference via Fastdllm)
+Minerva Math | SeqD | 64 | 512 | 117.82 | 34.20
+RCD | 64 | 512 | 110.37 | 36.22
+GSM8K | SeqD | 64 | 512 | 75.00 | 76.12
+RCD | 64 | 512 | 65.56 | 78.70
+SDAR Model (Inference via D2F)
+Minerva Math | SeqD | 64 | 16384 | 130.54 | 50.82
+RCD | 64 | 16384 | 124.86 | 59.82
+GSM8K | SeqD | 64 | 16384 | 149.45 | 75.36
+RCD | 64 | 16384 | 148.41 | 81.43
+
+### Table 4 : Comparison of RCD and Loopholing under a constrained training budget. Both methods are trained on SDAR-4B-b64 for a single epoch ( \sim 300M tokens). “NA” indicates that the model failed to generate valid, evaluatable mathematical sequences. RCD exhibits significantly higher data efficienc
+
+Model | Variant | GSM8K | MATH500
+SDAR-4B-b64 | Loopholing | NA | NA
+RCD (1 Epoch) | 86.35 | 66.20
+
+### Table 5 : Initialization strategy ablation on MATH500 (finetuned SDAR-8B-b64 at confidence 0.85). We compare different strategies for initializing the residual context prior distribution. Dirichlet initialization eliminates the reference model while achieving the best accuracy.
+
+Method | Requires \boldsymbol{M_{\text{ref}}} ? | MATH500
+Baseline SeqD | No | 64.2
+RCD w/ Ref Model (1.7B) | Yes | 74.2
+RCD w/ Ref Model (4B) | Yes | 71.8
+RCD w/ Target Model (Self) | No | 76.4
+RCD w/ Zero Init | No | 75.6
+RCD w/ Dirichlet Init | No | 77.4
+
+### Table 6 : Saturation analysis on SDAR-8B-b64. RCD (5 epochs) is compared against an extended SeqD baseline (8 epochs). RCD significantly surpasses the saturated baseline, confirming that residual context usage provides gains beyond simple continual training.
+
+Model | Variant | GSM8K | MATH500
+SDAR-8B-b64 | SeqD (Extended) | 84.61 | 68.00
+RCD | 86.05 | 74.40
+Model | Variant | AIME24 | AIME25
+SDAR-8B-b64 | SeqD (Extended) | 8.96 | 10.83
+RCD | 18.75 | 16.04
+
+### Table 7 : Hyperparameters for SDAR and LLaDA Fine-tuning.
+
+Hyperparameter | Value
+SDAR Family Configuration
+Dataset | OpenR1-Math-220k (Filtered \leq 8K)
+Optimizer | AdamW ( \beta_{1}=0.9,\beta_{2}=0.999 )
+Learning Rate | 1.0\times 10^{-5}
+LR Scheduler | constant_with_warmup
+Warmup Ratio | 0.03
+Batch Size (per device) | 1
+Gradient Accumulation Steps | 12
+Total Batch Size | 96 (on 8 \times H100)
+Max Sequence Length | 8,192
+Training Epochs | 10 (Reference 1.7B) / 5 (Target 4B/8B)
+Precision | bfloat16
+LLaDA Configuration
+Dataset | OpenMathInstruct-2 (1M subset)
+Optimizer | AdamW
+Learning Rate | 1.0\times 10^{-5}
+LR Scheduler | cosine
+Max Sequence Length | 2,048
+Training Epochs | 5
+Batch Size (per device) | 2
+Gradient Accumulation Steps | 48
+Total Batch Size | 768 (on 8 \times H100)
+Precision | bfloat16
+Distributed Strategy | FSDP
+
+### Table 8 : Accuracy of SDAR-Chat models across three GSM variants. The significant performance drop from GSM8K to GSM1K/Plus indicates potential data contamination.
+
+Model | Block | GSM8K | GSM1K | GSM-Plus
+SDAR-4B-Chat | 32 | 86.13 | 82.57 | 75.89
+64 | 85.90 | 79.25 | 73.87
+SDAR-8B-Chat | 32 | 88.40 | 86.22 | 78.38
+64 | 88.32 | 83.24 | 77.62
+

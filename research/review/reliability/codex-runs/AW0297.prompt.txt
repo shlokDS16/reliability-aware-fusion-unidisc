@@ -1,0 +1,154 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Principled and Tractable RL for Reasoning with Diffusion Language Models
+
+record AW0297 | arXiv:2510.04019 | first version 2025-10-05
+
+**Abstract.** Diffusion large language models (dLLMs) represent a promising alternative to autoregressive LLMs; however, the lack of effective post-training techniques, including reinforcement learning (RL), remains a key challenge for dLLMs, especially for downstream applications. Existing approaches often rely on a sequence-level view that requires biased likelihood approximations. In this work, we propose Amortized Group Relative Policy Optimization (AGRPO), a policy gradient algorithm that leverages the Markovian nature of dLLMs, optimizing individual denoising steps rather than full sequences. Our approach improves alignment between the trained policy and the inference process and also admits efficient, unbiased gradient updates via a novel timestep estimation scheme. We demonstrate AGRPO's effectiveness on different math and reasoning tasks, achieving absolute accuracy gains of +59.4\% and +69.7\% on Countdown and Sudoku over the base LLaDA model, exceeding comparable methods such as diffu-GRPO. Code is available at https://github.com/probablyabot/agrpo.
+
+## All captions
+
+- Figure 1 : Existing RL post-training algorithms focus on sequence-level likelihoods and require either autoregressive factorization or ELBO-like bounds, which result in biased policy updates. Our proposed algorithm instead focuses on individual unmasking steps
+- Algorithm 1 Amortized Group Relative Policy Optimization (AGRPO)
+- Table 1 : Accuracies for different RL post-training methods across different reasoning tasks and generation lengths. For all diffusion models, outputs of length n are generated with m=n/2 steps. Few-shot examples are denoted in parentheses, and the best accura
+- Figure 2 : The compute/quality frontier for the GSM8K test split with response length n=384 . Lines show the possible tradeoffs at inference time for a specific model.
+- (a) GSM8K reward over training runs with different k . Shaded area represents intra-run variance over a rolling window of 15 steps.
+- (b) Average wall time per training step for different components of AGRPO. Total includes optimizer/overhead. Values are reported on 8xH100 GPUs with a global batch size of 128.
+- Figure 3 : Reward curve and wall time comparisons for different values of k on GSM8K with n=384 and m=128 .
+- Figure 4 : Reward and gradient norm plots for baseline and variance-reduced versions of AGRPO on Countdown with n=128 and m=64 . The shaded area of the reward plot represents a rolling standard deviation with a window of 15 steps.
+- Table 2 : Comparison of base model accuracies reported in previous work vs. reproduced in our work.
+- Table 3 : Accuracy under confidence-based and random unmasking at evaluation. All models are evaluated with n=256 and m=128 .
+- Table 4 : Sensitivity to the number of denoising steps m on Countdown, with n=192 and k=24 .
+- Table 5 : Sensitivity to the number of gradient updates per rollout batch \mu on Countdown, with n=192 and m=96 .
+- Table 6 : Average wall time per gradient step for different dLLM RL methods on a controlled GSM8K training run with n=256 , m=128 , G=4 , and \mu=2 . Values are reported on 2xA6000 Ada GPUs with a global batch size of 16.
+- Table 7 : Sample responses ( n=384 ) for different values of m (# sampling steps) from a model trained with AGRPO. Problem is from the GSM8K-Platinum dataset.
+
+## Tables as text
+
+### Table 1 : Accuracies for different RL post-training methods across different reasoning tasks and generation lengths. For all diffusion models, outputs of length n are generated with m=n/2 steps. Few-shot examples are denoted in parentheses, and the best accuracy for each task is bolded . Models trai
+
+Model (AR) | GSM8K | MATH
+DeepSeekMath-Base 7B | 64.2 | 36.2
+CoT SFT | 82.9 | 46.8
+CoT SFT + GRPO | 88.2 | 51.7
+ | GSM8K (0) | MATH-500 (0) | Countdown (0) | Sudoku (3)
+Model \ Seq len | 256 | 512 | 256 | 512 | 256 | 512 | 256 | 512
+LLaDA-8B-Instruct | 79.9 | 78.2 | 36.6 | 37.4 | 20.3 | 27.3 | 25.5 | 18.8
+LLaDA 1.5 (VRPO) | 81.4 | 81.1 | 35.4 | 40.6 | 27.0 | 27.3 | 23.5 | 20.1
+diffu-GRPO † | 79.8 | 81.9 | 37.2 | 39.2 | 31.3 | 37.3 | 32.5 | 29.3
+wd1 † | 80.8 | 82.3 | 34.4 | 39.0 | 51.2 | 46.1 | 32.1 | 22.5
+SPG † | 86.1 | 84.5 | 40.0 | 41.8 | 70.7 | 70.3 | 94.0 | 93.1
+AGRPO (ours) † | 88.0 | 88.1 | 39.4 | 42.0 | 79.7 | 82.4 | 95.2 | 95.2
+
+### Table 2 : Comparison of base model accuracies reported in previous work vs. reproduced in our work.
+
+ |  | GSM8K | MATH-500 | Countdown | Sudoku
+Work | Model \ Seq len | 256 | 512 | 256 | 512 | 256 | 512 | 256 | 512
+d1 ( Zhao et al., 2025 ) | LLaDA-8B-Instruct | 76.7 | 78.2 | 32.4 | 36.2 | 19.5 | 16.0 | 6.7 | 5.5
+SPG ( Wang et al., 2026a ) | LLaDA-8B-Instruct | 77.2 | 79.8 | 32.4 | 34.6 | 16.8 | 16.8 | 27.7 | 26.2
+AGRPO (ours) | LLaDA-8B-Instruct | 79.9 | 78.2 | 36.6 | 37.4 | 20.3 | 27.3 | 25.5 | 18.8
+
+### Table 3 : Accuracy under confidence-based and random unmasking at evaluation. All models are evaluated with n=256 and m=128 .
+
+Model | Unmasking | GSM8K | Countdown
+LLaDA | Confidence | 79.9 | 20.3
+LLaDA | Random | 66.6 | 11.7
+AGRPO | Confidence | 88.0 | 79.7
+AGRPO | Random | 83.8 | 80.0
+
+### Table 4 : Sensitivity to the number of denoising steps m on Countdown, with n=192 and k=24 .
+
+Model | \boldsymbol{m=48} | \boldsymbol{m=96}
+LLaDA | 17.6 | 20.3
+AGRPO | 55.9 | 63.3
+
+### Table 5 : Sensitivity to the number of gradient updates per rollout batch \mu on Countdown, with n=192 and m=96 .
+
+Model | Countdown
+LLaDA | 20.3
+AGRPO ( \mu=1 ) | 63.3
+AGRPO ( \mu=4 ) | 61.3
+
+### Table 6 : Average wall time per gradient step for different dLLM RL methods on a controlled GSM8K training run with n=256 , m=128 , G=4 , and \mu=2 . Values are reported on 2xA6000 Ada GPUs with a global batch size of 16.
+
+ | Average wall time (s)
+Method | Inference | Loss/backprop | Total
+diffu-GRPO | 42.4 | 0.5 | 43.8
+SPG | 41.9 | 1.0 | 44.6
+AGRPO ( k=8 ) | 41.6 | 10.4 | 53.3
+
+### Table 7 : Sample responses ( n=384 ) for different values of m (# sampling steps) from a model trained with AGRPO. Problem is from the GSM8K-Platinum dataset.
+
+System: You will be given a math problem. Think through the problem step by step, enclosing your reasoning process in <think> tags. Provide your final answer in <answer> tags, with only the number or expression enclosed in \boxed{}, as follows: <think> ... </think> <answer> \boxed{...} </answer>
+User: Tommy is fundraising for his charity by selling brownies for $3 a slice and cheesecakes for $4 a slice. If Tommy sells 43 brownies and 23 slices of cheesecake, how much money does Tommy raise?
+Assistant (m=48): <think> First, we need to calculate the total from from selling selling brownies. Each Eachie is $ $3 and and Tommy sells 43 brownies \[\[ 3 \times 43 = = 129 \] Next, we calculate the total from selling selling selling cheesecakes. Each slice of cheesecake is $4 and and sells 23 slices is: \[\[4 \times 23 = 92 \] Finally, we add these two amounts to find the total money raised by Tommy: \[\[129 + 92 = 221 \] </think> <answer> \boxed{221} </answer>
+Assistant (m=192): <think> First, we need calculate the money raised from selling the brownies. Tommy sells 43 brownies at $3 each: \[\[ 43 \times 3 = 129 \] Next, we calculate the money raised from selling the cheesecakes. Tommy sells 23 slices of cheesecake at $4 each: \[\[ 23 \times 4 = 92 \] Finally, we add these two amounts together to find the total amount of money raised: \[\[ 129 + 92 = 221 \] </think> <answer> \boxed{221} </answer>
+

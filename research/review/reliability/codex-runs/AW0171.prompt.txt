@@ -1,0 +1,163 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Generative Flows on Discrete State-Spaces: Enabling Multimodal Flows with Applications to Protein Co-Design
+
+record AW0171 | arXiv:2402.04997 | first version 2024-02-07
+
+**Abstract.** Combining discrete and continuous data is an important capability for generative models. We present Discrete Flow Models (DFMs), a new flow-based model of discrete data that provides the missing link in enabling flow-based generative models to be applied to multimodal continuous and discrete data problems. Our key insight is that the discrete equivalent of continuous space flow matching can be realized using Continuous Time Markov Chains. DFMs benefit from a simple derivation that includes discrete diffusion models as a specific instance while allowing improved performance over existing diffusion-based approaches. We utilize our DFMs method to build a multimodal flow-based modeling framework. We apply this capability to the task of protein co-design, wherein we learn a model for jointly generating protein structure and sequence. Our approach achieves state-of-the-art co-design performance while allowing the same multimodal model to be used for flexible generation of the sequence or structure.
+
+## All captions
+
+- Figure 1: Overview. (A.) A DFM trajectory with masking over a 3-dim. sequence with 4 possible states. (B.) CTMC stochasticity controls the number of transitions in a sequence trajectory while respecting the flow p_{t} . Shown is a 1-dim. sequence with 5 states
+- Table 1: Comparison between continuous space linear interpolant flow models and DFMs with masking. Both start with a conditional flow p_{t|1}(x_{t}|x_{1}) interpolating between data and noise. For continuous, p_{t|1}(x_{t}|x_{1})=\mathcal{N}(tx_{1},(1-t)^{2}I)
+- Algorithm 1 DFM Sampling
+- Table 2: Flexible multimodal sampling.
+- Figure 2: Negative log-likelihood as measured by GPT-J-6B versus sample entropy. For DFM, D3PM and autoregressive, we sweep the logit temperature for p_{1|t}^{\theta}(x_{1}|x_{t}) over \{0.5,0.6,,\dots,1\} . We aim to minimize NLL whilst staying close to the d
+- Table 3: Co-design results. Abbreviations: Designability ( DES. ), Diversity ( DIV. ), Novelty ( NOV. ). For Protpardelle, we report Co-design 1 as same numbers as PMPNN 1 since their co-design approach employs PMPNN. We note this is not co-generation since PM
+- Figure 3: Multiflow structural properties. Average proportion of residues that are part of an alpha helix or beta strand versus the CTMC stochasticity level. Proportions of helices or strands can be desirable based on the family of proteins to generate ( Vinot
+- Table 4: Forward and inverse folding: mean \pm std.
+- Figure 4: Curves in Entropy-NLL space for varying noise levels used during sampling. For each noise level, the temperature applied to the logits of the p_{\theta}(x_{1}|x_{t}) prediction is varied over values 0.5,0.6,0.7,0.8,0.9,1.0 .
+- Table 5: Model log-likelihoods computed on the test set of text8 in bits-per-character (BPC).
+- Figure 5: The temperature settings for each model for which we will examine sample generations. The selected temperature setting is highlighted with a black circle.
+- Table 6: Performance metrics for various methods across different configurations.
+- Figure 6: Multiflow results on Protpardelle benchmark. ( Left ) PMPNN 8 scRMSD and designability versus length. Designability is computed as the proportion of samples that have \text{scRMSD}<2\text{\AA{}} within a sliding window of size 11. Average pLDDT as co
+- Figure 7: Multiflow samples. ( Left ) 2 undesignable Multiflow samples with the highest scRMSD from the benchmark. ( Right ) 2 designable Multiflow samples with the lowest scRMSD from the benchmark.
+- Table 7: Co-design 1 designability results based on oracle.
+- Figure 8: Sample metrics for Multiflow trained with the uniform interpolant on the discrete sequence modality. (Left) Co-Design 1 designability and diversity versus stochasticity level used when simulating the discrete CTMC. Higher is better for both designabi
+- Figure 9: Forward folding RMSD metrics (Left) RMSD error between ground truth and predicted structures for Multiflow along the x-axis versus RMSD error for ESMFold on the y-axis. Each dot represents a protein in the test set. The shading of each point represen
+- Figure 10: Proportion of residues that are part of secondary structure elements for both the Multiflow predicted structure and the ground truther structure. We plot the ground truth proportion of residues in a secondary structure element along the x-axis and t
+- Figure 11: Multiflow scRMSD versus PMPNN scRMSD on our test set. Each scatter point represents a protein with the shading giving the length. We also plot the dividing line of equal scRMSD for the two models for ease of comparison.
+
+## Tables as text
+
+### Table 1: Comparison between continuous space linear interpolant flow models and DFMs with masking. Both start with a conditional flow p_{t|1}(x_{t}|x_{1}) interpolating between data and noise. For continuous, p_{t|1}(x_{t}|x_{1})=\mathcal{N}(tx_{1},(1-t)^{2}I) and for discrete we use p_{t|1}^{\mathr
+
+Quantity | Continuous | Discrete
+Fokker-Planck-Kolmogorov | \partial_{t}p_{t}=-\nabla\cdot\left(v_{t}p_{t}\right) | \partial_{t}p_{t}=R_{t}^{\top}p_{t}
+Conditional process | \nu_{t}(x_{t}|x_{1})=\frac{x_{1}-x_{t}}{1-t} | R_{t}(x_{t},j|x_{1})=\frac{\delta\left\{j,x_{1}\right\}}{1-t}\delta\left\{x_{t},M\right\}
+Generative process | \nu_{t}(x_{t})=\mathbb{E}_{p_{1|t}(x_{1}|x_{t})}\left[\nu_{t}(x_{t}|x_{1})\right] | R_{t}(x_{t},j)=\mathbb{E}_{p_{1|t}(x_{1}|x_{t})}\left[R(x_{t},j|x_{1})\right]
+Generative sampling | x_{t+\Delta t}=x_{t}+v_{t}(x_{t})\Delta t | x_{t+\Delta t}\sim\mathrm{Cat}(\delta\left\{x_{t},x_{t+\Delta t}\right\}+R_{t}(x_{t},x_{t+\Delta t})\Delta t)
+
+### Table 2: Flexible multimodal sampling.
+
+ | Codesign | Inverse folding | Forward folding
+x_{t},r_{t} | t:0\rightarrow 1 | t=1 | t:0\rightarrow 1
+a_{\tilde{t}} | \tilde{t}:0\rightarrow 1 | \tilde{t}:0\rightarrow 1 | \tilde{t}=1
+
+### Table 3: Co-design results. Abbreviations: Designability ( DES. ), Diversity ( DIV. ), Novelty ( NOV. ). For Protpardelle, we report Co-design 1 as same numbers as PMPNN 1 since their co-design approach employs PMPNN. We note this is not co-generation since PMPNN is used while Multiflow explicitly l
+
+Method | Co-design 1 | PMPNN 8 | PMPNN 1
+ | Des. ( \uparrow ) | Div. ( \uparrow ) | Nov. ( \downarrow ) | Des. | Div. | Nov. | Des. | Div. | Nov.
+Protpardelle | 0.63* | 38* | 0.60* | 0.90 | 47 | 0.59 | 0.63 | 38 | 0.60
+ProteinGenerator | 0.37 | 35 | 0.69 | 0.89 | 75 | 0.65 | 0.78 | 64 | 0.66
+RFdiffusion |  | N/A |  | 0.87 | 158 | 0.63 | 0.66 | 111 | 0.64
+Multiflow | 0.86 | 143 | 0.61 | 0.99 | 156 | 0.61 | 0.88 | 143 | 0.61
+Multiflow w/o distillation | 0.42 | 72 | 0.62 | 0.89 | 126 | 0.62 | 0.71 | 101 | 0.63
+Multiflow w/o sequence |  | N/A |  | 0.99 | 116 | 0.63 | 0.86 | 97 | 0.62
+
+### Table 4: Forward and inverse folding: mean \pm std.
+
+ | Inverse folding | Forward folding
+Method | scRMSD ( \downarrow ) | RMSD ( \downarrow )
+ProteinMPNN | 1.9 \pm 2.7 | N/A
+ESMFold | N/A | 2.7 \pm 3.9
+Multiflow | 2.2 \pm 2.6 | 15.3 \pm 4.5
+
+### Table 5: Model log-likelihoods computed on the test set of text8 in bits-per-character (BPC).
+
+Method | BPC
+DFM \eta=0 | \leq 1.41
+Multinomial Diffusion ( Hoogeboom et al., 2021 ) | \leq 1.72
+MAC ( Shih et al., 2022 ) | \leq 1.40
+BFN ( Graves et al., 2023 ) | \leq 1.41
+D3PM Uniform ( Austin et al., 2021 ) | \leq 1.61
+D3PM Absorb ( Austin et al., 2021 ) | \leq 1.45
+SEDD Uniform ( Lou et al., 2023 ) | \leq 1.41
+SEDD Absorb ( Lou et al., 2023 ) | \leq 1.32
+
+### Table 6: Performance metrics for various methods across different configurations.
+
+Method | Co-design 1 | PMPNN 8 | PMPNN 1
+ | Des. | Div. | Nov. | Des. | Div. | Nov. | Des. | Div. | Nov.
+Protpardelle | 0.04 (0.01) | 5 (0.3) | 0.69 (0.01) | 0.9 (0.01) | 47 (0.7) | 0.59 (0.01) | 0.63 (0.01) | 38 (2.7) | 0.60 (0.01)
+ProteinGenerator | 0.37 (0.01) | 35 (2.6) | 0.69 (0.01) | 0.89 (0.00) | 75 (1.5) | 0.65 (0.02) | 0.78 (0.02) | 64 (4.6) | 0.66 (0.01)
+RFdiffusion |  |  |  | 0.87 (0.02) | 158 (3.7) | 0.63 (0.01) | 0.66 (0.02) | 111 (5.9) | 0.64 (0.01)
+Cogen | 0.86 (0.01) | 143 (6.4) | 0.61 (0.02) | 0.99 (0.00) | 156 (7.7) | 0.61 (0.01) | 0.88 (0.01) | 143 (6.4) | 0.61 (0.02)
+Cogen w/o distillation | 0.42 (0.02) | 72 (2.4) | 0.62 (0.01) | 0.89 (0.00) | 126 (1.0) | 0.62 (0.02) | 0.71 (0.02) | 101 (7.1) | 0.63 (0.02)
+Cogen w/o sequence |  |  |  | 0.99 (0.00) | 116 (1.0) | 0.63 (0.01) | 0.86 (0.01) | 97 (1.5) | 0.62 (0.02)
+
+### Table 7: Co-design 1 designability results based on oracle.
+
+ | Designability with ESMFold | Designability with AF2
+Multiflow w/o distillation | 0.41 | 0.38
+Multiflow w/ distillation | 0.88 | 0.83
+Net improvement | +0.47 | +0.45
+

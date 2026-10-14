@@ -1,0 +1,171 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Faster but Different: Diagnosing and Controlling Content Drift in Accelerated Multimodal Diffusion Language Models
+
+record AW0235 | arXiv:2607.29079 | first version 2026-07-31
+
+**Abstract.** Training-free acceleration makes diffusion-based multimodal large language models (dMLLMs) more deployable, but it may silently change generated content. We study this serving-time consistency problem on 300 real images, comparing Fast-dLLM outputs with the same model's unaccelerated outputs. Across the mild parallelism induced in our long-form setting (1.05--1.25 committed tokens per step), confidence-threshold tuning changes decoding behavior but not baseline agreement. State-refresh ablations and an image-swap intervention instead identify stale visual and generated-text states as contributors to drift. For the tested Fast-dLLM implementation, shortening the KV-cache refresh interval yields a monotonic speed--agreement frontier and near-exact agreement at a measured 1.3x speedup. The initial diagnosis also appears with dLLM-Cache and LaViDa, although dLLM-Cache recovers agreement only after both caches are tightened, which removes its speed advantage. Independent prompts and images reproduce the threshold-insensitivity and refresh recovery. A targeted audit finds genuine content substitution in half of 50 low-agreement pairs. In a separate blinded two-annotator evaluation, the pooled accelerated-minus-baseline factual-error difference is 0.00 (95% CI [-0.17,+0.17]); this sample detects no difference but does not establish factual equivalence. Finally, none of the tested adaptive or smoothed-refresh variants beats the fixed interval at matched compute. Our contribution is a paired diagnostic and an implementation-scoped consistency control, not an accuracy or safety guarantee.
+
+## All captions
+
+- Figure 1. Why acceleration changes what the model says, and the dial that controls it in the settings we study. (a) Fast-dLLM’s approximate KV cache re-attends to the image only once every prefix_refresh_interval steps (default 32): 124 of 128 denoising steps 
+- Table 1. How this paper differs from the closest related work.
+- Figure 2. Threshold sweep (300 images \times 6 configurations, 1,800 generations; 95% paired-bootstrap CIs). (a) Acceleration yields a 10–12 \times speedup. (b) Agreement remains flat at \approx 0.41– 0.42 . (c) distinct-2 remains stable. Three plots compare t
+- Table 2. Content drift by MME category (exploratory). “Images” is the number of distinct images per category; “Gen.” is the number of accelerated generations ( =5\times Images). Rows with Images \leq 2 are not statistically reliable.
+- Figure 3. Speed and baseline agreement as a function of prefix_refresh_interval (50 images \times 6 configurations, 300 generations; error bars are 95% bootstrap CIs). Unlike threshold, the refresh interval produces a continuous, monotonic trade-off between sp
+- Table 3. Speed–agreement trade-off across refresh intervals (50 images each).
+- Figure 4. Measured latency–agreement frontiers for Fast-dLLM and dLLM-Cache (50 paired images per point; error bars are 95% bootstrap CIs). At every shared latency budget, the best feasible Fast-dLLM setting has higher agreement; the unaccelerated baseline is 
+- Table 4. dLLM-Cache: initial drift replicates, remedy does not (50 images each).
+- Table 5. RQ4: seven reported adaptive/smoothed points (of 12 tested), each against a fixed-interval setting of equal or greater speed. No variant beats the frontier; exact-match counts are 0/50 except joint per-step (7/50, vs. 40/50 for interval 1).
+- Table 6. Experiment ledger. RQ1 uses 300 paired baselines; targeted studies reuse its fixed 50-image subset.
+
+## Tables as text
+
+### Table 1. How this paper differs from the closest related work.
+
+ | MM | Thresh. | Refresh | Cross-impl. | Content
+ |  | vs. drift | vs. drift | check | metric
+Fast-dLLM ( Wu et al., 2025 ) | \times | \times | \times | \times | \times
+dLLM-Cache ( Liu et al., 2025 ) | \times | \times | \times | \times | \times
+APD ( Israel et al., 2025 ) | \times | \times | \times | \times | \times
+ParallelBench ( Kang et al., 2025 ) | \times | ✓ | \times | \times | ✓
+VRCD ( Yuan et al., 2026 ) | ✓ | \times | \times | \times | \times
+Vis. redund. ( Li et al., 2026 ) | ✓ | \times | \times | \times | \times
+Ours | ✓ | ✓ | ✓ | ✓ | ✓
+
+### Table 2. Content drift by MME category (exploratory). “Images” is the number of distinct images per category; “Gen.” is the number of accelerated generations ( =5\times Images). Rows with Images \leq 2 are not statistically reliable.
+
+Category | Images | Gen. | Avg. Jaccard
+artwork | 7 | 35 | 0.317
+OCR | 1 | 5 | 0.337
+code_reasoning | 1 | 5 | 0.358
+celebrity | 6 | 30 | 0.390
+commonsense_reasoning | 4 | 20 | 0.403
+existence | 2 | 10 | 0.410
+landmark | 8 | 40 | 0.422
+count | 2 | 10 | 0.442
+posters | 8 | 40 | 0.450
+scene | 10 | 50 | 0.453
+position | 1 | 5 | 0.603
+
+### Table 3. Speed–agreement trade-off across refresh intervals (50 images each).
+
+prefix_refresh_interval | Time (s) | Jaccard | Exact match
+32 (default) | 6.37 | 0.420 | 0/50
+16 | 8.12 | 0.463 | 0/50
+8 | 11.16 | 0.482 | 0/50
+4 | 17.53 | 0.572 | 2/50
+2 | 30.11 | 0.666 | 3/50
+1 | 55.29 | 0.987 | 40/50
+No acceleration | 71.90 | 1.000 | 50/50
+
+### Table 4. dLLM-Cache: initial drift replicates, remedy does not (50 images each).
+
+prompt_interval_steps | Time (s) | Jaccard | Exact match
+25 (default) | 21.66 | 0.394 | 0/50
+16 | 23.01 | 0.418 | 0/50
+8 | 28.17 | 0.414 | 0/50
+4 | 38.44 | 0.436 | 0/50
+2 | 58.86 | 0.442 | 0/50
+1 | 99.58 | 0.437 | 0/50
+
+### Table 5. RQ4: seven reported adaptive/smoothed points (of 12 tested), each against a fixed-interval setting of equal or greater speed. No variant beats the frontier; exact-match counts are 0/50 except joint per-step (7/50, vs. 40/50 for interval 1).
+
+Variant | Config | Time (s) | Jaccard | Fixed-int. ref.
+Token budget | B{=}4 | 18.6 | 0.492 | int. 4: 17.5s, 0.572
+Conf. decay | r{=}0.85 | 8.5 | 0.471 | int. 16: 8.1s, 0.463
+Attn. decay | r{=}0.95 | 7.3 | 0.437 | int. 16: 8.1s, 0.463
+Chunked | C{=}16 | 11.2 | 0.405 | int. 8: 11.2s, 0.482
+Chunked | C{=}8 | 14.4 | 0.436 | int. 8: 11.2s, 0.482
+Chunked | C{=}4 | 20.1 | 0.472 | int. 4: 17.5s, 0.572
+Joint per-step | prefix frozen | 50.6 | 0.616 | int. 1: 55.3s, 0.987
+
+### Table 6. Experiment ledger. RQ1 uses 300 paired baselines; targeted studies reuse its fixed 50-image subset.
+
+Experiment | Imgs \times configs | Gens
+Unaccelerated baseline (RQ1 reference) | 300\times 1 | 300
+RQ1 threshold sweep (Sec. 5 ) | 300\times 5 | 1,500
+RQ1 threshold instrumentation (validation) | 50\times 5 | 250
+Prompt/sample generalization | 50\times 2\times 5 | 500
+RQ2 refresh-interval sweep | 50\times 6 | 300
+RQ2 state-refresh ablation / image swap | 50\times 2+10\times 4 | 140
+Threshold \times refresh grid (Sec. 6.3 ) | 50\times 4 | 200
+RQ3 dLLM-Cache sweep (Sec. 7 ) | 50\times 6 | 300
+RQ3 dLLM-Cache joint pilot | 15\times 4 | 60
+LaViDa cross-model sweep (Sec. 7 ) | 50\times 6 | 300
+RQ4 token budget | 50\times 4 | 200
+RQ4 confidence / attention decay | 50\times 4 | 200
+RQ4 chunked + joint | 50\times 4 | 200
+RQ4 learned-gating probe | 20\times 8 | 160
+Short-form (VQA) pilot | 20\times 4 | 80
+Cross-hardware timing replication | 30\times 8 | 240
+Total |  | 4,930
+

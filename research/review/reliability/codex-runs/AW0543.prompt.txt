@@ -1,0 +1,114 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# DiffS2UT: A Semantic Preserving Diffusion Model for Textless Direct Speech-to-Speech Translation
+
+record AW0543 | arXiv:2310.17570 | first version 2023-10-26
+
+**Abstract.** While Diffusion Generative Models have achieved great success on image generation tasks, how to efficiently and effectively incorporate them into speech generation especially translation tasks remains a non-trivial problem. Specifically, due to the low information density of speech data, the transformed discrete speech unit sequence is much longer than the corresponding text transcription, posing significant challenges to existing auto-regressive models. Furthermore, it is not optimal to brutally apply discrete diffusion on the speech unit sequence while disregarding the continuous space structure, which will degrade the generation performance significantly. In this paper, we propose a novel diffusion model by applying the diffusion forward process in the \textit{continuous} speech representation space, while employing the diffusion backward process in the \textit{discrete} speech unit space. In this way, we preserve the semantic structure of the continuous speech representation space in the diffusion process and integrate the continuous and discrete diffusion models. We conduct extensive experiments on the textless direct speech-to-speech translation task, where the proposed method achieves comparable results to the computationally intensive auto-regressive baselines (500 steps on average) with significantly fewer decoding steps (50 steps).
+
+## All captions
+
+- Figure 1: Illustration of different diffusion forward processes. (a) Continuous diffusion on images. The image is corrupted gradually by the Gaussian noise. (b) Discrete absorbing diffusion on text sequences. The text sequence is corrupted with masks. (c) Our 
+- Figure 2: Illustration of the model architecture. (a) Left: The speech-to-unit model with mHuBERT and K-means to discretize the speech input. Right: The unit-based HiFi-GAN vocoder for unit-to-speech conversion. (b) Our proposed DiffS2UT translation model. The
+- Algorithm 1 Training DiffS2UT
+- Algorithm 2 Sampling from DiffS2UT
+- Figure 3: Accuracy of nearest neighbour search on the perturbation data in the K-means space.
+- Table 1: BLEU scores achieved by training on VoxPopuli-S2S Wang et al. (2021) training sets and evaluating on Europarl-ST Iranzo-Sánchez et al. (2020) test sets. For the S2UT systems with diffusion generative models, the results are reproduced by ourselves.
+- Figure 4: Statistics of the target sequence length in VoxPopuli-S2S Es-En training set.
+- Table 2: The ablation study on the proposed methods. Results are conducted on the Es-En test set.
+- Figure 5: The BLEU score of intermediate \hat{\mathbf{x}}_{0} within a decoding process.
+
+## Tables as text
+
+### Table 1: BLEU scores achieved by training on VoxPopuli-S2S Wang et al. (2021) training sets and evaluating on Europarl-ST Iranzo-Sánchez et al. (2020) test sets. For the S2UT systems with diffusion generative models, the results are reproduced by ourselves.
+
+Name | # Iter. | Es-En | Fr-En | En-Es | En-Fr | Param. | Speedup
+Cascaded systems: |  |  |  | 
+S2T + tf TTS Lee et al. (2022) | n.a. | 19.2 | 19.8 | 21.7 | 18.5 | n.a. | -
+S2UT systems with auto-regressive generation: |  |  |  | 
+S2UT Lee et al. (2022) | N | 13.1 | 15.4 | 16.4 | 15.8 | 71M | 1.0 \times
+S2UT w/ ED Duquenne et al. (2022) | N | 20.4 | 20.7 | 21.9 | 19.3 | 71M | 1.0 \times
+S2UT w/ PT Popuri et al. (2022) | N | 23.8 | - | 26.0 | - | 827M | -
+S2UT systems with diffusion generation: |  |  |  | 
+S2UT-Absorbing Austin et al. (2021) | 50 | 5.5 | 5.1 | 3.9 | 4.3 | 71M | 12.6 \times
+S2UT-Multinomial Hoogeboom et al. (2021) | 50 | 11.8 | 12.0 | 11.2 | 8.5 | 71M | 9.7 \times
+DiffS2UT (Ours) | 5 | 13.5 | 14.1 | 13.8 | 12.9 | 71M | 14.4 \times
+10 | 14.6 | 15.0 | 14.2 | 13.5 | 71M | 14.0 \times
+20 | 14.8 | 15.1 | 14.4 | 13.6 | 71M | 12.4 \times
+50 | 14.8 | 15.2 | 14.5 | 13.6 | 71M | 11.9 \times
+
+### Table 2: The ablation study on the proposed methods. Results are conducted on the Es-En test set.
+
+Models | BLEU
+DiffS2UT | 14.8
+w/o K-means mapping | 12.1
+w/o beam size | 14.6
+

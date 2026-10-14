@@ -1,0 +1,210 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# $R^2$-dLLM: Accelerating Diffusion Large Language Models via Spatio-Temporal Redundancy Reduction
+
+record AW0362 | arXiv:2604.18995 | first version 2026-04-21
+
+**Abstract.** Diffusion Large Language Models (dLLMs) have emerged as a promising alternative to autoregressive generation by enabling parallel token prediction. However, practical dLLM decoding still suffers from high inference latency, which limits deployment. In this work, we observe that a substantial part of this inefficiency comes from recurring redundancy in the decoding process, including spatial redundancy caused by confidence clusters and positional ambiguity, and temporal redundancy caused by repeatedly remasking predictions that have already stabilized. Motivated by these patterns, we propose $R^{2}$-dLLM, a unified framework for reducing decoding redundancy from both inference and training perspectives. At inference time, we introduce training-free decoding rules that aggregate local confidence and token predictions, and finalize temporally stable tokens to avoid redundant decoding steps. We further propose a redundancy-aware supervised fine-tuning pipeline that aligns the model with efficient decoding trajectories and reduces reliance on manually tuned thresholds. Experiments demonstrate that $R^{2}$-dLLM consistently reduces the number of decoding steps by up to 88\% compared to existing decoding strategies, while maintaining competitive generation quality across different models and tasks. These results validate that decoding redundancy is a central bottleneck in dLLMs, and that explicitly reducing it yields substantial practical efficiency gains. Our code and models are available at https://github.com/GATECH-EIC/R2-dLLM.
+
+## All captions
+
+- Figure 1: Benchmarking the accuracy versus the Number of Function Evaluations (NFE) trade-offs between our R^{2} -dLLM and SOTA dLLM acceleration methods on the GSM8K dataset based on the LLaDA-Instruct-8B model.
+- Figure 2: An illustration of spatial redundancy.
+- Figure 3: Overview of the proposed training-free redundancy reduction strategy during diffusion decoding.
+- Figure 4: An illustration of temporal redundancy, where a “redundant step” denotes a token that matches the final output but is not finalized.
+- Figure 5: Redundancy-aware training dataset collection: For each prompt, candidate responses with correct answers and the lowest redundancy score R_{\text{total}} are selected.
+- Table 1: Efficiency and accuracy comparison under different decoding strategies (generation length is equal to 256). Latency speedup and NFE reduction over Vanilla is shown in green.
+- Table 2: Efficiency and accuracy comparison between Fast-dLLM and R^{2} -dLLM on LLaDA-1.5. NFE reduction is computed relative to Fast-dLLM, shown in green.
+- Table 3: Ablation of training-free redundancy reduction components on LLaDA.
+- Table 4: Comparison of different response selection strategies based on redundancy.
+- Figure 6: Training dynamics of LLaDA-Instruct-8B on GSM8K, showing loss, R_{total} , NFE, and accuracy over training iterations.
+- Table 5: Training configuration for redundancy-aware supervised fine-tuning.
+- Table 6: Selected \tau_{t} and \tau_{s} across datasets and models.
+- Figure 7: The sensitivity of \tau_{s} and \tau_{t} .
+- Figure 8: Effect of Generation Length on Decoding Efficiency and Accuracy.
+- Table 7: Comparison of different token cluster aggregation position selection strategies.
+- Table 8: Comparison of different temporal redundancy indicators.
+- Table 9: Average redundancy-event counts per response on LLaDA GSM8K.
+- Table 10: Pairwise response-level comparison between the Min- R_{\text{total}} and Max- R_{\text{total}} candidates on matched GSM8K pairs. For Same final number and Textually identical, the percentage indicates the proportion of all matched pairs satisfying t
+- Table 11: Examples of overused lead-ins in high- and low-redundancy response subsets.
+
+## Tables as text
+
+### Table 1: Efficiency and accuracy comparison under different decoding strategies (generation length is equal to 256). Latency speedup and NFE reduction over Vanilla is shown in green.
+
+Task | Method | LLaDA-Instruct-8B | Dream-v0-Instruct-7B
+Latency \downarrow | NFE \downarrow | ACC \uparrow | Latency \downarrow | NFE \downarrow | ACC \uparrow
+GSM8K (5-shot) | Vanilla | 13.1 | 256.0 | 77.03 | 10.4 | 256.0 | 78.77
+Fast-dLLM | 2.7 ↓4.9× | 86.4 ↓66% | 78.01 | 1.7 ↓6.1× | 63.6 ↓75% | 76.57
+LocalLeap | 2.3 ↓5.7× | 64.4 ↓74% | 78.16 | 1.4 ↓7.4× | 61.0 ↓76% | 76.19
+dParallel | 1.4 ↓9.4× | 39.7 ↓84% | 75.36 | 1.3 ↓8.0× | 38.7 ↓84% | 78.47
+\bm{R^{2}} -dLLM (F) | 2.3 ↓5.7× | 63.1 ↓75% | 77.56 | 1.4 ↓7.4× | 53.3 ↓79% | 75.51
+\bm{R^{2}} -dLLM (T) | 1.7 ↓7.7× | 51.9 ↓79% | 77.86 | 1.3 ↓8.0× | 44.9 ↓82% | 80.82
+MATH (4-shot) | Vanilla | 9.7 | 256.0 | 33.20 | 8.3 | 256.0 | 38.08
+Fast-dLLM | 3.3 ↓2.9× | 107.8 ↓57% | 32.60 | 2.4 ↓3.5× | 90.3 ↓64% | 37.58
+LocalLeap | 2.8 ↓3.5× | 85.3 ↓66% | 32.18 | 1.9 ↓4.4× | 81.5 ↓68% | 37.18
+dParallel | 1.7 ↓5.7× | 53.8 ↓78% | 30.22 | 1.6 ↓5.2× | 57.3 ↓77% | 35.94
+\bm{R^{2}} -dLLM (F) | 2.9 ↓3.3× | 79.7 ↓68% | 32.26 | 1.7 ↓4.9× | 76.3 ↓70% | 37.56
+\bm{R^{2}} -dLLM (T) | 2.1 ↓4.6× | 68.5 ↓73% | 32.60 | 1.8 ↓4.6× | 66.1 ↓74% | 36.88
+HumanEval (0-shot) | Vanilla | 5.8 | 256.0 | 40.24 | 4.7 | 256.0 | 57.93
+Fast-dLLM | 2.5 ↓2.3× | 90.1 ↓64% | 36.59 | 1.7 ↓2.8× | 80.5 ↓68% | 57.93
+LocalLeap | 2.1 ↓2.8× | 69.8 ↓72% | 35.98 | 1.4 ↓3.4× | 75.0 ↓70% | 53.66
+dParallel | 1.1 ↓5.3× | 37.9 ↓85% | 33.53 | 1.1 ↓4.3× | 50.4 ↓80% | 53.66
+\bm{R^{2}} -dLLM (F) | 2.3 ↓2.5× | 81.7 ↓68% | 35.98 | 1.3 ↓3.6× | 67.5 ↓73% | 53.05
+\bm{R^{2}} -dLLM (T) | 1.7 ↓3.4× | 64.3 ↓74% | 36.59 | 0.9 ↓5.2× | 44.6 ↓82% | 54.27
+MBPP (3-shot) | Vanilla | 10.1 | 256.0 | 29.40 | 7.9 | 256.0 | 61.00
+Fast-dLLM | 2.2 ↓4.6× | 73.0 ↓71% | 25.60 | 1.0 ↓7.9× | 35.3 ↓86% | 53.20
+LocalLeap | 1.9 ↓5.3× | 56.1 ↓78% | 24.00 | 0.9 ↓8.8× | 36.3 ↓85% | 51.40
+dParallel | 1.0 ↓10.1× | 29.7 ↓88% | 35.80 | 0.8 ↓9.9× | 26.6 ↓89% | 48.20
+\bm{R^{2}} -dLLM (F) | 1.9 ↓5.3× | 61.2 ↓76% | 25.60 | 0.8 ↓9.9× | 29.9 ↓88% | 52.60
+\bm{R^{2}} -dLLM (T) | 1.3 ↓7.7× | 40.3 ↓84% | 37.40 | 0.8 ↓9.9× | 28.7 ↓88% | 54.00
+
+### Table 2: Efficiency and accuracy comparison between Fast-dLLM and R^{2} -dLLM on LLaDA-1.5. NFE reduction is computed relative to Fast-dLLM, shown in green.
+
+Method | GSM8K | MATH | HumanEval | MBPP
+NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow
+Fast-dLLM | 84.5 | 79.81 | 106.6 | 32.54 | 104.7 | 36.59 | 48.5 | 34.40
+\bm{R^{2}} -dLLM | 50.5 \downarrow 40% | 79.23 | 72.5 \downarrow 32% | 32.40 | 81.8 \downarrow 21% | 37.20 | 38.0 \downarrow 21% | 37.00
+
+### Table 3: Ablation of training-free redundancy reduction components on LLaDA.
+
+Redundancy Type | GSM8K | MATH | HumanEval | MBPP
+Spa. (Conf.) | Spa. (Token.) | Temp. | NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow
+✗ | ✗ | ✗ | 86.4 | 78.01 | 107.8 | 32.60 | 90.1 | 36.59 | 73.0 | 25.60
+✓ |  |  | 69.6 | 77.33 | 89.4 | 32.62 | 79.1 | 36.59 | 61.5 | 25.40
+ | ✓ |  | 80.3 | 78.32 | 104.2 | 32.20 | 86.5 | 35.37 | 72.5 | 25.40
+ |  | ✓ | 70.0 | 77.51 | 90.7 | 32.40 | 88.8 | 35.98 | 63.2 | 25.80
+✓ | ✓ | ✓ | 63.1 | 77.56 | 79.7 | 32.26 | 81.7 | 35.98 | 61.2 | 25.60
+
+### Table 4: Comparison of different response selection strategies based on redundancy.
+
+Strategy | GSM8K | HumanEval
+NFE \downarrow | ACC \uparrow | NFE \downarrow | ACC \uparrow
+Max | 59.9 | 77.94 | 82.4 | 36.59
+Min | 51.9 | 77.86 | 64.3 | 36.59
+
+### Table 5: Training configuration for redundancy-aware supervised fine-tuning.
+
+Config | LLaDA | LLaDA-1.5 | Dream
+LoRA Rank | 32 | 32 | 32
+LoRA Alpha | 32 | 32 | 32
+Learning Rate | 2\times 10^{-5} | 2\times 10^{-5} | 2\times 10^{-5}
+Batch Size | 64 | 64 | 64
+Epoch | 6 | 6 | 3
+
+### Table 6: Selected \tau_{t} and \tau_{s} across datasets and models.
+
+Dataset | LLaDA | Dream
+\bm{\tau_{t}} | \bm{\tau_{s}} | \bm{\tau_{t}} | \bm{\tau_{s}}
+GSM8K | 0.70 | 0.80 | 0.80 | 0.85
+MATH | 0.70 | 0.80 | 0.80 | 0.85
+HumanEval | 0.85 | 0.85 | 0.85 | 0.85
+MBPP | 0.80 | 0.80 | 0.80 | 0.85
+
+### Table 7: Comparison of different token cluster aggregation position selection strategies.
+
+Strategy | NFE \downarrow | ACC \uparrow
+Fast-dLLM | 86.4 | 78.01
+Mid | 83.1 | 75.82
+Random | 83.2 | 76.12
+Conf | 80.3 | 78.32
+
+### Table 8: Comparison of different temporal redundancy indicators.
+
+Strategy | NFE \downarrow | ACC \uparrow
+Fast-dLLM | 86.4 | 78.01
+Ave | 84.4 | 77.79
+Max | 71.5 | 77.33
+Last | 70.0 | 77.51
+
+### Table 9: Average redundancy-event counts per response on LLaDA GSM8K.
+
+Method | Count type | Confidence-cluster | Token-cluster | Temporal-finalization
+Fast-dLLM | Potential | 47.45 | 3.15 | 26.82
+R 2 -dLLM (F) | Actual | 40.04 | 1.11 | 6.17
+R 2 -dLLM (T) | Potential | 23.85 | 0.87 | 3.50
+
+### Table 10: Pairwise response-level comparison between the Min- R_{\text{total}} and Max- R_{\text{total}} candidates on matched GSM8K pairs. For Same final number and Textually identical, the percentage indicates the proportion of all matched pairs satisfying the condition. For the remaining three me
+
+Metric | All pairs (%) | Differ-only (%) | Same-final-number (%)
+Same final number | 89.9 | – | –
+Textually identical | 1.7 | – | –
+Lower repeated-bigram rate | 60.4 | 65.2 | 65.0
+Higher lexical diversity | 63.3 | 68.0 | 68.0
+Fewer template markers | – | 75.9 | 75.8
+
+### Table 11: Examples of overused lead-ins in high- and low-redundancy response subsets.
+
+Lead-in | High-redundancy Subset (%) | Low-redundancy Subset (%)
+“Let’s break down the problem step by …” | 5.92 | 3.85
+“To solve this problem, we need to determine …” | 2.09 | 0.52
+“To solve this problem, we need to calculate …” | 1.92 | 0.76
+

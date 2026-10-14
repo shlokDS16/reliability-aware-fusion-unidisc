@@ -1,0 +1,258 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Meta-DiffuB: A Contextualized Sequence-to-Sequence Text Diffusion Model with Meta-Exploration
+
+record AW0209 | arXiv:2410.13201 | first version 2024-10-17
+
+**Abstract.** The diffusion model, a new generative modeling paradigm, has achieved significant success in generating images, audio, video, and text. It has been adapted for sequence-to-sequence text generation (Seq2Seq) through DiffuSeq, termed S2S Diffusion. Existing S2S-Diffusion models predominantly rely on fixed or hand-crafted rules to schedule noise during the diffusion and denoising processes. However, these models are limited by non-contextualized noise, which fails to fully consider the characteristics of Seq2Seq tasks. In this paper, we propose the Meta-DiffuB framework - a novel scheduler-exploiter S2S-Diffusion paradigm designed to overcome the limitations of existing S2S-Diffusion models. We employ Meta-Exploration to train an additional scheduler model dedicated to scheduling contextualized noise for each sentence. Our exploiter model, an S2S-Diffusion model, leverages the noise scheduled by our scheduler model for updating and generation. Meta-DiffuB achieves state-of-the-art performance compared to previous S2S-Diffusion models and fine-tuned pre-trained language models (PLMs) across four Seq2Seq benchmark datasets. We further investigate and visualize the impact of Meta-DiffuB's noise scheduling on the generation of sentences with varying difficulties. Additionally, our scheduler model can function as a "plug-and-play" model to enhance DiffuSeq without the need for fine-tuning during the inference stage.
+
+## All captions
+
+- Figure 1 : Comparison between S2S-Diffusion model ( i.e. , DiffuSeq [ 21 ] ) and the proposed Meta-Diffu B . The shades of color represent different amounts of noise being imposed. Different from prior works that use a fixed noise, we introduce a novel schedul
+- Algorithm 1 Meta-Diffu B
+- Table 1 : Computational complexity increase when applying Meta-Diffu B to DiffuSeq.
+- Table 2: Results of applying our Meta-Diffu B ( D_{\theta} = a specific S2S-Diffusion model) to other S2S-Diffusion models [ 8 , 45 , 44 ] . The specific S2S-Diffusion model used in the exploiter model is indicated by the assignment of D_{\theta} . Outcomes wh
+- (a) QQP dataset
+- (b) WA dataset
+- Figure 2 : Increase in BLEU score with varying candidate sizes |S| on the QQP and WA datasets.
+- Table 3: We present the results of our Meta-Diffu B ( D_{\theta} = DiffuSeq) compared with other models across four Seq2Seq datasets. We report the scores of DiffuSeq and PLMs from [ 8 ] . A star ( \star ) indicates results reported directly from previous stud
+- Table 4: The results of our Meta-Diffu B ( D_{\theta} = DiffuSeq) and other S2S-Diffusion models for generating sentences (E) and (H) on the WA dataset. The best result in each group is highlighted in bold .
+- (a) QQP dataset
+- (b) WA dataset
+- Figure 3: Visualization of noise scheduling for each S2S-Diffusion model on the QQP and WA datasets. \overline{\beta}_{t} represents the average noise imposed on sentences at diffusion step t . Unlike other models, which impose the same noise on all sentences,
+- Table 5: Results of the plug-and-play experiment for our scheduler model. The ‘Scheduler’ field indicates the dataset used to train our scheduler model, while the ’DiffuSeq’ field indicates the dataset used to train DiffuSeq. If the ‘DiffuSeq’ field is ‘Null’,
+- Table 6 : Results of Meta-Diffu B on Machine Translation datasets (DE-EN). Results where Meta-Diffu B combined with different models show improved performance are indicated in bold .
+- Table 7 : Comparison of Meta-Diffu B on the QG and QQP datasets. Results where Meta-Diffu B combined with different models show improved performance are indicated in bold .
+- Table 8: The sample output of our Meta-Diffu B ( D_{\theta} = DiffuSeq) and other S2S-Diffusion models [ 8 , 44 , 45 ] on hardest generated sentences (H) of WA dataset. The conditional sentence is the same.
+- Table 9: The sample output of Meta-Diffu B ( D_{\theta} = DiffuSeq) and other S2S-Diffusion models [ 8 , 44 , 45 ] on hardest generated sentence (H) of QQP dataset. The conditional sentence is the same.
+- Table 10: The results of our Meta-Diffu B and other S2S-Diffusion models [ 8 , 44 , 45 ] for generating sentences (E) and (H) on the WA dataset. The best result in each group is highlighted in bold .
+- (a) QQP dataset
+- (b) WA dataset
+- Figure 4: Adaptive noise scheduling for each S2S-Diffusion model on the QQP and WA datasets. \Sigma\boldsymbol{\beta} represents the total amount of noise imposed in each training epoch.
+- Table 11: Results of the plug-and-play experiment for our scheduler model. The ’Scheduler’ field indicates the dataset used to train the scheduler model, while the ’DiffuSeq’ field indicates the dataset used to train DiffuSeq. If the ’DiffuSeq’ field is ’Null’
+- Table 12 : Plug-and-play experiments on SeqDiffuSeq integrated with our scheduler. The field ‘SeqDiffuSeq’ indicates which dataset this model is trained on. When the ‘Scheduler’ field is ‘Null’, it indicates the use of the model’s own noise scheduling. Results
+- Table 13 : Plug-and-play experiments on Dinoiser integrated with our scheduler. The field ‘Dinoiser’ indicates which dataset this model is trained on. When the ‘Scheduler’ field is ‘Null’, it indicates the use of the model’s own noise scheduling. Results where
+
+## Tables as text
+
+### Table 1 : Computational complexity increase when applying Meta-Diffu B to DiffuSeq.
+
+Method | Increased Parameters (%) | Increased Training Time (%) | Increased Inference Time (%)
+Meta-Diffu B | 2.2% | 5% | 0.5%
+
+### Table 2: Results of applying our Meta-Diffu B ( D_{\theta} = a specific S2S-Diffusion model) to other S2S-Diffusion models [ 8 , 45 , 44 ] . The specific S2S-Diffusion model used in the exploiter model is indicated by the assignment of D_{\theta} . Outcomes where Meta-Diffu B outperforms previous S2
+
+Tasks | Methods | BLEU (\uparrow) | BERTScore (\uparrow) | Dist-1 (\uparrow)
+QQP | \star DiffuSeq | 0.2413 | 0.8365 | 0.9807
+Meta-Diffu B ( D_{\theta} = DiffuSeq) | 0.2552 | 0.8821 | 0.9922
+\star SeqDiffuSeq | 0.2434 | 0.8400 | 0.9807
+Meta-Diffu B ( D_{\theta} = SeqDiffuSeq) | 0.2632 | 0.8919 | 0.9902
+\dagger Dinoiser | 0.1949 | 0.8036 | 0.9723
+Meta-Diffu B ( D_{\theta} = Dinoiser) | 0.2271 | 0.8525 | 0.9752
+WA | \star DiffuSeq | 0.3622 | 0.8126 | 0.9264
+Meta-Diffu B ( D_{\theta} = DiffuSeq) | 0.3877 | 0.8233 | 0.9355
+\star SeqDiffuSeq | 0.3712 | 0.8214 | 0.9077
+Meta-Diffu B ( D_{\theta} = SeqDiffuSeq) | 0.3957 | 0.8451 | 0.9412
+\dagger Dinoiser | 0.2388 | 0.6787 | 0.8421
+Meta-Diffu B ( D_{\theta} = Dinoiser) | 0.2471 | 0.7285 | 0.8694
+
+### Table 3: We present the results of our Meta-Diffu B ( D_{\theta} = DiffuSeq) compared with other models across four Seq2Seq datasets. We report the scores of DiffuSeq and PLMs from [ 8 ] . A star ( \star ) indicates results reported directly from previous studies, while a dagger ( \dagger ) signifie
+
+Tasks | Methods | BLEU (\uparrow) | ROUGH-L (\uparrow) | BERTScore (\uparrow) | Dist-1 (\uparrow) | Self-BLEU (\downarrow) | M-R (\downarrow)
+QQP | \star GPT2-base | 0.1980 | 0.5212 | 0.8246 | 0.9798 | 0.5480 | 5.20
+\star GPT2-large | 0.2059 | 0.5415 | 0.8363 | 0.9819 | 0.7325 | 3.80
+\star LevT | 0.2268 | 0.5795 | 0.8344 | 0.9790 | 0.9995 | 4.80
+\star DiffuSeq | 0.2413 | 0.5880 | 0.8365 | 0.9807 | 0.2732 | 2.60
+\star SeqDiffuSeq | 0.2434 | - | 0.8400 | 0.9807 | - | 2.33
+\dagger Dinoiser | 0.1949 | 0.5316 | 0.8036 | 0.9723 | 0.8643 | 6.20
+Meta-Diffu B | 0.2632 | 0.5933 | 0.8519 | 0.9902 | 0.2595 | 1.00
+WA | \star GPT2-base | 0.3083 | 0.5461 | 0.8021 | 0.9439 | 0.5444 | 3.40
+\star GPT2-large | 0.2693 | 0.5111 | 0.7882 | 0.9464 | 0.6042 | 4.00
+\star LevT | 0.2052 | 0.4402 | 0.7254 | 0.9715 | 0.9907 | 5.00
+\star DiffuSeq | 0.3622 | 0.5849 | 0.8126 | 0.9264 | 0.4642 | 3.00
+\star SeqDiffuSeq | 0.3712 | - | 0.8214 | 0.9077 | - | 3.33
+\dagger Dinoiser | 0.2388 | 0.4821 | 0.6787 | 0.8421 | 0.9132 | 6.20
+Meta-Diffu B | 0.3877 | 0.6047 | 0.8233 | 0.9355 | 0.3888 | 1.60
+QT | \star GPT2-base | 0.0741 | 0.2714 | 0.6052 | 0.9602 | 0.1403 | 3.80
+\star GPT2-large | 0.1110 | 0.3215 | 0.6346 | 0.9670 | 0.2910 | 2.60
+\star LevT | 0.0930 | 0.2893 | 0.5491 | 0.8914 | 0.9830 | 5.40
+\star DiffuSeq | 0.1731 | 0.3665 | 0.6123 | 0.9056 | 0.2789 | 3.20
+\star SeqDiffuSeq | 0.1746 | - | 0.6174 | 0.9248 | - | 3.33
+\dagger Dinoiser | 0.0477 | 0.1872 | 0.4690 | 0.8191 | 0.5273 | 6.40
+Meta-Diffu B | 0.1820 | 0.3870 | 0.6286 | 0.9323 | 0.2527 | 1.80
+CC | \star GPT2-base | 0.0108 | 0.1508 | 0.5279 | 0.9194 | 0.0182 | 4.00
+\star GPT2-large | 0.0125 | 0.1002 | 0.5293 | 0.9244 | 0.0213 | 4.00
+\star LevT | 0.0158 | 0.0550 | 0.4760 | 0.9726 | 0.7103 | 3.80
+\star DiffuSeq | 0.0139 | 0.1056 | 0.5131 | 0.9467 | 0.0144 | 3.40
+\star SeqDiffuSeq | 0.0112 | - | 0.4425 | 0.9608 | - | 2.80
+\dagger Dinoiser | 0.0096 | 0.1166 | 0.3545 | 0.2485 | 0.9994 | 6.00
+Meta-Diffu B | 0.0220 | 0.1528 | 0.5316 | 0.9670 | 0.0133 | 1.20
+
+### Table 4: The results of our Meta-Diffu B ( D_{\theta} = DiffuSeq) and other S2S-Diffusion models for generating sentences (E) and (H) on the WA dataset. The best result in each group is highlighted in bold .
+
+Methods | BLEU (\uparrow) | Self-BLEU (\downarrow)
+DiffuSeq (E) | 0.3721 | 0.4345
+SeqDiffuSeq (E) | 0.3752 | 0.4652
+Dinoiser (E) | 0.2892 | 0.8852
+Meta-Diffu B (E) | 0.3997 | 0.3688
+DiffuSeq (H) | 0.3216 | 0.5085
+SeqDiffuSeq (H) | 0.3282 | 0.6251
+Dinoiser (H) | 0.2092 | 0.9528
+Meta-Diffu B (H) | 0.3724 | 0.4056
+
+### Table 5: Results of the plug-and-play experiment for our scheduler model. The ‘Scheduler’ field indicates the dataset used to train our scheduler model, while the ’DiffuSeq’ field indicates the dataset used to train DiffuSeq. If the ‘DiffuSeq’ field is ‘Null’, DiffuSeq generates sentences using its 
+
+Scheduler | DiffuSeq | BLEU (\uparrow) | ROUGH-L (\uparrow) | BERTScore (\uparrow) | Dist-1 (\uparrow) | Self-BLEU (\downarrow)
+WA |  | 0.2594 | 0.5912 | 0.8459 | 0.9834 | 0.2653
+QT | QQP | 0.2603 | 0.5947 | 0.8503 | 0.9812 | 0.2649
+Null |  | 0.2413 | 0.5880 | 0.8365 | 0.9807 | 0.2732
+
+### Table 6 : Results of Meta-Diffu B on Machine Translation datasets (DE-EN). Results where Meta-Diffu B combined with different models show improved performance are indicated in bold .
+
+Methods | SacreBLEU ↑ (IWSLT14 DE-EN) | SacreBLEU ↑ (WMT14 DE-EN)
+DiffuSeq | 29.43 | 22.72
+Meta-Diffu B ( D_{\theta} = DiffuSeq) | 31.71 | 26.17
+SeqDiffuSeq | 30.16 | 23.28
+Meta-Diffu B ( D_{\theta} = SeqDiffuSeq) | 32.41 | 26.14
+Dinoiser | 31.61 | 30.30
+Meta-Diffu B ( D_{\theta} = Dinoiser) | 33.82 | 32.09
+
+### Table 7 : Comparison of Meta-Diffu B on the QG and QQP datasets. Results where Meta-Diffu B combined with different models show improved performance are indicated in bold .
+
+Methods | BLEU ↑ (QQP) | BERTScore ↑ (QQP) | BLEU ↑ (QG) | BERTScore ↑ (QG)
+DiffuSeq [ 8 ] | 0.2413 | 0.8365 | 0.1731 | 0.6123
+Meta-Diffu B ( D_{\theta} = DiffuSeq) | 0.2552 | 0.8821 | 0.1826 | 0.6357
+DiffuSeq-v2 [ 9 ] | 0.2411 | 0.8393 | - | -
+Meta-Diffu B ( D_{\theta} = DiffuSeq-v2) | 0.2556 | 0.8829 | - | -
+BG-DiffuSeq [ 42 ] | 0.2619 | 0.8427 | 0.1744 | 0.6280
+Meta-Diffu B ( D_{\theta} = BG-DiffuSeq) | 0.2790 | 0.8757 | 0.1838 | 0.6571
+TESS [ 22 ] | 0.3020 | 0.8570 | 0.1950 | 0.6580
+Meta-Diffu B ( D_{\theta} = TESS) | 0.3142 | 0.8975 | 0.2055 | 0.6761
+RDM [ 47 ] | 0.2510 | 0.8472 | 0.1802 | 0.6310
+Meta-Diffu B ( D_{\theta} = RDM) | 0.2684 | 0.8724 | 0.2271 | 0.6542
+
+### Table 8: The sample output of our Meta-Diffu B ( D_{\theta} = DiffuSeq) and other S2S-Diffusion models [ 8 , 44 , 45 ] on hardest generated sentences (H) of WA dataset. The conditional sentence is the same.
+
+Conditional sentence : ostersunds bs is a bandy club in ostersund, sweden, established on 5 september 1974 when ope ifs bandy section was disestablished.
+Real target sentence | Meta-Diffu B | DiffuSeq | Dinoiser | SeqDiffuSeq
+it was established on 5 september 1974 when ope ifs bandy section was disestablished. | it was established on 5 september 1974 when ope if ifs bandy section was disestablished. | ostersunds bs is a bandy club in the town of ostersund in sweden. | The club was disestablished on 5 September 1974. | henry cr bandy club in the town of sweden.
+ | ostersunds bs is a bandy club started in ostersund, sweden, established in 5 september 1974, the ifs bandy section was disestablished. | ostersunds bs is a bandy club in the town of ostersund in sweden. | The club was disestablished on 5 September 1974. | henry cr bandy club in the town of sweden.
+ | it was founded on 5 september 1974 when ope ifs bandy section was disestablished. | ostersunds bs is a bandy club in the town of ostersund in sweden. | The club was disestablished on 5 September 1974. | henry cr bandy club in the town of sweden.
+
+### Table 9: The sample output of Meta-Diffu B ( D_{\theta} = DiffuSeq) and other S2S-Diffusion models [ 8 , 44 , 45 ] on hardest generated sentence (H) of QQP dataset. The conditional sentence is the same.
+
+Conditional sentence : is it possible to invent the time machine?
+Real target sentence | Meta-Diffu B | DiffuSeq | Dinoiser | SeqDiffuSeq
+can we create a time machine? | is we really possible to create a time machine? | is it possible to in our time machine? | Is it possible to make a time machine? | is possible to have a time machine?
+ | is it possible that we create a time machine? | is it possible to in our time machine? | Is it possible to make a time machine? | is possible to have a time machine?
+ | can we create a time machine? | is it possible to in our time machine? | Is it possible to make a time machine? | is possible to have a time machine?
+
+### Table 10: The results of our Meta-Diffu B and other S2S-Diffusion models [ 8 , 44 , 45 ] for generating sentences (E) and (H) on the WA dataset. The best result in each group is highlighted in bold .
+
+Methods | BLEU (\uparrow) | Self-BLEU (\downarrow) | ROUGH-L (\uparrow) | BERTScore (\uparrow) | Dist-1 (\uparrow)
+DiffuSeq (E) | 0.3721 | 0.4345 | 0.5962 | 0.8232 | 0.9285
+SeqDiffuSeq (E) | 0.3752 | 0.4652 | 0.6021 | 0.8286 | 0.9273
+Dinoiser (E) | 0.2892 | 0.8852 | 0.4937 | 0.6882 | 0.8574
+Meta-Diffu B (E) | 0.3997 | 0.3688 | 0.6359 | 0.8452 | 0.9462
+DiffuSeq (H) | 0.3216 | 0.5085 | 0.5514 | 0.7586 | 0.8828
+SeqDiffuSeq (H) | 0.3282 | 0.6251 | 0.5621 | 0.7479 | 0.8974
+Dinoiser (H) | 0.2092 | 0.9528 | 0.4375 | 0.6345 | 0.8396
+Meta-Diffu B (H) | 0.3724 | 0.4056 | 0.5741 | 0.8026 | 0.9216
+
+### Table 11: Results of the plug-and-play experiment for our scheduler model. The ’Scheduler’ field indicates the dataset used to train the scheduler model, while the ’DiffuSeq’ field indicates the dataset used to train DiffuSeq. If the ’DiffuSeq’ field is ’Null’, DiffuSeq generates sentences using its
+
+Scheduler | DiffuSeq | BLEU (\uparrow) | ROUGH-L (\uparrow) | BERTScore (\uparrow) | Dist-1 (\uparrow) | Self-BLEU (\downarrow)
+WA |  | 0.2594 | 0.5912 | 0.8459 | 0.9834 | 0.2653
+QT | QQP | 0.2603 | 0.5905 | 0.8503 | 0.9812 | 0.2649
+Null |  | 0.2413 | 0.5880 | 0.8365 | 0.9807 | 0.2732
+WA |  | 0.1804 | 0.3761 | 0.6234 | 0.9147 | 0.3848
+QQP | QT | 0.1769 | 0.3729 | 0.6215 | 0.9104 | 0.4485
+Null |  | 0.1731 | 0.3665 | 0.6123 | 0.9056 | 0.2789
+QT |  | 0.3666 | 0.5945 | 0.8217 | 0.9297 | 0.4052
+QQP | WA | 0.3711 | 0.5985 | 0.8204 | 0.9302 | 0.3996
+Null |  | 0.3622 | 0.5849 | 0.8126 | 0.9264 | 0.4642
+
+### Table 12 : Plug-and-play experiments on SeqDiffuSeq integrated with our scheduler. The field ‘SeqDiffuSeq’ indicates which dataset this model is trained on. When the ‘Scheduler’ field is ‘Null’, it indicates the use of the model’s own noise scheduling. Results where the model performs better with it
+
+Scheduler | SeqDiffuSeq | BLEU ↑ | BERTScore ↑ | Dist-1 ↑
+WA | QQP | 0.2627 | 0.8481 | 0.9814
+Null | QQP | 0.2434 | 0.8400 | 0.9807
+WA | QT | 0.1834 | 0.6226 | 0.9369
+Null | QT | 0.1746 | 0.6174 | 0.9248
+
+### Table 13 : Plug-and-play experiments on Dinoiser integrated with our scheduler. The field ‘Dinoiser’ indicates which dataset this model is trained on. When the ‘Scheduler’ field is ‘Null’, it indicates the use of the model’s own noise scheduling. Results where the model performs better with its own 
+
+Scheduler | Dinoiser | BLEU ↑ | BERTScore ↑ | Dist-1 ↑
+WA | QQP | 0.2079 | 0.8121 | 0.9765
+Null | QQP | 0.1949 | 0.8036 | 0.9723
+WA | QT | 0.0495 | 0.4740 | 0.8289
+Null | QT | 0.0477 | 0.4690 | 0.8191
+

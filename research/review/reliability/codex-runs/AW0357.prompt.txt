@@ -1,0 +1,189 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Dystruct: Dynamically Structured Diffusion Language Model Decoding via Bayesian Inference
+
+record AW0357 | arXiv:2605.09820 | first version 2026-05-10
+
+**Abstract.** Diffusion language models (DLMs) have recently emerged as a promising alternative to autoregressive models, primarily due to their ability to enable parallel decoding. Despite this advantage, most existing DLMs rely on a fixed generation length specified prior to decoding, which restricts their flexibility in real-world applications. While a few recent works attempt to support flexible-length generation, they typically suffer from notable limitations: some require costly retraining to accommodate variable-length outputs, while others depend solely on local confidence signals during decoding. Such local criteria fail to capture the evolving structure of the sequence, often resulting in suboptimal generation quality. In this paper, we propose a training-free, Bayesian structured decoding framework that formulates flexible-length generation as a dynamic structural inference problem. Our approach formulates flexible-length generation as a dynamic structural inference problem, jointly computing the expansion length, the block boundaries, and the decoding schedule. At each window expansion step, the method integrates local uncertainty with structural signals via a unified mechanism that supports dynamic structured generation, including both flexible block expansion and block organization, while maintaining coherence. Extensive experiments across multiple benchmarks demonstrate that our approach significantly improves generation quality and flexibility over existing fixed-length and flexible-length baselines. These results highlight the advantage of Bayesian structured decoding for diffusion language model, providing a principled and efficient solution for structured text generation.
+
+## All captions
+
+- Figure 1: Overview of DyStruct. The framework performs flexible-length decoding by iteratively appending masked windows and executing structural inference. (a) Window Expansion: The next window size adaptively scales based on the mean instability ( \bar{h} ) o
+- Algorithm 1 DyStruct: Dynamic Structured Decoding
+- Table 1: Dynamic structured decoding outperforms baselines. To ensure strict computational parity, all models utilize a base budget of 256 unmasking iterations and a maximum generation limit of 256 tokens. DyStruct scales this base iteration budget across adap
+- Figure 2: Inference efficiency comparison. DyStruct achieves the lowest inference time across different backbone models on the GSM8K dataset. Time is reported in seconds per iteration (s/it).
+- Table 2: Ablation study of structural decoding components. W/o Block Decoding Schedule replaces the context-aware Gibbs scheduling with a fixed left-to-right block order.
+- Table 3: Effect of concentration parameter. Toks denotes the average number of newly generated tokens per sample, and Blks denotes the rounded average number of finalized blocks. The default setting is shaded.
+- Table 4: Effect of initial sequence length. Performance remains stable across different initial sequence lengths. Forcing a massive initial window (256) causes accuracy collapse due to distributional drift.
+- Figure 3: DyStruct Resolves Boundary Fragmentation via Edge-Welding. Independent block decoding produces structurally incompatible boundaries. The predictive entropy spike triggers localized boundary repair to recover context-grounded syntax. ( Red : incoheren
+- Figure 4: DyStruct Isolates Logical Transitions via Partitioning. The framework splits the unanchored window to isolate segments with high instability scores. Prioritizing Block 1 provides stable conditioning before refining the logical evaluation in Block 2. 
+- Figure 5: DyStruct Multi-Block Scheduling via Stable Anchors. The scheduler prioritizes both terminal anchor blocks (1 and 3) to establish a constrained context for the high-instability inferential resolution in Block 2. ( Blue : stable anchors; Red : high-ins
+- Table 5: Mathematical notation for DyStruct.
+- Algorithm 2 DyStruct: Dynamic Structured Decoding
+- Table 6: Sensitivity analysis of the welding radius r_{\mathrm{weld}} . We evaluate the effect of different welding radius on HumanEval and MBPP. The setting used in our main experiments is highlighted in blue. P@1 denotes Pass@1, Toks denotes the average numb
+- Table 7: Paired McNemar test comparing DyStruct vs. Daedal. BBH is pooled over all BBH subtasks; Math is pooled over GSM8K and MATH; Code is pooled over HumanEval and MBPP. We report McNemar’s chi-square statistic with continuity correction, its asymptotic p_{
+
+## Tables as text
+
+### Table 1: Dynamic structured decoding outperforms baselines. To ensure strict computational parity, all models utilize a base budget of 256 unmasking iterations and a maximum generation limit of 256 tokens. DyStruct scales this base iteration budget across adaptively sized blocks based on block insta
+
+ | Code Ability | Mathematics | General
+Model | HumanEval (0) | MBPP (3) | GSM8K (5) | MATH (4) | BBH (3)
+LLaDA-8B-Base | 32.3 \pm 3.6 | 39.8 \pm 2.1 | 70.3 \pm 1.2 | 30.5 \pm 0.6 | 44.9 \pm 0.5
+LLaDA-8B-Base + DAEDAL | 33.5 \pm 3.7 | 40.2 \pm 2.1 | 70.8 \pm 1.2 | 31.2 \pm 0.6 | 43.7 \pm 0.5
+LLaDA-8B-Base + DyStruct | 34.8 \pm 3.7 | 41.4 \pm 2.2 | 72.1 \pm 1.2 | 31.4 \pm 0.6 | 49.3 \pm 0.5
+Dream-7B-Base | 40.2 \pm 2.7 | 57.2 \pm 2.2 | 74.9 \pm 1.1 | 38.2 \pm 0.6 | 51.7 \pm 0.5
+Dream-7B-Base + DAEDAL | 34.7 \pm 2.7 | 54.4 \pm 2.2 | 74.3 \pm 1.2 | 38.6 \pm 0.6 | 44.8 \pm 0.5
+Dream-7B-Base + DyStruct | 47.0 \pm 3.9 | 59.8 \pm 2.1 | 75.1 \pm 1.9 | 38.8 \pm 0.6 | 52.5 \pm 0.5
+
+### Table 2: Ablation study of structural decoding components. W/o Block Decoding Schedule replaces the context-aware Gibbs scheduling with a fixed left-to-right block order.
+
+ | Coding Ability | Mathematics | General
+Configuration | HumanEval | MBPP | GSM8K | MATH | BBH
+Full DyStruct | 34.8 | 41.4 | 72.1 | 31.4 | 49.3
+w/o Block Decoding Schedule | 33.5 | 41.2 | 71.8 | 30.3 | 49.3
+w/o Boundary Repair | 32.9 | 40.8 | 70.5 | 31.2 | 49.1
+w/o Block Decoding Schedule & Boundary Repair | 32.9 | 41.0 | 69.7 | 31.0 | 49.1
+LLaDA-8B-Base | 32.3 | 40.2 | 70.3 | 30.5 | 44.9
+
+### Table 3: Effect of concentration parameter. Toks denotes the average number of newly generated tokens per sample, and Blks denotes the rounded average number of finalized blocks. The default setting is shaded.
+
+ | HumanEval | BBH
+\alpha_{0} | Pass@1 \uparrow | Toks \downarrow | Blks | Acc. \uparrow | Toks \downarrow | Blks
+1.2 | 35.4 | 217 | 7 | 49.4 | 246 | 7
+1.5 | 34.8 | 219 | 7 | 49.3 | 246 | 7
+1.8 | 33.5 | 220 | 7 | 49.5 | 245 | 6
+2.0 | 34.1 | 221 | 6 | 49.3 | 245 | 6
+
+### Table 4: Effect of initial sequence length. Performance remains stable across different initial sequence lengths. Forcing a massive initial window (256) causes accuracy collapse due to distributional drift.
+
+ | HumanEval | BBH
+Len. | Pass@1 \uparrow | Toks \downarrow | Blks | Acc. \uparrow | Toks \downarrow | Blks
+32 | 33.5 | 220 | 8 | 48.8 | 239 | 7
+48 | 34.8 | 219 | 7 | 49.3 | 246 | 7
+64 | 33.5 | 216 | 6 | 49.0 | 246 | 6
+128 | 35.4 | 225 | 5 | 48.9 | 248 | 5
+256 | 36.6 | 256 | 7 | 46.3 | 256 | 3
+
+### Table 5: Mathematical notation for DyStruct.
+
+Symbol | Description
+Decoding and Sequence Parameters
+t | Window expansion step index.
+L_{t} | Window expansion length at step t .
+L_{\min},L_{\max} | Bounds for the window expansion length.
+N_{\max} | Global sequence token limit.
+W^{(t)} | Local indices in the newly appended window.
+Z^{(t)} | Set of latent structural variables \{L_{t},\mathcal{P}^{(t)},\tau^{(t)}\} .
+Diagnostic Temporary Pass and Uncertainty Metrics
+O^{(t)} | Observations from the diagnostic temporary pass.
+p_{g}^{\mathrm{temp}} | Initial distribution from the diagnostic pass.
+\mathcal{H}_{i} | Token predictive entropy at position i .
+\phi_{j}^{(t)} | Local feature vector at token position j .
+w | Learned weights for position features \phi_{j}^{(t)} .
+h_{j}^{(t)} | Position instability score at position j .
+\bar{h}^{(t)} | Mean instability of the previously decoded window.
+Partitioning and CRP Prior
+g | Gap index between token positions g and g+1 .
+\psi_{g}^{(t)} | Gap feature vector for the boundary at gap g .
+w_{b} | Learned weights for gap features \psi_{g}^{(t)} .
+\ell_{g}^{(t)},q_{g}^{(t)} | Logit edge score and boundary split probability.
+\alpha_{g}^{(t)} | Local CRP concentration parameter at gap g .
+\alpha_{0} | Base CRP concentration parameter.
+m_{g} | Length of the block immediately preceding gap g .
+\mathcal{P}^{(t)} | Partition of W^{(t)} into contiguous token blocks.
+B_{m}^{(t)} | The m -th block in partition \mathcal{P}^{(t)} .
+Scheduling and Edge-Welding
+\tau^{(t)} | Context-aware decoding schedule for partition \mathcal{P}^{(t)} .
+H(B) | Mean instability score of block B .
+C(B) | Context-adjacency metric for block B .
+\gamma | Weight for context-adjacency priority.
+T(B) | Interpolated refinement steps allocated to block B .
+T_{\min},T_{\max} | Bounds for block refinement steps.
+r_{\mathrm{weld}} | Spatial radius for localized edge-welding.
+E_{m}^{(t)} | Localized edge-welding interval between adjacent blocks.
+
+### Table 6: Sensitivity analysis of the welding radius r_{\mathrm{weld}} . We evaluate the effect of different welding radius on HumanEval and MBPP. The setting used in our main experiments is highlighted in blue. P@1 denotes Pass@1, Toks denotes the average number of newly generated tokens per sample,
+
+r_{\mathrm{weld}} | HumanEval | MBPP
+P@1 \uparrow | Toks \downarrow | Blks | P@1 \uparrow | Toks \downarrow | Blks
+8 | 34.8 | 219 | 7 | 41.0 | 256 | 7
+10 | 34.8 | 219 | 7 | 41.4 | 256 | 7
+12 | 34.8 | 219 | 7 | 41.2 | 256 | 7
+16 | 34.1 | 219 | 7 | 41.0 | 256 | 7
+
+### Table 7: Paired McNemar test comparing DyStruct vs. Daedal. BBH is pooled over all BBH subtasks; Math is pooled over GSM8K and MATH; Code is pooled over HumanEval and MBPP. We report McNemar’s chi-square statistic with continuity correction, its asymptotic p_{\text{CC}} -value, and the exact two-sid
+
+Benchmark | n | Acc {}_{\text{Daedal}} | Acc {}_{\text{DyStruct }} | \chi^{2} | p_{\text{CC}} | p_{\text{exact}}
+BBH | 6511 | 43.7% | 49.3% | 116.9 | 3.07{\times}10^{-27} | 1.09{\times}10^{-27}
+Math | 6319 | 44.2% | 45.3% | 4.6 | 0.03 | 0.03
+Code | 664 | 38.5% | 39.9% | 0.9 | 0.35 | 0.35
+

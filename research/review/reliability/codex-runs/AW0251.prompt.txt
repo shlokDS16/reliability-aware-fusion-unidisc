@@ -1,0 +1,127 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# dVLA: Diffusion Vision-Language-Action Model with Multimodal Chain-of-Thought
+
+record AW0251 | arXiv:2509.25681 | first version 2025-09-30
+
+**Abstract.** Vision-Language-Action (VLA) models are emerging as a next-generation paradigm for robotics. We introduce dVLA, a diffusion-based VLA that leverages a multimodal chain-of-thought to unify visual perception, language reasoning, and robotic control in a single system. dVLA jointly optimizes perception, language understanding, and action under a single diffusion objective, enabling stronger cross-modal reasoning and better generalization to novel instructions and objects. For practical deployment, we mitigate inference latency by incorporating two acceleration strategies, a prefix attention mask and KV caching, yielding up to around times speedup at test-time inference. We evaluate dVLA in both simulation and the real world: on the LIBERO benchmark, it achieves state-of-the-art performance with a 96.4% average success rate, consistently surpassing both discrete and continuous action policies; on a real Franka robot, it succeeds across a diverse task suite, including a challenging bin-picking task that requires multi-step planning, demonstrating robust real-world performance. Together, these results underscore the promise of unified diffusion frameworks for practical, high-performance VLA robotics.
+
+## All captions
+
+- Figure 1: The architecture of dVLA. We adopt a discrete diffusion language model as a backbone and separate tokenizers for each modality.
+- Figure 2: Examples of multimodal Chain-of-Thought on real robot tasks.
+- Figure 3: The experiment setup and real-world task suite.
+- Figure 4: Qualitative results on LIBERO simulation. Top : The successful execution results. Bottom : Failure execution results and corresponding visual CoT.
+- Table 1: Experimental results on LIBERO benchmark. We evaluated our model on 10 LIBERO tasks, with 50 trials per task, for a total of 500 trials. The success rate is the total number of successful trajectories out of 500.
+- Table 2: Experimental results for real-world tasks. We evaluate each method on four real-world robotic tasks, ranging from a simple pick-and-place to a long-horizon bin picking scenario. Each method is tested for 10 trials per task (40 trials total), and we re
+- Table 3: Effect of KV Caching and Prefix Attention Mask. We report the inference speed (actions per second) and task success rate (SR) between the full attention and our accelerated strategies on boththe LIBERO simulation and real-world bin picking tasks.
+
+## Tables as text
+
+### Table 1: Experimental results on LIBERO benchmark. We evaluated our model on 10 LIBERO tasks, with 50 trials per task, for a total of 500 trials. The success rate is the total number of successful trajectories out of 500.
+
+Methods / Tasks | MMCoT | Libero-Spatial | Libero-Object | Libero-Goal | Libero-Long | Average
+Textual CoT | Visual CoT | SR(%) | SR(%) | SR(%) | SR(%) | SR(%)
+Continuous Action Policy |  |  |  |  |  |  | 
+Diffusion Policy ( Chi et al., 2023 ) | ✗ | ✗ | 78.3 | 92.5 | 68.3 | 50.5 | 72.4
+Octo ( Octo Model Team et al., 2024 ) | ✗ | ✗ | 78.9 | 85.7 | 84.6 | 51.1 | 75.1
+DiT Policy Hou et al. (2024) | ✗ | ✗ | 84.2 | 96.3 | 85.4 | 63.8 | 82.4
+\pi_{0} ( Black et al., 2024 ) | ✗ | ✗ | 96.8 | 98.8 | 95.8 | 85.2 | 94.2
+GR00T-N1 ( Bjorck et al., 2025 ) | ✗ | ✗ | 94.4 | 97.6 | 93.0 | 90.6 | 93.9
+OpenVLA-OFT (Continuous) ( Kim et al., 2025 ) | ✗ | ✗ | 96.9 | 98.1 | 95.5 | 91.1 | 95.4
+Discrete Action Policy |  |  |  |  |  |  | 
+OpenVLA ( Kim et al., ) | ✗ | ✗ | 84.7 | 88.4 | 79.2 | 53.7 | 76.5
+OpenVLA-OFT (Discrete) ( Kim et al., 2025 ) | ✗ | ✗ | 96.2 | 98.2 | 95.6 | 92.0 | 95.5
+CoTVLA ( Zhao et al., 2025a ) | ✗ | ✓ | 81.13 | 87.5 | 91.6 | 87.6 | 69.0
+WorldVLA ( 512\times 512 ) ( Cen et al., 2025 ) | ✗ | ✓ | 87.6 | 96.2 | 83.4 | 60.0 | 81.8
+Discrete Diffusion VLA ( Liang et al., 2025 ) | ✗ | ✗ | 97.2 | 98.6 | 97.4 | 92.0 | 96.3
+Vallina dVLA | ✗ | ✗ | 90.2 | 93.1 | 92.8 | 83.0 | 89.8
+dVLA | ✓ | ✓ | 97.4 | 97.9 | 98.2 | 92.2 | 96.4
+
+### Table 2: Experimental results for real-world tasks. We evaluate each method on four real-world robotic tasks, ranging from a simple pick-and-place to a long-horizon bin picking scenario. Each method is tested for 10 trials per task (40 trials total), and we report the total number of successful traj
+
+Methods / Tasks | MMCoT | Bin Picking | Open Box | Hang Cups | Pick&place Object | Average
+Textual CoT | Visual CoT | SR(%) | SR(%) | SR(%) | SR(%) | SR(%)
+Continuous Action Policy |  |  |  |  |  |  | 
+Diffusion Policy ( Chi et al., 2023 ) | ✗ | ✗ | 2/10 | 4/10 | 4/10 | 4/10 | 14/40
+GR00T ( Bjorck et al., 2025 ) | ✗ | ✗ | 4/10 | 5/10 | 4/10 | 5/10 | 19/40
+Discrete Action Policy |  |  |  |  |  |  | 
+OpenVLA ( Kim et al., ) | ✗ | ✗ | 2/10 | 3/10 | 5/10 | 4/10 | 14/40
+Vallina dVLA | ✗ | ✗ | 5/10 | 5/10 | 6/10 | 5/10 | 21/40
+dVLA | ✓ | ✓ | 7/10 | 5/10 | 7/10 | 7/10 | 26/40
+
+### Table 3: Effect of KV Caching and Prefix Attention Mask. We report the inference speed (actions per second) and task success rate (SR) between the full attention and our accelerated strategies on boththe LIBERO simulation and real-world bin picking tasks.
+
+Methods | LIBERO | Real World
+Spatial | Object | Actions / s ( \uparrow ) | Bin Picking | Hang Cups | Actions / s ( \uparrow )
+Full Attention | 97.4 | 97.9 | 1.3 Hz | 7/10 | 8/10 | 1.5 Hz
+Prefix Attention + KV Caching | 96.9 | 97.3 | 2.9 Hz | 7/10 | 7/10 | 3 Hz
+

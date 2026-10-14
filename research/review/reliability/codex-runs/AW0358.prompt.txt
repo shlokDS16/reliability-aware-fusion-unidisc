@@ -1,0 +1,358 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Steering Without Breaking: Mechanistically Informed Interventions for Discrete Diffusion Language Models
+
+record AW0358 | arXiv:2605.10971 | first version 2026-05-08
+
+**Abstract.** Discrete diffusion language models (DLMs) generate text by iteratively denoising all positions in parallel, offering an alternative to autoregressive models. Controlled generation methods for DLMs, imported from autoregressive models, apply uniform intervention at every denoising step. We show this uniform schedule is inefficient and degrades quality, and the damage compounds when multiple attributes are steered jointly. To diagnose the failure, we train sparse autoencoders on four DLMs (124M-8B parameters) and find that different attributes commit on distinct schedules, varying in timing, sharpness, and magnitude. For instance, topic commits within the first 2% of denoising on MDLM, whereas sentiment emerges gradually over 20% of the process. Motivated by these profiles, we propose an adaptive scheduling mechanism that concentrates intervention where each attribute is actively forming. An idealized allocation analysis predicts that attributes with more sharply concentrated emergence benefit more from adaptive scheduling, a prediction we confirm empirically. Across seven single- and multi-attribute steering tasks on four DLMs, adaptive steering consistently improves the control-quality balance over uniform and interval-restricted baselines.
+
+## All captions
+
+- Figure 1 : Method overview. (1) SAEs trained per-layer decompose the residual stream into interpretable features. Contrastive selection identifies attribute-relevant feature sets F_{a}^{\ell} , whose temporal commitment across denoising steps defines an adapti
+- Table 1 : Comparison of our work with concurrent efforts. ✓ = fully, \sim = partially, ✗ = not addressed.
+- (a) Emergence trajectories
+- (b) Block fractions
+- (c) Commitment times
+- Figure 2 : Temporal hierarchy of feature emergence: (a) Topic emergence (normalized |a(t)-a(0)| ) across layers; (b) Block fractions ( B{=}8 ) at deepest layers; (c) Commitment time t_{c}(p) : % of trajectory at which p % of emergence has occurred (deepest lay
+- (a) Cumulative effect size
+- (b) Total effect size
+- (c) Effect spread
+- (d) Cross-model alignment
+- Figure 3 : Training objective shapes feature geometry. (a–c) MDLM vs. SEDD (layer 7, Cohen’s d>0 features): (a) cumulative Cohen’s d vs. rank; (b) total \sum d ; (c) effective dimensionality. (d) Cross-model alignment: sharing a loss family yields higher simil
+- Table 2 : Steering performance comparison at best operating points (selection criteria in § 5.1 ), averaged over single-attribute (sentiment (S), topic (T), style (St)) and multi-attribute (S+T, S+St, St+T, S+T+St) conditions. Conf = target attribute classifie
+- Table 3 : Schedule comparison: % of matched points where the first method is better (using model-specific quality metrics; see § E.3.2 and § E.3.4 for details).
+- Table 4 : \alpha sensitivity: confidence drop (pp) when using a single global \alpha^{*} across all 7 conditions vs. per-condition optimal \alpha .
+- Figure 4 : MDLM trade-off curves (SAE methods). Top: target confidence vs. \alpha . Bottom: Qwen2-7B perplexity vs. \alpha . Full curves with all methods and models are in § E.2 .
+- Table 5 : Effect of E-ratio scaling: mean \Delta from adding E-ratio calibration, averaged over the 4 multi-attribute conditions. LLaDA PPL omitted as it is non-diagnostic. Flu = LLMJ fluency (1–5 scale).
+- Table 6: Notation used throughout the paper. Indices: t denotes a denoising step (of T total), \ell a transformer layer, a an attribute, b a temporal block, j an SAE feature.
+- Table 7 : Schedule concentration \eta and Adaptive-vs-Uniform quality gains for all 12 conditions (4 models \times 3 attributes), averaged over \alpha\in[1,15] .
+- Table 8 : Vocabulary grounding of top contrastive SAE features (via \mathbf{W}_{\text{dec}}\cdot\mathbf{W}_{\text{unembed}}^{\top} ). For each model and attribute, the top-3 positive- d and top-3 negative- d features at the deepest SAE layer are shown.
+- Table 9 : Model and SAE summary. All SAEs use TopK activation with k{=}32 .
+- Figure 5 : Prediction formation via logit lens across four diffusion language models. Each panel shows token agreement between intermediate-layer representations and the final output, as a function of layer depth and denoising progress. Small models (MDLM, SED
+- Table 10 : Logit lens experimental configuration per model.
+- Table 11 : MDLM-124M conditioned lens agreement (%) at selected layers and steps.
+- Table 12 : Cross-model comparison of prediction formation properties.
+- Table 13: Linear probing accuracy (sentiment, 5-fold CV) at selected layers. Layers in bold are those selected for SAE training. MDLM and SEDD share the GPT-2 architecture (12 layers); Dream has 28 layers (Qwen2); LLaDA has 32 layers (LLaMA).
+- Table 14: MDLM sentiment steering ablation across layer windows. Swing = positive rate at \alpha{=}{-}3 minus \alpha{=}{+}3 .
+- Table 15: SAE training configuration per model. All SAEs use TopK activation with auxiliary dead-neuron loss.
+- Table 16 : Sigma bin boundaries (equal-frequency, MDLM). Low \sigma corresponds to near-clean text; high \sigma corresponds to heavily masked text. Each bin contains {\sim}1.79 M token positions (sentiment) or {\sim}334 K (topic).
+- Table 17 : Coefficient of variation (CV) of |d| across sigma bins for the top-20 features per layer. Lower CV indicates more noise-robust discriminability.
+- Table 18 : Per-bin signed Cohen’s d for selected positive- d sentiment features (Layer 7, top-50 by overall d ). Features are categorized by their sigma-dependence pattern.
+- Table 19 : Feature extraction hyperparameters for all models.
+- Table 20 : Per-model extraction configurations.
+- Table 21 : Evaluation classifiers. These classifiers are used for evaluation and for filtering dynamics samples. They are not used during contrastive feature extraction for sentiment or topic, which rely on human-labeled datasets. For formality, the RoBERTa ra
+- Table 22 : Classifier confidence thresholds for dynamics filtering.
+- Table 23 : Per-model dynamics tracking configurations.
+- Table 24 : Minimum filtered samples for schedule stability (5th-percentile cosine \geq 0.95 to full-data schedule). Median, min, and max are taken across all (attribute, layer) conditions per model.
+- Table 25 : Schedule stability across block counts B . Mean cosine similarity (across models and layers) between schedules at different B values.
+- Table 26 : E ratios for multi-attribute steering. The hardest attribute (ratio {}=1.0 ) is in bold.
+- Table 27 : Per-model steering parameters.
+- Table 28 : Prompts used for LLaDA and DREAM generation.
+- Table 29 : Activation-space baseline methods.
+- Table 30 : Instruction prefixes for the prompt baseline (LLaDA and DREAM). Each prefix is prepended to the 10 standard prompts from Table 28 .
+- Table 31 : Step Function threshold comparison: \tau=0.90 vs. \tau=0.80 . Best operating point \alpha^{*} under quality gates (PPL <100 for MDLM/SEDD/DREAM; fluency \geq 50\% baseline for LLaDA). Conf = mean target classifier confidence (%). PPL = Qwen2-7B perp
+- Table 32 : Inter-annotator agreement (two authors, 100 samples).
+- Table 33 : LLM-judge agreement with human consensus (100 samples, post tie-break).
+- Table 34 : Quality metric correlations (Spearman \rho ). Each datapoint is the mean metric value for one (condition, method, \alpha ) operating point ( n=1{,}140 per model). {}^{***}p<0.001 .
+- Table 35 : Target attribute correlations: classifier confidence vs. LLM-judge attribute rate (Spearman \rho , aggregated across all 4 models, n=4{,}560 ). All p<0.001 .
+- Figure 6 : Emergence trajectories for all four models and all three attributes (positive sentiment, sports topic, formal/informal style). Each panel shows normalized absolute deviation |\bar{h}(t)-\bar{h}(0)| from baseline across the full denoising trajectory,
+- Figure 7 : Block fractions across all SAE layers for all four models. Each row corresponds to a model; each column to a layer. Comparing columns within a row reveals how the temporal distribution of emergence shifts with layer depth. MDLM and SEDD (rows 1–2, 3
+- Figure 8 : Cumulative | Cohen’s d| vs. feature rank for all four models and all SAE layers. Each row is a model (MDLM-124M, SEDD-124M, LLaDA-8B, DREAM-7B); each column is a layer. Features are sorted by |d| in descending order and the top 50 are shown. Topic f
+- Figure 9 : Masked fraction of SAE feature activation vs. denoising progress for all four models and layers. Values above the dashed line (0.5) indicate anticipatory encoding; values below indicate reactive encoding. Each row is a model; each column is a layer.
+- Table 36 : Cross-model feature alignment. Best-match sim. is the mean cosine similarity between each feature in model A and its nearest neighbour in model B . For cross-architecture pairs, both search directions ( A{\to}B and B{\to}A ) are shown. Overall mean 
+- Table 37 : Single-attribute steering results with standard deviations. Format: mean \pm std. Superscripts on Conf denote the selected \alpha . Same quality gate and selection criteria as Table 2
+- Table 38 : Multi-attribute steering results with per-attribute confidence. S: sentiment confidence; T: topic confidence; St: style confidence (formal for MDLM/SEDD, informal for LLaDA/DREAM). Superscripts on the first attribute denote selected \alpha . Same qu
+- Figure 10 : MDLM-124M steering trade-off curves (all methods). Top: target confidence vs. \alpha . Bottom: Qwen2-7B perplexity vs. \alpha . MDLM shows the clearest Adaptive–Uniform separation: Adaptive matches or exceeds Uniform in steering while preserving lo
+- Figure 11 : SEDD-124M steering trade-off curves (all methods). Top: target confidence vs. \alpha . Bottom: Qwen2-7B perplexity vs. \alpha . Contrastive Vectors matches SAE methods on sentiment and topic, consistent with SEDD’s distributed feature geometry (§ 3
+- Figure 12 : LLaDA-8B steering trade-off curves (all methods). Top: target confidence vs. \alpha . Bottom: LLM-judge fluency vs. \alpha . SAE methods consistently outperform baselines, with the gap largest for topic and multi-attribute conditions.
+- Figure 13 : DREAM-7B steering trade-off curves (all methods). Top: target confidence vs. \alpha . Bottom: Qwen2-7B perplexity vs. \alpha . DREAM achieves near-perfect steering at moderate \alpha but exhibits the sharpest quality degradation, consistent with it
+- Table 39 : Significance of Adaptive quality advantage at best operating points. For each condition, we compare Adaptive vs. the second-best method (2nd) using a one-sided Mann–Whitney U test. Quality metric: Qwen2-7B PPL for MDLM/SEDD/DREAM (P, lower better), 
+- Table 40 : Matched- \alpha quality ordering. Percentage of (model, combo, \alpha ) points where the ordering holds. n=560 total (4 models \times 7 combos \times 20 \alpha ).
+- Table 41 : \alpha sensitivity: confidence drop (pp) when using a single global \alpha^{*} across all 7 conditions vs. per-condition optimal \alpha . \alpha^{*} is the value that maximizes mean confidence subject to the quality gate passing for all conditions.
+- Table 42 : Rank stability across \alpha ranges. Percentage of matched (model, combo, \alpha ) points where the full quality ordering (Adaptive \geq Step \geq Uniform) holds, computed separately for LLMJ fluency and model-specific quality.
+- Table 43 : Matched-confidence quality comparison. At each confidence level within the overlap range (probed every 2 pp), the percentage of probes where one method produces better quality than the other.
+- Table 44 : Feature count ablation: positive-direction sentiment steering at \alpha{=}5 , varying the number of features N . Pos = positive sentiment confidence (%), Spt = sports topic confidence (%), Frm = formality confidence (%).
+- Figure 14 : Cross-attribute interference at the best operating points: mean absolute pp deviation of non-target attributes from unsteered baselines. On MDLM, Adaptive (orange) produces substantially less interference than Uniform (blue); on other models the ga
+- Table 45 : Generation latency (seconds per sample, batch size 1). SAE overhead is the ratio of SAE steering time to baseline. CV = contrastive vector.
+- Table 46 : MDLM qualitative examples (triple-attribute: positive, sports, formal). S/T = sentiment/topic confidence (%); Frm = formality confidence (%).
+- Table 47 : SEDD qualitative examples (triple-attribute: positive, sports, formal). S/T = sentiment/topic confidence (%); Frm = formality confidence (%).
+- Table 48 : LLaDA qualitative examples (triple-attribute: positive, sports, informal). S/T = sentiment/topic confidence (%); Inf = informality confidence (%).
+- Table 49 : DREAM qualitative examples (triple-attribute: positive, sports, informal). S/T = sentiment/topic confidence (%); Inf = informality confidence (%).
+
+## Tables as text
+
+### Table 2 : Steering performance comparison at best operating points (selection criteria in § 5.1 ), averaged over single-attribute (sentiment (S), topic (T), style (St)) and multi-attribute (S+T, S+St, St+T, S+T+St) conditions. Conf = target attribute classifier confidence (%), PPL = Qwen2-7B perplex
+
+ |  | Single-attribute (mean of 3) | Multi-attribute (mean of 4)
+ |  |  | SAE-based | Res. stream / prompt |  | SAE-based | Res. stream / prompt
+ |  | Unsteered | Uniform | Step | Adaptive | Contr.V | Probe | PCA | Prompt | Unsteered | Uniform | Step | Adaptive | Contr.V | Probe | PCA | Prompt
+MDLM | Conf \uparrow | 34.2 | 89.5 | 89.6 | 89.1 | 69.9 | 80.2 | 26.4 | – | 34.2 | 75.8 | 74.5 | 78.0 | 77.3 | 76.8 | 24.8 | –
+PPL \downarrow | 46.0 | 86.3 | 88.5 | 59.7 | 309.3 | 462.6 | 300.0 | – | 46.0 | 85.5 | 82.6 | 70.7 | 353.5 | 441.4 | 281.1 | –
+Flu \uparrow | 2.32 | 2.06 | 2.07 | 2.15 | 1.34 | 1.21 | 1.39 | – | 2.32 | 2.00 | 2.01 | 2.01 | 1.40 | 1.19 | 1.39 | –
+SEDD | Conf \uparrow | 33.4 | 97.7 | 96.5 | 89.1 | 97.1 | 92.5 | 41.0 | – | 33.3 | 89.7 | 88.8 | 88.6 | 92.2 | 84.6 | 45.3 | –
+PPL \downarrow | 48.1 | 83.8 | 67.7 | 48.9 | 73.3 | 136.3 | 45.5 | – | 48.1 | 91.3 | 88.2 | 42.5 | 77.5 | 130.1 | 51.1 | –
+Flu \uparrow | 2.23 | 2.00 | 2.10 | 2.17 | 2.12 | 1.86 | 2.25 | – | 2.23 | 1.99 | 1.99 | 2.11 | 2.02 | 1.83 | 2.25 | –
+LLaDA | Conf \uparrow | 35.1 | 95.0 | 91.6 | 84.8 | 52.8 | 44.9 | 41.7 | 63.6 | 35.1 | 84.1 | 81.2 | 76.5 | 48.1 | 44.0 | 39.6 | 57.0
+PPL \downarrow | 7.1 | 35.2 | 5.1 | 5.5 | 6.7 | 7.7 | 8.0 | 8.2 | 7.1 | 5.3 | 4.3 | 8.7 | 8.8 | 7.1 | 6.6 | 8.2
+Flu \uparrow | 3.56 | 2.56 | 2.64 | 2.97 | 3.41 | 3.55 | 3.54 | 3.15 | 3.56 | 2.20 | 2.30 | 2.75 | 3.48 | 3.60 | 3.57 | 3.19
+DREAM | Conf \uparrow | 30.8 | 99.5 | 99.2 | 98.8 | 95.5 | 90.0 | 45.0 | 54.1 | 30.8 | 95.3 | 95.3 | 95.8 | 84.7 | 78.3 | 41.9 | 53.5
+PPL \downarrow | 8.6 | 35.8 | 26.7 | 20.8 | 12.2 | 13.2 | 26.9 | 7.7 | 8.6 | 63.6 | 58.6 | 64.2 | 11.7 | 15.7 | 21.7 | 8.8
+Flu \uparrow | 3.75 | 2.05 | 2.08 | 2.21 | 2.96 | 2.79 | 2.84 | 3.57 | 3.75 | 1.69 | 1.43 | 1.34 | 2.23 | 2.72 | 2.81 | 3.41
+
+### Table 3 : Schedule comparison: % of matched points where the first method is better (using model-specific quality metrics; see § E.3.2 and § E.3.4 for details).
+
+ | Matched conf. | Matched \alpha | Matched qual.
+ | (quality > ) | (quality \geq ) | (conf. > )
+Adaptive vs. Uniform | 82.2% | 97.5% | 46.7%
+Adaptive vs. Step | 71.5% | 95.0% | 47.5%
+Step vs. Uniform | 66.5% | 92.9% | 44.6%
+ | Uniform | Step Fn. | Adaptive
+Model | mean | max | mean | max | mean | max
+MDLM | 9.1 | 50.9 | 5.6 | 32.2 | 0.6 | 3.2
+SEDD | 9.2 | 28.4 | 4.6 | 13.9 | 0.2 | 0.6
+LLaDA | 1.4 | 2.9 | 1.1 | 4.5 | 0.4 | 1.4
+DREAM | 3.1 | 9.1 | 3.2 | 10.8 | 1.2 | 2.1
+
+### Table 5 : Effect of E-ratio scaling: mean \Delta from adding E-ratio calibration, averaged over the 4 multi-attribute conditions. LLaDA PPL omitted as it is non-diagnostic. Flu = LLMJ fluency (1–5 scale).
+
+ | Uniform vs. Uniform+E | Adaptive vs. Adaptive+E
+Model | \Delta Conf | \Delta PPL | \Delta Flu | \Delta Conf | \Delta PPL | \Delta Flu
+MDLM | +6.4 | +2.5 | +0.01 | +3.0 | - 8.2 | +0.05
+SEDD | +1.1 | +7.5 | +0.01 | - 12.2 | +10.6 | +0.04
+LLaDA | - 6.7 | – | +0.10 | - 10.2 | – | +0.12
+DREAM | +1.5 | - 5.0 | +0.10 | +0.2 | - 26.8 | +0.70
+
+### Table 6: Notation used throughout the paper. Indices: t denotes a denoising step (of T total), \ell a transformer layer, a an attribute, b a temporal block, j an SAE feature.
+
+Symbol | Meaning
+Model and denoising
+T | Total number of denoising steps
+t | Denoising step index, t\in\{1,\dots,T\} (or 0{:}T )
+\ell | Transformer layer index
+h_{t}^{\ell} | Residual-stream activation at step t , layer \ell
+Sparse autoencoder
+\mathrm{Enc},\,\mathrm{Dec} | SAE encoder / decoder
+W_{\mathrm{dec}} | SAE decoder matrix; column w^{\mathrm{dec}}_{j} is feature j ’s direction
+j | SAE feature index
+F_{a}^{\ell} | Attribute-specific feature set for attribute a at layer \ell
+ | ( |F_{a}^{\ell}|=20 for steering; 50 for the interpretability analysis)
+Attributes and emergence
+a | An attribute (sentiment, topic, or style)
+b | Temporal block index, b\in\{1,\dots,K\}
+K | Number of temporal blocks
+\bar{h}_{j}^{(t)} | Mean activation of feature j at step t over the contrastive corpus
+f_{b}^{(a,\ell)} | Commitment fraction: share of attribute a ’s total feature-activation
+ | growth occurring in block b
+Steering
+\delta^{(a)}_{j} | Contrastive shift for feature j : \bar{h}^{(a)}_{j,+}-\bar{h}^{(a)}_{j,-}
+\alpha | Overall steering scale (swept during evaluation)
+r(a) | Per-attribute effectiveness ratio, r(a)\in(0,1]
+w_{\mathrm{dyn}}(t;a,\ell) | Adaptive temporal weight \in[0,1] from the commitment profile
+\alpha_{\mathrm{eff}}(a,t,\ell) | Effective strength =\alpha\cdot r(a)\cdot w_{\mathrm{dyn}}(t;a,\ell)
+Theory
+s_{t} | Realized per-step attribute gain (marginal sensitivity at step t )
+c_{t} | Realized per-step KL cost of the intervention at step t
+\rho^{2} | Adaptive-vs-uniform efficiency ratio, =1+\mathrm{CV}_{c}^{2}(s/c)
+\mathrm{CV}_{c} | Coefficient of variation of s_{t}/c_{t} under the cost-weighted measure
+
+### Table 7 : Schedule concentration \eta and Adaptive-vs-Uniform quality gains for all 12 conditions (4 models \times 3 attributes), averaged over \alpha\in[1,15] .
+
+Model | Attribute | \eta | LLMJ flu. | Qwen2 PPL
+MDLM | sentiment | 1.44 | +7.8\% | +29.0\%
+MDLM | style | 1.57 | +28.7\% | +51.2\%
+MDLM | topic | 2.58 | +10.9\% | +64.6\%
+SEDD | sentiment | 3.18 | +8.0\% | +28.4\%
+SEDD | style | 1.72 | +9.0\% | +26.4\%
+SEDD | topic | 3.51 | +12.5\% | +53.7\%
+LLaDA | sentiment | 1.68 | +0.5\% | -8.3\%
+LLaDA | style | 3.67 | +15.7\% | -19.9\%
+LLaDA | topic | 3.31 | +13.8\% | -12.7\%
+DREAM | sentiment | 4.72 | +1.6\% | +6.0\%
+DREAM | style | 4.09 | +7.5\% | +27.5\%
+DREAM | topic | 5.01 | +16.3\% | +29.8\%
+
+### Table 8 : Vocabulary grounding of top contrastive SAE features (via \mathbf{W}_{\text{dec}}\cdot\mathbf{W}_{\text{unembed}}^{\top} ). For each model and attribute, the top-3 positive- d and top-3 negative- d features at the deepest SAE layer are shown.
+
+Model | Attribute | Positive- d (target class) | Negative- d (contrast class)
+ |  | Feature ( d ) | Top Tokens | Feature ( d ) | Top Tokens
+MDLM (L7) | Topic | F6047 ( + 0.60) | midfield, Isles, winger, Trafford, Championship | F8014 ( - 0.67) | Securities, industrial, industry, regulatory, commercial
+ |  | F7923 ( + 0.58) | mph, Guinness, mph, Citation, maximum | F533 ( - 0.67) | 2030, 2020, average, 2025, 2050
+ |  | F1000 ( + 0.57) | dyl, anooga, rongh, ickets, Sorceress | F6218 ( - 0.61) | Avg, [+, /$, DAQ, avg
+ | Sentiment | F6624 ( + 0.17) | solid, ocally, Scand, composure, ACTION | F11410 ( - 0.30) | !!!!!, ???, !!!!, ……, !!!
+ |  | F5123 ( + 0.16) | DJs, eaturing, magic, creat, aples | F10932 ( - 0.27) | my, idiot, NS, replies, CP
+ |  | F6921 ( + 0.15) | explan, overview, Learn, depth, detailing | F2643 ( - 0.27) | textures, texture, weird, Illusion, guts
+ | Formality | F1866 ( + 0.45) | reportedly, spokeswoman, watchdog, compensation, commissioner | F5013 ( - 0.56) | …, I, !, myself, ?!
+ |  | F8014 ( + 0.37) | Securities, industrial, industry, regulatory, commercial | F751 ( - 0.53) | …, …, […], …, […]
+ |  | F7544 ( + 0.33) | quished, Instit, Aether, org, Presents | F7258 ( - 0.53) | GOODMAN, —, —
+SEDD (L7) | Topic | F606 ( + 0.84) | matchups, rematch, matchup, challenger, clinch | F7260 ( - 0.73) | payable, cash, dollars, money, fees
+ |  | F5606 ( + 0.63) | championships, jerseys, championship, playoffs, playoff | F1914 ( - 0.66) | GDP, repairs, ppm, gallon, gallons
+ |  | F3948 ( + 0.45) | Featuring, teamed, eaturing, featuring, reunited | F9697 ( - 0.57) | liberal, government, neoliberal, privatization, atism
+ | Sentiment | F10956 ( + 0.27) | morrow, ,—, thence, tion, splend | F3169 ( - 0.21) | abusers, porn, sexist, moms, Kids
+ |  | F3948 ( + 0.25) | Featuring, teamed, eaturing, featuring, reunited | F8644 ( - 0.20) | nobody, nothing, nothing, Nothing, THING
+ |  | F2014 ( + 0.24) | dynam, affordable, unbeat, appreciated, versatile | F4439 ( - 0.20) | disgusting, vile, despicable, crap, disgrace
+ | Formality | F12001 ( + 0.63) | [CJK], Participant, ortium, ilaterally, ortment | F9490 ( - 0.67) | pie, hell, —, damn, …
+ |  | F4051 ( + 0.58) | Treaty, NATO, treaty, milit, Yugoslavia | F11298 ( - 0.61) | ]], ín, tar, eq, ›
+ |  | F9697 ( + 0.56) | liberal, government, neoliberal, privatization, atism | F7306 ( - 0.55) | §§, Crossref, fmt, ÍÍ, nos
+LLaDA (L26) | Topic | F9143 ( + 1.13) | Para, 增量 (increment), 晗, _event, events | F5553 ( - 0.80) | Oro, leness, experien, -war, Lah
+ |  | F1834 ( + 1.05) | Historic, atch, 奥斯 (Aus-), stacked | F6163 ( - 0.68) | INCLUDING, IllegalStateException, Subscriptions, -analytics
+ |  | F2897 ( + 0.63) | won, awarded, year, 提名 (nomination), win | F1518 ( - 0.66) | -producing, 资产负债 (balance sheet), .release, produce
+ | Sentiment | F12180 ( + 0.43) | (always, commended, throughout, PERF, -Sah | F5461 ( - 0.44) | Avoid, Avoid, avoided, avoid, AV
+ |  | F2833 ( + 0.38) | recommended, recommend, deserves, recommendi
+
+### Table 9 : Model and SAE summary. All SAEs use TopK activation with k{=}32 .
+
+Model | Params | Arch. | Diffusion Loss | SAE Layers | d_{\text{model}} | d_{\text{SAE}} | d_{\text{SAE}}/d_{\text{model}}
+MDLM [ 40 ] | 124M | GPT-2 [ 34 ] | Absorbing | 5, 6, 7 | 768 | 12,288 | 16 \times
+SEDD [ 26 ] | 124M | GPT-2 | Score-entropy | 5, 6, 7 | 768 | 12,288 | 16 \times
+LLaDA [ 31 ] | 8B | LLaMA [ 44 ] | Absorbing | 8, 14, 20, 26 | 4,096 | 16,384 | 4 \times
+DREAM [ 49 ] | 7B | Qwen2 [ 48 ] | Absorbing | 8, 13, 17, 23 | 3,584 | 14,336 | 4 \times
+
+### Table 10 : Logit lens experimental configuration per model.
+
+Model | Samples | Steps | Layers | Lens Type | Notes
+MDLM-124M | 200 | 128 | 13 | Raw + Conditioned | adaLN sigma conditioning
+SEDD-124M | 200 | 256 | 13 | Raw + Conditioned | Score-entropy output head
+DREAM-7B | 100 | 64 | 15 | Raw | AR-style logit shift
+LLaDA-8B | 64 | 64 | 17 | Raw | No noise conditioning
+
+### Table 11 : MDLM-124M conditioned lens agreement (%) at selected layers and steps.
+
+Layer | Step 0 | Step 64 | Step 127
+Block 0 | 0.02 | 11.3 | 20.9
+Block 5 | 3.8 | 37.9 | 54.9
+Block 8 | 3.8 | 53.3 | 77.4
+Block 11 | 3.6 | 60.1 | 86.9
+
+### Table 12 : Cross-model comparison of prediction formation properties.
+
+Property | MDLM | SEDD | DREAM | LLaDA
+Crystallization | Gradual diagonal | Gradual diagonal | Sharp (L22) | Sharp (L26)
+Layer contribution | All layers | All layers | L22+ only | L26+ only
+Raw lens max | 8% | 72% | 93% | 100%
+Entropy trajectory | Monotonic \downarrow | Monotonic \downarrow | V-shaped | Monotonic \downarrow
+Sigma conditioning needed | Yes (essential) | Yes (but raw works) | N/A | N/A
+Max agreement | 87% | 86% | 93% | 100%
+
+### Table 13: Linear probing accuracy (sentiment, 5-fold CV) at selected layers. Layers in bold are those selected for SAE training. MDLM and SEDD share the GPT-2 architecture (12 layers); Dream has 28 layers (Qwen2); LLaDA has 32 layers (LLaMA).
+
+Layer | MDLM | SEDD | Dream | LLaDA
+(12L, 124M) | (12L, 124M) | (28L, 7B) | (32L, 8B)
+0 | 80.9 | 81.5 | 88.5 | 86.4
+4 | 82.2 | 77.8 | 90.7 | 88.1
+5 | 82.7 | 78.6 | — | —
+6 | 83.1 | 79.9 | — | —
+7 | 84.0 | 81.3 | — | —
+8 | 84.7 † | 82.1 | 95.0 | 91.4
+9 | 84.4 | 81.8 | — | —
+10 | 84.0 | 82.4 | — | —
+11 | 84.4 | 83.2 † | — | —
+13 | — | — | 97.6 | —
+14 | — | — | — | 95.5
+17 | — | — | 98.2 † | —
+20 | — | — | 98.0 | 97.3
+23 | — | — | 98.0 | 98.1 †
+26 | — | — | — | 98.0
+27 | — | — | 98.0 | —
+31 | — | — | — | 97.9
+† Peak probing accuracy for that model.
+
+### Table 14: MDLM sentiment steering ablation across layer windows. Swing = positive rate at \alpha{=}{-}3 minus \alpha{=}{+}3 .
+
+Layer window | Swing (pp) | Max pos. rate | Min pos. rate | PPL range
+[5, 6, 7] | 74.2 | 76.0% | 1.8% | 42–51
+[ 7, 8, 9 ] | 70.3 | 70.5% | 0.2% | 40–49
+[ 8, 9, 10 ] | 62.1 | 63.3% | 1.2% | 40–46
+[ 9, 10, 11 ] | 59.8 | 62.7% | 2.9% | 40–43
+
+### Table 15: SAE training configuration per model. All SAEs use TopK activation with auxiliary dead-neuron loss.
+
+Parameter | MDLM | SEDD | Dream | LLaDA
+d_{\text{model}} | 768 | 768 | 3,584 | 4,096
+d_{\text{sae}} | 12,288 | 12,288 | 14,336 | 16,384
+Expansion ratio | 16 \times | 16 \times | 4 \times | 4 \times
+k (TopK) | 32 | 32 | 32 | 32
+Training steps | 50K | 80K | 80K | 40K
+Batch size | 4,096 | 4,096 | 4,096 | 4,096
+Learning rate | 10^{-4} | 10^{-4} | 10^{-4} | 10^{-4}
+LR schedule | Cosine | Cosine | Cosine | Cosine
+Aux loss coef | 1/32 | 1/32 | 1/32 | 1/32
+EMA decay | 0.999 | 0.999 | 0.999 | 0.999
+Training data | OWT | OWT | OWT | OWT
+
+### Table 16 : Sigma bin boundaries (equal-frequency, MDLM). Low \sigma corresponds to near-clean text; high \sigma corresponds to heavily masked text. Each bin contains {\sim}1.79 M token positions (sentiment) or {\sim}334 K (topic).
+
+Bin | \sigma_{\text{low}} | \sigma_{\text{high}} | Interpretation
+1 | 8.3\times 10^{-5} | 0.221 | Near-clean
+2 | 0.221 | 0.514 | Low noise
+3 | 0.514 | 0.915 | Medium noise
+4 | 0.915 | 1.61 | High noise
+5 | 1.61 | 6.89 | Near-fully-masked
+

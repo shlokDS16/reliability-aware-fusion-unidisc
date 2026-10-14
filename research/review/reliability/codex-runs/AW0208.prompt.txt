@@ -1,0 +1,195 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Segment-Level Diffusion: A Framework for Controllable Long-Form Generation with Diffusion Language Models
+
+record AW0208 | arXiv:2412.11333 | first version 2024-12-15
+
+**Abstract.** Diffusion models have shown promise in text generation, but often struggle with generating long, coherent, and contextually accurate text. Token-level diffusion doesn't model word-order dependencies explicitly and operates on short, fixed output windows, while passage-level diffusion struggles with learning robust representations for long-form text. To address these challenges, we propose Segment-Level Diffusion (SLD), a framework that enhances diffusion-based text generation through text segmentation, robust representation training with adversarial and contrastive learning, and improved latent-space guidance. By segmenting long-form outputs into multiple latent representations and decoding them with an autoregressive decoder, SLD simplifies diffusion predictions and improves scalability. Experiments on four datasets demonstrate that, when compared to other diffusion and autoregressive baselines SLD achieves competitive or superior fluency, coherence, and contextual compatibility in automatic and human evaluations.
+
+## All captions
+
+- Figure 1: Comparison of AR models (top), latent diffusion (middle), and our segment-level diffusion (bottom). Unlike latent diffusion, which de-noises a single latent representation, our method splits outputs and representation into segments as the cross-atten
+- Figure 2: Overview of the training pipeline of SLD. In the first stage, gold output is divided into segments. In the second stage, we use contrastive and adversarial learning to ensure latent representations are robust to drastic semantic changes. Finally, we 
+- Table 1: Comparison of results on the XSum, ROCStories, DialogSum, and DeliData datasets. Fluency ∗ for XSum is calculated using Gemini-1.5 Team et al. (2024) as LLM-as-a-Judge with details are provided in Appendix C . Results for Diffusion-CG ∗∗ are directly 
+- Figure 3: BLEU score of different auto-encoder/decoder models for text conversion on DialogSum dataset of a single utterance.
+- Table 2: Text quality comparison of different models for text generation. Red indicates wrong conversion, orange indicates corrupted token and green indicates admissible paraphrase.
+- Table 3: Performance comparison across models on ECQA.
+- Table 4: Hyperparameter choices of loss ratio.
+- Figure 4: Violin plot of performance gain distribution of the DeliData dialogue continuations. Our model demonstrate a closer distribution with respect to the gold distribution, demonstrating the output is better controlled.
+- Table 5: An example of human evaluation instructions for evaluating compatibility for DialogSum.
+- Table 6: Prompt for Gemini-1.5 Pro to evaluate XSum fluency.
+- Figure 5: An example of human evaluation interface of DialogSum. Each session starts with a comprehensive instructions with examples, followed by model outputs and questions.
+- Algorithm 1 Training Algorithm for Segment-Level Diffusion (SLD)
+- Figure 6: Comparison of PCA 2D projections of latent representations for sampled segmented sentences from ROCStories (Blue), their paraphrases (Green), and out-of-domain (OOD) sentences sampled from CNN/Daily Mail (Orange) under three training paradigms: Vanil
+- Table 7: Comparison of decoded text segment for varying noise ratios across three models: Vanilla, Noise Only, and CSE + Noise. The original sentence is listed separately for reference.
+- Table 8: Text quality comparison of generated outputs for the story "Lilo’s Walk" in ROCStories. The table compares the outputs of LD4LG, Flan-T5, and our model against the gold standard.All model generates admissible story, however, LD4LG has minor word corru
+- Table 9: Text quality comparison of generated dialogues for the summary: "#Person1# invites Jimmy to go workout and persuades him into working out on arms and stomach" in DialogSum. The table compares the outputs of LD4LG, Flan-T5, and our model against the go
+- Table 10: Text quality comparison of generated continuations for a DeliData example. The table compares the outputs of LD4LG, Flan-T5, and our model against the gold standard. LD4LG hallucinated a card choice (Red). Flan-T5 generates unnatural repetitive outpu
+- Table 11: Models’ Predictions on ECQA: All diffusion models gives a wrong answer that is consistent with the knowledge of their Flan-T5 Base backbone.
+- Table 12: Models’ Predictions on ECQA: LD4LG initially mentions the correct answer, but predicts a non-existent answer by blending choices “spring into action” and “experience fear” together.
+
+## Tables as text
+
+### Table 1: Comparison of results on the XSum, ROCStories, DialogSum, and DeliData datasets. Fluency ∗ for XSum is calculated using Gemini-1.5 Team et al. (2024) as LLM-as-a-Judge with details are provided in Appendix C . Results for Diffusion-CG ∗∗ are directly taken from Chen and Yang (2023) .
+
+Models | ROUGE-L | Length | PPL | Repetition (mean, var) | Fluency (mean, var) | Coherence (mean, var) | Hallucination (mean, var)
+Gold | N/A | 53.04 | 13.42 | 2.60, 0.46 | 2.66, 0.42 | 2.55, 0.47 | 2.85, 0.29
+Flan-T5 | 25.83 | 234.35 | 9.79 | 2.27, 0.50 | 2.59, 0.39 | 2.30, 0.43 | 2.48, 0.52
+LD4LG | 21.14 | 68.08 | 51.10 | 2.52, 0.89 | 2.06, 0.80 | 1.78, 0.71 | 1.63, 0.87
+Ours | 30.51 | 71.61 | 13.41 | 2.50, 0.54 | 2.60, 0.34 | 2.30, 0.47 | 2.48, 0.55
+
+### Table 2: Text quality comparison of different models for text generation. Red indicates wrong conversion, orange indicates corrupted token and green indicates admissible paraphrase.
+
+Model | Generated Text
+Gold | #Person1#: What made you decide on this type of occupation?
+Planner | #Person1#: I’m afraid I can’t.
+LD4LG | #Person1#: What made you decide on this type of occupation?
+Adv | #Person1#: What’s your decide on this type of occupation?
+Adv+CSE | #Person1#: What made you decide on this type of job ?
+
+### Table 3: Performance comparison across models on ECQA.
+
+Model | Acc | MAUVE | ROUGE-L
+Flan-T5 Base | 0.75 | 0.13 | 33.88
+Flan-T5 Large | 0.88 | 0.21 | 35.86
+LD4LG | 0.63 | 0.74 | 38.66
+Ours | 0.723 | 0.75 | 40.14
+
+### Table 4: Hyperparameter choices of loss ratio.
+
+Dataset | \lambda_{1} | \lambda_{2} | \lambda_{3} | \lambda_{4}
+XSum | 0.5 | 0.2 | 0.5 | 0.5
+ROCStories | 0.2 | 0.2 | 0.5 | 0.5
+DialogSum | 0.5 | 0.2 | 0.5 | 0.5
+Delibot | 0 | 0.2 | 0.5 | 0.5
+
+### Table 7: Comparison of decoded text segment for varying noise ratios across three models: Vanilla, Noise Only, and CSE + Noise. The original sentence is listed separately for reference.
+
+Noise Ratio | LD4LG | Adversarial | CSE + Adversarial
+Original : David noticed he had put on a lot of weight recently.
+0.00 | David noticed he had put on a lot of weight recently. | David noticed he had put on a lot of weight recently. | David noticed he had put on a lot of weight recently.
+0.11 | David noticed he had put on a lot of weight recently. | David noticed he had put on a lot of weight recently. | David noticed he had put on a lot of weight recently.
+0.22 | Amanda noticed he had put on a lot of weight recently. | David noticed he had put on a lot of weight recently. | David noticed he had put on a lot of weight recently.
+0.33 | David he had to give up a thousand of cigarettes. | David noticed he had put on a lot of weight. | David noticed he had put on a lot of weight recently.
+0.44 | he had put did on a lot of weight recently. | David a had put on a lot of weight. | David noticed he had put on a lot of weight recently.
+0.56 | he noticed he had put on a lot of weight lately. | David – he had to put on a lot of weight. | David realized he had put on a lot of weight recently.
+0.67 | He expected he gotten ban on a lot of weight recently. | I had to give a dose of weight. | In mentioned he had put on, a lot of weight recently.
+0.78 | It would smile a pa heard she had a sign for a little on | you have ad on a lot of food? | lization marche, 15 had jumped on to a lot of weight of a
+0.89 | Some weeks contacted he’s got, ration. | You are the threw in a defo. | The fat, hearing the of rounded.
+1.00 | The sitter of Edward that she defended, and said. | , he, and the… | I thought, 10thed he would constantly ress, sanctwing of
+
+### Table 8: Text quality comparison of generated outputs for the story "Lilo’s Walk" in ROCStories. The table compares the outputs of LD4LG, Flan-T5, and our model against the gold standard.All model generates admissible story, however, LD4LG has minor word corruptions (Orange).
+
+Title | Lilo’s Walk
+Model | Generated Text
+Gold | Sarah has a dog named Lilo. Sarah took Lilo for a walk. Lilo rolled around in dirt during his walk. Sarah had to take Lilo to the groomer. When Lilo came home from the groomer, he looked beautiful and clean.
+LD4LG | Lilo was about to take a walk to school. She saw no people on the grass. Lilio was walking by the grass, she ran every grass. Llo knew she was bored and walked to class.
+Flan-T5 | Lilo wanted to go for a walk. Lilo’s mom took her to the park. Lilo and her mom walked to the park. Lilo had a great time walking to the park. Lilo and her mom walked home together.
+Ours | Lilo was walking down the sidewalk for her dog. Lilo has not liked to walk across the woods. Lilo took him to walk in the park. Lilo’s mom would walk with her every day. Lilo continued to walk again.
+
+### Table 9: Text quality comparison of generated dialogues for the summary: "#Person1# invites Jimmy to go workout and persuades him into working out on arms and stomach" in DialogSum. The table compares the outputs of LD4LG, Flan-T5, and our model against the gold standard. Flan-T5 generates repetitiv
+
+Title | Dialogue Summary: #Person1# invites Jimmy to go workout and persuades him into working out on arms and stomach.
+Model | Generated Text
+Gold | #Person1#: Hey Jimmy. Let’s go workout later today. #Person2#: Sure. What time do you want to go? #Person1#: How about at 3:30? #Person2#: That sounds good. Today we work on Legs and forearm. #Person1#: Hey. I just played basketball earlier, so my legs are a little sore. Let’s work out on arms and stomach today. #Person2#: I’m on a weekly schedule. You’re messing everything up. #Person1#: C’mon. We’re only switching two days. You can do legs on Friday. #Person2#: Aright. I’ll meet you at the gym at 3:30 then.
+Flan-T5 | #Person1#: Hey, Jimmy, why don’t you come work out with me? #Person2#: What are you talking about? #Person1#: I’m talking about working out on your arms and your stomach. #Person2#: What are you talking about? #Person1#: I mean, you lift weights on your arms and you lift weights on your stomach. #Person2#: That’s not working. #Person1#: But you lift weights on your arms and you lift weights on your stomach. #Person2#: That’s not working. #Person1#: But you lift weights on your arms and you lift weights on your stomach. #Person2#: That’s not working. #Person1#: But you lift weights on your arms and you lift weights on your stomach. #Person2#: That’s not working. (repeated 7 times more)
+LD4LG | #Person1#: Hi, Jimmy. We’re going to do some exercises and arm exercises on this weekend. Would you like to join us? #PEerson2# : Yeah, that sounds good for us. #PEPerson3# : Yeah, working on arms with arms, but I’ve thought I’m going to start on my stomach. #EPerson4# : Working??.. I don’t think I just have to hold up my weight. #EPerson3# : Why not go on your arms and arms and then put arms on your stomach. Then you can work for for any time.
+Ours | #Person1#: Hey Jimmy, how’s it going? #Person2#: I’m still not sure, physically. #Person1#: So, what’s going on? #Person2#: I’m just not feeling up to it. #Person1#: Come on, let’s get moving. #Person2#: What do you mean? #Person1#: Well, we could work on your arms and stomach. #Person2#: Oh, no thank you. I don’t know it as well. #Person1#: It’s not that hard, I’ll show you. #Person2#: Okay, I’ll try. #Person1#: That’s the spirit!
+
+### Table 10: Text quality comparison of generated continuations for a DeliData example. The table compares the outputs of LD4LG, Flan-T5, and our model against the gold standard. LD4LG hallucinated a card choice (Red). Flan-T5 generates unnatural repetitive outputs (Brown) and hallucinate an extra user
+
+Meta-Info | Users: [USER_SYS] [USER_0] [USER_1] Cards: 4 9 V U
+Previous Turns | [USER_0]HI! I went with flipping the card with the letter U
+Model | Generated Text
+Gold | [USER_1]I selected U and 9 [USER_1]You need to select 9 also, the other side might be a vowel [USER_0]I completely overlooked that you could select 2 cards. I agree both should be selected [USER_0] [PICK] U 9 [USER_1]the other two cards are irrelevant [USER_0]yes i agree [USER_1]Are you ready to submit the HIT? [USER_0]yes, i submitted my final answer [USER_1] [PICK] U 9 [USER_SYS][FINISHED]
+LD4LG | [USER_0] Hello [USER_0] I picked the letter "U" and the number "9". I chose u and 9 because I think those are the ones you need to check to see if the rule is correct? I didn’t think about it that way. I was thinking that it should be 2 cards with a vowel and a number on the other side. I also did not see any reason why I chose the same card. [USER_1] I picked U, 9 and [PICK] 4 U . Why did you pick the letter 8 and u? I thought it was 2 cards that would verify the rule. So I picked 2 cards and ur correct answer
+Flan-T5 | [USER_0] Hi, it was nothing like this. [PICK] U 9 [USER_0] I have chosen the cards to flip over that one. it does say an even number would have to have a vowel and a consonant. [USER_0] You think that would work well to prove either of the 2 cards? [USER_0] I did what you said [USER_1] you should flip them to see if there’s a vowel or consonant on the side (apart from the number) [USER_0] hmmmmm i could imagine choosing them all because the rule needs to be followed. [USER_1] maybe we should keep to u and 9 then? [USER_1] alright I’m gonna submit those two I guess [USER_1] I don’t think we need to do all four as its not a vowel so I don’t think we need to see it because the rule doesn’t state that consonants can’t have an even number or vowel [USER_0] Oh really? lol [USER_1] so u and 9? [USER_1] yea it is a vowel and a consonant [USER_1] we’re testing the rule so turning them all would test the rule [USER_0] well guess we’ll see what happens when we’re done [USER_1] it says to ONLY flip the cards that have letters. i think to check the rule that cards with vowels have an even number so that’s the only one you need to flip [USER_0] [PICK] U [USER_0] how do we know that the rule doesn’t actually apply to all evens [USER_1] we’re testing the rule to see if there is a vowel on the other side [USER_1] but it doesn’t specify if there’s a non vowel on the other side [USER_0] the task asks if there is a number in each of the 3 cards [USER_0] oh yeah so just the card with the vowel would test it [USER_0] yeah :) [USER_0] but then we have to test the other two cards [USER_0][USER_1] hmmm lmao! should we flip them all then? [USER_0] well yeah, mine seems reasonable. [USER_0] tiger sorry im confused lol lol [USER_0] u and 9 maybe too [USER_2] ok so maybe not all 3? [USER_0] yeah u and 9? [USER_0] thats what im going with emuerk? [USER_0] yea I see where you are coming from lol [U
+
+### Table 11: Models’ Predictions on ECQA: All diffusion models gives a wrong answer that is consistent with the knowledge of their Flan-T5 Base backbone.
+
+Input | Answer the following question by reasoning step by step: antarctic ocean is named after a continent. What’s another ocean that’s named after a landmass? Choices: antarctic, atlantic, pacific, indian ocean, pacific.
+Model | Generated Text
+Gold | India is a name of a country which is a land mass. So Indian ocean is named after a landmass. Antarctic is always given in the question and the other options are not names of land masses. The answer is indian ocean .
+Flan-T5 Base | atlantic ocean is named after a continent. atlantic ocean is named after a landmass. Therefore, the final answer is atlantic .
+LD4LG | The atlantic ocean is named for antarcam. So atlantic is named an antarcha ocean. All the other options are not named another ocean named for landmass. The answer is atlantic .
+Ours | The antarcic ocean is named to pacific because it is named another an landmass. So the antico is named by atlantic ocean. All the other options are not named by which ant ocean is called another after landmasses. The answer is atlantic .
+Flan-T5 Large | Pacific Ocean is named after pacific. Pacific Ocean is named after pacific. Therefore, the final answer is pacific .
+
+### Table 12: Models’ Predictions on ECQA: LD4LG initially mentions the correct answer, but predicts a non-existent answer by blending choices “spring into action” and “experience fear” together.
+
+Input | Answer the following question by reasoning step by step: If someone brings candy to a group of children what will happen? Choices: listen to music, spring into action, wave goodbye, play chess, experience fear.
+Model | Generated Text
+Gold | Springing into action means to become active unlike playing chess and experiencing fear. Candies make children spring into action and not listen to music or wave goodbye. The answer is spring into action .
+Flan-T5 Base | Spring into action is the act of bringing something to a group of children. If someone brings candy to a group of children, spring into action will happen. Therefore, the final answer is spring into action .
+LD4LG | Springing into action leads to spring into action and not play chess or wave fear. Springing onto action which leads to Spring into music unlike listening to music and experiencing fear. The answer is spring into fear .
+Ours | Spring into action is an activity unlike listening to music, play chess. Candy makes a group of children springing into action. The answer is spring into action .
+Flan-T5 Large | Spring into action is to get excited. Candy is a good thing. Children get excited when someone brings candy to them. Therefore, the final answer is spring into action .
+

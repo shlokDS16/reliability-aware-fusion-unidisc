@@ -1,0 +1,181 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Saber: An Efficient Sampling with Adaptive Acceleration and Backtracking Enhanced Remasking for Diffusion Language Model
+
+record AW0421 | arXiv:2510.18165 | first version 2025-10-20
+
+**Abstract.** Diffusion language models (DLMs) are emerging as a compelling alternative to the dominant autoregressive paradigm, offering inherent advantages in parallel generation and bidirectional context modeling. However, for the tasks with strict structural constraints such as code generation, DLMs face a critical trade-off between inference speed and output quality, where accelerating generation by reducing sampling steps often leads to catastrophic performance collapse. We find that the fundamental reasons are: 1) the generation difficulty is non-uniform in the structured sequence decoding steps, making DLM's static acceleration strategy suboptimal; 2) the context of tokens generated by DLM evolves continuously, causing early high-confidence predictions to turn into irreversible errors. In this paper, we introduce efficient Sampling with Adaptive acceleration and Backtracking Enhanced Remasking (i.e., Saber), a novel training-free sampling algorithm for DLMs that first achieves both better inference speed and output quality in code generation. Saber dynamically adjusts the number of tokens unmasked per step based on the model's evolving confidence, and utilizes a backtracking mechanism to revert tokens whose confidence drops as new context emerges, with its effectiveness supported by theoretical analysis. Extensive experiments on multiple mainstream code generation benchmarks show that Saber boosts Pass@1 accuracy by an average of 1.9\% over mainstream DLM sampling methods, while achieving an average 251.4\% inference speedup. By leveraging the inherent advantages of DLMs, our work significantly narrows the performance gap with autoregressive models in code generation.
+
+## All captions
+
+- Figure 1: Left: Illustration of DLM Sampling. Right: The trade-off of DLM Sampling between inference speed and output quality on a representative benchmark (HumanEval).
+- Figure 2: Motivation Example. Left: Average confidence per step. Right: An example of confidence drop for an incorrectly generated token as context evolves during decoding.
+- Figure 3: An Overview of Saber in DLM sampling, which consists of two key components, i.e., Adaptive Acceleration via Dynamic Unmasking (AADU) and Backtracking-Enhanced Remasking Mechanism (BERM), during each iterative sampling process.
+- Algorithm 1 Pseudocode of Saber in each step.
+- Table 1: Comparison of Saber and existing DLM sampling methods, where the bold indicates the best performance in this column while the underline indicates the second-best performance, and ET means the Pass@1 performance on its extended test case version.
+- Table 2: Effectiveness of Saber compared to mainstream DLM sampling method based on different DLMs.
+- Table 3: Ablation study of different components in our proposed method.
+- Table 4: Error type analysis.
+- Figure 4: Case study.
+- Table 5: Effectiveness of Saber compared to the baseline under the optimal settings of Dream and DiffuCoder on the HumanEval benchmark.
+- Table 6: Performance comparison on MATH-500 and ARC-Challenge benchmarks.
+- Table 7: Performance comparison in long-context scenarios (input lengths between 512 and 4096 tokens).
+- Table 8: Hyperparameter sensitivity analysis of the backtracking ratio \mu .
+- Table 9: Broader testing of Saber on MBPP and MBPP-ET benchmarks across different DLMs.
+
+## Tables as text
+
+### Table 1: Comparison of Saber and existing DLM sampling methods, where the bold indicates the best performance in this column while the underline indicates the second-best performance, and ET means the Pass@1 performance on its extended test case version.
+
+Method | HumanEval | MBPP | LiveCodeBench
+Pass@1 \uparrow | ET \uparrow | Step \downarrow | Time \downarrow | Pass@1 \uparrow | ET \uparrow | Step \downarrow | Time \downarrow | Pass@1 \uparrow | Step \downarrow | Time \downarrow
+Standard DLM Sampling
+Random | 14.63 | 12.80 | 256 | 1:29:40 | 22.95 | 18.26 | 256 | 2:51:28 | 0 | 256 | 4:09:49
+Entropy | 41.46 | 34.15 | 256 | 1:30:22 | 42.15 | 31.14 | 256 | 2:56:42 | 4.00 | 256 | 4:30:31
+Confidence | 43.29 | 35.79 | 256 | 2:11:52 | 42.86 | 31.38 | 256 | 3:12:08 | 9.75 | 256 | 5:59:07
+Efficient DLM Sampling
+Confidence (p=2) | 34.76 | 28.66 | 128 | 51:13 | 40.75 | 28.57 | 128 | 1:35:13 | 9.25 | 128 | 2:57:16
+SAR (p=2) | 35.98 | 29.27 | 128 | 1:33:00 | 40.05 | 27.86 | 128 | 1:36:05 | 9.50 | 128 | 2:57:17
+Fast-dLLM | 39.63 | 34.15 | 256 | 59:40 | 44.03 | 30.44 | 256 | 2:30:24 | 8.75 | 256 | 2:33:29
+Fast-dLLM (+parallel) | 39.63 | 33.54 | 96.24 | 25:25 | 39.34 | 27.63 | 73.13 | 43:18 | 2.30 | 96.28 | 43:22
+ReMDM | 20.73 | 18.29 | 128 | 1:26:50 | 31.62 | 22.48 | 128 | 1:28:51 | 3.30 | 128 | 2:50:23
+WINO | 40.24 | 31.71 | 100.12 | 57:10 | 43.09 | 31.38 | 88.49 | 1:44:51 | 9.25 | 77.43 | 2:40:30
+Saber | 45.12 | 35.98 | 118.92 | 41:55 | 44.73 | 33.02 | 110.96 | 1:33:33 | 11.00 | 122.47 | 2:33:17
+
+### Table 2: Effectiveness of Saber compared to mainstream DLM sampling method based on different DLMs.
+
+ | Pass@1 \uparrow | Steps \downarrow | Time \downarrow
+LLaDA-8B-Instruct |  |  | 
+Confidence (p=1) | 0.4329 | 256 | 2:11:52
+Saber | 0.4512 | 118.92 | 41:55
+Dream-v0-Instruct-7B |  |  | 
+Confidence (p=1) | 0.2805 | 256 | 1:16:15
+Saber | 0.2927 | 156.68 | 46:39
+DiffuCoder-7B-cpGRPO |  |  | 
+Confidence (p=1) | 0.5671 | 256 | 1:12:47
+Saber | 0.5732 | 140.34 | 37:08
+
+### Table 3: Ablation study of different components in our proposed method.
+
+Method | Pass@1 \uparrow | Steps \downarrow | Time \downarrow
+Ours | 0.4512 | 118.92 | 41:55
+w/o Adaptive Accelerate | 0.4451 | 256 | 1:32:33
+w/o Backtracking Remask | 0.3523 | 65.67 | 28:30
+w/o both | 0.3476 | 128 | 51:13
+\Delta confidence from init. | 0.4207 | 121.46 | 42:32
+
+### Table 4: Error type analysis.
+
+Error Type | Baseline | Saber | \downarrow\Delta
+Syntax Error | 3 | 1 | 66.7%
+Compilation/Runtime Error | 14 | 11 | 21.5%
+Semantic Error | 92 | 73 | 20.7%
+
+### Table 5: Effectiveness of Saber compared to the baseline under the optimal settings of Dream and DiffuCoder on the HumanEval benchmark.
+
+Base Model | Method | HumanEval \uparrow | HumanEval-ET \uparrow | Step \downarrow | Time \downarrow
+Dream | Baseline | 0.5749 | 0.4756 | 256 | 1:18:12
+Ours | 0.6037 | 0.5183 | 141.04 | 40:49
+DiffuCoder | Baseline | 0.6829 | 0.5937 | 256 | 1:19:56
+Ours | 0.6890 | 0.6098 | 168.02 | 53:19
+
+### Table 6: Performance comparison on MATH-500 and ARC-Challenge benchmarks.
+
+Method | MATH-500 | ARC-Challenge
+Pass@1 \uparrow | Step \downarrow | Time \downarrow | Pass@1 \uparrow | Step \downarrow | Time \downarrow
+Baseline | 0.3240 | 256 | 3:01:02 | 0.5351 | 256 | 1:49:51
+Saber | 0.3400 | 146.00 | 1:31:15 | 0.5619 | 129.66 | 0:49:02
+
+### Table 7: Performance comparison in long-context scenarios (input lengths between 512 and 4096 tokens).
+
+Method | Performance | \uparrow\Delta
+Baseline | 1.4% | -
+Saber (Ours) | 4.3% | +207.2%
+
+### Table 8: Hyperparameter sensitivity analysis of the backtracking ratio \mu .
+
+\mu | Pass@1 \uparrow | Steps \downarrow | Time \downarrow
+1/2 | 0.4512 | 158.40 | 59:12
+1/4 | 0.4451 | 128.55 | 48:54
+1/8 | 0.4512 | 118.92 | 41:55
+1/16 | 0.3963 | 109.93 | 39:59
+0 (w/o Backtracking-Enhanced Remasking) | 0.3523 | 65.67 | 28:30
+
+### Table 9: Broader testing of Saber on MBPP and MBPP-ET benchmarks across different DLMs.
+
+Base Model | Method | MBPP \uparrow | MBPP-ET \uparrow | Step \downarrow | Time \downarrow
+LLaDA | Baseline | 0.4286 | 0.3138 | 256 | 3:12:08
+Ours | 0.4473 | 0.3302 | 110.96 | 1:33:33
+Dream | Baseline | 0.6182 | 0.4637 | 256 | 2:38:03
+Ours | 0.6206 | 0.4660 | 131.48 | 1:26:16
+DiffuCoder | Baseline | 0.5152 | 0.3677 | 256 | 2:42:28
+Ours | 0.5691 | 0.4192 | 125.65 | 1:20:51
+

@@ -123,6 +123,18 @@ Scored 0 (absent), 1 (partial), 2 (met), with the evidence location recorded:
 | QA9 | limitations and failure cases stated |
 | QA10 | peer-review status (recorded, not scored) |
 
+**Claim evaluability (added 2026-10-14, direction approved by the authors).** In addition to
+QA1 to QA9, each study's primary claim is typed and scored against its minimum evaluability
+criterion with `evaluability-rubric.md`. This carries three pre-registered hypotheses, analysed
+separately: (E1) for each scored claim type, fewer than half of claims meet their criterion;
+(E2) the share meeting it does not rise by more than 10 percentage points from the earliest to the
+latest publication-year tercile, nor differ by more than 10 points between peer-reviewed and
+preprint-only studies; (E3) in studies that report both a headline comparison and a controlled
+comparison on the same outcome, the controlled effect is smaller in more than half of them.
+The rubric is adopted only if two independent raters reach kappa of at least 0.60 on claim type
+and weighted kappa of at least 0.60 on the criterion in the reliability sample
+(`reliability/`, 40 papers); otherwise it is revised and retested on a fresh sample.
+
 Appraisal by two raters as in section 4, weighted kappa reported. Scores are never used to exclude
 a study; they are used for sensitivity analysis (results with and without low-scoring studies).
 

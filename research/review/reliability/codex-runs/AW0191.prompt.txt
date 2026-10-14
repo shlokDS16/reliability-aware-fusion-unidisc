@@ -1,0 +1,196 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# TextLDM: Language Modeling with Continuous Latent Diffusion
+
+record AW0191 | arXiv:2605.07748 | first version 2026-05-08
+
+**Abstract.** Diffusion Transformers (DiT) trained with flow matching in a VAE latent space have unified visual generation across images and videos. A natural next step toward a single architecture for both generation (visual synthesis) and understanding (text generation) is to apply this framework to language modeling. We propose TextLDM, which transfers the visual latent diffusion recipe to text generation with minimal architectural modification. A Transformer-based VAE maps discrete tokens to continuous latents, enhanced by Representation Alignment (REPA) with a frozen pretrained language model to produce representations effective for conditional denoising. A standard DiT then performs flow matching in this latent space, identical in architecture to its visual counterpart. The central challenge we address is obtaining high-quality continuous text representations: we find that reconstruction fidelity alone is insufficient, and that aligning latent features with a pretrained language model via REPA is critical for downstream generation quality. Trained from scratch on OpenWebText2, TextLDM substantially outperforms prior diffusion language models and matches GPT-2 under the same settings. Our results establish that the visual DiT recipe transfers effectively to language, taking a concrete step toward unified diffusion architectures for multimodal generation and understanding.
+
+## All captions
+
+- Figure 1 : Comparison of language generation paradigms. Each sub-figure illustrates the generation process from left to right . (a) Autoregressive (AR) models generate tokens one by one in sequential order. (b) Discrete diffusion (e.g., LLaDA ( Nie et al., 202
+- Figure 2 : Inference efficiency: the number of function evaluations (NFE) for AR models grows linearly with sequence length, while TextLDM achieves length-invariant NFE over a broad operating range (e.g., up to 1024 tokens).
+- Figure 3 : Overview of TextLDM. (a) TextVAE : A Transformer encoder maps discrete tokens to continuous latents, regularized by KL divergence and enhanced by REPA alignment with a frozen Qwen3-1.7B. The decoder reconstructs tokens from latents via cross-entropy
+- Algorithm 1 Inference of TextLDM
+- Table 1 : Text continuation results across four benchmarks. All models are trained on OpenWebText2 with max sequence length 1024. Our TextLDM uses the default configuration: VAE 350M with ch64 and REPA (Qwen3-1.7B, 3rd-to-last layer), logit-normal 1.5 schedule
+- Figure 4 : Training dynamics comparison between TextLDM (DiT-328M, blue ) and our reproduced GPT-2-medium (459M, red ). The reproduced GPT-2-medium has more parameters than the original 355M due to the larger vocabulary size of the Qwen3 tokenizer. Both models
+- Table 2 : Ablation studies on downstream DiT generation performance under different design choices. Unless otherwise noted, DiTs are trained for 1M steps with CFG=7 and 50 inference steps. Group (e) reports results at 2M steps as we found 1M steps insufficient
+- Table 3 : Token reconstruction accuracy (%) of TextVAE. All VAEs achieve near-perfect reconstruction, indicating that generation quality differences in Table 2 are driven by latent space structure rather than reconstruction fidelity.
+- Table 4 : Sensitivity of CFG scale on TinyStories. Results are reported using 50 denoising steps on 100 TinyStories samples. We employ a 328M DiT and a 350M VAE (chl=128), where the VAE is aligned via REPA to the 3rd-to-last layer of a frozen Qwen3-1.7B. We ob
+- Table 5 : Step-by-step denoising progression
+- Table 6 : Step-by-step denoising progression
+- Table 7 : Step-by-step denoising progression
+
+## Tables as text
+
+### Table 1 : Text continuation results across four benchmarks. All models are trained on OpenWebText2 with max sequence length 1024. Our TextLDM uses the default configuration: VAE 350M with ch64 and REPA (Qwen3-1.7B, 3rd-to-last layer), logit-normal 1.5 scheduler, CFG=7, 50-step inference. Best result
+
+ | WikiSource | Wikipedia | TinyStories | One Billion Words
+Model | R-1 | R-2 | R-L | BS | MAU | R-1 | R-2 | R-L | BS | MAU | R-1 | R-2 | R-L | BS | MAU | R-1 | R-2 | R-L | BS | MAU
+Autoregressive Models
+GPT-2 (137M) | 31.1 | 7.0 | 18.2 | 81.6 | 35.3 | 23.3 | 4.7 | 15.1 | 81.6 | 7.89 | 31.8 | 6.1 | 18.9 | 85.5 | 1.04 | 13.4 | 1.6 | 12.3 | 83.9 | 0.45
+GPT-2-medium (355M) | 34.0 | 8.3 | 19.0 | 82.4 | 39.2 | 25.0 | 5.3 | 15.7 | 81.8 | 8.16 | 33.6 | 6.8 | 19.9 | 86.1 | 1.47 | 14.8 | 2.4 | 13.8 | 84.2 | 0.49
+GPT-2-large (774M) | 33.7 | 8.4 | 19.5 | 82.2 | 38.3 | 25.1 | 5.7 | 16.1 | 82.2 | 8.00 | 34.7 | 7.5 | 20.8 | 86.3 | 1.47 | 15.8 | 2.9 | 14.6 | 84.3 | 0.53
+Discrete Diffusion Language Models
+BlockDiff. (170M) bs=16 | 30.9 | 5.6 | 16.0 | 81.4 | 39.6 | 23.9 | 4.2 | 13.8 | 81.6 | 7.23 | 31.8 | 5.3 | 18.0 | 85.1 | 1.20 | 10.9 | 0.6 | 9.4 | 83.1 | 0.50
+BlockDiff. (170M) bs=8 | 30.9 | 5.6 | 16.0 | 81.5 | 41.0 | 22.9 | 4.1 | 13.4 | 81.3 | 7.70 | 31.0 | 5.0 | 17.7 | 84.9 | 1.00 | 9.0 | 0.7 | 8.1 | 82.8 | 0.55
+BlockDiff. (170M) bs=4 | 29.3 | 5.2 | 15.3 | 81.1 | 29.8 | 21.9 | 3.8 | 13.1 | 80.9 | 7.30 | 28.5 | 4.4 | 16.6 | 84.4 | 1.10 | 9.5 | 0.8 | 8.7 | 83.0 | 0.59
+Continuous Diffusion Language Models
+SSD-LM (355M) | 15.3 | 2.0 | 10.4 | 79.2 | 7.66 | 15.1 | 1.8 | 10.4 | 79.3 | 2.82 | 28.0 | 3.7 | 16.6 | 83.7 | 0.78 | 10.0 | 0.7 | 8.8 | 82.8 | 0.65
+Ours–TextLDM (114M) | 33.0 | 6.6 | 16.6 | 80.3 | 21.6 | 27.5 | 5.9 | 15.9 | 81.0 | 8.9 | 36.7 | 7.8 | 20.7 | 84.8 | 1.00 | 10.3 | 0.73 | 9.4 | 83.1 | 0.77
+Ours–TextLDM (328M) | 33.1 | 6.8 | 16.9 | 80.7 | 27.6 | 27.6 | 6.2 | 16.2 | 81.3 | 10.5 | 37.1 | 8.3 | 21.1 | 85.2 | 1.13 | 10.8 | 0.88 | 9.8 | 83.4 | 0.79
+Ours–TextLDM (768M) | 37.5 | 16.5 | 25.7 | 84.3 | 32.7 | 38.9 | 8.1 | 17.6 | 82.7 | 10.1 | 39.7 | 10.4 | 23.4 | 85.8 | 1.51 | 21.4 | 3.6 | 17.4 | 85.0 | 0.80
+
+### Table 2 : Ablation studies on downstream DiT generation performance under different design choices. Unless otherwise noted, DiTs are trained for 1M steps with CFG=7 and 50 inference steps. Group (e) reports results at 2M steps as we found 1M steps insufficient for convergence at these scales. Defaul
+
+ | WikiSource | Wikipedia | TinyStories | One Billion Words
+Setting | R-1 | R-2 | R-L | BS | MAU | R-1 | R-2 | R-L | BS | MAU | R-1 | R-2 | R-L | BS | MAU | R-1 | R-2 | R-L | BS | MAU
+(a) Effect of REPA
+w/ REPA | 32.6 | 6.5 | 16.9 | 80.2 | 20.4 | 27.7 | 5.9 | 16.2 | 81.0 | 7.7 | 36.6 | 7.9 | 21.0 | 84.8 | 0.92 | 10.5 | 0.90 | 9.6 | 83.2 | 0.81
+w/o REPA | 27.8 | 4.4 | 14.6 | 77.3 | 2.5 | 22.5 | 3.2 | 13.2 | 77.7 | 4.4 | 35.1 | 5.7 | 19.5 | 81.3 | 0.58 | 9.1 | 0.48 | 8.1 | 82.1 | 0.73
+(b) VAE Model Size
+350M | 32.6 | 6.5 | 16.9 | 80.2 | 20.4 | 27.7 | 5.9 | 16.2 | 81.0 | 7.7 | 36.6 | 7.9 | 21.0 | 84.8 | 0.92 | 10.5 | 0.90 | 9.6 | 83.2 | 0.81
+502M | 31.9 | 6.3 | 16.3 | 80.2 | 21.7 | 26.7 | 5.5 | 15.5 | 80.9 | 7.4 | 36.4 | 7.7 | 20.8 | 84.9 | 0.82 | 10.4 | 0.71 | 9.6 | 83.1 | 0.70
+690M | 33.2 | 6.6 | 16.7 | 80.3 | 21.9 | 26.5 | 5.5 | 15.3 | 80.8 | 8.4 | 36.1 | 7.6 | 20.5 | 84.8 | 1.03 | 10.0 | 0.77 | 9.1 | 83.2 | 0.70
+(c) Latent Channel Dimension
+32 | 32.6 | 6.7 | 16.5 | 80.6 | 26.8 | 27.1 | 5.8 | 15.6 | 81.0 | 8.7 | 36.4 | 7.8 | 20.5 | 85.0 | 1.05 | 9.9 | 0.69 | 9.1 | 83.1 | 0.81
+64 | 34.3 | 7.0 | 17.1 | 80.6 | 27.3 | 27.4 | 5.9 | 16.1 | 81.1 | 12.5 | 37.1 | 8.2 | 21.1 | 85.1 | 0.95 | 12.7 | 0.93 | 11.9 | 83.3 | 0.73
+128 | 32.6 | 6.5 | 16.9 | 80.2 | 20.4 | 27.7 | 5.9 | 16.2 | 81.0 | 7.7 | 36.6 | 7.9 | 21.0 | 84.8 | 0.92 | 10.5 | 0.90 | 9.6 | 83.2 | 0.81
+192 | 33.8 | 6.6 | 17.4 | 80.2 | 17.6 | 27.0 | 5.5 | 15.6 | 80.8 | 7.5 | 36.3 | 7.4 | 20.6 | 84.7 | 0.85 | 12.1 | 1.21 | 11.2 | 83.2 | 0.68
+(d) REPA Layer Selection
+Layer -1 | 33.1 | 6.3 | 16.8 | 80.1 | 16.5 | 27.1 | 5.5 | 15.7 | 80.8 | 7.5 | 37.2 | 8.1 | 21.2 | 84.8 | 0.98 | 10.0 | 0.65 | 9.1 | 83.0 | 0.70
+Layer -3 | 32.6 | 6.5 | 16.9 | 80.2 | 20.4 | 27.7 | 5.9 | 16.2 | 81.0 | 7.7 | 36.6 | 7.9 | 21.0 | 84.8 | 0.92 | 10.5 | 0.90 | 9.6 | 83.2 | 0.81
+(e) DiT Model Size
+114M | 33.0 | 6.6 | 16.6 | 80.3 | 21.6 | 27.5 | 5.9 | 15.9 | 81.0 | 8.9 | 36.7 | 7.8 | 20.7 | 84.8 | 1.00 | 10.3 | 0.73 | 9.4 | 83.1 | 0.77
+328M | 33.1 | 6.8 | 16.9 | 80.7 | 27.6 | 27.6 | 6.2 | 16.2 | 81.3 | 10.5 | 37.1 | 8.3 | 21.1 | 85.2 | 1.13 | 10.8 | 0.88 | 9.8 | 83.4 | 0.79
+768M | 37.5 | 16.5 | 25.7 | 84.3 | 32.7 | 38.9 | 8.1 | 17.6 | 82.7 | 10.1 | 39.7 | 10.4 | 23.4 | 85.8 | 1.51 | 21.4 | 3.6 | 17.4 | 85.0 | 0.80
+(f) Timestep Schedule
+Uniform | 32.2 | 6.4 | 16.5 | 80.3 | 23.2 | 26.8 | 5.6 | 15.4 | 80.9 | 7.1 | 36.3 | 7.7 | 20.7 | 84.9 | 0.85 | 10.0 | 0.71 | 9.1 | 83.1 | 0.72
+Logit-normal 1.2 | 29.5 | 4.7 | 15.3 | 79.3 | 12.5 | 25.9 | 4.6 | 14.9 | 80.4 | 7.1 | 35.5 | 7.1 | 20.6 | 84.6 | 0.88 | 10.3 | 0.75 | 9.4 | 83.2 | 0.74
+Logit-normal 1.5 | 32.6 | 6.5 | 16.9 | 80.2 | 20.4 | 27.7 | 5.9 | 16.2 | 81.0 | 7.7 | 36.6 | 7.9 | 21.0 | 84.8 | 0.92 | 10.5 | 0.90 | 9.6 | 83.2 | 0.81
+
+### Table 3 : Token reconstruction accuracy (%) of TextVAE. All VAEs achieve near-perfect reconstruction, indicating that generation quality differences in Table 2 are driven by latent space structure rather than reconstruction fidelity.
+
+VAE Size | ch | REPA | WikiSource | Wikipedia | TinyStories | OBW
+(a) Latent Channel Dimension
+350M | 64 | Layer -3 | 97.56 | 97.79 | 99.58 | 99.98
+350M | 128 | Layer -3 | 97.55 | 97.79 | 99.60 | 100.00
+350M | 192 | Layer -3 | 97.55 | 97.78 | 99.60 | 100.00
+(b) VAE Model Size
+350M | 128 | Layer -3 | 97.55 | 97.79 | 99.60 | 100.00
+502M | 128 | Layer -3 | 97.57 | 97.80 | 99.60 | 100.00
+690M | 128 | Layer -3 | 97.57 | 97.80 | 99.60 | 100.00
+(c) Effect of REPA
+350M | 128 | Layer -3 | 97.55 | 97.79 | 99.60 | 100.00
+350M | 128 | – | 97.56 | 97.78 | 99.60 | 99.99
+(d) REPA Layer Selection
+350M | 128 | Layer -1 | 97.56 | 97.79 | 99.60 | 99.98
+350M | 128 | Layer -3 | 97.55 | 97.79 | 99.60 | 100.00
+
+### Table 4 : Sensitivity of CFG scale on TinyStories. Results are reported using 50 denoising steps on 100 TinyStories samples. We employ a 328M DiT and a 350M VAE (chl=128), where the VAE is aligned via REPA to the 3rd-to-last layer of a frozen Qwen3-1.7B. We observe that a CFG scale w=7 yields the mo
+
+CFG | R-1 | R-2 | R-L | BS
+3 | 36.2 | 6.7 | 20.1 | 84.6
+4 | 36.6 | 7.3 | 20.6 | 84.6
+5 | 36.7 | 7.6 | 21.2 | 84.7
+6 | 37.1 | 7.9 | 21.1 | 84.9
+7 | 37.0 | 8.1 | 21.5 | 84.9
+8 | 36.2 | 7.7 | 21.3 | 84.8
+
+### Table 5 : Step-by-step denoising progression
+
+Stage | Text
+Cond | …In 2014, Gavaris won a Canadian Screen Award for Best Supporting Actor and also won a Constellation Award for best performance in an episode. On August 18, 20
+Step 10 | 037 she is won Actor Actor Actor Asked Asked Actress following for create Discão Sourceing Jackson starred politics and seem Actress To and Actress and Original andide Actressing Actress.
+Step 20 | 17, he was awarded Canadian Screen Award for Best Actor and Performance for Best drama and lead for BBC America’s Best Original Feature film, and a Cored Award for Hiring Actress.
+Step 30 | 17, he was awarded Canadian Screen Award for Best Actor and Performance for Best drama and lead for BBC America’s Best Original Feature film, and a Cored Award for Hiring Actress.
+Step 40 | 17, he was nominated by Queen Turing for Star for Best Supporting Actor and being named one of BBC America and Canada’s Space and also won a Constellation Award for best performance.
+Step 50 | 17, he was honoured by The Canadian Screen Award for Best Supporting Actor and being named one of BBC America and Canada’s Space and also won a Constellation Award for best performance.
+
+### Table 6 : Step-by-step denoising progression
+
+Stage | Text
+Cond | “…also performs on tour with the Julian Siegel Big Band. Recordings Freestone’s debut album with her Trio was In the Chop House, released in 2014 on Whirlwind Recordings. This album featured Freestone on tenor saxophone, Dave Manington on double bass and Tim Giles on drums. The Guardian gave the album 4 stars and said: “In being supported by only bass”
+Step 10 | bench state and bass bass more. playing more soundtrack challengingott two and complete diagon agile ballet. composing bass two comment two more state state more more two complete two and develop my dreaming two his soundtrack schedule “
+Step 20 | and bass, the album is to showcase unusual sounds and drums with robust visual improvisational techniques. This trio she featured an imposingly melodic sound and robust composition and lead leader. In the Chop House was her debut for all the albums and hit with excellent albums […]
+Step 30 | and bass, the album was to showcase unusual sounds and drums with robust visual improvisational techniques. From behind she showcased an imposingly melodic sound and traditional composition […] In the Chop House was her star for all things on ensemble Jazz: outstanding albums infer Freestone on drums again and it featured Giles on tenor sax with Tim Giles on double bass and Dave Manington on drums. […]
+Step 40 | and bass, the album is to embody unusual angles and drums with robust visual improvisational techniques. From behind she created an compensified tenor sound with traditional composition […] In the Chop House was her favorite for all three on ambitious jazz and youth albums. Freestone on drums […] she featured Giles on tenor saxophone Tim Giles on double bass and Dave Manington on drums. […]
+Step 50 | and bass, her album is to explore unusual angles and drums with robust visual improvisational techniques. From behind she created an recognisable tenor sound with traditional composition […] In the Chop House was her favorite for all these on ambitious Jazz and youth festivals. Freestone on drums […] featured Giles on tenor saxophone Tim Giles on double bass and Dave Manington on drums. […]
+
+### Table 7 : Step-by-step denoising progression
+
+Stage | Text
+Cond | “…the position of Professor of History at the University of Denver, where he remained until his retirement in 1995. At the University of Denver During his time at the University of Denver, Roeder was instrumental in both curriculum development and research program coordination. He served as chair of the History Department during 1985–1986, when the Core Curriculum program was implemented”
+Step 10 | seemIm richser university Pre set here left - 7 more by distinguly - take edition operated recently he me and reasoned3 Experimental “ Henry changing Foundation and - story7 two and and Operating is Oh. during explicitly he taught traditionally programming professor Acad and ranks sailed Technical Professor Modern Professor Scientific studied: found Professor Technical Political Professor in Modern Professor Political Philosophy Judicial Literature taught in History, History of Philosophy […]
+Step 20 | . Roeder served a second teaching fellowship later, until 1978. He left Denver, later taking over to the position of Assistant Professor of History at Harvard, where he was instrumental in that process. Roeder was ordained at the University of Chicago, in 1982. His first job was teaching at Harvard University. He returned to history, College of Philosophy, the University of History, and later returned to Harvard University, where he earned his.D. Profites from the North and International Studies. […] He also held a teaching fellowship in history during the Allied II Salvennial of 1933–1986. He then returned to Harvard with history and literature, and a bachelor’s thesis on the history of History. […]
+Step 30 | . Roeder served a further teaching fellowship until Chicago in 1978. He left that same year in Denver to take the position of Professor in History at Harvard, where he was instrumental in that process. Roeder was elected from the College of William and Mary in1982. His second job was teaching at Harvard University. He returned to history, College of Philosophy, the University of Chicago, and his time at Harvard University, where he earned his.D. in History. […] Roeder held a teaching fellowship during the Counter-Ilennial in 1933–1986. He then returned to Harvard with a teaching fellowship, with a bachelor’s thesis at the University of Denver. […]
+Step 40 | . Roeder held a second teaching fellowship after Chicago in 1968. He left that same time at Denver to take the position of Professor of History at Harvard, where he was instrumental in that process. Roeder was graduated from the College of William and Mary in1982 with a teaching fellowship in philosophy from Harvard University. He returned to history, College of History, the University of Chicago, and the University of Texas again, where he earned his Dr. of History from the University of Chicago. […] Roeder held a teaching fellowship during the Counter-colonial in 19331996. He then returned to Harvard with a teaching fellowship, with a bachelor’s thesis at the University of 
+

@@ -1,0 +1,235 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Fast and Fluent Diffusion Language Models via Convolutional Decoding and Rejective Fine-tuning
+
+record AW0443 | arXiv:2509.15188 | first version 2025-09-18
+
+**Abstract.** Autoregressive (AR) language models generate text one token at a time, which limits their inference speed. Diffusion-based language models offer a promising alternative, as they can decode multiple tokens in parallel. However, we identify a key bottleneck in current diffusion LMs: the long decoding-window problem, where tokens generated far from the input context often become irrelevant or repetitive. Previous solutions like semi-autoregressive address this issue by splitting windows into blocks (sacrificing bidirectionality), but we find that this also leads to time-interval expansion problem, sacrificing the speed. Therefore, semi-AR eliminates the main advantages of diffusion models. To overcome this, we propose Convolutional decoding (Conv), a normalization-based method that narrows the decoding window without hard segmentation, leading to better fluency and flexibility. Additionally, we introduce Rejecting Rule-based Fine-Tuning (R2FT), a post-hoc training scheme that better aligns tokens at positions far from context. Our methods achieve state-of-the-art results on open-ended generation benchmarks (e.g., AlpacaEval) among diffusion LM baselines, with significantly lower step size than previous works, demonstrating both speed and quality improvements.
+
+## All captions
+
+- Figure 1 : G-eval score and sampling speed on AlpacaEval. Ours achieves SOTA.
+- Figure 2 : Candidate zone of the first inference step given the previous context “Q: Who is Abraham Lincoln? A:”. The left box shows positions close to the context (0 to 4), and the right box shows positions relatively far from the context (25 to 29). Darker r
+- Figure 3 : X-axis is distance from instruction prompt, Y-axis is summed probability of high-prior and repetition .
+- Figure 4 : Perplexity (y-axis) of the text samples from pretrained MDLM, applying semi-AR decoding with different block sizes (x-axis) on fixed L=1024 . Each line corresponds to a fixed S .
+- Figure 5 : Convolution normalizer ( s_{i} ) for each position across decoding window, given bidirectional context.
+- Figure 6 : Pipeline of convolutional decoding, from (1) to (5). Gray boxes are mask tokens.
+- (a) Conv (uni-direction)
+- (b) Conv (bi-direction)
+- (c) Semi-AR
+- (d) Categorical
+- Figure 7 : Unmask positions (Y-axis) over decoding steps (X-axis) for different decoding strategies. L=1024 , S=128 , with a kernel size and block size of 128. All strategies begin with a BOS (begin-of-sentence) token at the first position. In (b), a BOS token
+- Figure 8 : Perplexity (y-axis) of the text samples from pretrained MDLM, applying Conv decoding with different kernel size (x-axis) on fixed L=1024 . Each line corresponds to a fixed S .
+- Table 1 : AlpacaEval score of small baselines across different decoding strategies. LC is length-controlled [ 44 ] . Block and kernel size 256 . We highlight first and second best.
+- Table 2 : Comparison between small MDLMs across MT-Bench and Wiki. L=1024, S=128.
+- Table 3 : Comparison between large (8B) MDLMs. L=1024, S=128, block and kernel size 512.
+- Table 4 : GSM8K test accuracy for large MDLMs. L=512, S=64, block and kernel size 128.
+- Figure 9 : AlpacaEval win rate (Y-axis) of semi-AR and Conv with different block size (stride) and kernel size. The red line is the best of top- k .
+- Figure 10 : AlpacaEval win rate of semi-AR and combination of Conv and R2FT. Red line is score from Conv + R2FT with S=128 .
+- Algorithm 1 Corruption for Instruction Tuning Data
+- Figure 11 : Candidate zone of first 25 positions from instruction “Q: Who is Abraham Lincoln? A:”. X-axis is distance from instruction, Y-axis is top-k rank. Green stands for informative tokens for instruction (e.g., “president” “United States”), while blue st
+- (a) Validation loss
+- (b) Mean log prior
+- Figure 12 : Validation values during R2FT training, plotted against global steps (with a global batch size of 512). In (a), the Y-axis represents the loss value of \mathcal{L}_{w} and \mathcal{L}_{l} . In (b), the Y-axis shows the mean log prior of tokens in s
+- Figure 13 : X-axis is distance from instruction prompt, Y-axis is summed probability of high-prior and repetition .
+- Table 5 : Sampling speed of small and large baselines during generating responses for the AlpacaEval benchmark.
+- (a) Small
+- (b) Large
+- Table 6 : Comparison between large (8B) MDLMs on AlpacaEval. L=512 , S=128 . L_{b}=128 for LLADA, semi-AR, and Conv, if without comments.
+- Table 7 : Comparison between large (8B) MDLMs on AlpacaEval. L=512, S=128. The inlier criterion is set to the central 95%
+- Table 8 : Comparison between LLADA-8B-Instruct on MMLU. L=512 , S=128 .
+- Table 9 : Comparison between LLADA-8B-Instruct on GSM8k. L=512 , S=128 .
+- Table 10 : The effective sample rate ( r^{*} ) with respect to step size ( S ). Here, r^{*}=L^{*}/S , where L^{*} denotes the total number of unmasked tokens.
+- Figure 14 : In the process of image editing with latent diffusion [ 35 ] , the transformation from the visual prompt to the output is quite substantial, giving the impression that diffusion method generally has a high degree of revocability. However, after sev
+- Figure 15 : Response samples for the same query from different decoding strategies.
+
+## Tables as text
+
+### Table 1 : AlpacaEval score of small baselines across different decoding strategies. LC is length-controlled [ 44 ] . Block and kernel size 256 . We highlight first and second best.
+
+Backbone | SFT | R2FT | Decoding | EOS fill | L | S | LC Win rate | Win rate | 
+vicgalle/gpt2-alpaca | - | - | nucleus | - | - | - | 41.08 (0.11) | 40.74 (1.47) | 
+SEDD | ✓ | ✗ | categorical | ✗ | 1024 | 128 | 6.04 (0.04) | 7.34 (0.72) | 
+MDLM | ✓ | ✗ | categorical | ✗ | 1024 | 128 | 32.16 (0.02) | 31.79 (1.40) | 
+MDLM | ✓ | ✗ | penalty | ✗ | 1024 | 128 | 28.92 (0.01) | 28.66 (1.35) | 
+MDLM | ✓ | ✗ | LLADA | ✗ | 1024 | 128 | 14.54 (0.09) | 10.65 (1.05) | 
+MDLM | ✓ | ✓ | LLADA | ✗ | 1024 | 128 | 37.47 (0.09) | 34.25 (1.43) | 
+MDLM | ✓ | ✓ | categorical | ✗ | 1024 | 128 | 23.31 (0.06) | 21.48 (1.22) | 
+MDLM | ✓ | ✓ | top- k + Glob | ✗ | 1024 | 128 | 40.72 (0.04) | 40.24 (1.47) | 
+MDLM | ✓ | ✓ | top- k + Glob | ✓ | 1024 | 128 | 41.17 (0.04) | 40.98 (1.46) | 
+MDLM | ✓ | ✓ | top- k + Glob + SemiAR | ✓ | 1024 | 128 | 42.31 (0.07) | 41.91 (1.47) | 
+MDLM | ✓ | ✗ | top- k + Glob + Conv | ✓ | 1024 | 128 | 46.32 (0.02) | 42.19 (1.49) | 
+MDLM | ✓ | ✓ | top- k + Glob + Conv | ✓ | 1024 | 128 | 46.92 (0.04) | 45.92 (1.49) | 
+
+### Table 2 : Comparison between small MDLMs across MT-Bench and Wiki. L=1024, S=128.
+
+ | MT Bench | Wiki
+R2FT | Decoding | LC Win rate | Win rate | LC Win rate | Win rate
+✗ | categorical | 31.26 (1.43) | 30.55 (4.29) | 28.90 (0.11) | 28.48 (1.44)
+✓ | categorical | 13.20 (0.93) | 18.81 (3.16) | 23.85 (0.17) | 23.44 (1.31)
+✗ | LLADA | 20.12 (1.11) | 12.21 (3.21) | 19.11 (0.09) | 14.65 (1.05)
+✓ | LLADA | 41.81 (3.65) | 39.81 (4.55) | 34.25 (0.16) | 32.56 (1.54)
+✓ | top- k + Glob | 45.27 (1.37) | 45.87 (4.86) | 35.75 (0.15) | 34.54 (1.51)
+✗ | top- k + Glob + Conv | 45.23 (1.38) | 36.44 (4.33) | 39.64 (0.18) | 38.55 (1.54)
+✓ | top- k + Glob + Conv | 45.29 (1.38) | 40.47 (4.51) | 44.42 (0.09) | 44.00 (1.59)
+
+### Table 3 : Comparison between large (8B) MDLMs. L=1024, S=128, block and kernel size 512.
+
+ | Alpaca eval | MT Bench | Wiki | Arena hard auto
+Backbone | R2FT | Decoding | LC Win rate | Win rate | LC Win rate | Win rate | LC Win rate | Win rate | LC Win rate | Win rate
+LLADA-8B-Instruct | - | LLADA | 35.63 (0.21) | 36.52 (1.59) | 24.31 (0.12) | 25.35 (0.33) | 15.86 (0.09) | 25.51 (1.59) | 25.71 (0.25) | 25.41 (1.75)
+PT (8B) + LoRA SFT (80M) | ✗ | categorical | 31.71 (0.11) | 31.92 (1.54) | 40.06 (1.44) | 36.93 (5.11) | 16.06 (0.12) | 19.22 (1.59) | 19.57 (0.16) | 19.17 (1.60)
+ | ✗ | LLADA | 16.07 (0.19) | 15.72 (1.10) | 27.48 (1.42) | 31.89 (4.54) | 23.03 (0.06) | 22.17 (1.25) | 13.02 (0.15) | 15.50 (1.38)
+ | ✓ | LLADA | 17.04 (0.24) | 16.02 (1.15) | 21.41 (1.30) | 23.86 (4.36) | 17.27 (0.11) | 17.67 (1.12) | 11.15 (0.15) | 12.43 (1.25)
+ | ✓ | categorical | 45.04 (0.22) | 44.83 (1.65) | 45.80 (1.23) | 48.60 (5.31) | 20.87 (0.08) | 25.52 (1.63) | 26.72 (1.81) | 27.38 (0.17)
+ | ✗ | Top- k + Glob + Conv | 43.79 (0.08) | 43.64 (1.65) | 45.04 (1.43) | 44.30 (5.32) | 22.35 (0.14) | 26.55 (1.66) | 27.81 (0.22) | 27.56 (1.85)
+ | ✓ | Top- k + Glob | 54.39 (0.21) | 54.03 (1.64) | 50.14 (0.97) | 51.02 (4.35) | 30.33 (1.70) | 27.41 (0.16) | 35.98 (0.22) | 35.43 (2.00)
+ | ✓ | Top- k + Glob + Conv | 55.96 (0.20) | 55.65 (1.65) | 46.32 (1.09) | 50.07 (5.24) | 30.53 (1.69) | 28.17 (0.06) | 33.54 (0.15) | 33.20 (1.95)
+
+### Table 4 : GSM8K test accuracy for large MDLMs. L=512, S=64, block and kernel size 128.
+
+Backbone | R2FT | Decoding | Accuracy
+PT (8B) + LoRA SFT (80M) | ✗ | categorical | 7.20
+ | ✓ | categorical | 7.49
+ | ✗ | LLADA | 17.13
+ | ✓ | LLADA | 18.11
+ | ✗ | Conv | 23.50
+ | ✓ | Conv | 22.97
+LLADA-8B-Instruct | - | LLADA | 29.49
+ | - | Conv | 39.34
+
+### Table 5 : Sampling speed of small and large baselines during generating responses for the AlpacaEval benchmark.
+
+Backbone | cache | EOS-fill | L | S | L* | L* (gpt4) | L^{*}_{norm} | S^{*} | L^{*}_{norm}/S^{*}
+AR | ✗ | ✗ | - | - | 109.1 | 416 | 114 | 114.0 | 1
+MDLM | ✗ | ✗ | 1024 | 128 | 108.4 | 402 | 114 | 128.0 | 0.89
+MDLM | ✓ | ✗ | 1024 | 128 | 115.3 | 423 | 114 | 127.9 | 0.89
+MDLM | ✓ | ✓ | 1024 | 128 | 119.1 | 431 | 114 | 45.4 | 2.51
+Backbone | cache | EOS-fill | L | S | L* | L* (gpt4) | L^{*}_{norm} | S^{*} | L^{*}_{norm}/S^{*}
+AR | ✗ | ✗ | - | - | 401 | 1246 | 341 | 341 | 1
+MDLM | ✗ | ✗ | 1024 | 128 | 341.2 | 1109 | 341 | 128.0 | 2.66
+MDLM | ✓ | ✗ | 1024 | 128 | 330.3 | 973 | 341 | 127.9 | 2.56
+MDLM | ✓ | ✓ | 1024 | 128 | 352.5 | 1169 | 341 | 109.1 | 3.23
+
+### Table 6 : Comparison between large (8B) MDLMs on AlpacaEval. L=512 , S=128 . L_{b}=128 for LLADA, semi-AR, and Conv, if without comments.
+
+RFT | Decoding | Win rate | Avg length | len > 0 | inlier (95%)
+✗ | semi-AR | 21.50 | 265.5 | 0.97 | 0.35
+✗ | categorical | 37.98 | 360.1 | 1.00 | 1.00
+✗ | ReMDM + top- k | 41.64 | 358.1 | 0.97 | 0.95
+✗ | ReMDM + Conv + top- k | 42.12 | 470.5 | 1.00 | 1.00
+✗ | LLADA | 39.18 | 405.1 | 1.00 | 0.75
+✗ | topk- k + repetition | 36.14 | 340.5 | 0.96 | 0.95
+✗ | top- k | 42.48 | 354.5 | 0.97 | 0.95
+✗ | Conv + top- k | 46.99 | 354.8 | 0.99 | 0.99
+✓ | semi-AR | 26.97 | 452.5 | 1.00 | 0.80
+✓ | LLADA | 47.37 | 394.8 | 1.00 | 0.82
+✓ | categorical | 50.22 | 403.5 | 1.00 | 1.00
+✓ | ReMDM + top- k | 51.68 | 472.3 | 1.00 | 1.00
+✓ | ReMDM + Conv + top- k | 50.41 | 439.9 | 1.00 | 1.00
+✓ | top- k | 55.38 | 459.8 | 1.00 | 1.00
+✓ | Conv + top- k | 57.38 | 454.2 | 1.00 | 1.00
+✓ | Conv ( L_{b}=256 ) + top- k | 67.73 | 320.1 | 1.00 | 1.00
+
+### Table 7 : Comparison between large (8B) MDLMs on AlpacaEval. L=512, S=128. The inlier criterion is set to the central 95%
+
+ | MT Bench | Wiki | Arena hard auto
+R2FT | Decoding | Win rate | Inlier | Win rate | Inlier | Win rate | Inlier
+✗ | categorical | 26.19 (4.42) | 1.00 | 44.66 (1.75) | 0.97 | 27.41 (1.79) | 0.98
+✗ | LLADA | 17.16 (3.80) | 0.76 | 39.03 (1.71) | 0.62 | 28.75 (1.85) | 0.76
+✓ | LLADA | 36.91 (5.07) | 0.91 | 45.66 (1.73) | 0.73 | 35.34 (1.93) | 0.87
+✓ | categorical | 24.64 (4.35) | 1.00 | 56.44 (1.77) | 1.00 | 34.77 (1.91) | 1.00
+✗ | Top- k + Glob | 26.13 (4.64) | 0.97 | 47.42 (1.80) | 0.97 | 30.11 (0.95) | 0.95
+✗ | Top- k + Glob + Conv | 32.80 (4.87) | 1.00 | 50.27 (1.79) | 0.97 | 33.32 (1.91) | 0.99
+✓ | Top- k + Glob | 34.11 (4.93) | 1.00 | 63.77 (1.76) | 0.99 | 40.25 (2.02) | 0.99
+✓ | Top- k + Glob + Conv | 36.59 (5.18) | 1.00 | 64.74 (1.72) | 0.99 | 42.47 (1.99) | 0.99
+
+### Table 8 : Comparison between LLADA-8B-Instruct on MMLU. L=512 , S=128 .
+
+Decoding | L_{b}=32 | L_{b}=64 | L_{b}=128 | L_{b}=256 | L_{b}=512
+LLADA | 40.89 | 42.54 | 34.61 | 20.24 | 17.85
+LLADA + Conv | 45.94 | 46.31 | 41.13 | 27.94 | 22.33
+top-k + Conv | 54.13 | 54.16 | 54.65 | 54.02 | 53.21
+
+### Table 9 : Comparison between LLADA-8B-Instruct on GSM8k. L=512 , S=128 .
+
+Decoding | L_{b}=32 | L_{b}=64 | L_{b}=128 | L_{b}=256 | L_{b}=512
+LLADA | 48.82 | 50.72 | 47.38 | 26.16 | 21.30
+LLADA + Conv | 51.18 | 51.48 | 50.72 | 44.88 | 26.76
+top-k + Conv | 51.71 | 48.75 | 44.73 | 43.37 | 40.03
+
+### Table 10 : The effective sample rate ( r^{*} ) with respect to step size ( S ). Here, r^{*}=L^{*}/S , where L^{*} denotes the total number of unmasked tokens.
+
+L | S | r* of ReMDM | r* of MDLM
+512 | 65 | 12.9 | 8.0
+512 | 128 | 8.6 | 4.0
+512 | 256 | 6.6 | 2.0
+

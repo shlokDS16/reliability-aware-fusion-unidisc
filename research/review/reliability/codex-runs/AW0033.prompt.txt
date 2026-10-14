@@ -1,0 +1,261 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Nemotron-Labs-Diffusion: A Tri-Mode Language Model Unifying Autoregressive, Diffusion, and Self-Speculation Decoding
+
+record AW0033 | arXiv:2607.05722 | first version 2026-07-07
+
+**Abstract.** We introduce Nemotron-Labs-Diffusion, a tri-mode language model (LM) that unifies AR, diffusion, and self-speculation decoding within a single architecture. Trained with a joint AR-diffusion objective, Nemotron-Labs-Diffusion can switch modes to sustain high throughput across deployment settings and concurrency levels. Our study shows that (1) AR and diffusion objectives are complementary: diffusion improves lookahead planning, while AR provides left-to-right linguistic priors. (2) In self-speculation mode, diffusion drafts while AR verifies, outperforming multi-token prediction (MTP) methods in both acceptance rate and real-device efficiency. (3) A speed-of-light analysis further demonstrates diffusion's long-term potential, with up to 76.5% more tokens per forward pass than self-speculation under an optimal sampler. Scaling to 3B, 8B, and 14B parameters, our Nemotron-Labs-Diffusion family, including base, instruct, and vision-language models, consistently outperforms state-of-the-art open-source AR and diffusion LMs in both accuracy and speed. For example, Nemotron-Labs-Diffusion-8B decodes 6x more tokens per forward than Qwen3-8B with comparable accuracy, translating to 4x higher throughput on SPEED-Bench with SGLang on a GB200 GPU.
+
+## All captions
+
+- Figure 1 : Benchmarking our Nemotron-Labs-Diffusion-8B (Instruct) against SOTA AR and diffusion instruct LMs across different benchmarks. (a) shows the average accuracy across all 10 tasks (HumanEval, MBPP, LiveCodeBench-CPP, GSM8K, Math500, AIME24, AIME25, GP
+- Figure 2 : Visualizing the attention pattern of Nemotron-Labs-Diffusion, where denotes attention among noisy tokens, denotes attention from noisy tokens to clean-context tokens, and denotes attention within the clean context.
+- Table 1 : Ablation study of each training technique during continuous pretraining on 25B tokens.
+- Figure 3 : Visualizing the evolution of the AR and diffusion losses across training steps under different diffusion loss coefficients \alpha . The AR loss coefficient is set to 1 by default across all settings, except in the ‘no AR’ setting, where the AR loss 
+- Table 2 : Impact of diffusion loss weight \alpha during 25B-token continuous pretraining.
+- Table 3 : AR-mode accuracy with and without the diffusion loss ( \alpha{=}0.3 ). Base : 25B-token continuous pretraining from Ministral3-8B. Instruct : further SFT on 45B tokens.
+- Figure 4 : Visualizing tri-mode inference: (a) left-to-right AR decoding, (b) parallel diffusion decoding, and (c) linear self-speculation decoding (quadratic self-speculation is visualized in Fig. 11 ).
+- Figure 5 : An example of using the recursive dynamic compaction method to identify the SOL path.
+- Figure 6 : Visualizing the acceptance rate and TPF across different SPEED-Bench categories for diffusion SOL and linear self-speculation. The average metrics across all categories are highlighted in red.
+- Table 4 : Per-category SOL acceptance ratio on SPEED-Bench under recursive dynamic compaction. Benchmark accuracy is averaged over 10 instruct LM benchmarks in Sec. 6.1 .
+- Table 5 : Benchmark our Nemotron-Labs-Diffusion-8B instruct model against SOTA AR and diffusion instruct LMs across scientific QA, instruction following, coding, and math reasoning benchmarks.
+- Table 6 : Per-task TPF achieved by linear self-speculation w/ and w/o LoRA tuning across 3B/8B/14B scales.
+- Figure 7 : Comparing the accuracy-TPF trade-offs achieved w/ and w/o a sampler.
+- Table 7 : Benchmark our Nemotron-Labs-Diffusion-3B/14B instruct models against SOTA AR instruct models.
+- Table 8 : Benchmark our Nemotron-Labs-Diffusion-8B base model against SOTA AR and diffusion base LMs across coding, math, knowledge, and commonsense reasoning benchmarks.
+- Table 9 : Benchmarking discrete diffusion VLMs and Nemotron-Labs-Diffusion-VLM across tasks. The diffusion mode of Nemotron-Labs-Diffusion-VLM uses denoising threshold \tau{=}0.9 .
+- Figure 8 : (a) System vs. per-user throughput trade-off on an NVIDIA RTX Pro 6000 GPU; (b)/(c)/(d): The throughput under a concurrency of 1 on NVIDIA RTX Pro 6000, GB200, and DGX Spark, respectively.
+- Table 10 : Per-category acceptance length on SPEED-Bench [ 7 ] . Comparing Native / LoRA for Nemotron-Labs-Diffusion-8B and Qwen3-8B-Eagle3 / Qwen3-9B-MTP, all with draft length 31.
+- Figure 9 : An illustration of the sampler design on top of the diffusion mode.
+- Figure 10 : An illustration of LoRA training on the diffusion drafter of the linear self-speculation mode.
+- Figure 11 : An illustration of quadratic self-speculation with simultaneous drafting and verification. denotes draft tokens that match AR verification, and denotes the block that originates from the last matched token and is to be verified in the next iteratio
+
+## Tables as text
+
+### Table 1 : Ablation study of each training technique during continuous pretraining on 25B tokens.
+
+Technique | HumanEval | HumanEval+ | MBPP | MBPP+ | GSM8K | Minerva Math | Avg
+Block-wise attention | 39.02 | 37.80 | 53.40 | 67.72 | 82.87 | 44.58 | 54.23
++ Global Loss Avg | 42.07 | 39.02 | 56.20 | 71.69 | 83.78 | 45.36 | 56.35
++ DP-rank Varying Masking Ratios | 45.12 | 43.29 | 55.80 | 70.90 | 81.58 | 45.66 | 57.06
++ Two-stage training | 58.54 | 52.44 | 53.00 | 73.81 | 83.17 | 55.84 | 62.80
++ AR loss | 64.02 | 57.93 | 65.60 | 80.95 | 86.73 | 66.44 | 70.28
+
+### Table 2 : Impact of diffusion loss weight \alpha during 25B-token continuous pretraining.
+
+\alpha | Mode | Human Eval | Human Eval+ | MBPP | MBPP+ | GSM8K | Minerva Math | Avg
+0.1 | Diff. | 56.71 | 51.83 | 64.80 | 81.22 | 87.64 | 67.02 | 68.20
+AR | 58.54 | 53.05 | 64.60 | 80.42 | 87.64 | 68.02 | 68.71
+0.2 | Diff. | 60.37 | 54.27 | 63.40 | 80.69 | 86.43 | 66.58 | 68.62
+AR | 60.98 | 57.93 | 66.40 | 83.60 | 87.04 | 67.04 | 70.50
+0.3 | Diff. | 61.59 | 58.54 | 64.60 | 80.42 | 87.64 | 65.86 | 69.77
+AR | 62.80 | 57.93 | 65.80 | 82.54 | 87.79 | 66.84 | 70.62
+0.5 | Diff. | 59.76 | 54.27 | 64.40 | 80.16 | 87.11 | 66.98 | 68.78
+AR | 58.54 | 53.05 | 65.40 | 82.80 | 86.81 | 67.14 | 68.96
+1.0 | Diff. | 56.10 | 48.78 | 65.00 | 80.69 | 84.91 | 66.12 | 66.93
+AR | 54.27 | 50.61 | 64.80 | 80.69 | 86.58 | 66.36 | 67.22
+
+### Table 3 : AR-mode accuracy with and without the diffusion loss ( \alpha{=}0.3 ). Base : 25B-token continuous pretraining from Ministral3-8B. Instruct : further SFT on 45B tokens.
+
+Base Model
+Training | HumanEval | HumanEval+ | MBPP | MBPP+ | GSM8K | Minerva Math | MMLU | Hellaswag | PIQA | Winogrande | Avg
+AR only | 60.37 | 56.10 | 67.00 | 81.48 | 87.64 | 67.90 | 76.34 | 76.54 | 79.71 | 71.98 | 72.50
++ Diff. loss | 62.80 | 57.93 | 65.80 | 82.54 | 87.79 | 66.84 | 75.99 | 76.59 | 79.82 | 70.32 | 72.64
+Instruct Model
+Training | GPQA | IFEval | HumanEval | MBPP | Math500 | GSM8K | AIME24 | AIME25 | MMLU | LCB-CPP | Avg
+AR only | 44.44 | 71.66 | 82.93 | 83.60 | 87.80 | 93.63 | 36.67 | 26.67 | 79.77 | 24.61 | 63.18
++ Diff. loss | 44.44 | 68.65 | 80.49 | 85.19 | 88.00 | 94.01 | 33.33 | 33.33 | 79.85 | 28.85 | 63.61
+
+### Table 4 : Per-category SOL acceptance ratio on SPEED-Bench under recursive dynamic compaction. Benchmark accuracy is averaged over 10 instruct LM benchmarks in Sec. 6.1 .
+
+Category | BL=32 | BL=16 | BL=8 | BL=4
+coding | 10.24 | 7.50 | 5.32 | 3.32
+humanities | 6.93 | 5.00 | 3.76 | 2.76
+math | 9.30 | 7.02 | 4.90 | 3.20
+multilingual | 11.26 | 8.08 | 5.46 | 3.37
+qa | 5.63 | 4.43 | 3.46 | 2.61
+rag | 7.32 | 5.67 | 4.14 | 2.91
+reasoning | 7.22 | 5.06 | 3.87 | 2.79
+roleplay | 3.49 | 2.76 | 2.41 | 2.00
+stem | 8.01 | 5.68 | 4.11 | 2.98
+summarization | 6.02 | 4.48 | 3.25 | 2.71
+writing | 6.13 | 4.71 | 3.58 | 2.62
+Acceptance rate | 7.60 | 5.68 | 4.17 | 2.89
+Benchmark Acc | 61.81 | 63.18 | 65.43 | 64.04
+
+### Table 5 : Benchmark our Nemotron-Labs-Diffusion-8B instruct model against SOTA AR and diffusion instruct LMs across scientific QA, instruction following, coding, and math reasoning benchmarks.
+
+Model | Qwen2.5
+7B
+Qwen3
+8B
+Ministral3-8B
+Instruct-2512
+LLaDA-8B
+Instruct
+Dream-7B
+Instruct
+SDAR-8B
+Chat
+Nemotron-Labs-Diffusion-8B
+(Tri-Mode in One Model)
+Gen. Mode | AR | AR | AR | Diff. | Diff. | Diff. | Diff. | AR | Diff. | Linear SS | Quad. SS
+Scientific QA & Instruction Following
+GPQA | 37.12 | 49.24 | 42.87 | 33.30 | 33.00 | 40.20 | 30.80 | 44.44 | 43.94 | 40.40 | 44.30
+IFEval | 74.58 | 87.38 | 64.31 | 59.90 | 62.50 | 61.40 | 60.07 | 68.65 | 68.32 | 69.13 | 71.00
+MMLU | 74.86 | 76.66 | 73.90 | 65.50 | 67.00 | 78.60 | 78.83 | 79.85 | 78.71 | 79.01 | 79.95
+Coding
+HumanEval | 77.44 | 81.71 | 71.04 | 49.40 | 55.50 | 78.70 | 79.27 | 80.49 | 78.66 | 81.71 | 79.27
+MBPP | 81.55 | 81.88 | 78.97 | 41.00 | 58.80 | 72.00 | 67.32 | 85.19 | 83.86 | 84.92 | 85.19
+LCB-CPP | 12.33 | 21.09 | 20.76 | 4.19 | 1.25 | 13.44 | 11.89 | 28.85 | 26.16 | 24.89 | 27.70
+Math
+Math500 | 75.10 | 84.80 | 83.60 | 39.20 | 43.00 | 78.60 | 72.40 | 88.00 | 85.80 | 87.60 | 88.80
+GSM8K | 91.89 | 92.42 | 92.42 | 79.91 | 81.00 | 91.30 | 88.48 | 94.01 | 93.03 | 93.78 | 94.16
+AIME24 | 13.75 | 30.21 | 27.71 | 0.00 | 0.00 | 16.67 | 13.33 | 33.33 | 46.67 | 36.67 | 33.33
+AIME25 | 6.88 | 22.08 | 24.58 | 0.00 | 3.33 | 10.00 | 3.33 | 33.33 | 26.67 | 30.00 | 36.67
+Average over All Tasks
+Accuracy | 54.55 | 62.75 | 58.02 | 37.24 | 40.54 | 54.09 | 50.57 | 63.61 | 63.18 | 62.81 | 64.04
+TPF | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.75 | 1.00 | 2.57 | 5.99 | 6.38
+
+### Table 6 : Per-task TPF achieved by linear self-speculation w/ and w/o LoRA tuning across 3B/8B/14B scales.
+
+Model Scale | Setting | GPQA | IFEval | HumanEval | MBPP | Math500 | GSM8K | AIME24 | AIME25 | MMLU | LCB-CPP | Avg TPF | Avg Acc
+3B | w/o LoRA | 3.07 | 2.97 | 4.77 | 3.74 | 4.94 | 4.01 | 4.33 | 4.53 | 2.42 | 3.34 | 3.81 | 55.00
+w/ LoRA | 3.57 | 3.30 | 5.56 | 4.23 | 5.63 | 4.55 | 4.99 | 5.11 | 2.74 | 3.95 | 4.36 | 55.00
+8B | w/o LoRA | 5.10 | 4.32 | 4.62 | 3.44 | 5.43 | 4.47 | 5.38 | 5.05 | 3.25 | 4.14 | 4.52 | 62.88
+w/ LoRA | 6.64 | 5.52 | 5.82 | 4.44 | 7.36 | 5.89 | 7.44 | 6.92 | 4.08 | 5.70 | 5.99 | 62.81
+14B | w/o LoRA | 5.31 | 3.86 | 6.75 | 4.42 | 5.01 | 4.54 | 4.47 | 3.92 | 4.95 | 3.42 | 4.67 | 66.35
+w/ LoRA | 6.07 | 4.74 | 8.11 | 5.22 | 6.72 | 5.79 | 5.88 | 5.41 | 7.22 | 4.46 | 5.96 | 66.36
+
+### Table 7 : Benchmark our Nemotron-Labs-Diffusion-3B/14B instruct models against SOTA AR instruct models.
+
+Model | Gen. Mode | GPQA | IFEval | HumanEval | MBPP | Math500 | GSM8K | AIME24 | AIME25 | MMLU | LCB-CPP | Avg Acc | Avg TPF
+3B Scale
+Llama-3.2-3B-Instruct | AR | 27.78 | 69.69 | 65.85 | 66.93 | 32.60 | 62.09 | 0.00 | 0.00 | 62.45 | 9.25 | 39.90 | 1.00
+Phi-4-mini-Instruct | AR | 40.91 | 71.16 | 77.44 | 75.13 | 70.80 | 76.57 | 10.00 | 6.67 | 53.37 | 9.91 | 49.20 | 1.00
+Ministral3-3B-Instruct-2512 | AR | 28.79 | 57.55 | 64.79 | 68.39 | 71.90 | 87.41 | 12.50 | 12.71 | 63.21 | 12.50 | 47.97 | 1.00
+Qwen3-4B | AR | 37.18 | 72.20 | 75.91 | 72.49 | 68.40 | 92.19 | 10.63 | 10.63 | 77.05 | 15.58 | 53.23 | 1.00
+ | AR | 39.39 | 69.39 | 76.22 | 71.16 | 77.60 | 87.87 | 23.33 | 16.67 | 71.70 | 21.37 | 55.50 | 1.00
+ | Diff. | 33.84 | 68.93 | 74.39 | 73.54 | 74.80 | 88.40 | 16.67 | 10.00 | 72.06 | 16.30 | 52.90 | 1.91
+ | Linear SS | 35.86 | 68.96 | 75.00 | 70.11 | 77.40 | 87.79 | 26.67 | 16.67 | 71.89 | 20.04 | 55.00 | 4.36
+Nemotron-Labs -Diffusion-3B (Tri-Mode) | Quad. SS | 42.93 | 71.36 | 79.27 | 76.46 | 78.20 | 88.25 | 13.33 | 16.67 | 72.12 | 19.60 | 55.80 | 5.42
+14B Scale
+Gemma-3-12B-IT | AR | 38.32 | 85.73 | 58.23 | 85.45 | 84.55 | 90.45 | 23.75 | 16.88 | 76.41 | 20.54 | 58.03 | 1.00
+Phi-3-Medium-14B | AR | 37.56 | 85.75 | 70.43 | 76.65 | 43.35 | 89.69 | 1.88 | 0.62 | 76.67 | 10.79 | 49.34 | 1.00
+Phi-4-14B | AR | 56.94 | 68.96 | 84.60 | 83.93 | 79.95 | 92.27 | 19.17 | 15.83 | 84.76 | 21.75 | 60.82 | 1.00
+Ministral3-14B-Instruct-2512 | AR | 52.02 | 71.51 | 72.56 | 82.47 | 86.30 | 92.80 | 36.25 | 29.38 | 79.88 | 26.54 | 62.97 | 1.00
+Qwen3-14B | AR | 50.51 | 88.36 | 83.54 | 87.30 | 85.40 | 94.31 | 33.33 | 20.00 | 81.51 | 27.42 | 65.17 | 1.00
+ | AR | 54.55 | 68.50 | 86.59 | 85.19 | 88.40 | 91.36 | 46.67 | 43.33 | 82.51 | 27.48 | 67.46 | 1.00
+ | Diff. | 48.99 | 69.03 | 83.54 | 82.80 | 85.80 | 93.71 | 43.33 | 50.00 | 82.17 | 25.77 | 66.51 | 2.74
+ | Linear SS | 47.47 | 70.06 | 85.37 | 84.66 | 86.60 | 92.04 | 50.00 | 40.00 | 81.11 | 26.32 | 66.36 | 5.96
+Nemotron-Labs -Diffusion-14B (Tri-Mode) | Quad. SS | 52.02 | 72.15 | 87.20 | 85.45 | 88.00 | 92.12 | 53.33 | 40.00 | 82.45 | 28.74 | 68.15 | 6.92
+
+### Table 8 : Benchmark our Nemotron-Labs-Diffusion-8B base model against SOTA AR and diffusion base LMs across coding, math, knowledge, and commonsense reasoning benchmarks.
+
+Model | Gen. Mode | Human Eval | Human Eval+ | MBPP | MBPP+ | GSM8K | Minerva Math | MMLU | ARC-E | ARC-C | Hella swag | PIQA | Wino grande | Avg Acc | Avg TPF
+Llama-3.1-8B | AR | 35.37 | 28.66 | 48.80 | 61.90 | 54.06 | 18.22 | 65.15 | 81.31 | 53.41 | 78.93 | 81.18 | 77.43 | 57.04 | 1.00
+Ministral3-8B | AR | 42.68 | 38.41 | 61.60 | 76.98 | 80.21 | 44.58 | 76.39 | 86.15 | 60.75 | 79.01 | 80.74 | 73.48 | 66.75 | 1.00
+Qwen3-8B | AR | 64.63 | 56.71 | 69.40 | 83.07 | 86.73 | 52.94 | 76.93 | 81.90 | 53.16 | 78.59 | 79.22 | 75.69 | 71.58 | 1.00
+LLaDA-8B | Diff. | 32.32 | 27.44 | 40.80 | 51.85 | 70.96 | 27.30 | 65.86 | 73.78 | 49.15 | 71.05 | 73.88 | 74.66 | 54.92 | 1.00
+Dream-7B | Diff. | 54.88 | 49.39 | 56.80 | 74.60 | 77.18 | 39.60 | 67.00 | 82.20 | 59.13 | 73.73 | 75.52 | 73.56 | 65.30 | 1.00
+ | AR | 60.37 | 53.05 | 68.20 | 82.54 | 88.25 | 66.00 | 74.68 | 83.38 | 58.11 | 76.08 | 80.09 | 71.98 | 71.89 | 1.00
+ | Diff. | 62.80 | 57.32 | 67.00 | 81.75 | 87.26 | 65.16 | 74.68 | 83.38 | 58.11 | 76.08 | 80.09 | 71.98 | 72.13 | 2.06
+ | Linear SS | 63.41 | 56.10 | 67.20 | 81.75 | 88.17 | 67.38 | 74.68 | 83.38 | 58.11 | 76.08 | 80.09 | 71.98 | 72.36 | 4.67
+Nemotron-Labs -Diffusion-8B (Tri-Mode) | Quad. SS | 62.20 | 54.88 | 67.60 | 81.48 | 88.48 | 66.24 | 74.68 | 83.38 | 58.11 | 76.08 | 80.09 | 71.98 | 72.10 | 7.04
+
+### Table 9 : Benchmarking discrete diffusion VLMs and Nemotron-Labs-Diffusion-VLM across tasks. The diffusion mode of Nemotron-Labs-Diffusion-VLM uses denoising threshold \tau{=}0.9 .
+
+Model | Gen. Mode | AI2D | ChartQA | DocVQA | MMMU | MMMU Pro-10c | MMMU Pro-V-CoT | Math Vista | RealWorld QA | TPF | Acc
+MMaDA | Diff. | 67.4 | 9.6 | 9.5 | 30.2 | 16.5 | 8.5 | 33.4 | 49.2 | 1 | 28.0
+LaViDa | Diff. | 70.0 | 59.0 | 64.6 | 43.3 | 28.7 | 10.5 | 44.8 | 54.5 | 1 | 46.9
+Dimple | Diff. | 74.4 | 63.4 | 37.7 | 45.2 | 23.8 | 12.4 | 42.3 | 55.4 | 1 | 44.3
+LLaDA-V-8B | Diff. | 77.8 | 78.3 | 83.9 | 48.6 | 35.2 | 18.6 | 59.7 | 63.2 | 1 | 58.2
+ | AR | 75.0 | 81.3 | 89.2 | 50.3 | 32.6 | 24.3 | 60.4 | 62.6 | 1 | 59.5
+ | Diff. | 74.7 | 76.6 | 88.3 | 50.4 | 31.7 | 22.2 | 58.5 | 60.3 | 2.46 all samples 2.80 tok {>} 100 3.15 tok {>} 200 | 57.9
+Nemotron-Labs -Diffusion -VLM-8B | Linear SS | 74.9 | 81.2 | 89.3 | 50.0 | 32.8 | 24.1 | 60.7 | 62.4 | 3.63 all samples 6.03 tok {>} 100 7.45 tok {>} 200 | 59.4
+
+### Table 10 : Per-category acceptance length on SPEED-Bench [ 7 ] . Comparing Native / LoRA for Nemotron-Labs-Diffusion-8B and Qwen3-8B-Eagle3 / Qwen3-9B-MTP, all with draft length 31.
+
+Category | Native | LoRA | Eagle3 | MTP
+coding | 6.61 | 8.57 | 3.14 | 5.97
+math | 6.24 | 8.14 | 2.79 | 4.80
+reasoning | 6.18 | 7.99 | 3.40 | 3.68
+multilingual | 7.96 | 10.06 | 1.91 | 4.47
+humanities | 5.01 | 6.31 | 3.12 | 3.76
+qa | 4.01 | 4.65 | 2.63 | 3.50
+rag | 5.07 | 6.15 | 3.06 | 4.75
+roleplay | 4.66 | 5.54 | 2.10 | 2.32
+stem | 5.55 | 7.02 | 2.92 | 4.45
+summarization | 4.47 | 5.48 | 2.66 | 3.69
+writing | 4.28 | 5.07 | 2.81 | 3.21
+Average | 5.46 | 6.82 | 2.75 | 4.24
+4 category avg | 6.75 | 8.69 | 2.81 | 4.73
+

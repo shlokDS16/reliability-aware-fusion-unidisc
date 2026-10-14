@@ -1,0 +1,102 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# From Bits to Rounds: Parallel Decoding with Exploration for Diffusion Language Models
+
+record AW0417 | arXiv:2511.21103 | first version 2025-11-26
+
+**Abstract.** Diffusion Language Models (DLMs) have recently emerged as a strong alternative to autoregressive language models (LMs). DLMs offer comparable accuracy with faster inference speed via parallel decoding. However, standard DLM decoding strategies relying on high-confidence tokens encounter an inherent information-theoretic bottleneck that restricts decoding progress and ultimately slows generation. We demonstrate both theoretically and empirically that prioritizing high-confidence tokens is inherently inefficient. High-probability tokens carry negligible information and strictly relying on them limits the effective progress made in each decoding round. We prove that the number of decoding rounds must grow linearly with the sample's total information (negative log-likelihood) and inversely with the per-round information budget, establishing a bits-to-rounds principle. We also propose Explore-Then-Exploit (ETE), a training-free decoding strategy that maximizes information throughput and decoding efficiency. ETE combines cross-block decoding with targeted exploration of high-uncertainty tokens to reshape the conditional distribution and trigger cascades of confident predictions. Experiments verify our theoretical bounds and demonstrate that ETE consistently reduces the required number of decoding rounds compared to confidence-only baselines without compromising generation quality.
+
+## All captions
+
+- (a) Illustration of E xplore- T hen- E xploit (ETE): Fast block diffusion scheme proceeds by sequentially unlocking a new block to the right and applying confidence-based parallel sampling to all past blocks. At t=4 , targeted exploration is triggered to apply
+- (b) Superior performance of ETE across four standard benchmarks. With generation length fixed at 512 for MATH, GSM8K, and HumanEval, and 256 for MMLU-Pro, ETE (our algorithm) matches the accuracy of the confidence-based baseline ( Wu et al., 2025 ) while reduc
+- Algorithm 1 Confidence-based parallel decoding with block diffusion sampling
+- Figure 2 : Side-by-side comparison of (implicit) exploration and exploitation across rounds distribution and bits distribution for each factor f . For each factor, four bars show: exploration rounds % , exploration bits % , exploitation rounds %, and exploitat
+- (a) Block diffusion LLaDA sampling ( Nie et al., 2025 ) .
+- (b) Fast block diffusion sampling.
+- Figure 3 : Panel (a): Block diffusion unlocks the next block after the current block is fully unmasked; Panel (b): Fast block diffusion (with budget 1) unlocks the next block after the budget exhausts and retains the ability to unmask prior blocks, enabling fa
+- Algorithm 2 ETE Main Sampling Procedure (Simplified)
+- (a) Exploitation rounds v.s. Bits per sample
+- (b) Exploitation rounds & Bits per round
+- Figure 4 : Panel (a): Exploitation rounds required versus partial log probability contributed. Each point represents a single sample from GSM8K dataset, with colors indicating different choice of factors f . We measure partial bits (excluding implicit explorat
+- (a) Average wallclock on H100
+- (b) Average wallclock on B200
+- Figure 5 : Average wall-clock time for batched forward passes with different beam sizes under KV cache on NVIDIA H100 and B200 GPU. We adapted the Fast-DLLM codebase for KV-cache implementation. To simulate realistic decoding scenarios, we generate sequences o
+- (a) MATH
+- (b) MMLU-Pro
+- (c) GSM8K
+- (d) HumanEval
+- Figure 6 : Accuracy-steps frontiers of our method versus baseline on four benchmarks.
+- Algorithm 3 ETE Exploitation and Exploration Subroutines
+
+## Tables as text
+
+

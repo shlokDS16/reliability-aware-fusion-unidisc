@@ -1,0 +1,130 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# Self Speculative Decoding for Diffusion Large Language Models
+
+record AW0432 | arXiv:2510.04147 | first version 2025-10-05
+
+**Abstract.** Diffusion-based Large Language Models (dLLMs) have emerged as a competitive alternative to autoregressive models, offering unique advantages through bidirectional attention and parallel generation paradigms. However, the generation results of current parallel decoding methods deviate from stepwise decoding, introducing potential performance degradation, which limits their practical deployment. To address this problem, we propose \textbf{S}elf \textbf{S}peculative \textbf{D}ecoding (SSD), a lossless inference acceleration method that leverages the dLLM itself as both speculative decoding drafter and verifier without auxiliary modules. SSD introduces a self-drafting mechanism where the model generates predictions for multiple positions, then verifies them through hierarchical verification trees in a single forward pass. Unlike traditional speculative decoding that requires separate draft models, SSD eliminates model redundancy and memory overhead by exploiting the dLLM's inherent parallel prediction capability for multiple positions. This self-speculative approach allows the model to progressively verify and accept multiple tokens in a single forward pass. Our experiments demonstrate that SSD achieves up to 3.46$\times$ speedup while keeping the output identical to stepwise decoding on open source models such as LLaDA and Dream. Code will be made publicly available on GitHub.
+
+## All captions
+
+- Figure 1: TPS comparison with and without cache showing memory-bound characteristics of LLaDA-8B-Instruct when cache is enabled.
+- Figure 2: Comparison of stepwise dLLM inference (bottom-left) with our SSD approach. Stepwise inference accepts one token per step following semi-autoregressive block order. SSD leverages self-drafting and hierarchical verification to accept multiple tokens pe
+- Table 1: Comparison of SSD speed across different models and benchmarks. Configurations achieving the highest acceleration are highlighted in bold.
+- Figure 3: Impact of sequence length on SSD acceleration with LLaDA-8B-Instruct. (Left) Effect of generation length (128-512 tokens) on throughput for GSM8K and MBPP. (Right) Effect of prompt length via few-shot examples (0-3 shots) on throughput for GSM8K and 
+- Table 2: Step (forward pass) reduction ratio in forward passes under different draft lengths N and top- k candidate selection on MATH using LLaDA-8B-Instruct.
+- Figure 4: (a) Decoding may exhibit out-of-order generation. (b) Mix-order strategy supplements acceptance possibilities under out-of-order conditions.
+- Table 3: Reduction in forward passes with mix-order strategy on MATH using LLaDA-8B-Instruct.
+- Algorithm 1 SSD: Self Speculative Decoding
+
+## Tables as text
+
+### Table 1: Comparison of SSD speed across different models and benchmarks. Configurations achieving the highest acceleration are highlighted in bold.
+
+Model | Method | Draft Length | GSM8K | MATH | HumanEval | MBPP | Mean
+TPS | Step↓ | TPS | Step↓ | TPS | Step↓ | TPS | Step↓ | TPS | Step↓
+LLaDA Base | Origin | - | 14.99 | - | 26.34 | - | 8.30 | - | 5.74 | - | 13.84 | -
+Origin+SSD | 3 | 28.73 ( 1.92× ) | 52.9% | 52.35 ( 1.99× ) | 55.1% | 18.28 ( 2.20× ) | 57.3% | 10.17 ( 1.77× ) | 56.7% | 27.38 ( 1.98× ) | 55.5%
+Origin+SSD | 4 | 30.47 ( 2.03x ) | 55.6% | 53.61 ( 2.04× ) | 58.2% | 18.01 ( 2.17× ) | 60.4% | 10.31 ( 1.78× ) | 60.0% | 28.10 ( 2.03× ) | 58.6%
+Origin+SSD | 5 | 30.39 ( 2.03× ) | 56.8% | 52.54 ( 1.99× ) | 59.7% | 17.56 ( 2.12× ) | 61.6% | 9.86 ( 1.72× ) | 61.5% | 27.59 ( 1.99× ) | 59.9%
+LLaDA Instruct | Origin | - | 26.91 | - | 27.34 | - | 26.13 | - | 16.98 | - | 24.34 | -
+Origin+SSD | 3 | 57.04 ( 2.12× ) | 58.1% | 56.52 ( 2.07× ) | 54.0% | 53.28 ( 2.04× ) | 57.7% | 30.21 ( 1.78× ) | 59.8% | 49.26 ( 2.02× ) | 57.4%
+Origin+SSD | 4 | 60.07 ( 2.23× ) | 61.3% | 58.98 ( 2.16× ) | 57.2% | 55.28 ( 2.12× ) | 60.7% | 31.15 ( 1.83× ) | 63.0% | 51.37 ( 2.11× ) | 60.6%
+Origin+SSD | 5 | 60.39 ( 2.24× ) | 63.2% | 57.99 ( 2.12× ) | 58.9% | 54.14 ( 2.11× ) | 62.5% | 30.33 ( 1.79× ) | 65.2% | 50.71 ( 2.08× ) | 62.5%
+LLaDA 1.5 | Origin | - | 26.50 | - | 27.66 | - | 27.25 | - | 18.58 | - | 25.00 | -
+Origin+SSD | 3 | 57.48 ( 2.17× ) | 58.0% | 57.26 ( 2.07× ) | 56.1% | 55.51 ( 2.04× ) | 57.7% | 33.32 ( 1.79× ) | 59.1% | 50.89 ( 2.04× ) | 57.7%
+Origin+SSD | 4 | 61.43 ( 2.32× ) | 61.1% | 59.01 ( 2.13× ) | 59.1% | 58.18 ( 2.13× ) | 60.7% | 33.68 ( 1.81× ) | 62.3% | 53.08 ( 2.12× ) | 60.8%
+Origin+SSD | 5 | 60.72 ( 2.29× ) | 63.1% | 58.29 ( 2.11× ) | 60.8% | 57.41 ( 2.11× ) | 62.4% | 32.84 ( 1.77× ) | 64.6% | 52.32 ( 2.09× ) | 62.7%
+Dream Base | Origin | - | 13.29 | - | 26.94 | - | 12.62 | - | 5.94 | - | 14.70 | -
+Origin+SSD | 3 | 28.78 ( 2.17× ) | 52.8% | 54.42 ( 2.02× ) | 55.2% | 21.66 ( 1.72× ) | 53.3% | 14.03 ( 2.36× ) | 61.4% | 29.72 ( 2.02× ) | 55.7%
+Origin+SSD | 4 | 30.16 ( 2.27× ) | 55.4% | 57.16 ( 2.12× ) | 58.1% | 19.28 ( 1.53× ) | 56.3% | 15.02 ( 2.53× ) | 64.7% | 30.41 ( 2.07× ) | 58.6%
+Origin+SSD | 5 | 30.25 ( 2.28× ) | 56.6% | 58.65 ( 2.18× ) | 59.8% | 22.54 ( 1.79× ) | 57.7% | 14.70 ( 2.47× ) | 66.5% | 31.54 ( 2.15× ) | 60.2%
+Dream Instruct | Origin | - | 14.43 | - | 26.73 | - | 17.49 | - | 6.37 | - | 16.26 | -
+Origin+SSD | 3 | 32.80 ( 2.27× ) | 60.7% | 56.33 ( 2.11× ) | 56.6% | 36.49 ( 2.09× ) | 59.8% | 18.61 ( 2.92× ) | 70.3% | 36.06 ( 2.22× ) | 61.9%
+Origin+SSD | 4 | 35.13 ( 2.43× ) | 64.2% | 58.47 ( 2.19× ) | 59.6% | 39.18 ( 2.24× ) | 63.4% | 21.20 ( 3.33× ) | 74.6% | 38.50 ( 2.37× ) | 65.5%
+Origin+SSD | 5 | 36.63 ( 2.54× ) | 66.4% | 60.02 ( 2.25× ) | 61.4% | 39.61 ( 2.26× ) | 65.3% | 22.07 ( 3.46× ) | 77.4% | 39.58 ( 2.43× ) | 67.6%
+
+### Table 2: Step (forward pass) reduction ratio in forward passes under different draft lengths N and top- k candidate selection on MATH using LLaDA-8B-Instruct.
+
+Draft Length | k=1 | k=2 | k=3 | k=4 | k=5 | Upper Bound
+3 | 68.4% | 73.4%( +5.0% ) | 73.8%( +0.4% ) | 74.6%( +0.8% ) | 74.6%( +0.0% ) | 75.0%
+4 | 72.3% | 77.7%( +5.4% ) | 78.1%( +0.4% ) | 78.5%( +0.4% ) | 78.9%( +0.4% ) | 80.0%
+5 | 71.5% | 79.3%( +7.8% ) | 80.1%( +0.8% ) | 80.9%( +0.8% ) | 82.0%( +1.1% ) | 83.3%
+
+### Table 3: Reduction in forward passes with mix-order strategy on MATH using LLaDA-8B-Instruct.
+
+Draft Length | Greedy | Greedy + Mix Order | Upper Bound
+Verification | Step Reduction | Verification | Step Reduction
+Batch Size | Ratio | Batch Size | Ratio
+3 | 4 | 59.0% | 6( +2 ) | 61.5%( +2.5% ) | 75.0%
+4 | 5 | 62.1% | 8( +3 ) | 65.2%( +3.1% ) | 80.0%
+5 | 6 | 63.3% | 10( +4 ) | 66.4%( +3.1% ) | 83.3%
+

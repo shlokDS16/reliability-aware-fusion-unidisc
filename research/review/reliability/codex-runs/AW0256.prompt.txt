@@ -1,0 +1,172 @@
+You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON object and nothing else. Do not use tools or read files.
+
+=== RUBRIC ===
+# Claim-evaluability rubric (v0.1, 2026-10-14; under reliability test, not yet frozen)
+
+Purpose: decide, for one paper, whether its primary claim can be checked from the paper itself.
+The rater sees the abstract, every table and figure caption, and the tables as text. The rater
+does not judge whether the claim is true.
+
+## Step 1. Primary claim
+The first statement in the abstract that asserts an advantage or a quantitative result for the
+paper's own contribution. Paraphrase it in at most 25 words. If the abstract asserts none, the
+claim type is `none`.
+
+## Step 2. Claim type (exactly one)
+
+| Code | Claim type | The quantity the claim is about |
+|---|---|---|
+| CT1 | Fewer denoising steps or forward passes at comparable quality | quality of method and baseline at equal forward passes |
+| CT2 | Faster in wall-clock time, throughput or latency (caching, kernels, systems) | quality and measured time of method and baseline on the same hardware |
+| CT3 | Better quality from an inference-time technique (remasking, corrector, unmasking order, guidance, constrained decoding) | quality with and without the technique at equal forward passes |
+| CT4 | Better quality from a training or post-training change (objective, fine-tuning, reinforcement learning, distillation, architecture) | quality with and without the change at equal data and training budget |
+| CT5 | Benefit of unifying tasks or modalities (synergy, joint training) | quality on one task with and without the other task in training |
+| CT6 | Parity with or superiority over autoregressive models | quality of both at comparable size and a stated decoding budget |
+| CT7 | Theoretical result (bound, equivalence, convergence) or a benchmark, dataset or analysis with no method advantage claimed | not scored |
+| none | no advantage or quantitative claim in the abstract | not scored |
+
+Tie-breaks: a method that changes inference only is CT1 if its abstract leads with steps or
+forward passes, CT2 if it leads with time or throughput, CT3 if it leads with quality. A new model
+that claims to match or beat autoregressive models is CT6 even if it also changes training. A new
+unified model that claims the tasks help each other is CT5; one that only reports scores on both
+kinds of task is CT4 or CT6 according to the comparison it leads with.
+
+## Step 3. Minimum evaluability criterion (MEC)
+
+The least a paper must report for the claimed quantity to be read off its own tables.
+
+| Type | `met` | `partial` | `absent` |
+|---|---|---|---|
+| CT1 | the baseline sampler is reported at a step or forward-pass count no more than twice the method's, on the same task, model and metric | the baseline is reported at two or more budgets but none within twice the method's, or the matched comparison is on a different task than the headline | the baseline appears at one budget only |
+| CT2 | quality is reported for the same configuration whose time is reported, the baseline is timed by the authors, and the hardware is named | two of the three | one or none |
+| CT3 | a with-and-without comparison on the same model and task, with forward passes or steps reported for both arms | a with-and-without comparison where the cost of the arms is not reported | no with-and-without comparison |
+| CT4 | a comparison against the same model trained without the change, with data or training steps stated for both arms | such a comparison without the budget of the arms, or against a different checkpoint of the same family | comparison only against other models |
+| CT5 | the same backbone trained with and without the other task (or with shared against decoupled pathways), other settings stated equal | such an arm exists but other settings also change, or it is reported for one direction only | scores for both task kinds listed with no such arm |
+| CT6 | an autoregressive baseline within a factor of two in parameters, evaluated by the authors under their own harness, with the diffusion model's steps or forward passes stated | a size-comparable autoregressive baseline whose numbers are copied from another paper, or the diffusion decoding budget is not stated | no size-comparable autoregressive baseline |
+| CT7, none | code `na` | | |
+
+A comparison shown only in a figure counts if the caption names the arms; record "figure" in the
+evidence field. If the tables needed are cut off in the extract, choose the lower category and set
+confidence to `low`.
+
+## Step 4. Uncertainty (all empirical types)
+`yes` if the headline comparison is reported with repeated runs (three or more seeds), a standard
+deviation, a confidence interval or a significance test that the paper defines. An undefined
+plus-minus is `no`.
+
+## Output, one JSON object per paper
+`{"record_id": "...", "primary_claim": "...", "claim_type": "CT1|CT2|CT3|CT4|CT5|CT6|CT7|none",
+"mec": "met|partial|absent|na", "mec_evidence": "table or figure label, or 'none found'",
+"uncertainty": "yes|no|na", "confidence": "high|low"}`
+
+## Why these criteria and not others
+Each criterion is the comparison that defines the claimed quantity: a speed-up at comparable
+quality is a statement about two samplers at equal cost, so the baseline must be observed near
+that cost; a benefit of unification is a statement about a model with and without the second task.
+The criteria were written before any paper in the reliability sample was rated. They set a floor:
+meeting one does not make a claim true, and a paper can meet it and still be confounded.
+
+
+=== PAPER ===
+# FUDOKI: Discrete Flow-based Unified Understanding and Generation via Kinetic-Optimal Velocities
+
+record AW0256 | arXiv:2505.20147 | first version 2025-05-26
+
+**Abstract.** The rapid progress of large language models (LLMs) has catalyzed the emergence of multimodal large language models (MLLMs) that unify visual understanding and image generation within a single framework. However, most existing MLLMs rely on autoregressive (AR) architectures, which impose inherent limitations on future development, such as the raster-scan order in image generation and restricted reasoning abilities in causal context modeling. In this work, we challenge the dominance of AR-based approaches by introducing FUDOKI, a unified multimodal model purely based on discrete flow matching, as an alternative to conventional AR paradigms. By leveraging metric-induced probability paths with kinetic optimal velocities, our framework goes beyond the previous masking-based corruption process, enabling iterative refinement with self-correction capability and richer bidirectional context integration during generation. To mitigate the high cost of training from scratch, we initialize FUDOKI from pre-trained AR-based MLLMs and adaptively transition to the discrete flow matching paradigm. Experimental results show that FUDOKI achieves performance comparable to state-of-the-art AR-based MLLMs across both visual understanding and image generation tasks, highlighting its potential as a foundation for next-generation unified multimodal models. Furthermore, we show that applying test-time scaling techniques to FUDOKI yields significant performance gains, further underscoring its promise for future enhancement through reinforcement learning.
+
+## All captions
+
+- Figure 1 : Qualitative Results of Visual Generation and Understanding Capabilities of FUDOKI. FUDOKI is designed based on the discrete flow matching for both visual and textual modalities, capable of performing understanding and generation simultaneously under
+- Figure 2 : Comparison of Model Architectures in Unified Multimodal Models. (a) AR-based models [ 20 , 22 , 21 , 48 , 49 , 50 , 18 , 51 ] perform multimodal tasks via sequential token generation under strictly causal context modeling. (b) Hybrid AR+Diffusion mo
+- Figure 3 : Inference Comparisons between (a) Mask-Based Discrete Diffusion Models and (b) Discrete Flow Matching-Based FUDOKI. In mask-based discrete diffusion models, once a token is unmasked, it typically cannot be modified again, which hinders self-correcti
+- Table 1 : Visual Generation Performance on the GenEval Benchmark . " Und. " and " Gen. " denotes " Understanding " and " Generation ". † denotes models that integrate an external pretrained diffusion model.
+- Table 2 : Multimodal Understanding Performance on Various Benchmarks. " Und. " and " Gen. " denotes " Understanding " and " Generation ". † denotes models that integrate an external pretrained diffusion model.
+- Figure 4 : Generation process of different methods. (a) AR-based Janus can only generate tokens sequentially; if an error is made in the initial step, subsequent outputs will consistently propagate this mistake. (b) D-DiT (mask-based discrete diffusion, MDD) c
+- Figure 5 : Comparison of training loss and speed-quality trade-off. (Left, Middle) AR initialization and removing time embedding layers both reduce training loss. (Right) With fewer timesteps, FUDOKI achieves much higher speed but slightly lower quality than A
+- Table 3 : Visual Generation Performance on DPG-Bench.
+- Figure 6 : Qualitative Comparisons on Visual Generation. Comparison among Janus [ 20 ] , D-DiT [ 42 ] and FUDOKI on various text prompts. The results demonstrate that our method (FUDOKI) achieved superior text-image alignment and aesthetics.
+- Figure 7 : Qualitative Comparisons on Visual Understanding. The upper part of the figure shows selected intermediate outputs from the answer generation process of different models—Janus (AR), D-DiT (mask-based discrete diffusion, MDD), and our FUDOKI (discrete
+- Figure 8 : Visualization of the iterative refinement process enabled by discrete flow matching in FUDOKI , demonstrating denoising process for text-to-image generation and visual understanding tasks.
+- Figure 9 : Comparison of FUDOKI and GPT-4o/GPT-Image-1 on frozen lake maze navigation tasks . GPT-4o/GPT-Image-1 offered well-reasoned textual outputs with safety and goal awareness but generated inconsistent visuals, even altering the maze (e.g., the third ro
+- Figure 10 : FUDOKI successfully completed the full maze navigation task step by step. Starting from the initial position at (4, 1), it sequentially selected safe moves—Right → Down → Right → Right—while avoiding holes and progressing toward the treasure at (5,
+- Figure 11 : Training Dataset Distribution. The overall training data consists of 8.76M Generation samples (69%) and 3.86M Understanding samples (31%), as shown on the left. The right chart depicts the composition of the Understanding subset by category.
+- Figure 12 : Examples of failed cases on visual understanding and generation. While FUDOKI demonstrated strong performance, it still struggled with harder tasks—such as generating images from complex prompts involving specific texts, and understanding visuals t
+
+## Tables as text
+
+### Table 1 : Visual Generation Performance on the GenEval Benchmark . " Und. " and " Gen. " denotes " Understanding " and " Generation ". † denotes models that integrate an external pretrained diffusion model.
+
+Type | Paradigm | Method | Single Obj. | Two Obj. | Counting | Colors | Position | Color Attri. | Overall \uparrow
+Gen. Only | AR | LlamaGen [ 56 ] | 0.71 | 0.34 | 0.21 | 0.58 | 0.07 | 0.04 | 0.32
+Emu3-Gen [ 18 ] | 0.98 | 0.71 | 0.34 | 0.81 | 0.17 | 0.21 | 0.54
+Diffusion | LDM [ 12 ] | 0.92 | 0.29 | 0.23 | 0.70 | 0.02 | 0.05 | 0.37
+SDv1.5 [ 12 ] | 0.97 | 0.38 | 0.35 | 0.76 | 0.04 | 0.06 | 0.43
+PixArt- \alpha [ 13 ] | 0.98 | 0.50 | 0.44 | 0.80 | 0.08 | 0.07 | 0.48
+SDv2.1 [ 12 ] | 0.98 | 0.51 | 0.44 | 0.85 | 0.07 | 0.17 | 0.50
+DALL-E 2 [ 66 ] | 0.94 | 0.66 | 0.49 | 0.77 | 0.10 | 0.19 | 0.52
+SDXL [ 67 ] | 0.98 | 0.74 | 0.39 | 0.85 | 0.15 | 0.23 | 0.55
+DALL-E 3 [ 68 ] | 0.96 | 0.87 | 0.47 | 0.83 | 0.43 | 0.45 | 0.67
+SD3-Medium [ 14 ] | 0.99 | 0.94 | 0.72 | 0.89 | 0.33 | 0.60 | 0.74
+Und. and Gen. | AR | SEED-X † [ 69 ] | 0.97 | 0.58 | 0.26 | 0.80 | 0.19 | 0.14 | 0.49
+LWM [ 65 ] | 0.93 | 0.41 | 0.46 | 0.79 | 0.09 | 0.15 | 0.47
+ILLUME [ 21 ] | 0.99 | 0.86 | 0.45 | 0.71 | 0.39 | 0.28 | 0.61
+TokenFlow-XL [ 70 ] | 0.95 | 0.60 | 0.41 | 0.81 | 0.16 | 0.24 | 0.55
+Chameleon [ 50 ] | - | - | - | - | - | - | 0.39
+Janus [ 20 ] | 0.97 | 0.68 | 0.30 | 0.84 | 0.46 | 0.42 | 0.61
+Janus-Pro-1B [ 22 ] | 0.98 | 0.82 | 0.51 | 0.89 | 0.65 | 0.56 | 0.73
+AR+Diffusion | Show-o [ 52 ] | 0.95 | 0.52 | 0.49 | 0.82 | 0.11 | 0.28 | 0.53
+Transfusion [ 19 ] | - | - | - | - | - | - | 0.63
+Diffusion | UniDisc [ 44 ] | 0.92 | 0.47 | 0.15 | 0.67 | 0.13 | 0.19 | 0.42
+D-DiT [ 42 ] | 0.97 | 0.80 | 0.54 | 0.76 | 0.32 | 0.50 | 0.65
+Discrete Flow | FUDOKI (Ours) | 0.96 | 0.85 | 0.56 | 0.88 | 0.68 | 0.67 | 0.77
+ | +Inference Scaling | 0.98 | 0.95 | 0.73 | 0.94 | 0.88 | 0.78 | 0.88
+
+### Table 2 : Multimodal Understanding Performance on Various Benchmarks. " Und. " and " Gen. " denotes " Understanding " and " Generation ". † denotes models that integrate an external pretrained diffusion model.
+
+Type | Paradigm | Model | # LLM Params | POPE \uparrow | MME-P \uparrow | MMB \uparrow | SEED \uparrow | GQA \uparrow | MMMU \uparrow | MM-Vet \uparrow
+Und. Only | AR | LLaVA-v1.5-Phi-1.5 [ 52 ] | 1.3B | 84.1 | 1128.0 | - | - | 56.5 | 30.7 | -
+MobileVLM [ 72 ] | 1.4B | 84.5 | 1196.2 | 53.2 | - | 56.1 | - | -
+MobileVLM-V2 [ 73 ] | 1.4B | 84.3 | 1302.8 | 57.7 | - | 59.3 | - | -
+MobileVLM [ 72 ] | 2.7B | 84.9 | 1288.9 | 59.6 | - | 59.0 | - | -
+MobileVLM-V2 [ 73 ] | 2.7B | 84.7 | 1440.5 | 63.2 | - | 61.1 | - | -
+LLaVA-Phi [ 74 ] | 2.7B | 85.0 | 1335.1 | 59.8 | - | - | - | 28.9
+LLaVA [ 6 ] | 7B | 76.3 | 809.6 | 38.7 | 33.5 | - | - | 25.5
+LLaVA-v1.5 [ 75 ] | 7B | 85.9 | 1510.7 | 64.3 | 58.6 | 62.0 | 35.4 | 31.1
+InstructBLIP [ 8 ] | 7B | - | - | 36.0 | 53.4 | 49.2 | - | 26.2
+Qwen-VL-Chat [ 76 ] | 7B | - | 1487.5 | 60.6 | 58.2 | 57.5 | - | -
+IDEFICS-9B [ 77 ] | 8B | - | - | 48.2 | - | 38.4 | - | -
+Emu3-Chat [ 18 ] | 8B | 85.2 | 1244 | 58.5 | 68.2 | 60.3 | 31.6 | 37.2
+InstructBLIP [ 8 ] | 13B | 78.9 | 1212.8 | - | - | 49.5 | - | 25.6
+Und. and Gen. | AR | LaVIT † [ 78 ] | 7B | - | - | - | - | 46.8 | - | -
+MetaMorph † [ 79 ] | 8B | - | - | 75.2 | 71.8 | - | - | -
+Gemini-Nano-1 [ 80 ] | 1.8B | - | - | - | - | - | 26.3 | -
+ILLUME [ 21 ] | 7B | 88.5 | 1445.3 | 65.1 | 72.9 | - | 38.2 | 37.0
+TokenFlow-XL [ 70 ] | 13B | 86.8 | 1545.9 | 68.9 | 68.7 | 62.7 | 38.7 | 40.7
+LWM [ 65 ] | 7B | 75.2 | - | - | - | 44.8 | - | 9.6
+VILA-U [ 81 ] | 7B | 85.8 | 1401.8 | - | 59.0 | 60.8 | - | 33.5
+Chameleon [ 50 ] | 7B | - | - | - | - | - | 22.4 | 8.3
+Janus [ 20 ] | 1.5B | 87.0 | 1338.0 | 69.4 | 63.7 | 59.1 | 30.5 | 34.3
+Janus-Pro-1B [ 22 ] | 1.5B | 86.2 | 1444.0 | 75.5 | 68.3 | 59.3 | 36.3 | 39.8
+AR+Diffusion | Show-o-256 [ 52 ] | 1.3B | 73.8 | 948.4 | - | - | 48.7 | 25.1 | -
+Show-o-512 [ 52 ] | 1.3B | 80.0 | 1097.2 | - | - | 58.0 | 26.7 | -
+Diffusion | D-Dit [ 42 ] | 2.0B | 84.0 | 1124.7 | - | - | 59.2 | - | -
+Discrete Flow | FUDOKI (Ours) | 1.5B | 86.1 | 1485.4 | 73.9 | 68.2 | 57.6 | 34.3 | 38.0
+ | +Inference Scaling | 1.5B | - | - | - | - | - | - | 55.5
+
+### Table 3 : Visual Generation Performance on DPG-Bench.
+
+Method | Global | Entity | Attribute | Relation | Other | Overall \uparrow
+SDv1.5 [ 12 ] | 74.63 | 74.23 | 75.39 | 73.49 | 67.81 | 63.18
+PixArt- \alpha [ 13 ] | 74.97 | 79.32 | 78.60 | 82.57 | 76.96 | 71.11
+Lumina-Next [ 128 ] | 82.82 | 88.65 | 86.44 | 80.53 | 81.82 | 74.63
+SDXL [ 67 ] | 83.27 | 82.43 | 80.91 | 86.76 | 80.41 | 74.65
+Playground v2.5 [ 129 ] | 83.06 | 82.59 | 81.20 | 84.08 | 83.50 | 75.47
+Hunyuan-DiT [ 130 ] | 84.59 | 80.59 | 88.01 | 74.36 | 86.41 | 78.87
+PixArt- \Sigma [ 131 ] | 86.89 | 82.89 | 88.94 | 86.59 | 87.68 | 80.54
+Emu3-Gen [ 18 ] | 85.21 | 86.68 | 86.84 | 90.22 | 83.15 | 80.60
+DALL-E 3 [ 68 ] | 90.97 | 89.61 | 88.39 | 90.58 | 89.83 | 83.50
+SD3-Medium [ 14 ] | 87.90 | 91.01 | 88.83 | 80.70 | 88.68 | 84.08
+Janus [ 20 ] | 82.33 | 87.38 | 87.70 | 85.46 | 86.41 | 79.68
+Janus-Pro-1B [ 22 ] | 87.58 | 88.63 | 88.17 | 88.98 | 88.30 | 82.63
+FUDOKI (Ours) | 80.55 | 89.73 | 88.05 | 93.66 | 78.00 | 83.63
+
