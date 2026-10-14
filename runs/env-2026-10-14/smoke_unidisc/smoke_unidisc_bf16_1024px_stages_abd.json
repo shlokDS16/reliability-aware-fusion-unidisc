@@ -1,0 +1,95 @@
+{
+  "info": {
+    "env": {
+      "python": "3.12.14",
+      "torch": "2.11.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+      "vram_total_gb": 12.82048,
+      "platform": "Windows-11-10.0.26300-SP0",
+      "free_system_commit_gb_at_start": 12.82
+    },
+    "load_s": 9.694851398468018,
+    "weights_dtype": "torch.bfloat16",
+    "n_params": 1406870785,
+    "vram_after_load_gb": 2.818095104,
+    "free_system_commit_gb_after_load": 12.82,
+    "free_system_commit_gb_after_gc": 12.92,
+    "free_commit_gb_before_stage": {
+      "a": 12.9,
+      "b": 10.48,
+      "d": 10.53
+    }
+  },
+  "a": {
+    "resolution": 1024,
+    "seed": 0,
+    "steps": 50,
+    "sampler": "maskgit",
+    "cfg_scale": 3.0,
+    "maskgit_r_temp": 4.5,
+    "seconds": 49.84535837173462,
+    "peak_alloc_gb": 6.753027072,
+    "generated_text": "\u00a9 photoshiko shui copyright \u00a9 1 2 3 / 02 a / 12 3 / 15 a",
+    "n_masked_after": 0,
+    "image_file": "joint_image_1024px.png"
+  },
+  "b": {
+    "state": "revealed 25% of masked positions from the stage-a sample",
+    "shape": [
+      1,
+      4171,
+      48385
+    ],
+    "dtype_returned": "bfloat16 log-probs from model.forward (cast to float here)",
+    "vocab": 48385,
+    "text_vocab": 32001,
+    "image_vocab": 16384,
+    "mask_token_id": 32000,
+    "image_token_id_offset": 32001,
+    "n_masked": 3093,
+    "masked_text": {
+      "n": 25,
+      "mass_on_text_ids": 0.9977270364761353,
+      "mass_on_image_ids": 0.0,
+      "mass_on_mask_id": 0.0,
+      "mean_top1": 0.18104003369808197,
+      "mean_entropy_nats": 5.022686004638672
+    },
+    "masked_image": {
+      "n": 3068,
+      "mass_on_text_ids": 0.0,
+      "mass_on_image_ids": 1.0001919269561768,
+      "mass_on_mask_id": 0.0,
+      "mean_top1": 0.041902244091033936,
+      "mean_entropy_nats": 6.528759002685547
+    },
+    "observed_are_onehot": true,
+    "guided_cfg_marginals": {
+      "cfg": 3.0,
+      "t": 0.5,
+      "shape": [
+        1,
+        4171,
+        48385
+      ],
+      "masked_image_mean_top1": 0.043028343468904495,
+      "masked_text_mean_top1": 0.2187207043170929
+    }
+  },
+  "d": {
+    "flex_vs_sdpa_max_abs_diff": 0.0004291534423828125,
+    "ordered_commit_sets_match_prescribed": true,
+    "ordered_commit_modalities_of_first_8_committed": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+    ],
+    "forward_finite": true
+  }
+}

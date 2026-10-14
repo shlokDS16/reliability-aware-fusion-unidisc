@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\decoupled_utils.py", line 964, in inner
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\model_eval.py", line 2370, in _sample
+    x, nfe_step_cnt = self._maskgit_update(x, t, dt, x0=x0, x0_unmask=x0_unmask, schedule=schedule, step=i, **kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\model_eval.py", line 3089, in _maskgit_update
+    tresh_conf, indice_mask = torch.topk(conf, k=max_num_unmask, dim=-1)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\utils\_device.py", line 116, in __torch_function__
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

@@ -1,0 +1,51 @@
+{
+  "info": {
+    "env": {
+      "python": "3.12.14",
+      "torch": "2.11.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+      "vram_total_gb": 12.82048,
+      "platform": "Windows-11-10.0.26300-SP0",
+      "free_system_commit_gb_at_start": 12.0
+    },
+    "load_s": 9.979957342147827,
+    "weights_dtype": "torch.bfloat16",
+    "n_params": 1406870785,
+    "vram_after_load_gb": 2.818095104,
+    "free_system_commit_gb_after_load": 12.0,
+    "free_system_commit_gb_after_gc": 11.99,
+    "free_commit_gb_before_stage": {
+      "e": 12.25
+    }
+  },
+  "e": {
+    "cfg_3.0": {
+      "forward_calls_x_shapes": [
+        [
+          2,
+          331
+        ]
+      ],
+      "max_abs_diff_to_unguided": 1.0
+    },
+    "cfg_0.0": {
+      "forward_calls_x_shapes": [
+        [
+          1,
+          331
+        ]
+      ],
+      "max_abs_diff_to_unguided": 0.0
+    },
+    "cfg_null": {
+      "forward_calls_x_shapes": [
+        [
+          1,
+          331
+        ]
+      ],
+      "max_abs_diff_to_unguided": 0.0
+    }
+  }
+}

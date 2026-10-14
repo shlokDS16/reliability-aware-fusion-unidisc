@@ -1,0 +1,43 @@
+{
+  "state": "revealed 25% of masked positions from the stage-a sample",
+  "shape": [
+    1,
+    4171,
+    48385
+  ],
+  "dtype_returned": "bfloat16 log-probs from model.forward (cast to float here)",
+  "vocab": 48385,
+  "text_vocab": 32001,
+  "image_vocab": 16384,
+  "mask_token_id": 32000,
+  "image_token_id_offset": 32001,
+  "n_masked": 3094,
+  "masked_text": {
+    "n": 26,
+    "mass_on_text_ids": 1.0000009536743164,
+    "mass_on_image_ids": 0.0,
+    "mass_on_mask_id": 0.0,
+    "mean_top1": 1.0,
+    "mean_entropy_nats": 1.4686896065541077e-05
+  },
+  "masked_image": {
+    "n": 3068,
+    "mass_on_text_ids": 0.0,
+    "mass_on_image_ids": 1.00094473361969,
+    "mass_on_mask_id": 0.0,
+    "mean_top1": 0.07436732947826385,
+    "mean_entropy_nats": 5.846148490905762
+  },
+  "observed_are_onehot": true,
+  "guided_cfg_marginals": {
+    "cfg": 3.0,
+    "t": 0.5,
+    "shape": [
+      1,
+      4171,
+      48385
+    ],
+    "masked_image_mean_top1": 0.07459627836942673,
+    "masked_text_mean_top1": 0.9750601053237915
+  }
+}

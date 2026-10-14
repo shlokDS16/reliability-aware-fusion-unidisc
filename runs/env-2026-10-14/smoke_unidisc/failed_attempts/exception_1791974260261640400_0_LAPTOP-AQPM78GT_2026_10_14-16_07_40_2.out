@@ -1,0 +1,39 @@
+Traceback (most recent call last):
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\unidisc\utils\viz_utils.py", line 31, in create_text_image
+    font = ImageFont.truetype(font_path, font_size)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\PIL\ImageFont.py", line 885, in truetype
+    return freetype(font)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\PIL\ImageFont.py", line 882, in freetype
+    return FreeTypeFont(font, size, index, encoding, layout_engine)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\PIL\ImageFont.py", line 298, in __init__
+    self.font = core.getfont(
+                ^^^^^^^^^^^^^
+OSError: cannot open resource
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\decoupled_utils.py", line 964, in inner
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\model_eval.py", line 2450, in _sample
+    res = self.decode_sampling(x, text_only, **kwargs, **decode_kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\scripts\unidisc_smoke.py", line 120, in grab
+    rec["x"] = x.clone(); return orig_decode(x, *a, **k)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\model_eval.py", line 2465, in decode_sampling
+    ret = self.get_interleaved_image(sample_data, sample_modalities, image_save_postfix=image_save_postfix)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\model_eval.py", line 3444, in get_interleaved_image
+    txt_image = create_text_image(text=sample_text[0], desired_width=self.config.data.resolution)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\unidisc\utils\viz_utils.py", line 33, in create_text_image
+    raise IOError(f"Font file not found at path: {font_path}")
+OSError: Font file not found at path: /usr/share/fonts/dejavu/DejaVuSansMono.ttf

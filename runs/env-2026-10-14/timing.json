@@ -1,0 +1,388 @@
+{
+  "mdlm": {
+    "source": "smoke_mdlm/smoke_mdlm.json",
+    "log": "logs/mdlm_smoke.log",
+    "env": {
+      "python": "3.12.14",
+      "torch": "2.11.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+      "vram_total_gb": 12.82048,
+      "platform": "Windows-11-10.0.26300-SP0",
+      "free_system_commit_gb_at_start": 16.77
+    },
+    "load_s": 2.996100664138794,
+    "n_params_backbone": 169627218,
+    "sample_128_steps": {
+      "steps": 128,
+      "shape": [
+        1,
+        1024
+      ],
+      "seconds": 3.5197787284851074,
+      "peak_alloc_gb": 1.411782656,
+      "seed": 1,
+      "text_file": "sample_L1024.txt"
+    },
+    "sample_1000_steps": {
+      "steps": 1000,
+      "seconds": 18.156598329544067
+    },
+    "gen_ppl_eval_one_sample": {
+      "evaluator": "gpt2-large",
+      "value_one_sample": 77.1654281616211,
+      "seconds_incl_model_load": 4.474852561950684,
+      "peak_alloc_gb": 4.65137152,
+      "note": "single sample; a plumbing check, NOT a measurement of model quality"
+    },
+    "forward_L1024": {
+      "batch1_full_forward": {
+        "median_s": 0.020974199986085296,
+        "min_s": 0.02037540008313954,
+        "max_s": 0.021759300027042627,
+        "iters": 5,
+        "peak_alloc_gb": 1.081063424,
+        "peak_reserved_gb": 1.23731968
+      },
+      "batch1_backbone_only": {
+        "median_s": 0.01575430016964674,
+        "min_s": 0.01568419998511672,
+        "max_s": 0.01682649995200336,
+        "iters": 5,
+        "peak_alloc_gb": 1.081062912,
+        "peak_reserved_gb": 1.13246208
+      },
+      "batch8_full_forward": {
+        "median_s": 0.0894249000120908,
+        "min_s": 0.08891579997725785,
+        "max_s": 0.08992030005902052,
+        "iters": 5,
+        "peak_alloc_gb": 2.339826176,
+        "peak_reserved_gb": 2.961178624
+      },
+      "batch8_backbone_only": {
+        "median_s": 0.07896640012040734,
+        "min_s": 0.0755563999991864,
+        "max_s": 0.08409369993023574,
+        "iters": 5,
+        "peak_alloc_gb": 1.862035456,
+        "peak_reserved_gb": 2.136997888
+      },
+      "batch32_full_forward": {
+        "median_s": 0.40747279999777675,
+        "min_s": 0.38438619999215007,
+        "max_s": 0.4486659001559019,
+        "iters": 5,
+        "peak_alloc_gb": 7.281235456,
+        "peak_reserved_gb": 8.856272896
+      },
+      "batch32_backbone_only": {
+        "median_s": 0.3251742001157254,
+        "min_s": 0.32120030000805855,
+        "max_s": 0.3499304000288248,
+        "iters": 5,
+        "peak_alloc_gb": 4.52045312,
+        "peak_reserved_gb": 5.561647104
+      }
+    },
+    "marginals_fp32_vs_bf16": {
+      "dtype": "torch.float32",
+      "rowsum_masked_min": 0.9999988079071045,
+      "rowsum_masked_max": 1.0000016689300537,
+      "max_abs_diff_vs_bf16": 0.5710673928260803,
+      "top1_agreement_masked": 0.784761905670166,
+      "mean_abs_diff_entropy_nats": 0.31510451436042786,
+      "batch1_seconds": 0.03451150003820658,
+      "batch1_peak_gb": 1.41180672
+    }
+  },
+  "unidisc": {
+    "source": "smoke_unidisc/smoke_unidisc_bf16_1024px_stages_*.json",
+    "logs": [
+      "logs/unidisc_smoke_1024_abd.log",
+      "logs/unidisc_timing_c.log",
+      "logs/unidisc_stage_e.log"
+    ],
+    "stage_a": {
+      "resolution": 1024,
+      "seed": 0,
+      "steps": 50,
+      "sampler": "maskgit",
+      "cfg_scale": 3.0,
+      "maskgit_r_temp": 4.5,
+      "seconds": 49.84535837173462,
+      "peak_alloc_gb": 6.753027072,
+      "generated_text": "\u00a9 photoshiko shui copyright \u00a9 1 2 3 / 02 a / 12 3 / 15 a",
+      "n_masked_after": 0,
+      "image_file": "joint_image_1024px.png"
+    },
+    "stage_b": {
+      "state": "revealed 25% of masked positions from the stage-a sample",
+      "shape": [
+        1,
+        4171,
+        48385
+      ],
+      "dtype_returned": "bfloat16 log-probs from model.forward (cast to float here)",
+      "vocab": 48385,
+      "text_vocab": 32001,
+      "image_vocab": 16384,
+      "mask_token_id": 32000,
+      "image_token_id_offset": 32001,
+      "n_masked": 3093,
+      "masked_text": {
+        "n": 25,
+        "mass_on_text_ids": 0.9977270364761353,
+        "mass_on_image_ids": 0.0,
+        "mass_on_mask_id": 0.0,
+        "mean_top1": 0.18104003369808197,
+        "mean_entropy_nats": 5.022686004638672
+      },
+      "masked_image": {
+        "n": 3068,
+        "mass_on_text_ids": 0.0,
+        "mass_on_image_ids": 1.0001919269561768,
+        "mass_on_mask_id": 0.0,
+        "mean_top1": 0.041902244091033936,
+        "mean_entropy_nats": 6.528759002685547
+      },
+      "observed_are_onehot": true,
+      "guided_cfg_marginals": {
+        "cfg": 3.0,
+        "t": 0.5,
+        "shape": [
+          1,
+          4171,
+          48385
+        ],
+        "masked_image_mean_top1": 0.043028343468904495,
+        "masked_text_mean_top1": 0.2187207043170929
+      }
+    },
+    "stage_d": {
+      "flex_vs_sdpa_max_abs_diff": 0.0004291534423828125,
+      "ordered_commit_sets_match_prescribed": true,
+      "ordered_commit_modalities_of_first_8_committed": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "forward_finite": true
+    },
+    "info_by_run": {
+      "abd": {
+        "env": {
+          "python": "3.12.14",
+          "torch": "2.11.0+cu130",
+          "cuda": "13.0",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+          "vram_total_gb": 12.82048,
+          "platform": "Windows-11-10.0.26300-SP0",
+          "free_system_commit_gb_at_start": 12.82
+        },
+        "load_s": 9.694851398468018,
+        "weights_dtype": "torch.bfloat16",
+        "n_params": 1406870785,
+        "vram_after_load_gb": 2.818095104,
+        "free_system_commit_gb_after_load": 12.82,
+        "free_system_commit_gb_after_gc": 12.92,
+        "free_commit_gb_before_stage": {
+          "a": 12.9,
+          "b": 10.48,
+          "d": 10.53
+        }
+      },
+      "c": {
+        "env": {
+          "python": "3.12.14",
+          "torch": "2.11.0+cu130",
+          "cuda": "13.0",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+          "vram_total_gb": 12.82048,
+          "platform": "Windows-11-10.0.26300-SP0",
+          "free_system_commit_gb_at_start": 13.72
+        },
+        "load_s": 8.38080358505249,
+        "weights_dtype": "torch.bfloat16",
+        "n_params": 1406870785,
+        "vram_after_load_gb": 2.818095104,
+        "free_system_commit_gb_after_load": 13.72,
+        "free_system_commit_gb_after_gc": 13.42,
+        "free_commit_gb_before_stage": {
+          "c": 13.45
+        }
+      },
+      "e": {
+        "env": {
+          "python": "3.12.14",
+          "torch": "2.11.0+cu130",
+          "cuda": "13.0",
+          "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+          "vram_total_gb": 12.82048,
+          "platform": "Windows-11-10.0.26300-SP0",
+          "free_system_commit_gb_at_start": 12.0
+        },
+        "load_s": 9.979957342147827,
+        "weights_dtype": "torch.bfloat16",
+        "n_params": 1406870785,
+        "vram_after_load_gb": 2.818095104,
+        "free_system_commit_gb_after_load": 12.0,
+        "free_system_commit_gb_after_gc": 11.99,
+        "free_commit_gb_before_stage": {
+          "e": 12.25
+        }
+      }
+    },
+    "stage_c": {
+      "L1536_512px_batch1_plain": {
+        "median_s": 0.1289242000784725,
+        "min_s": 0.12829150003381073,
+        "max_s": 0.1289643000345677,
+        "iters": 3,
+        "peak_alloc_gb": 3.12526336,
+        "peak_reserved_gb": 3.745513472,
+        "seq_len": 1536,
+        "effective_batch": 1
+      },
+      "L1536_512px_batch1_cfg_double_batch": {
+        "median_s": 0.3007486001588404,
+        "min_s": 0.27181669999845326,
+        "max_s": 0.31224399991333485,
+        "iters": 3,
+        "peak_alloc_gb": 3.423377408,
+        "peak_reserved_gb": 4.290772992,
+        "seq_len": 1536,
+        "effective_batch": 2
+      },
+      "L1536_512px_batch4_plain": {
+        "median_s": 0.5889860999304801,
+        "min_s": 0.5888177999295294,
+        "max_s": 0.6144312000833452,
+        "iters": 3,
+        "peak_alloc_gb": 4.01908736,
+        "peak_reserved_gb": 5.584715776,
+        "seq_len": 1536,
+        "effective_batch": 4
+      },
+      "L1536_512px_batch4_cfg_double_batch": {
+        "median_s": 1.1696499998215586,
+        "min_s": 1.1686833000276238,
+        "max_s": 1.1713823000900447,
+        "iters": 3,
+        "peak_alloc_gb": 5.20636416,
+        "peak_reserved_gb": 7.910457344,
+        "seq_len": 1536,
+        "effective_batch": 8
+      },
+      "L1536_512px_batch8_plain": {
+        "median_s": 1.1671534001361579,
+        "min_s": 1.1610123999416828,
+        "max_s": 1.1704087001271546,
+        "iters": 3,
+        "peak_alloc_gb": 5.206365696,
+        "peak_reserved_gb": 7.910457344,
+        "seq_len": 1536,
+        "effective_batch": 8
+      },
+      "L1536_512px_batch8_cfg_double_batch": {
+        "median_s": 2.5751336999237537,
+        "min_s": 2.5707622000481933,
+        "max_s": 2.577537299832329,
+        "iters": 3,
+        "peak_alloc_gb": 7.5850624,
+        "peak_reserved_gb": 12.566134784,
+        "seq_len": 1536,
+        "effective_batch": 16
+      },
+      "L5120_1024px_batch1_plain": {
+        "median_s": 0.6057551000267267,
+        "min_s": 0.5815292000770569,
+        "max_s": 0.6116859000176191,
+        "iters": 3,
+        "peak_alloc_gb": 3.818789888,
+        "peak_reserved_gb": 5.02267904,
+        "seq_len": 5120,
+        "effective_batch": 1
+      },
+      "L5120_1024px_batch1_cfg_double_batch": {
+        "median_s": 1.2523799000773579,
+        "min_s": 1.2344500999897718,
+        "max_s": 1.2533106999471784,
+        "iters": 3,
+        "peak_alloc_gb": 4.811971584,
+        "peak_reserved_gb": 7.170162688,
+        "seq_len": 5120,
+        "effective_batch": 2
+      },
+      "L5120_1024px_batch4_plain": {
+        "median_s": 2.5004312000237405,
+        "min_s": 2.4930350000504404,
+        "max_s": 2.510923800058663,
+        "iters": 3,
+        "peak_alloc_gb": 6.792163328,
+        "peak_reserved_gb": 11.04150528,
+        "seq_len": 5120,
+        "effective_batch": 4
+      },
+      "L5120_1024px_batch4_cfg_double_batch": {
+        "median_s": 4.968755400041118,
+        "min_s": 4.966785199940205,
+        "max_s": 4.969275899929926,
+        "iters": 3,
+        "peak_alloc_gb": 10.756665856,
+        "peak_reserved_gb": 11.379146752,
+        "seq_len": 5120,
+        "effective_batch": 8
+      },
+      "L5120_1024px_batch8_plain": {
+        "median_s": 5.164490099996328,
+        "min_s": 4.982843300094828,
+        "max_s": 5.189055999973789,
+        "iters": 3,
+        "peak_alloc_gb": 10.75666432,
+        "peak_reserved_gb": 11.379146752,
+        "seq_len": 5120,
+        "effective_batch": 8
+      },
+      "L5120_1024px_batch8_cfg_double_batch": {
+        "status": "OOM",
+        "message": "CUDA out of memory. Tried to allocate 4.88 GiB. GPU 0 has a total capacity of 11.94 GiB of which 148.00 MiB is free. Of the allocated memory 10.02 GiB is allocated by PyTorch, and 591.14 MiB is reserv",
+        "free_system_commit_gb": 4.53
+      }
+    },
+    "stage_e": {
+      "cfg_3.0": {
+        "forward_calls_x_shapes": [
+          [
+            2,
+            331
+          ]
+        ],
+        "max_abs_diff_to_unguided": 1.0
+      },
+      "cfg_0.0": {
+        "forward_calls_x_shapes": [
+          [
+            1,
+            331
+          ]
+        ],
+        "max_abs_diff_to_unguided": 0.0
+      },
+      "cfg_null": {
+        "forward_calls_x_shapes": [
+          [
+            1,
+            331
+          ]
+        ],
+        "max_abs_diff_to_unguided": 0.0
+      }
+    }
+  }
+}

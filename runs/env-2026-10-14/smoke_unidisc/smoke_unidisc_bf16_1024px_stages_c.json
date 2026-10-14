@@ -1,0 +1,139 @@
+{
+  "info": {
+    "env": {
+      "python": "3.12.14",
+      "torch": "2.11.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+      "vram_total_gb": 12.82048,
+      "platform": "Windows-11-10.0.26300-SP0",
+      "free_system_commit_gb_at_start": 13.72
+    },
+    "load_s": 8.38080358505249,
+    "weights_dtype": "torch.bfloat16",
+    "n_params": 1406870785,
+    "vram_after_load_gb": 2.818095104,
+    "free_system_commit_gb_after_load": 13.72,
+    "free_system_commit_gb_after_gc": 13.42,
+    "free_commit_gb_before_stage": {
+      "c": 13.45
+    }
+  },
+  "c": {
+    "L1536_512px_batch1_plain": {
+      "median_s": 0.1289242000784725,
+      "min_s": 0.12829150003381073,
+      "max_s": 0.1289643000345677,
+      "iters": 3,
+      "peak_alloc_gb": 3.12526336,
+      "peak_reserved_gb": 3.745513472,
+      "seq_len": 1536,
+      "effective_batch": 1
+    },
+    "L1536_512px_batch1_cfg_double_batch": {
+      "median_s": 0.3007486001588404,
+      "min_s": 0.27181669999845326,
+      "max_s": 0.31224399991333485,
+      "iters": 3,
+      "peak_alloc_gb": 3.423377408,
+      "peak_reserved_gb": 4.290772992,
+      "seq_len": 1536,
+      "effective_batch": 2
+    },
+    "L1536_512px_batch4_plain": {
+      "median_s": 0.5889860999304801,
+      "min_s": 0.5888177999295294,
+      "max_s": 0.6144312000833452,
+      "iters": 3,
+      "peak_alloc_gb": 4.01908736,
+      "peak_reserved_gb": 5.584715776,
+      "seq_len": 1536,
+      "effective_batch": 4
+    },
+    "L1536_512px_batch4_cfg_double_batch": {
+      "median_s": 1.1696499998215586,
+      "min_s": 1.1686833000276238,
+      "max_s": 1.1713823000900447,
+      "iters": 3,
+      "peak_alloc_gb": 5.20636416,
+      "peak_reserved_gb": 7.910457344,
+      "seq_len": 1536,
+      "effective_batch": 8
+    },
+    "L1536_512px_batch8_plain": {
+      "median_s": 1.1671534001361579,
+      "min_s": 1.1610123999416828,
+      "max_s": 1.1704087001271546,
+      "iters": 3,
+      "peak_alloc_gb": 5.206365696,
+      "peak_reserved_gb": 7.910457344,
+      "seq_len": 1536,
+      "effective_batch": 8
+    },
+    "L1536_512px_batch8_cfg_double_batch": {
+      "median_s": 2.5751336999237537,
+      "min_s": 2.5707622000481933,
+      "max_s": 2.577537299832329,
+      "iters": 3,
+      "peak_alloc_gb": 7.5850624,
+      "peak_reserved_gb": 12.566134784,
+      "seq_len": 1536,
+      "effective_batch": 16
+    },
+    "L5120_1024px_batch1_plain": {
+      "median_s": 0.6057551000267267,
+      "min_s": 0.5815292000770569,
+      "max_s": 0.6116859000176191,
+      "iters": 3,
+      "peak_alloc_gb": 3.818789888,
+      "peak_reserved_gb": 5.02267904,
+      "seq_len": 5120,
+      "effective_batch": 1
+    },
+    "L5120_1024px_batch1_cfg_double_batch": {
+      "median_s": 1.2523799000773579,
+      "min_s": 1.2344500999897718,
+      "max_s": 1.2533106999471784,
+      "iters": 3,
+      "peak_alloc_gb": 4.811971584,
+      "peak_reserved_gb": 7.170162688,
+      "seq_len": 5120,
+      "effective_batch": 2
+    },
+    "L5120_1024px_batch4_plain": {
+      "median_s": 2.5004312000237405,
+      "min_s": 2.4930350000504404,
+      "max_s": 2.510923800058663,
+      "iters": 3,
+      "peak_alloc_gb": 6.792163328,
+      "peak_reserved_gb": 11.04150528,
+      "seq_len": 5120,
+      "effective_batch": 4
+    },
+    "L5120_1024px_batch4_cfg_double_batch": {
+      "median_s": 4.968755400041118,
+      "min_s": 4.966785199940205,
+      "max_s": 4.969275899929926,
+      "iters": 3,
+      "peak_alloc_gb": 10.756665856,
+      "peak_reserved_gb": 11.379146752,
+      "seq_len": 5120,
+      "effective_batch": 8
+    },
+    "L5120_1024px_batch8_plain": {
+      "median_s": 5.164490099996328,
+      "min_s": 4.982843300094828,
+      "max_s": 5.189055999973789,
+      "iters": 3,
+      "peak_alloc_gb": 10.75666432,
+      "peak_reserved_gb": 11.379146752,
+      "seq_len": 5120,
+      "effective_batch": 8
+    },
+    "L5120_1024px_batch8_cfg_double_batch": {
+      "status": "OOM",
+      "message": "CUDA out of memory. Tried to allocate 4.88 GiB. GPU 0 has a total capacity of 11.94 GiB of which 148.00 MiB is free. Of the allocated memory 10.02 GiB is allocated by PyTorch, and 591.14 MiB is reserv",
+      "free_system_commit_gb": 4.53
+    }
+  }
+}

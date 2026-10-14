@@ -1,0 +1,130 @@
+{
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "free_system_commit_gb_at_start": 16.77
+  },
+  "checkpoint": "kuleshov-group/mdlm-owt",
+  "repo": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\models\\third_party\\mdlm",
+  "load_s": 2.996100664138794,
+  "mask_index": 50257,
+  "vocab_size_with_mask": 50258,
+  "n_params_backbone": 169627218,
+  "backbone_param_dtype": "torch.float32",
+  "sampler_defaults": {
+    "predictor": "ddpm_cache",
+    "steps_default_in_repo": 128,
+    "noise_removal": true,
+    "temperature": null,
+    "top_p": null,
+    "cfg": null,
+    "gumbel_dtype": "float32 (official MDLM repo); the ReMDM repo uses float64 and optional nucleus p"
+  },
+  "sample": {
+    "steps": 128,
+    "shape": [
+      1,
+      1024
+    ],
+    "seconds": 3.5197787284851074,
+    "peak_alloc_gb": 1.411782656,
+    "seed": 1,
+    "text_file": "sample_L1024.txt"
+  },
+  "sample_long": {
+    "steps": 1000,
+    "seconds": 18.156598329544067
+  },
+  "gen_ppl": {
+    "evaluator": "gpt2-large",
+    "value_one_sample": 77.1654281616211,
+    "seconds_incl_model_load": 4.474852561950684,
+    "peak_alloc_gb": 4.65137152,
+    "note": "single sample; a plumbing check, NOT a measurement of model quality"
+  },
+  "marginals": {
+    "shape": [
+      1,
+      1024,
+      50258
+    ],
+    "dtype": "torch.bfloat16",
+    "n_masked": 525,
+    "rowsum_masked_min": 0.92578125,
+    "rowsum_masked_max": 1.0703125,
+    "mask_id_prob_max": 0.0,
+    "unmasked_is_onehot": true,
+    "mean_top1_prob_masked": 0.40625,
+    "mean_entropy_nats_masked": 3.34375
+  },
+  "marginals_fp32_check": {
+    "dtype": "torch.float32",
+    "rowsum_masked_min": 0.9999988079071045,
+    "rowsum_masked_max": 1.0000016689300537,
+    "max_abs_diff_vs_bf16": 0.5710673928260803,
+    "top1_agreement_masked": 0.784761905670166,
+    "mean_abs_diff_entropy_nats": 0.31510451436042786,
+    "batch1_seconds": 0.03451150003820658,
+    "batch1_peak_gb": 1.41180672
+  },
+  "timing_forward_L1024": {
+    "batch1_full_forward": {
+      "median_s": 0.020974199986085296,
+      "min_s": 0.02037540008313954,
+      "max_s": 0.021759300027042627,
+      "iters": 5,
+      "peak_alloc_gb": 1.081063424,
+      "peak_reserved_gb": 1.23731968
+    },
+    "batch1_backbone_only": {
+      "median_s": 0.01575430016964674,
+      "min_s": 0.01568419998511672,
+      "max_s": 0.01682649995200336,
+      "iters": 5,
+      "peak_alloc_gb": 1.081062912,
+      "peak_reserved_gb": 1.13246208
+    },
+    "batch8_full_forward": {
+      "median_s": 0.0894249000120908,
+      "min_s": 0.08891579997725785,
+      "max_s": 0.08992030005902052,
+      "iters": 5,
+      "peak_alloc_gb": 2.339826176,
+      "peak_reserved_gb": 2.961178624
+    },
+    "batch8_backbone_only": {
+      "median_s": 0.07896640012040734,
+      "min_s": 0.0755563999991864,
+      "max_s": 0.08409369993023574,
+      "iters": 5,
+      "peak_alloc_gb": 1.862035456,
+      "peak_reserved_gb": 2.136997888
+    },
+    "batch32_full_forward": {
+      "median_s": 0.40747279999777675,
+      "min_s": 0.38438619999215007,
+      "max_s": 0.4486659001559019,
+      "iters": 5,
+      "peak_alloc_gb": 7.281235456,
+      "peak_reserved_gb": 8.856272896
+    },
+    "batch32_backbone_only": {
+      "median_s": 0.3251742001157254,
+      "min_s": 0.32120030000805855,
+      "max_s": 0.3499304000288248,
+      "iters": 5,
+      "peak_alloc_gb": 4.52045312,
+      "peak_reserved_gb": 5.561647104
+    }
+  },
+  "ordered_sampler_test": {
+    "steps": 16,
+    "k": 4,
+    "committed_sets_match_prescribed": true,
+    "n_unmasked_end": 64
+  }
+}

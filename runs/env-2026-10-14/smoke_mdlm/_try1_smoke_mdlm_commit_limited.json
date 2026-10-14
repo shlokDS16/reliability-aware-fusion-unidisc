@@ -1,0 +1,100 @@
+{
+  "env": {
+    "python": "3.12.14",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "vram_total_gb": 12.82048,
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "checkpoint": "kuleshov-group/mdlm-owt",
+  "repo": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\models\\third_party\\mdlm",
+  "load_s": 17.796801328659058,
+  "mask_index": 50257,
+  "vocab_size_with_mask": 50258,
+  "n_params_backbone": 169627218,
+  "backbone_param_dtype": "torch.float32",
+  "sampler_defaults": {
+    "predictor": "ddpm_cache",
+    "steps_default_in_repo": 128,
+    "noise_removal": true,
+    "temperature": null,
+    "top_p": null,
+    "cfg": null,
+    "gumbel_dtype": "float32 (official MDLM repo); the ReMDM repo uses float64 and optional nucleus p"
+  },
+  "sample": {
+    "steps": 128,
+    "shape": [
+      1,
+      1024
+    ],
+    "seconds": 4.4883873462677,
+    "peak_alloc_gb": 1.411782656,
+    "seed": 1,
+    "text_file": "sample_L1024.txt"
+  },
+  "sample_long": {
+    "steps": 1000,
+    "seconds": 18.574998140335083
+  },
+  "marginals": {
+    "shape": [
+      1,
+      1024,
+      50258
+    ],
+    "dtype": "torch.bfloat16",
+    "n_masked": 525,
+    "rowsum_masked_min": 0.92578125,
+    "rowsum_masked_max": 1.0703125,
+    "mask_id_prob_max": 0.0,
+    "unmasked_is_onehot": true,
+    "mean_top1_prob_masked": 0.40625,
+    "mean_entropy_nats_masked": 3.34375
+  },
+  "timing_forward_L1024": {
+    "batch1_full_forward": {
+      "median_s": 0.020901599898934364,
+      "min_s": 0.018857700051739812,
+      "max_s": 0.021246599964797497,
+      "iters": 5,
+      "peak_alloc_gb": 1.081062912,
+      "peak_reserved_gb": 1.23731968
+    },
+    "batch1_backbone_only": {
+      "median_s": 0.01866799988783896,
+      "min_s": 0.016306400066241622,
+      "max_s": 0.019474599976092577,
+      "iters": 5,
+      "peak_alloc_gb": 1.0810624,
+      "peak_reserved_gb": 1.13246208
+    },
+    "batch8_full_forward": {
+      "status": "OOM",
+      "message": "CUDA out of memory. Tried to allocate 786.00 MiB. GPU 0 has a total capacity of 11.94 GiB of which 9.27 GiB is free. Of the allocated memory 1.41 GiB is allocated by PyTorch, and 62.65 MiB is reserved"
+    },
+    "batch8_backbone_only": {
+      "median_s": 0.07756490004248917,
+      "min_s": 0.07723180018365383,
+      "max_s": 0.07847049995325506,
+      "iters": 5,
+      "peak_alloc_gb": 1.862034944,
+      "peak_reserved_gb": 2.136997888
+    },
+    "batch32_full_forward": {
+      "status": "OOM",
+      "message": "CUDA out of memory. Tried to allocate 3.07 GiB. GPU 0 has a total capacity of 11.94 GiB of which 9.29 GiB is free. Of the allocated memory 1.14 GiB is allocated by PyTorch, and 320.96 MiB is reserved "
+    },
+    "batch32_backbone_only": {
+      "status": "OOM",
+      "message": "CUDA out of memory. Tried to allocate 3.07 GiB. GPU 0 has a total capacity of 11.94 GiB of which 9.29 GiB is free. Of the allocated memory 1.14 GiB is allocated by PyTorch, and 320.96 MiB is reserved "
+    }
+  },
+  "ordered_sampler_test": {
+    "steps": 16,
+    "k": 4,
+    "committed_sets_match_prescribed": true,
+    "n_unmasked_end": 64
+  }
+}

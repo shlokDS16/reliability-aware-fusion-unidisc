@@ -1,0 +1,444 @@
+slurm: false
+debug: true
+mode: eval
+diffusion: absorbing_state
+backbone: dit
+parameterization: subs
+time_conditioning: false
+T: 0
+subs_masking: false
+seed: 163
+profile: false
+devices: 1
+nodes: 1
+partition: all
+constraint: ''
+ckpt: null
+loader:
+  desired_global_batch_size: 512
+  global_batch_size: null
+  eval_global_batch_size: null
+  batch_size: 1
+  eval_batch_size: 1
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: true
+  num_eval_workers: 0
+sampling:
+  predictor: maskgit
+  steps: 50
+  max_sampling_steps: 50
+  noise_removal: true
+  num_sample_log: 2
+  semi_ar: false
+  stride_length: 1
+  num_strides: 1
+  num_sample_batches: 2
+eval:
+  checkpoint_path: ''
+  disable_ema: false
+  compute_generative_perplexity: false
+  perplexity_batch_size: 6
+  gen_ppl_eval_model_name_or_path: gpt2-large
+  generate_samples: false
+  cfg: 3.0
+  num_masking_viz_batches: 0
+  num_sample_batches: 1
+  test_eval_speed: false
+  standalone_fid: false
+  visualize_data_only: false
+  val_with_train_data: false
+  max_num_fid_batches_per_device: null
+  class_conditional_fid: false
+  compute_entropy: false
+  compute_standalone_mauve: false
+  compute_standalone_entropy: false
+  compute_img_to_txt_mauve_clip: false
+  compute_img_to_txt_mauve_during_unconditional_fid: false
+  mauve_num_samples: 5000
+  mauve_divergence_curve_discretization_size: 25
+  mauve_average_over_seeds: 3
+  mauve_scaling_factor: 5
+  txt_conditional_fid: false
+  unconditional_fid: false
+  fid_mode: inline
+  calculate_clip_score: false
+  clean_fid_use_precomputed_stats: false
+  clean_fid_precomputed_name: null
+  clean_fid_precomputed_split: null
+  clean_fid_precomputed_res: null
+  attention_caching: false
+  set_random_gen_seed: false
+  compute_val_metrics_standalone: false
+  num_val_metrics_standalone_batches_per_device: -1
+  num_val_metrics_standalone_samples: -1
+  return_unweighed_sim: false
+  compute_chameleon_perplexity: false
+  global_disable_mauve: false
+  bypass_normal_validation: false
+  auto_enhance: false
+  num_auto_enhance_iter: 2
+  ar_inpainting_min_val: 0.5
+  ar_inpainting_max_val: 1.0
+  ar_inpainting_force_val: null
+  log_every_n_evals: 1
+  log_every_n_fid: -1
+  limit_val_batches_manual: 1
+  auto_enhance_reward_config:
+    dfn_score: 1.0
+    laion_aesthetic_score: 1.0
+  disable_visualization: true
+  num_uncond_sample_batches: 10
+  num_random_masking: 0
+  masking_batch_size: 6
+  eval_large_batch: 10
+  maskgit_r_temp: 4.5
+  half_uncond: false
+  return_interleaved_modalities_split: true
+  static_img_txt_demo: true
+  visualize_sample: false
+optim:
+  weight_decay: 0
+  lr: 0.0001
+  beta1: 0.9
+  beta2: 0.999
+  eps: 1.0e-08
+  fused: true
+model:
+  use_custom_vae_config: false
+  use_custom_vae_ckpt: C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\vq_ds16_t2i.pt
+  downscale_ratio: 16
+  image_vocab_size: 16384
+  vae_type: VQ-16
+  use_attention_mask: false
+  cond_use_custom_vae_config: false
+  cond_use_custom_vae_ckpt: null
+  cond_downscale_ratio: null
+  cond_image_vocab_size: null
+  cond_vae_type: null
+  text_model: true
+  attn_type: flash
+  force_varlen_attn: false
+  force_cast_bf16: false
+  norm_type: rms
+  mup: false
+  qk_norm: true
+  distillation: false
+  force_argmax_valid_indices: true
+  use_flash_attn_3: false
+  use_spda_attn: true
+  rope_2d: true
+  modality_embed: true
+  zero_linear_init: true
+  full_attention: true
+  use_lora: false
+  use_kv_cache: false
+  force_optimized_native_attn: false
+  use_pretrained_img_emb: false
+  use_flex_attention: true
+  add_labels: null
+  flex_attention_txt_masking_prob: null
+  flex_attention_img_masking_prob: null
+  name: extra_large
+  type: ddit
+  hidden_size: 2048
+  cond_dim: 128
+  length: 5120
+  n_blocks: 24
+  n_heads: 16
+  scale_by_sigma: true
+  dropout: 0.1
+  tie_word_embeddings: false
+  custom_vae_name: _t2i
+  codebook_embed_dim: 8
+  img_length: 4096
+  txt_length: 1024
+  unified_model: true
+  image_model: true
+  image_model_fid_eval: false
+  sandwich_normalization: true
+  text_vocab_size: 32001
+  linear_factor: 2
+trainer:
+  _target_: lightning.Trainer
+  accelerator: cuda
+  num_nodes: 1
+  devices: 1
+  accumulate_grad_batches: 512
+  gradient_clip_val: 1.0
+  precision: bf16
+  max_steps: 1000000000
+  num_epochs: 1000000000
+  optimizer_cls: adamw
+  set_grads_to_none: true
+  eval_on_start: false
+  eval_decay_steps: false
+  eval_epochs: null
+  ckpt_steps: 20000
+  fsdp: false
+  force_enable_checkpointing: false
+  limit_val_batches: 2
+  ckpt_every_n_minutes: 180
+  ckpt_recent_timeout_minutes: 10
+  checkpoint_all_ranks: true
+  force_null_sigma: true
+  log_every_n_steps: 10
+  limit_train_batches: 1.0
+  val_check_interval: -1
+  ema: 0.0
+  antithetic_sampling: true
+  importance_sampling: false
+  sampling_eps: 0.001
+  change_of_variables: false
+  benchmark: true
+  backward_pass: true
+  forward_pass: true
+  profile_memory: false
+  pytorch_profile: false
+  nvtx_profile: false
+  custom_ddp_bf16: true
+  log_seperate_modal_losses: true
+  use_gradient_checkpointing: true
+  text_loss_weight: 1.0
+  img_loss_weight: 0.2
+  disable_strict_load: false
+  attach_oom_observer_eval: false
+  find_unused_parameters: false
+  restart_on_failure: true
+  skip_early_checkpointing: false
+  log_flops: false
+  sync_timing: false
+  use_custom_ema: false
+  scale_lr_by_batch_size: false
+  tpu_eager: false
+  allow_dynamic_nodes: false
+  force_disable_signal_handler: false
+  tpu_profile: false
+  tpu_cache: false
+  enable_jax_smi: false
+  tpu_compile_debug: false
+  xla_spmd: false
+  log_grad_norm: true
+  tpu_profile_markers: true
+  compile: false
+  disable_all_checkpointing: false
+  tpu_force_mark_step: false
+  ar_shift: false
+  ar_llm_loss: false
+  ar_print_loss: false
+  chameleon_z_loss: null
+  image_mode: discrete
+  chameleon_use_ce_loss: false
+  low_precision_loss: false
+  low_precision_params: false
+  scratch: false
+  use_spmd_distributed_checkpointing: null
+  use_simple_spmd_distributed_checkpointing: false
+  load_from_state_dict: C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+  load_from_optimizer_state_dict: null
+  multimodal_batches: true
+  sync_dataloader_timing: false
+  compile_flag_pos_emb: true
+  compile_fullgraph: false
+  compile_mode: max-autotune-no-cudagraphs
+  joint_ar_nar_prob: null
+  joint_ar_nar_prob_warmup_steps: null
+  joint_ar_nar_timestep_warmup_steps: null
+  spmd_mesh: null
+  detect_anomaly: false
+  freeze_chameleon_embeddings: false
+  ckpt_model_only: false
+  use_orig_params: null
+  disable_adjust_num_warmup_steps: false
+  mask_entire_modality: 0.2
+  iterate_dataloader_only: false
+  force_bf16_eval: false
+  disable_all_eval_generation: false
+  debug_xla_sept: false
+  ignore_text_in_unified: false
+  allow_null_sigma: true
+  disable_forward_autocast_during_eval: false
+  viz_images_only: false
+  add_label: false
+  first_token_dropout: null
+  disable_ddp_optimizer: false
+  rand_flip_ar_prob: null
+  rand_ar_modality_dropout: null
+  use_linear_warmup_cosine_annealing: false
+  no_ce_weighting: false
+  interleaved: true
+  interleaved_training_flex_attention: true
+  awr: false
+  ar_inpainting: false
+  softmin_snr: 5
+  watch_gradients: false
+  force_full_attention_mask: true
+  force_full_attention_mask_loss_only: false
+  force_convert_to_dict: true
+  set_max_txt_loss_ratio: true
+  bypass_load_from_state_dicts_if_resuming: true
+wandb:
+  entity: grads
+  project: unidisc-debug
+  resume: null
+  id: null
+  group: null
+  job_type: null
+  name: null
+  tags:
+  - combined_tokens
+  mode: disabled
+checkpointing_root_dir: null
+root_output_dir: outputs
+python_orig: 'accelerate launch \
+
+  --num_machines $SLURM_NNODES \
+
+  --num_processes $NUM_PROCESSES \
+
+  --rdzv_backend c10d \
+
+  --main_process_ip $MASTER_ADDR \
+
+  --main_process_port $MASTER_PORT \
+
+  --machine_rank $SLURM_PROCID \
+
+  --mixed_precision bf16 \
+
+  --dynamo_backend no \
+
+  --enable_cpu_affinity \
+
+  --max_restarts 0 \
+
+  '
+mem_per_gpu: 40
+cpus_per_gpu: 8
+slurm_name: null
+timeout_min: 360
+checkpointing:
+  save_dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\smoke_unidisc/checkpoints
+  resume_from_ckpt: true
+  resume_ckpt_path: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\smoke_unidisc/checkpoints
+  initial_resume_ckpt_path: null
+  resume_wandb: true
+  checkpoints_total_limit: 10
+  use_automatic_naming: false
+data:
+  cache_dir: /grogu/user/mprabhud/aswerdlo/huggingface/datasets
+  num_proc: 16
+  cond_resolution: null
+  iterable: false
+  force_disable_shuffle: false
+  pin_dataset_to_gpu: false
+  webdataset_iterable: false
+  webdataset_train_data: null
+  webdataset_val_data: null
+  webdataset_train_num_samples: null
+  webdataset_val_num_samples: null
+  webdataset_indexed: false
+  dataset_type: null
+  keep_tensordict_on_disk: true
+  use_token_dataset: true
+  use_custom_tensordict_collate: true
+  use_weighted_tensordict_sampler: true
+  enable_cuda_in_tensordict_collate: false
+  data_dir_train:
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/matrix/HPDv2_image_reward_v1_v2_v3/train
+    weight: 0.5
+    name: HPDv2_image_reward_v1_v2_v3
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/grogu/pick_score_sac_prompts_v1_v2_v3_512
+    weight: 1.0
+    name: pick_score_sac_prompts_v1_v2_v3_512
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/07_31_2024_matrix/pixelprose_tokens
+    weight: 1.0
+    name: pixelprose_tokens
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/babel/cambrian_10m_v5
+    weight: 1.0
+    name: cambrian_10m_v5
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/scratch_ssd_tokens/datacomp1b_7_512
+    weight: 1.0
+    name: datacomp1b_7_512
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_2_tokens
+    weight: 0.5
+    name: datacomp_1b_datacomp1b_2_tokens
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_4_tokens
+    weight: 0.5
+    name: datacomp_1b_datacomp1b_4_tokens
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/babel/mmc4_fewer_faces_v0
+    weight: 2.0
+    name: mmc4_fewer_faces_v0
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/07_31_2024_matrix/datacomp_1b_datacomp1b_5_tokens
+    weight: 0.5
+    name: datacomp_1b_datacomp1b_5_tokens
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_0_tokens
+    weight: 0.5
+    name: datacomp_1b_datacomp1b_0_tokens
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/07_31_2024_grogu/datacomp_1b_datacomp1b_1_tokens
+    weight: 0.5
+    name: datacomp_1b_datacomp1b_1_tokens
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/babel/cosmopedia_2_v0
+    weight: 1.0
+    name: cosmopedia_v2
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/babel/fineweb_edu_dedup_v0
+    weight: 1.0
+    name: fineweb_edu_dedup
+  data_dir_val:
+  - dir: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\env-2026-10-14\_unused_data_dir/tokens/matrix/HPDv2_image_reward_v1_v2_v3/train
+    weight: 1.0
+    name: HPDv2_image_reward_512
+  token_output_dir: null
+  wrap_dataloaders: true
+  force_shuffle_train: false
+  move_tensordict_to_shm: false
+  keep_hf_dataset_in_memory: false
+  use_chameleon: false
+  tokenize_vqvae_in_dataloader: false
+  force_mp_spawn: false
+  force_raw_images_in_multiple_tensordict: false
+  disable_text_modality: false
+  txt_only: false
+  disable_mask_after_eos: true
+  allow_label: false
+  split_dataset: false
+  img_token_shift: 32001
+  zero_shot_eval_dataset: null
+  require_sample_ids: true
+  use_packing_collate: true
+  dynamic_packing_lengths: true
+  remove_txt_img_padding: true
+  add_image_gen_tokens: true
+  use_slow_tokenizer: true
+  add_image_token: true
+  train: combined_tokens
+  val: unset_dataset
+  tokenizer_name_or_path: NousResearch/Llama-2-7b-hf
+  valid: combined_tokens
+  precache: false
+  streaming: false
+  resolution: 1024
+  block_size: 5120
+  wrap: true
+  unpaired: false
+  tokens_flip_collate: false
+  n_val_samples: null
+  n_train_samples: null
+  n_duplicate_train: null
+  n_duplicate_val: null
+  raw_data_dir: null
+  save_train_dataloader: true
+  save_validation_dataloader: true
+  tokenizers_parallelism: false
+  token_data_dir: null
+  add_text_to_weighted_sampler: false
+  force_seed: true
+  disable_packing: true
+dummyarg: null
+noise:
+  type: loglinear
+  sigma_min: 0.0001
+  sigma_max: 20
+lr_scheduler:
+  _target_: transformers.get_constant_schedule_with_warmup
+  num_warmup_steps: 5000
