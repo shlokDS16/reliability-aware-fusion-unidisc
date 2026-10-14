@@ -1,0 +1,100 @@
+{"sid":"R0501","decision":"include","code":"","reason":"Proposes and evaluates preference optimization for diffusion language models."}
+{"sid":"R0502","decision":"exclude","code":"X1","reason":"Diffusion generates time-series tokens, with no text generation or unified text model."}
+{"sid":"R0503","decision":"include","code":"","reason":"Proposes variable-length text generation for diffusion language models."}
+{"sid":"R0504","decision":"exclude","code":"X1","reason":"Generates video and images only; no text generation or unified text model."}
+{"sid":"R0505","decision":"include","code":"","reason":"Analyzes masked diffusion sampling and schedules for token sequences."}
+{"sid":"R0506","decision":"include","code":"","reason":"Evaluates training for unified multimodal models, including discrete diffusion architectures."}
+{"sid":"R0507","decision":"include","code":"","reason":"Proposes and evaluates inference-time control for diffusion text generation."}
+{"sid":"R0508","decision":"include","code":"","reason":"Presents a unified vision-language model generating interleaved text and vision with discrete diffusion adaptation."}
+{"sid":"R0509","decision":"include","code":"","reason":"Trains a masked diffusion language model to generate image captions."}
+{"sid":"R0510","decision":"include","code":"","reason":"Evaluates diffusion language models as reasoning thought proposers."}
+{"sid":"R0511","decision":"include","code":"","reason":"Uses discrete diffusion text drafting for speculative decoding."}
+{"sid":"R0512","decision":"exclude","code":"X1","reason":"Diffusion generates actions and images; text is an input, not generated output."}
+{"sid":"R0513","decision":"include","code":"","reason":"Proposes and evaluates decoding for masked diffusion language models."}
+{"sid":"R0514","decision":"include","code":"","reason":"Proposes and analyzes watermarking for discrete diffusion language models."}
+{"sid":"R0515","decision":"include","code":"","reason":"Empirically compares diffusion and autoregressive language model training."}
+{"sid":"R0516","decision":"include","code":"","reason":"Analyzes sampling schedules for masked diffusion language models."}
+{"sid":"R0517","decision":"unclear","code":"","reason":"Evaluates discrete diffusion across text and images without specifying text generation."}
+{"sid":"R0518","decision":"include","code":"","reason":"Proposes and evaluates unmasking paths for diffusion text generation."}
+{"sid":"R0519","decision":"include","code":"","reason":"Proposes faster inference for masked diffusion models, including language generation."}
+{"sid":"R0520","decision":"exclude","code":"X7","reason":"Uses diffusion for recommendation IDs, not natural-language text or unified multimodal generation."}
+{"sid":"R0521","decision":"include","code":"","reason":"Proposes a hybrid diffusion and autoregressive text generation model."}
+{"sid":"R0522","decision":"include","code":"","reason":"Proposes a flow-matching framework demonstrated on antibody sequences."}
+{"sid":"R0523","decision":"include","code":"","reason":"Proposes and evaluates multimodal diffusion for text and image generation."}
+{"sid":"R0524","decision":"include","code":"","reason":"Studies discrete diffusion multimodal models and their text responses."}
+{"sid":"R0525","decision":"include","code":"","reason":"Analyzes and improves reasoning in diffusion language models."}
+{"sid":"R0526","decision":"include","code":"","reason":"Proposes and evaluates a masked diffusion language model."}
+{"sid":"R0527","decision":"exclude","code":"X1","reason":"Detects generated videos; diffusion is not used to generate text or unify generation."}
+{"sid":"R0528","decision":"include","code":"","reason":"Presents a unified model for multimodal understanding and image generation with diffusion."}
+{"sid":"R0529","decision":"include","code":"","reason":"Theoretically analyzes masked diffusion objectives and decoding orders."}
+{"sid":"R0530","decision":"include","code":"","reason":"Proposes and evaluates faster diffusion language model sampling."}
+{"sid":"R0531","decision":"include","code":"","reason":"Proposes and evaluates decoding for diffusion text generation."}
+{"sid":"R0532","decision":"unclear","code":"","reason":"Describes unified multimodal generation, but does not specify a diffusion component."}
+{"sid":"R0533","decision":"include","code":"","reason":"Analyzes and improves decoding for diffusion language models."}
+{"sid":"R0534","decision":"exclude","code":"X1","reason":"Unifies video understanding and generation, but describes no text generation."}
+{"sid":"R0535","decision":"include","code":"","reason":"Analyzes context comprehension and training for diffusion language models."}
+{"sid":"R0536","decision":"exclude","code":"X1","reason":"Diffusion generates actions only; text is an input, not generated output."}
+{"sid":"R0537","decision":"include","code":"","reason":"Proposes and evaluates inference acceleration for diffusion language models."}
+{"sid":"R0538","decision":"exclude","code":"X0","reason":"Framework concerns autoregressive models; diffusion language models are only a related special case."}
+{"sid":"R0539","decision":"include","code":"","reason":"Proposes and evaluates a causal concept-guided diffusion language model."}
+{"sid":"R0540","decision":"exclude","code":"X1","reason":"Detects generated images; no diffusion text generation or unified generation model."}
+{"sid":"R0541","decision":"exclude","code":"X7","reason":"Applies masked diffusion to recommendation IDs, not language generation."}
+{"sid":"R0542","decision":"exclude","code":"X0","reason":"Visual generation uses autoregressive modeling, with no diffusion generation component."}
+{"sid":"R0543","decision":"include","code":"","reason":"Proposes and evaluates masked diffusion for scene-text generation."}
+{"sid":"R0544","decision":"include","code":"","reason":"Proposes and evaluates inference for diffusion language models."}
+{"sid":"R0545","decision":"include","code":"","reason":"Proposes and evaluates faster decoding for diffusion language models."}
+{"sid":"R0546","decision":"unclear","code":"","reason":"Uses diffusion for video generation, but text output and unified training are unclear."}
+{"sid":"R0547","decision":"include","code":"","reason":"Proposes and evaluates reinforcement learning for diffusion language models."}
+{"sid":"R0548","decision":"include","code":"","reason":"Presents a diffusion vision-language model generating text and structured plans."}
+{"sid":"R0549","decision":"exclude","code":"X2","reason":"Uses diffusion for image generation conditioned on VLM features; no unified generation."}
+{"sid":"R0550","decision":"exclude","code":"X1","reason":"Discrete flow generates driving trajectories; no text generation or unified text model."}
+{"sid":"R0551","decision":"include","code":"","reason":"Proposes and evaluates adaptation of autoregressive models to diffusion text generation."}
+{"sid":"R0552","decision":"include","code":"","reason":"Proposes and evaluates learned unmasking policies for diffusion language models."}
+{"sid":"R0553","decision":"include","code":"","reason":"Proposes and evaluates policy optimization for diffusion language models."}
+{"sid":"R0554","decision":"include","code":"","reason":"Empirically studies scaling behavior of discrete diffusion language models."}
+{"sid":"R0555","decision":"include","code":"","reason":"Studies discrete diffusion transfer learning on language modeling tasks."}
+{"sid":"R0556","decision":"exclude","code":"X2","reason":"Uses diffusion generators conditioned by an MLLM; no unified generation model."}
+{"sid":"R0557","decision":"exclude","code":"X1","reason":"Diffusion generates driving trajectories; VQA is an auxiliary task, not text generation."}
+{"sid":"R0558","decision":"include","code":"","reason":"Proposes and evaluates search-based inference for diffusion language models."}
+{"sid":"R0559","decision":"include","code":"","reason":"Proposes and evaluates a masked diffusion model for text generation."}
+{"sid":"R0560","decision":"include","code":"","reason":"Extends a unified multimodal discrete diffusion model across image and text tasks."}
+{"sid":"R0561","decision":"include","code":"","reason":"Studies and evaluates conversion of autoregressive models to diffusion language models."}
+{"sid":"R0562","decision":"include","code":"","reason":"Evaluates block-wise discrete diffusion for vision-language understanding."}
+{"sid":"R0563","decision":"unclear","code":"","reason":"Focuses on visual generation; text generation and unified understanding are only prospective."}
+{"sid":"R0564","decision":"exclude","code":"X1","reason":"Generates LiDAR and camera data only; no text generation or unified text model."}
+{"sid":"R0565","decision":"exclude","code":"X2","reason":"Uses text prompts to manipulate image diffusion; it does not generate text."}
+{"sid":"R0566","decision":"include","code":"","reason":"Empirically studies combined masked-diffusion and autoregressive language modeling."}
+{"sid":"R0567","decision":"include","code":"","reason":"Studies parallel text decoding and diffusion-based language model adaptation."}
+{"sid":"R0568","decision":"exclude","code":"X1","reason":"Models protein sequences and structures, not natural-language text or code."}
+{"sid":"R0569","decision":"include","code":"","reason":"Uses diffusion language models as drafters for speculative text decoding."}
+{"sid":"R0570","decision":"include","code":"","reason":"Proposes and evaluates corrective refinement for diffusion language models."}
+{"sid":"R0571","decision":"include","code":"","reason":"Develops diffusion vision-language models with text generation and visual understanding."}
+{"sid":"R0572","decision":"include","code":"","reason":"Presents and evaluates scaled discrete diffusion language models."}
+{"sid":"R0573","decision":"unclear","code":"","reason":"Unifies diffusion theory and evaluates DNA generation, but language generation is unspecified."}
+{"sid":"R0574","decision":"include","code":"","reason":"Proposes and evaluates parallel decoding for diffusion language models."}
+{"sid":"R0575","decision":"unclear","code":"","reason":"Describes non-autoregressive language models without specifying a diffusion component."}
+{"sid":"R0576","decision":"include","code":"","reason":"Proposes and evaluates context-aware initialization for diffusion text generation."}
+{"sid":"R0577","decision":"include","code":"","reason":"Uses diffusion language models as speculative text drafters."}
+{"sid":"R0578","decision":"include","code":"","reason":"Proposes and evaluates diffusion-based long-form text generation."}
+{"sid":"R0579","decision":"include","code":"","reason":"Uses diffusion language models to infer text behaviors in a primary study."}
+{"sid":"R0580","decision":"include","code":"","reason":"Proposes and evaluates uncertainty-guided decoding for masked diffusion text generation."}
+{"sid":"R0581","decision":"include","code":"","reason":"Proposes and evaluates reinforcement learning for diffusion language model decoding."}
+{"sid":"R0582","decision":"include","code":"","reason":"Proposes and evaluates post-training for diffusion language models."}
+{"sid":"R0583","decision":"unclear","code":"","reason":"Evaluates masked diffusion on image benchmarks; language generation is not specified."}
+{"sid":"R0584","decision":"include","code":"","reason":"Analyzes discrete and continuous diffusion approaches to language modeling."}
+{"sid":"R0585","decision":"include","code":"","reason":"Proposes and evaluates diffusion-style parallel text generation."}
+{"sid":"R0586","decision":"include","code":"","reason":"Studies and evaluates inference-time control for masked diffusion language models."}
+{"sid":"R0587","decision":"include","code":"","reason":"Proves theoretical results about parallel sampling by diffusion language models."}
+{"sid":"R0588","decision":"include","code":"","reason":"Proposes and evaluates decoding for diffusion language models."}
+{"sid":"R0589","decision":"exclude","code":"X0","reason":"Uses autoregressive text and image generation without a diffusion or discrete-flow component."}
+{"sid":"R0590","decision":"include","code":"","reason":"Proposes and evaluates consistency distillation for diffusion language models."}
+{"sid":"R0591","decision":"include","code":"","reason":"Evaluates inference for discrete diffusion and flow language models."}
+{"sid":"R0592","decision":"include","code":"","reason":"Proposes and evaluates dynamic in-context planning for diffusion language models."}
+{"sid":"R0593","decision":"include","code":"","reason":"Proposes discrete absorbing diffusion for unified text-image generation."}
+{"sid":"R0594","decision":"include","code":"","reason":"Proposes and evaluates remasking for diffusion language model decoding."}
+{"sid":"R0595","decision":"include","code":"","reason":"Studies unified text-image generation with a flow-matching component."}
+{"sid":"R0596","decision":"include","code":"","reason":"Proposes and evaluates self-correction for diffusion language models."}
+{"sid":"R0597","decision":"include","code":"","reason":"Analyzes and improves entity modeling in diffusion language models."}
+{"sid":"R0598","decision":"include","code":"","reason":"Proposes and evaluates a revisable diffusion-based language model."}
+{"sid":"R0599","decision":"include","code":"","reason":"Proposes and evaluates distillation for diffusion language models."}
+{"sid":"R0600","decision":"include","code":"","reason":"Analyzes attention mechanisms and text learning in masked diffusion models."}

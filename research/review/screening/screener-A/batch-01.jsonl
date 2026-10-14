@@ -1,0 +1,100 @@
+{"sid": "R0001", "decision": "exclude", "code": "X1", "reason": "General diffusion model; no text generation stated."}
+{"sid": "R0002", "decision": "exclude", "code": "X1", "reason": "Score-based image generation; no text."}
+{"sid": "R0003", "decision": "exclude", "code": "X1", "reason": "Image synthesis only."}
+{"sid": "R0004", "decision": "exclude", "code": "X1", "reason": "Image generation sampling; no text."}
+{"sid": "R0005", "decision": "exclude", "code": "X1", "reason": "Score SDE for images; no text."}
+{"sid": "R0006", "decision": "include", "code": "", "reason": "Multinomial diffusion for categorical data including text modelling."}
+{"sid": "R0007", "decision": "include", "code": "", "reason": "Discrete diffusion with text results on LM1B."}
+{"sid": "R0008", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for images only."}
+{"sid": "R0009", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for image generation only."}
+{"sid": "R0010", "decision": "include", "code": "", "reason": "Continuous diffusion language model for controllable text generation."}
+{"sid": "R0011", "decision": "include", "code": "", "reason": "Latent diffusion energy-based model for text modeling."}
+{"sid": "R0012", "decision": "exclude", "code": "X2", "reason": "Text-to-sound; text only conditions audio generation."}
+{"sid": "R0013", "decision": "unclear", "code": "", "reason": "Latent ODE sampler for text; diffusion link not stated."}
+{"sid": "R0014", "decision": "exclude", "code": "X1", "reason": "Rectified flow for images; no text."}
+{"sid": "R0015", "decision": "include", "code": "", "reason": "Diffusion text decoder for image captioning."}
+{"sid": "R0016", "decision": "include", "code": "", "reason": "Multinomial diffusion generating transcripts for speech recognition."}
+{"sid": "R0017", "decision": "include", "code": "", "reason": "Diffusion for sequence-to-sequence text generation."}
+{"sid": "R0018", "decision": "include", "code": "", "reason": "Edit-based discrete diffusion for text generation."}
+{"sid": "R0019", "decision": "include", "code": "", "reason": "Simplex-based diffusion language model."}
+{"sid": "R0020", "decision": "include", "code": "", "reason": "Embedding diffusion for text generation."}
+{"sid": "R0021", "decision": "include", "code": "", "reason": "Discrete diffusion text decoder for image captioning."}
+{"sid": "R0022", "decision": "include", "code": "", "reason": "Unified discrete diffusion generating text and images."}
+{"sid": "R0023", "decision": "include", "code": "", "reason": "Absorbing discrete diffusion generative masked language model."}
+{"sid": "R0024", "decision": "include", "code": "", "reason": "Continuous diffusion for categorical data, language modelling."}
+{"sid": "R0025", "decision": "include", "code": "", "reason": "Latent diffusion for language generation."}
+{"sid": "R0026", "decision": "include", "code": "", "reason": "Text diffusion for sequence-to-sequence generation."}
+{"sid": "R0027", "decision": "include", "code": "", "reason": "Pretrained diffusion language model for text generation."}
+{"sid": "R0028", "decision": "include", "code": "", "reason": "Reparameterized discrete diffusion for text generation."}
+{"sid": "R0029", "decision": "include", "code": "", "reason": "Diffusion sequence generation with noise manipulation."}
+{"sid": "R0030", "decision": "exclude", "code": "X3", "reason": "Survey."}
+{"sid": "R0031", "decision": "exclude", "code": "X3", "reason": "Survey."}
+{"sid": "R0032", "decision": "exclude", "code": "X1", "reason": "3D shape generation; no text generation."}
+{"sid": "R0033", "decision": "exclude", "code": "X1", "reason": "Image synthesis only."}
+{"sid": "R0034", "decision": "include", "code": "", "reason": "Diffusion language model with soft-masked noise."}
+{"sid": "R0035", "decision": "include", "code": "", "reason": "Text generation via glyph image diffusion; outputs text."}
+{"sid": "R0036", "decision": "unclear", "code": "", "reason": "Diffusion generates sentence representations for extractive summarization; text output doubtful."}
+{"sid": "R0037", "decision": "include", "code": "", "reason": "Discrete diffusion for non-autoregressive text generation."}
+{"sid": "R0038", "decision": "include", "code": "", "reason": "Text diffusion training-inference gap analysis and methods."}
+{"sid": "R0039", "decision": "include", "code": "", "reason": "Simplex diffusion for text-to-text generation."}
+{"sid": "R0040", "decision": "include", "code": "", "reason": "Auto-regressive diffusion for text generation."}
+{"sid": "R0041", "decision": "include", "code": "", "reason": "Adaptive halting for diffusion language models."}
+{"sid": "R0042", "decision": "include", "code": "", "reason": "Encoder-decoder text diffusion architecture."}
+{"sid": "R0043", "decision": "unclear", "code": "", "reason": "Boundary diffusion for NER; output is entity spans, not generated text."}
+{"sid": "R0044", "decision": "exclude", "code": "X3", "reason": "Survey."}
+{"sid": "R0045", "decision": "include", "code": "", "reason": "Scaling and ensembling diffusion language models."}
+{"sid": "R0046", "decision": "include", "code": "", "reason": "Diffusion prior in dialog generation model; text output."}
+{"sid": "R0047", "decision": "exclude", "code": "X2", "reason": "Text-to-image personalization; text only conditions images."}
+{"sid": "R0048", "decision": "include", "code": "", "reason": "Likelihood-based diffusion language model Plaid."}
+{"sid": "R0049", "decision": "exclude", "code": "X1", "reason": "3D avatar generation; no text generation."}
+{"sid": "R0050", "decision": "include", "code": "", "reason": "Diffusion language model for text style transfer."}
+{"sid": "R0051", "decision": "exclude", "code": "X1", "reason": "Protein sequence design with discrete diffusion."}
+{"sid": "R0052", "decision": "unclear", "code": "", "reason": "Called unified model, but only retrieval plus text-to-image synthesis."}
+{"sid": "R0053", "decision": "include", "code": "", "reason": "Conditional diffusion language model for empathetic response generation."}
+{"sid": "R0054", "decision": "include", "code": "", "reason": "Latent diffusion planning plus autoregressive text decoding."}
+{"sid": "R0055", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for graphs only."}
+{"sid": "R0056", "decision": "include", "code": "", "reason": "Diffusion model for poetry generation."}
+{"sid": "R0057", "decision": "include", "code": "", "reason": "Diffusion model for text detoxification."}
+{"sid": "R0058", "decision": "include", "code": "", "reason": "Cross-lingual diffusion language model for translation."}
+{"sid": "R0059", "decision": "include", "code": "", "reason": "Empirical analysis of diffusion on pretrained language models."}
+{"sid": "R0060", "decision": "unclear", "code": "", "reason": "Predicts prompt text from images; diffusion role in text output unclear."}
+{"sid": "R0061", "decision": "include", "code": "", "reason": "Diffusion-like generative model with discrete language modelling results."}
+{"sid": "R0062", "decision": "unclear", "code": "", "reason": "Text diffusion used for keyphrase extraction representations; text output doubtful."}
+{"sid": "R0063", "decision": "include", "code": "", "reason": "Scaling and instruction-finetuning diffusion language models."}
+{"sid": "R0064", "decision": "exclude", "code": "X2", "reason": "Text-to-motion; text only conditions motion."}
+{"sid": "R0065", "decision": "include", "code": "", "reason": "Guided diffusion paraphraser for text style transfer."}
+{"sid": "R0066", "decision": "exclude", "code": "X2", "reason": "Text-conditioned motion generation."}
+{"sid": "R0067", "decision": "include", "code": "", "reason": "Any-to-any LLM with diffusion decoders, understanding and generation."}
+{"sid": "R0068", "decision": "exclude", "code": "X1", "reason": "Masked diffusion for video action planning; no text generation."}
+{"sid": "R0069", "decision": "unclear", "code": "", "reason": "Diffusion language model generating chemical formulas; text status ambiguous."}
+{"sid": "R0070", "decision": "include", "code": "", "reason": "Accelerated sequence-to-sequence text diffusion."}
+{"sid": "R0071", "decision": "include", "code": "", "reason": "Diffusion plus LLM for multimodal understanding and generation."}
+{"sid": "R0072", "decision": "unclear", "code": "", "reason": "Any-order masked infilling model; diffusion not mentioned in abstract."}
+{"sid": "R0073", "decision": "exclude", "code": "X1", "reason": "Protein generation with protein language diffusion model."}
+{"sid": "R0074", "decision": "include", "code": "", "reason": "Entropy-aware text diffusion model."}
+{"sid": "R0075", "decision": "include", "code": "", "reason": "Diffusion-enhanced topic-based text generation."}
+{"sid": "R0076", "decision": "exclude", "code": "X2", "reason": "Generates scanpaths conditioned on text; output not text."}
+{"sid": "R0077", "decision": "include", "code": "", "reason": "Score entropy discrete diffusion language models."}
+{"sid": "R0078", "decision": "exclude", "code": "X1", "reason": "Textless speech-to-speech translation diffusion."}
+{"sid": "R0079", "decision": "exclude", "code": "X1", "reason": "Point-cloud world model with discrete diffusion."}
+{"sid": "R0080", "decision": "include", "code": "", "reason": "Diffusion language model for controlled news summarization."}
+{"sid": "R0081", "decision": "include", "code": "", "reason": "Unified LLM for video understanding and diffusion-based generation."}
+{"sid": "R0082", "decision": "exclude", "code": "X1", "reason": "Image super-resolution with text-to-image diffusion prior."}
+{"sid": "R0083", "decision": "exclude", "code": "X2", "reason": "Text-to-video diffusion; text only conditions."}
+{"sid": "R0084", "decision": "include", "code": "", "reason": "Unified MLLM for CXR understanding and diffusion-based generation."}
+{"sid": "R0085", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for image super-resolution."}
+{"sid": "R0086", "decision": "include", "code": "", "reason": "Diffusion model generating visual story text."}
+{"sid": "R0087", "decision": "unclear", "code": "", "reason": "Text image super-resolution with text diffusion recognizer; text output unclear."}
+{"sid": "R0088", "decision": "include", "code": "", "reason": "Fast sampling for discrete diffusion on text generation."}
+{"sid": "R0089", "decision": "include", "code": "", "reason": "Discrete diffusion decoder generating recognized text."}
+{"sid": "R0090", "decision": "unclear", "code": "", "reason": "Diffusion-based text classification; no text generation stated."}
+{"sid": "R0091", "decision": "include", "code": "", "reason": "Adapting autoregressive models to text diffusion."}
+{"sid": "R0092", "decision": "unclear", "code": "", "reason": "General discrete diffusion theory; text experiments not stated."}
+{"sid": "R0093", "decision": "exclude", "code": "X1", "reason": "Discrete flow models for protein co-design."}
+{"sid": "R0094", "decision": "include", "code": "", "reason": "Chain-of-thought reasoning in diffusion language models."}
+{"sid": "R0095", "decision": "unclear", "code": "", "reason": "Discrete diffusion convergence theory on hypercube; text link not stated."}
+{"sid": "R0096", "decision": "include", "code": "", "reason": "Controllable diffusion language model with quantized embeddings."}
+{"sid": "R0097", "decision": "exclude", "code": "X0", "reason": "Cognitive drift-diffusion model, not a diffusion generative model."}
+{"sid": "R0098", "decision": "unclear", "code": "", "reason": "Diffusion language model generating SMILES; molecule versus text ambiguous."}
+{"sid": "R0099", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion over video tokens for robot policy."}
+{"sid": "R0100", "decision": "include", "code": "", "reason": "Text diffusion with reinforced conditioning."}
