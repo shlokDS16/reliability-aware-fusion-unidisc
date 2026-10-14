@@ -35,3 +35,8 @@ in `claude/`. End-of-session routine runs before any session finishes.
 - Two paper-reader agents, one at a time (FRUGAL budget; user's choice): `research/review/dossier/primer-gaussian.md` and `primer-multimodal.md`, each with an exact-enumeration check script that reruns cleanly.
 - Discoveries: Gaussian samplers carry a final-rounding factorisation term the framework lacked; corollary 3 is unattested in six papers; the multimodal E_fact splits exactly into within-text, within-image and cross-modal CMI, which makes P5 as worded near an identity, so it is split into P5a/P5b (D0010). No paper measures a cross-modal quantity per step. Released MMaDA-Parallel-A code differs from the paper's "parallel at every step" (E3).
 - Implications: framework-v1 must apply 25 edits; the cross-modal CMI per step is the most promising untested measurement for Paper 2. User set a two-week horizon with quality first.
+
+## 2026-10-14 (build session) - Framework v1 and v2; the selection term fails audit
+- framework-v1 applied 25 primer edits; a 47-model design-space table tested coverage (36 fit, 11 partly, 0 no).
+- method-architect formalised E_sel; red-team found 2 fatal flaws (the tilt/selection split is not a law property; per-step impossibility depends on the coupling) and full-text prior art (2605.12522, Hayakawa et al. 2510.04525) already covers the k = 1 law and the resample fix. D0011 withdraws E_sel and E_tilt as new terms; framework-v2 keeps one signed value slot V.
+- Implication: Paper 1's weight moves to the design space, an independently coded census of value rules and reporting, and stated open problems; the controlled four-arm value-rule result or the cross-modal measurement is the experiment that would carry Paper 2.

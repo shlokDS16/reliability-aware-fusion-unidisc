@@ -1,7 +1,39 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-14, build session; newest block, overrides all older ones).**
+- **CURRENT STATE (2026-10-14, end of build session; newest block, overrides all older ones).**
+  Handoff because controller context passed 250k. Read `review/framework-v2.md` first (sections A
+  and D), then decision D0011.
+  **Outcome of the build:** the selection term failed. Red-team (`review/audits/2026-10-14-red-
+  team-selection-term.md`, 2 fatal, 11 major, 10 minor; scripts reproduce) and the full-text
+  prior-art check (`review/dossier/prior-art-selection.md`: 2605.12522 has the k = 1 commit law,
+  majorisation and the sample-select-resample fix in code; Hayakawa et al. 2510.04525; 2609.34509;
+  Beirami et al. 2401.01879) mean E_sel and E_tilt are withdrawn as new terms (D0011). framework-v2
+  uses one signed value slot V; P2 withdrawn; P1 narrowed to k = 1; P5 restated in a named split
+  S_theta with a mixture-reference estimator, checked by enumeration
+  (`analysis/framework/check_crossmodal_mixture.py`, 0 failures). Paper 1's contribution is now:
+  (1) design space tested on 47 models, (2) value-rule and reporting census (29 of 40 headlines use
+  a non-plain value rule; 5 report entropy; 1 of 14 guided models sweeps steps with guidance fixed),
+  (3) budget as taxonomy with credited identity, (4) open problems with the evidence each needs.
+  Codex round 4 (`research/debates/2026-10-14-framework-v1/round-04-codex.md`): ACCEPT D3 and D4;
+  NEEDS-EVIDENCE D1, D2, D5; census needs independent coding with agreement before reconciliation;
+  the one addition that would move the review to acceptance is a controlled frozen-checkpoint
+  four-arm value-rule result, unless 2605.12522 already has it.
+  **Next, in order (fresh session; weekly budget 64 percent, reset 2026-10-19 17:00 UTC):**
+  (1) paper-reader, short: do 2605.12522's experiments cover the four-arm comparison (SF,
+  resampled twin, confidence-ranked RS, tilted twin) at matched passes with an entropy-matched
+  frontier? This decides Paper 2 and D4. (2) Write the census fields and operational definitions
+  into `review/protocol.md` section 6 (value rule classes, entropy reported, sweep with value rule
+  fixed, guidance fixed), with statistician sign-off on the agreement plan. (3) Screening plan for
+  the 883 new arXiv records (`review/corpus/arxiv-S1-*.jsonl`, `arxiv-S2-*.jsonl`). (4) Ask the user
+  about downloads above 5 GB (UniDisc 5.63 GB for P5; LLaDA-8B 16 GB) once Paper 2's first
+  experiment is chosen. (5) Tie correction to the k = 1 law in `method/selection-term.md` T2(a)
+  (prior-art-selection.md concern 3). (6) Human authors read framework-v2.
+  Dispatch record this session: paper-reader x4 (sonnet; primers, design space, prior art; all
+  useful), method-architect (opus; useful, then refuted in part), red-team (opus; decisive),
+  novelty-auditor (opus; useful but missed Hayakawa and was wrong on N4 at k = 1; E1 only),
+  Codex rounds 2 and 4.
+- **Superseded (2026-10-14, build session).**
   User said "start the build" with the recommended plan, despite FRUGAL budget (weekly 63 percent).
   Done and committed: `review/framework-v1.md` (25 primer edits applied, v0 kept);
   `review/coverage/design-space-v1.md` + `.csv` (47 models, 36 fit, 11 partly, 0 no; misfits:
