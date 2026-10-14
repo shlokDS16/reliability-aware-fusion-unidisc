@@ -1,0 +1,7 @@
+no coupling                      Lambda_d -0.004 | Lambda_b +0.000 (se 0.003, eligible 10338) | placebo +0.006 (se 0.003)
+add c=.5 b=1                     Lambda_d +0.124 | Lambda_b +0.001 (se 0.003, eligible 9460) | placebo +0.002 (se 0.003)
+add c=.5 b=2                     Lambda_d +0.173 | Lambda_b +0.005 (se 0.003, eligible 9517) | placebo -0.002 (se 0.003)
+inter b=1 cint=1 g=.5            Lambda_d +0.143 | Lambda_b +0.054 (se 0.003, eligible 9482) | placebo -0.007 (se 0.003)
+inter b=1 cint=2 g=1             Lambda_d +0.214 | Lambda_b +0.162 (se 0.004, eligible 9481) | placebo -0.000 (se 0.003)
+inter b=0 cint=2 g=1             Lambda_d +0.140 | Lambda_b +0.155 (se 0.004, eligible 9485) | placebo -0.003 (se 0.003)
+true link .15, add c=.5 b=1      Lambda_d +0.242 | Lambda_b +0.125 (se 0.003, eligible 9530) | placebo -0.003 (se 0.003)

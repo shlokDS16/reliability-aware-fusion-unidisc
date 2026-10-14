@@ -168,3 +168,39 @@ A same-image placebo for the primary statistic: the identical ratio computed wit
 ## Open for the orchestrator
 - Fatal items F-1 and F-2 block the gate until a resolution row is recorded in the decision ledger. I wrote no ledger rows.
 - Scripts left for reproduction: `analysis/framework/redteam_exp003_commit_order.py`, `analysis/framework/redteam_exp003_quality_coupling.py` (with `.log` files). They are toy models; they establish possibility (F-1) and a sketch (F-4), not UniDisc behaviour.
+
+---
+
+# v0.2 check (2026-10-15; card commits a0073e1 and 8accefe; scripts `analysis/framework/redteam_exp003_balanced_check.py` + `.log`)
+
+**Verdict: NOT SIGNED. Four remaining conditions (R1 to R4); R1 and R2 block signature. F-1 is reduced from fatal to major; F-2 is cleared; F-3, F-4, F-6, F-7, F-8 are cleared except as noted.**
+
+## Toy rerun (CPU, 12,000 prefixes per row; se about 0.003)
+| scenario (true noun link 0 unless stated) | Lambda_d (v0.1) | Lambda_b (v0.2) | placebo (NC-2) |
+|---|---|---|---|
+| no coupling | -0.004 | +0.000 | +0.006 |
+| additive yes-bias, text richness coupled (the v0.1 toy) | +0.124 / +0.173 | +0.001 / +0.005 | +0.002 / -0.002 |
+| non-additive: yes-prob rises with quality x noun detectability, quality also shifts which nouns are mentioned | +0.143 / +0.214 | **+0.054 / +0.162** | -0.007 / -0.000 |
+| same, image-level bias term zero | +0.140 | **+0.155** | -0.003 |
+| true link added (additive coupling kept) | +0.242 | +0.125 | -0.003 |
+
+Reading. Lambda_b removes the **additive** bias exactly, as the card says (F-1 as I built it is cleared), and keeps a real link (the true-link row is not attenuated to zero). But when the bias is not additive (a sample's quality changes both which nouns its text names and how findable those nouns are in its own image), Lambda_b stays at +0.05 to +0.16 and **NC-2 reads about 0**. The placebo cannot see it, because placebo nouns are by construction not selected by the sample's own text, so they do not carry the text-mention / image-findability coupling. The card's sentence that NC-2 "measures what remains of image-level bias after balancing (non-additive bias, yes-rate interacting with noun class)" is false for this case. (This is a toy; whether UniDisc has the coupling is unknown. It is a class-level dependence through a shared latent, arguably real text-image consistency, but it is not a completion-specific noun link, and the card words it as one.)
+
+## Condition-by-condition ("clears if" of each finding)
+- **F-1: partly cleared.** Additive bias cancelled (toy). NC-2 does not bound the non-additive residual. See R2.
+- **F-2: cleared on the test side** (per-arm 90 percent intervals, NC-2, diversity floor, W5 scope). One residue: the null sentence still ends "joint text-image consistency ... is carried by the prefix, not by co-generation"; nothing tested shows the prefix carries the consistency (the prefix gap is descriptive only, 4.3 item 3). See R3.
+- **F-3: text cleared; the assertion is wrong.** Card 1.2 says that at the first step of every G unit the guided marginals must differ from O0's by more than 1e-3. At step 0, t = 1 exactly and w = cfg x (1 - t) = 0, so `(_w > 0).any()` is false, no second call is made, and the guided marginal equals O0's. As written the assertion fails every G unit (or is satisfied only by noise). It also means G makes 64 calls, not 65. See R1.
+- **F-4: cleared** (Delta2b rows carry no value-rule claim; commit order required with a token-identity hook check).
+- **F-5: not addressed.** The diff touches only the NC-1 half-width rule. PC-2 is still a cross-caption contrast on a different sampler; PC-1 is still plain images only; open item 3 stands; thresholds still [A] on 32 images. NC-1 and NC-2 now have half-width limits, which is an improvement; the sensitivity of the instrument to **within-prefix** differences on **guided** images is still not tested. See R4.
+- **F-6: cleared** (W4, W5, Section 10 rows now map to tested statements; hypotheses tested against 0). W1 and W3 unchanged: W1's CLIP bar shares the quality confound and is a lower limit above 0 only; minor.
+- **F-7: cleared in form** (sibling CLIP cosine below 0.92 and Jaccard below 0.80 on G). The thresholds are [A] with no P64 reference value; if P64 also exceeds them the floor blocks every null by construction; minor.
+- **F-8: cleared** (named "32-step variant").
+- **Stale text (minor):** the YAML header `next_test` still reads "primary_metric: discordant-noun link Lambda_d" and the falsifier lists NC-1, PC-1, PC-2 without NC-2; Section 10 (E3-H4 row) not rechecked.
+
+## Remaining conditions
+- **R1 (blocks signature).** The guidance assertion must not be evaluated at a step where w = 0 (step 0, t = 1); it must name a step with t < 1, and the call-count arithmetic for G (64 or 65) must follow.
+- **R2 (blocks signature).** State that NC-2 bounds only additive and noun-class-independent bias, drop the sentence claiming it measures the non-additive part, and word a positive Lambda_b as a noun-level dependence that may include quality-mediated class-level coupling (the toy reaches +0.16 with zero noun link and a clean placebo). W1 and the Section 10 positive rows use "completion-specific link"; that term is not licensed by Lambda_b alone.
+- **R3.** The null sentence's last clause ("carried by the prefix, not by co-generation") is not supported by any tested quantity; limit it to what is tested (no seed-specific noun link larger than 0.10 among discordant nouns).
+- **R4.** The PC-2 and PC-1 mismatch (cross-caption, plain images) is carried over from F-5; either record it as an accepted limitation in the wording of W2 or test the contrast it licenses.
+
+Rejection conditions 1 to 5 above stand, with condition 1 now read on the **non-additive** placebo as well: a Lambda_b above 0.05 in G with a clean NC-2 is not distinguishable from quality-mediated class-level coupling.
