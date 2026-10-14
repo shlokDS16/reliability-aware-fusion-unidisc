@@ -1,6 +1,26 @@
 # Progress ledger
 
 ## RESUME
+- **CURRENT STATE (2026-10-14, end of day; this block is the newest and overrides older ones).**
+  User decision: the target stays ACM Computing Surveys (D0009). Paper 1 is being rebuilt on an
+  integrating framework: `review/framework-v0.md` (generation as a commitment process, five design
+  choices C1 to C5, an error budget of factorisation, learning, selection and stale-computation
+  terms, and a taxonomy of methods by the term they change). It has been checked once against
+  sources: `review/dossier/competitor-anatomy.md` (organisation absent from both surveys),
+  `review/dossier/primer-foundations.md` (three unification claims correct with restrictions),
+  `review/dossier/primer-samplers.md` (the two-term identity is already published: ARDM
+  2110.02037 and the entropy-bounded sampler 2505.24857; selection and stale-computation terms and
+  the taxonomy not found), plus an exact-enumeration check in `analysis/framework/`.
+  **Next, in order:** (1) primer chapters still missing: the Gaussian and embedding diffusion
+  family; unified multimodal models (Show-o, UniDisc, MMaDA, MMaDA-Parallel, FUDOKI, Lumina-DiMOO
+  and the hybrid autoregressive-plus-diffusion models), with a check of proposition P5;
+  (2) rewrite P1 to P3 from the primers and have method-architect formalise the selection term
+  (what is the law of committed values under keep-the-most-confident-sample selection) and
+  red-team attack the derivations; (3) coverage test: place every corpus record on C1 to C5 and on
+  the lever table, starting with a design-space table of about 40 major models; records that fit
+  nowhere show where the framework is incomplete; (4) retry the arXiv searches; (5) the humans
+  read `framework-v0.md`. The claim-evaluability rubric and hypotheses E1 to E3 stay suspended;
+  quality appraisal will be a descriptive component.
 - **STOP AND READ FIRST (2026-10-14): the plan failed its own audits.**
   `review/audits/2026-10-14-red-team-plan.md` (editor's decision: reject without review; three
   fatal findings: scope trap at ACM Computing Surveys, evaluability construct unreliable and

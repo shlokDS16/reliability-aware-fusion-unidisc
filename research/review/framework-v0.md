@@ -1,10 +1,13 @@
 # Integrating framework for the review, v0 (2026-10-14)
 
-Status: **the orchestrator's own formulation, evidence level E0.** Written from prior knowledge of
-the field and derived here; not yet checked against the primary papers, not yet audited for
-novelty against the two existing surveys, and the derivations not yet independently verified.
-Three reading agents are checking it (see the end). Nothing here may be cited in the paper until
-those checks are recorded.
+Status: the orchestrator's formulation, **checked once against sources on 2026-10-14** by three
+full-text reading agents (`dossier/competitor-anatomy.md`, `dossier/primer-foundations.md`,
+`dossier/primer-samplers.md`) and by exact enumeration. Outcome: the organisation (five design
+choices, an error budget used as a taxonomy) is absent from both existing surveys; the central
+identity is correct but already published, so the review claims the synthesis and not the
+theorem; three unification claims needed restrictions; two of five predictions were wrong or
+contradicted and are corrected below. Still unchecked: the Gaussian family, the unified multimodal
+models, and whether every corpus record can be placed. The human authors have not yet read it.
 
 The aim is the thing ACM Computing Surveys' charter asks of a survey: one framework that puts the
 whole literature in a single notation and makes its trade-offs derivable, so that the taxonomy is
@@ -29,15 +32,23 @@ reuse** (how much of a forward pass is recomputed per step: caching).
 
 Claimed consequences of C1 to C3 that the review would present as the unification (each must be
 matched to its source):
-- With the erasure channel and marginal predictor, the continuous-time variational bound reduces
-  to a weighted masked cross-entropy, sum over masked positions of minus log p_theta(x^i given z),
-  with weight determined by the schedule; the time variable can be removed, leaving an expectation
-  over the number of masked positions; this equals the any-order autoregressive objective. So
-  masked diffusion, any-order autoregression and autoregression differ in C2 only.
-- Ratio (score-entropy) and marginal parameterisations of the erasure channel carry the same
-  information: the ratio is the clean-token marginal times a schedule-dependent scalar.
-- Gaussian and symmetric channels differ from erasure in C5: every position stays revisable, and
-  "commitment" happens only at the final rounding or as probability mass concentrates.
+(Corrected 2026-10-14 after the full-text check in `dossier/primer-foundations.md`; each verdict
+there was "correct with a stated restriction".)
+- With the erasure channel and marginal predictor, the continuous-time variational bound is a
+  weighted masked cross-entropy (MD4, arXiv 2406.04329, Eq. 5; MDLM, 2406.07524, Eq. 13). The time
+  variable can be removed; the weight is then 1/n for n masked positions and no longer depends on
+  the schedule (Zheng et al., 2409.02908, Prop. 3.1), and the objective equals the any-order
+  autoregressive one (RADD, 2406.03736, Thm 2; ARDM, 2110.02037, App. C). **Restriction:** the
+  objectives coincide; the model classes do not, the any-order objective is a Jensen bound on a
+  mixture whose conditionals need not be order-consistent, and the samplers coincide only in the
+  exact event-driven limit (Zheng et al., Prop. 4.1). These results are nonparametric. The bound
+  describes the infinite-step model: the gap to a finite-step parallel sampler is where E_fact lives.
+- For the erasure channel, at masked positions, the ratio (concrete score) is the clean-token
+  marginal times alpha/(1 - alpha) (RADD Thm 1; MD4 Prop. 1). An unconstrained ratio network can
+  leave this set (MD4 App. H.3).
+- The symmetric (uniform) channel keeps every position revisable, and it also changes the form of
+  the bound and loses the time-free parameterisation and the any-order link. The Gaussian channel
+  has **not yet been checked against sources** (not among the nine papers read).
 
 ## 2. The error budget (the theoretical spine)
 
@@ -62,6 +73,19 @@ randomness is independent of the unrevealed tokens, the right-hand side is an up
 3. For symmetric and Gaussian channels the same term appears as the total correlation of the
    reverse step, TC(z_s given z_t), which vanishes as the step shrinks: step size plays the role
    of parallelism.
+
+**Attribution (from `dossier/primer-samplers.md`, 2026-10-14). The two-term identity is published
+and is not ours.** Random orders: ARDM (arXiv 2110.02037) Eq. 3 and 4. State-dependent adaptive
+policies, with equality for deterministic ones: the entropy-bounded sampler paper of Ben-Hamu et
+al. (2505.24857) Eq. 7 and App. A.1. Fixed or random partitions: Feng et al. Lemma D.3,
+ParallelBench (2510.04767) Thm 1 proof, Li and Cai Eq. 17 and 23, Zhang et al. Eq. 16 and 18. The
+bound for randomised policies is also known (Li and Cai Eq. 11; Feng Lemma D.2). Per-step total
+correlation of a reverse step is defined in ReDi Eq. 5 and IMDM Eq. 6; the summed statement for
+uniform or Gaussian channels was not found, and for those channels it is an equality on path
+divergence and only a bound on the divergence of x. **Not found in the literature read:** the
+selection and stale-computation terms as parts of one budget, and the explicit condition "the
+policy depends on z_n only" together with what happens when it is violated. The review may claim
+the synthesis and the taxonomy, and must cite the sources above for the identity.
 
 Two further terms complete the budget:
 - **E_sel, commitment-selection bias.** If the policy decides what to keep after seeing sampled
@@ -112,6 +136,22 @@ P5. In unified models, committing image and text tokens in parallel is costly ex
 
 These are derived expectations, not findings. Each is checkable against within-paper step sweeps
 and, properly, by reruns on frozen checkpoints (Paper 2).
+
+**Status after the source check (2026-10-14):**
+- P1: supported in theory, with a caveat: the order also changes E_learn (Kim et al.; Zhang et
+  al.; Ben-Hamu et al.), so a step sweep does not cleanly separate the two terms.
+- P2: **wrong as worded.** A product of exact marginals has higher entropy than the data (also
+  visible in our toy check: 4.21 nats against 3.96), so lowering E_fact lowers entropy too.
+  Corrected form: output entropy **below a reference entropy** (data, or the many-step sampler)
+  indicates E_sel. Measured for argmax and low temperature (Zheng et al. Table 2 and Fig. 10;
+  ReMDM Table 5; the identity generative perplexity = divergence + entropy); for
+  confidence-of-sampled-token selection it is only hypothesised in the literature, with an entropy
+  cap in arXiv 2604.00375. A clean measurement of that distortion was not found.
+- P3: second clause **contradicted** (ReMDM Table 1: plain masked diffusion stays flat while
+  remasking keeps improving up to 4096 steps); first clause not testable as worded. To be rewritten.
+- P4: true by construction; not a prediction.
+- P5: open; no evidence found either way. This is the candidate conjecture for the multimodal
+  part and for Paper 2.
 
 ## 4b. Numerical check done (2026-10-14)
 
