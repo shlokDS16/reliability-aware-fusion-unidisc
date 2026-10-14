@@ -1,0 +1,210 @@
+{
+ "generation": 3,
+ "created": "2026-10-14T23:53:11",
+ "card": "EXP-001 v0.5 SIGNED",
+ "git": {
+  "head": "3cde697d676cc0abbe391bd25285c39e93d1aed3",
+  "branch": "claude/dlm-discovery-resume-ca3357",
+  "dirty_note": "files of this implementation are untracked at manifest time; the orchestrator commits"
+ },
+ "appendix_b_frozen": {
+  "prefix_rule.py": "99920c678a2d5e23b6b3b2a3fa5a04cc624bd627f0da3fdbc75c23db3f5f122d",
+  "caption_end.py": "20a85f779c28c993f913017ae62f899ef7312a99db5696f221e80eaa0f98339b",
+  "nonvisual_nouns.txt": "1ea7bc0b7ff2621163cb3457809301d82b1b4b4c7406b405fb8fb6d1bd5b0825",
+  "spatial_words.txt": "29bc5f5a3eae1e752d1bd697ae786bb2e2b677e82d6f222e318933895d4cc17e",
+  "debris_patterns.txt": "ea3d1ec8d4bab420830b8e06d732a12870dc3d4ff314b04ac0555ff25c8a7fa7",
+  "vlm_prompt.txt": "778d047ecc19c3fde374fbff4f77e6786146869440d00df8254b23e83a7ceee3",
+  "vlm_presence_prompt.txt": "b818693be344d7ffe272d05a5a0e758e838b5129886084ab05b485bd262c1e69",
+  "completion.py": "82ed4bc6e5d78115590e1e37e8ec5fef2b668e0232fc522e8892d51a2605275a",
+  "ha_source.py": "b47490baa80a22a263563d924efd4b4e7e8fed3d154e9501b1486ef83fc04bb4"
+ },
+ "H_A_source_rule_and_L_c": {
+  "ha_source.py": "b47490baa80a22a263563d924efd4b4e7e8fed3d154e9501b1486ef83fc04bb4",
+  "L_c.txt": null,
+  "note": "L_c.txt is written after PG-V passes; hashed again in runs/EXP-001/pilot/ before D0"
+ },
+ "derangements": {
+  "pi1_seed": 9101,
+  "pi2_seed": 9102,
+  "generator": "analysis/EXP-001/metrics.py::derangement (numpy default_rng, rejection)",
+  "pgv_cross_prefix": "analysis/EXP-001/completion.py::pgv_derangements (base seed 4401, 4 derangements, different prefix)",
+  "pgv_same_prefix_pairing": "analysis/EXP-001/completion.py::same_prefix_partner",
+  "code_sha256": {
+   "metrics.py": "e23a533fc216d8ce66c2c538520ae384d8311dac00bf75a3ce2b383b8485c23d",
+   "completion.py": "82ed4bc6e5d78115590e1e37e8ec5fef2b668e0232fc522e8892d51a2605275a"
+  }
+ },
+ "analysis_code": {
+  "metrics.py": "e23a533fc216d8ce66c2c538520ae384d8311dac00bf75a3ce2b383b8485c23d",
+  "hastats.py": "8a404859cab517f9fa9617aa66eba0f18d696dd40649dce0d2ff6ac7ba6c357a",
+  "coco_draw.py": "7c4826bfdc094ec397a96038beecdbbc2154b36ddefe55121aad92e969955527",
+  "evalmodels.py": "88e6e5269b88bda0fe35eb3ff2e7e5698822a5ff3a1da3bb222667fc15a1814c",
+  "gates_eval.py": "9f88de715d372a19a1a617e720b313a83a88b474991cd597a07c3d1580411785",
+  "frozen_analysis.py": "8ba8d884b97ab33b7801b72f912aa0dbfd47803a7a6279ced04b5a4f1cd1883f"
+ },
+ "generation_code": {
+  "config.py": "1f120bd035576d524f129770135a381aedd2590b10cd7f25f6377aaf87e2ebde",
+  "rng.py": "9c336204dff70fd6c5df93db12ec17ee7facc696cd44a54ac9ec1376c769eaec",
+  "plan.py": "1e688df3873996b19f835457a5989dc77238a8234e8cb9f358d5f29d8aa5bc6c",
+  "network.py": "3e6222b2775d410e7d679407fa6293e169b58cee4ff8b268e10614a65917de81",
+  "sampler.py": "ec3af79cc4b1f57f5f677df917a080c183e815397949161d3755d37366e6c80d",
+  "estimator.py": "d8a79b6aa6299b189f3467de86735361e666cfcd5400b8e528aa64a4feaf9620",
+  "probe_run.py": "2438f47686857b34b829bc1472b6f0e264703b239c28e0c7a9ef5a8019e6e8fc",
+  "unidisc_net.py": "ef271cf0636c5f73739f6a810660ef390e43b6d117fd24785da8d7c20324e468",
+  "runtools.py": "e4d2ac1ea7d9efc5d52c2a5cf7cee803f760de38496ad1eea3f85bdd74f3ec2b",
+  "gate_gen.py": "a13f04a099633eb0b20e708486534a6f38e88497a910c38c206ee3872cd370fe",
+  "gate_driver.py": "b2d3f4c2aed858ec767b2bf7db10601677fc325164fe1cc0108111ba989b2fcc",
+  "frozen.py": "3956ce2ba8b22d1494562c8d79398d2951c4f32c5c7800d05e8ffd811fb3b919",
+  "manifest.py": "ae607a85963d335c67bd867b2d0a1bb4a3cb84e409b8f060553951bcff4c768f"
+ },
+ "coco": {
+  "draw": "b939c298b145588291875324edcb59d2d7c72c9e3da31d7ed59fb7357ec456a6",
+  "captions_val2017.json": "afe3b30e403dd7f228e2373023abbd60042a6e10ec6874d3652df034d289ebb9",
+  "annotations_trainval2017.zip": "113a836d90195ee1f884e704da6304dfaaecff1f023f49b6ca93c4aaae470268",
+  "val2017.zip": "4f7e2ccb2866ec5041993c9cf2a952bbed69647b115d0f74da7ce8f4bef82f05",
+  "licence": "annotations CC BY 4.0, images Flickr terms (cocodataset.org terms of use) [E0, as stated by the card; not re-verified]"
+ },
+ "pins": {
+  "tagger": {
+   "name": "spaCy en_core_web_sm",
+   "version": "3.8.0",
+   "wheel_sha256": "1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85",
+   "source": "github.com/explosion/spacy-models release en_core_web_sm-3.8.0",
+   "tags": "Universal POS (pos_)"
+  },
+  "clip": {
+   "revision": "32bd64288804d66eefd0ccbe215aa642df71cc41",
+   "dir": "C:\\Users\\Shlok\\.cache\\dlm_dl\\hf_eval\\models--openai--clip-vit-large-patch14\\snapshots\\32bd64288804d66eefd0ccbe215aa642df71cc41",
+   "files": {
+    "config.json": {
+     "size": 4519,
+     "sha256": "8a09b467700c58138c29d53c605b34ebc69beaadd13274a8a2af8ad2c2f4032a"
+    },
+    "merges.txt": {
+     "size": 524619,
+     "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"
+    },
+    "model.safetensors": {
+     "size": 1710540580,
+     "sha256": "a2bf730a0c7debf160f7a6b50b3aaf3703e7e88ac73de7a314903141db026dcb"
+    },
+    "preprocessor_config.json": {
+     "size": 316,
+     "sha256": "910e70b3956ac9879ebc90b22fb3bc8a75b6a0677814500101a4c072bd7857bd"
+    },
+    "special_tokens_map.json": {
+     "size": 389,
+     "sha256": "f8c0d6c39aee3f8431078ef6646567b0aba7f2246e9c54b8b99d55c22b707cbf"
+    },
+    "tokenizer.json": {
+     "size": 2224003,
+     "sha256": "a83e0809aa4c3af7208b2df632a7a69668c6d48775b3c3fe4e1b1199d1f8b8f4"
+    },
+    "tokenizer_config.json": {
+     "size": 905,
+     "sha256": "deef455e52fa5e8151e339add0582e4235f066009601360999d3a9cda83b1129"
+    },
+    "vocab.json": {
+     "size": 961143,
+     "sha256": "3f0c4f7d2086b61b38487075278ea9ed04edb53a03cbb045b86c27190fa8fb69"
+    }
+   },
+   "repo": "openai/clip-vit-large-patch14"
+  },
+  "vlm": {
+   "revision": "89644892e4d85e24eaac8bacfd4f463576704203",
+   "dir": "C:\\Users\\Shlok\\.cache\\dlm_dl\\hf_eval\\models--Qwen--Qwen3-VL-2B-Instruct\\snapshots\\89644892e4d85e24eaac8bacfd4f463576704203",
+   "files": {
+    "chat_template.json": {
+     "size": 5502,
+     "sha256": "6f8a6a55027e3da5160105556cda5dd69f6423f1c32645f6730d32de7773d0c4"
+    },
+    "config.json": {
+     "size": 1505,
+     "sha256": "bec4b3d446efa05807365c9e1cec03ac590836879d02f3a6da879971154bdd3b"
+    },
+    "generation_config.json": {
+     "size": 269,
+     "sha256": "1e241830b48b397cb0900101421df5450baddc7adf01e5fc86b5615865f3bae4"
+    },
+    "merges.txt": {
+     "size": 1671839,
+     "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+    },
+    "model.safetensors": {
+     "size": 4255140312,
+     "sha256": "7de1838c87a5349b016c26a1c3f7d2bc400a3d485f95ef39a7059ffd734977a0"
+    },
+    "preprocessor_config.json": {
+     "size": 390,
+     "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+    },
+    "tokenizer.json": {
+     "size": 7032403,
+     "sha256": "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+    },
+    "tokenizer_config.json": {
+     "size": 10868,
+     "sha256": "c2da771801886ad9ae98181793ffd3dfb7f1af30f6f7c6a4e15d7dbba52e2399"
+    },
+    "video_preprocessor_config.json": {
+     "size": 385,
+     "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+    },
+    "vocab.json": {
+     "size": 2776833,
+     "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+   },
+   "repo": "Qwen/Qwen3-VL-2B-Instruct",
+   "licence": "apache-2.0 (HF API)",
+   "p_yes": "two-way softmax of Yes/No answer logits at the first answer position",
+   "prompt_template_file": "analysis/EXP-001/vlm_prompt.txt",
+   "presence_template_file": "analysis/EXP-001/vlm_presence_prompt.txt"
+  },
+  "clip_iqa": "Wang et al. 2023 formulation with the pinned CLIP ViT-L/14 weights: prompts 'Good photo.' / 'Bad photo.', logit scale 100 (analysis/EXP-001/evalmodels.py::ClipScorer.iqa); torchmetrics 1.9.0 class not used",
+  "kid": "NOT PINNED YET (Inception weights for KID are needed from stage D3 on, not for PG-1/PG-V)",
+  "llama2_tokenizer": "NousResearch/Llama-2-7b-hf rev 8efe6c9b93655b934e27bd9981e3ec13e55aee9d (setup.md)",
+  "gpt2_large": "openai-community/gpt2-large rev 32b71b12589c2f8d625668d2335a01cac3249519 (setup.md)",
+  "unidisc": "alexanderswerdlow/unidisc commit 3ee3e47a9e64bac2fdca59957726f14723371ced; weights aswerdlow/unidisc_interleaved rev 2b344ca856bd108b52a2d022a3463dace131249f (setup.md)"
+ },
+ "shim": {
+  "file": "runs\\env-2026-10-14\\scripts\\shims\\flash_attn\\layers\\rotary.py",
+  "sha256": "fc7f254f27254896008b152b534d872b4f1bae14506b684045b31e81efbcbceb",
+  "note": "working copy is v2 (float32 rotation, one rounding) and uncommitted at card time"
+ },
+ "environments": {
+  "generation_venv": {
+   "python": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.venv\\Scripts\\python.exe",
+   "versions": {
+    "torch": "2.11.0+cu130",
+    "transformers": "4.49.0",
+    "numpy": "2.5.2",
+    "torchmetrics": "1.9.0",
+    "accelerate": "1.5.2",
+    "diffusers": "0.32.2"
+   }
+  },
+  "eval_venv": {
+   "python": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.venv-eval\\Scripts\\python.exe",
+   "versions": {
+    "torch": "2.11.0+cu130",
+    "transformers": "5.19.0",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "spacy": "3.8.16",
+    "en_core_web_sm": "3.8.0",
+    "pytest": "9.1.1",
+    "torchmetrics": "1.9.0",
+    "pillow": "12.3.0"
+   }
+  }
+ },
+ "gpu": {
+  "nvidia_smi": "NVIDIA GeForce RTX 5070 Ti Laptop GPU, 595.71, 12227 MiB, 3090 MHz"
+ },
+ "gpu_guard": {
+  "tool": "tools/gpu_guard.py",
+  "sha256": "5ddf7d09f1ea830a6a1049b5958974c342cd37a2817e1063e1dbf797d855aa6d"
+ }
+}

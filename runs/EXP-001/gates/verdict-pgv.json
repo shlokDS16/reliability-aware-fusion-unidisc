@@ -1,0 +1,839 @@
+{
+ "rung": 1,
+ "n_samples": 48,
+ "stat": {
+  "m": 0.7083333333333334,
+  "s": 0.7239583333333334,
+  "s_sp": 0.7083333333333334,
+  "nonempty_share": 0.9791666666666666,
+  "per_noun": {
+   "n_nouns": 283,
+   "matched": 0.30742049469964666,
+   "cross": 0.21643109540636044,
+   "same_prefix": 0.26501766784452296
+  }
+ },
+ "gate": {
+  "a_nonempty_share_ge_0.60": true,
+  "b_m_ge_0.50": true,
+  "c_m_minus_s_ge_0.25": false,
+  "d_median_debris_lt_0.5": true,
+  "pass": false,
+  "m_minus_s": -0.015625,
+  "median_debris_share": 0.25
+ },
+ "m_minus_s_sp": {
+  "estimate": 0.0,
+  "ci90_cluster": [
+   -0.0625,
+   0.0625
+  ],
+  "line": "no measurable co-generation dependence at this rung (PG-V, 24 prefixes)"
+ },
+ "m_minus_s_cross": {
+  "estimate": -0.015625,
+  "ci90_cluster": [
+   -0.08333333333333333,
+   0.057291666666666664
+  ]
+ },
+ "e2_share": 0.5,
+ "caption_end_set_by": {
+  "e0": 0,
+  "e1": 7,
+  "e2": 24,
+  "cap": 17
+ },
+ "completion_len": {
+  "mean": 22.645833333333332,
+  "p90": 32.0,
+  "min": 1,
+  "max": 32
+ },
+ "caption_end_index_hist": [
+  0,
+  0,
+  1,
+  1,
+  0,
+  2,
+  0,
+  0,
+  0,
+  1,
+  2,
+  0,
+  0,
+  2,
+  1,
+  2,
+  0,
+  1,
+  2,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  6,
+  1,
+  2,
+  0,
+  1,
+  0,
+  0,
+  2,
+  17
+ ],
+ "pad_share_of_tail": 0.0,
+ "debris_share": {
+  "median": 0.25,
+  "mean": 0.2923177083333333
+ },
+ "committed_text_token_state_pad_or_post_caption_share": {
+  "pass2": 0.125,
+  "pass6": 0.20833333333333334
+ },
+ "source_availability": {
+  "1": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 6.351180065078164e-05
+  },
+  "2": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 3.152524526775267e-05
+  },
+  "6": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 3.948917272743047e-05
+  },
+  "26": {
+   "share_with_source_Lc16": 0.5,
+   "mean_w": 1.1093420832176116e-05
+  },
+  "30": {
+   "share_with_source_Lc16": 0.3333333333333333,
+   "mean_w": 0.0012497062244049785
+  }
+ },
+ "L_c": 16,
+ "tagger": "spaCy en_core_web_sm",
+ "n_vlm_calls": 1632,
+ "nouns": [
+  {
+   "i": 90000,
+   "prefix": "A bear laying in a",
+   "caption": "A bear laying in a bewilderment on the banks of a river in australia by agricultural experts on pigeon july",
+   "nouns": [
+    "bewilderment",
+    "banks",
+    "river",
+    "australia",
+    "experts",
+    "pigeon",
+    "july"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90001,
+   "prefix": "A bear laying in a",
+   "caption": "A bear laying in a tree on a white cloud with king kings royalty royalty famous royalty golden royalty unique royalty golden royalty famous royalty diy royalty",
+   "nouns": [
+    "tree",
+    "cloud",
+    "king",
+    "royalty",
+    "golden",
+    "diy"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90002,
+   "prefix": "A group of",
+   "caption": "A group of travelers setting up their own resort to stay at the fursland resort, the moai fish club resort, the hottest resort in nigeria",
+   "nouns": [
+    "travelers",
+    "resort",
+    "moai",
+    "fish",
+    "club",
+    "nigeria"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90003,
+   "prefix": "A group of",
+   "caption": "A group of beers is displayed on a black and white web background against a geometric background with a beer container and lotpot numbers in white outlines and outlines of",
+   "nouns": [
+    "beers",
+    "web",
+    "beer",
+    "container",
+    "lotpot",
+    "numbers",
+    "outlines"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90004,
+   "prefix": "three dogs on a",
+   "caption": "three dogs on a carriage ride poses for a photo at the large portobello party in downtown nyc on",
+   "nouns": [
+    "carriage",
+    "ride",
+    "party",
+    "downtown",
+    "nyc"
+   ],
+   "caption_end": 23,
+   "set_by": "e2"
+  },
+  {
+   "i": 90005,
+   "prefix": "three dogs on a",
+   "caption": "three dogs on a sea of spray paint by susan f danielle-billies on august",
+   "nouns": [
+    "sea",
+    "spray",
+    "paint",
+    "susan",
+    "f",
+    "danielle",
+    "billies",
+    "august"
+   ],
+   "caption_end": 20,
+   "set_by": "e2"
+  },
+  {
+   "i": 90006,
+   "prefix": "Someone roasting hot dogs in a",
+   "caption": "Someone roasting hot dogs in a bag at a table with up fire pit in southwest america",
+   "nouns": [
+    "bag",
+    "table",
+    "fire",
+    "pit",
+    "southwest",
+    "america"
+   ],
+   "caption_end": 15,
+   "set_by": "e2"
+  },
+  {
+   "i": 90007,
+   "prefix": "Someone roasting hot dogs in a",
+   "caption": "Someone roasting hot dogs in a text box to get it all for £",
+   "nouns": [
+    "text",
+    "box"
+   ],
+   "caption_end": 9,
+   "set_by": "e2"
+  },
+  {
+   "i": 90008,
+   "prefix": "A room with a",
+   "caption": "A room with a bookshelf, an old house ornate sconces, a burningchair and the building ceiling that has been caused by dew and oxygen",
+   "nouns": [
+    "bookshelf",
+    "house",
+    "ornate",
+    "sconces",
+    "burningchair",
+    "building",
+    "ceiling",
+    "dew",
+    "oxygen"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90009,
+   "prefix": "A room with a",
+   "caption": "A room with a water aquarium on the floor and a hammer fish in the center, with text telling us about the wall banner - it's the design flow",
+   "nouns": [
+    "water",
+    "aquarium",
+    "floor",
+    "hammer",
+    "fish",
+    "text",
+    "wall",
+    "banner",
+    "design",
+    "flow"
+   ],
+   "caption_end": 32,
+   "set_by": "e1"
+  },
+  {
+   "i": 90010,
+   "prefix": "A couple of",
+   "caption": "A couple of crows throw pillows hang on a wall in a room filled with a large pile of clothes as they are the thing for the contemporary entertainment industry",
+   "nouns": [
+    "crows",
+    "pillows",
+    "wall",
+    "room",
+    "pile",
+    "clothes",
+    "thing",
+    "entertainment",
+    "industry"
+   ],
+   "caption_end": 32,
+   "set_by": "e1"
+  },
+  {
+   "i": 90011,
+   "prefix": "A couple of",
+   "caption": "A couple of gingerbread grapes with drizzle sauce on top - with floral art - by susansart",
+   "nouns": [
+    "gingerbread",
+    "grapes",
+    "drizzle",
+    "sauce",
+    "art",
+    "susansart"
+   ],
+   "caption_end": 26,
+   "set_by": "e2"
+  },
+  {
+   "i": 90012,
+   "prefix": "A Nintendo Wii",
+   "caption": "A Nintendo Wii with a background of the olympic games of iglam bu spain - one of the most famous legends in arabia - displayed in the dark - for",
+   "nouns": [
+    "games",
+    "iglam",
+    "spain",
+    "legends",
+    "arabia",
+    "dark"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90013,
+   "prefix": "A Nintendo Wii",
+   "caption": "A Nintendo Wii console, a few items that are attached to a dashboard,",
+   "nouns": [
+    "console",
+    "items",
+    "dashboard"
+   ],
+   "caption_end": 15,
+   "set_by": "e2"
+  },
+  {
+   "i": 90014,
+   "prefix": "A woman with her",
+   "caption": "A woman with her knee bent and head bowed in front of a holographic display board, optimized for",
+   "nouns": [
+    "knee",
+    "bent",
+    "head",
+    "display",
+    "board"
+   ],
+   "caption_end": 22,
+   "set_by": "e2"
+  },
+  {
+   "i": 90015,
+   "prefix": "A woman with her",
+   "caption": "A woman with her daughter are in the sandup at the california beach, florida, florida, florida, febru",
+   "nouns": [
+    "daughter",
+    "california",
+    "beach",
+    "florida",
+    "febru"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90016,
+   "prefix": "A man swinging a",
+   "caption": "A man swinging a bat on his baseball field during the batfl",
+   "nouns": [
+    "bat",
+    "baseball",
+    "field",
+    "batfl"
+   ],
+   "caption_end": 10,
+   "set_by": "e1"
+  },
+  {
+   "i": 90017,
+   "prefix": "A man swinging a",
+   "caption": "A man swinging a club with multiple heads in russian congressman's premiere of the sixty of colorcs on nad",
+   "nouns": [
+    "club",
+    "heads",
+    "congressman",
+    "premiere",
+    "colorcs",
+    "nad"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90018,
+   "prefix": "A chair next to a",
+   "caption": "A chair next to a sign that says italian wedding with crystals and greenery on the centerpiece, with a white and grey linen table nap placeware,",
+   "nouns": [
+    "sign",
+    "wedding",
+    "crystals",
+    "greenery",
+    "centerpiece",
+    "linen",
+    "table",
+    "nap",
+    "placeware"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90019,
+   "prefix": "A chair next to a",
+   "caption": "A chair next to a mirror on the white wall with gold branches mirror flowers in the room decorative decoration, interior decoration, stylish decoration, accent decoration decor",
+   "nouns": [
+    "mirror",
+    "wall",
+    "gold",
+    "branches",
+    "flowers",
+    "room",
+    "decoration",
+    "decor"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90020,
+   "prefix": "Scissors are resting on a",
+   "caption": "Scissors are resting on a piece of paper, a purple background is a miniature wildlife scene featured on it all taken from just outside of the frame by david bbcard",
+   "nouns": [
+    "piece",
+    "paper",
+    "wildlife",
+    "scene",
+    "frame",
+    "david",
+    "bbcard"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90021,
+   "prefix": "Scissors are resting on a",
+   "caption": "Scissors are resting on a table next to a bouquet of white baby pink flowers, a pearl necklace and a small jar of a white heart-shaped flower orn",
+   "nouns": [
+    "table",
+    "bouquet",
+    "baby",
+    "flowers",
+    "pearl",
+    "necklace",
+    "jar",
+    "heart",
+    "flower"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90022,
+   "prefix": "A tall sandwich with",
+   "caption": "A tall sandwich with cheese and stuffing on a white floor, in photos",
+   "nouns": [
+    "cheese",
+    "floor",
+    "photos"
+   ],
+   "caption_end": 13,
+   "set_by": "e2"
+  },
+  {
+   "i": 90023,
+   "prefix": "A tall sandwich with",
+   "caption": "A tall sandwich with spinach, an egg, pasta and parmesan cheese is presented on a table at restaurant montana gel decadence",
+   "nouns": [
+    "spinach",
+    "egg",
+    "pasta",
+    "parmesan",
+    "cheese",
+    "table",
+    "restaurant",
+    "montana",
+    "gel",
+    "decadence"
+   ],
+   "caption_end": 29,
+   "set_by": "e2"
+  },
+  {
+   "i": 90024,
+   "prefix": "A bowl filled with",
+   "caption": "A bowl filled with black piles on a white cloth with an old- black photo of an deceased person, a black and white photo of a person, white pile in",
+   "nouns": [
+    "piles",
+    "cloth",
+    "person",
+    "pile"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90025,
+   "prefix": "A bowl filled with",
+   "caption": "A bowl filled with pink ice cream is placed on top of a short mold of aerobic strawberries and it has been in use in this recipe",
+   "nouns": [
+    "ice",
+    "cream",
+    "mold",
+    "strawberries",
+    "use",
+    "recipe"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90026,
+   "prefix": "A mixed breed",
+   "caption": "A mixed breed dog standing on a rail of fence in public space during a rainy evening, photograph",
+   "nouns": [
+    "dog",
+    "rail",
+    "fence",
+    "space",
+    "evening"
+   ],
+   "caption_end": 19,
+   "set_by": "e2"
+  },
+  {
+   "i": 90027,
+   "prefix": "A mixed breed",
+   "caption": "A mixed breed dog walking down the beach in the middle of a plain, detailed photo of the sand, with an excavation and a sandcastle on the pictures of dog",
+   "nouns": [
+    "dog",
+    "beach",
+    "sand",
+    "excavation",
+    "sandcastle",
+    "pictures"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90028,
+   "prefix": "A table holding a",
+   "caption": "A table holding a number of plastic wastes and instruments can be seen among the black and purple tablecloths megaphone dome stand black and purple sound",
+   "nouns": [
+    "number",
+    "wastes",
+    "instruments",
+    "tablecloths",
+    "megaphone",
+    "dome",
+    "sound"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90029,
+   "prefix": "A table holding a",
+   "caption": "A table holding a bunch of paper flowers",
+   "nouns": [
+    "bunch",
+    "paper",
+    "flowers"
+   ],
+   "caption_end": 5,
+   "set_by": "e1"
+  },
+  {
+   "i": 90030,
+   "prefix": "A woman in a",
+   "caption": "A woman in a light blue dress, looking away to the left, standing in front of an abstract background with many black silhouettes, all in soft focus and faded by",
+   "nouns": [
+    "dress",
+    "silhouettes",
+    "focus"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90031,
+   "prefix": "A woman in a",
+   "caption": "A woman in a dress is sitting on a beach, looking out at the sea",
+   "nouns": [
+    "dress",
+    "beach",
+    "sea"
+   ],
+   "caption_end": 13,
+   "set_by": "e1"
+  },
+  {
+   "i": 90032,
+   "prefix": "A machine in a",
+   "caption": "A machine in a 3d model with a white background thanks for this service with a brain on waste management psychology - july",
+   "nouns": [
+    "3d",
+    "model",
+    "thanks",
+    "service",
+    "brain",
+    "waste",
+    "management",
+    "psychology",
+    "july"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90033,
+   "prefix": "A machine in a",
+   "caption": "A machine in a prototype factory, with a background of white dots and the words speech, fast more times, listen to the ny thoughts, want to think of the future poster",
+   "nouns": [
+    "prototype",
+    "factory",
+    "dots",
+    "words",
+    "speech",
+    "times",
+    "ny",
+    "thoughts",
+    "poster"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90034,
+   "prefix": "The airplane has landed behind a",
+   "caption": "The airplane has landed behind a street sign and sign that reads \"join pakistan chulita jan alghan",
+   "nouns": [
+    "street",
+    "sign",
+    "pakistan",
+    "chulita",
+    "jan",
+    "alghan"
+   ],
+   "caption_end": 18,
+   "set_by": "e2"
+  },
+  {
+   "i": 90035,
+   "prefix": "The airplane has landed behind a",
+   "caption": "The airplane has landed behind a building",
+   "nouns": [
+    "building"
+   ],
+   "caption_end": 2,
+   "set_by": "e1"
+  },
+  {
+   "i": 90036,
+   "prefix": "A blue and black ray holding",
+   "caption": "A blue and black ray holding the phrases bankruptcy is disrupted",
+   "nouns": [
+    "phrases",
+    "bankruptcy"
+   ],
+   "caption_end": 10,
+   "set_by": "e2"
+  },
+  {
+   "i": 90037,
+   "prefix": "A blue and black ray holding",
+   "caption": "A blue and black ray holding a piece of paper and covered with the word hados on it inposed birthday singing rec key for surerank pinter",
+   "nouns": [
+    "piece",
+    "paper",
+    "word",
+    "hados",
+    "birthday",
+    "singing",
+    "rec",
+    "key",
+    "surerank",
+    "pinter"
+   ],
+   "caption_end": 27,
+   "set_by": "e2"
+  },
+  {
+   "i": 90038,
+   "prefix": "A pizza covered in",
+   "caption": "A pizza covered in sour cream and garlic sauce cheese sauce on a sheet tray, baked in half, stuffed with cheese and meat mixture",
+   "nouns": [
+    "cream",
+    "sauce",
+    "cheese",
+    "sheet",
+    "tray",
+    "half",
+    "meat",
+    "mixture"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90039,
+   "prefix": "A pizza covered in",
+   "caption": "A pizza covered in blue tomatella",
+   "nouns": [
+    "blue",
+    "tomatella"
+   ],
+   "caption_end": 5,
+   "set_by": "e1"
+  },
+  {
+   "i": 90040,
+   "prefix": "A group of",
+   "caption": "A group of people at a restaurant into the chinese chinese new year queue, chinese chinese temple, chinese chain bowls, Chinese new year avenue",
+   "nouns": [
+    "people",
+    "restaurant",
+    "queue",
+    "temple",
+    "chain",
+    "bowls",
+    "avenue"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90041,
+   "prefix": "A group of",
+   "caption": "A group of people are sitting in a boat and gracist the word palcine as symbol",
+   "nouns": [
+    "people",
+    "boat",
+    "word",
+    "palcine",
+    "symbol"
+   ],
+   "caption_end": 18,
+   "set_by": "e2"
+  },
+  {
+   "i": 90042,
+   "prefix": "A man walking toward a",
+   "caption": "A man walking toward a piece of paper displaying the abbreviation 'the newspaper,' in black on white color",
+   "nouns": [
+    "piece",
+    "paper",
+    "abbreviation",
+    "newspaper",
+    "color"
+   ],
+   "caption_end": 17,
+   "set_by": "e2"
+  },
+  {
+   "i": 90043,
+   "prefix": "A man walking toward a",
+   "caption": "A man walking toward a building with his hands in his pockets in a gurney pictures by hr, edward stn, pg",
+   "nouns": [
+    "building",
+    "hands",
+    "pockets",
+    "gurney",
+    "pictures",
+    "hr",
+    "edward",
+    "stn"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90044,
+   "prefix": "A group of",
+   "caption": "A group of young people flying kites and frisbee in the park with a blue sky and clean water off the flyriver",
+   "nouns": [
+    "people",
+    "kites",
+    "frisbee",
+    "park",
+    "sky",
+    "water",
+    "flyriver"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90045,
+   "prefix": "A group of",
+   "caption": "A group of 5",
+   "nouns": [],
+   "caption_end": 3,
+   "set_by": "e2"
+  },
+  {
+   "i": 90046,
+   "prefix": "a couple of young",
+   "caption": "a couple of young girls posing in front of a staple paper vending machine clothes stand in sydney wharf in london",
+   "nouns": [
+    "girls",
+    "paper",
+    "machine",
+    "clothes",
+    "sydney",
+    "wharf",
+    "london"
+   ],
+   "caption_end": 27,
+   "set_by": "e2"
+  },
+  {
+   "i": 90047,
+   "prefix": "a couple of young",
+   "caption": "a couple of young boys laughing in front of a stack of clothing store,",
+   "nouns": [
+    "boys",
+    "stack",
+    "clothing",
+    "store"
+   ],
+   "caption_end": 14,
+   "set_by": "e2"
+  }
+ ]
+}

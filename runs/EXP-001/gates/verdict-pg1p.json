@@ -1,0 +1,23 @@
+{
+ "512": {
+  "median_code_share": 0.94921875,
+  "mean_iqa": 0.6651765536516905,
+  "sd_iqa": 0.1794265848802983,
+  "near_uniform_proxy_count": 0,
+  "grid": "grid_pleg_512px.png",
+  "mean_seconds": 3.194748368750652
+ },
+ "1024": {
+  "median_code_share": 0.8304443359375,
+  "mean_iqa": 0.4698054017499089,
+  "sd_iqa": 0.22431203582941048,
+  "near_uniform_proxy_count": 0,
+  "grid": "grid_pleg_1024px.png",
+  "mean_seconds": 15.267485281250401
+ },
+ "real_median_code_share_512px": 0.92919921875,
+ "criterion_i_code_share": true,
+ "criterion_ii_iqa": true,
+ "criterion_iii_near_uniform_proxy_le_2": true,
+ "criterion_iii_note": "the engineer's visual count (grid file) is recorded in IMPLEMENTATION.md; the proxy is pixel SD < 6 on 8-bit grey"
+}

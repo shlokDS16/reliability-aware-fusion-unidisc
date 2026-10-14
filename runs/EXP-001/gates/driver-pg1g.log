@@ -1,0 +1,839 @@
+chunk 0 minutes 5.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 22:12:02.262000 23124 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 22:12:03.799000 23124 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 22:12:03] [Rank:0] Forcing cudnn spda context
+[2026-10-14 22:12:03] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 22:12:03] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 22:12:13] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 22:12:13] [Rank:0] Setting torch defaults
+[2026-10-14 22:12:13] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 22:12:14] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 22:12:14] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 22:12:14] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 22:12:14] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 22:12:15] [Rank:0] Using Scale factor: 1
+[2026-10-14 22:12:15] [Rank:0] Using Scale factor: 2
+[2026-10-14 22:12:15] [Rank:0] Using Scale factor: 3
+[2026-10-14 22:12:15] [Rank:0] Using Scale factor: 4
+[2026-10-14 22:12:15] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 22:12:15] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 22:12:16] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 22:12:16] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 22:12:24] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 22:12:24] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'A person is surfing in a wave pool.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A person is surfing in a wave pool.</s><s><image></s>']
+Attention mask: torch.Size([1063]), input ids: torch.Size([1063]), modality: torch.Size([1063])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A person is surfing in a wave pool.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A person is surfing in a wave pool.</s><s><image></s>']
+Attention mask: torch.Size([4135]), input ids: torch.Size([4135]), modality: torch.Size([4135])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-000.csv
+chunk exit 75 wall 181s
+chunk 1 minutes 15.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 22:17:12.152000 44008 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 22:17:13.320000 44008 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 22:17:12] [Rank:0] Forcing cudnn spda context
+[2026-10-14 22:17:12] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 22:17:12] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 22:17:26] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 22:17:26] [Rank:0] Setting torch defaults
+[2026-10-14 22:17:26] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 22:17:27] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 22:17:27] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 22:17:27] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 22:17:27] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 22:17:28] [Rank:0] Using Scale factor: 1
+[2026-10-14 22:17:28] [Rank:0] Using Scale factor: 2
+[2026-10-14 22:17:28] [Rank:0] Using Scale factor: 3
+[2026-10-14 22:17:28] [Rank:0] Using Scale factor: 4
+[2026-10-14 22:17:28] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 22:17:28] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 22:17:29] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 22:17:29] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 22:17:36] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 22:17:36] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'a cat sitting in a bathtub not looking amused'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>a cat sitting in a bathtub not looking amused</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'a cat sitting in a bathtub not looking amused'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>a cat sitting in a bathtub not looking amused</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A tall church tower sitting on the side of a road.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A tall church tower sitting on the side of a road.</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A tall church tower sitting on the side of a road.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A tall church tower sitting on the side of a road.</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'many kites with different shapes all laying on the ground'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>many kites with different shapes all laying on the ground</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'many kites with different shapes all laying on the ground'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>many kites with different shapes all laying on the ground</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A woman wearing a blue t-shirt while looking at her cell phone and sitting on a bench next to a bright pink wall.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A woman wearing a blue t-shirt while looking at her cell phone and sitting on a bench next to a bright pink wall.</s><s><image></s>']
+Attention mask: torch.Size([1082]), input ids: torch.Size([1082]), modality: torch.Size([1082])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A woman wearing a blue t-shirt while looking at her cell phone and sitting on a bench next to a bright pink wall.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A woman wearing a blue t-shirt while looking at her cell phone and sitting on a bench next to a bright pink wall.</s><s><image></s>']
+Attention mask: torch.Size([4154]), input ids: torch.Size([4154]), modality: torch.Size([4154])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'a couple of horses pull a contraption '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>a couple of horses pull a contraption </s><s><image></s>']
+Attention mask: torch.Size([1061]), input ids: torch.Size([1061]), modality: torch.Size([1061])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'a couple of horses pull a contraption '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>a couple of horses pull a contraption </s><s><image></s>']
+Attention mask: torch.Size([4133]), input ids: torch.Size([4133]), modality: torch.Size([4133])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'The moon shining down on a harbor full of ships.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>The moon shining down on a harbor full of ships.</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-001.csv
+chunk exit 75 wall 708s
+chunk 2 minutes 15.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 22:30:56.354000 35320 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 22:30:58.175000 35320 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 22:30:57] [Rank:0] Forcing cudnn spda context
+[2026-10-14 22:30:57] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 22:30:57] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 22:31:09] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 22:31:09] [Rank:0] Setting torch defaults
+[2026-10-14 22:31:10] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 22:31:11] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 22:31:11] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 22:31:11] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 22:31:11] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 22:31:12] [Rank:0] Using Scale factor: 1
+[2026-10-14 22:31:12] [Rank:0] Using Scale factor: 2
+[2026-10-14 22:31:12] [Rank:0] Using Scale factor: 3
+[2026-10-14 22:31:12] [Rank:0] Using Scale factor: 4
+[2026-10-14 22:31:12] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 22:31:12] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 22:31:12] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 22:31:12] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 22:31:21] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 22:31:21] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'The moon shining down on a harbor full of ships.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>The moon shining down on a harbor full of ships.</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A lady hold a game controller, pointed towards a laptop.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A lady hold a game controller, pointed towards a laptop.</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A lady hold a game controller, pointed towards a laptop.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A lady hold a game controller, pointed towards a laptop.</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'The woman holding an umbrella smiles on the narrow street beside the sidewalk.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>The woman holding an umbrella smiles on the narrow street beside the sidewalk.</s><s><image></s>']
+Attention mask: torch.Size([1070]), input ids: torch.Size([1070]), modality: torch.Size([1070])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'The woman holding an umbrella smiles on the narrow street beside the sidewalk.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>The woman holding an umbrella smiles on the narrow street beside the sidewalk.</s><s><image></s>']
+Attention mask: torch.Size([4142]), input ids: torch.Size([4142]), modality: torch.Size([4142])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Small motorcycle with several bicycles tied to the back of it. '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Small motorcycle with several bicycles tied to the back of it. </s><s><image></s>']
+Attention mask: torch.Size([1069]), input ids: torch.Size([1069]), modality: torch.Size([1069])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Small motorcycle with several bicycles tied to the back of it. '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Small motorcycle with several bicycles tied to the back of it. </s><s><image></s>']
+Attention mask: torch.Size([4141]), input ids: torch.Size([4141]), modality: torch.Size([4141])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A table topped with a train styled cake.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A table topped with a train styled cake.</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A table topped with a train styled cake.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A table topped with a train styled cake.</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': "A bathroom with a toilette with it's seat down."}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ["You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A bathroom with a toilette with it's seat down.</s><s><image></s>"]
+Attention mask: torch.Size([1067]), input ids: torch.Size([1067]), modality: torch.Size([1067])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': "A bathroom with a toilette with it's seat down."}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ["You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A bathroom with a toilette with it's seat down.</s><s><image></s>"]
+Attention mask: torch.Size([4139]), input ids: torch.Size([4139]), modality: torch.Size([4139])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-002.csv
+chunk exit 75 wall 789s
+chunk 3 minutes 15.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 22:46:03.611000 37224 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 22:46:05.134000 37224 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 22:46:04] [Rank:0] Forcing cudnn spda context
+[2026-10-14 22:46:04] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 22:46:04] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 22:46:14] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 22:46:14] [Rank:0] Setting torch defaults
+[2026-10-14 22:46:14] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 22:46:15] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 22:46:15] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 22:46:15] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 22:46:15] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 22:46:16] [Rank:0] Using Scale factor: 1
+[2026-10-14 22:46:16] [Rank:0] Using Scale factor: 2
+[2026-10-14 22:46:16] [Rank:0] Using Scale factor: 3
+[2026-10-14 22:46:16] [Rank:0] Using Scale factor: 4
+[2026-10-14 22:46:16] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 22:46:16] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 22:46:16] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 22:46:16] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 22:46:23] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 22:46:23] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'Messy bed next to bed with clothes on it in bright room.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Messy bed next to bed with clothes on it in bright room.</s><s><image></s>']
+Attention mask: torch.Size([1066]), input ids: torch.Size([1066]), modality: torch.Size([1066])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Messy bed next to bed with clothes on it in bright room.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Messy bed next to bed with clothes on it in bright room.</s><s><image></s>']
+Attention mask: torch.Size([4138]), input ids: torch.Size([4138]), modality: torch.Size([4138])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A person doing skateboard ticks at a skate park'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A person doing skateboard ticks at a skate park</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A person doing skateboard ticks at a skate park'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A person doing skateboard ticks at a skate park</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A group of animals standing on top of a grass covered field.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A group of animals standing on top of a grass covered field.</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A group of animals standing on top of a grass covered field.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A group of animals standing on top of a grass covered field.</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A person in the process of sheering a woolen animal.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A person in the process of sheering a woolen animal.</s><s><image></s>']
+Attention mask: torch.Size([1066]), input ids: torch.Size([1066]), modality: torch.Size([1066])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A person in the process of sheering a woolen animal.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A person in the process of sheering a woolen animal.</s><s><image></s>']
+Attention mask: torch.Size([4138]), input ids: torch.Size([4138]), modality: torch.Size([4138])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A replica of a bear and her cub in a glass case in an exhibit.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A replica of a bear and her cub in a glass case in an exhibit.</s><s><image></s>']
+Attention mask: torch.Size([1070]), input ids: torch.Size([1070]), modality: torch.Size([1070])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A replica of a bear and her cub in a glass case in an exhibit.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A replica of a bear and her cub in a glass case in an exhibit.</s><s><image></s>']
+Attention mask: torch.Size([4142]), input ids: torch.Size([4142]), modality: torch.Size([4142])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man badly beating laying unconscious near a nurse.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man badly beating laying unconscious near a nurse.</s><s><image></s>']
+Attention mask: torch.Size([1067]), input ids: torch.Size([1067]), modality: torch.Size([1067])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man badly beating laying unconscious near a nurse.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man badly beating laying unconscious near a nurse.</s><s><image></s>']
+Attention mask: torch.Size([4139]), input ids: torch.Size([4139]), modality: torch.Size([4139])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-003.csv
+chunk exit 75 wall 776s
+chunk 4 minutes 15.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 23:01:35.561000 26224 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 23:01:39.209000 26224 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 23:01:38] [Rank:0] Forcing cudnn spda context
+[2026-10-14 23:01:38] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 23:01:38] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 23:02:24] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 23:02:24] [Rank:0] Setting torch defaults
+[2026-10-14 23:02:25] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 23:02:26] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 23:02:26] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 23:02:26] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 23:02:26] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 23:02:27] [Rank:0] Using Scale factor: 1
+[2026-10-14 23:02:27] [Rank:0] Using Scale factor: 2
+[2026-10-14 23:02:27] [Rank:0] Using Scale factor: 3
+[2026-10-14 23:02:27] [Rank:0] Using Scale factor: 4
+[2026-10-14 23:02:27] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 23:02:27] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 23:02:27] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 23:02:27] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 23:02:35] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 23:02:35] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': "An adult black bear let's his long tongue protrude."}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ["You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>An adult black bear let's his long tongue protrude.</s><s><image></s>"]
+Attention mask: torch.Size([1066]), input ids: torch.Size([1066]), modality: torch.Size([1066])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': "An adult black bear let's his long tongue protrude."}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ["You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>An adult black bear let's his long tongue protrude.</s><s><image></s>"]
+Attention mask: torch.Size([4138]), input ids: torch.Size([4138]), modality: torch.Size([4138])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A pitcher holds his arm far behind him during a pitch.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A pitcher holds his arm far behind him during a pitch.</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A pitcher holds his arm far behind him during a pitch.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A pitcher holds his arm far behind him during a pitch.</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A train next to a train station with city in background.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A train next to a train station with city in background.</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A train next to a train station with city in background.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A train next to a train station with city in background.</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'a view of a kitchen from across the room.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>a view of a kitchen from across the room.</s><s><image></s>']
+Attention mask: torch.Size([1062]), input ids: torch.Size([1062]), modality: torch.Size([1062])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'a view of a kitchen from across the room.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>a view of a kitchen from across the room.</s><s><image></s>']
+Attention mask: torch.Size([4134]), input ids: torch.Size([4134]), modality: torch.Size([4134])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'White birds are gathered around a water puddle.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>White birds are gathered around a water puddle.</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'White birds are gathered around a water puddle.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>White birds are gathered around a water puddle.</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-004.csv
+chunk exit 75 wall 730s
+chunk 5 minutes 15.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 23:15:16.909000 39896 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 23:15:18.704000 39896 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 23:15:18] [Rank:0] Forcing cudnn spda context
+[2026-10-14 23:15:18] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 23:15:18] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 23:15:30] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 23:15:30] [Rank:0] Setting torch defaults
+[2026-10-14 23:15:31] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 23:15:32] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 23:15:32] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 23:15:32] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 23:15:32] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 23:15:32] [Rank:0] Using Scale factor: 1
+[2026-10-14 23:15:32] [Rank:0] Using Scale factor: 2
+[2026-10-14 23:15:32] [Rank:0] Using Scale factor: 3
+[2026-10-14 23:15:32] [Rank:0] Using Scale factor: 4
+[2026-10-14 23:15:32] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 23:15:32] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 23:15:33] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 23:15:33] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 23:15:41] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 23:15:41] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'A kitchen with a toilet, sink and a bathtub.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A kitchen with a toilet, sink and a bathtub.</s><s><image></s>']
+Attention mask: torch.Size([1067]), input ids: torch.Size([1067]), modality: torch.Size([1067])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A kitchen with a toilet, sink and a bathtub.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A kitchen with a toilet, sink and a bathtub.</s><s><image></s>']
+Attention mask: torch.Size([4139]), input ids: torch.Size([4139]), modality: torch.Size([4139])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A car driving in an intersection, past a furniture shop. '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A car driving in an intersection, past a furniture shop. </s><s><image></s>']
+Attention mask: torch.Size([1066]), input ids: torch.Size([1066]), modality: torch.Size([1066])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A car driving in an intersection, past a furniture shop. '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A car driving in an intersection, past a furniture shop. </s><s><image></s>']
+Attention mask: torch.Size([4138]), input ids: torch.Size([4138]), modality: torch.Size([4138])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man with blue jersey holding a baseball bat.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man with blue jersey holding a baseball bat.</s><s><image></s>']
+Attention mask: torch.Size([1064]), input ids: torch.Size([1064]), modality: torch.Size([1064])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man with blue jersey holding a baseball bat.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man with blue jersey holding a baseball bat.</s><s><image></s>']
+Attention mask: torch.Size([4136]), input ids: torch.Size([4136]), modality: torch.Size([4136])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A woman walking down a street holding an orange umbrella.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A woman walking down a street holding an orange umbrella.</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A woman walking down a street holding an orange umbrella.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A woman walking down a street holding an orange umbrella.</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A group of people sitting around two couches.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A group of people sitting around two couches.</s><s><image></s>']
+Attention mask: torch.Size([1063]), input ids: torch.Size([1063]), modality: torch.Size([1063])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A group of people sitting around two couches.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A group of people sitting around two couches.</s><s><image></s>']
+Attention mask: torch.Size([4135]), input ids: torch.Size([4135]), modality: torch.Size([4135])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Men climbing on board a bus that needs to be repaired.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Men climbing on board a bus that needs to be repaired.</s><s><image></s>']
+Attention mask: torch.Size([1067]), input ids: torch.Size([1067]), modality: torch.Size([1067])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Men climbing on board a bus that needs to be repaired.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Men climbing on board a bus that needs to be repaired.</s><s><image></s>']
+Attention mask: torch.Size([4139]), input ids: torch.Size([4139]), modality: torch.Size([4139])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-005.csv
+chunk exit 75 wall 792s
+chunk 6 minutes 15.0
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1014 23:30:29.921000 52724 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1014 23:30:31.620000 52724 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-14 23:30:31] [Rank:0] Forcing cudnn spda context
+[2026-10-14 23:30:31] [Rank:0] Not using Flash Attention 3!
+[2026-10-14 23:30:31] [Rank:0] Imported Flash Attention 2!
+[2026-10-14 23:30:41] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-14 23:30:41] [Rank:0] Setting torch defaults
+[2026-10-14 23:30:42] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-14 23:30:42] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-14 23:30:42] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-14 23:30:42] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-14 23:30:42] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-14 23:30:43] [Rank:0] Using Scale factor: 1
+[2026-10-14 23:30:43] [Rank:0] Using Scale factor: 2
+[2026-10-14 23:30:43] [Rank:0] Using Scale factor: 3
+[2026-10-14 23:30:43] [Rank:0] Using Scale factor: 4
+[2026-10-14 23:30:43] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-14 23:30:43] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-14 23:30:44] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-14 23:30:44] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-14 23:30:51] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-14 23:30:51] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'A cats sits on the table with a dog outside.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A cats sits on the table with a dog outside.</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A cats sits on the table with a dog outside.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A cats sits on the table with a dog outside.</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A bathroom with a toilet, shower and an hanging chain to flush the toilet. '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A bathroom with a toilet, shower and an hanging chain to flush the toilet. </s><s><image></s>']
+Attention mask: torch.Size([1076]), input ids: torch.Size([1076]), modality: torch.Size([1076])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A bathroom with a toilet, shower and an hanging chain to flush the toilet. '}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A bathroom with a toilet, shower and an hanging chain to flush the toilet. </s><s><image></s>']
+Attention mask: torch.Size([4148]), input ids: torch.Size([4148]), modality: torch.Size([4148])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A bathroom that has a broken wall in the shower.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A bathroom that has a broken wall in the shower.</s><s><image></s>']
+Attention mask: torch.Size([1065]), input ids: torch.Size([1065]), modality: torch.Size([1065])
+seq_len: 1024
+schedule: tensor([[ 1,  4,  6,  7,  8,  9, 10, 11, 12, 13, 13, 14, 15, 15, 16, 17, 17, 18,
+         18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 25, 26, 26,
+         27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31, 31, 32, 33]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A bathroom that has a broken wall in the shower.'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A bathroom that has a broken wall in the shower.</s><s><image></s>']
+Attention mask: torch.Size([4137]), input ids: torch.Size([4137]), modality: torch.Size([4137])
+seq_len: 4096
+schedule: tensor([[  1,  17,  24,  29,  34,  38,  41,  45,  48,  51,  54,  56,  59,  61,
+          64,  66,  68,  71,  73,  75,  77,  79,  81,  83,  85,  87,  89,  91,
+          93,  95,  97,  98, 100, 102, 104, 105, 107, 109, 111, 112, 114, 116,
+         118, 119, 121, 123, 124, 126, 128, 127]], device='cuda:0',
+       dtype=torch.int32)
+gpu_guard: child exited 0; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-001\gates\telemetry-pg1g-006.csv
+chunk exit 0 wall 417s
+stage complete

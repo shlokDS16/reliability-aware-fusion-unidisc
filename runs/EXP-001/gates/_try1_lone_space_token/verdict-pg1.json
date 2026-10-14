@@ -1,0 +1,40 @@
+{
+ "gate": "PG-1",
+ "card": "EXP-001 v0.5 section 4.3",
+ "guided_leg": {
+  "pass": true,
+  "file": "verdict-pg1g.json",
+  "mean_paired_diff_512_minus_1024": -0.4219431947859729,
+  "lift_512": 15.36235825172874,
+  "lift_1024": 16.337683641757998,
+  "lift_ratio": 0.9403021008720971
+ },
+ "condition_p_leg": {
+  "pass": true,
+  "file": "verdict-pg1p.json",
+  "i_code_share": {
+   "median_512": 0.9423828125,
+   "real_median_512": 0.92919921875,
+   "threshold": 0.464599609375,
+   "pass": true
+  },
+  "ii_clip_iqa": {
+   "mean_512": 0.660785524174571,
+   "mean_1024": 0.4914998849853873,
+   "sd_1024": 0.25659377703342406,
+   "threshold": 0.36320299646867527,
+   "pass": true
+  },
+  "iii_near_uniform": {
+   "pixel_sd_proxy_count_of_16": 0,
+   "engineer_visual_count_of_16": 2,
+   "visual_note": "grid_pleg_512px.png: tiles 3 (near-white texture) and 7 (dark low-contrast) read as near-uniform; many other tiles are texture collages; count 2 of 16 is at the registered limit (<= 2)",
+   "pass": true
+  }
+ },
+ "decision": "both legs pass at 512 px: resolution 512, position rule P (confidence ranking)",
+ "resolution": 512,
+ "position_rule": "P",
+ "fork": null,
+ "verdict": "PASS"
+}

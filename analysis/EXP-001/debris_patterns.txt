@@ -1,0 +1,16 @@
+# Frozen list: e2 debris patterns of the caption-end rule (EXP-001 card v0.5, section 4.1b; red-team R3-M1).
+# One pattern per line. 'contains:X' = the decoded piece contains the substring X (case-sensitive except where noted);
+# 'equals_ci:X' = the stripped decoded piece equals X, case-insensitive; 'digits_only' = the stripped piece consists of digits only.
+# Applied only to tail tokens at index i > f (f = first alphanumeric tail token).
+contains:(
+contains:)
+contains:©
+contains:/
+contains:|
+contains:@
+contains:http
+contains:www
+contains:.com
+equals_ci:copyright
+equals_ci:stock
+digits_only

@@ -1,0 +1,29 @@
+{
+ "gate": {
+  "m_real": 1.0,
+  "s_real": 0.4739583333333333,
+  "pass": true
+ },
+ "stat": {
+  "m": 1.0,
+  "s": 0.4739583333333333,
+  "s_sp": 1.0,
+  "nonempty_share": 1.0,
+  "per_noun": {
+   "n_nouns": 175,
+   "matched": 0.92,
+   "cross": 0.18142857142857144,
+   "same_prefix": 0.92
+  }
+ },
+ "vlift_mean": 0.8927204376723835,
+ "vlift_ci95": [
+  0.8209955531112759,
+  0.9543825204089031
+ ],
+ "vlift_excludes_0": true,
+ "pass": true,
+ "n_vlm_calls": 967,
+ "vqa_template": "Is this figure showing \"{}\"? Please answer yes or no.",
+ "presence_template": "Is there a {noun} in this image? Please answer yes or no."
+}

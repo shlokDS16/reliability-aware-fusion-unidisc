@@ -1,0 +1,848 @@
+{
+ "rung": 2,
+ "n_samples": 48,
+ "stat": {
+  "m": 0.7708333333333334,
+  "s": 0.6197916666666666,
+  "s_sp": 0.7916666666666666,
+  "nonempty_share": 0.9375,
+  "per_noun": {
+   "n_nouns": 294,
+   "matched": 0.35034013605442177,
+   "cross": 0.21258503401360543,
+   "same_prefix": 0.2789115646258503
+  }
+ },
+ "gate": {
+  "a_nonempty_share_ge_0.60": true,
+  "b_m_ge_0.50": true,
+  "c_m_minus_s_ge_0.25": false,
+  "d_median_debris_lt_0.5": true,
+  "pass": false,
+  "m_minus_s": 0.15104166666666674,
+  "median_debris_share": 0.0625
+ },
+ "m_minus_s_sp": {
+  "estimate": -0.020833333333333332,
+  "ci90_cluster": [
+   -0.125,
+   0.08333333333333333
+  ],
+  "line": "no measurable co-generation dependence at this rung (PG-V, 24 prefixes)"
+ },
+ "m_minus_s_cross": {
+  "estimate": 0.15104166666666666,
+  "ci90_cluster": [
+   0.08333333333333333,
+   0.21875
+  ]
+ },
+ "e2_share": 0.3958333333333333,
+ "caption_end_set_by": {
+  "e0": 0,
+  "e1": 6,
+  "e2": 19,
+  "cap": 23
+ },
+ "completion_len": {
+  "mean": 24.020833333333332,
+  "p90": 32.0,
+  "min": 2,
+  "max": 32
+ },
+ "caption_end_index_hist": [
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  0,
+  0,
+  1,
+  2,
+  0,
+  1,
+  3,
+  1,
+  1,
+  0,
+  2,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  4,
+  1,
+  0,
+  1,
+  0,
+  2,
+  1,
+  0,
+  1,
+  23
+ ],
+ "pad_share_of_tail": 0.0,
+ "debris_share": {
+  "median": 0.0625,
+  "mean": 0.24934895833333334
+ },
+ "committed_text_token_state_pad_or_post_caption_share": {
+  "pass2": 0.08333333333333333,
+  "pass6": 0.20833333333333334
+ },
+ "source_availability": {
+  "1": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 0.0009139613424211911
+  },
+  "2": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 0.0010819087643534743
+  },
+  "6": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 8.637079806582188e-05
+  },
+  "26": {
+   "share_with_source_Lc16": 0.3541666666666667,
+   "mean_w": 8.045884125035114e-06
+  },
+  "30": {
+   "share_with_source_Lc16": 0.2708333333333333,
+   "mean_w": 6.504566461328759e-06
+  }
+ },
+ "L_c": 16,
+ "tagger": "spaCy en_core_web_sm",
+ "n_vlm_calls": 1710,
+ "nouns": [
+  {
+   "i": 90100,
+   "prefix": "A gray and white kitten sitting in a bathroom",
+   "caption": "A gray and white kitten sitting in a bathroom water photo showing being on a collar a cat in a bathroom, a kitten looking on a carpet and a basket full of food - on the",
+   "nouns": [
+    "water",
+    "collar",
+    "cat",
+    "carpet",
+    "basket",
+    "food"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90101,
+   "prefix": "A gray and white kitten sitting in a bathroom",
+   "caption": "A gray and white kitten sitting in a bathroom , covered with light white swap sheets in the background, with the text'draantic swipes miter, sofa, bath, tsx fat water",
+   "nouns": [
+    "swap",
+    "sheets",
+    "text'draantic",
+    "swipes",
+    "miter",
+    "sofa",
+    "bath",
+    "tsx",
+    "fat",
+    "water"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90102,
+   "prefix": "An urban street with a streetlight, one way",
+   "caption": "An urban street with a streetlight, one way out of it a white building and sidewalk lining the street with many small large holes cut into the snow wall, photograph taken close - up or-on",
+   "nouns": [
+    "building",
+    "holes",
+    "snow",
+    "wall",
+    "up"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90103,
+   "prefix": "An urban street with a streetlight, one way",
+   "caption": "An urban street with a streetlight, one way lamp, a building with fire escape staircase, a black",
+   "nouns": [
+    "lamp",
+    "building",
+    "fire",
+    "escape",
+    "staircase"
+   ],
+   "caption_end": 14,
+   "set_by": "e2"
+  },
+  {
+   "i": 90104,
+   "prefix": "A laptop computer sitting on",
+   "caption": "A laptop computer sitting on a white cloth, with some money money and pills wrapped around it, and some words on the back with the words 'i opened' and 'two'",
+   "nouns": [
+    "cloth",
+    "money",
+    "pills",
+    "words",
+    "back"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90105,
+   "prefix": "A laptop computer sitting on",
+   "caption": "A laptop computer sitting on a grey background",
+   "nouns": [],
+   "caption_end": 4,
+   "set_by": "e2"
+  },
+  {
+   "i": 90106,
+   "prefix": "Cars and trucks stopped at an",
+   "caption": "Cars and trucks stopped at an intersection stretch in a number of ways and all of them find their way through travel to work in need to arrive at witnesses of the evee chaos",
+   "nouns": [
+    "intersection",
+    "stretch",
+    "number",
+    "ways",
+    "travel",
+    "work",
+    "need",
+    "witnesses",
+    "evee",
+    "chaos"
+   ],
+   "caption_end": 32,
+   "set_by": "e1"
+  },
+  {
+   "i": 90107,
+   "prefix": "Cars and trucks stopped at an",
+   "caption": "Cars and trucks stopped at an historic railway on the Prince Edward Boulevard, march",
+   "nouns": [
+    "railway",
+    "prince",
+    "edward",
+    "boulevard",
+    "march"
+   ],
+   "caption_end": 13,
+   "set_by": "e2"
+  },
+  {
+   "i": 90108,
+   "prefix": "A sheet cake with a frosting",
+   "caption": "A sheet cake with a frosting classic shredded cake cake",
+   "nouns": [],
+   "caption_end": 9,
+   "set_by": "e1"
+  },
+  {
+   "i": 90109,
+   "prefix": "A sheet cake with a frosting",
+   "caption": "A sheet cake with a frosting and purple string icing on top sits on top of a packing tray that has the words “saaulu” imprinted onto it",
+   "nouns": [
+    "string",
+    "packing",
+    "tray",
+    "words",
+    "saaulu"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90110,
+   "prefix": "A street corner with a brown and white",
+   "caption": "A street corner with a brown and white building to the right, a bunch of white and orange flowers on the left, and some city buildings in the background",
+   "nouns": [
+    "building",
+    "bunch",
+    "flowers",
+    "city",
+    "buildings"
+   ],
+   "caption_end": 24,
+   "set_by": "e1"
+  },
+  {
+   "i": 90111,
+   "prefix": "A street corner with a brown and white",
+   "caption": "A street corner with a brown and white striped fruit decor piece ranging from it, wire accents and a metal, renown sign, a cork shell with the company name on it,",
+   "nouns": [
+    "fruit",
+    "decor",
+    "piece",
+    "wire",
+    "accents",
+    "metal",
+    "sign",
+    "cork",
+    "shell",
+    "company",
+    "name"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90112,
+   "prefix": "A pastry station, with an",
+   "caption": "A pastry station, with an assortment of pastries, sits on top of a marble countertop with silver flowers and a booed Mocha cup",
+   "nouns": [
+    "assortment",
+    "pastries",
+    "marble",
+    "countertop",
+    "flowers",
+    "mocha",
+    "cup"
+   ],
+   "caption_end": 30,
+   "set_by": "e2"
+  },
+  {
+   "i": 90113,
+   "prefix": "A pastry station, with an",
+   "caption": "A pastry station, with an out of focus background in shades of white and green, and the bakery \"ribuna alla herm\" based on aile of meat cupcakes",
+   "nouns": [
+    "out",
+    "focus",
+    "shades",
+    "bakery",
+    "ribuna",
+    "alla",
+    "herm",
+    "aile",
+    "meat",
+    "cupcakes"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90114,
+   "prefix": "A cardinal perches on the",
+   "caption": "A cardinal perches on the green branch of a rose bush photo by anna welfad, edited by la svenri on july",
+   "nouns": [
+    "branch",
+    "bush",
+    "anna",
+    "welfad",
+    "la",
+    "svenri",
+    "july"
+   ],
+   "caption_end": 25,
+   "set_by": "e2"
+  },
+  {
+   "i": 90115,
+   "prefix": "A cardinal perches on the",
+   "caption": "A cardinal perches on the branches of a tree and my chrysanthemums, floral nature insects birds, while the large these image, the buds robin is a",
+   "nouns": [
+    "branches",
+    "tree",
+    "chrysanthemums",
+    "nature",
+    "birds",
+    "buds",
+    "robin"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90116,
+   "prefix": "A baseball player swings their",
+   "caption": "A baseball player swings their glove at a home plate in an",
+   "nouns": [
+    "glove",
+    "home",
+    "plate"
+   ],
+   "caption_end": 10,
+   "set_by": "e2"
+  },
+  {
+   "i": 90117,
+   "prefix": "A baseball player swings their",
+   "caption": "A baseball player swings their bat in the middle of a baseball game on may",
+   "nouns": [
+    "bat",
+    "game"
+   ],
+   "caption_end": 12,
+   "set_by": "e2"
+  },
+  {
+   "i": 90118,
+   "prefix": "A fire department with a",
+   "caption": "A fire department with a broom and credit card in its uniform and whistle marijuana inadvertently being thrown into theile of terracotta photo gray metal material",
+   "nouns": [
+    "broom",
+    "credit",
+    "card",
+    "uniform",
+    "whistle",
+    "marijuana",
+    "theile",
+    "terracotta",
+    "metal",
+    "material"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90119,
+   "prefix": "A fire department with a",
+   "caption": "A fire department with a red graphic for shirlin door and fire armor building overview at the louis british",
+   "nouns": [
+    "graphic",
+    "shirlin",
+    "door",
+    "armor",
+    "building",
+    "overview",
+    "louis",
+    "british"
+   ],
+   "caption_end": 24,
+   "set_by": "e2"
+  },
+  {
+   "i": 90120,
+   "prefix": "A yellow cat is wearing a blue plastic",
+   "caption": "A yellow cat is wearing a blue plastic avens chicken costume full of oceans and other fish -",
+   "nouns": [
+    "chicken",
+    "costume",
+    "oceans",
+    "fish"
+   ],
+   "caption_end": 17,
+   "set_by": "e2"
+  },
+  {
+   "i": 90121,
+   "prefix": "A yellow cat is wearing a blue plastic",
+   "caption": "A yellow cat is wearing a blue plastic cone on his head in the snow with a face goggle like a person has a glove with something to it in their hand with winter not a problem by",
+   "nouns": [
+    "cone",
+    "head",
+    "snow",
+    "face",
+    "goggle",
+    "person",
+    "glove",
+    "hand",
+    "winter",
+    "problem"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90122,
+   "prefix": "A bathroom that has been gutted with the shower",
+   "caption": "A bathroom that has been gutted with the shower stall full of rose petals, a plastic bag of snow displaying rose petals and mulled petals and a plastic bag of rose petals",
+   "nouns": [
+    "stall",
+    "petals",
+    "bag",
+    "snow"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90123,
+   "prefix": "A bathroom that has been gutted with the shower",
+   "caption": "A bathroom that has been gutted with the shower surface tackled with plastic bubbles",
+   "nouns": [
+    "surface",
+    "plastic",
+    "bubbles"
+   ],
+   "caption_end": 10,
+   "set_by": "e1"
+  },
+  {
+   "i": 90124,
+   "prefix": "A city street lit up in a",
+   "caption": "A city street lit up in a picture with blurred out blurred people on the street, people and city night snow in the trees dim lights in tormento umbrellas",
+   "nouns": [
+    "people",
+    "night",
+    "snow",
+    "trees",
+    "dim",
+    "lights",
+    "tormento",
+    "umbrellas"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90125,
+   "prefix": "A city street lit up in a",
+   "caption": "A city street lit up in a bright glow on a rainy night below the walkway from monday on",
+   "nouns": [
+    "glow",
+    "night",
+    "walkway",
+    "monday"
+   ],
+   "caption_end": 18,
+   "set_by": "e2"
+  },
+  {
+   "i": 90126,
+   "prefix": "a large tower that has a big clock at",
+   "caption": "a large tower that has a big clock at the front",
+   "nouns": [],
+   "caption_end": 3,
+   "set_by": "e1"
+  },
+  {
+   "i": 90127,
+   "prefix": "a large tower that has a big clock at",
+   "caption": "a large tower that has a big clock at it on top of a gothic -pco cathedral surrounded by tower and church saint with wings back of which is holding a scimitar in hand",
+   "nouns": [
+    "-pco",
+    "cathedral",
+    "church",
+    "saint",
+    "wings",
+    "scimitar",
+    "hand"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90128,
+   "prefix": "A parking meter on the",
+   "caption": "A parking meter on the street with spec blur effect by terasystems photo -",
+   "nouns": [
+    "street",
+    "spec",
+    "effect",
+    "terasystems"
+   ],
+   "caption_end": 15,
+   "set_by": "e2"
+  },
+  {
+   "i": 90129,
+   "prefix": "A parking meter on the",
+   "caption": "A parking meter on the road in africa ibikees bikees fuel",
+   "nouns": [
+    "road",
+    "africa",
+    "fuel"
+   ],
+   "caption_end": 13,
+   "set_by": "e2"
+  },
+  {
+   "i": 90130,
+   "prefix": "Two desktop computers sitting on",
+   "caption": "Two desktop computers sitting on a table located in an office space with rug and software outside it in the background, some of these have their lettering that reads \"silicon\", right now",
+   "nouns": [
+    "table",
+    "office",
+    "space",
+    "rug",
+    "software",
+    "lettering",
+    "silicon"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90131,
+   "prefix": "Two desktop computers sitting on",
+   "caption": "Two desktop computers sitting on black heavy aerium desiconductor icicle on a product showroom display and price tag during january",
+   "nouns": [
+    "aerium",
+    "desiconductor",
+    "icicle",
+    "product",
+    "showroom",
+    "display",
+    "price",
+    "tag",
+    "january"
+   ],
+   "caption_end": 24,
+   "set_by": "e2"
+  },
+  {
+   "i": 90132,
+   "prefix": "A mother sheep and a",
+   "caption": "A mother sheep and a calf in front of a feeding trough on the grass in tapestry, south asex, hay county -",
+   "nouns": [
+    "calf",
+    "feeding",
+    "trough",
+    "grass",
+    "tapestry",
+    "asex",
+    "hay",
+    "county"
+   ],
+   "caption_end": 27,
+   "set_by": "e2"
+  },
+  {
+   "i": 90133,
+   "prefix": "A mother sheep and a",
+   "caption": "A mother sheep and a droplet of grass dew in front of them on a leafy plant background lawn with extreme close up of the grass dew droplet image",
+   "nouns": [
+    "droplet",
+    "grass",
+    "dew",
+    "plant",
+    "lawn",
+    "close"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90134,
+   "prefix": "A man's reflection taking a",
+   "caption": "A man's reflection taking a limited number at ronissance, italy and venice, florana for a media chat at cupca, italy west ber",
+   "nouns": [
+    "number",
+    "ronissance",
+    "italy",
+    "venice",
+    "florana",
+    "media",
+    "chat",
+    "cupca",
+    "west",
+    "ber"
+   ],
+   "caption_end": 29,
+   "set_by": "e2"
+  },
+  {
+   "i": 90135,
+   "prefix": "A man's reflection taking a",
+   "caption": "A man's reflection taking a crush bottle in the harbor accident, at the oilmath of the cyprus incident on march",
+   "nouns": [
+    "crush",
+    "bottle",
+    "harbor",
+    "accident",
+    "oilmath",
+    "cyprus",
+    "incident",
+    "march"
+   ],
+   "caption_end": 24,
+   "set_by": "e2"
+  },
+  {
+   "i": 90136,
+   "prefix": "A living room with colored",
+   "caption": "A living room with colored coke bottles, a vase of apples, and tulips in front of a Christmas tree, alcohol bottles and coca in white",
+   "nouns": [
+    "coke",
+    "bottles",
+    "vase",
+    "apples",
+    "tulips",
+    "christmas",
+    "tree",
+    "alcohol",
+    "coca"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90137,
+   "prefix": "A living room with colored",
+   "caption": "A living room with colored wall blue that has been painted with stars and sofa - wallpaper wallpaper dfa wallpaper, living room wallpaper, living room decor, decor,",
+   "nouns": [
+    "wall",
+    "blue",
+    "stars",
+    "sofa",
+    "wallpaper",
+    "dfa",
+    "decor"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90138,
+   "prefix": "Paddle boats parked at the",
+   "caption": "Paddle boats parked at the beach club boards to hayao waterfront, florida, canada ca",
+   "nouns": [
+    "beach",
+    "club",
+    "boards",
+    "hayao",
+    "waterfront",
+    "florida",
+    "canada"
+   ],
+   "caption_end": 17,
+   "set_by": "e1"
+  },
+  {
+   "i": 90139,
+   "prefix": "Paddle boats parked at the",
+   "caption": "Paddle boats parked at the lively shore of the ghridphorus coast in ber, the city of catal pill ist, bosphorus in february,",
+   "nouns": [
+    "shore",
+    "ghridphorus",
+    "coast",
+    "ber",
+    "city",
+    "pill",
+    "ist",
+    "bosphorus",
+    "february"
+   ],
+   "caption_end": 29,
+   "set_by": "e2"
+  },
+  {
+   "i": 90140,
+   "prefix": "A living room with a",
+   "caption": "A living room with a colorful rug \\xe",
+   "nouns": [
+    "rug",
+    "\\xe"
+   ],
+   "caption_end": 6,
+   "set_by": "e2"
+  },
+  {
+   "i": 90141,
+   "prefix": "A living room with a",
+   "caption": "A living room with a large window, a sofa, a desk with a lamp on it, a camouflage patterned curtain, and the pore of a",
+   "nouns": [
+    "window",
+    "sofa",
+    "desk",
+    "lamp",
+    "camouflage",
+    "curtain",
+    "pore"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90142,
+   "prefix": "Three giraffe's leaning over to get a sip of",
+   "caption": "Three giraffe's leaning over to get a sip of wine at a leafy mint in gastroardie plaza ewert ahdr, at a horizenda in tuba canyons, la",
+   "nouns": [
+    "wine",
+    "mint",
+    "gastroardie",
+    "plaza",
+    "ewert",
+    "ahdr",
+    "horizenda",
+    "tuba",
+    "canyons"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90143,
+   "prefix": "Three giraffe's leaning over to get a sip of",
+   "caption": "Three giraffe's leaning over to get a sip of oil off of the baby pacifiers while the baby pacifiers are green with white border and they are an array of spotted brown giraffe oil infusers",
+   "nouns": [
+    "oil",
+    "baby",
+    "pacifiers",
+    "border",
+    "array",
+    "giraffe",
+    "infusers"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90144,
+   "prefix": "Two large elephants standing next to a wire",
+   "caption": "Two large elephants standing next to a wire -link fence and luncheon shield states \"brother's\", the sign is silver and has a warrior woman's cross with a cross",
+   "nouns": [
+    "-link",
+    "fence",
+    "luncheon",
+    "shield",
+    "states",
+    "brother",
+    "sign",
+    "warrior",
+    "woman",
+    "cross"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90145,
+   "prefix": "Two large elephants standing next to a wire",
+   "caption": "Two large elephants standing next to a wire fence and other plants in the background, overcast sky in the sky, elephant in the field, largest elephant, trees, grass,",
+   "nouns": [
+    "fence",
+    "plants",
+    "sky",
+    "elephant",
+    "field",
+    "trees",
+    "grass"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90146,
+   "prefix": "A laptop computer sitting on",
+   "caption": "A laptop computer sitting on a white table with some other items in the background background photo",
+   "nouns": [
+    "table",
+    "items"
+   ],
+   "caption_end": 13,
+   "set_by": "e2"
+  },
+  {
+   "i": 90147,
+   "prefix": "A laptop computer sitting on",
+   "caption": "A laptop computer sitting on a black surface in front of a black and white background with white blurred shapes in the background in front of the background, looking at what's inside",
+   "nouns": [
+    "surface",
+    "shapes"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  }
+ ]
+}

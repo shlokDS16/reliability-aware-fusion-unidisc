@@ -1,0 +1,42 @@
+{
+ "gate": "PG-1",
+ "card": "EXP-001 v0.5 section 4.3",
+ "try": 2,
+ "note": "condition-P leg try 2 (layout without the space before the masks); try 1 is in _try1_lone_space_token/ (also PASS numerically)",
+ "guided_leg": {
+  "pass": true,
+  "file": "verdict-pg1g.json",
+  "mean_paired_diff_512_minus_1024": -0.4219431947859729,
+  "lift_512": 15.36235825172874,
+  "lift_1024": 16.337683641757998,
+  "lift_ratio": 0.9403021008720971
+ },
+ "condition_p_leg": {
+  "pass": true,
+  "file": "verdict-pg1p.json",
+  "i_code_share": {
+   "median_512": 0.94921875,
+   "real_median_512": 0.92919921875,
+   "threshold": 0.464599609375,
+   "pass": true
+  },
+  "ii_clip_iqa": {
+   "mean_512": 0.6651765536516905,
+   "mean_1024": 0.4698054017499089,
+   "sd_1024": 0.22431203582941048,
+   "threshold": 0.35764938383520367,
+   "pass": true
+  },
+  "iii_near_uniform": {
+   "pixel_sd_proxy_count_of_16": 0,
+   "engineer_visual_count_of_16": 2,
+   "visual_note": "grid_pleg_512px.png: tile 16 (near-white) and tile 1 (low-contrast grey water) read as near-uniform; most other tiles are shredded-texture collages with local structure; count 2 of 16 is at the registered limit (<= 2)",
+   "pass": true
+  }
+ },
+ "decision": "both legs pass at 512 px: resolution 512, position rule P (confidence ranking)",
+ "resolution": 512,
+ "position_rule": "P",
+ "fork": null,
+ "verdict": "PASS"
+}

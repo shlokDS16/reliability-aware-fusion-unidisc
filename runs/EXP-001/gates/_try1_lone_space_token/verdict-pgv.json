@@ -1,0 +1,628 @@
+{
+ "rung": 1,
+ "n_samples": 48,
+ "stat": {
+  "m": 0.2916666666666667,
+  "s": 0.21875,
+  "s_sp": 0.25,
+  "nonempty_share": 0.375,
+  "per_noun": {
+   "n_nouns": 101,
+   "matched": 0.2871287128712871,
+   "cross": 0.2079207920792079,
+   "same_prefix": 0.27722772277227725
+  }
+ },
+ "gate": {
+  "a_nonempty_share_ge_0.60": false,
+  "b_m_ge_0.50": false,
+  "c_m_minus_s_ge_0.25": false,
+  "d_median_debris_lt_0.5": false,
+  "pass": false,
+  "m_minus_s": 0.07291666666666669,
+  "median_debris_share": 0.96875
+ },
+ "m_minus_s_sp": {
+  "estimate": 0.041666666666666664,
+  "ci90_cluster": [
+   -0.020833333333333332,
+   0.10416666666666667
+  ],
+  "line": "no measurable co-generation dependence at this rung (PG-V, 24 prefixes)"
+ },
+ "m_minus_s_cross": {
+  "estimate": 0.07291666666666667,
+  "ci90_cluster": [
+   -0.005208333333333333,
+   0.16145833333333334
+  ]
+ },
+ "e2_share": 0.8333333333333334,
+ "caption_end_set_by": {
+  "e0": 0,
+  "e1": 3,
+  "e2": 40,
+  "cap": 5
+ },
+ "completion_len": {
+  "mean": 8.395833333333334,
+  "p90": 30.60000000000001,
+  "min": 1,
+  "max": 32
+ },
+ "caption_end_index_hist": [
+  0,
+  0,
+  29,
+  1,
+  2,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  2,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  1,
+  0,
+  1,
+  0,
+  1,
+  0,
+  5
+ ],
+ "pad_share_of_tail": 0.0,
+ "debris_share": {
+  "median": 0.96875,
+  "mean": 0.7376302083333334
+ },
+ "committed_text_token_state_pad_or_post_caption_share": {
+  "pass2": 0.4166666666666667,
+  "pass6": 0.7291666666666666
+ },
+ "source_availability": {
+  "1": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 5.806907553784862e-06
+  },
+  "2": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 8.725911774103211e-06
+  },
+  "6": {
+   "share_with_source_Lc16": 1.0,
+   "mean_w": 2.684230408018544e-05
+  },
+  "26": {
+   "share_with_source_Lc16": 0.6041666666666666,
+   "mean_w": 3.4549849066658954e-06
+  },
+  "30": {
+   "share_with_source_Lc16": 0.4791666666666667,
+   "mean_w": 2.7215892249262523e-06
+  }
+ },
+ "L_c": 16,
+ "tagger": "spaCy en_core_web_sm",
+ "n_vlm_calls": 598,
+ "nouns": [
+  {
+   "i": 90000,
+   "prefix": "A bear laying in a",
+   "caption": "A bear laying in a 3d crop wallpaper with side view and iphone camera by photolife photographer in london march",
+   "nouns": [
+    "3d",
+    "crop",
+    "wallpaper",
+    "iphone",
+    "camera",
+    "photolife",
+    "photographer",
+    "london",
+    "march"
+   ],
+   "caption_end": 24,
+   "set_by": "e2"
+  },
+  {
+   "i": 90001,
+   "prefix": "A bear laying in a",
+   "caption": "A bear laying in a 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90002,
+   "prefix": "A group of",
+   "caption": "A group of 4",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90003,
+   "prefix": "A group of",
+   "caption": "A group of 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90004,
+   "prefix": "three dogs on a",
+   "caption": "three dogs on a 7",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90005,
+   "prefix": "three dogs on a",
+   "caption": "three dogs on a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90006,
+   "prefix": "Someone roasting hot dogs in a",
+   "caption": "Someone roasting hot dogs in a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90007,
+   "prefix": "Someone roasting hot dogs in a",
+   "caption": "Someone roasting hot dogs in a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90008,
+   "prefix": "A room with a",
+   "caption": "A room with a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90009,
+   "prefix": "A room with a",
+   "caption": "A room with a 3d floral wallpaper and a wallpaper - the wallpaper featuring pink, green, and brown in color with the words flowers sort",
+   "nouns": [
+    "3d",
+    "wallpaper",
+    "color",
+    "words",
+    "flowers"
+   ],
+   "caption_end": 31,
+   "set_by": "e2"
+  },
+  {
+   "i": 90010,
+   "prefix": "A couple of",
+   "caption": "A couple of earrings hang in front of a snowglobe",
+   "nouns": [
+    "earrings",
+    "snowglobe"
+   ],
+   "caption_end": 13,
+   "set_by": "e1"
+  },
+  {
+   "i": 90011,
+   "prefix": "A couple of",
+   "caption": "A couple of 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90012,
+   "prefix": "A Nintendo Wii",
+   "caption": "A Nintendo Wii 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90013,
+   "prefix": "A Nintendo Wii",
+   "caption": "A Nintendo Wii 3 boxed item with a white background with a rainbow pattern, featuring the text `rainbow tree week rubber salmo dust collection to' with a",
+   "nouns": [
+    "item",
+    "rainbow",
+    "pattern",
+    "text",
+    "tree",
+    "week",
+    "rubber",
+    "salmo",
+    "dust",
+    "collection"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90014,
+   "prefix": "A woman with her",
+   "caption": "A woman with her 4",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90015,
+   "prefix": "A woman with her",
+   "caption": "A woman with her 8th birthday holding a piece of soap and a finger aerometer, text",
+   "nouns": [
+    "birthday",
+    "piece",
+    "soap",
+    "finger",
+    "aerometer",
+    "text"
+   ],
+   "caption_end": 17,
+   "set_by": "e2"
+  },
+  {
+   "i": 90016,
+   "prefix": "A man swinging a",
+   "caption": "A man swinging a 9",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90017,
+   "prefix": "A man swinging a",
+   "caption": "A man swinging a 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90018,
+   "prefix": "A chair next to a",
+   "caption": "A chair next to a story magazine with the words saga pigs the serial, veranda the story book, L",
+   "nouns": [
+    "story",
+    "magazine",
+    "words",
+    "saga",
+    "book",
+    "l"
+   ],
+   "caption_end": 20,
+   "set_by": "e1"
+  },
+  {
+   "i": 90019,
+   "prefix": "A chair next to a",
+   "caption": "A chair next to a 5 piece styled mir fur blanket, with a black background and gold accents, taken by lobby lumpft at the dublyn kew",
+   "nouns": [
+    "piece",
+    "fur",
+    "blanket",
+    "gold",
+    "accents",
+    "lobby",
+    "lumpft",
+    "dublyn"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90020,
+   "prefix": "Scissors are resting on a",
+   "caption": "Scissors are resting on a 5",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90021,
+   "prefix": "Scissors are resting on a",
+   "caption": "Scissors are resting on a 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90022,
+   "prefix": "A tall sandwich with",
+   "caption": "A tall sandwich with 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90023,
+   "prefix": "A tall sandwich with",
+   "caption": "A tall sandwich with 4x",
+   "nouns": [
+    "4x"
+   ],
+   "caption_end": 3,
+   "set_by": "e2"
+  },
+  {
+   "i": 90024,
+   "prefix": "A bowl filled with",
+   "caption": "A bowl filled with 2nd edition plush toy coloured children's rocks are sold all over the uk and are priced price $",
+   "nouns": [
+    "edition",
+    "plush",
+    "toy",
+    "children",
+    "rocks",
+    "uk",
+    "price"
+   ],
+   "caption_end": 27,
+   "set_by": "e2"
+  },
+  {
+   "i": 90025,
+   "prefix": "A bowl filled with",
+   "caption": "A bowl filled with 1 dozen cups of dates with a very pretty image obscured by a loose sauce of deft peach china on it - pink including blue",
+   "nouns": [
+    "dozen",
+    "cups",
+    "dates",
+    "sauce",
+    "peach",
+    "china"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90026,
+   "prefix": "A mixed breed",
+   "caption": "A mixed breed 9",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90027,
+   "prefix": "A mixed breed",
+   "caption": "A mixed breed 9",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90028,
+   "prefix": "A table holding a",
+   "caption": "A table holding a 1 - inlende white and apple - l'wildflower to take place at the saint au notre vitre in march",
+   "nouns": [
+    "apple",
+    "l'wildflower",
+    "place",
+    "saint",
+    "au",
+    "notre",
+    "vitre",
+    "march"
+   ],
+   "caption_end": 29,
+   "set_by": "e2"
+  },
+  {
+   "i": 90029,
+   "prefix": "A table holding a",
+   "caption": "A table holding a 8 case itc",
+   "nouns": [
+    "case",
+    "itc"
+   ],
+   "caption_end": 6,
+   "set_by": "e2"
+  },
+  {
+   "i": 90030,
+   "prefix": "A woman in a",
+   "caption": "A woman in a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90031,
+   "prefix": "A woman in a",
+   "caption": "A woman in a 1",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90032,
+   "prefix": "A machine in a",
+   "caption": "A machine in a 6",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90033,
+   "prefix": "A machine in a",
+   "caption": "A machine in a 3",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90034,
+   "prefix": "The airplane has landed behind a",
+   "caption": "The airplane has landed behind a 4",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90035,
+   "prefix": "The airplane has landed behind a",
+   "caption": "The airplane has landed behind a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90036,
+   "prefix": "A blue and black ray holding",
+   "caption": "A blue and black ray holding 5x",
+   "nouns": [
+    "5x"
+   ],
+   "caption_end": 4,
+   "set_by": "e2"
+  },
+  {
+   "i": 90037,
+   "prefix": "A blue and black ray holding",
+   "caption": "A blue and black ray holding 1, a warrior-bird with a beak and helmet, stands on the edge of a skywal plume, captured over the atrium",
+   "nouns": [
+    "warrior",
+    "bird",
+    "beak",
+    "helmet",
+    "plume",
+    "atrium"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90038,
+   "prefix": "A pizza covered in",
+   "caption": "A pizza covered in 2 coleman mustard bottles, a plate of frozen spam  and",
+   "nouns": [
+    "coleman",
+    "mustard",
+    "bottles",
+    "plate",
+    "spam"
+   ],
+   "caption_end": 19,
+   "set_by": "e2"
+  },
+  {
+   "i": 90039,
+   "prefix": "A pizza covered in",
+   "caption": "A pizza covered in 5 sauce lists transforms into a round - belly and can retain open",
+   "nouns": [
+    "sauce",
+    "lists",
+    "belly"
+   ],
+   "caption_end": 17,
+   "set_by": "e1"
+  },
+  {
+   "i": 90040,
+   "prefix": "A group of",
+   "caption": "A group of 2,",
+   "nouns": [],
+   "caption_end": 4,
+   "set_by": "e2"
+  },
+  {
+   "i": 90041,
+   "prefix": "A group of",
+   "caption": "A group of 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90042,
+   "prefix": "A man walking toward a",
+   "caption": "A man walking toward a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90043,
+   "prefix": "A man walking toward a",
+   "caption": "A man walking toward a 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90044,
+   "prefix": "A group of",
+   "caption": "A group of 9 carp jack pieces in spring has been announced on april",
+   "nouns": [
+    "carp",
+    "jack",
+    "pieces",
+    "spring",
+    "april"
+   ],
+   "caption_end": 14,
+   "set_by": "e2"
+  },
+  {
+   "i": 90045,
+   "prefix": "A group of",
+   "caption": "A group of 7",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  },
+  {
+   "i": 90046,
+   "prefix": "a couple of young",
+   "caption": "a couple of young 2nd united states soldiers in costume are marching against it's new hindu state during the isbeen & marty festival in january",
+   "nouns": [
+    "2nd",
+    "united",
+    "states",
+    "soldiers",
+    "costume",
+    "hindu",
+    "state",
+    "isbeen",
+    "marty",
+    "festival",
+    "january"
+   ],
+   "caption_end": 33,
+   "set_by": "cap"
+  },
+  {
+   "i": 90047,
+   "prefix": "a couple of young",
+   "caption": "a couple of young 2",
+   "nouns": [],
+   "caption_end": 2,
+   "set_by": "e2"
+  }
+ ]
+}

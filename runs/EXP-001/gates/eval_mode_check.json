@@ -1,0 +1,19 @@
+{
+ "training_flag_after_build_before_set_eval": false,
+ "dropout_p_config": 0.1,
+ "shim": {
+  "file": "runs\\env-2026-10-14\\scripts\\shims\\flash_attn\\layers\\rotary.py",
+  "sha256": "fc7f254f27254896008b152b534d872b4f1bae14506b684045b31e81efbcbceb",
+  "version_line": ""
+ },
+ "eval_twice_max_abs_diff_text": 0.0,
+ "eval_twice_max_abs_diff_img": 0.0,
+ "train_twice_max_abs_diff_text": 0.1224851149345014,
+ "train_twice_max_abs_diff_img": 0.018560672291245944,
+ "train_vs_eval_mean_tv_text": 0.07185275674925104,
+ "train_vs_eval_mean_tv_img": 0.023779372850659217,
+ "train_vs_eval_top1_agree_text": 0.78125,
+ "train_vs_eval_top1_agree_img": 0.9677734375,
+ "assert_eval_ok_after_reset": true,
+ "gpu_seconds_per_forward": null
+}
