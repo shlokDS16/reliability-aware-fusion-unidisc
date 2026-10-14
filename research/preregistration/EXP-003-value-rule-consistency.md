@@ -72,7 +72,7 @@ competing_explanations:
   - measurement-range effect: guided images are more object-like, so the VLM is more discriminating on them without the dependence changing (control, NC-1, PC-1, PC-2, per-arm base rates, CLIP concordance rule, COCO-noun sensitivity)
   - noun composition: guided completions contain more depictive nouns (control, COCO-category-noun sensitivity, composition share reported)
   - degenerate output of G at 32 steps instead of the default 50 (control, pilot screen and stop rule 9.2)
-unknowns: [Lambda_d under P and under G; discordant-noun counts per arm; whether the official sampler commits the tail before the image; per-call VLM cost; official-sampler cost per step in the joint row; completion length, empty-completion rate and debris share under G; whether G at 32 steps is non-degenerate at 512 px; whether the VLM resolves nouns on plain-sampling images well enough for PC-1]
+unknowns: [Lambda_b under P and under G; discordant-noun counts per arm; whether the official sampler commits the tail before the image; per-call VLM cost; official-sampler cost per step in the joint row; completion length, empty-completion rate and debris share under G; whether G at 32 steps is non-degenerate at 512 px; whether the VLM resolves nouns on plain-sampling images well enough for PC-1]
 next_test: {hypothesis: "E3-H1, E3-H2a, E3-H2b", intervention: "plain sampler (J, 64 and 32 passes) versus official sampler with CFG 0 and 3.0 (32 steps) after fresh rung-2 prefixes", primary_metric: "discordant-noun link Lambda_d, G minus P64, prefix-cluster paired bootstrap", falsifier: "section 5 (null class: 90 percent interval inside (-0.10, +0.10) with NC-1, PC-1, PC-2 passed)", gpu_hours: "about 2.8 compute-hours, about 5.8 wall-clock hours at duty 0.5 (section 8)"}
 ```
 
@@ -205,7 +205,7 @@ All on E3-CTRL (48 prefixes x 2 seeds), plain value rule, before the main stage 
 | 0.20 | 1.00 | 1.00 | 0.00 |
 
   Holm second-step power for a Delta2 of 0.10 is 0.68 (0.97 at 0.15). **n rule after the pilot:** n_conf = clamp(n_req, 120, min(150, n_cap)), where n_req uses sigma_d,up = 1.21 x the pilot SD of the paired per-prefix influence values (sqrt(15 / chi2_{0.20, 15}) = 1.206, the 80 percent upper factor for 16 clusters) and n_req = ceil(((1.96 + 1.2816) sigma_d,up / 0.10)^2) and n_cap is the largest n for which the projected wall-clock (section 8) with the pilot's measured costs is at most 6.0 hours. If no n >= 120 fits, the overrun goes to the orchestrator before the controls start. Whatever n_conf is, all tests run and the report states the achieved MDE and the power at the MEI.
-- **Pilot firewall.** The pilot analysis script (hashed before the pilot is generated) writes only: costs, memory, telemetry, per-arm completion counts, noun and discordant counts, failure and degeneracy counts, and the SD of the paired per-prefix difference L_p(G) - L_p(P64) and the eligible-prefix share per arm (v0.2). It computes no Lambda_d, no arm mean of any link, no contrast, and no CLIP lift. No pilot sample enters any test. Allowed pilot-based changes: n_conf, chunk length, batch size (1), hook feasibility. Not allowed: arms, steps, CFG values, MEI, endpoint, thresholds, pools.
+- **Pilot firewall.** The pilot analysis script (hashed before the pilot is generated) writes only: costs, memory, telemetry, per-arm completion counts, noun and discordant counts, failure and degeneracy counts, and the SD of the paired per-prefix difference L_p(G) - L_p(P64) and the eligible-prefix share per arm (v0.2). It computes no Lambda_b or Lambda_d, no arm mean of any link, no contrast, and no CLIP lift. No pilot sample enters any test. Allowed pilot-based changes: n_conf, chunk length, batch size (1), hook feasibility. Not allowed: arms, steps, CFG values, MEI, endpoint, thresholds, pools.
 
 ## 8. Runs in order of information per GPU-hour, GPU regime, budget
 
@@ -243,7 +243,7 @@ Statements are restricted to the scope sentence of 1.1.
 | Reversed Delta1 | "Guidance reduces the completion-specific link on this model", with the candidate reasons the data allow (diversity, prefix over-conditioning), not asserted. |
 | Inconclusive | The interval, the achieved MDE, and no claim. |
 | E3-H4 supported | "The guided rule lowers diversity (sibling Jaccard, unigram entropy, image sibling cosine, with intervals) at the consistency it buys." Not supported: "no diversity cost measured at this precision". |
-| P32 replicates the EXP-001 null (Lambda_d(P32) interval contains 0 and the OR-rule m - s_sp interval contains 0) | One sentence: the EXP-001 gate result holds on fresh prefixes at n = 150 clusters. |
+| P32 replicates the EXP-001 null (Lambda_b(P32) interval contains 0 and the OR-rule m - s_sp interval contains 0) | One sentence: the EXP-001 gate result holds on fresh prefixes at n = 150 clusters. |
 
 Because UniDisc states no licence (EXP-001 3 item 6, 15.1), any figure with generated images waits for the authors' permission; metrics are reported without it.
 
