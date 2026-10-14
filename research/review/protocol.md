@@ -74,6 +74,14 @@ Filters: 2021-01-01 to search date; English. Pilot: both strings must retrieve a
 the Awesome-DLMs "Multimodal DLMs" section and a random 50 of its other records; missed records
 are used to revise the strings before the logged run.
 
+**Version rated.** Screening, extraction and appraisal use the latest arXiv version available on
+the retrieval date (HTML retrieved 2026-10-13 for the seed corpus), because that is the version
+all raters can open. The published version of each included study is resolved separately
+(Semantic Scholar, Crossref, OpenAlex, DBLP) and recorded with its venue and DOI; the bibliography
+cites the published version where one exists. Differences between a preprint and its published
+version are a stated limitation; paywalled published versions are obtained through the authors'
+institutional access when a pooled estimate or a quoted number depends on them.
+
 ## 4. Selection process and reviewer agreement
 
 1. Deduplicate on arXiv ID, DOI, OpenReview ID, then normalised title.

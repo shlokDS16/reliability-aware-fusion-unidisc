@@ -1,0 +1,79 @@
+== A. Round 2 intervals: 40 papers, 10000 paper-cluster bootstrap resamples, seed 20261014, percentile ==
+  kappa asserted, pooled 6 types (240 cells)   0.71  [ 0.59,  0.81]  width 0.22 n=240; naive cell bootstrap [0.61, 0.80]
+  kappa evaluable flag, pooled (jointly asserted)   0.33  [ 0.03,  0.59]  width 0.56 n=62; naive cell bootstrap [0.08, 0.55]
+  per-type asserted kappa (n = 40 papers each):
+  CT1 steps                            1.00  [ 1.00,  1.00]  width 0.00 yes: claude 5, codex 5, both 5; undefined draws 1%
+  CT2 time                             0.85  [ 0.66,  1.00]  width 0.34 yes: claude 17, codex 20, both 17; undefined draws 0%
+  CT3 inference quality                0.53  [ 0.14,  0.83]  width 0.69 yes: claude 8, codex 8, both 5; undefined draws 0%
+  CT4 training quality                 0.60  [ 0.37,  0.83]  width 0.46 yes: claude 20, codex 28, both 20; undefined draws 0%
+  CT5 unification                      0.00  [ 0.00,  0.00]  width 0.00 yes: claude 0, codex 4, both 0; undefined draws 2%
+  CT6 vs autoregressive                0.53  [ 0.31,  0.75]  width 0.44 yes: claude 15, codex 25, both 15; undefined draws 0%
+  evaluable flag, pooled over jointly asserted cells (n = 62):
+  share evaluable, claude              0.44  [ 0.30,  0.57]  width 0.27 
+  share evaluable, codex               0.34  [ 0.21,  0.48]  width 0.27 
+  share difference claude - codex      0.10  [-0.05,  0.24]  width 0.29 (paired, = bias index)
+  PABAK = 2*po - 1                     0.35  [ 0.06,  0.63]  width 0.57 
+  bias index (c_yn - c_ny)/n           0.10  [-0.05,  0.24]  width 0.29 
+  prevalence index (c_nn - c_yy)/n     0.23  [ 0.00,  0.45]  width 0.45 
+  raw agreement                        0.68  [ 0.53,  0.81]  width 0.28 
+  evaluable 2x2 (rows claude, cols codex): nn 28, ny 7, yn 13, yy 14; McNemar exact p = 0.263
+  P(kappa_evaluable >= 0.60) among bootstrap draws: 0.022 ; P(kappa_asserted < 0.60): 0.031
+  per-type evaluable share (claude, codex) where both asserted:
+    CT1 steps              n= 5  claude 0.20  codex 0.20
+    CT2 time               n=17  claude 0.29  codex 0.35
+    CT3 inference quality  n= 5  claude 0.60  codex 0.20
+    CT4 training quality   n=20  claude 0.70  codex 0.55
+    CT5 unification        n= 0  claude 0.00  codex 0.00
+    CT6 vs autoregressive  n=15  claude 0.27  codex 0.13
+
+== B. Clustering: design effect of papers on the kappa variance ==
+  asserted pooled: var ratio cluster/naive = 1.35 (DEFF), cells per paper 6.00
+  evaluable pooled: var ratio cluster/naive = 1.42 (DEFF), cells per paper 1.55
+  per-type asserted kappa mean (unweighted) 0.59 vs pooled 0.71
+  asserted disagreements per paper: mean 0.78, variance 0.90; variance/mean 1.16 (1 = binomial-like; >1 = clustering)
+  evaluable disagreements per paper: mean 0.50, variance 0.62; papers with >=1: 14, with >=2: 5
+
+== C. Claims needed so that the lower 95% bound of kappa clears 0.60 when true kappa = 0.75 ==
+  (delta-method SE inside a Monte Carlo of 20000 multinomial samples; two-sided 95% bound, z = 1.96; iid claims, i.e. before the paper/group design effect)
+  marginals evaluable-yes 0.40/0.40 (cells valid: True): n for P(LB>0.60)>=0.5 : 80; >=0.8 : 180; P at n=30: 0.28, n=60: 0.42; analytic SE at n=100: 0.068
+  marginals evaluable-yes 0.50/0.50 (cells valid: True): n for P(LB>0.60)>=0.5 : 80; >=0.8 : 180; P at n=30: 0.26, n=60: 0.46; analytic SE at n=100: 0.066
+  marginals evaluable-yes 0.30/0.30 (cells valid: True): n for P(LB>0.60)>=0.5 : 90; >=0.8 : 210; P at n=30: 0.31, n=60: 0.39; analytic SE at n=100: 0.073
+  marginals evaluable-yes 0.44/0.34 (cells valid: True): n for P(LB>0.60)>=0.5 : 80; >=0.8 : 170; P at n=30: 0.27, n=60: 0.44; analytic SE at n=100: 0.066
+  Paper/group design effect multiplies these n; a validation round of m papers yields about 1.55 jointly asserted claims per paper (62 / 40 in round 2): n_claims 150 ~ 97 papers, before any DEFF.
+  Per type: needs n jointly asserted claims EACH; round-2 jointly asserted per type were: {'steps': 5, 'time': 17, 'inference quality': 5, 'training quality': 20, 'unification': 0, 'vs autoregressive': 15}
+  30-claim human sheet: SE of a kappa at true 0.75, n=30 (marginals .4/.4): 0.123 -> expected 95% bounds 0.51 to 0.99
+  Clopper-Pearson upper 95% (one-sided) for error rate with 0/10 human-vs-model errors among agreements: 0.259
+  Clopper-Pearson upper 95% (one-sided) for error rate with 1/10 human-vs-model errors among agreements: 0.394
+  human sides with one named rater in 10/20 disagreements: 95% CI [0.27, 0.73]
+  human sides with one named rater in 14/20 disagreements: 95% CI [0.46, 0.88]
+  human sides with one named rater in 15/20 disagreements: 95% CI [0.51, 0.91]
+  sheet weights: round-2 evaluable cells nn 28, ny 7, yn 13, yy 14; 20 disagreements all rated, 10 of 42 agreements sampled -> agreement weight 4.2
+
+== D. Stratified prevalence: planning table (human-rates ALL discordant claims + random subsample of agreements) ==
+  round-2 stratum shares of jointly asserted claims: AA 0.23, NN 0.45, discordant 0.32
+  planning values (ASSUMED, to be replaced by the validation round): human-evaluable rate AA 0.90, NN 0.10; group-clustering DEFF 1.3
+  N_t = jointly asserted claims of the type | half-width 0.10 | half-width 0.07 : (total agreements to rate; AA, NN)
+   N_t= 60 (discordant ~19) | (14, 5, 9) | (21, 7, 14)
+   N_t=150 (discordant ~48) | (18, 6, 12) | (30, 10, 20)
+   N_t=300 (discordant ~97) | (19, 6, 13) | (35, 12, 23)
+  A demo of strat_estimate() needs human ratings and is run only on real adjudication data (none yet).
+
+== E. Planning numbers for E1-E3 ==
+  E1 one-sided, true share 0.30 vs 0.50, alpha .05: n asserted claims per type for 80% power = 37 (x1.3 clustering = 48)
+  E1 one-sided, true share 0.30 vs 0.50, Holm worst case .05/6: n asserted claims per type for 80% power = 63 (x1.3 clustering = 82)
+  E1 one-sided, true share 0.40 vs 0.50, alpha .05: n asserted claims per type for 80% power = 153 (x1.3 clustering = 199)
+  E1 one-sided, true share 0.40 vs 0.50, Holm worst case .05/6: n asserted claims per type for 80% power = 259 (x1.3 clustering = 337)
+  E1 one-sided, true share 0.44 vs 0.50, alpha .05: n asserted claims per type for 80% power = 428 (x1.3 clustering = 556)
+  E1 one-sided, true share 0.44 vs 0.50, Holm worst case .05/6: n asserted claims per type for 80% power = 725 (x1.3 clustering = 942)
+  E2 TOST margin 0.10, per-group n for 80% power, true diff 0.00, base share 0.4: 297 claims per group
+  E2 TOST margin 0.10, per-group n for 80% power, true diff 0.03, base share 0.4: 606 claims per group
+  E2 SE of a difference of two shares (p=.4) at n per group 40 / 100 / 200: 0.110 / 0.069 / 0.049  (equivalence needs 1.645*SE < 0.10 even at zero true difference)
+  E3 exact sign test (one-sided .05) true P(controlled smaller)=0.60: papers needed for 80% power = 158
+  E3 exact sign test (one-sided .05) true P(controlled smaller)=0.65: papers needed for 80% power = 69
+  E3 exact sign test (one-sided .05) true P(controlled smaller)=0.70: papers needed for 80% power = 37
+  E1 sample frame: jointly asserted claims per paper by type in round 2 x 550 papers: {'steps': 69, 'time': 234, 'inference quality': 69, 'training quality': 275, 'unification': 0, 'vs autoregressive': 206}
+
+== F. Pilot counts that the protocol and summaries word as support ==
+  2/9: 0.22, Clopper-Pearson 95% [0.03, 0.60] -- H2(a): papers with a swept baseline reaching 2 T_m (pre-set: support if < 1/3, contradict if >= 1/2)
+  7/9: 0.78, Clopper-Pearson 95% [0.40, 0.97] -- papers not publishing the sweep
+  H2(b): 0.00 in 2 computable papers; one-sided 95% upper bound for a proportion with 0/2 = 0.78

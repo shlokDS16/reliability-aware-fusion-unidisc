@@ -1,6 +1,22 @@
 # Progress ledger
 
 ## RESUME
+- **STOP AND READ FIRST (2026-10-14): the plan failed its own audits.**
+  `review/audits/2026-10-14-red-team-plan.md` (editor's decision: reject without review; three
+  fatal findings: scope trap at ACM Computing Surveys, evaluability construct unreliable and
+  unvalidated, no expert human reads the corpus) and
+  `review/audits/2026-10-14-statistician-protocol.md` (claim-identification "pass" not
+  established, lower bound 0.59; E2 and E3 not testable as written; a real validation needs about
+  160 papers and human raters). **Hypotheses E1 to E3 and "organised around claim evaluability"
+  are suspended** pending the user's and professor's decision on the orchestrator's proposal:
+  (1) Paper 1 becomes a PRISMA systematic review whose core is an integrating framework and
+  critical synthesis by research question, with quality appraisal as a descriptive component
+  built from extractive, checkable items; (2) first target Artificial Intelligence Review, with a
+  scope inquiry to the ACM Computing Surveys editors in parallel; (3) the slack and evaluability
+  questions move to Paper 2 as an experimental re-evaluation with reruns; (4) a stated minimum of
+  human author reading. Nothing below this block overrides it.
+  Work that is valid under any outcome: the integrating framework (RQ1), the database searches,
+  the published-version resolution, PRISMA bookkeeping.
 - **Order of work changed 2026-10-13 (D0005):** Paper 1 is a systematic review for ACM Computing
   Surveys; Paper 2 (research article, Nature Machine Intelligence) follows. Plan and gates R0 to
   R6: `research/review/PLAN.md`. The G0 to G9 gates below now belong to Paper 2.
@@ -90,6 +106,17 @@
   (30 claims; ideally a second human too). **Then:** write rubric v0.3 (extractive items, computed
   budgets, wording fixes), freeze, validate on a fresh sample, then red-team and statistician sign
   the protocol. The first-round `reliability/human-sheet.csv` is superseded.
+- **2026-10-14, searches and venues.** `tools/search_arxiv.py venues` done:
+  `corpus/venues-semantic-scholar.json`, 537 of 539 arXiv records found, 156 with a non-arXiv
+  venue (ACL 40, NeurIPS 35, ICLR 17, EMNLP 15, ICML 11, NAACL 8, AAAI 8), 20 with a non-arXiv DOI.
+  Semantic Scholar venue strings need checking against DBLP or Crossref before use in E2.
+  **arXiv API returned 429 for every search request** (this IP fetched about 540 HTML pages on
+  2026-10-13); no search has been logged yet. Retry `python tools/search_arxiv.py count` on
+  another day before `run S1 S2`. OpenAlex answers, but its `search` parameter now maps to
+  full-text search and phrase plus date filters returned zero: read the current OpenAlex API
+  documentation before using it as a source; do not guess the syntax.
+  Running: red-team referee review of the plan and statistician review of the protocol (both
+  return text; save to `review/audits/`).
 - **Agent definitions fixed:** hypothesis-smith, experiment-designer and method-architect had not
   loaded (unquoted colon in the description); `tools/build_agents.py` now quotes descriptions.
 - **Exemplar reading was structural only (E1).** Before drafting, paper-reader must read two
