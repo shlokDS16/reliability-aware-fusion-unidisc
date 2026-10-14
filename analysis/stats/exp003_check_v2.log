@@ -1,0 +1,20 @@
+v0.2 check: Lambda_b (seed-balanced, eligible prefixes only) against Lambda_d (instance-weighted ratio), P = 150, 300 reps, B = 1000
+-- F-1 toy: seed count coupled to image yes-bias, true link 0 (bias of the estimators = mean column)
+no coupling                    nd A/B=3.0/3.0 od=None couple=0.0/0.0 true=0.00 | excluded share 0.184 | Lambda_b: mean +0.002 SE 0.034 P(rej95) 0.053 P(null90) 0.780 cov90 0.893 | Lambda_d: mean +0.001 SE 0.027 P(rej95) 0.050 P(null90) 0.953
+coupling 0.5                   nd A/B=3.0/3.0 od=None couple=0.5/0.5 true=0.00 | excluded share 0.224 | Lambda_b: mean -0.000 SE 0.036 P(rej95) 0.067 P(null90) 0.767 cov90 0.893 | Lambda_d: mean -0.001 SE 0.030 P(rej95) 0.080 P(null90) 0.913
+coupling 1.0                   nd A/B=3.0/3.0 od=None couple=1.0/1.0 true=0.00 | excluded share 0.317 | Lambda_b: mean +0.000 SE 0.037 P(rej95) 0.060 P(null90) 0.707 cov90 0.897 | Lambda_d: mean -0.003 SE 0.029 P(rej95) 0.047 P(null90) 0.937
+-- coupling in arm A only (arm-level bias of the absolute statistic; arm B uncoupled), true link 0
+A coupled 1.0, B none          nd A/B=3.0/3.0 od=None couple=1.0/0.0 true=0.00 | excluded share 0.258 | Lambda_b: mean -0.002 SE 0.038 P(rej95) 0.060 P(null90) 0.730 cov90 0.860 | Lambda_d: mean +0.062 SE 0.029 P(rej95) 0.580 P(null90) 0.397
+A coupled 2.0, B none          nd A/B=3.0/3.0 od=None couple=2.0/0.0 true=0.00 | excluded share 0.367 | Lambda_b: mean +0.000 SE 0.043 P(rej95) 0.107 P(null90) 0.620 cov90 0.853 | Lambda_d: mean +0.129 SE 0.035 P(rej95) 0.993 P(null90) 0.010
+-- efficiency, no coupling
+Poisson counts                 nd A/B=4/4 od=None couple=0.0/0.0 true=0.00 | excluded share 0.070 | Lambda_b: mean +0.001 SE 0.028 P(rej95) 0.043 P(null90) 0.937 cov90 0.903 | Lambda_d: mean +0.001 SE 0.025 P(rej95) 0.070 P(null90) 0.987
+Poisson counts                 nd A/B=4/4 od=None couple=0.0/0.0 true=0.10 | excluded share 0.072 | Lambda_b: mean +0.096 SE 0.027 P(rej95) 0.917 P(null90) 0.057 cov90 0.913 | Lambda_d: mean +0.099 SE 0.024 P(rej95) 0.980 P(null90) 0.060
+Poisson counts                 nd A/B=2/4 od=None couple=0.0/0.0 true=0.00 | excluded share 0.281 | Lambda_b: mean -0.000 SE 0.040 P(rej95) 0.070 P(null90) 0.680 cov90 0.883 | Lambda_d: mean +0.001 SE 0.031 P(rej95) 0.053 P(null90) 0.907
+Poisson counts                 nd A/B=2/4 od=None couple=0.0/0.0 true=0.10 | excluded share 0.281 | Lambda_b: mean +0.103 SE 0.041 P(rej95) 0.733 P(null90) 0.043 cov90 0.863 | Lambda_d: mean +0.103 SE 0.032 P(rej95) 0.917 P(null90) 0.060
+Poisson counts                 nd A/B=1/3 od=None couple=0.0/0.0 true=0.00 | excluded share 0.642 | Lambda_b: mean +0.006 SE 0.059 P(rej95) 0.050 P(null90) 0.073 cov90 0.910 | Lambda_d: mean +0.002 SE 0.035 P(rej95) 0.040 P(null90) 0.663
+Poisson counts                 nd A/B=1/3 od=None couple=0.0/0.0 true=0.10 | excluded share 0.639 | Lambda_b: mean +0.099 SE 0.061 P(rej95) 0.370 P(null90) 0.000 cov90 0.900 | Lambda_d: mean +0.102 SE 0.043 P(rej95) 0.680 P(null90) 0.060
+-- overdispersed counts (NB size 1.5), efficiency
+NB counts                      nd A/B=3/3 od=1.5 couple=0.0/0.0 true=0.00 | excluded share 0.575 | Lambda_b: mean +0.003 SE 0.052 P(rej95) 0.073 P(null90) 0.310 cov90 0.877 | Lambda_d: mean +0.002 SE 0.033 P(rej95) 0.083 P(null90) 0.873
+NB counts                      nd A/B=3/3 od=1.5 couple=0.0/0.0 true=0.10 | excluded share 0.571 | Lambda_b: mean +0.102 SE 0.048 P(rej95) 0.530 P(null90) 0.030 cov90 0.913 | Lambda_d: mean +0.100 SE 0.030 P(rej95) 0.913 P(null90) 0.047
+NB counts                      nd A/B=1.5/3 od=1.5 couple=0.0/0.0 true=0.00 | excluded share 0.726 | Lambda_b: mean +0.001 SE 0.067 P(rej95) 0.057 P(null90) 0.033 cov90 0.883 | Lambda_d: mean +0.000 SE 0.034 P(rej95) 0.047 P(null90) 0.770
+NB counts                      nd A/B=1.5/3 od=1.5 couple=0.0/0.0 true=0.10 | excluded share 0.727 | Lambda_b: mean +0.098 SE 0.065 P(rej95) 0.310 P(null90) 0.007 cov90 0.930 | Lambda_d: mean +0.101 SE 0.035 P(rej95) 0.783 P(null90) 0.040

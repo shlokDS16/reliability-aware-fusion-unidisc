@@ -72,3 +72,45 @@ next_test: {hypothesis: n/a, intervention: none, primary_metric: n/a, falsifier:
 ## Signature
 
 Statistician: **unsigned**, pending v0.2 with changes 1 to 8 (items 1 to 3, 5 and 6 are blocking; 4, 7 and 8 are wording/definition additions).
+
+---
+
+# v0.2 check (2026-10-15)
+
+Read: card v0.2 (`git diff 01dabdb`, commits a0073e1, 8accefe). Simulation: `python analysis/stats/exp003_check.py v2` (log `analysis/stats/exp003_check_v2.log`; synthetic data, 150 prefixes, 300 replicates, B = 1000, seeded; Monte Carlo SE of a rate near 0.05 is about 0.013). It does not describe UniDisc; discordant counts are the driver and are unknown.
+
+## (1) Does Lambda_b cancel additive image-level bias; is the cluster bootstrap right?
+
+- **Cancellation: yes, exactly for additive bias, in expectation given the noun sets.** For an eligible prefix the two sides contribute (link + b0 - b1)/2 and (link + b1 - b0)/2; the noun-specific base rates cancel within each side because the same noun is scored on both images. Simulation of the red-team F-1 toy (seed noun count scales with the seed's image yes-bias, true link 0, bias on the logit scale, heterogeneous nouns): the instance-weighted Lambda_d, absolute, is +0.062 (coupling 1.0) and +0.129 (coupling 2.0), consistent with their +0.07 to +0.18; Lambda_b is -0.002 and 0.000. The Delta1 contrast cancels the Lambda_d bias only if both arms are coupled equally; G and P64 need not be, so keeping Lambda_b primary is right.
+- **Residual: non-additive bias** (yes-rate interacting with noun class) is not cancelled; NC-2 is the right idea. Caveat: placebo nouns (nouns of another prefix, absent from both completions) have near-zero presence rates, so their slope under a logit-type bias is small and NC-2 under-detects a bias acting on real, plausible nouns. Report the placebo noun presence rate per arm beside Lambda_b^plac (not blocking).
+- **Bootstrap.** Resampling prefixes with the eligibility flag carried inside each replicate (numerator sum over eligible, count of eligible recomputed) is the correct cluster scheme; the mean over eligible prefixes is a ratio estimator and was unbiased in simulation (bias at most 0.006). Percentile size at nominal 0.05: 0.043 to 0.067 in ordinary cases; 0.107 with 90 percent coverage 0.853 under extreme coupling 2.0 (coverage 0.86 at coupling 1.0, arm A only). Mildly anti-conservative; see fix 3.
+- **Estimand sets.** The arm contrast uses prefixes eligible in both arms, so the pairwise sets differ between Delta1, Delta2a and Delta2b. The identity of 4.2 then holds exactly only on a common set; the card still says "exactly" (line 146). See fix 2.
+
+## (2) Efficiency against Lambda_d (n = 150 prefixes; power at true Delta1 0.10, P(null) at true 0)
+
+| scenario (discordant nouns per seed, G / P64) | excluded share | SE Lambda_b | SE Lambda_d | power Lambda_b | power Lambda_d | P(null) Lambda_b | P(null) Lambda_d |
+|---|---|---|---|---|---|---|---|
+| Poisson 4 / 4 | 0.07 | 0.029 | 0.025 | 0.93 | 0.95 | 0.93 | 0.98 |
+| Poisson 2 / 4 | 0.28 | 0.040 | 0.031 | 0.74 | 0.92 | 0.65 | 0.89 |
+| Poisson 1 / 3 | 0.64 | 0.059 to 0.066 | 0.039 to 0.046 | 0.33 | 0.68 | 0.06 | 0.60 |
+| negative binomial (size 1.5) 3 / 3 | 0.57 | 0.049 to 0.052 | 0.030 to 0.031 | 0.56 | 0.93 | 0.29 | 0.89 |
+| negative binomial (size 1.5) 1.5 / 3 | 0.73 | 0.071 to 0.072 | 0.037 to 0.040 | 0.31 | 0.76 | 0.02 | 0.71 |
+
+Lambda_b costs a factor 1.2 to 1.8 in standard error, almost all through excluded prefixes (the price of cancelling the bias). The card's planning value (SE 0.0367, power 0.78, P(null | 0) 0.72) corresponds to about 2.5 Poisson discordant nouns per seed (sigma 0.45 on 150 prefixes); overdispersed counts, which real 0-to-32-token completions with 6 percent empty ones will be, give 0.64 to 0.87. **Expected excluded share: 10 to 30 percent if G keeps about 2 or more discordant nouns per seed; 55 to 75 percent if counts are 1 to 3 and overdispersed.** The empty-completion rate (0.06 in EXP-001) and G's expected lower diversity push toward the upper range. The pilot will show it, and the card's rule must use it (fix 1).
+
+## (3) Do the null and wording changes meet my items 1 to 8?
+
+- 1 null wording: met in sections 5 and 10 (per-arm 90 percent intervals, margin note, diversity floor, NC-2). Not met in one place: line 121 still reads "a null is the stronger null" (fix 4).
+- 2 hypotheses tested against 0: met. 3 W4: met. 4 W5: met; add "eligible prefixes" to its scope sentence (fix 1). 6 null mechanics: met. 7 NC-1: met. 8 per-arm intervals: met.
+- 5 sample size: partly. The conditional sentence is there, but the operating characteristics (SE 0.0367, MDE 0.119) are still the Lambda_d numbers, and 9.3 and n_req ignore eligibility. The pilot SD of the paired difference (5c) is met.
+
+## Verdict: NOT YET SIGNED. Four minimal fixes, then SIGNED on a one-line confirmation, no new round
+
+1. **Eligibility in the sample-size rule (section 7, 9.3, pilot firewall).** SE of Delta1 is sigma_el / sqrt(n x s), with s the share of prefixes eligible in both arms and sigma_el the SD of the paired L_p(G) - L_p(P64) over eligible prefixes. n_req, the MDE in 9.3 and the pilot output use s (the pilot already reports a share) and apply the 1.21 factor to sigma_el. Replace the stale "SE 0.0367 / MDE 0.119" by: valid only if the eligible prefixes carry sigma_el = 0.45 (about 2.5 Poisson discordant nouns per seed); simulated range SE 0.029 to 0.072, power at the MEI 0.93 to 0.31. Add to W5 "among prefixes in which both seeds have such nouns".
+2. **Identity and sets (4.1, 4.2).** State that arm contrasts use the prefixes eligible in both arms and per-arm headline intervals each arm's own eligible set. Report the identity Delta1 = Delta2a + Delta2b + (P32 - P64) on the prefixes eligible in all four arms (descriptive) and drop "exactly" for the pairwise sets.
+3. **Positive and reversed classes (section 5, W4).** A "positive" or "reversed" label also requires the BCa 95 percent interval to exclude 0 (the null class already requires BCa agreement); percentile size reached 0.07 to 0.11 in the coupled toys.
+4. **Delete "and a null is the stronger null" (line 121).** Replace by: "a null of G minus P64 is a statement about the difference only; absolute statements follow section 10".
+
+A p-value or an equivalence result still says nothing about practical importance; the 0.10 margin is a choice and larger than the EXP-001 gap, as the card now states.
+
+Statistician: **unsigned until fixes 1 to 4 appear in v0.3.**
