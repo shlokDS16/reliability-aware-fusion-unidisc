@@ -204,3 +204,18 @@ Reading. Lambda_b removes the **additive** bias exactly, as the card says (F-1 a
 - **R4.** The PC-2 and PC-1 mismatch (cross-caption, plain images) is carried over from F-5; either record it as an accepted limitation in the wording of W2 or test the contrast it licenses.
 
 Rejection conditions 1 to 5 above stand, with condition 1 now read on the **non-additive** placebo as well: a Lambda_b above 0.05 in G with a clean NC-2 is not distinguishable from quality-mediated class-level coupling.
+
+---
+
+# v0.3 check (2026-10-15; card commits 465c754 and e33e8f3; only R1 to R4 checked)
+
+**Verdict: one remaining fix, then SIGN. R1 to R4 are applied in the places they were aimed at.**
+
+- **R1 cleared.** Assertion moved to step 1 (t < 1); G = 1 + 2 x 31 + final = 64 calls, matched exactly with P64 (arithmetic checked against `_ddpm_forward` L1763 guard and `get_cfg_weight`: w = 0 at t = 1 gives a single call).
+- **R2 cleared in Section 4 and W0.** NC-2 scope is stated and the toy is cited; W0 bans the term for results; the quality-matched sensitivity (sibling CLIP-IQA difference, slope of L_p) is a sensible descriptive check (not run by me).
+- **R3 cleared.** The null sentence now states only the tested quantity.
+- **R4 cleared** as an accepted limitation in W2.
+
+**The one remaining fix (blocks signature).** W0 says the term "completion-specific link" is "not used for any result of this card", but the card's own claim contract still asserts it as the thing being tested and as a finding: the YAML claim for E3-H1 (line 57), the Section 0 summary (line 85: "The primary endpoint is the **completion-specific link**" and "If guidance does not create a completion-specific link either, the joint consistency of the guided sampler comes from the prefix, not from co-generation" , which is the R3 clause removed from Section 10 but kept here), and the Section 1.1 one-sentence claim (line 90: "produces a larger completion-specific text-image link"). A reader of the frozen claim contract gets the wording W0 forbids and the untested "not from co-generation" conclusion. These three sentences must use the W0 term and drop the "comes from the prefix, not from co-generation" clause.
+
+Cosmetic, non-blocking: in 4.1 the NC-2 "Pass on G and on P64 ..." and "Delta1 also reported net of placebo" sentences now sit inside the quality-matched bullet; read literally, the pass rule attaches to the sensitivity. Line 32 and 93 ("EXP-001 measured no completion-specific link") describe a past result under a different statistic and are acceptable.
