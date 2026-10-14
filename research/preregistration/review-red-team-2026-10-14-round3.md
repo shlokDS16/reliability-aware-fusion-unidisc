@@ -251,3 +251,45 @@ check of the changed paragraphs is enough.
 `analysis/framework/redteam_exp_001_source_rule.py` -> `.log`, run with
 `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 <repo-root>/.venv/Scripts/python.exe analysis/framework/redteam_exp_001_source_rule.py`
 (about 28 s).
+
+## v0.5 check (paragraph check, 2026-10-14; card at commit 4809632, diff against 7bce081)
+
+Scope: only the changed paragraphs of section 2 (H-A, items (a)-(g)), 4.1b, 6 and 10.3. Earlier text above is unchanged.
+CPU check: `analysis/framework/redteam_exp_001_source_rule_std.py` -> `.log` (synthetic tail model of the round-3 script,
+three strata, noise cv 0.8 [A], 400 studies of n = 256, 95 percent limits by a normal approximation; about 1 minute).
+
+| Item | v0.5 paragraph | Status |
+|---|---|---|
+| R3-M1 | 4.1b e2 with the pattern list, e2 share reported at PG-V, 14 item 16 caveat narrowed | closed |
+| R3-M2 | 6: fork at 1.0 point, 1.0-2.0 proceeds under P with the range stated | closed (one stale sentence, note 2) |
+| R3-F1 | 2 (b)-(f), 10.3: standardised pair decides, weights fixed in replicates, thin-stratum rule, Negative needs both standardised ratios and R_Q2 | **partly closed** (below) |
+| R3-M3 | 2 (a)-(g) applied to both directions | partly closed: the I->T standardisation is over receivers; the I->T source composition is covered only by the reported guard, so it shares the residual below |
+
+**Does standardisation remove the artefact? [C, log] Mostly, not fully.**
+- The between-type part is gone: standardised ratios agree between "typed" and "flat" dependence (0.71 against 0.74,
+  1.24 against 1.29), and where the source entropy does not drift (sharpening rows, h = 0.93) they recover the truth
+  (1.02-1.09 at a true 1.0; 1.79-1.91 at a true 1.75). No false support anywhere: P(support) = 0.00 at a true 1.0 in
+  all 8 rows.
+- A within-stratum part remains. Inside each stratum the early source is still the most predictable member and the late
+  one a leftover, so when h is far from 1 (static rows, h = 0.55-0.63) the standardised ratio reads about 0.7 of the
+  truth (1.15-1.29 at a true 1.75). Negative also needs R_Q2 to fail; R_Q2 corrects entropy but is not standardised, so
+  with noun-heavier dependence per nat it fails too (0.79-0.83). Result: **P(Negative) = 0.20 (P) and 0.08 (R) at a true
+  1.75**, which is 0.45 and 0.24 of the studies not stopped by the thin-stratum rule. With equal dependence per nat
+  R_Q2 rescues (P(Negative) = 0.00).
+- In every row with a false Negative, h lies outside the registered band [0.85, 1.18]; in the rows where h is inside the
+  band (0.93) false Negatives are 0.00 and correct Negatives at a true 1.0 are 0.82-0.88. The guard already computes h,
+  but under (g) it only changes the wording of the raw ratio.
+
+**Verdict: minimal fix, one sentence; red-team signs v0.5 once it is in (no further review needed).**
+Add to section 2 (g): "If h lies outside [0.85, 1.18] in direction d, direction d cannot be Negative or reversed; it
+is 'inconclusive (composition)' in 11.7. Positives are decided by the standardised pair as in (e)." For I->T, h is the
+ratio of mean per-code marginal entropy of the committed image set, early over late. Cost: correct Negatives in
+drifting-entropy settings become "inconclusive" (0.34-0.43 of studies at a true 1.0 in the static rows); P5 then stays
+open rather than being dropped on an artefact.
+
+Notes (not blocking):
+1. The thin-stratum rule makes T->I "inconclusive (composition)" often: P(thin) = 0.10-0.58 under confidence ranking,
+   0.62-0.67 under random positions and 1.00 with sharpening (early noun sources 0.02-0.06 of probes). The statistician's D1
+   projection should report P(thin) beside power.
+2. Section 6 OC sentence is stale: with the fork at 1.0 and an SE of 0.5-0.7, a true increment of 1.5 (not 2.5) fails
+   about 20 percent of the time.
