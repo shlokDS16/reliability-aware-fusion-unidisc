@@ -1,7 +1,42 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-14, end of day; this block is the newest and overrides older ones).**
+- **CURRENT STATE (2026-10-14, late session; newest block, overrides all older ones).**
+  User: two-week horizon for Paper 1 (about 2026-10-28), quality first, the review must carry a
+  significant result (D0010). Budget was FRUGAL (weekly 58 percent at about 22 percent elapsed;
+  resets 2026-10-19 17:00 UTC), so the user chose sequential primer agents only this session.
+  **Done this session (step 1 and 2 of the plan):**
+  - `review/dossier/primer-gaussian.md` (paper-reader, sonnet, 364k tokens; useful). Six papers
+    read (Diffusion-LM, CDCD, Plaid, DFM, Duo, BD3-LM; SSD-LM method only; TESS, CANDI, Simplex
+    Relaxation not read). Corollary 3 (step size as parallelism) not stated in any of them; toy
+    per-step TC ~ step^2.16. Gaussian samplers add a final-rounding factorisation term
+    TC(x given z_0); self-conditioning breaks "policy depends on z_n only"; "implicit revision"
+    is qualified (pinned conditioning, freezing below an identifiability noise level); Duo's
+    duality is per-position per-time only, not trajectories. 14 numbered edits in section 5.
+    Two proof steps flagged as possibly unjustified (BD3-LM App. B.5; Duo Thm 3.2 setup), low
+    confidence because of conversion: check against the PDFs.
+  - `review/dossier/primer-multimodal.md` (paper-reader, sonnet, 374k tokens; useful). Show-o,
+    UniDisc, MMaDA, MMaDA-Parallel, FUDOKI, Lumina-DiMOO, Transfusion, BAGEL, Show-o2, LaViDa-O
+    at sections-read level (E2-); Muddit, LaViDa, Dynin-Omni not read. **P5: no paper measures a
+    cross-modal quantity per step.** Premise has weak indirect support (UniDisc App. I CFG
+    Fig. 24-25; LaViDa-O Table 13). The only joint-vs-sequential contrast (MMaDA-Parallel
+    Tables 3, 10) favours joint but is confounded. E3: the released MMaDA-Parallel-A sampler
+    commits no image tokens in the first quarter of steps (parallel_generator.py lines 156-160,
+    219-220), unlike the paper's text. Toy [V]: E_fact = within-text + within-image + cross-modal
+    CMI (error 6.6e-16), so P5 as worded is near an identity; split into P5a/P5b (D0010).
+    "No new machinery" fails in four places (guidance, per-modality weights and schedules,
+    continuous image channels, output-level revision). 11 numbered edits in section 6.
+    Cheapest P5 test: frozen UniDisc 1.4B interleaved checkpoint, **5.63 GB download, which
+    needs the user's yes (above 5 GB)**, licence not stated (E1), about 8 GPU-hours, not run.
+  - arXiv count retry worked (S1 1158, S2 173, S1n 731 hits); `run` not yet executed.
+  **Next, in order (fresh session):** (1) write `review/framework-v1.md` (v0 stays) applying the
+  25 edits from both primers, with P5a/P5b and rewritten P1-P3; (2) method-architect (opus)
+  formalises E_sel (law of committed values under keep-the-most-confident-sample selection,
+  and CFG as an E_sel analogue) and the multimodal E_fact^X term; red-team (opus) attacks both;
+  (3) 40-model design-space table and coverage test; (4) `python tools/search_arxiv.py run S1 S2`;
+  (5) ask the user about the UniDisc download for the P5 pilot (Paper 2 candidate); (6) humans
+  read framework-v1. Weekly budget should be checked first; heavy steps after the reset.
+- **Earlier state (2026-10-14, end of day).**
   User decision: the target stays ACM Computing Surveys (D0009). Paper 1 is being rebuilt on an
   integrating framework: `review/framework-v0.md` (generation as a commitment process, five design
   choices C1 to C5, an error budget of factorisation, learning, selection and stale-computation
