@@ -1,0 +1,75 @@
+
+== 1a. Non-D3 passes X and core totals from the card's per-trajectory formulas
+  stage 1 gates: 3,584.0
+  pilot probe+gate: 28,928.0
+  stage 2: 35,072.0
+  PC-B: 15,321.6
+  D1: 33,792.0
+  D2: 55,552.0
+  4r (64): 13,568.0
+  4r (128): 27,136.0
+  NC-6': 25,088.0
+  D3 fixed (Jd, Ref-T2I): 12,000.0
+X (trace 64) = 193,977.6 (card 193,978); X (trace 128) = 207,545.6 (card 207,546)
+n_req with sigma_d rounded to 5.66 (as the card and round 3): 596
+n_req at planning sigma_d 5.657: sigma_d,up 6.144, n_req = 595 (card 596); MDE at 596 = 0.816 (card 0.82)
+n     trace passes   compute@0.129 wall@0.129 wall@0.09
+500     64  289,978  12.89         25.78      19.50
+500    128  303,546  13.38         26.75      20.18
+596     64  308,410  13.66         27.33      20.64
+596    128  321,978  14.15         28.30      21.32
+
+== 1b. n_cap and n_conf = min(max(500, n_req), max(500, n_cap)); cap 32 h; X sized with the 128-trajectory trace
+  plan          t_b=0.09: n_cap=1000, n_conf=595, wall(n_conf)=21.31 h
+  plan          t_b=0.129: n_cap=826, n_conf=595, wall(n_conf)=28.28 h
+  plan          t_b=0.15: n_cap=593, n_conf=593, wall(n_conf)=32.00 h
+  plan          t_b=0.17: n_cap=none (read as 500), n_conf=500, wall(n_conf)=33.67 h
+  +P_rand       t_b=0.09: n_cap=1000, n_conf=595, wall(n_conf)=21.51 h
+  +P_rand       t_b=0.129: n_cap=807, n_conf=595, wall(n_conf)=28.58 h
+  +P_rand       t_b=0.15: n_cap=574, n_conf=574, wall(n_conf)=31.99 h
+  +P_rand       t_b=0.17: n_cap=none (read as 500), n_conf=500, wall(n_conf)=34.06 h
+  +G5 fallback  t_b=0.09: n_cap=1000, n_conf=595, wall(n_conf)=24.02 h
+  +G5 fallback  t_b=0.129: n_cap=584, n_conf=584, wall(n_conf)=31.99 h
+  +G5 fallback  t_b=0.15: n_cap=none (read as 500), n_conf=500, wall(n_conf)=34.82 h
+  +G5 fallback  t_b=0.17: n_cap=none (read as 500), n_conf=500, wall(n_conf)=38.79 h
+  +G5 +P_rand   t_b=0.09: n_cap=1000, n_conf=595, wall(n_conf)=24.23 h
+  +G5 +P_rand   t_b=0.129: n_cap=566, n_conf=566, wall(n_conf)=32.00 h
+  +G5 +P_rand   t_b=0.15: n_cap=none (read as 500), n_conf=500, wall(n_conf)=35.16 h
+  +G5 +P_rand   t_b=0.17: n_cap=none (read as 500), n_conf=500, wall(n_conf)=39.18 h
+  card: n_cap 826 (plan, 0.129), 1,000 (0.09), 566 (G5 + P_rand, 0.129), 593 (0.15), none at 0.17 with wall(500) 33.7
+  grid t_b 0.05-0.40 s x 5 X x 5 n_req: violations of 'defined, >= 500, under 32 h whenever n_cap exists' = 0
+  plan X (trace 128): n_cap ceases to exist at t_b = 0.1602 s; with G5 + P_rand at 0.1343 s
+
+== 2. Source entropy drift h = mean H_src(early)/mean H_src(late) under the v0.4 guard [A: I scales with H_src]
+true normalised ratio 1.75 (front-loaded relative to the source entropy); cv 0.8, r 0.3, n = 256 [A]
+h     P(raw WF)  P(label h<0.5)  P(counted Negative, v0.4)  P(counted, R_Q2 rule)
+0.4   1.000      1.000           0.000                      0.000
+0.5   1.000      0.485           0.515                      0.000
+0.6   0.995      0.000           0.995                      0.000
+0.7   0.732      0.000           0.732                      0.000
+0.8   0.137      0.000           0.137                      0.000
+0.9   0.013      0.000           0.013                      0.000
+1.0   0.000      0.000           0.000                      0.000
+true normalised ratio 1.0 (flat): the R_Q2 rule must still let a true negative count
+h=0.6: P(raw WF) 1.000; P(counted, v0.4) 1.000; P(counted, R_Q2 rule) 0.998
+h=1.0: P(raw WF) 0.997; P(counted, v0.4) 0.997; P(counted, R_Q2 rule) 0.997
+opposite drift (h > 1) inflates the raw ratio; true normalised ratio 1.0:
+h=1.5: P(raw lower 95% >= 1.5) = 0.015
+h=1.75: P(raw lower 95% >= 1.5) = 0.513
+h=2.0: P(raw lower 95% >= 1.5) = 0.937
+
+== 3. Source availability at late probes: pooled-over-available ratio vs balanced panel [A: hardness model]
+true within-trajectory ratio 1.75 at every hardness level
+  late availability 1.0, late sources are high-dependence: median main ratio 1.74, balanced 1.74; P(lower >= 1.5) main 0.61, balanced 0.61
+  late availability 0.8, late sources are high-dependence: median main ratio 1.54, balanced 1.75; P(lower >= 1.5) main 0.06, balanced 0.55
+  late availability 0.8, late sources are low-dependence: median main ratio 2.21, balanced 1.74; P(lower >= 1.5) main 1.00, balanced 0.56
+  late availability 0.5, late sources are high-dependence: median main ratio 1.28, balanced 1.76; P(lower >= 1.5) main 0.00, balanced 0.46
+  late availability 0.5, late sources are low-dependence: median main ratio 2.81, balanced 1.74; P(lower >= 1.5) main 1.00, balanced 0.40
+  late availability 0.3, late sources are high-dependence: median main ratio 1.09, balanced 1.74; P(lower >= 1.5) main 0.00, balanced 0.33
+  late availability 0.3, late sources are low-dependence: median main ratio 3.39, balanced 1.73; P(lower >= 1.5) main 1.00, balanced 0.30
+true within-trajectory ratio 1.0 (flat), late sources low-dependence, availability 0.5:
+  median main ratio 1.62, balanced 1.00; P(lower >= 1.5) main 0.133, balanced 0.000
+
+== 4. Dynamic-range gate: P(increment estimate < 2.0 | true increment) at n = 64, SE 0.5-0.7 [A]
+  SE 0.5: true 1.0: 0.98, true 1.5: 0.84, true 2.0: 0.50, true 2.5: 0.16, true 3.0: 0.02
+  SE 0.7: true 1.0: 0.92, true 1.5: 0.76, true 2.0: 0.50, true 2.5: 0.24, true 3.0: 0.08
