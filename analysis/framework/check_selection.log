@@ -1,0 +1,221 @@
+
+====================================================================================================
+T2  law of the committed (position, value) under sample-then-filter
+====================================================================================================
+  [PASS] T2.1 closed form (any k, ties, prob or margin score, any priority) = enumeration, 300 states | max abs diff 3.3e-16
+  [PASS] T2.2 k=1: kappa_i(v)/p_i(v) nondecreasing in p_i(v) (2000 states) | violations 0
+  [PASS] T2.3 k=1: H(kappa_i) <= H(p_i) at every selected position (majorisation) | violations 0
+  [PASS] T2.4 one masked position: SF = RS
+  [PASS] T2.5 position with a flat marginal on its support: committed value law unchanged
+  [PASS] T2.6 k = number of masked positions: SF = RS
+  [PASS] T2.7 k=2: SF value law inside the committed set is not a product (max TC over 400 states > 0) | max TC = 0.0885 nats
+  [PASS] T2.8 iid marginals, k=1: committed value law = (F+p)^N - F^N | max abs diff 5.6e-16
+  many positions, p = (0.45, 0.35, 0.20): N, P(commit mode), KL(r_N||p), -log p_max, log N - 1 + 1/N
+    N=   1  0.450000  0.000000  0.798508  0.000000
+    N=   2  0.697500  0.165789  0.798508  0.193147
+    N=   4  0.908494  0.508331  0.798508  0.636294
+    N=   8  0.991627  0.752205  0.798508  1.204442
+    N=  16  0.999930  0.797785  0.798508  1.835089
+    N=  32  1.000000  0.798508  0.798508  2.496986
+    N=  64  1.000000  0.798508  0.798508  3.174508
+    N= 128  1.000000  0.798508  0.798508  3.859843
+  [PASS] T2.9 KL(r_N||p) nondecreasing in N and -> -log p_max (fixed p)
+
+====================================================================================================
+T3  size: universal bounds, iid closed forms, continuous limit, the [V] toy decomposed
+====================================================================================================
+  [PASS] T3.1 per-step distortion D <= H(rho) (1500 random states, k = 1..n) | violations 0, max D/H(rho) = 0.507
+  [PASS] T3.2 H(rho) <= log C(N, k)
+  [PASS] T3.3 iid k=1: KL(r_N||p) <= log N - 1 + 1/N (continuous best-of-N value) | violations 0
+  [PASS] T3.4 iid k=1, index tie-breaking: D >= KL(r_N||p) (position-value coupling adds)
+  [PASS] T3.5 iid, random tie-breaking: vectorised closed form for D = permutation-averaged enumeration (60 cases, with ties) | max abs diff 9.2e-16
+  fine vocabulary (V=150 for k<3, V=60 for k=3; near-uniform), random tie-breaking: N, k, D_discrete, KL_cont(N,k), log C(N,k)
+    N=2 k=1  0.193123  0.193147  0.693147
+    N=4 k=1  0.636259  0.636294  1.386294
+    N=8 k=1  1.204306  1.204442  2.079442
+    N=3 k=2  0.265218  0.265279  1.098612
+    N=4 k=2  0.625050  0.625093  1.791759
+    N=8 k=2  1.724931  1.725062  3.332205
+    N=6 k=3  1.145229  1.145732  2.995732
+    N=8 k=3  1.851910  1.852733  4.025352
+  [PASS] T3.6 random tie-breaking: D_discrete <= KL_cont(N,k) and within 10% of it (fine vocabulary)
+  [PASS] T3.7 KL_cont(N,k) bounds D for any marginal (300 random p, k=1,2, N<=6) | violations 0
+  [PASS] T3.8 iid k=1: KL(r_N||p) nondecreasing in N and <= -log p_max (300 random p, N<=64) | violations 0
+  iid sequence of N positions, V=3, p=(0.45,0.35,0.20), SF k=1 every step, random tie-breaking, exact on counts:
+    N   KL(q||p_SF)  KL(p_SF||q)  sum_m KL(r_m||p) (self-distortion)  log N!-N+H_N (fine-V value)
+      1    -0.00000     0.00000     0.00000     0.00000
+      2     0.09510     0.07834     0.16579     0.19315
+      4     1.05042     0.67183     1.03674     1.26139
+      8     6.33372     2.84033     3.80074     5.32246
+     16    29.33442     8.32500    10.11961    18.05259
+     32   120.01434    20.23598    22.89473    53.61645
+     64   472.66849    44.93248    48.44698   145.91209
+  [PASS] T3.9 iid run: KL(p_SF||q) <= summed self-distortion (data processing)
+  [PASS] T3.10 iid run: forward KL(q||p_SF) grows with N and faster than linearly (ratio KL(64)/KL(32) > 2) | KL(32)=120.01, KL(64)=472.67
+  [PASS] T3.10b iid run: self-distortion grows at most linearly: per-token value <= -log p_max
+  iid, L=24, k tokens per step (T = L/k steps), SF top-k: KL(q||p_SF), KL(p_SF||q), self-distortion (E_fact = 0 here)
+    k=24 T= 1   -0.00000    0.00000        nan
+    k=12 T= 2    2.37916    2.17438        nan
+    k= 8 T= 3    6.45649    4.86842        nan
+    k= 6 T= 4   10.35080    6.80063        nan
+    k= 4 T= 6   17.41376    9.21864   13.34087
+    k= 3 T= 8   23.82612   10.65683   14.38598
+    k= 2 T=12   35.55363   12.29538   15.43737
+    k= 1 T=24   67.44270   14.20535   16.50668
+  [PASS] T3.10c iid data (E_fact = 0): SF forward KL increases as k falls (more steps, more selection rounds)
+  toy (primer-samplers-check C): KL(q||p_SF)=1.288069 H(p_SF)=2.163238 H(q)=3.504671
+    forward path KL(Q||P_SF) = inf; E_fact 0.00e+00, E_learn 0.00e+00, E_sel_path inf; Q-mass of data paths SF never takes = 0.4265
+    matched RS: KL(q||p_mRS)=3.68e-16 (exact marginals, k=1 => p_mRS = q), so E_sel^Delta = KL(q||p_SF) = 1.288069
+    reverse: self-distortion sum E_P[D] = 0.996288 = KL(P_SF||P_mRS) on paths 0.996288 >= KL(p_SF||q) = 0.603030; bound log 4! = 3.1781
+  [PASS] T3.11 toy reproduced: KL(q||p_SF) = 1.288 | 1.288069
+  [PASS] T3.12 toy: forward per-step (path) E_sel is infinite (SF never commits some data (position, value) pairs)
+  [PASS] T3.13 toy: output-level E_sel^Delta = KL(q||p_SF) - KL(q||p_mRS) is finite
+  [PASS] T3.14 toy: self-distortion = path KL(P_SF||P_mRS) >= KL(p_SF||q)
+
+====================================================================================================
+T1  path identity KL(Q_rho||P_kappa) = E_fact + E_learn + E_sel for every kernel; output KL = path KL - G
+====================================================================================================
+    L=4 seed=0 noise=0.0 SF k=1                 KL_out=1.32216 KL_out(mRS)=-0.00000 E_sel^Delta=+1.32216 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.0 SF k=2                 KL_out=0.62831 KL_out(mRS)=0.19048 E_sel^Delta=+0.43783 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.0 SF k=1 tau=0.7         KL_out=2.04569 KL_out(mRS)=-0.00000 E_sel^Delta=+2.04569 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.0 SF k=1 margin score    KL_out=1.39320 KL_out(mRS)=-0.00000 E_sel^Delta=+1.39320 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.0 RS conf k=2            KL_out=0.33837 path=0.33837 fact=0.33837 learn=0.00000 sel=-0.00000 G=-0.00000
+    L=4 seed=0 noise=0.0 RS conf k=2 tau=0.5    KL_out=0.64750 path=0.64750 fact=0.33837 learn=0.00000 sel=+0.30913 G=0.00000
+    L=4 seed=0 noise=0.0 joint draw k=2         KL_out=-0.00000 path=-0.00000 fact=0.33837 learn=0.00000 sel=-0.33837 G=-0.00000
+    L=4 seed=0 noise=0.0 RS uniform k=2         KL_out=0.18628 path=0.28645 fact=0.28645 learn=0.00000 sel=+0.00000 G=0.10017
+    L=4 seed=0 noise=0.5 SF k=1                 KL_out=1.21108 KL_out(mRS)=0.12705 E_sel^Delta=+1.08403 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.5 SF k=2                 KL_out=1.03325 KL_out(mRS)=0.43465 E_sel^Delta=+0.59861 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.5 SF k=1 tau=0.7         KL_out=1.81561 KL_out(mRS)=0.15524 E_sel^Delta=+1.66037 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.5 SF k=1 margin score    KL_out=1.08807 KL_out(mRS)=0.10875 E_sel^Delta=+0.97932 path=inf sel_path=+inf
+    L=4 seed=0 noise=0.5 RS conf k=2            KL_out=0.82686 path=0.82686 fact=0.33837 learn=0.48849 sel=-0.00000 G=-0.00000
+    L=4 seed=0 noise=0.5 RS conf k=2 tau=0.5    KL_out=1.92600 path=1.92600 fact=0.33837 learn=0.48849 sel=+1.09914 G=0.00000
+    L=4 seed=0 noise=0.5 joint draw k=2         KL_out=-0.00000 path=-0.00000 fact=0.33837 learn=0.48849 sel=-0.82686 G=-0.00000
+    L=4 seed=0 noise=0.5 RS uniform k=2         KL_out=0.35451 path=0.62173 fact=0.28645 learn=0.33529 sel=+0.00000 G=0.26722
+    L=4 seed=1 noise=0.0 SF k=1                 KL_out=0.92774 KL_out(mRS)=-0.00000 E_sel^Delta=+0.92774 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.0 SF k=2                 KL_out=0.67733 KL_out(mRS)=0.16969 E_sel^Delta=+0.50764 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.0 SF k=1 tau=0.7         KL_out=1.44316 KL_out(mRS)=0.00000 E_sel^Delta=+1.44316 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.0 SF k=1 margin score    KL_out=0.76166 KL_out(mRS)=-0.00000 E_sel^Delta=+0.76166 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.0 RS conf k=2            KL_out=0.27762 path=0.27762 fact=0.27762 learn=0.00000 sel=+0.00000 G=-0.00000
+    L=4 seed=1 noise=0.0 RS conf k=2 tau=0.5    KL_out=0.58168 path=0.58168 fact=0.27762 learn=0.00000 sel=+0.30407 G=-0.00000
+    L=4 seed=1 noise=0.0 joint draw k=2         KL_out=0.00000 path=0.00000 fact=0.27762 learn=0.00000 sel=-0.27762 G=-0.00000
+    L=4 seed=1 noise=0.0 RS uniform k=2         KL_out=0.16886 path=0.31442 fact=0.31442 learn=0.00000 sel=+0.00000 G=0.14555
+    L=4 seed=1 noise=0.5 SF k=1                 KL_out=0.75708 KL_out(mRS)=0.04923 E_sel^Delta=+0.70785 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.5 SF k=2                 KL_out=1.09185 KL_out(mRS)=0.28393 E_sel^Delta=+0.80792 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.5 SF k=1 tau=0.7         KL_out=1.23294 KL_out(mRS)=0.06666 E_sel^Delta=+1.16628 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.5 SF k=1 margin score    KL_out=0.75734 KL_out(mRS)=0.04657 E_sel^Delta=+0.71077 path=inf sel_path=+inf
+    L=4 seed=1 noise=0.5 RS conf k=2            KL_out=0.49881 path=0.49881 fact=0.27341 learn=0.22540 sel=-0.00000 G=-0.00000
+    L=4 seed=1 noise=0.5 RS conf k=2 tau=0.5    KL_out=1.17767 path=1.17767 fact=0.27341 learn=0.22540 sel=+0.67886 G=-0.00000
+    L=4 seed=1 noise=0.5 joint draw k=2         KL_out=0.00000 path=0.00000 fact=0.27341 learn=0.22540 sel=-0.49881 G=-0.00000
+    L=4 seed=1 noise=0.5 RS uniform k=2         KL_out=0.28717 path=0.54719 fact=0.31442 learn=0.23278 sel=-0.00000 G=0.26003
+    L=3 seed=2 noise=0.0 SF k=1                 KL_out=0.70371 KL_out(mRS)=0.00000 E_sel^Delta=+0.70371 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.0 SF k=2                 KL_out=0.23070 KL_out(mRS)=0.01236 E_sel^Delta=+0.21834 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.0 SF k=1 tau=0.7         KL_out=1.13995 KL_out(mRS)=0.00000 E_sel^Delta=+1.13995 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.0 SF k=1 margin score    KL_out=0.66243 KL_out(mRS)=0.00000 E_sel^Delta=+0.66243 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.0 RS conf k=2            KL_out=0.04526 path=0.04526 fact=0.04526 learn=0.00000 sel=+0.00000 G=0.00000
+    L=3 seed=2 noise=0.0 RS conf k=2 tau=0.5    KL_out=0.27768 path=0.27768 fact=0.04526 learn=0.00000 sel=+0.23242 G=0.00000
+    L=3 seed=2 noise=0.0 joint draw k=2         KL_out=-0.00000 path=0.00000 fact=0.04526 learn=0.00000 sel=-0.04526 G=0.00000
+    L=3 seed=2 noise=0.0 RS uniform k=2         KL_out=0.01197 path=0.04656 fact=0.04656 learn=0.00000 sel=+0.00000 G=0.03459
+    L=3 seed=2 noise=0.5 SF k=1                 KL_out=0.69014 KL_out(mRS)=0.08563 E_sel^Delta=+0.60451 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.5 SF k=2                 KL_out=0.38795 KL_out(mRS)=0.06975 E_sel^Delta=+0.31820 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.5 SF k=1 tau=0.7         KL_out=1.19028 KL_out(mRS)=0.13333 E_sel^Delta=+1.05695 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.5 SF k=1 margin score    KL_out=0.70048 KL_out(mRS)=0.08051 E_sel^Delta=+0.61997 path=inf sel_path=+inf
+    L=3 seed=2 noise=0.5 RS conf k=2            KL_out=0.19064 path=0.19064 fact=0.02117 learn=0.16947 sel=-0.00000 G=-0.00000
+    L=3 seed=2 noise=0.5 RS conf k=2 tau=0.5    KL_out=0.95728 path=0.95728 fact=0.02117 learn=0.16947 sel=+0.76663 G=-0.00000
+    L=3 seed=2 noise=0.5 joint draw k=2         KL_out=0.00000 path=0.00000 fact=0.02117 learn=0.16947 sel=-0.19064 G=0.00000
+    L=3 seed=2 noise=0.5 RS uniform k=2         KL_out=0.06811 path=0.17381 fact=0.04656 learn=0.12725 sel=-0.00000 G=0.10569
+    L=3 seed=3 noise=0.0 SF k=1                 KL_out=0.66738 KL_out(mRS)=-0.00000 E_sel^Delta=+0.66738 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.0 SF k=2                 KL_out=0.26798 KL_out(mRS)=0.05137 E_sel^Delta=+0.21661 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.0 SF k=1 tau=0.7         KL_out=1.34510 KL_out(mRS)=0.00000 E_sel^Delta=+1.34510 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.0 SF k=1 margin score    KL_out=0.67914 KL_out(mRS)=-0.00000 E_sel^Delta=+0.67914 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.0 RS conf k=2            KL_out=0.07666 path=0.07666 fact=0.07666 learn=0.00000 sel=-0.00000 G=-0.00000
+    L=3 seed=3 noise=0.0 RS conf k=2 tau=0.5    KL_out=0.57052 path=0.57052 fact=0.07666 learn=0.00000 sel=+0.49386 G=-0.00000
+    L=3 seed=3 noise=0.0 joint draw k=2         KL_out=0.00000 path=-0.00000 fact=0.07666 learn=0.00000 sel=-0.07666 G=-0.00000
+    L=3 seed=3 noise=0.0 RS uniform k=2         KL_out=0.04618 path=0.09753 fact=0.09753 learn=0.00000 sel=+0.00000 G=0.05135
+    L=3 seed=3 noise=0.5 SF k=1                 KL_out=0.83197 KL_out(mRS)=0.02737 E_sel^Delta=+0.80460 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.5 SF k=2                 KL_out=0.39850 KL_out(mRS)=0.14114 E_sel^Delta=+0.25736 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.5 SF k=1 tau=0.7         KL_out=1.62029 KL_out(mRS)=0.03315 E_sel^Delta=+1.58714 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.5 SF k=1 margin score    KL_out=0.92048 KL_out(mRS)=0.03121 E_sel^Delta=+0.88927 path=inf sel_path=+inf
+    L=3 seed=3 noise=0.5 RS conf k=2            KL_out=0.22973 path=0.22973 fact=0.07666 learn=0.15308 sel=+0.00000 G=0.00000
+    L=3 seed=3 noise=0.5 RS conf k=2 tau=0.5    KL_out=0.80486 path=0.80486 fact=0.07666 learn=0.15308 sel=+0.57513 G=-0.00000
+    L=3 seed=3 noise=0.5 joint draw k=2         KL_out=0.00000 path=-0.00000 fact=0.07666 learn=0.15308 sel=-0.22973 G=-0.00000
+    L=3 seed=3 noise=0.5 RS uniform k=2         KL_out=0.12402 path=0.22115 fact=0.09753 learn=0.12362 sel=+0.00000 G=0.09712
+  [PASS] T1.1 path identity holds for every kernel where finite (RS, tempered RS, joint draw, random RS) | max gap 4.4e-16
+  [PASS] T1.1b where the path KL is infinite, E_sel_path is infinite too (identity holds as inf = inf)
+  [PASS] T1.2 G = path KL - output KL >= 0 in every finite case
+  [PASS] T1.3 E_sel is signed (joint draws give E_sel = -(E_fact + E_learn) < 0) | 8 negative cases
+  [PASS] T1.3b SF kernels: forward path E_sel infinite in some cases | 32 of 32
+  [PASS] T1.3c SF output law KL(q||p_SF) finite in every case (support lemma)
+    output-level E_sel^Delta = KL(q||p_SF) - KL(q||p_mRS) negative in 0 of 32 SF cases
+  [PASS] T1.4 deterministic state-only policy: G = 0 (identity exact for x)
+  [PASS] T1.5 matched RS of SF (randomised position law): identity is a strict upper bound, G > 0
+  [PASS] T1.6 exact marginals, k=1: KL(q||p_mRS)=0, 0 < KL(q||p_SF) < inf, KL(p_SF||q) <= self-distortion (6 random q)
+  [PASS] T1.9 support lemma: p_SF(x) >= prod over greedy steps of all masked marginals; KL(q||p_SF) <= that cross-entropy bound
+  [PASS] T1.8 E_sel^Delta < 0 is possible (over-dispersed model, independent peaked data) | E_sel^Delta = -0.74062
+  Markov chain L=6, flip 0.1, exact marginals: k, T, KL(q||p_RS-conf), KL(q||p_mRS), KL(q||p_SF), E_sel^Delta, H(p_SF), H(q)=2.3186
+    k=6 T=1  1.84032  1.84032  1.84032  +0.00000  4.1589
+    k=3 T=2  0.56762  0.57359  1.02486  +0.45127  3.1685
+    k=2 T=3  0.13698  0.18325  0.83555  +0.65230  2.4450
+    k=1 T=6  -0.00000  -0.00000  1.53544  +1.53544  1.0899
+  [PASS] T3.15 Markov toy: RS error falls to 0 at k=1 while the SF excess over matched RS is largest at k=1
+  [PASS] T3.16 Markov toy: KL(q||p_SF) is U-shaped in the number of steps (interior minimum) | T = 1, 2, 3, 6: 1.8403, 1.0249, 0.8355, 1.5354
+  [PASS] T1.7 matched RS is the KL(kappa||.) projection of SF onto rank-then-sample kernels (200 perturbed position laws)
+
+====================================================================================================
+T4  entropy
+====================================================================================================
+  [PASS] T4.1 k=1, per state: H(SF step) <= H(matched RS step) (3000 states) | violations 0
+  k=2 per-state violations of H(SF step) <= H(mRS step): 0 of up to 3000
+  constructed q (x1 in {0,1} w.p. 0.7/0.3; x2 uniform; x3,x4 uniform iff x1=0, else 0): H(p_SF)=3.34380  H(p_mRS)=3.24753  H(q)=3.24753
+  [PASS] T4.2 output entropy under SF can exceed that of matched RS (counterexample)
+  random q (40 cases, exact or perturbed predictor): H(p_SF) < H(p_mRS) in 40 of 40
+  T4(b) construction: eps=0.1, steps {x1,x2} then {x3,x4}, exact marginals, sampled values
+    H(p)=2.77259  H(q)=3.51356  closed forms: 2ln2 + ln16/2 = 2.77259; ln2 + h(eps) + (1-eps) ln16 = 3.51356
+    KL(q||p)=0.36806 = E_fact 0.36806 (= ln2 - h(eps) = 0.36806), E_learn 0.0e+00
+  [PASS] T4.3 exact marginals, sampled values, deterministic state-only policy: H(p) < H(q) is possible
+    random q (300, Dirichlet 0.05/0.2/1.0), fixed 2+2 partition, exact marginals: H(p) < H(q) in 0 cases
+  [PASS] T4.4 one-shot product of exact marginals: entropy >= H(q) (300 cases)
+
+====================================================================================================
+T5  estimators from logits (and data)
+====================================================================================================
+    noise=0.0: probability that a data path meets a (position, value) pair SF can never commit = 0.3841
+  [PASS] T5.1 noise=0.0: the forward data-side per-step estimator is infinite with positive probability
+    noise=0.4: probability that a data path meets a (position, value) pair SF can never commit = 0.6782
+  [PASS] T5.1 noise=0.4: the forward data-side per-step estimator is infinite with positive probability
+    SF k=1, perturbed predictor: exact sum_n E_P[D] = 1.030437; MC over 20000 sampler paths = 1.03029 +- 0.00078; per-path sd 0.1100, max 1.3336
+  [PASS] T5.2 self-distortion: closed-form per-state D equals the enumerated kernel's D | max diff 1.9e-16
+  [PASS] T5.3 self-distortion: Monte Carlo along sampler paths is within 3 SE of the exact value
+  [PASS] T5.4 top-K truncation brackets F_j(c) within the tail mass (2000 random cases)
+  [PASS] T5.5 argmax with a deterministic position rule: self-distortion = -log p_RS(x*) = KL(delta_x*||p_RS) | 1.403133 vs 1.403133
+  [PASS] T5.6 argmax: forward KL(q||p_argmax) = infinity (E_tilt infinite in the forward direction)
+  [PASS] T5.7 temperature is a state-only tilt: E_learn[p] + E_sel = E_learn[p_tilde] and E_sel(p_tilde ref) = 0 | E_tilt = +0.21450
+
+====================================================================================================
+T6  cross-modal term: X = I(a;b|s), set-to-token S = sum_j I(a;b_j|s), pairwise P = sum_ij I(a_i;b_j|s)
+====================================================================================================
+  [PASS] T6.1 two exact splits: TC(A) = TC(a)+TC(b)+X = TC(a)+S+TC(b|a) (500 random q) | max err 1.3e-15
+    sign counts over 500 random q: {'X>S': 388, 'X<S': 112, 'S>P': 442, 'S<P': 58}  (X - S and S - P take both signs)
+  [PASS] T6.2 X - S and S - P are not sign-definite in general
+  [PASS] T6.3 image tokens conditionally independent given text => X <= S
+  [PASS] T6.4 text tokens mutually independent given the state => P <= S
+    state with context revealed: X=0.80422  S=0.61517  requery(a~joint)=0.61517  requery(a~product)=0.60571  TC(a|s)=0.00317
+  [PASS] T6.5 exact model, a drawn from the joint (sequential reveal): requery estimator = S
+
+====================================================================================================
+T7  memory: identity on the augmented path; equality for x
+====================================================================================================
+    (a1) deterministic rho, memory = last committed value (function of revealed path): path KL 0.150564  E_fact+E_learn 0.150564  KL(q||p) on x 0.150564  gap 0.00e+00
+    (a2) random rho, memory = first committed position (path, not z): path KL 0.165509  E_fact+E_learn 0.165509  KL(q||p) on x 0.022657  gap 1.43e-01
+    (b) deterministic rho, fresh random memory bit used by predictor: path KL 0.149186  E_fact+E_learn 0.149186  KL(q||p) on x 0.060013  gap 8.92e-02
+    (c) deterministic rho, fresh random memory bit ignored by predictor and policy: path KL 0.060382  E_fact+E_learn 0.060382  KL(q||p) on x 0.060382  gap 1.32e-16
+  [PASS] T7.1 augmented-path identity is an equality in all four memory cases
+  [PASS] T7.2 (a1) memory a function of the revealed path, deterministic rho: equality for x
+  [PASS] T7.3 (a2) memory a function of the revealed path but rho random: strict inequality for x
+  [PASS] T7.4 (b) stochastic memory used by the predictor: strict inequality for x
+  [PASS] T7.5 (c) stochastic memory not used: equality for x (so 'only when' in framework-v1 2.1 is too strong)
+
+====================================================================================================
+SUMMARY
+====================================================================================================
+  checks run: 61; failures: 0
+  ALL CHECKS PASSED
