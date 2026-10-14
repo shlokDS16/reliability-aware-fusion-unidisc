@@ -1,0 +1,105 @@
+N=[]
+def add(**k): N.append(k)
+add(name="TESS",arxiv="2305.08379",ver="v2",aw="AW0221",fam="Gaussian/embedding (logit simplex)",ev="read here (Sec 3, 4.4, 6.2-6.3, App B-C)",
+ C1="VP Gaussian on k-logit simplex (+-k, k=5), cosine schedule, noise N(0,k^2 I) (Eq 6-7)",C2="None; one t for all positions; source text enters through the encoder",
+ C3="Logits with CE (Eq 8); RoBERTa encoder, fully non-autoregressive; input is E softmax(S_t) (Eq 6)",
+ C4pos="All positions every step; no committed set before the end",C4val="argmax projection to +-k each step, then re-noise (Eq 9-10)",C4steps="T=1000 generation, 10 classification (trained T=5000); Table 7: 10/100/1000",C4joint="no (final rounding)",
+ C5="Implicit (all positions re-estimated)",mem="self-conditioning: average of softmaxes, rho=0.5 train, 1 at inference (Eq 11-12)",lev="L7, L11 (argmax projection), L1",fit="yes",missing="Two-level C4 (G10)",
+ src="TESS Sec 3 (Eq 6-12), Sec 4.4, Table 7, App B",cls="A",esel="yes",ent="no",sweep="yes",swfix="yes")
+add(name="TESS 2",arxiv="2502.13917",ver="v2",aw="AW0207",fam="Gaussian/embedding (logit simplex), AR-adapted",ev="read here (Sec 3.1-3.4, 4.1, 4.4, 5.1-5.4)",
+ C1="As TESS (k=5 simplex, cosine), adapted from Mistral-7B",C2="Training mixture: UL2 span infilling plus prefix completion; instruction tuning with prefix-LM only",
+ C3="Logits CE; label shifting (position i predicts token i+1); full bidirectional attention",
+ C4pos="All positions every step",C4val="argmax projection; optional reward-gradient guidance eta*grad on the logits each step (Eq 8)",C4steps="100 forward passes in speed test (Sec 5.4); Fig 3(b) sweep to 1000",C4joint="no (final rounding)",
+ C5="Implicit",mem="self-conditioning as TESS",lev="L6 (AR adaptation), L7, L11, L12 (reward gradient)",fit="yes",missing="Reward-gradient guidance edits the state, not the predictor; lever row L12 names CFG only",
+ src="TESS 2 Sec 3.1-3.4, 4.4, 5.1, 5.4",cls="A;G",esel="yes",ent="yes",sweep="yes",swfix="not stated")
+add(name="DiffuSeq",arxiv="2210.08933",ver="v3",aw="AW0230",fam="Gaussian/embedding (conditional seq2seq)",ev="read here (Sec 3, 4.1, 4.3, App D)",
+ C1="Gaussian on learned embeddings (d=128), sqrt schedule, T=2000; partial noising of the target half only",C2="Conditioning mask: source clean, target noised; shared t; importance-sampled t",
+ C3="x0 regression (MSE on target part) plus rounding term",
+ C4pos="All target positions every step; anchoring function rounds to nearest embedding and resets the source part",C4val="Rounding/clamp each step; Minimum Bayes Risk selection over |S|=10 samples (negative BLEU)",C4steps="T=2000 main; DDIM-style skipping to 1000 shown (Fig 6)",C4joint="no (final rounding)",
+ C5="Implicit",mem="none",lev="L11 (clamp), L1, sequence-level selection (no lever row)",fit="partly",missing="MBR picks among whole samples: sequence-level selection is not in the lever table",
+ src="DiffuSeq Sec 3 (Fig 2, Eq 3-4), Sec 4.1 impl. details, 4.3",cls="A;M",esel="yes",ent="yes",sweep="yes",swfix="not stated")
+add(name="CANDI",arxiv="2510.22510",ver="v3",aw="AW0200",fam="hybrid channel (erasure + Gaussian)",ev="read here (Sec 5.1-5.3, 6.3-6.4, App D.3)",
+ C1="Per position: clean anchor (Bernoulli(1-t), carry-over) or Gaussian-noised one-hot with sigma set from a target rank-degradation r*(t) (Eq 8-11)",C2="Independent mask; masked-diffusion CE weight",
+ C3="Token posterior P(X0|X_t); score derived from E[X0|X_t] (Sec 5.2)",
+ C4pos="Each step: positions flipping to clean ~ Bernoulli((a(s)-a(t))/(1-a(t))), values sampled from the posterior; other positions follow the reverse PF-ODE (Sec 5.3)",C4val="Sampled; temperature swept 0.7-1.0 to trace entropy-perplexity frontier (App D.3); classifier-gradient guidance on the score",C4steps="NFE up to 64 in headline (matches MDLM at 64); frontiers also at higher NFE",C4joint="no",
+ C5="Clean anchors fixed; noisy positions stay soft until flipped",mem="none (continuous residual is part of the state)",lev="L1, L11 (frontier), L12",fit="partly",missing="Non-committed positions carry graded evidence, not a blank mask: the erasure identity applies to the flips only, the ODE part needs the 2.3 term",
+ src="CANDI Sec 5.1-5.3, Fig 7, App D.3",cls="T",esel="controlled",ent="yes",sweep="yes",swfix="co-varied")
+add(name="Simplax (Simplex Relaxation)",arxiv="2608.10615",ver="v2",aw="AW0022",fam="uniform (with auxiliary simplex latent)",ev="read here (Sec 3.1-3.3, 4.1-4.4, App A.3)",
+ C1="Uniform-state categorical z_t plus auxiliary Dirichlet variable w_t (concentration eta=0.01) (Sec 3.1)",C2="Independent positions",
+ C3="Denoiser f(z_t,t) gives x_hat (z_t is the input in main results, Table 3); Rao-Blackwellised reverse-bridge objective (App E)",
+ C4pos="All positions every step",C4val="Sample z_s from the bridge, w-deterministic variant in main results; mode (z-deterministic) variants collapse entropy to 0.9-4.8; comparison at temperature closest to data entropy 5.44",C4steps="NFE 16, 128, 1024 (Tables 3-4)",C4joint="no",
+ C5="Implicit (uniform channel)",mem="w_t: stochastic simplex bridge state carried between steps",lev="L9, L11 (matched entropy), state augmentation",fit="partly",missing="m_n here is a random latent with its own kernel, not a deterministic function of the revealed path (open item 6.1 memory claim)",
+ src="Simplax Sec 3.3, 4.1, 4.4 (Tables 3-4), App A.3 (Table 7)",cls="T",esel="controlled",ent="yes",sweep="yes",swfix="co-varied")
+add(name="Dream 7B",arxiv="2508.15487",ver="v1",aw="not in corpus (corpus AW0153 is the blog)",fam="AR-adapted absorbing",ev="read here (Sec 3.2, 4.1-4.3, 5.1, 5.5)",
+ C1="Erasure, alpha_t=1-t",C2="Token-level reweighting CART: w(t,x_t,n)=1/2 sum_i 1[x_t^i not MASK] Geo(p,|n-i|-1) replaces 1/t (Sec 4.2)",
+ C3="Mask predictor initialised from Qwen2.5-7B; shift operation (hidden state i predicts token i+1)",
+ C4pos="Not stated in the paper (configurable decoding order via hyperparameters, Sec 5.5.3). DiffuCoder App B.2 reports Dream default = top negative-entropy remasking",C4val="Not stated in the paper. DiffuCoder App B.2 reports temperature 0.2",C4steps="Fig 7: timesteps 5-20 on Countdown beat Qwen2.5 7B; other tables not stated",C4joint="no",
+ C5="Not stated",mem="none",lev="L6 (AR init, CART), L2",fit="yes",missing="Sampler absent from the paper; blog not read",
+ src="Dream Sec 3.2, 4.1-4.2, 5.5.2-5.5.3; DiffuCoder App B.2 for the default sampler",cls="",esel="unclear",ent="no",sweep="yes",swfix="not stated")
+add(name="DiffuLLaMA",arxiv="2410.17891",ver="v3",aw="AW0165",fam="AR-adapted absorbing",ev="read here (Sec 3.2-3.4, 4.2, App B.3, C.1)",
+ C1="Erasure (continuous time, Shi et al. form)",C2="Weight 1/t; attention-mask annealing from causal to bidirectional; no time embedding",
+ C3="Shift operation (position i predicts i+1) on LLaMA-2 weights",
+ C4pos="Posterior jump: masked token takes the prediction with prob (a_s-a_t)/(1-a_t); conditional tasks: only high-probability tokens are denoised (rule detail not in Sec 3.4)",C4val="Unconditional: top-k 0.98 / top-p 0.9 (medium), 1.0 / 0.9 (small); conditional: high-probability filter",C4steps="T=32 default (GSM8K); T=8 vs 32 in App C.5",C4joint="no",
+ C5="None (self-correction shown qualitatively, Table 6)",mem="none",lev="L6, L11, L1",fit="yes",missing="",
+ src="DiffuLLaMA Sec 3.4, 4.2, App B.3 line on top-k/top-p, App C.1",cls="P",esel="yes",ent="no",sweep="yes",swfix="not stated")
+add(name="DiffuCoder",arxiv="2506.20639",ver="v2",aw="AW0306",fam="AR-adapted absorbing (RL)",ev="read here (Sec 3, 4.1-4.3, 5, App B.1-B.2)",
+ C1="Erasure, alpha_t=1-t",C2="Standard weight; coupled-GRPO draws complementary mask pairs for the policy-gradient estimator (training estimator only)",
+ C3="Qwen2.5-Coder initialised, Dream architecture and inference implementation",
+ C4pos="Analysis: low-confidence remasking, steps=length=512; Dream default top negative-entropy; temperature changes generation order as well as tokens (Sec 4.3, 'AR-ness')",C4val="Evaluation: best over temperature set {0.2,0.3,0.4} (Table 2); pass@k analysis at 0.2-1.2; GRPO rollouts at 1.2",C4steps="512 (=length); Fig 1c halves steps; rollouts 256",C4joint="no",
+ C5="None",mem="none",lev="L6 (RL), L2, L11",fit="yes",missing="Position and value rules are coupled in practice (tempered confidence sets the order); lever table separates them",
+ src="DiffuCoder Sec 4.1-4.3, Table 2, App B.1-B.2",cls="T",esel="yes",ent="no",sweep="partial",swfix="not stated")
+add(name="Seed Diffusion",arxiv="2508.02193",ver="v1",aw="AW0135",fam="AR-adapted absorbing + edit channel",ev="read here (Sec 3.1-3.4)",
+ C1="Stage 1 (first 80% steps): erasure. Stage 2 (last 20%): edit channel (insert, delete, substitute), signal level by Levenshtein distance",C2="Standard weight; constrained-order training on ELBO-selected model trajectories; on-policy training to shorten trajectories with a verifier",
+ C3="Mask logit set to -inf but no carry-over: unmasked tokens are re-predicted",
+ C4pos="Semi-AR blocks, parallel inside a block, KV cache for earlier blocks",C4val="Not stated",C4steps="Not stated (headline is tokens per second)",C4joint="no",
+ C5="Trained revision of all tokens (edit augmentation, no carry-over)",mem="KV cache on finished blocks (lossy; authors saw no degradation)",lev="L6, L8, L14, L4",fit="partly",missing="Edit channel changes length (no position index); training on policy-selected trajectories; revision comes from training, not the channel",
+ src="Seed Diffusion Sec 3.1 (Eq 1-4), 3.2, 3.3, 3.4, Remark 3.1",cls="",esel="unclear",ent="no",sweep="no",swfix="na")
+add(name="Fast-dLLM",arxiv="2505.22618",ver="v3",aw="AW0004",fam="sampler-only (cache and adaptive k)",ev="read here (Sec 3.1-3.3, 4.1, 4.3)",
+ C1="Erasure (applied to LLaDA, LLaDA-1.5, Dream, LLaDA-V)",C2="Base model",C3="Base model marginals",
+ C4pos="Block-wise (cache block 32); inside a block unmask all positions whose max-softmax confidence exceeds 0.9, at least the top one; or factor rule (n+1)(1-c_n)<f",C4val="Greedy implied (Thm 1 is about argmax); temperature not stated in the sections read",C4steps="Adaptive; compared with fixed tokens per step on GSM8K (Fig 5, Fig 8)",C4joint="no",
+ C5="None",mem="approximate block-wise KV cache: PrefixCache, DualCache (Sec 3.2; the paper calls it approximate)",lev="L1, L2, L14, L4",fit="yes",missing="",
+ src="Fast-dLLM Sec 3.2, 3.3 (Thm 1), 4.1, 4.3",cls="A",esel="yes",ent="no",sweep="yes",swfix="yes")
+add(name="Di4C",arxiv="2410.08709",ver="v4",aw="AW0467",fam="distillation (joint over positions)",ev="read here (Sec 3.1-3.3, 5.3)",
+ C1="Erasure teacher (SDTT-6/7 from MDLM); also Gaussian pixels, VQ masked",C2="Distillation and consistency losses (Sec 3.3)",
+ C3="Mixture of products p(x_s|x_t)=E_lambda[prod_d p_d(x_s^d|x_t;lambda)], lambda~U(0,1) given as an extra input token (Sec 3.2, 5.3): a joint over the set, not marginals",
+ C4pos="Student denoiser in few steps",C4val="Ancestral sampling; draw lambda once, then independent positions (joint through lambda)",C4steps="8, 16, 32, 64, 128 (Fig 4)",C4joint="yes (shared latent lambda)",
+ C5="None",mem="none",lev="L8, L3",fit="partly",missing="C3 assumes marginals; here the head outputs a latent-mixture joint, which also is the joint-draw mechanism",
+ src="Di4C Sec 3.2, 5.3 (Fig 4), F.3",cls="",esel="no",ent="yes",sweep="yes",swfix="yes")
+add(name="Discrete Copula Diffusion (DCD)",arxiv="2410.01949",ver="v2",aw="AW0167",fam="sampler-only (joint draw)",ev="read here (Sec 4.2, 5.3, 6.1, App G.1)",
+ C1="Absorbing (SEDD-medium); chunks of 8 tokens masked together in the sampler",C2="Base model",C3="Pair: SEDD marginals plus a GPT-2-small AR copula, combined by approximate I-projection (matrix scaling V) (Sec 4-5)",
+ C4pos="Committed tokens drawn autoregressively from p_hat(x^i|x_t+1, x^<i) proportional to the copula times exp(V)",C4val="Sampled directly; authors avoid nucleus because it affects generative perplexity (Sec 6.1)",C4steps="DCD 2-32 steps; SEDD 2-256; DCD at 4 steps matches SEDD at 128",C4joint="yes (AR copula)",
+ C5="None",mem="AR KV cache for the copula in the efficient variant",lev="L3",fit="partly",missing="C3 names one predictor; here two models with a projection step",
+ src="DCD Sec 5.3 (Alg 1), 6.1, App G.1",cls="",esel="no",ent="no",sweep="yes",swfix="yes")
+add(name="UDLM (Schiff et al., guidance)",arxiv="2412.10193",ver="v3",aw="not in corpus",fam="uniform",ev="read here (Sec 3.1-3.2, 4.1, 5.2, App E.3)",
+ C1="Uniform-state, continuous time, improved bound (Sec 4)",C2="Independent positions",C3="Posterior x_theta; conditional and unconditional nets by condition dropout",
+ C4pos="All positions every step (ancestral)",C4val="Sampled; D-CFG: per-token p^gamma(z_s|y,z_t) p^(1-gamma)(z_s|z_t) normalised (Sec 3.1); D-CBG classifier-based (Sec 3.2)",C4steps="T=128/256/512 on genomic (L=32768); QM9 Fig 6 (App E.3)",C4joint="no",
+ C5="Implicit (uniform)",mem="none",lev="L12, L1, L9",fit="yes",missing="",
+ src="UDLM Sec 3.1-3.2, 4, 5.2, App E.3",cls="G",esel="yes",ent="no",sweep="yes",swfix="not stated")
+add(name="LaViDa",arxiv="2505.16839",ver="v4",aw="AW0257",fam="unified multimodal (understanding only)",ev="read here (Sec 3.1-3.3, 4.5, App B.1)",
+ C1="Erasure on answer tokens; image enters as continuous SigLIP features (no image generation)",C2="Weight 1/t; complementary masking (two disjoint masks per sample); Prefix-DLM attention (prompt cannot see answer)",
+ C3="LLaDA-8B (default) or Dream-7B logits",
+ C4pos="Sample all, remask L*t_{i+1}; rule not stated beyond 'similar to LLaDa'; convex time-shift schedule alpha=1/3 (more tokens early)",C4val="Not stated",C4steps="K in {32,24,16,8}, NFE 100% to 25% (Table 3b); at least one token per step",C4joint="no",
+ C5="None",mem="exact prefix KV cache, bought by Prefix-DLM (CIDEr 117.3 vs 121.0 uncached)",lev="L13, L1, L6",fit="yes",missing="Cache is exact only after changing the model class (training effect)",
+ src="LaViDa Sec 3.2-3.3, 4.5, Table 3",cls="",esel="unclear",ent="na",sweep="yes",swfix="not stated")
+add(name="Muddit",arxiv="2505.23606",ver="v5",aw="AW0255",fam="unified multimodal (discrete)",ev="read here (Sec 2.2.1-2.2.3, 3.1, 3.4, App D-E)",
+ C1="Erasure on VQ image tokens and text tokens; one target modality per call",C2="Independent; arccos-truncated mask ratio, cosine; loss weights image 1.0, text 0.3 (Sec 3.5)",
+ C3="One MM-DiT (init Meissonic), lightweight linear text head",
+ C4pos="Sampler S unmasks the fraction gamma_{t+1/T}-gamma_t of masked tokens per step; selection rule not stated in the sections read",C4val="CFG with negative condition (same operator for both modalities); App E: logits may be tempered or top-k filtered; scale 9.0 (T2I), 1.5 (I2T)",C4steps="64 default; Table 5 sweep, plateau near 32; text 16-32 (App E)",C4joint="one modality per call",
+ C5="None",mem="none",lev="L12, L1",fit="yes",missing="",
+ src="Muddit Sec 2.2.2-2.2.3, 3.1 (Meissonic defaults), Table 5, App D.1, E",cls="G",esel="yes",ent="no",sweep="yes",swfix="not stated")
+add(name="Dynin-Omni",arxiv="2604.00007",ver="v1",aw="AW0244",fam="unified multimodal (discrete, omnimodal)",ev="read here (Sec 3.1-3.2, 6.4-6.5, 7.2)",
+ C1="Erasure over joint vocabulary text + vision + speech",C2="Independent Bernoulli(t), weight 1/t; conditioning tokens never masked",C3="One shared head over joint vocabulary (MMaDA backbone)",
+ C4pos="Confidence-based remasking; text and speech block-wise, image one block fully parallel",C4val="Tokens are sampled, confidence is the max probability of the selected token (sample-then-filter); CFG 3.5 (generation), 2.5 (editing)",C4steps="Editing 128; Fig 11 sweeps: GSM8K needs 512-1024, GenEval saturates 64-128",C4joint="one target modality per call",
+ C5="None",mem="none",lev="L2, L4, L11, L12",fit="yes",missing="",
+ src="Dynin-Omni Sec 3.2.2, 6.4-6.5, 7.2 (Fig 11)",cls="S;G",esel="yes",ent="no",sweep="yes",swfix="not stated")
+add(name="D-DiT (Dual Diffusion)",arxiv="2501.00289",ver="v2",aw="not in corpus",fam="unified multimodal (flow image + masked text)",ev="read here (Sec 3.1-3.3, 4.1, 4.4)",
+ C1="Text: erasure on T5 tokens; image: rectified flow on SD3-VAE latents",C2="Other modality kept clean (its timestep set to 0); L = L_image + lambda_text L_text",
+ C3="MM-DiT with two branches: image velocity, text x0 logits; shared attention",
+ C4pos="One target modality per call: T2I Euler 28 steps; I2T ancestral posterior sampling; VQA infills the answer",C4val="T2I: CFG velocity re-weighting scale s; text: sampled",C4steps="T2I 28; long text 256; Table 5 text-step sweep",C4joint="one modality per call",
+ C5="Implicit for image; none for text",mem="none",lev="L12, L1",fit="partly",missing="Continuous image channel has no committed set (as Transfusion)",
+ src="D-DiT Sec 3.1-3.3, 4.1, 4.4 (Table 5)",cls="G",esel="yes",ent="no",sweep="yes",swfix="yes")
+add(name="Dimple",arxiv="2505.16990",ver="v3",aw="AW0258",fam="unified multimodal (understanding, AR-adapted)",ev="read here (Sec 3.1-3.2, S1.4)",
+ C1="Erasure on answer tokens; Dream backbone, Qwen2.5-VL vision encoder",C2="Standard; training: AR alignment, AR instruction tuning, then diffusion tuning",C3="Dream logits",
+ C4pos="MaskGIT-style top-K by confidence=max prob; 'Confident Decoding': all positions with confidence >= gamma, else the top one (Sec 3.2)",C4val="Headline Table 1: temperature 0, top-p 0.01, confident decoding disabled",C4steps="Steps = response length (1 token per step); length chosen as best of {4,8,16} per benchmark",C4joint="no",
+ C5="None",mem="prefilling (not read)",lev="L1, L2, L11",fit="yes",missing="Best-of-three response length is chosen per benchmark on the evaluation set",
+ src="Dimple Sec 3.2, S1.4",cls="A",esel="yes",ent="no",sweep="partial",swfix="not stated")
