@@ -1,0 +1,86 @@
+
+== 9.6 constant (z_{1-0.025/(2m)} + z_0.80)^2 and n_B
+m=4: z=2.7344  z_0.80=0.8416  constant=12.788
+m=3: z=2.6383  z_0.80=0.8416  constant=12.110
+m=2: z=2.4977  z_0.80=0.8416  constant=11.151
+m=1: z=2.2414  z_0.80=0.8416  constant=9.505
+card uses 12.75 (m=4, z rounded to 2.73) and 12.1 (m=3)
+sigma_up=0.25: n_B(m=4) exact=889  with 12.75=886  | m=3: 841  m=2: 775  m=1: 661
+sigma_up=0.4: n_B(m=4) exact=2274  with 12.75=2267  | m=3: 2153  m=2: 1983  m=1: 1690
+sigma_up=0.6: n_B(m=4) exact=5116  with 12.75=5100  | m=3: 4844  m=2: 4461  m=1: 3803
+pilot n_p=32: chi2_0.20,31 = 24.255; sigma_up / sigma_c = 1.1305
+
+== MDE at n_B = 1000 (power 0.80, Bonferroni-worst-case Holm level) by sigma_c
+sigma_c=0.25: m=4: 0.0283  m=3: 0.0275  m=2: 0.0264  m=1: 0.0244
+sigma_c=0.4: m=4: 0.0452  m=3: 0.0440  m=2: 0.0422  m=1: 0.0390
+sigma_c=0.6: m=4: 0.0678  m=3: 0.0660  m=2: 0.0634  m=1: 0.0585
+
+== Analytic sigma_c of the IR1 estimator (delta method) under [A] component values
+sigma_psi^2 = sigma_y^2 + beta^2 sigma_h^2 - 2 beta rho_yh sigma_y sigma_h ; w = 0.5 ; rho_tau = corr of psi between tau_lo and tau_hi cells of one arm (same s, CRN) ; rho_arm = corr between A1 and A3
+ sigma_y beta sigma_h rho_yh rho_tau rho_arm | sigma_psi  sigma_c  n_B(m=4, sigma_up=1.13 sigma_c)
+   0.30  3.0   0.10   0.50   0.30   0.10  |    0.300    0.324  1913
+   0.35  3.0   0.12   0.50   0.30   0.10  |    0.355    0.384  2680
+   0.35  5.0   0.12   0.30   0.30   0.10  |    0.597    0.646  7575
+   0.50  3.0   0.15   0.30   0.50   0.00  |    0.563    0.690  8649
+   0.35  3.0   0.12   0.50   0.30   0.50  |    0.355    0.286  1489
+
+== 9.5 outcome classes: operating characteristics at the sized n (SE = d_cp / (z_m + z_0.80), m = 4)
+SE at sized n = 0.0084
+true G=0.000: P(sig at Bonf level)=0.006  P('clearly +/-')=0.000  P('practically 0', 97.5% CI)=0.819  (95% CI: 0.895)
+true G=0.015: P(sig at Bonf level)=0.171  P('clearly +/-')=0.037  P('practically 0', 97.5% CI)=0.325  (95% CI: 0.431)
+true G=0.030: P(sig at Bonf level)=0.800  P('clearly +/-')=0.500  P('practically 0', 97.5% CI)=0.012  (95% CI: 0.025)
+true G=0.040: P(sig at Bonf level)=0.979  P('clearly +/-')=0.884  P('practically 0', 97.5% CI)=0.000  (95% CI: 0.001)
+true G=0.050: P(sig at Bonf level)=0.999  P('clearly +/-')=0.992  P('practically 0', 97.5% CI)=0.000  (95% CI: 0.000)
+H1 negative needs 'practically 0' at every estimable k; with 4 independent k and G = 0 at all k:
+  97.5%: per-k 0.818; all four (independent) 0.448; all two (R2) 0.669
+  95%: per-k 0.894; all four (independent) 0.639; all two (R2) 0.799
+
+== F2 (Delta2 = 2 Y3 - Y1 - Y2, delta 0.05) power relative to F1 at the n sized for F1, arms uncorrelated
+effect/SE scale factor = 0.962; power F2 at delta = 0.760 (F1: 0.800)
+
+== H1b: Holm on F1 then H1b at full 0.025 if >= 1 rejection. FWER over {F1, H1b} when H1b's null is true
+true G/SE=(0, 0, 0, 0): true slope=0.00 SE-units  FWER(F1)=0.0248  FWER(F1 or H1b)=0.0248
+true G/SE=(6, 0, 0, 6): true slope=0.00 SE-units  FWER(F1)=0.0244  FWER(F1 or H1b)=0.0364
+true G/SE=(6, 6, 6, 6): true slope=0.00 SE-units  FWER(F1)=0.0000  FWER(F1 or H1b)=0.0124
+true G/SE=(6, 0, 0, 0): true slope=-1.80 SE-units  FWER(F1)=0.0248  FWER(F1 or H1b)=0.0248
+Holm with H1b as 5th member, true (6,0,0,6): FWER = 0.0246
+
+== N2 gate (k = 1, A1 vs A3 identical in law): P(pass) of 'TOST 90% CI inside +-0.05', rho_arm = 0
+sigma_y   n_1=256   n_1=512   n_1=1024  n_1 for P(pass)=0.90
+   0.25     0.463     0.880     0.996   542
+   0.30     0.190     0.693     0.967   780
+   0.40     0.000     0.278     0.763   1386
+   0.50     0.000     0.000     0.463   2165
+
+== IR1-IR5 estimator + paired percentile bootstrap: type I error and SE check (synthetic, [A] parameters)
+same frontier for A1 and A3 (G = 0): n=1000, 600 reps, B=1000: rejection at 0.05 = 0.052 (MC SE 0.009); mean bootstrap SE = 0.0127; SD of estimate over reps = 0.0130; implied sigma_c = 0.410
+different slopes and curvature, same value at h* (G = 0): n=1000, 600 reps, B=1000: rejection at 0.05 = 0.188 (MC SE 0.009); mean bootstrap SE = 0.0155; SD of estimate over reps = 0.0176; implied sigma_c = 0.558
+
+== IR4 with beta_A treated as a fixed constant: missing variance
+n_A=64, stage-A E gap 0.15: SE(beta_A) ~ 0.412; at |h* - E_cell| = 0.03: omitted SD = 0.0124 (per-arm SE at n_B=1000 is about 0.0100)
+n_A=64, stage-A E gap 0.15: SE(beta_A) ~ 0.412; at |h* - E_cell| = 0.05: omitted SD = 0.0206 (per-arm SE at n_B=1000 is about 0.0100)
+n_A=64, stage-A E gap 0.15: SE(beta_A) ~ 0.412; at |h* - E_cell| = 0.1: omitted SD = 0.0412 (per-arm SE at n_B=1000 is about 0.0100)
+n_A=64, stage-A E gap 0.3: SE(beta_A) ~ 0.206; at |h* - E_cell| = 0.03: omitted SD = 0.0062 (per-arm SE at n_B=1000 is about 0.0100)
+n_A=64, stage-A E gap 0.3: SE(beta_A) ~ 0.206; at |h* - E_cell| = 0.05: omitted SD = 0.0103 (per-arm SE at n_B=1000 is about 0.0100)
+n_A=64, stage-A E gap 0.3: SE(beta_A) ~ 0.206; at |h* - E_cell| = 0.1: omitted SD = 0.0206 (per-arm SE at n_B=1000 is about 0.0100)
+
+== N4 placebo: P(rejection rate over 200 random splits lies in [0.02, 0.09]) under a valid test
+single (arm, k) cell pair: P(pass) = 0.989; SD of rate = 0.0153 (binomial iid: 0.0154)
+if the gate is applied to 12 (arm, k) pairs and all must pass (independent): P(all pass) = 0.876
+if the gate uses the mean rate over 12 pairs: P(pass) = 1.000
+
+== IR1 decomposition of the 0.188 rejection rate: slope difference vs curvature difference vs cell placement
+slopes differ (2 vs 5), no curvature, calib_sd 0.015: rejection = 0.037; bootstrap SE = 0.0155; SD over reps = 0.0155; analytic curvature bias at symmetric cells = 0.0000
+curvature differs (0 vs 6), calib_sd 0: rejection = 0.152; bootstrap SE = 0.0153; SD over reps = 0.0156; analytic curvature bias at symmetric cells = 0.0150
+curvature differs (0 vs 2), calib_sd 0.015: rejection = 0.062; bootstrap SE = 0.0156; SD over reps = 0.0154; analytic curvature bias at symmetric cells = 0.0050
+
+== N2 entropy part: P(pass) of 'TOST 90% CI of H(A1)-H(A3) inside +-0.03', rho_arm = 0, n_1 = 256
+sigma_H=0.10: P(pass)=0.920  n_1 for 0.90: 241
+sigma_H=0.15: P(pass)=0.463  n_1 for 0.90: 542
+sigma_H=0.20: P(pass)=0.042  n_1 for 0.90: 962
+
+== Stage-B GPU-hours per unit n_B by ladder rung (card constants [A]: t_f 7 ms, w1+w2+w3 = 5.92, w4 = 1.3)
+R0: sum P(k) = 960; GPU-h per n_B = 0.02372; n_B affordable at 45 GPU-h = 1897
+R1: sum P(k) = 448; GPU-h per n_B = 0.01193; n_B affordable at 45 GPU-h = 3771
+R2: sum P(k) = 192; GPU-h per n_B = 0.00474; n_B affordable at 45 GPU-h = 9486
+R3: sum P(k) = 64; GPU-h per n_B = 0.00180; n_B affordable at 45 GPU-h = 25042

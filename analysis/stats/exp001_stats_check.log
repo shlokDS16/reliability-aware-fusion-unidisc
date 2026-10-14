@@ -1,0 +1,43 @@
+
+== 10.4 sample size for H-B (sigma_L, rho_pair = 0, m = 1.0 point)
+alpha 0.05: z=1.9600  sigma_d=5.657  n=336.2 -> 337
+alpha 0.05/7: z=2.6901  sigma_d=5.657  n=504.8 -> 505
+n=500 sigma_L=4.0: SE=0.253  power(primary)=0.977  power(alpha .05/7)=0.897
+n=500 sigma_L=5.0: SE=0.316  power(primary)=0.885  power(alpha .05/7)=0.682
+n=500 sigma_L=6.0: SE=0.379  power(primary)=0.750  power(alpha .05/7)=0.478
+
+== Decision-rule operating characteristics, n = 500, sigma_L = 4, rho = 0 (10.2 outcome classes)
+true d=0.00: P(lo>0)=0.024  P('positive' = lo>0 & dhat>=1)=0.000  P('null')=0.954
+true d=0.50: P(lo>0)=0.507  P('positive' = lo>0 & dhat>=1)=0.024  P('null')=0.506
+true d=1.00: P(lo>0)=0.976  P('positive' = lo>0 & dhat>=1)=0.501  P('null')=0.026
+true d=1.25: P(lo>0)=0.999  P('positive' = lo>0 & dhat>=1)=0.839  P('null')=0.002
+true d=1.50: P(lo>0)=1.000  P('positive' = lo>0 & dhat>=1)=0.976  P('null')=0.000
+
+== H-B2: percentile bootstrap of max(TF,IF)-Alt vs intersection-union test (IUT), data-level, n = 500
+true (TF-Alt, IF-Alt)=(1.0, 1.0): reject H0[max>=1] IUT=0.010  percentile-bootstrap-of-max=0.003
+true (TF-Alt, IF-Alt)=(1.0, -1.0): reject H0[max>=1] IUT=0.037  percentile-bootstrap-of-max=0.037
+true (TF-Alt, IF-Alt)=(0.0, 0.0): reject H0[max>=1] IUT=0.973  percentile-bootstrap-of-max=0.972
+
+== H-A1 SE and the probability that the 95% lower limit of the ratio is >= 1.5 (n = 128 and 512)
+n=128: SE(ln ratio)=0.0627  R=1.5: 0.025  R=1.75: 0.690  R=2.0: 0.996  R=2.5: 1.000
+n=256: SE(ln ratio)=0.0444  R=1.5: 0.025  R=1.75: 0.935  R=2.0: 1.000  R=2.5: 1.000
+n=512: SE(ln ratio)=0.0314  R=1.5: 0.025  R=1.75: 0.998  R=2.0: 1.000  R=2.5: 1.000
+
+== H-A extension rule (11.2): type I error of 'positive' when the true ratio is exactly 1.5
+naive rule (1.96 at both looks): alpha = 0.0453  (nominal 0.025)
+Pocock-type equal boundary with binding futility at z1 <= -1.96: c = 2.208 at both looks
+OBF-type spending: alpha1 = 7.37e-06 (c1 = 4.333), final c2 = 1.960 (binding futility at -1.96)
+OBF-type spending, non-binding futility: final c2 = 1.960
+fixed n = 256 (no look): 95% lower limit rule unchanged; SE(ln ratio) = 0.0444
+
+== H-C: Spearman over 16 cells. Critical value and the pooled-strata artefact
+one-sided 5% critical value, 16 exchangeable cells (20,000 perms): 0.424
+stratified statistic (mean of two within-k Spearman, permute within k): one-sided 5% critical = 0.452
+no within-k association; between-k shift M=0, Delta=0: P(pooled rho>=0.5 & > crit)=0.025  median pooled rho=-0.003 | P(stratified > crit)=0.048
+no within-k association; between-k shift M=3, Delta=1: P(pooled rho>=0.5 & > crit)=0.302  median pooled rho=0.391 | P(stratified > crit)=0.043
+no within-k association; between-k shift M=3, Delta=3: P(pooled rho>=0.5 & > crit)=0.964  median pooled rho=0.712 | P(stratified > crit)=0.048
+no within-k association; between-k shift M=3, Delta=-3: P(pooled rho>=0.5 & > crit)=0.000  median pooled rho=-0.712 | P(stratified > crit)=0.043
+
+== Lift: variance of the mean Lift vs per-seed SD / sqrt(n) (synthetic embeddings)
+influence SD/sqrt(n) (psi_i = 100 (C_i - 2 B_i)) = 0.3130
+n=200: per-seed SD/sqrt(n) = 0.2637; bootstrap SE (with same-seed exclusion) = 0.3067; true sampling SD (400 fresh draws) = 0.3062
