@@ -1,0 +1,33 @@
+field                                                    agree  kappa   n
+non-plain value rule (yes/no/unknown), all rows           0.68   0.44  47
+non-plain value rule, rows both coded yes/no              0.92   0.47  26
+class A present (rows both coded)                         0.77   0.43  26
+class T present (rows both coded)                         0.92   0.75  26
+class P present (rows both coded)                         0.96   0.88  26
+class S present (rows both coded)                         0.96   0.84  26
+class G present (rows both coded)                         0.92   0.84  26
+class M present (rows both coded)                         1.00   1.00  26
+entropy or diversity reported (yes/no rows)               0.81   0.56  36
+step sweep reported (coder 1 'ns' rows excluded)          0.93   0.47  29
+value rule determinable (not NS/NA/unclear)               0.72   0.35  47
+
+coder 1 headline non-plain: {'unknown': 13, 'yes': 31, 'no': 3}
+coder 2 headline non-plain: {'unknown': 16, 'no': 8, 'yes': 23}
+coder 2 F2 codes: {'NS': 14, 'U': 8, 'NA': 2, 'A': 3, 'S': 2, 'P': 3, 'G': 6, 'S+G': 1, 'S+P+T+G': 1, 'A+G': 1, 'M': 1, 'T': 3, 'T+P': 1, 'A+P': 1}
+
+disagreements on non-plain value rule (id, name, coder1, coder2 codes):
+  M03 SEDD                         c1=unknown []  c2=no      [U]
+  M04 MDLM                         c1=unknown []  c2=no      [U]
+  M05 MD4                          c1=unknown []  c2=no      [U]
+  M06 RADD                         c1=unknown []  c2=no      [U]
+  M07 Zheng et al. (time-agnostic, c1=unknown [T]  c2=no      [U]
+  M12 EB-sampler                   c1=yes     [A]  c2=unknown [NS]
+  M14 CDCD                         c1=yes     [A]  c2=no      [U]
+  M15 Plaid                        c1=yes     [A,T]  c2=unknown [NA]
+  M17 Duo                          c1=yes     [A]  c2=no      [U]
+  M22 MMaDA                        c1=yes     [G]  c2=unknown [NS]
+  M24 FUDOKI                       c1=no      [M]  c2=unknown [NS]
+  M27 BAGEL                        c1=yes     [G]  c2=unknown [NS]
+  M39 Fast-dLLM                    c1=yes     [A]  c2=unknown [NS]
+  M40 Di4C                         c1=no      []  c2=unknown [NS]
+  M45 Dynin-Omni                   c1=yes     [G,S]  c2=unknown [NS]
