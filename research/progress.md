@@ -1,7 +1,25 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-14, night; newest block, overrides all older).**
+- **CURRENT STATE (2026-10-15, early; newest block, overrides all older).**
+  EXP-001 v0.5 was signed, implemented (130 tests pass; `exp001/`, `analysis/EXP-001/`,
+  `runs/EXP-001/IMPLEMENTATION.md`) and STOPPED at its construct gate PG-V under preregistered
+  rule 11.1 (D0016): under plain sampling at T = 1 UniDisc's joint completions show no
+  completion-specific image link (rung 2 m - s 0.151 < 0.25; m - s_sp about 0; images are
+  textures); checker valid (PC-F). One protocol deviation recorded (prefix layout space fix
+  between rung-1 runs). Images are unlicensed and kept local (`runs/EXP-001/image-hashes.txt`).
+  G4 done: MDLM reproduced (22.935 vs 23.05, -0.50%; `runs/G4-mdlm-repro-2026-10-14/report.md`);
+  the bf16 gap was dropout (train mode).
+  **EXP-003** (new, preregistration draft `research/preregistration/EXP-003-value-rule-consistency.md`):
+  plain vs official guided sampler vs CFG-0 on fresh prefixes; primary discordant-noun link
+  Lambda_d; about 6 wall-clock GPU-hours. Running: statistician and red-team reviews (sonnet).
+  Codex exhausted until 2026-11-10 (D0015): census coding by Claude coders after the 2026-10-19
+  reset; Codex tools fixed to resume one read-only thread per 20 calls.
+  **Budget: weekly 86 percent on 2026-10-15** (resets 2026-10-19 17:00 UTC). Before reset: only
+  EXP-003 review, sign-off and the guarded run. After reset: census coders A and B, novelty audit
+  of EXP-003, then manuscript drafting. Human tasks pending: 218-record screening sample, 120
+  screening disagreements.
+- **Superseded (2026-10-14, night).**
   Laptop crashed twice under sustained GPU load (bugcheck 0x20001; memory `laptop-gpu-crashes`);
   user chose guarded runs: every GPU job through `tools/gpu_guard.py` (15-min chunks, 85 C stop,
   telemetry), checkpointed, duty cycle about 50 percent, batch <= 8. Python child processes exit
