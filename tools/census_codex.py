@@ -1,4 +1,4 @@
-"""Census coder B: Codex codes one paper per fresh read-only call (codebook v1 as amended by v1.1).
+"""Census coder B: Codex codes one paper per call, 20 papers per resumed thread (codebook v1 as amended by v1.1).
 
 For each paper in research/review/census/census-order.csv (in rank order, from --start), Codex opens
 the plain-text full text in the main checkout's research/sources/census-text/<arxiv>.txt, decides
@@ -24,6 +24,7 @@ CEN = ROOT / "research" / "review" / "census"
 COV = ROOT / "research" / "review" / "coverage"
 TEXT = Path(r"C:\Users\Shlok\Downloads\Multi-Modality Language model\research\sources\census-text")
 OUT = CEN / "coder-B.jsonl"
+BATCH = 20  # papers per resumed Codex thread
 FIELDS = ["eligible", "exclusion_code", "F0_version", "F1_task", "F1_metric", "F1_value", "F1_location",
           "F2_codes", "F2_detail", "F2_location", "F3", "F3_location", "F4", "F4_location", "F5", "F6", "notes"]
 
@@ -69,6 +70,7 @@ def main() -> None:
             done[d["arxiv"]] = d
     eligible = sum(1 for d in done.values() if d.get("eligible") == "yes")
     order = list(csv.DictReader(open(CEN / "census-order.csv", encoding="utf8")))
+    thread, in_thread = None, 0  # one Codex thread per BATCH papers, resumed by explicit id (memory: codex-one-thread)
     for r in order[a.start - 1:]:
         if eligible >= a.target:
             break
@@ -79,19 +81,34 @@ def main() -> None:
         if not f.exists():
             print(f"rank {r['rank']} {aid}: no full text, skipped (counted as unavailable)")
             continue
-        prompt = (ELIG + "\n\nCODEBOOK (v1, then amendments v1.1):\n" + codebook + "\n\n" +
-                  ASK.format(fname=f.name, keys=", ".join(FIELDS)))
+        resume = thread is not None and in_thread < BATCH
+        if resume:
+            prompt = ("Next paper. Apply the same eligibility rules and codebook exactly, independently of earlier "
+                      "papers.\n\n" + ASK.format(fname=f.name, keys=", ".join(FIELDS)))
+        else:
+            prompt = (ELIG + "\n\nCODEBOOK (v1, then amendments v1.1):\n" + codebook + "\n\n" +
+                      ASK.format(fname=f.name, keys=", ".join(FIELDS)))
         resp = CEN / "codex-tmp-response.txt"
         if resp.exists():
             resp.unlink()
-        cmd = [exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
-               "-C", str(TEXT), "-o", str(resp)] + (["-m", a.model] if a.model else []) + ["-"]
+        if resume:
+            cmd = [exe, "exec", "resume", "--skip-git-repo-check", "-o", str(resp)] + \
+                (["-m", a.model] if a.model else []) + [thread, "-"]
+        else:
+            cmd = [exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
+                   "-C", str(TEXT), "-o", str(resp)] + (["-m", a.model] if a.model else []) + ["-"]
         t0 = dt.datetime.now(dt.timezone.utc)
         p = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding="utf-8",
                            errors="replace", timeout=a.timeout)
         raw = (p.stdout or "") + (p.stderr or "")
         model = re.search(r"^model:\s*(\S+)", raw, re.M)
         text = resp.read_text(encoding="utf8") if resp.exists() else ""
+        if "usage limit" in (raw + text).lower():
+            sys.exit(f"rank {r['rank']}: Codex usage limit reached; stopping without further calls")
+        sid = re.search(r"session id:\s*([0-9a-fA-F-]{8,})", raw)
+        if p.returncode == 0:
+            thread = (sid.group(1) if sid else None) or thread
+            in_thread = in_thread + 1 if resume else 1
         obj = None
         for line in text.splitlines():
             line = line.strip().strip("`")
@@ -102,7 +119,8 @@ def main() -> None:
                     pass
         ok = isinstance(obj, dict) and obj.get("eligible") in ("yes", "no")
         log = {"ts": t0.isoformat(), "rank": r["rank"], "arxiv": aid, "exit": p.returncode, "ok": ok,
-               "model": model.group(1) if model else a.model, "prompt_sha": sha(prompt),
+               "model": model.group(1) if model else a.model, "codex_session": sid.group(1) if sid else None,
+               "thread_mode": "resume" if resume else "new", "prompt_sha": sha(prompt),
                "response_sha": sha(text) if text else None,
                "seconds": (dt.datetime.now(dt.timezone.utc) - t0).total_seconds()}
         with open(CEN / "coder-B-run-log.jsonl", "a", encoding="utf8") as fh:
