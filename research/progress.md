@@ -1,7 +1,30 @@
 # Progress ledger
 
 ## RESUME
-- **CURRENT STATE (2026-10-14, late session; newest block, overrides all older ones).**
+- **CURRENT STATE (2026-10-14, build session; newest block, overrides all older ones).**
+  User said "start the build" with the recommended plan, despite FRUGAL budget (weekly 63 percent).
+  Done and committed: `review/framework-v1.md` (25 primer edits applied, v0 kept);
+  `review/coverage/design-space-v1.md` + `.csv` (47 models, 36 fit, 11 partly, 0 no; misfits:
+  length-changing edit channels, stochastic memory, graded evidence, joint-over-set predictors,
+  sequence-level selection; census: 29 of 40 headlines use a value tilt or selection, 5 of those
+  report entropy); `review/method/selection-term.md` with `analysis/framework/check_selection.py`
+  (61 exact checks pass on rerun). Key results: E_sel is defined only against a reference; the
+  canonical one is matched rank-then-sample (same position law, values resampled), runnable as
+  sample-select-resample; per-step forward E_sel is infinite for sample-then-filter; temperature,
+  top-p, argmax and CFG are state-only tilts (E_tilt, inside the identity), so only 4 of the 29
+  census headlines use true E_sel (sample-then-filter) [recount needed]; **P2's premise is false**
+  (E_fact alone can push entropy far below H(q)); toy U-shape in steps under SF. arXiv S1+S2
+  retrieved: 1303 unique, recall 78 percent, 883 new candidates (not yet screened). Codex debate
+  `research/debates/2026-10-14-framework-v1` round 2: P1 not identified as stated, E_sel may be
+  decomposition-dependent, framework risks reading as identity plus labels without one validated
+  new prediction. `tools/debate.py` fixed (relative path bug).
+  **Running at this point:** red-team (opus) on selection-term + framework-v1 + Codex objections,
+  report `review/audits/2026-10-14-red-team-selection-term.md`; novelty-auditor (opus) on N1-N8,
+  report `review/audits/2026-10-14-novelty-selection-term.md`.
+  **Next:** read both audits; write `review/framework-v2.md` applying the 15 method edits as
+  amended by the audits; Codex round 3 with the content pasted into the debate folder; recount
+  the census with the tilt/selection split; screening plan for the 883 new records.
+- **Earlier state (2026-10-14, late session).**
   User: two-week horizon for Paper 1 (about 2026-10-28), quality first, the review must carry a
   significant result (D0010). Budget was FRUGAL (weekly 58 percent at about 22 percent elapsed;
   resets 2026-10-19 17:00 UTC), so the user chose sequential primer agents only this session.
