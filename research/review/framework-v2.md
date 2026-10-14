@@ -101,7 +101,14 @@ sample, R samples), re-query the image marginals, and estimate
 I_theta(a; b_j | s) = E_a KL(p(b_j | s, a) || mbar_j), with mbar_j = mean over the R draws of
 p(b_j | s, a). Using the mixture mbar_j rather than the one-pass marginal p(b_j | s) removes the
 marginal-inconsistency term that red-team block J shows is 0.081 nats per token at zero dependence,
-and which is largest exactly where P5a predicts front-loading [I; to be checked by enumeration].
+and which is largest exactly where P5a predicts front-loading. [V]
+`analysis/framework/check_crossmodal_mixture.py`: the naive estimator equals I_theta plus
+KL(mbar || one-pass marginal) to 8.9e-16 over 2000 random models; on red-team block J it gives
+0.08109 while the mixture estimator gives 0; the finite-R mixture estimate is biased low in
+expectation (concavity of entropy), within 3 Monte Carlo standard errors of below I_theta in
+40 of 40 random models at R = 4, 16, 64, with median relative error 0.014 at R = 64. This checks
+the estimator's algebra on toy models only; it says nothing about re-query fidelity on a real
+network.
 Cost: R k_T + R passes per probed step. Evidence status unchanged from v1: no paper measures a
 cross-modal quantity per step; the MMaDA-Parallel contrast is confounded and its released sampler
 is not fully parallel (E3).
@@ -118,10 +125,14 @@ Contribution of the review, in order of weight:
    rule other than plain sampling at temperature 1 (truncation, temperature, argmax, guidance,
    sample-then-filter or sequence-level selection); 5 report entropy or diversity next to the
    headline; about 28 report a step sweep but only 10 state that the value rule was held fixed;
-   1 of 14 guided models sweeps steps with guidance fixed. With P2 withdrawn, none of these papers'
-   gains can be attributed to model, schedule or value rule from what is reported. To be extended
-   from 47 models to all included records through the extraction form (protocol section 6) and
-   double-checked by a second extractor before it is stated as a review result.
+   1 of 14 guided models sweeps steps with guidance fixed. With P2 withdrawn, reported entropy
+   cannot separate the contributions of model, schedule and value rule; whether a given paper
+   reports enough elsewhere (ablations, appendices, code) to separate them is a per-paper coding
+   question, not something the counts establish (Codex round 4). Before it is stated as a review
+   result: final operational definitions, extension from 47 models to all included records
+   through the extraction form (protocol section 6), a second independent extractor, agreement
+   reported before reconciliation with the raw disagreements, missing-data rules, and the coded
+   rows published.
 3. **The budget as a taxonomy**, with the identity credited to its sources, V as a single signed
    value slot, G and E_approx named, and the lever table (v1 section 3) with the value rows merged
    into one row keyed by mechanism.

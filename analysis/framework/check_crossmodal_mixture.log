@@ -1,0 +1,9 @@
+A  naive = I_theta + KL(mbar||p1): max abs error over 2000 random models = 8.88e-16
+B  zero dependence, shifted marginal: I_theta = 0.00000, naive = 0.08109, mixture (R=8) = 0.00000
+C  40 random models: finite-R estimate <= I_theta at R = 4, 16, 64 (within 3 MC standard errors) in 40/40; median relative error at R = 64 = 0.014
+   I_theta=0.1654  R=4:0.1387  R=16:0.1570  R=64:0.1634
+   I_theta=0.1187  R=4:0.0876  R=16:0.1116  R=64:0.1188
+   I_theta=0.1724  R=4:0.1244  R=16:0.1619  R=64:0.1685
+   I_theta=0.1021  R=4:0.0659  R=16:0.0901  R=64:0.1001
+   I_theta=0.2650  R=4:0.2099  R=16:0.2456  R=64:0.2618
+SUMMARY: failures = 0
