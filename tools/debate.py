@@ -9,9 +9,11 @@ Every turn is a file (`round-NN-<speaker>.md`) plus a row in the debate's `log.j
 project-wide `research/debates/index.jsonl`: time, duration, working folder, Claude session,
 Codex session, model, prompt and response paths with SHA-256.
 
-Isolation from other sessions that use Codex: each Codex turn is a fresh `codex exec` run in a
-read-only sandbox, started in the debate folder, and is sent the whole transcript. Nothing is
-resumed with `--last`, so another session's thread can never be picked up.
+One Codex thread per debate: the first Codex turn starts a read-only session in the debate folder
+with the full transcript; later turns resume that session by its explicit id and send only the
+new Claude turn. After --max-thread-turns Codex turns (default 8) a fresh thread is seeded with the
+whole transcript, to limit drift in long threads. Nothing is resumed with `--last`, so another
+session's thread can never be picked up.
 """
 from __future__ import annotations
 
@@ -89,36 +91,48 @@ def cmd_codex(a: argparse.Namespace) -> None:
     if not prior or "claude" not in prior[-1].name:
         sys.exit("the last turn must be Claude's before Codex replies")
     n = len(prior) + 1
-    transcript = "\n\n".join(f"===== {p.stem} =====\n{p.read_text(encoding='utf-8')}" for p in prior)
-    prompt = d / f"round-{n:02d}-codex.prompt.txt"
-    prompt.write_text(f"{RULES}\nTOPIC: {meta['topic']}\n\nTRANSCRIPT SO FAR:\n{transcript}\n\n"
-                      "Write your turn now.", encoding="utf-8")
     out = d / f"round-{n:02d}-codex.md"
     raw = d / f"round-{n:02d}-codex.raw.log"
+    prompt = d / f"round-{n:02d}-codex.prompt.txt"
     exe = shutil.which("codex.cmd") or shutil.which("codex")
     if not exe:
         sys.exit("codex CLI not found on PATH")
-    cmd = [exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
-           "-C", str(d), "-o", str(out)]
-    if a.model:
-        cmd += ["-m", a.model]
-    cmd.append("-")
+    # One Codex thread per debate: resume it by explicit id (never --last, which could pick up
+    # another session's thread). Start a new thread, seeded with the full transcript, only for the
+    # first turn or after MAX_THREAD_TURNS Codex turns, when a long thread risks drift.
+    sid0, used = meta.get("codex_session"), meta.get("thread_turns", 0)
+    resume = bool(sid0) and used < a.max_thread_turns
+    if resume:
+        prompt.write_text("New turn from Claude follows. Same rules as before; answer it now.\n\n"
+                          f"===== {prior[-1].stem} =====\n{prior[-1].read_text(encoding='utf-8')}", encoding="utf-8")
+        cmd = [exe, "exec", "resume", "--skip-git-repo-check", "-o", str(out)]
+        cmd += (["-m", a.model] if a.model else []) + [sid0, "-"]
+    else:
+        transcript = "\n\n".join(f"===== {p.stem} =====\n{p.read_text(encoding='utf-8')}" for p in prior)
+        prompt.write_text(f"{RULES}\nTOPIC: {meta['topic']}\n\nTRANSCRIPT SO FAR:\n{transcript}\n\n"
+                          "Write your turn now.", encoding="utf-8")
+        cmd = [exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
+               "-C", str(d), "-o", str(out)] + (["-m", a.model] if a.model else []) + ["-"]
     t0 = time.time()
-    r = subprocess.run(cmd, input=prompt.read_text(encoding="utf-8"), capture_output=True,
+    r = subprocess.run(cmd, input=prompt.read_text(encoding="utf-8"), capture_output=True, cwd=str(d),
                        text=True, encoding="utf-8", errors="replace", timeout=a.timeout)
     raw.write_text((r.stdout or "") + "\n--- stderr ---\n" + (r.stderr or ""), encoding="utf-8")
     text = raw.read_text(encoding="utf-8")
     sid = re.search(r"session id:\s*([0-9a-fA-F-]{8,})", text)
     model = re.search(r"^model:\s*(\S+)", text, re.M)
     ok = r.returncode == 0 and out.exists() and out.stat().st_size > 0
+    session = (sid.group(1) if sid else None) or (sid0 if resume else None)
     log(d, {"event": "turn", "speaker": "codex", "round": n, "exit": r.returncode, "ok": ok,
-            "seconds": round(time.time() - t0, 1), "codex_session": sid.group(1) if sid else None,
+            "mode": "resume" if resume else "new-thread", "thread_turn": used + 1 if resume else 1,
+            "seconds": round(time.time() - t0, 1), "codex_session": session,
             "model": model.group(1) if model else a.model, "prompt": prompt.name,
             "prompt_sha": sha(prompt), "response": out.name if ok else None,
             "response_sha": sha(out) if ok else None, "raw_log": raw.name,
             "claude_session": meta.get("claude_session")})
     if not ok:
         sys.exit(f"codex turn failed (exit {r.returncode}); see {raw}")
+    meta.update({"codex_session": session, "thread_turns": used + 1 if resume else 1})
+    (d / "meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(out)
 
 
@@ -138,7 +152,9 @@ def main() -> None:
     c = sub.add_parser("claude"); c.add_argument("dir"); c.add_argument("--file", required=True)
     c.set_defaults(fn=cmd_claude)
     x = sub.add_parser("codex"); x.add_argument("dir"); x.add_argument("--model")
-    x.add_argument("--timeout", type=int, default=900); x.set_defaults(fn=cmd_codex)
+    x.add_argument("--timeout", type=int, default=900)
+    x.add_argument("--max-thread-turns", type=int, default=8, help="Codex turns per thread before a fresh one")
+    x.set_defaults(fn=cmd_codex)
     s = sub.add_parser("status"); s.add_argument("dir"); s.set_defaults(fn=cmd_status)
     a = ap.parse_args()
     DEBATES.mkdir(parents=True, exist_ok=True)

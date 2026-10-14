@@ -1,0 +1,1 @@
+NEEDS-EVIDENCE — “The same” depends on the error definition and update rule. Updating one position per step avoids simultaneous multi-position commitments, but a symmetric channel may still introduce errors through its transition probabilities or token choice. I can’t determine thread identity from this transcript alone.

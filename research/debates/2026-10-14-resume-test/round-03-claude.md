@@ -1,0 +1,1 @@
+﻿Claim 2: the same holds for a uniform-state (symmetric) channel with one position updated per step. Accept or reject in at most 60 words, and say whether you are in the same thread as claim 1.

@@ -31,6 +31,7 @@ QUOTA = {"Inference Optimization": 12, "Discrete DLMs": 10, "Training Strategies
          "Multimodal DLMs": 6, "Continuous DLMs": 4, "Applications": 2}
 TYPES = ["CT1", "CT2", "CT3", "CT4", "CT5", "CT6", "CT7", "none"]
 MEC = ["absent", "partial", "met"]
+BATCH = 20  # papers per Codex thread before a fresh thread is started
 
 
 def load(p: Path) -> list[dict]:
@@ -101,18 +102,30 @@ def cmd_codex(limit: int) -> None:
     work = REL / "codex-runs"
     work.mkdir(exist_ok=True)
     todo = [m for m in json.loads((REL / "sample.json").read_text(encoding="utf-8")) if m["record_id"] not in done]
+    thread, in_thread = None, 0  # one Codex thread per batch of BATCH papers, resumed by explicit id
     for m in (todo[:limit] if limit else todo):
         prompt = work / f"{m['record_id']}.prompt.txt"
-        prompt.write_text("You are rating one research paper with the rubric below. Apply it exactly. Reply with ONE JSON "
-                          "object and nothing else. Do not use tools or read files.\n\n=== RUBRIC ===\n" + rubric
-                          + "\n\n=== PAPER ===\n" + (ROOT / m["file"]).read_text(encoding="utf-8"), encoding="utf-8")
+        paper = (ROOT / m["file"]).read_text(encoding="utf-8")
         resp, raw, t0 = work / f"{m['record_id']}.response.txt", work / f"{m['record_id']}.raw.log", time.time()
-        r = subprocess.run([exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
-                            "-C", str(work), "-o", str(resp), "-"], input=prompt.read_text(encoding="utf-8"),
+        resume = thread is not None and in_thread < BATCH
+        if resume:
+            prompt.write_text("Next paper. Apply the same rubric exactly, independently of earlier papers. Reply with ONE "
+                              "JSON object and nothing else.\n\n=== PAPER ===\n" + paper, encoding="utf-8")
+            cmd = [exe, "exec", "resume", "--skip-git-repo-check", "-o", str(resp), thread, "-"]
+        else:
+            prompt.write_text("You will rate research papers one at a time with the rubric below. Apply it exactly. "
+                              "Reply with ONE JSON object and nothing else. Do not use tools or read files.\n\n"
+                              "=== RUBRIC ===\n" + rubric + "\n\n=== PAPER ===\n" + paper, encoding="utf-8")
+            cmd = [exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
+                   "-C", str(work), "-o", str(resp), "-"]
+        r = subprocess.run(cmd, input=prompt.read_text(encoding="utf-8"), cwd=str(work),
                            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600)
         raw.write_text((r.stdout or "") + "\n--- stderr ---\n" + (r.stderr or ""), encoding="utf-8")
         text = resp.read_text(encoding="utf-8") if resp.exists() else ""
         sid = re.search(r"session id:\s*([0-9a-fA-F-]{8,})", raw.read_text(encoding="utf-8"))
+        if r.returncode == 0:
+            thread = (sid.group(1) if sid else None) or thread
+            in_thread = in_thread + 1 if resume else 1
         j = re.search(r"\{.*\}", text, re.S)
         row, ok = None, False
         try:
