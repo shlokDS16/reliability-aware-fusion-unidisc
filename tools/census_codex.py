@@ -92,14 +92,14 @@ def main() -> None:
         if resp.exists():
             resp.unlink()
         if resume:
-            cmd = [exe, "exec", "resume", "--skip-git-repo-check", "-o", str(resp)] + \
+            cmd = [exe, "exec", "resume", "-c", 'sandbox_mode="read-only"', "--skip-git-repo-check", "-o", str(resp)] + \
                 (["-m", a.model] if a.model else []) + [thread, "-"]
         else:
             cmd = [exe, "exec", "--sandbox", "read-only", "--skip-git-repo-check", "--color", "never",
                    "-C", str(TEXT), "-o", str(resp)] + (["-m", a.model] if a.model else []) + ["-"]
         t0 = dt.datetime.now(dt.timezone.utc)
         p = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding="utf-8",
-                           errors="replace", timeout=a.timeout)
+                           errors="replace", timeout=a.timeout, cwd=str(TEXT))
         raw = (p.stdout or "") + (p.stderr or "")
         model = re.search(r"^model:\s*(\S+)", raw, re.M)
         text = resp.read_text(encoding="utf8") if resp.exists() else ""

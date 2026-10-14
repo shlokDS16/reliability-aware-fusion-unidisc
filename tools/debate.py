@@ -105,7 +105,7 @@ def cmd_codex(a: argparse.Namespace) -> None:
     if resume:
         prompt.write_text("New turn from Claude follows. Same rules as before; answer it now.\n\n"
                           f"===== {prior[-1].stem} =====\n{prior[-1].read_text(encoding='utf-8')}", encoding="utf-8")
-        cmd = [exe, "exec", "resume", "--skip-git-repo-check", "-o", str(out)]
+        cmd = [exe, "exec", "resume", "-c", 'sandbox_mode="read-only"', "--skip-git-repo-check", "-o", str(out)]
         cmd += (["-m", a.model] if a.model else []) + [sid0, "-"]
     else:
         transcript = "\n\n".join(f"===== {p.stem} =====\n{p.read_text(encoding='utf-8')}" for p in prior)

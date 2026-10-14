@@ -111,7 +111,7 @@ def cmd_codex(limit: int) -> None:
         if resume:
             prompt.write_text("Next paper. Apply the same rubric exactly, independently of earlier papers. Reply with ONE "
                               "JSON object and nothing else.\n\n=== PAPER ===\n" + paper, encoding="utf-8")
-            cmd = [exe, "exec", "resume", "--skip-git-repo-check", "-o", str(resp), thread, "-"]
+            cmd = [exe, "exec", "resume", "-c", 'sandbox_mode="read-only"', "--skip-git-repo-check", "-o", str(resp), thread, "-"]
         else:
             prompt.write_text("You will rate research papers one at a time with the rubric below. Apply it exactly. "
                               "Reply with ONE JSON object and nothing else. Do not use tools or read files.\n\n"
