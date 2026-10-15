@@ -185,3 +185,11 @@ question, quality assessment). The full landscape is in `survey-landscape.md`.
 
 ## 10. Amendments
 None yet.
+- 2026-10-15 (D0020; census codebook v1.2 B-4, B-6). Eligibility I1(b): "unified" means one model
+  (shared weights or one jointly trained system), not a pipeline of separately trained models;
+  "another modality" means image, video, audio or speech, or 3D. A unified model whose text is
+  autoregressive and whose diffusion or flow component generates one of these is eligible. Robot
+  actions, molecules and other non-text domains with autoregressive text are X1. X1 is widened
+  from "non-text diffusion only" to every diffusion model whose diffusion component produces no
+  natural-language text or code and is not covered by I1(b). Made after the random-sample census
+  coding; applies to adjudication of that sample and to all later coding.
