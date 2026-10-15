@@ -6,6 +6,7 @@ the snowball string filter, abstract enrichment, and the screening queue.
     python tools/merge_new_records_v2.py merge       # raw files -> new-records-2026-10-15-v2.jsonl (pre-enrichment)
     python tools/merge_new_records_v2.py enrich      # fetch missing abstracts (Semantic Scholar batch, arXiv API)
     python tools/merge_new_records_v2.py finalize    # string_match, snowball filter, screening queue, report
+    python tools/merge_new_records_v2.py final-filter  # D0027: S1''/S2'' on every queue record, final queue, auto-excluded, validation sets
 
 Reads research/review/corpus/search-log.jsonl rows executed on 2026-10-15 whose export is under
 research/sources/search-raw/ (both string versions and both snowball directions). Does NOT modify
@@ -579,6 +580,137 @@ def cmd_finalize():
     print(json.dumps({k: v for k, v in rep.items() if k not in ("per_source", "queue_by_source_combination")}, indent=2))
 
 
+
+
+# ------------------------------------------------------------------ final string filter (decision D0027)
+QUEUE_FINAL = CORPUS / f"screening-queue-final-{ISO}.jsonl"
+AUTO_EXCL = CORPUS / f"auto-excluded-{ISO}.jsonl"
+FF_STATS = CORPUS / f"final-filter-stats-{ISO}.json"
+VALID_SET = ROOT / "research" / "review" / "screening" / f"validation-autoexcl-{ISO}.jsonl"
+VALID_META = CORPUS / f"validation-autoexcl-sampling-{ISO}.json"
+SEED_V1, SEED_V2 = 20261020, 20261021
+N_V1, N_V2 = 200, 100
+
+
+def cmd_final_filter():
+    """Apply S1'' and S2'' (D0027) locally to every record of the screening queue (all tiers, T5 included): passing records go to
+    screening-queue-final, failing ones are marked auto_excluded ('string filter, D0027') in auto-excluded; the two validation sets are
+    drawn (random, seeds above) and written without screening anything. Reads the queue and the v2 file; changes neither."""
+    import string_rounds as sr
+    v2 = {r["nid"]: r for r in load_v2()}
+    queue = [json.loads(l) for l in open(QUEUE, encoding="utf8") if l.strip()]
+    ix = sr.Index({r["id"]: sr.toks(text_of(v2[r["id"]])) for r in queue})
+    s1_parts = {k: ix.ev(sp) for k, sp in ss.S1PP_PARTS.items()}
+    s2_parts = {k: ix.ev(sp) for k, sp in ss.S2PP_PARTS.items()}
+    a2c, a2n = (ix.ev(sp) for sp in ss.S1PP_PARTS["A2"][1])
+    keep, drop = [], []
+    for r in queue:
+        i = r["id"]
+        p1 = [k for k in ss.S1PP_PARTS if i in s1_parts[k]]
+        p2 = [k for k in ss.S2PP_PARTS if i in s2_parts[k]]
+        sm = dict(r["string_match"])
+        sm["S1''"], sm["S2''"] = bool(p1), bool(p2)
+        r = dict(r, string_match=sm, s1pp_parts=p1, s2pp_parts=p2, snowball_only=snowball_only(v2[i]),
+                 abstract_missing=not r["abstract"], sources=v2[i]["sources"])
+        if p1 or p2:
+            if r["string_match"]["S1"] or r["string_match"]["S2"] or "A1" in p1 or p2:
+                t = 1
+            elif "A3" in p1 or i in a2c:
+                t = 2
+            elif "B" in p1 or "C" in p1:
+                t = 3
+            else:
+                t = 4
+            r.update(queue_tier_final=t, queue_reason=r["queue_reason"] + "; passes S1''/S2''")
+            keep.append(r)
+        else:
+            r.update(queue_tier_final=None, auto_excluded=True, auto_excluded_reason="string filter, D0027")
+            drop.append(r)
+    with QUEUE_FINAL.open("w", encoding="utf8") as fh:
+        for r in keep:
+            fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+    with AUTO_EXCL.open("w", encoding="utf8") as fh:
+        for r in drop:
+            fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+    # ---- counts
+    tiers = (1, 2, 3, 4, 5)
+    per_tier = {f"T{t}": {"queue": sum(1 for r in queue if r["queue_tier"] == t),
+                          "passes": sum(1 for r in keep if r["queue_tier"] == t),
+                          "auto_excluded": sum(1 for r in drop if r["queue_tier"] == t)} for t in tiers}
+    kind = lambda r: "snowball" if r["snowball_only"] else "database"
+    per_tier_kind = {f"T{t}": {k: {"passes": sum(1 for r in keep if r["queue_tier"] == t and kind(r) == k),
+                                  "auto_excluded": sum(1 for r in drop if r["queue_tier"] == t and kind(r) == k)}
+                               for k in ("database", "snowball")} for t in tiers}
+    per_source = {}
+    for r in queue:
+        for s in r["sources"]:
+            d = per_source.setdefault(s, {"queue": 0, "passes": 0, "auto_excluded": 0})
+            d["queue"] += 1
+    for r in keep:
+        for s in r["sources"]:
+            per_source[s]["passes"] += 1
+    for r in drop:
+        for s in r["sources"]:
+            per_source[s]["auto_excluded"] += 1
+    final_tier = collections.Counter(r["queue_tier_final"] for r in keep)
+    # who passes only by one route
+    st = {
+        "date": ISO, "decision": "D0027", "queue_records": len(queue), "passes": len(keep), "auto_excluded": len(drop),
+        "passes_by_kind": dict(collections.Counter(kind(r) for r in keep)),
+        "auto_excluded_by_kind": dict(collections.Counter(kind(r) for r in drop)),
+        "by_original_tier": per_tier, "by_original_tier_and_kind": per_tier_kind,
+        "passes_by_final_tier": {f"T{t}": final_tier[t] for t in (1, 2, 3, 4)},
+        "per_source_a_record_counts_in_each_of_its_sources": per_source,
+        "passes_by_s1pp_part": dict(collections.Counter(p for r in keep for p in r["s1pp_parts"])),
+        "passes_by_s2pp_part": dict(collections.Counter(p for r in keep for p in r["s2pp_parts"])),
+        "passes_missing_abstract": sum(1 for r in keep if r["abstract_missing"]),
+        "auto_excluded_missing_abstract": {"database": sum(1 for r in drop if r["abstract_missing"] and kind(r) == "database"),
+                                           "snowball": sum(1 for r in drop if r["abstract_missing"] and kind(r) == "snowball")},
+        "auto_excluded_matching_original_S1_or_S2": sum(1 for r in drop if r["string_match"]["S1"] or r["string_match"]["S2"]),
+        "auto_excluded_matching_S1prime_or_S2prime": sum(1 for r in drop if r["string_match"]["S1'"] or r["string_match"]["S2'"]),
+        "auto_excluded_matching_no_string_locally": sum(1 for r in drop if not any(r["string_match"][s] for s in STRINGS)),
+        "queue_sha256": hashlib.sha256(QUEUE.read_bytes()).hexdigest(),
+        "queue_final_sha256": hashlib.sha256(QUEUE_FINAL.read_bytes()).hexdigest(),
+        "auto_excluded_sha256": hashlib.sha256(AUTO_EXCL.read_bytes()).hexdigest(),
+    }
+    # ---- validation sets (not screened here)
+    db_pop = sorted(r["id"] for r in drop if kind(r) == "database")
+    sb_rows = {nid: v for nid, v in v2.items() if v.get("auto_excluded") and v.get("auto_excluded_abstract_missing")}
+    sb_pop = sorted(sb_rows)
+    s1 = random.Random(SEED_V1).sample(db_pop, N_V1)
+    s2 = random.Random(SEED_V2).sample(sb_pop, N_V2)
+    dropped = {r["id"]: r for r in drop}
+    rows = [{"id": i, "title": dropped[i]["title"], "abstract": dropped[i]["abstract"], "set": "V1 database record excluded by S1''/S2'' (D0027)"}
+            for i in s1]
+    rows += [{"id": i, "title": sb_rows[i]["title"], "abstract": sb_rows[i]["abstract"],
+              "set": "V2 snowball record excluded on the title alone (D0026)"} for i in s2]
+    random.Random(SEED_V1 + SEED_V2).shuffle(rows)
+    with VALID_SET.open("w", encoding="utf8") as fh:
+        for r in rows:
+            fh.write(json.dumps(r, ensure_ascii=False) + "\n")
+    meta = {"date": ISO, "decision": "D0027", "note": "Sampling record for the validation sets. The set file carries only id, title, abstract, set so that "
+            "the screener sees nothing about why a record was excluded. Nothing was screened.",
+            "V1": {"population": "database records of the screening queue that fail S1''/S2'' (auto-excluded, snowball-only records excluded)",
+                   "population_size": len(db_pop), "n": N_V1, "seed": SEED_V1,
+                   "method": "random.Random(seed).sample(sorted(ids), n)",
+                   "ids": s1, "records": [{"id": i, "original_tier": dropped[i]["queue_tier"], "abstract_missing": dropped[i]["abstract_missing"],
+                                           "sources": dropped[i]["sources"],
+                                           "matches_S1prime_or_S2prime": bool(dropped[i]["string_match"]["S1'"] or dropped[i]["string_match"]["S2'"]),
+                                           "matches_S1_or_S2": bool(dropped[i]["string_match"]["S1"] or dropped[i]["string_match"]["S2"])} for i in s1]},
+            "V2": {"population": "snowball-only records marked auto_excluded in D0026 with no abstract after enrichment (title alone judged)",
+                   "population_size": len(sb_pop), "n": N_V2, "seed": SEED_V2, "method": "random.Random(seed).sample(sorted(ids), n)", "ids": s2},
+            "file": VALID_SET.relative_to(ROOT).as_posix(), "file_sha256": hashlib.sha256(VALID_SET.read_bytes()).hexdigest(),
+            "population_V1_by_original_tier": {f"T{t}": sum(1 for r in drop if kind(r) == "database" and r["queue_tier"] == t) for t in tiers},
+            "population_V1_missing_abstract": sum(1 for r in drop if kind(r) == "database" and r["abstract_missing"])}
+    VALID_META.write_text(json.dumps(meta, indent=1, ensure_ascii=False), encoding="utf8")
+    st["validation"] = {"V1_population": len(db_pop), "V1_n": N_V1, "V1_seed": SEED_V1, "V2_population": len(sb_pop), "V2_n": N_V2, "V2_seed": SEED_V2,
+                        "file": VALID_SET.relative_to(ROOT).as_posix(), "sampling_record": VALID_META.relative_to(ROOT).as_posix()}
+    FF_STATS.write_text(json.dumps(st, indent=1, ensure_ascii=False), encoding="utf8")
+    print(json.dumps({k: v for k, v in st.items() if k not in ("per_source_a_record_counts_in_each_of_its_sources",)}, indent=1))
+    print(json.dumps(per_source, indent=1))
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
-    {"merge": cmd_merge, "enrich": cmd_enrich, "finalize": cmd_finalize}.get(cmd, lambda: sys.exit(__doc__))()
+    {"merge": cmd_merge, "enrich": cmd_enrich, "finalize": cmd_finalize,
+     "final-filter": cmd_final_filter}.get(cmd, lambda: sys.exit(__doc__))()

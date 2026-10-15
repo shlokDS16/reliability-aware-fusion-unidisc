@@ -1,0 +1,73 @@
+{
+ "seed": 20261019,
+ "tiers": {
+  "1": {
+   "records_in_tier": 1084,
+   "sampled": 40,
+   "IN": 20,
+   "U": 6,
+   "O": 14,
+   "share_in": 0.5,
+   "wilson95_in": [
+    0.352,
+    0.648
+   ],
+   "share_in_or_unclear": 0.65,
+   "estimated_in_records": 542,
+   "estimated_in_or_unclear_records": 705
+  },
+  "2": {
+   "records_in_tier": 120,
+   "sampled": 40,
+   "IN": 3,
+   "U": 7,
+   "O": 30,
+   "share_in": 0.075,
+   "wilson95_in": [
+    0.026,
+    0.199
+   ],
+   "share_in_or_unclear": 0.25,
+   "estimated_in_records": 9,
+   "estimated_in_or_unclear_records": 30
+  },
+  "3": {
+   "records_in_tier": 512,
+   "sampled": 40,
+   "IN": 7,
+   "U": 6,
+   "O": 27,
+   "share_in": 0.175,
+   "wilson95_in": [
+    0.087,
+    0.32
+   ],
+   "share_in_or_unclear": 0.325,
+   "estimated_in_records": 90,
+   "estimated_in_or_unclear_records": 166
+  },
+  "4": {
+   "records_in_tier": 126,
+   "sampled": 40,
+   "IN": 2,
+   "U": 10,
+   "O": 28,
+   "share_in": 0.05,
+   "wilson95_in": [
+    0.014,
+    0.165
+   ],
+   "share_in_or_unclear": 0.3,
+   "estimated_in_records": 6,
+   "estimated_in_or_unclear_records": 38
+  },
+  "queue_total": {
+   "records": 1842,
+   "estimated_in": 647,
+   "estimated_share_in": 0.351,
+   "estimated_in_or_unclear": 939,
+   "estimated_share_in_or_unclear": 0.51
+  }
+ },
+ "text": "Stratified random sample of the final screening queue (records passing S1'' and S2'', D0027): 40 records per tier (seed 20261019), labelled from the title as in 2.3 (`precision-round4-labels-2026-10-15.json`). Estimated number of in-scope-looking records in the queue of 1,842: 647 (35.1%); in scope or unclear: 939 (51.0%). Per tier:\n\n| Tier | Records | Sampled | IN | U | O | IN share (Wilson 95%) | Estimated IN records |\n|---|---|---|---|---|---|---|---|\n| T1 | 1,084 | 40 | 20 | 6 | 14 | 50% (35% to 65%) | 542 |\n| T2 | 120 | 40 | 3 | 7 | 30 | 8% (3% to 20%) | 9 |\n| T3 | 512 | 40 | 7 | 6 | 27 | 18% (9% to 32%) | 90 |\n| T4 | 126 | 40 | 2 | 10 | 28 | 5% (1% to 16%) | 6 |"
+}

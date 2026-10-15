@@ -1,0 +1,169 @@
+{
+ "date": "2026-10-15",
+ "decision": "D0027",
+ "queue_records": 6376,
+ "passes": 1842,
+ "auto_excluded": 4534,
+ "passes_by_kind": {
+  "database": 1721,
+  "snowball": 121
+ },
+ "auto_excluded_by_kind": {
+  "database": 4531,
+  "snowball": 3
+ },
+ "by_original_tier": {
+  "T1": {
+   "queue": 1297,
+   "passes": 1084,
+   "auto_excluded": 213
+  },
+  "T2": {
+   "queue": 220,
+   "passes": 120,
+   "auto_excluded": 100
+  },
+  "T3": {
+   "queue": 2221,
+   "passes": 512,
+   "auto_excluded": 1709
+  },
+  "T4": {
+   "queue": 450,
+   "passes": 126,
+   "auto_excluded": 324
+  },
+  "T5": {
+   "queue": 2188,
+   "passes": 0,
+   "auto_excluded": 2188
+  }
+ },
+ "by_original_tier_and_kind": {
+  "T1": {
+   "database": {
+    "passes": 997,
+    "auto_excluded": 212
+   },
+   "snowball": {
+    "passes": 87,
+    "auto_excluded": 1
+   }
+  },
+  "T2": {
+   "database": {
+    "passes": 119,
+    "auto_excluded": 100
+   },
+   "snowball": {
+    "passes": 1,
+    "auto_excluded": 0
+   }
+  },
+  "T3": {
+   "database": {
+    "passes": 499,
+    "auto_excluded": 1708
+   },
+   "snowball": {
+    "passes": 13,
+    "auto_excluded": 1
+   }
+  },
+  "T4": {
+   "database": {
+    "passes": 106,
+    "auto_excluded": 323
+   },
+   "snowball": {
+    "passes": 20,
+    "auto_excluded": 1
+   }
+  },
+  "T5": {
+   "database": {
+    "passes": 0,
+    "auto_excluded": 2188
+   },
+   "snowball": {
+    "passes": 0,
+    "auto_excluded": 0
+   }
+  }
+ },
+ "passes_by_final_tier": {
+  "T1": 1083,
+  "T2": 120,
+  "T3": 513,
+  "T4": 126
+ },
+ "per_source_a_record_counts_in_each_of_its_sources": {
+  "semantic-scholar-bulk": {
+   "queue": 5369,
+   "passes": 1065,
+   "auto_excluded": 4304
+  },
+  "openalex": {
+   "queue": 322,
+   "passes": 207,
+   "auto_excluded": 115
+  },
+  "arxiv-protocol-rerun": {
+   "queue": 1439,
+   "passes": 515,
+   "auto_excluded": 924
+  },
+  "acl-anthology": {
+   "queue": 138,
+   "passes": 87,
+   "auto_excluded": 51
+  },
+  "snowball-backward": {
+   "queue": 261,
+   "passes": 214,
+   "auto_excluded": 47
+  },
+  "snowball-forward": {
+   "queue": 678,
+   "passes": 515,
+   "auto_excluded": 163
+  },
+  "openreview": {
+   "queue": 715,
+   "passes": 651,
+   "auto_excluded": 64
+  }
+ },
+ "passes_by_s1pp_part": {
+  "A1": 738,
+  "A3": 166,
+  "C": 665,
+  "A2": 678,
+  "B": 426
+ },
+ "passes_by_s2pp_part": {
+  "M": 106,
+  "VLA": 20
+ },
+ "passes_missing_abstract": 171,
+ "auto_excluded_missing_abstract": {
+  "database": 426,
+  "snowball": 1
+ },
+ "auto_excluded_matching_original_S1_or_S2": 111,
+ "auto_excluded_matching_S1prime_or_S2prime": 2342,
+ "auto_excluded_matching_no_string_locally": 2188,
+ "queue_sha256": "08e23ec4064a2ec6e80c471f92f3f6b48d19040cbbeb4f17a4de8e39fa8506b8",
+ "queue_final_sha256": "6ccf8e5c3fa7d32cd272e1343e8386405f039c29314572e5892decff9c715a86",
+ "auto_excluded_sha256": "a1936ecd4345487c7d2b097e3e4ac8e44338e5463f6a4d9a5a948fe33e634ade",
+ "validation": {
+  "V1_population": 4531,
+  "V1_n": 200,
+  "V1_seed": 20261020,
+  "V2_population": 2107,
+  "V2_n": 100,
+  "V2_seed": 20261021,
+  "file": "research/review/screening/validation-autoexcl-2026-10-15.jsonl",
+  "sampling_record": "research/review/corpus/validation-autoexcl-sampling-2026-10-15.json"
+ }
+}

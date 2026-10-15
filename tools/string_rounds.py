@@ -299,11 +299,190 @@ def main():
     res["final_round_sample_by_part"] = {p: dict(c) for p, c in sorted(tiers.items())}
     res["S1prime_plain"] = ss.render_spec(ss.P_SPECS["S1'"], "plain")
     res["S2prime_plain"] = ss.render_spec(ss.P_SPECS["S2'"], "plain")
-    res["parts"] = {n: {k: ss.render_part(n, k, "plain") for k in p} for n, p in ss.P_PARTS.items()}
+    res["parts"] = {n: {k: ss.render_part(n, k, "plain") for k in p} for n, p in ss.P_PARTS.items() if n in ("S1'", "S2'")}
     out = CORPUS / "string-revision-2026-10-15.json"
     out.write_text(json.dumps(res, indent=1, ensure_ascii=False), encoding="utf8")
     print(json.dumps({k: res[k] for k in ("original", "rounds")}, indent=1)[:4000])
 
 
+# ================================================================ round 4 (decision D0027): precision only
+# python tools/string_rounds.py round4   # writes research/review/corpus/string-revision-round4-2026-10-15.json
+# S1'' and S2'' are held in tools/search_sources.py (S1PP_PARTS, S2PP_PARTS; lists R4_*). Evaluated here, locally and on title +
+# abstract (+ keywords for the queue records, as the queue was built), on (a) the 540 seed entries (539 distinct IDs), MM28, R50
+# (same seed as round 3) and (b) the 6,376 records of screening-queue-2026-10-15.jsonl, in the order of the steps below.
+R4_OUT = CORPUS / "string-revision-round4-2026-10-15.json"
+R4_ISO = "2026-10-15"
+
+
+def r4_build(soc=(), nn=(), stable=(), nt_a=(), nt_bc=(), a1x=(), a2=False, a3=False, ds=False, a2_strict_lang=False,
+             b_lang=False, c_lang=False):
+    """S1'' with the pieces switched on one by one; all switches on and the full lists = ss.P_SPECS["S1''"]."""
+    P = ss.S1P_PARTS
+    ex = lambda *g: [NOT(*x) for x in g if x]
+    A1 = AND(P["A1"], *ex(a1x))
+    A2c = AND(ss.R4_A2_CTX_DD if a2 else ss.A2_DD, ss.P_CTX4, *ex(nn, soc))
+    A2n = AND(ss.R4_A2_NOCTX_DD if a2 else ss.A2_DD, NOT(ss.P_BIO), NOT(ss.P_VIS), *ex(nn, soc, nt_a),
+              *([ss.P_CTX4] if a2_strict_lang else []))
+    A3 = OR(AND("absorbing state", ss.P_CTX, *([ss.R4_A3_CTX] if a3 else [])),
+            AND("any-order", ss.P_CTX, *([ss.R4_A3_CTX] if a3 else [])), "non-autoregressive language model*",
+            AND("non-autoregressive", "diffusion", NOT(ss.P_BIO), *ex(nt_a, nn, soc)))
+    B = AND("diffusion", P["B"][1][1], *([ss.R4_DS] if ds else []), *([ss.P_CTX] if b_lang else []), NOT(ss.P_BIO),
+            *ex(nn, soc, stable, nt_bc))
+    C = AND("diffusion", ss.P_LM, *([ss.R4_DS] if ds else []), *([ss.P_CTX] if c_lang else []), NOT(ss.P_BIO), NOT(ss.P_VIS),
+            *ex(nn, soc, stable, nt_bc))
+    return OR(A1, OR(A2c, A2n), A3, B, C)
+
+
+def r4_s2(on=True):
+    return ss.P_SPECS["S2''"] if on else ss.P_SPECS["S2'"]
+
+
+def r4_load():
+    import merge_new_records_v2 as mv
+    seeds = load_seeds()
+    q = [json.loads(l) for l in open(mv.QUEUE, encoding="utf8") if l.strip()]
+    qid = {r["id"] for r in q}
+    text = {r["nid"]: mv.text_of(r) for r in mv.load_v2() if r["nid"] in qid}
+    docs = {f"S:{i}": toks(s["title"] + " " + s["abstract"]) for i, s in enumerate(seeds)}
+    for r in q:
+        docs[f"Q:{r['id']}"] = toks(text[r["id"]])
+    return seeds, q, text, Index(docs)
+
+
+def round4():
+    seeds, q, text, ix = r4_load()
+    mm = {f"S:{i}" for i, s in enumerate(seeds) if s["mm"]}
+    others = sorted((s for s in seeds if not s["mm"]), key=lambda s: s["arxiv"])
+    r50s = random.Random(20261015).sample(others, 50)
+    groups = {"all540_entries": {f"S:{i}" for i in range(len(seeds))}, "MM28": mm,
+              "R50": {f"S:{i}" for i, s in enumerate(seeds) if any(s is g for g in r50s)}}
+    tier = {f"Q:{r['id']}": r["queue_tier"] for r in q}
+    byid = {r["id"]: r for r in q}
+    lab = json.loads((CORPUS / "precision-actual-labels-2026-10-15.json").read_text(encoding="utf8"))
+    inu = {f"Q:{k}" for k, v in lab.items() if v in ("IN", "U")}
+
+    def evalset(s1, s2):
+        return ix.ev(s1) | ix.ev(s2)
+
+    def stats(m):
+        c = collections.Counter(tier[k] for k in m if k.startswith("Q:"))
+        return {"recall": {g: len(m & s) for g, s in groups.items()}, "queue_by_tier": {f"T{t}": c[t] for t in (1, 2, 3, 4, 5)},
+                "queue_total": sum(c.values())}
+
+    ref = evalset(ss.P_SPECS["S1'"], ss.P_SPECS["S2'"])
+    res = {"date": R4_ISO, "decision": "D0027", "baseline_S1prime_S2prime": stats(ref),
+           "matching": "title + abstract (+ keywords for queue records) of the record, word-based, case-insensitive, trailing * = word prefix"}
+    # ---- incremental steps
+    steps = [("1 diffusion of innovation, information, technology; social networks (R4_SOC)", dict(soc=ss.R4_SOC)),
+             ("2 MRI, physics, PDE, chemistry (R4_NN; A1 only MRI and chemistry)", dict(nn=ss.R4_NN, a1x=ss.R4_MRI + ss.R4_CHEM)),
+             ("3 'stable diffusion' in B and C", dict(stable=ss.R4_STABLE)),
+             ("4 non-text outputs: speech, music, motion, time series (R4_NT in A2 without context and A3 non-autoregressive; R4_NT_BC in B and C)",
+              dict(nt_a=ss.R4_NT, nt_bc=ss.R4_NT_BC)),
+             ("5 A2: without context only masked / discrete diffusion and discrete flow matching; with context 'discrete flow*' needs 'diffusion', "
+              "'discrete state-space*' needs diffusion, generative or flow matching", dict(a2=True)),
+             ("6 A3: 'absorbing state' and 'any-order' need a language-model or diffusion word besides the language word", dict(a3=True)),
+             ("7 B and C: 'diffusion' must be used as a model (R4_DS)", dict(ds=True)),
+             ("8 S2'': M needs a language word (R4_LMW); VLA: plain 'diffusion-based' needs 'diffusion VLA' wording", dict(_s2=True))]
+    cum, prev, table = {}, ref, []
+    for name, kw in steps:
+        s2 = kw.pop("_s2", False) or cum.get("_s2", False)
+        cum.update(kw)
+        cum["_s2"] = s2
+        args = {k: v for k, v in cum.items() if k != "_s2"}
+        m = evalset(r4_build(**args), r4_s2(s2))
+        st = stats(m)
+        rem = prev - m
+        rc = collections.Counter(tier[k] for k in rem if k.startswith("Q:"))
+        st.update({"step": name, "removed_by_this_step_by_tier": {f"T{t}": rc[t] for t in (1, 2, 3, 4)},
+                   "seeds_lost_by_this_step": [seeds[int(k[2:])]["arxiv"] for k in rem if k.startswith("S:")]})
+        table.append(st)
+        prev = m
+    final = evalset(ss.P_SPECS["S1''"], ss.P_SPECS["S2''"])
+    res["steps"] = table
+    res["final_equals_last_step"] = (final == prev)
+    res["final"] = stats(final)
+    res["final_outside_S1prime_S2prime_on_queue_and_seeds"] = len(final - ref)
+    res["seeds_not_captured_by_final"] = [s["arxiv"] for i, s in enumerate(seeds) if f"S:{i}" not in final]
+    res["seeds_lost_vs_S1prime"] = [s["arxiv"] for i, s in enumerate(seeds) if f"S:{i}" in ref and f"S:{i}" not in final]
+    res["labelled_in_or_unclear_lost"] = sorted(k[2:] for k in inu if k in ref and k not in final)
+    # ---- per term: records of the queue that pass S1'/S2' and stop passing when this term alone is added
+    base_args = dict()
+    per = {}
+    listing = [("R4_INNOV", ss.R4_INNOV, "soc"), ("R4_NET", ss.R4_NET, "soc"), ("R4_MRI", ss.R4_MRI, "nn"), ("R4_PHYS", ss.R4_PHYS, "nn"),
+               ("R4_PDE", ss.R4_PDE, "nn"), ("R4_CHEM", ss.R4_CHEM, "nn"), ("R4_BIOMED", ss.R4_BIOMED, "nn"), ("R4_STABLE", ss.R4_STABLE, "stable"),
+               ("R4_NT (A2 without context, A3)", ss.R4_NT, "nt_a"), ("R4_NT_BC (B, C)", ss.R4_NT_BC, "nt_bc")]
+    s1p = ss.P_SPECS["S1'"]
+    for gname, terms, key in listing:
+        per[gname] = {}
+        for t in terms:
+            kw = {key: [t]}
+            if key == "nn" and (t in ss.R4_MRI or t in ss.R4_CHEM):
+                kw["a1x"] = [t]
+            m = evalset(r4_build(**kw), ss.P_SPECS["S2'"])
+            rem = ref - m
+            rc = collections.Counter(tier[k] for k in rem if k.startswith("Q:"))
+            per[gname][t] = {"T1": rc[1], "T2": rc[2], "T3": rc[3], "T4": rc[4], "total": sum(rc.values()),
+                             "seeds_lost": [seeds[int(k[2:])]["arxiv"] for k in rem if k.startswith("S:")]}
+    res["per_term_standalone_removal"] = per
+    # group totals standalone (all terms of the group at once)
+    gt = {}
+    for gname, terms, key in listing:
+        kw = {key: terms}
+        if key == "nn":
+            kw["a1x"] = [t for t in terms if t in ss.R4_MRI or t in ss.R4_CHEM]
+        m = evalset(r4_build(**kw), ss.P_SPECS["S2'"])
+        rem = ref - m
+        rc = collections.Counter(tier[k] for k in rem if k.startswith("Q:"))
+        gt[gname] = {"T1": rc[1], "T2": rc[2], "T3": rc[3], "T4": rc[4], "total": sum(rc.values()),
+                     "seeds_lost": [seeds[int(k[2:])]["arxiv"] for k in rem if k.startswith("S:")]}
+    res["group_standalone_removal"] = gt
+    # ---- the language-word requirement as asked in D0027 (tried alone and reported)
+    alt = {}
+    for name, kw in (("language word (language, text, token*, language model*, llm*, vocabulary, autoregressive, reasoning) required in A2 without context",
+                      dict(a2_strict_lang=True)),
+                     ("language word (language, text, token*, language model*) required in B", dict(b_lang=True)),
+                     ("language word (language, text, token*, language model*) required in C", dict(c_lang=True))):
+        m = evalset(r4_build(**kw), ss.P_SPECS["S2'"])
+        rem = ref - m
+        rc = collections.Counter(tier[k] for k in rem if k.startswith("Q:"))
+        alt[name] = {**stats(m), "removed_by_tier": {f"T{t}": rc[t] for t in (1, 2, 3, 4)},
+                     "seeds_lost": [seeds[int(k[2:])]["arxiv"] for k in rem if k.startswith("S:")]}
+    res["language_word_requirement_alone"] = alt
+    # ---- S1''/S2'' by part on the queue; seeds by part
+    parts = {}
+    for n in ("S1''", "S2''"):
+        for k, sp in ss.P_PARTS[n].items():
+            m = ix.ev(sp)
+            parts[f"{n}:{k}"] = {"seeds": len(m & groups["all540_entries"]), "queue_by_tier": stats(m)["queue_by_tier"]}
+    res["parts"] = parts
+    # ---- consistency: set evaluation equals the word-based test of search_sources.matches; S1''/S2'' within S1'/S2' on all 19,328 records
+    import merge_new_records_v2 as mv
+    dis = 0
+    chk = [k for k in sorted(ix.all)][::37]
+    for k in chk:
+        t = " ".join(ix.docs[k])
+        a = ss.matches("S1''", t) or ss.matches("S2''", t)
+        dis += (a != (k in final))
+    res["consistency_check"] = {"records_checked_with_ss.matches": len(chk), "disagreements": dis}
+    allrows = mv.load_v2()
+    docs_all = {r["nid"]: toks(mv.text_of(r)) for r in allrows}
+    ia = Index(docs_all)
+    f_all = ia.ev(ss.P_SPECS["S1''"]) | ia.ev(ss.P_SPECS["S2''"])
+    p_all = ia.ev(ss.P_SPECS["S1'"]) | ia.ev(ss.P_SPECS["S2'"])
+    res["subset_check_all_v2_records"] = {"records": len(allrows), "match_S1pp_S2pp": len(f_all), "match_S1p_S2p": len(p_all),
+                                           "match_S1pp_S2pp_but_not_S1p_S2p": len(f_all - p_all)}
+    res["S1pp_plain"] = ss.render_spec(ss.P_SPECS["S1''"], "plain")
+    res["S2pp_plain"] = ss.render_spec(ss.P_SPECS["S2''"], "plain")
+    res["parts_plain"] = {n: {k: ss.render_part(n, k, "plain") for k in p} for n, p in ss.P_PARTS.items() if n in ("S1''", "S2''")}
+    R4_OUT.write_text(json.dumps(res, indent=1, ensure_ascii=False), encoding="utf8")
+    print(json.dumps({k: res[k] for k in ("baseline_S1prime_S2prime", "final", "final_equals_last_step", "seeds_lost_vs_S1prime",
+                                           "labelled_in_or_unclear_lost", "consistency_check", "subset_check_all_v2_records")}, indent=1))
+    for st in table:
+        print(st["step"][:70], st["recall"], st["queue_by_tier"], st["removed_by_this_step_by_tier"], st["seeds_lost_by_this_step"])
+
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "round4":
+        round4()
+    else:
+        main()

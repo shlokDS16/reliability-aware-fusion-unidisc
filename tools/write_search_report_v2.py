@@ -39,7 +39,7 @@ def main():
     mine = [r for r in rows if r["executed_utc"].startswith("20261015")]
     L = []
     a = L.append
-    a(f"# Search v2 report, {ISO} (decision D0026)")
+    a(f"# Search v2 report, {ISO} (decisions D0026 and D0027; D0027 is section 12 onward)")
     a("")
     a("Agent: lit-scout. Brief: D0026 items 1, 2, 4 and the follow-on tasks (revise S1/S2, rerun every accessible source, merge, string-filter the "
       "snowball records, enrich abstracts, update the subscription sheet). Nothing here is a screening decision. Every count is read from the JSON "
@@ -328,9 +328,222 @@ def main():
     a("- `tools/search_sources.py`, `tools/merge_new_records_v2.py`, `tools/string_rounds.py`, `tools/make_search_sheet_v2.py`, `tools/write_search_report_v2.py`")
     a("- `research/review/protocol.md` section 10 (amendment entry of 2026-10-15)")
     a("")
+    # ------------------------------------------------------------ 12 and 13 (D0027)
+    if (C / f"string-revision-round4-{ISO}.json").exists() and (C / f"final-filter-stats-{ISO}.json").exists():
+        round4_sections(L, rep)
     out = C / f"search-v2-report-{ISO}.md"
     out.write_text("\n".join(L), encoding="utf8")
     print(f"wrote {out} ({len(L)} lines)")
+
+
+def round4_sections(L, rep):
+    """Sections 12 and 13: round 4 (decision D0027). Every number is read from the JSON files named in section 14."""
+    a = L.append
+    r4, ff = jl(f"string-revision-round4-{ISO}.json"), jl(f"final-filter-stats-{ISO}.json")
+    pr = jl(f"precision-round4-{ISO}.json")
+    lost = jl(f"lost-check-{ISO}.json") if (C / f"lost-check-{ISO}.json").exists() else None
+    old = jl(f"precision-actual-{ISO}.json")
+    vm = jl(f"validation-autoexcl-sampling-{ISO}.json")
+    base, fin = r4["baseline_S1prime_S2prime"], r4["final"]
+    a("## 12. Round 4: precision only (decision D0027)")
+    a("")
+    a("D0027 allowed one further string round, restricted to precision: exclusion terms for the noise seen in the real results and a language-word requirement in the broad "
+      "branches, accepted only if the seed recall stays at 525/540 with MM28 28/28 and R50 47/50. The result is S1'' and S2''. Nothing was screened. The tools are "
+      "`tools/search_sources.py` (strings: `S1PP_PARTS`, `S2PP_PARTS`, lists `R4_*`), `tools/string_rounds.py round4` (recall, steps, per-term counts), "
+      "`tools/merge_new_records_v2.py final-filter` (application to the queue, validation sets) and `tools/precision_actual.py` (modes `r4`, `lost-sample`).")
+    a("")
+    a("### 12.1 Result in one table")
+    a("")
+    a("| | S1'/S2' (D0026) | S1''/S2'' (D0027) |")
+    a("|---|---|---|")
+    a(f"| Seed recall, 540 entries (539 distinct IDs) | {base['recall']['all540_entries']}/540 | {fin['recall']['all540_entries']}/540 |")
+    a(f"| MM28 | {base['recall']['MM28']}/28 | {fin['recall']['MM28']}/28 |")
+    a(f"| Random 50 | {base['recall']['R50']}/50 | {fin['recall']['R50']}/50 |")
+    a(f"| Queue records matching (of {n(ff['queue_records'])}) | {n(base['queue_total'])} | {n(fin['queue_total'])} |")
+    for t in ("T1", "T2", "T3", "T4"):
+        a(f"| of which tier {t} | {n(base['queue_by_tier'][t])} | {n(fin['queue_by_tier'][t])} |")
+    a(f"| Estimated share of the matching queue records that look in scope (title labels, stratified sample, 40 per tier) | 11.8% of the whole queue of 6,376 (second estimate, section 2.4) | {pr['tiers']['queue_total']['estimated_share_in']:.1%} |")
+    a("")
+    a(f"Seed entries lost against S1'/S2': {len(r4['seeds_lost_vs_S1prime'])}. Records of the {n(r4['subset_check_all_v2_records']['records'])} new records that match S1''/S2'' but not S1'/S2': "
+      f"{r4['subset_check_all_v2_records']['match_S1pp_S2pp_but_not_S1p_S2p']} (every part of S1'' and S2'' is a subset of the same part of S1' and S2', so this holds by construction and was checked). "
+      f"The set evaluation used here agrees with the word-based test of `search_sources.matches` on {r4['consistency_check']['records_checked_with_ss.matches']} records checked "
+      f"({r4['consistency_check']['disagreements']} disagreements). Seed entries still not captured: {len(r4['seeds_not_captured_by_final'])}, the same 15 as in section 2.5.")
+    a("")
+    a("### 12.2 S1'' and S2'' (verbatim)")
+    a("")
+    a("Reading rule as in section 2.2: AND binds tighter than OR; a trailing `*` is a word-prefix wildcard; `NOT (...)` excludes any of the listed words; title, abstract and keywords.")
+    a("")
+    a("S1'':")
+    a("```")
+    a(r4["S1pp_plain"])
+    a("```")
+    a("")
+    a("S2'':")
+    a("```")
+    a(r4["S2pp_plain"])
+    a("```")
+    a("")
+    a("Parts (S1'' = A1 OR A2 OR A3 OR B OR C; S2'' = M OR VLA). Seeds and queue records by part (a record can match several parts):")
+    a("")
+    a("| Part | Seed entries | Queue T1 | T2 | T3 | T4 |")
+    a("|---|---|---|---|---|---|")
+    for k, v in r4["parts"].items():
+        q = v["queue_by_tier"]
+        a(f"| {k} | {v['seeds']} | {q['T1']} | {q['T2']} | {q['T3']} | {q['T4']} |")
+    a("")
+    a("### 12.3 What changed, step by step (cumulative; counts are queue records that match S1'/S2' and stop matching at that step)")
+    a("")
+    a("| Step | Seed recall | Queue after the step (T1 / T2 / T3 / T4) | Removed by the step (T1 / T2 / T3 / T4) | Seeds lost |")
+    a("|---|---|---|---|---|")
+    for st in r4["steps"]:
+        q, rm = st["queue_by_tier"], st["removed_by_this_step_by_tier"]
+        a(f"| {st['step']} | {st['recall']['all540_entries']}/540, {st['recall']['MM28']}/28, {st['recall']['R50']}/50 | {q['T1']} / {q['T2']} / {q['T3']} / {q['T4']} | "
+          f"{rm['T1']} / {rm['T2']} / {rm['T3']} / {rm['T4']} | {', '.join(st['seeds_lost_by_this_step']) or 'none'} |")
+    a("")
+    a("The steps overlap: a record that two steps would remove is counted at the first. The next table counts each exclusion list **alone** (the list added to S1'/S2' on its own, in the branches it applies to):")
+    a("")
+    a("| List (terms; applies to) | Removes T1 | T2 | T3 | T4 | Total | Seeds lost |")
+    a("|---|---|---|---|---|---|---|")
+    applies = {"R4_INNOV": "A2, A3 non-autoregressive, B, C", "R4_NET": "A2, A3 non-autoregressive, B, C", "R4_MRI": "A1, A2, A3 non-autoregressive, B, C",
+               "R4_PHYS": "A2, A3 non-autoregressive, B, C", "R4_PDE": "A2, A3 non-autoregressive, B, C", "R4_CHEM": "A1, A2, A3 non-autoregressive, B, C",
+               "R4_BIOMED": "A2, A3 non-autoregressive, B, C", "R4_STABLE": "B, C", "R4_NT (A2 without context, A3)": "A2 without context, A3 non-autoregressive",
+               "R4_NT_BC (B, C)": "B, C"}
+    for g, v in r4["group_standalone_removal"].items():
+        nt = len(r4["per_term_standalone_removal"][g])
+        a(f"| {g} ({nt} term{'s' if nt != 1 else ''}; {applies.get(g, '')}) | {v['T1']} | {v['T2']} | {v['T3']} | {v['T4']} | {v['total']} | {', '.join(v['seeds_lost']) or 'none'} |")
+    a("")
+    a("Records removed by each term alone (total over T1 to T4; a record with two listed terms is counted under both; the split by tier is in `string-revision-round4-2026-10-15.json`, key `per_term_standalone_removal`):")
+    a("")
+    for g, terms in r4["per_term_standalone_removal"].items():
+        a(f"- {g}: " + "; ".join(f"`{t}` {v['total']}" for t, v in terms.items()))
+    a("")
+    a("The terms come from the false positives in the queue (titles read, then terms with seed counts of zero and a coherent meaning kept): diffusion of innovation, information or "
+      "technology and social-network diffusion (R4_INNOV, R4_NET); diffusion MRI (R4_MRI); diffusion, heat and fluid equations, traveling waves, epidemics, oxide layers (R4_PHYS, R4_PDE); "
+      "microextraction, disc diffusion (R4_CHEM, R4_BIOMED); Stable Diffusion; speech, music, motion, time series and a few technique words in the branches that need no language word "
+      "(R4_NT, R4_NT_BC). Two terms that looked noisy but removed seed entries were dropped: `knowledge diffusion` (DiffuCOMET, 2402.17011) and `social media` (DiffuDetox, 2306.08505); "
+      "`pde*`, `trajector*` and `heat` were narrowed for the same reason (2605.14531 and masked-diffusion theory papers), `fluid*` because of the model name FLUID-Omni, `susceptibility` because of a masked-diffusion sampling paper.")
+    a("")
+    a("The structural changes: (5) the no-context branch of A2 keeps `masked diffusion`, `discrete diffusion` and `discrete flow matching` only (`discrete state-space*` alone and `discrete flow*` alone accounted for 195 and 89 of the 450 T4 records, almost all control, physics and signal processing); "
+      "with a language word, `discrete flow*` needs `diffusion` and `discrete state-space*` needs a diffusion, generative or flow-matching word; (6) `absorbing state` (Markov chains) and `any-order` (Shapley interactions) need, besides the language word, "
+      "a language-model, autoregressive, diffusion or masked word; (7) in B and C `diffusion` must occur as a model (`diffusion model*`, `diffusion-based`, `denoising`, `discrete diffusion`, `using diffusion`, `flow matching`, ...; list R4_DS), "
+      "which removes the dissemination sense (cultural, policy, French *diffusion*); (8) in S2'' the unified-multimodal branch M needs a language word and the VLA branch no longer accepts plain `diffusion-based` "
+      "(robot diffusion policies). Two seed entries are held by the no-context branch of A2 alone (2509.13866, 2608.10615): their abstracts have no language word, which is why a strict language-word requirement there fails the acceptance rule (next subsection).")
+    a("")
+    a("### 12.4 The language-word requirement as asked, tried alone")
+    a("")
+    a("| Requirement added to S1'/S2' on its own | Seed recall | Queue records removed (T1 / T2 / T3 / T4) | Seeds lost |")
+    a("|---|---|---|---|")
+    for k, v in r4["language_word_requirement_alone"].items():
+        rm = v["removed_by_tier"]
+        a(f"| {k} | {v['recall']['all540_entries']}/540, {v['recall']['MM28']}/28, {v['recall']['R50']}/50 | {rm['T1']} / {rm['T2']} / {rm['T3']} / {rm['T4']} | {', '.join(v['seeds_lost']) or 'none'} |")
+    a("")
+    a("A language word in the no-context branch of A2 contradicts what the branch is (a branch for abstracts without one) and costs two seeds; the same word in B costs five seeds (NLP-task diffusion papers whose abstract names the task, not the language) "
+      "and in C removes only 110 records because C already requires `language model*` or `llm*`. Both were therefore relaxed as reported: the no-context branch is restricted instead (its own terms and the exclusion lists), B and C get the "
+      "diffusion-as-a-model requirement and the exclusion lists, and the language word is required where it costs nothing (M, A3).")
+    a("")
+    a("### 12.5 Precision on the same stratified real-result design (new seed)")
+    a("")
+    a(pr["text"])
+    t = pr["tiers"]["queue_total"]
+    a("")
+    a(f"Estimated in-scope-looking records in the {n(ff['passes'])} that pass: {n(t['estimated_in'])} ({t['estimated_share_in']:.1%}); in scope or unclear: {n(t['estimated_in_or_unclear'])} ({t['estimated_share_in_or_unclear']:.1%}). "
+      "Stratified normal-approximation 95% interval for the in-scope-looking count: about 470 to 830 (25% to 45%). The earlier estimate for the queue before round 4 was "
+      f"{n(old['tiers']['queue_total']['estimated_in'])} of {n(old['tiers']['queue_total']['records'])} ({old['tiers']['queue_total']['estimated_share_in']:.1%}); the two estimates have wide intervals and the "
+      "numbers of in-scope-looking records are not different beyond that noise, while the queue is 71% smaller. Caveats: the labels are mine, from titles only (U means the title does not settle it); "
+      "I proposed the strings and labelled the sample, so this is not an independent precision estimate; and the sample is drawn from the same queue from which the exclusion terms were derived (in-sample), "
+      "so it is optimistic about records of the kinds I looked at. T3 is the loosest stratum: a first draw with the same seed, made on a string that kept 7% more records (1,976, before `tabular`, `lora`, `quantiz*` and a few other technique words were added to R4_NT_BC "
+      "and `disc diffusion` to R4_BIOMED; 88 of its 160 records are in the final sample), gave 1 in-scope-looking record of 40 in T3, the final draw gives 7 of 40, and the second estimate before round 4 gave 2 of 40: "
+      "a sample of 40 from a tier of 512 cannot separate 2% from 18%, and T3 stays the weakest tier (B and C carry NLP-task diffusion papers and generic LLM-plus-diffusion papers side by side).")
+    a("")
+    a("### 12.6 What the filter removed: a check by title, and the validation sets")
+    a("")
+    if lost:
+        a(f"Check by me (not the validation sets): a stratified random sample of the database records the filter removed from T1 to T4, drawn from the records outside validation set V1 "
+          f"(seed {jl(f'lost-check-sample-{ISO}.json')['seed']}; 30, 10, 40 and 20 titles from T1 to T4), read as in 12.5:")
+        a("")
+        a("| Original tier | Removed | Sampled | Looks in scope | Unclear | Other |")
+        a("|---|---|---|---|---|---|")
+        for k, v in lost["tiers"].items():
+            if k.startswith("T"):
+                a(f"| {k} | {n(v['removed'])} | {v['sampled']} | {v['IN']} | {v['U']} | {v['O']} |")
+        a("")
+        a("None of the 100 looked in scope; three were unclear (a generic multi-task diffusion paper, a unified multimodal latent-diffusion framework, a diffusion-styled preference-optimization paper). "
+          "T5 (2,188 records that match no string locally) had 0 of 40 in scope or unclear in the second estimate (section 2.4). With zero observed the upper end is set by the sample sizes, not by the filter: "
+          "a Jeffreys-prior simulation of the stratified sample gives an upper 95% bound of about 100 in-scope-looking records among the 2,343 removed database records of T1 to T4, and about 100 among the 2,188 of T5 — "
+          "too wide to settle the 2% reversal criterion of D0027. That is what the validation sets are for.")
+    a("")
+    v1, v2 = vm["V1"], vm["V2"]
+    a(f"Validation sets (written, **not screened**; `research/review/screening/validation-autoexcl-{ISO}.jsonl`, 300 rows with `id`, `title`, `abstract`, `set`, in shuffled order; "
+      f"the sampling record with each sampled ID and its tier, source and abstract status is `research/review/corpus/validation-autoexcl-sampling-{ISO}.json`):")
+    a("")
+    a(f"- V1: {v1['n']} of the {n(v1['population_size'])} database records that fail S1''/S2'' (snowball-only records excluded), `random.Random({v1['seed']}).sample(sorted(ids), {v1['n']})`. "
+      f"By original tier the population is {', '.join(f'{k} {n(x)}' for k, x in vm['population_V1_by_original_tier'].items())}; {n(vm['population_V1_missing_abstract'])} have no abstract.")
+    a(f"- V2: {v2['n']} of the {n(v2['population_size'])} snowball-only records excluded in D0026 on the title alone (no abstract after enrichment), `random.Random({v2['seed']}).sample(sorted(ids), {v2['n']})`.")
+    a("")
+    a("Estimating the loss: if the screener finds k in-scope records among the 200 of V1, the estimate for V1's population is 4,531 x k/200 with a Clopper-Pearson or Wilson interval; V2 likewise with 2,107 x k/100. "
+      "V1 mixes tiers in proportion to the population (T5 and T3 dominate), so the tier-by-tier split of the findings is in the sampling record. The sets overlap the records whose titles I read while building S1''/S2'' "
+      "(well over a thousand titles of removed T1 to T4 records, and 40 T5 titles); the estimate from V1 is therefore slightly optimistic for those and unbiased for the rest.")
+    a("")
+    a("### 12.7 The strings applied to the queue (all tiers, T5 included)")
+    a("")
+    a(f"S1'' and S2'' were evaluated on title, abstract and keywords of every one of the {n(ff['queue_records'])} queue records. **{n(ff['passes'])} pass** "
+      f"(`screening-queue-final-{ISO}.jsonl`: the queue fields plus `string_match` for S1, S2, S1', S2', S1'', S2'', `s1pp_parts`, `s2pp_parts`, `queue_tier` as before and `queue_tier_final` recomputed on S1''/S2'' parts); "
+      f"**{n(ff['auto_excluded'])} fail** and are marked `auto_excluded`, reason 'string filter, D0027' (`auto-excluded-{ISO}.jsonl`).")
+    a("")
+    a("| Original tier | In queue | Pass | Auto-excluded | Pass: database | Pass: snowball | Excluded: database | Excluded: snowball |")
+    a("|---|---|---|---|---|---|---|---|")
+    for t, v in ff["by_original_tier"].items():
+        k = ff["by_original_tier_and_kind"][t]
+        a(f"| {t} | {n(v['queue'])} | {n(v['passes'])} | {n(v['auto_excluded'])} | {n(k['database']['passes'])} | {n(k['snowball']['passes'])} | {n(k['database']['auto_excluded'])} | {n(k['snowball']['auto_excluded'])} |")
+    a(f"| Total | {n(ff['queue_records'])} | {n(ff['passes'])} | {n(ff['auto_excluded'])} | {n(ff['passes_by_kind']['database'])} | {n(ff['passes_by_kind']['snowball'])} | {n(ff['auto_excluded_by_kind']['database'])} | {n(ff['auto_excluded_by_kind']['snowball'])} |")
+    a("")
+    a("Passing records by recomputed tier: " + ", ".join(f"{k} {n(v)}" for k, v in ff["passes_by_final_tier"].items()) +
+      f". Passing records without an abstract: {n(ff['passes_missing_abstract'])}. Auto-excluded without an abstract: {n(ff['auto_excluded_missing_abstract']['database'])} database, {n(ff['auto_excluded_missing_abstract']['snowball'])} snowball "
+      "(judged on the title alone, as the 2,107 snowball records of D0026; V1 contains these in proportion).")
+    a("")
+    a("By source (a record found by several sources counts under each):")
+    a("")
+    a("| Source | In queue | Pass | Auto-excluded |")
+    a("|---|---|---|---|")
+    for s, v in ff["per_source_a_record_counts_in_each_of_its_sources"].items():
+        a(f"| {s} | {n(v['queue'])} | {n(v['passes'])} | {n(v['auto_excluded'])} |")
+    a("")
+    ae = [json.loads(l) for l in open(C / f"auto-excluded-{ISO}.jsonl", encoding="utf8") if l.strip()]
+    s1o = [r for r in ae if r["string_match"]["S1"]]
+    s2o = [r for r in ae if r["string_match"]["S2"] and not r["string_match"]["S1"]]
+    a3 = sum(1 for r in s1o if "A3" in r["s1p_parts"])
+    a(f"Of the {n(ff['auto_excluded'])} auto-excluded records, {n(ff['auto_excluded_matching_no_string_locally'])} matched no string locally (T5), {n(ff['auto_excluded_matching_S1prime_or_S2prime'])} matched S1' or S2', "
+      f"and **{n(ff['auto_excluded_matching_original_S1_or_S2'])} matched the original protocol strings S1 or S2**: {len(s1o)} match S1 ({a3} of them through the non-autoregressive-with-diffusion branch, i.e. speech, music, "
+      f"time-series and similar non-text diffusion papers that S1 accepts because it has no exclusion) and {len(s2o)} match S2 only (unified multimodal image, video or 3D generation with no language word in the abstract). "
+      "They are excluded as X1 (no text output) by the exclusion lists and the language-word requirement of M. If the orchestrator wants records that match the protocol strings S1 or S2 never to be excluded by automation, "
+      "they can be released from `auto-excluded-2026-10-15.jsonl` (field `string_match`).")
+    a("")
+    a("## 13. Numbers for the PRISMA 2020 flow diagram, updated for D0027")
+    a("")
+    a("Rows 1 to 6 of section 8 are unchanged. The row 'Records to screen' becomes:")
+    a("")
+    a("| Box | Count | Note |")
+    a("|---|---|---|")
+    a(f"| Records to screen after D0026 (before D0027) | {n(rep['to_screen'])} | {n(rep['to_screen_database_records'])} database + {n(rep['to_screen_snowball_matching'])} snowball matching a string |")
+    a(f"| Marked ineligible by automation tool (string filter, D0027) | {n(ff['auto_excluded'])} | {n(ff['auto_excluded_by_kind']['database'])} database records and {n(ff['auto_excluded_by_kind']['snowball'])} snowball records that fail S1''/S2'' (T5 {n(ff['by_original_tier']['T5']['auto_excluded'])}, T4 {n(ff['by_original_tier']['T4']['auto_excluded'])}, T3 {n(ff['by_original_tier']['T3']['auto_excluded'])}, T2 {n(ff['by_original_tier']['T2']['auto_excluded'])}, T1 {n(ff['by_original_tier']['T1']['auto_excluded'])}) |")
+    a(f"| Marked ineligible by automation tool, in all (D0026 + D0027) | {n(rep['snowball_only_auto_excluded'] + ff['auto_excluded'])} | {n(rep['snowball_only_auto_excluded'])} + {n(ff['auto_excluded'])} |")
+    a(f"| **Records to screen (title and abstract), final queue** | **{n(ff['passes'])}** | {n(ff['passes_by_kind']['database'])} database + {n(ff['passes_by_kind']['snowball'])} snowball; tiers T1 {n(ff['by_original_tier']['T1']['passes'])}, T2 {n(ff['by_original_tier']['T2']['passes'])}, T3 {n(ff['by_original_tier']['T3']['passes'])}, T4 {n(ff['by_original_tier']['T4']['passes'])}, T5 0 |")
+    a(f"| Of which without an abstract | {n(ff['passes_missing_abstract'])} | screened on title alone, flagged |")
+    a(f"| Validation of the automation filter | {v1['n']} + {v2['n']} records | V1 {v1['n']} of {n(v1['population_size'])} database exclusions; V2 {v2['n']} of {n(v2['population_size'])} title-only snowball exclusions; sets written, not screened |")
+    a("")
+    a("The 4,534 + 12,952 records marked by automation are reported as 'records marked as ineligible by automation tools' (PRISMA 2020 item 16a), with the reasons given here and in the protocol amendment. "
+      "Dual screening by two Claude screeners (D0026 item 5, D0027 item 4) then applies to the final queue, T1 and T2 first; this has not started.")
+    a("")
+    a("## 14. Files added or changed by D0027")
+    a("")
+    for f in (f"string-revision-round4-{ISO}.json", f"screening-queue-final-{ISO}.jsonl", f"auto-excluded-{ISO}.jsonl", f"final-filter-stats-{ISO}.json",
+              f"validation-autoexcl-sampling-{ISO}.json", f"precision-round4-sample-{ISO}.json", f"precision-round4-labels-{ISO}.json", f"precision-round4-{ISO}.json",
+              f"lost-check-sample-{ISO}.json", f"lost-check-labels-{ISO}.json", f"lost-check-{ISO}.json", "subscription-search-sheet.md"):
+        a(f"- `research/review/corpus/{f}`")
+    a(f"- `research/review/screening/validation-autoexcl-{ISO}.jsonl`")
+    a("- `tools/search_sources.py` (S1PP_PARTS, S2PP_PARTS, R4_* lists), `tools/string_rounds.py` (`round4`), `tools/merge_new_records_v2.py` (`final-filter`), `tools/precision_actual.py` (`r4`, `lost-sample`, `lost-report`), `tools/make_search_sheet_v2.py`, `tools/write_search_report_v2.py`")
+    a("- `research/review/protocol.md` section 10 (amendment entry D0027)")
+    a("")
 
 
 if __name__ == "__main__":

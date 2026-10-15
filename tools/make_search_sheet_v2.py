@@ -1,8 +1,9 @@
-"""Write the S1' / S2' section of research/review/corpus/subscription-search-sheet.md (D0026, 2026-10-15).
+"""Write the S1'' / S2'' section (D0027, primary run) and the S1' / S2' section (D0026, broader run) of
+research/review/corpus/subscription-search-sheet.md.
 
     python tools/make_search_sheet_v2.py
 
-The section sits between two HTML comment markers and is replaced on every run; the earlier text of the sheet (the
+Each section sits between two HTML comment markers and is replaced on every run; the earlier text of the sheet (the
 original strings S1 and S2) is left as it is and becomes the second run. The strings are rendered from the single
 specification in tools/search_sources.py (S1P_PARTS, S2P_PARTS), per database dialect. Nothing written here has been run
 against the subscription databases; syntax assumptions are marked [unverified], as in the rest of the sheet.
@@ -28,6 +29,8 @@ import search_sources as ss  # noqa: E402
 SHEET = ss.ROOT / "research" / "review" / "corpus" / "subscription-search-sheet.md"
 BEGIN = "<!-- BEGIN S1p-S2p (D0026) -->"
 END = "<!-- END S1p-S2p (D0026) -->"
+BEGIN2 = "<!-- BEGIN S1pp-S2pp (D0027) -->"
+END2 = "<!-- END S1pp-S2pp (D0027) -->"
 
 
 def expand(p: str, keep_wild_in_phrase: bool):
@@ -142,16 +145,128 @@ PARTS_NOTE = {
 }
 
 
+PARTS_NOTE_PP = {
+    "A1": "names of diffusion language models (no context clause); outside MRI and chemistry words",
+    "A2": "discrete / masked diffusion and discrete flow: with a language word (and no physics, MRI, PDE, innovation-diffusion word), or without one (then outside biochemical, visual, physics, social-diffusion and non-text-output words)",
+    "A3": "absorbing state, any-order generation (each with a language word and a language-model or diffusion word), non-autoregressive language models, non-autoregressive with diffusion (outside non-text outputs)",
+    "B": "diffusion used as a model, together with text-generation or NLP-task vocabulary, outside the exclusion lists",
+    "C": "diffusion used as a model, together with a language model or LLM, outside the exclusion lists",
+    "M": "unified multimodal understanding and generation with diffusion, masked-generative or flow, with a language word",
+    "VLA": "vision-language-action models with discrete or unified diffusion",
+}
+
+
+def exclusion_lists() -> list:
+    return [("R4_INNOV (diffusion of innovation, information, technology, knowledge)", ss.R4_INNOV), ("R4_NET (social networks)", ss.R4_NET),
+            ("R4_MRI (diffusion MRI)", ss.R4_MRI), ("R4_PHYS (physics, heat, fluids)", ss.R4_PHYS), ("R4_PDE (equations, waves, epidemics)", ss.R4_PDE),
+            ("R4_CHEM (microextraction)", ss.R4_CHEM), ("R4_BIOMED (disc diffusion, antimicrobial)", ss.R4_BIOMED),
+            ("R4_STABLE (B and C only)", ss.R4_STABLE), ("R4_NT (non-text outputs; A2 without context and A3 non-autoregressive)", ss.R4_NT),
+            ("R4_NT_BC (non-text outputs and technique words; B and C only)", ss.R4_NT_BC)]
+
+
+def section_pp() -> str:
+    L = []
+    a = L.append
+    a(BEGIN2)
+    a("## Final strings S1'' and S2'' (decision D0027, protocol section 10 amendment of 2026-10-15): primary run")
+    a("")
+    import json
+    st = json.loads((ss.CORPUS / "final-filter-stats-2026-10-15.json").read_text(encoding="utf8"))
+    r4 = json.loads((ss.CORPUS / "string-revision-round4-2026-10-15.json").read_text(encoding="utf8"))
+    rc = r4["final"]["recall"]
+    a(f"S1'' and S2'' are S1' and S2' with exclusions and extra requirements added for precision (round 4): they keep the same seed "
+      f"entries as S1' and S2' ({rc['all540_entries']}/540, MM28 {rc['MM28']}/28, random 50 {rc['R50']}/50), and on the screening queue built from the free "
+      f"sources they remove {st['auto_excluded']:,} of {st['queue_records']:,} records, leaving {st['passes']:,} (see `search-v2-report-2026-10-15.md`, "
+      "section 12). Every part of S1'' / S2'' is a subset of the same part of S1' / S2', so "
+      "nothing is found that S1' / S2' would not find. They are the **primary run**; **S1 and S2 (sections 1 to 6 at the end of this sheet) remain "
+      "the second run** (protocol, D0026). Result files go in `...-S1pp-<part>...` and `...-S2pp-<part>...` (`.meta.txt`: string label `S1''` or `S2''`).")
+    a("")
+    a("Date window, language, part-by-part logging and run splitting are as in the next section. Generated from `tools/search_sources.py` "
+      "(`S1PP_PARTS`, `S2PP_PARTS`, lists `R4_*`), the same specification that was applied locally to the queue.")
+    a("")
+    a("**Term-limited databases (IEEE Xplore, SpringerLink, ScienceDirect).** The requirements and exclusions of S1'' do not fit their term budgets "
+      "(the run counts are given under each database). For these three, run the **S1' / S2' runs of the next section** (NOT clauses dropped); "
+      "lit-scout then applies S1'' and S2'' to the exports locally on title and abstract, which gives exactly the S1'' / S2'' result for those records. "
+      "For Scopus, Web of Science and ACM the strings below are run as written.")
+    a("")
+    a("### The final strings in database-neutral form (verbatim)")
+    a("")
+    a("Reading rule: AND binds tighter than OR; a trailing `*` is a word-prefix wildcard; `NOT (...)` excludes any of the listed words.")
+    a("")
+    for n in ("S1''", "S2''"):
+        a(f"{n}:")
+        a("```")
+        a(ss.render_spec(ss.P_SPECS[n], "plain"))
+        a("```")
+        a("")
+    a("Parts (each is a string on its own; S1'' = A1 OR A2 OR A3 OR B OR C; S2'' = M OR VLA):")
+    a("")
+    for n in ("S1''", "S2''"):
+        for k, sp in ss.P_PARTS[n].items():
+            a(f"- `{n}:{k}` ({PARTS_NOTE_PP[k]}):")
+            a("  ```")
+            a("  " + ss.render_spec(sp, "plain"))
+            a("  ```")
+    a("")
+    a("Exclusion lists of round 4 (each term is a word or phrase; the lists are used in the parts as stated in the notes above):")
+    a("")
+    for nm, lst in exclusion_lists():
+        a(f"- {nm}: " + ", ".join(f"`{t}`" for t in lst))
+    a("")
+    a("Biochemical and visual lists as in the next section.")
+    a("")
+    notes = {
+        "scopus": "Advanced document search; NOT is written `AND NOT`. The query is long (the parts carry up to about 170 excluded terms) **[unverified: Scopus' query-length limit]**; if Scopus refuses a part, run the S1' form of the same part (next section) and let lit-scout apply S1'' locally.",
+        "wos": "Advanced Search, Topic (`TS=`) as in the next section. Long NOT lists **[unverified: query-length limit]**; fall back to the S1' form of the part if refused.",
+        "acm": "Advanced Search, query-syntax box. NOT written `NOT`; phrases with `*` written as singular and plural. Long NOT lists **[unverified]**; fall back to the S1' form of the part if refused.",
+    }
+    titles = {"scopus": "Scopus", "wos": "Web of Science Core Collection", "acm": "ACM Digital Library",
+              "ieee": "IEEE Xplore", "springer": "SpringerLink", "sciencedirect": "ScienceDirect"}
+    folders = {"scopus": "scopus", "wos": "web-of-science", "ieee": "ieee-xplore", "acm": "acm-dl", "springer": "springerlink",
+               "sciencedirect": "sciencedirect"}
+    for key, d in DIALECTS.items():
+        fo = folders[key]
+        a(f"### {titles[key]} (folder `{fo}`; file names `{fo}-S1pp-<part>[-rN]-<YYYYMMDD>` and `{fo}-S2pp-<part>[-rN]-<YYYYMMDD>`)")
+        a("")
+        if not d.not_op:
+            total = 0
+            for n, name in (("S1''", "S1pp"), ("S2''", "S2pp")):
+                for k, sp in ss.P_PARTS[n].items():
+                    total += len(label_runs(name, k, drop_not(sp), d))
+            a(f"Not run here as S1'' / S2'': even without the NOT clauses the requirements of the final strings would need **{total} runs** at this database's "
+              "term budget. Run the S1' / S2' runs of the next section (file names `...-S1p-...`, `...-S2p-...`); S1'' / S2'' are applied locally to the export.")
+            a("")
+            continue
+        a(notes[key])
+        a("")
+        for n, name in (("S1''", "S1pp"), ("S2''", "S2pp")):
+            for k, sp in ss.P_PARTS[n].items():
+                for lab, r in label_runs(name, k, sp, d):
+                    a(f"{lab}:")
+                    a("```")
+                    a(d.wrap(render(r, d)))
+                    a("```")
+        a("")
+    a("After the exports are in place the checks at the end of this sheet apply unchanged. lit-scout applies S1'' and S2'' locally to every "
+      "export record (title and abstract) before merging, so a database that ignores part of a string does not change what enters screening.")
+    a(END2)
+    return "\n".join(L) + "\n"
+
+
 def section() -> str:
     L = []
     a = L.append
     a(BEGIN)
-    a("## Revised strings S1' and S2' (decision D0026, protocol section 10 amendment of 2026-10-15): run these first")
+    a("## Revised strings S1' and S2' (decision D0026, protocol section 10 amendment of 2026-10-15): broader run (primary run on IEEE Xplore, SpringerLink and ScienceDirect)")
+    a("")
+    a("Since D0027 the primary run is S1'' / S2'' (previous section), which are subsets of the strings below. S1' / S2' are kept for three reasons: "
+      "they are what was run on the free sources, they are the run for the three databases whose term budgets cannot hold S1'' / S2'', and "
+      "they are the fallback when Scopus, Web of Science or ACM refuses a part of S1'' / S2''. Everything below is as written on 2026-10-15 (D0026).")
     a("")
     a("The pilot (all 28 multimodal and a random 50 other seed papers) found that S1 and S2 miss seed papers whose abstracts use other "
       "words (`dLLM`, `diffusion-based LLM`, `large language diffusion model`, discrete or masked diffusion without a language word, "
       "diffusion drafters for speculative decoding, continuous or latent diffusion language models, NLP-task diffusion models, "
-      "vision-language-action). The revised strings S1' and S2' replace S1 and S2 as the **primary run**. **Keep the original strings "
+      "vision-language-action). The revised strings S1' and S2' replaced S1 and S2 as the primary run until D0027. **Keep the original strings "
       "S1 and S2 (sections 1 to 6 below) as a second run** in the same databases, same search date: their results go in files named "
       "`...-S1-...` and `...-S2-...` as before; the revised ones in `...-S1p-...` and `...-S2p-...` (`.meta.txt`: string label `S1'` or `S2'`). "
       "The two result sets overlap and are deduplicated afterwards.")
@@ -221,6 +336,15 @@ def section() -> str:
 
 def main():
     text = SHEET.read_text(encoding="utf8")
+    sec2 = section_pp()
+    if BEGIN2 in text:
+        pre, rest = text.split(BEGIN2, 1)
+        text = pre + sec2.rstrip("\n") + rest.split(END2, 1)[1]
+    else:
+        text = text.replace(BEGIN, sec2 + "\n" + BEGIN, 1)
+    step2 = "2. For each database and each string (S1, S2): paste the string"
+    if step2 in text:
+        text = text.replace(step2, "2. For each database and each string (**primary run: S1'' and S2'', part by part, first section below; second run: S1 and S2**): paste the string", 1)
     sec = section()
     if BEGIN in text:
         pre, rest = text.split(BEGIN, 1)

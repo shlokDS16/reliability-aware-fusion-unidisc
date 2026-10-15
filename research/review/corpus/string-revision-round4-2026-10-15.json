@@ -1,0 +1,1626 @@
+{
+ "date": "2026-10-15",
+ "decision": "D0027",
+ "baseline_S1prime_S2prime": {
+  "recall": {
+   "all540_entries": 525,
+   "MM28": 28,
+   "R50": 47
+  },
+  "queue_by_tier": {
+   "T1": 1293,
+   "T2": 220,
+   "T3": 2221,
+   "T4": 450,
+   "T5": 0
+  },
+  "queue_total": 4184
+ },
+ "matching": "title + abstract (+ keywords for queue records) of the record, word-based, case-insensitive, trailing * = word prefix",
+ "steps": [
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1293,
+    "T2": 219,
+    "T3": 1847,
+    "T4": 445,
+    "T5": 0
+   },
+   "queue_total": 3804,
+   "step": "1 diffusion of innovation, information, technology; social networks (R4_SOC)",
+   "removed_by_this_step_by_tier": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 374,
+    "T4": 5
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1287,
+    "T2": 213,
+    "T3": 1766,
+    "T4": 379,
+    "T5": 0
+   },
+   "queue_total": 3645,
+   "step": "2 MRI, physics, PDE, chemistry (R4_NN; A1 only MRI and chemistry)",
+   "removed_by_this_step_by_tier": {
+    "T1": 6,
+    "T2": 6,
+    "T3": 81,
+    "T4": 66
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1287,
+    "T2": 213,
+    "T3": 1632,
+    "T4": 379,
+    "T5": 0
+   },
+   "queue_total": 3511,
+   "step": "3 'stable diffusion' in B and C",
+   "removed_by_this_step_by_tier": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 134,
+    "T4": 0
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1235,
+    "T2": 186,
+    "T3": 1015,
+    "T4": 356,
+    "T5": 0
+   },
+   "queue_total": 2792,
+   "step": "4 non-text outputs: speech, music, motion, time series (R4_NT in A2 without context and A3 non-autoregressive; R4_NT_BC in B and C)",
+   "removed_by_this_step_by_tier": {
+    "T1": 52,
+    "T2": 27,
+    "T3": 617,
+    "T4": 23
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1235,
+    "T2": 160,
+    "T3": 1015,
+    "T4": 126,
+    "T5": 0
+   },
+   "queue_total": 2536,
+   "step": "5 A2: without context only masked / discrete diffusion and discrete flow matching; with context 'discrete flow*' needs 'diffusion', 'discrete state-space*' needs diffusion, generative or flow matching",
+   "removed_by_this_step_by_tier": {
+    "T1": 0,
+    "T2": 26,
+    "T3": 0,
+    "T4": 230
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1224,
+    "T2": 120,
+    "T3": 1015,
+    "T4": 126,
+    "T5": 0
+   },
+   "queue_total": 2485,
+   "step": "6 A3: 'absorbing state' and 'any-order' need a language-model or diffusion word besides the language word",
+   "removed_by_this_step_by_tier": {
+    "T1": 11,
+    "T2": 40,
+    "T3": 0,
+    "T4": 0
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1224,
+    "T2": 120,
+    "T3": 512,
+    "T4": 126,
+    "T5": 0
+   },
+   "queue_total": 1982,
+   "step": "7 B and C: 'diffusion' must be used as a model (R4_DS)",
+   "removed_by_this_step_by_tier": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 503,
+    "T4": 0
+   },
+   "seeds_lost_by_this_step": []
+  },
+  {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1084,
+    "T2": 120,
+    "T3": 512,
+    "T4": 126,
+    "T5": 0
+   },
+   "queue_total": 1842,
+   "step": "8 S2'': M needs a language word (R4_LMW); VLA: plain 'diffusion-based' needs 'diffusion VLA' wording",
+   "removed_by_this_step_by_tier": {
+    "T1": 140,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0
+   },
+   "seeds_lost_by_this_step": []
+  }
+ ],
+ "final_equals_last_step": true,
+ "final": {
+  "recall": {
+   "all540_entries": 525,
+   "MM28": 28,
+   "R50": 47
+  },
+  "queue_by_tier": {
+   "T1": 1084,
+   "T2": 120,
+   "T3": 512,
+   "T4": 126,
+   "T5": 0
+  },
+  "queue_total": 1842
+ },
+ "final_outside_S1prime_S2prime_on_queue_and_seeds": 0,
+ "seeds_not_captured_by_final": [
+  "2209.03003",
+  "2011.13456",
+  "2010.02502",
+  "2006.11239",
+  "1907.05600",
+  "1503.03585",
+  "2402.04997",
+  "2604.02028",
+  "2402.19009",
+  "2208.00638",
+  "2509.06040",
+  "2406.01572",
+  "2604.24089",
+  "2506.21557",
+  "2305.20009"
+ ],
+ "seeds_lost_vs_S1prime": [],
+ "labelled_in_or_unclear_lost": [
+  "M04871"
+ ],
+ "per_term_standalone_removal": {
+  "R4_INNOV": {
+   "diffusion of innovation*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 65,
+    "T4": 1,
+    "total": 66,
+    "seeds_lost": []
+   },
+   "innovation diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 16,
+    "T4": 1,
+    "total": 17,
+    "seeds_lost": []
+   },
+   "diffusion of technolog*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "technology diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 7,
+    "T4": 0,
+    "total": 7,
+    "seeds_lost": []
+   },
+   "diffusion of information": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 10,
+    "T4": 1,
+    "total": 11,
+    "seeds_lost": []
+   },
+   "information diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 92,
+    "T4": 1,
+    "total": 93,
+    "seeds_lost": []
+   },
+   "diffusion of knowledge": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "rapid diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 41,
+    "T4": 0,
+    "total": 41,
+    "seeds_lost": []
+   },
+   "policy diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 8,
+    "T4": 0,
+    "total": 8,
+    "seeds_lost": []
+   },
+   "norm diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 11,
+    "T4": 0,
+    "total": 11,
+    "seeds_lost": []
+   },
+   "cultural diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 9,
+    "T4": 0,
+    "total": 9,
+    "seeds_lost": []
+   }
+  },
+  "R4_NET": {
+   "social network*": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 103,
+    "T4": 2,
+    "total": 106,
+    "seeds_lost": []
+   },
+   "twitter": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 93,
+    "T4": 1,
+    "total": 94,
+    "seeds_lost": []
+   },
+   "tweets": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 62,
+    "T4": 0,
+    "total": 62,
+    "seeds_lost": []
+   }
+  },
+  "R4_MRI": {
+   "mri": {
+    "T1": 1,
+    "T2": 2,
+    "T3": 13,
+    "T4": 0,
+    "total": 16,
+    "seeds_lost": []
+   },
+   "fmri": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 4,
+    "T4": 0,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "dmri": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 1,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "diffusion weighted": {
+    "T1": 1,
+    "T2": 0,
+    "T3": 7,
+    "T4": 0,
+    "total": 8,
+    "seeds_lost": []
+   },
+   "diffusion tensor": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 5,
+    "T4": 1,
+    "total": 6,
+    "seeds_lost": []
+   },
+   "diffusion imaging": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 0,
+    "seeds_lost": []
+   },
+   "tractograph*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 0,
+    "seeds_lost": []
+   },
+   "magnetic resonance": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 10,
+    "T4": 0,
+    "total": 11,
+    "seeds_lost": []
+   },
+   "dti": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "dwi": {
+    "T1": 1,
+    "T2": 0,
+    "T3": 4,
+    "T4": 0,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "white matter": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 4,
+    "T4": 0,
+    "total": 4,
+    "seeds_lost": []
+   }
+  },
+  "R4_PHYS": {
+   "diffusion equation*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 10,
+    "T4": 7,
+    "total": 17,
+    "seeds_lost": []
+   },
+   "reaction diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 5,
+    "T4": 1,
+    "total": 6,
+    "seeds_lost": []
+   },
+   "heat equation*": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 4,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "heat transfer": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 3,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "thermal": {
+    "T1": 0,
+    "T2": 2,
+    "T3": 8,
+    "T4": 6,
+    "total": 16,
+    "seeds_lost": []
+   },
+   "fluid dynamic*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 6,
+    "total": 9,
+    "seeds_lost": []
+   },
+   "fluid flow*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 2,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "fluid mechanic*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 1,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "fluids": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 2,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "porous": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 5,
+    "total": 8,
+    "seeds_lost": []
+   },
+   "anomalous diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 0,
+    "seeds_lost": []
+   },
+   "mass transfer": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 1,
+    "T4": 2,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "gas diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 1,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "partial differential equation*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 8,
+    "T4": 4,
+    "total": 12,
+    "seeds_lost": []
+   },
+   "finite element*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 4,
+    "T4": 3,
+    "total": 7,
+    "seeds_lost": []
+   },
+   "navier stokes": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 2,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "turbulen*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 3,
+    "total": 6,
+    "seeds_lost": []
+   }
+  },
+  "R4_PDE": {
+   "traveling wave*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 1,
+    "T4": 8,
+    "total": 9,
+    "seeds_lost": []
+   },
+   "wavefront*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 4,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "predator": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 1,
+    "T4": 1,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "life table*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 4,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "dispersal": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 3,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "oxide": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 2,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "homogenization": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 4,
+    "total": 6,
+    "seeds_lost": []
+   },
+   "mean curvature": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 5,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "smoluchowski": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 1,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "kpp": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 1,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "diffusion system*": {
+    "T1": 2,
+    "T2": 0,
+    "T3": 7,
+    "T4": 6,
+    "total": 15,
+    "seeds_lost": []
+   },
+   "diffusion epidemic*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 2,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "diffusion type equation*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 2,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "epidemic*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 9,
+    "T4": 7,
+    "total": 16,
+    "seeds_lost": []
+   },
+   "burgers": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 2,
+    "total": 4,
+    "seeds_lost": []
+   }
+  },
+  "R4_CHEM": {
+   "microextraction": {
+    "T1": 1,
+    "T2": 0,
+    "T3": 2,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "dllme": {
+    "T1": 1,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   }
+  },
+  "R4_BIOMED": {
+   "disc diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "disk diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "antimicrobial": {
+    "T1": 2,
+    "T2": 0,
+    "T3": 4,
+    "T4": 0,
+    "total": 6,
+    "seeds_lost": []
+   }
+  },
+  "R4_STABLE": {
+   "stable diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 140,
+    "T4": 0,
+    "total": 140,
+    "seeds_lost": []
+   }
+  },
+  "R4_NT (A2 without context, A3)": {
+   "speech synthesis": {
+    "T1": 16,
+    "T2": 3,
+    "T3": 0,
+    "T4": 0,
+    "total": 19,
+    "seeds_lost": []
+   },
+   "text to speech": {
+    "T1": 23,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 23,
+    "seeds_lost": []
+   },
+   "tts": {
+    "T1": 22,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 24,
+    "seeds_lost": []
+   },
+   "vocoder*": {
+    "T1": 2,
+    "T2": 3,
+    "T3": 0,
+    "T4": 0,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "voice conversion": {
+    "T1": 1,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "voice cloning": {
+    "T1": 4,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "speech generation": {
+    "T1": 3,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "audio generation": {
+    "T1": 1,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "music": {
+    "T1": 7,
+    "T2": 2,
+    "T3": 0,
+    "T4": 4,
+    "total": 13,
+    "seeds_lost": []
+   },
+   "singing": {
+    "T1": 3,
+    "T2": 1,
+    "T3": 0,
+    "T4": 0,
+    "total": 4,
+    "seeds_lost": []
+   },
+   "waveform": {
+    "T1": 4,
+    "T2": 1,
+    "T3": 0,
+    "T4": 2,
+    "total": 7,
+    "seeds_lost": []
+   },
+   "gesture*": {
+    "T1": 3,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "talking head": {
+    "T1": 0,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "dance": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "time series": {
+    "T1": 4,
+    "T2": 5,
+    "T3": 0,
+    "T4": 11,
+    "total": 20,
+    "seeds_lost": []
+   },
+   "point cloud": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 2,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "novel view": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "video generation": {
+    "T1": 0,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "video to audio": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "scene synthesis": {
+    "T1": 1,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "fault diagnosis": {
+    "T1": 0,
+    "T2": 2,
+    "T3": 0,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   },
+   "anomaly detection": {
+    "T1": 0,
+    "T2": 2,
+    "T3": 0,
+    "T4": 3,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "imputation": {
+    "T1": 0,
+    "T2": 2,
+    "T3": 0,
+    "T4": 4,
+    "total": 6,
+    "seeds_lost": []
+   },
+   "precipitation": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "hand object": {
+    "T1": 0,
+    "T2": 1,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "motion generation": {
+    "T1": 1,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   }
+  },
+  "R4_NT_BC (B, C)": {
+   "human motion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 20,
+    "T4": 0,
+    "total": 20,
+    "seeds_lost": []
+   },
+   "motion generation": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 33,
+    "T4": 0,
+    "total": 33,
+    "seeds_lost": []
+   },
+   "motion synthesis": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 17,
+    "T4": 0,
+    "total": 17,
+    "seeds_lost": []
+   },
+   "animation": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 29,
+    "T4": 0,
+    "total": 29,
+    "seeds_lost": []
+   },
+   "layout": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 40,
+    "T4": 0,
+    "total": 40,
+    "seeds_lost": []
+   },
+   "gan": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 29,
+    "T4": 0,
+    "total": 29,
+    "seeds_lost": []
+   },
+   "gans": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 60,
+    "T4": 0,
+    "total": 60,
+    "seeds_lost": []
+   },
+   "gesture*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 22,
+    "T4": 0,
+    "total": 22,
+    "seeds_lost": []
+   },
+   "facial": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 22,
+    "T4": 0,
+    "total": 22,
+    "seeds_lost": []
+   },
+   "handwritten": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 18,
+    "T4": 0,
+    "total": 18,
+    "seeds_lost": []
+   },
+   "wireless": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 14,
+    "T4": 0,
+    "total": 14,
+    "seeds_lost": []
+   },
+   "video diffusion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 17,
+    "T4": 0,
+    "total": 17,
+    "seeds_lost": []
+   },
+   "image quality": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 24,
+    "T4": 0,
+    "total": 24,
+    "seeds_lost": []
+   },
+   "visual quality": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 18,
+    "T4": 0,
+    "total": 18,
+    "seeds_lost": []
+   },
+   "time series": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 39,
+    "T4": 0,
+    "total": 39,
+    "seeds_lost": []
+   },
+   "anomaly detection": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 10,
+    "T4": 0,
+    "total": 10,
+    "seeds_lost": []
+   },
+   "music": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 36,
+    "T4": 0,
+    "total": 36,
+    "seeds_lost": []
+   },
+   "speech synthesis": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 13,
+    "T4": 0,
+    "total": 13,
+    "seeds_lost": []
+   },
+   "text to speech": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 18,
+    "T4": 0,
+    "total": 18,
+    "seeds_lost": []
+   },
+   "voice conversion": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "total": 0,
+    "seeds_lost": []
+   },
+   "voice cloning": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "scene text": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 15,
+    "T4": 0,
+    "total": 15,
+    "seeds_lost": []
+   },
+   "visual text": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 22,
+    "T4": 0,
+    "total": 22,
+    "seeds_lost": []
+   },
+   "text rendering": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 12,
+    "T4": 0,
+    "total": 12,
+    "seeds_lost": []
+   },
+   "autonomous driving": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 22,
+    "T4": 0,
+    "total": 22,
+    "seeds_lost": []
+   },
+   "driving scenario*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 5,
+    "T4": 0,
+    "total": 5,
+    "seeds_lost": []
+   },
+   "driving simulation": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 1,
+    "T4": 0,
+    "total": 1,
+    "seeds_lost": []
+   },
+   "robot*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 81,
+    "T4": 0,
+    "total": 81,
+    "seeds_lost": []
+   },
+   "internet of things": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 14,
+    "T4": 0,
+    "total": 14,
+    "seeds_lost": []
+   },
+   "iot": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 13,
+    "T4": 0,
+    "total": 13,
+    "seeds_lost": []
+   },
+   "6g": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 8,
+    "T4": 0,
+    "total": 8,
+    "seeds_lost": []
+   },
+   "tabular": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 29,
+    "T4": 0,
+    "total": 29,
+    "seeds_lost": []
+   },
+   "image editing": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 13,
+    "T4": 0,
+    "total": 13,
+    "seeds_lost": []
+   },
+   "image synthesis": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 34,
+    "T4": 0,
+    "total": 34,
+    "seeds_lost": []
+   },
+   "lora": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 37,
+    "T4": 0,
+    "total": 37,
+    "seeds_lost": []
+   },
+   "low rank": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 26,
+    "T4": 0,
+    "total": 26,
+    "seeds_lost": []
+   },
+   "quantiz*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 46,
+    "T4": 0,
+    "total": 46,
+    "seeds_lost": []
+   },
+   "preference optimization": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 16,
+    "T4": 0,
+    "total": 16,
+    "seeds_lost": []
+   },
+   "diffusion polic*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 32,
+    "T4": 0,
+    "total": 32,
+    "seeds_lost": []
+   },
+   "federated": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 20,
+    "T4": 0,
+    "total": 20,
+    "seeds_lost": []
+   },
+   "unlearning": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 7,
+    "T4": 0,
+    "total": 7,
+    "seeds_lost": []
+   },
+   "watermark*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 7,
+    "T4": 0,
+    "total": 7,
+    "seeds_lost": []
+   },
+   "jailbreak*": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 8,
+    "T4": 0,
+    "total": 8,
+    "seeds_lost": []
+   },
+   "retrieval augmented": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 50,
+    "T4": 0,
+    "total": 50,
+    "seeds_lost": []
+   },
+   "knowledge distillation": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 13,
+    "T4": 0,
+    "total": 13,
+    "seeds_lost": []
+   },
+   "3d": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 46,
+    "T4": 0,
+    "total": 46,
+    "seeds_lost": []
+   },
+   "pose estimation": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 3,
+    "T4": 0,
+    "total": 3,
+    "seeds_lost": []
+   },
+   "sketch": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 7,
+    "T4": 0,
+    "total": 7,
+    "seeds_lost": []
+   },
+   "cad": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 2,
+    "T4": 0,
+    "total": 2,
+    "seeds_lost": []
+   }
+  }
+ },
+ "group_standalone_removal": {
+  "R4_INNOV": {
+   "T1": 0,
+   "T2": 0,
+   "T3": 258,
+   "T4": 3,
+   "total": 261,
+   "seeds_lost": []
+  },
+  "R4_NET": {
+   "T1": 0,
+   "T2": 1,
+   "T3": 184,
+   "T4": 2,
+   "total": 187,
+   "seeds_lost": []
+  },
+  "R4_MRI": {
+   "T1": 1,
+   "T2": 3,
+   "T3": 21,
+   "T4": 1,
+   "total": 26,
+   "seeds_lost": []
+  },
+  "R4_PHYS": {
+   "T1": 0,
+   "T2": 3,
+   "T3": 41,
+   "T4": 37,
+   "total": 81,
+   "seeds_lost": []
+  },
+  "R4_PDE": {
+   "T1": 2,
+   "T2": 0,
+   "T3": 24,
+   "T4": 38,
+   "total": 64,
+   "seeds_lost": []
+  },
+  "R4_CHEM": {
+   "T1": 1,
+   "T2": 0,
+   "T3": 2,
+   "T4": 0,
+   "total": 3,
+   "seeds_lost": []
+  },
+  "R4_BIOMED": {
+   "T1": 2,
+   "T2": 0,
+   "T3": 7,
+   "T4": 0,
+   "total": 9,
+   "seeds_lost": []
+  },
+  "R4_STABLE": {
+   "T1": 0,
+   "T2": 0,
+   "T3": 140,
+   "T4": 0,
+   "total": 140,
+   "seeds_lost": []
+  },
+  "R4_NT (A2 without context, A3)": {
+   "T1": 43,
+   "T2": 28,
+   "T3": 0,
+   "T4": 23,
+   "total": 94,
+   "seeds_lost": []
+  },
+  "R4_NT_BC (B, C)": {
+   "T1": 0,
+   "T2": 0,
+   "T3": 720,
+   "T4": 0,
+   "total": 720,
+   "seeds_lost": []
+  }
+ },
+ "language_word_requirement_alone": {
+  "language word (language, text, token*, language model*, llm*, vocabulary, autoregressive, reasoning) required in A2 without context": {
+   "recall": {
+    "all540_entries": 523,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1293,
+    "T2": 220,
+    "T3": 2221,
+    "T4": 0,
+    "T5": 0
+   },
+   "queue_total": 3734,
+   "removed_by_tier": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0,
+    "T4": 450
+   },
+   "seeds_lost": [
+    "2509.13866",
+    "2608.10615"
+   ]
+  },
+  "language word (language, text, token*, language model*) required in B": {
+   "recall": {
+    "all540_entries": 520,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1293,
+    "T2": 220,
+    "T3": 1515,
+    "T4": 450,
+    "T5": 0
+   },
+   "queue_total": 3478,
+   "removed_by_tier": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 706,
+    "T4": 0
+   },
+   "seeds_lost": [
+    "2402.17011",
+    "2403.00808",
+    "2501.00862",
+    "2305.01735",
+    "2305.13298"
+   ]
+  },
+  "language word (language, text, token*, language model*) required in C": {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "queue_by_tier": {
+    "T1": 1293,
+    "T2": 220,
+    "T3": 2111,
+    "T4": 450,
+    "T5": 0
+   },
+   "queue_total": 4074,
+   "removed_by_tier": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 110,
+    "T4": 0
+   },
+   "seeds_lost": []
+  }
+ },
+ "parts": {
+  "S1'':A1": {
+   "seeds": 432,
+   "queue_by_tier": {
+    "T1": 738,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "T5": 0
+   }
+  },
+  "S1'':A2": {
+   "seeds": 192,
+   "queue_by_tier": {
+    "T1": 476,
+    "T2": 70,
+    "T3": 6,
+    "T4": 126,
+    "T5": 0
+   }
+  },
+  "S1'':A3": {
+   "seeds": 66,
+   "queue_by_tier": {
+    "T1": 114,
+    "T2": 52,
+    "T3": 0,
+    "T4": 0,
+    "T5": 0
+   }
+  },
+  "S1'':B": {
+   "seeds": 170,
+   "queue_by_tier": {
+    "T1": 142,
+    "T2": 5,
+    "T3": 279,
+    "T4": 0,
+    "T5": 0
+   }
+  },
+  "S1'':C": {
+   "seeds": 340,
+   "queue_by_tier": {
+    "T1": 393,
+    "T2": 2,
+    "T3": 270,
+    "T4": 0,
+    "T5": 0
+   }
+  },
+  "S2'':M": {
+   "seeds": 8,
+   "queue_by_tier": {
+    "T1": 106,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "T5": 0
+   }
+  },
+  "S2'':VLA": {
+   "seeds": 4,
+   "queue_by_tier": {
+    "T1": 20,
+    "T2": 0,
+    "T3": 0,
+    "T4": 0,
+    "T5": 0
+   }
+  }
+ },
+ "consistency_check": {
+  "records_checked_with_ss.matches": 187,
+  "disagreements": 0
+ },
+ "subset_check_all_v2_records": {
+  "records": 19328,
+  "match_S1pp_S2pp": 1842,
+  "match_S1p_S2p": 4184,
+  "match_S1pp_S2pp_but_not_S1p_S2p": 0
+ },
+ "S1pp_plain": "((\"diffusion language model*\" OR \"language diffusion model*\" OR \"diffusion llm*\" OR \"diffusion lm*\" OR dllm OR dllms OR \"diffusion-based language model*\" OR \"diffusion-based llm*\" OR \"diffusion large language model*\" OR \"diffusion-based large language model*\" OR \"text diffusion\" OR \"block diffusion\" OR \"absorbing diffusion\" OR \"diffusion mllm*\" OR \"diffusion vlm*\" OR \"diffusion vision-language model*\" OR dmllm OR dmllms OR dvlm OR dvlms) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR microextraction OR dllme)) OR (((\"discrete diffusion\" OR \"masked diffusion\" OR \"discrete flow matching\" OR (\"discrete flow*\" AND diffusion) OR (\"discrete state-space*\" AND (diffusion OR generative OR \"flow matching\"))) AND (language OR text OR token* OR \"language model*\" OR llm* OR vocabulary OR autoregressive OR reasoning) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets)) OR ((\"masked diffusion\" OR \"discrete diffusion\" OR \"discrete flow matching\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets) AND NOT (\"speech synthesis\" OR \"text to speech\" OR tts OR vocoder* OR \"voice conversion\" OR \"voice cloning\" OR \"speech generation\" OR \"audio generation\" OR music OR singing OR waveform OR gesture* OR \"talking head\" OR dance OR \"time series\" OR \"point cloud\" OR \"novel view\" OR \"video generation\" OR \"video to audio\" OR \"scene synthesis\" OR \"fault diagnosis\" OR \"anomaly detection\" OR imputation OR precipitation OR \"hand object\" OR \"motion generation\"))) OR ((\"absorbing state\" AND (language OR text OR token* OR \"language model*\") AND (\"language model*\" OR llm* OR \"text generation\" OR \"language generation\" OR \"language modeling\" OR autoregressive OR diffusion OR masked)) OR (\"any-order\" AND (language OR text OR token* OR \"language model*\") AND (\"language model*\" OR llm* OR \"text generation\" OR \"language generation\" OR \"language modeling\" OR autoregressive OR diffusion OR masked)) OR \"non-autoregressive language model*\" OR (\"non-autoregressive\" AND diffusion AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (\"speech synthesis\" OR \"text to speech\" OR tts OR vocoder* OR \"voice conversion\" OR \"voice cloning\" OR \"speech generation\" OR \"audio generation\" OR music OR singing OR waveform OR gesture* OR \"talking head\" OR dance OR \"time series\" OR \"point cloud\" OR \"novel view\" OR \"video generation\" OR \"video to audio\" OR \"scene synthesis\" OR \"fault diagnosis\" OR \"anomaly detection\" OR imputation OR precipitation OR \"hand object\" OR \"motion generation\") AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets))) OR (diffusion AND (\"text generation\" OR \"language generation\" OR \"natural language generation\" OR \"sequence-to-sequence\" OR seq2seq OR \"discrete sequence*\" OR \"speculative decoding\" OR \"categorical data\" OR \"discrete data\" OR paraphras* OR \"textual diffusion\" OR \"text modeling\" OR \"named entity\" OR sentiment OR summarization OR dialog* OR dialogue OR \"machine translation\" OR \"text style\" OR commonsense OR \"topic model*\" OR \"triple extraction\" OR \"information extraction\") AND (\"diffusion model*\" OR \"diffusion-based\" OR \"diffusion process*\" OR \"diffusion probabilistic\" OR denoising OR \"diffusion transformer*\" OR \"diffusion language\" OR \"discrete diffusion\" OR \"masked diffusion\" OR \"latent diffusion\" OR \"diffusion llm*\" OR \"diffusion decoding\" OR \"diffusion network*\" OR \"diffusion framework*\" OR \"diffusion paradigm*\" OR \"diffusion lm*\" OR \"diffusion mllm*\" OR \"diffusion bridge*\" OR \"diffusion generat*\" OR \"continuous diffusion\" OR \"diffusion step*\" OR \"diffusion objective*\" OR \"diffusion head*\" OR \"diffusion prior*\" OR \"reverse diffusion\" OR \"forward diffusion\" OR \"diffusion sampl*\" OR \"diffusion training\" OR \"diffusion refinement\" OR \"guided diffusion\" OR \"conditional diffusion\" OR \"diffusion augmentation\" OR \"embedding diffusion\" OR \"diffusion method*\" OR \"diffusion approach*\" OR \"diffusion technique*\" OR \"using diffusion\" OR \"via diffusion\" OR \"with diffusion\" OR \"through diffusion\" OR \"by diffusion\" OR \"diffusion for\" OR \"diffusion ar\" OR \"ar diffusion\" OR \"diffusion equipped\" OR \"diffusion directed\" OR \"diffusion supervision\" OR \"flow matching\" OR \"discrete flow*\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets) AND NOT (\"stable diffusion\") AND NOT (\"human motion\" OR \"motion generation\" OR \"motion synthesis\" OR animation OR layout OR gan OR gans OR gesture* OR facial OR handwritten OR wireless OR \"video diffusion\" OR \"image quality\" OR \"visual quality\" OR \"time series\" OR \"anomaly detection\" OR music OR \"speech synthesis\" OR \"text to speech\" OR \"voice conversion\" OR \"voice cloning\" OR \"scene text\" OR \"visual text\" OR \"text rendering\" OR \"autonomous driving\" OR \"driving scenario*\" OR \"driving simulation\" OR robot* OR \"internet of things\" OR iot OR 6g OR tabular OR \"image editing\" OR \"image synthesis\" OR lora OR \"low rank\" OR quantiz* OR \"preference optimization\" OR \"diffusion polic*\" OR federated OR unlearning OR watermark* OR jailbreak* OR \"retrieval augmented\" OR \"knowledge distillation\" OR 3d OR \"pose estimation\" OR sketch OR cad)) OR (diffusion AND (\"language model*\" OR llm*) AND (\"diffusion model*\" OR \"diffusion-based\" OR \"diffusion process*\" OR \"diffusion probabilistic\" OR denoising OR \"diffusion transformer*\" OR \"diffusion language\" OR \"discrete diffusion\" OR \"masked diffusion\" OR \"latent diffusion\" OR \"diffusion llm*\" OR \"diffusion decoding\" OR \"diffusion network*\" OR \"diffusion framework*\" OR \"diffusion paradigm*\" OR \"diffusion lm*\" OR \"diffusion mllm*\" OR \"diffusion bridge*\" OR \"diffusion generat*\" OR \"continuous diffusion\" OR \"diffusion step*\" OR \"diffusion objective*\" OR \"diffusion head*\" OR \"diffusion prior*\" OR \"reverse diffusion\" OR \"forward diffusion\" OR \"diffusion sampl*\" OR \"diffusion training\" OR \"diffusion refinement\" OR \"guided diffusion\" OR \"conditional diffusion\" OR \"diffusion augmentation\" OR \"embedding diffusion\" OR \"diffusion method*\" OR \"diffusion approach*\" OR \"diffusion technique*\" OR \"using diffusion\" OR \"via diffusion\" OR \"with diffusion\" OR \"through diffusion\" OR \"by diffusion\" OR \"diffusion for\" OR \"diffusion ar\" OR \"ar diffusion\" OR \"diffusion equipped\" OR \"diffusion directed\" OR \"diffusion supervision\" OR \"flow matching\" OR \"discrete flow*\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets) AND NOT (\"stable diffusion\") AND NOT (\"human motion\" OR \"motion generation\" OR \"motion synthesis\" OR animation OR layout OR gan OR gans OR gesture* OR facial OR handwritten OR wireless OR \"video diffusion\" OR \"image quality\" OR \"visual quality\" OR \"time series\" OR \"anomaly detection\" OR music OR \"speech synthesis\" OR \"text to speech\" OR \"voice conversion\" OR \"voice cloning\" OR \"scene text\" OR \"visual text\" OR \"text rendering\" OR \"autonomous driving\" OR \"driving scenario*\" OR \"driving simulation\" OR robot* OR \"internet of things\" OR iot OR 6g OR tabular OR \"image editing\" OR \"image synthesis\" OR lora OR \"low rank\" OR quantiz* OR \"preference optimization\" OR \"diffusion polic*\" OR federated OR unlearning OR watermark* OR jailbreak* OR \"retrieval augmented\" OR \"knowledge distillation\" OR 3d OR \"pose estimation\" OR sketch OR cad))",
+ "S2pp_plain": "(((\"unified multimodal\" OR \"unified multi-modal\" OR \"unified understanding and generation\" OR \"understanding and generation\" OR \"any-to-any\" OR \"mixed-modal*\" OR \"mixed-modality\") AND (diffusion OR \"masked generative\" OR \"discrete flow*\" OR \"flow matching\" OR \"rectified flow\" OR \"discrete denoising\") AND (multimodal OR \"multi-modal\" OR \"vision-language\" OR \"text-to-image\" OR \"image generation\" OR mllm OR mllms OR \"visual understanding\" OR \"image understanding\")) AND (language OR llm* OR \"language model*\" OR mllm OR mllms OR \"multimodal understanding\" OR \"multi-modal understanding\" OR \"visual understanding\" OR \"image understanding\" OR \"text generation\" OR \"language generation\" OR \"vision-language model*\" OR vlm* OR \"large multimodal model*\" OR lmm*)) OR ((\"vision-language-action\" OR vla OR vlas) AND (\"discrete diffusion\" OR \"discrete denoising\" OR \"masked diffusion\" OR \"unified diffusion\" OR \"diffusion language model*\" OR dllm OR dllms OR (\"diffusion-based\" AND (\"diffusion vision language action\" OR \"diffusion vla\" OR dvla))))",
+ "parts_plain": {
+  "S1''": {
+   "A1": "(\"diffusion language model*\" OR \"language diffusion model*\" OR \"diffusion llm*\" OR \"diffusion lm*\" OR dllm OR dllms OR \"diffusion-based language model*\" OR \"diffusion-based llm*\" OR \"diffusion large language model*\" OR \"diffusion-based large language model*\" OR \"text diffusion\" OR \"block diffusion\" OR \"absorbing diffusion\" OR \"diffusion mllm*\" OR \"diffusion vlm*\" OR \"diffusion vision-language model*\" OR dmllm OR dmllms OR dvlm OR dvlms) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR microextraction OR dllme)",
+   "A2": "((\"discrete diffusion\" OR \"masked diffusion\" OR \"discrete flow matching\" OR (\"discrete flow*\" AND diffusion) OR (\"discrete state-space*\" AND (diffusion OR generative OR \"flow matching\"))) AND (language OR text OR token* OR \"language model*\" OR llm* OR vocabulary OR autoregressive OR reasoning) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets)) OR ((\"masked diffusion\" OR \"discrete diffusion\" OR \"discrete flow matching\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets) AND NOT (\"speech synthesis\" OR \"text to speech\" OR tts OR vocoder* OR \"voice conversion\" OR \"voice cloning\" OR \"speech generation\" OR \"audio generation\" OR music OR singing OR waveform OR gesture* OR \"talking head\" OR dance OR \"time series\" OR \"point cloud\" OR \"novel view\" OR \"video generation\" OR \"video to audio\" OR \"scene synthesis\" OR \"fault diagnosis\" OR \"anomaly detection\" OR imputation OR precipitation OR \"hand object\" OR \"motion generation\"))",
+   "A3": "(\"absorbing state\" AND (language OR text OR token* OR \"language model*\") AND (\"language model*\" OR llm* OR \"text generation\" OR \"language generation\" OR \"language modeling\" OR autoregressive OR diffusion OR masked)) OR (\"any-order\" AND (language OR text OR token* OR \"language model*\") AND (\"language model*\" OR llm* OR \"text generation\" OR \"language generation\" OR \"language modeling\" OR autoregressive OR diffusion OR masked)) OR \"non-autoregressive language model*\" OR (\"non-autoregressive\" AND diffusion AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (\"speech synthesis\" OR \"text to speech\" OR tts OR vocoder* OR \"voice conversion\" OR \"voice cloning\" OR \"speech generation\" OR \"audio generation\" OR music OR singing OR waveform OR gesture* OR \"talking head\" OR dance OR \"time series\" OR \"point cloud\" OR \"novel view\" OR \"video generation\" OR \"video to audio\" OR \"scene synthesis\" OR \"fault diagnosis\" OR \"anomaly detection\" OR imputation OR precipitation OR \"hand object\" OR \"motion generation\") AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets))",
+   "B": "diffusion AND (\"text generation\" OR \"language generation\" OR \"natural language generation\" OR \"sequence-to-sequence\" OR seq2seq OR \"discrete sequence*\" OR \"speculative decoding\" OR \"categorical data\" OR \"discrete data\" OR paraphras* OR \"textual diffusion\" OR \"text modeling\" OR \"named entity\" OR sentiment OR summarization OR dialog* OR dialogue OR \"machine translation\" OR \"text style\" OR commonsense OR \"topic model*\" OR \"triple extraction\" OR \"information extraction\") AND (\"diffusion model*\" OR \"diffusion-based\" OR \"diffusion process*\" OR \"diffusion probabilistic\" OR denoising OR \"diffusion transformer*\" OR \"diffusion language\" OR \"discrete diffusion\" OR \"masked diffusion\" OR \"latent diffusion\" OR \"diffusion llm*\" OR \"diffusion decoding\" OR \"diffusion network*\" OR \"diffusion framework*\" OR \"diffusion paradigm*\" OR \"diffusion lm*\" OR \"diffusion mllm*\" OR \"diffusion bridge*\" OR \"diffusion generat*\" OR \"continuous diffusion\" OR \"diffusion step*\" OR \"diffusion objective*\" OR \"diffusion head*\" OR \"diffusion prior*\" OR \"reverse diffusion\" OR \"forward diffusion\" OR \"diffusion sampl*\" OR \"diffusion training\" OR \"diffusion refinement\" OR \"guided diffusion\" OR \"conditional diffusion\" OR \"diffusion augmentation\" OR \"embedding diffusion\" OR \"diffusion method*\" OR \"diffusion approach*\" OR \"diffusion technique*\" OR \"using diffusion\" OR \"via diffusion\" OR \"with diffusion\" OR \"through diffusion\" OR \"by diffusion\" OR \"diffusion for\" OR \"diffusion ar\" OR \"ar diffusion\" OR \"diffusion equipped\" OR \"diffusion directed\" OR \"diffusion supervision\" OR \"flow matching\" OR \"discrete flow*\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets) AND NOT (\"stable diffusion\") AND NOT (\"human motion\" OR \"motion generation\" OR \"motion synthesis\" OR animation OR layout OR gan OR gans OR gesture* OR facial OR handwritten OR wireless OR \"video diffusion\" OR \"image quality\" OR \"visual quality\" OR \"time series\" OR \"anomaly detection\" OR music OR \"speech synthesis\" OR \"text to speech\" OR \"voice conversion\" OR \"voice cloning\" OR \"scene text\" OR \"visual text\" OR \"text rendering\" OR \"autonomous driving\" OR \"driving scenario*\" OR \"driving simulation\" OR robot* OR \"internet of things\" OR iot OR 6g OR tabular OR \"image editing\" OR \"image synthesis\" OR lora OR \"low rank\" OR quantiz* OR \"preference optimization\" OR \"diffusion polic*\" OR federated OR unlearning OR watermark* OR jailbreak* OR \"retrieval augmented\" OR \"knowledge distillation\" OR 3d OR \"pose estimation\" OR sketch OR cad)",
+   "C": "diffusion AND (\"language model*\" OR llm*) AND (\"diffusion model*\" OR \"diffusion-based\" OR \"diffusion process*\" OR \"diffusion probabilistic\" OR denoising OR \"diffusion transformer*\" OR \"diffusion language\" OR \"discrete diffusion\" OR \"masked diffusion\" OR \"latent diffusion\" OR \"diffusion llm*\" OR \"diffusion decoding\" OR \"diffusion network*\" OR \"diffusion framework*\" OR \"diffusion paradigm*\" OR \"diffusion lm*\" OR \"diffusion mllm*\" OR \"diffusion bridge*\" OR \"diffusion generat*\" OR \"continuous diffusion\" OR \"diffusion step*\" OR \"diffusion objective*\" OR \"diffusion head*\" OR \"diffusion prior*\" OR \"reverse diffusion\" OR \"forward diffusion\" OR \"diffusion sampl*\" OR \"diffusion training\" OR \"diffusion refinement\" OR \"guided diffusion\" OR \"conditional diffusion\" OR \"diffusion augmentation\" OR \"embedding diffusion\" OR \"diffusion method*\" OR \"diffusion approach*\" OR \"diffusion technique*\" OR \"using diffusion\" OR \"via diffusion\" OR \"with diffusion\" OR \"through diffusion\" OR \"by diffusion\" OR \"diffusion for\" OR \"diffusion ar\" OR \"ar diffusion\" OR \"diffusion equipped\" OR \"diffusion directed\" OR \"diffusion supervision\" OR \"flow matching\" OR \"discrete flow*\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation) AND NOT (mri OR fmri OR dmri OR \"diffusion weighted\" OR \"diffusion tensor\" OR \"diffusion imaging\" OR tractograph* OR \"magnetic resonance\" OR dti OR dwi OR \"white matter\" OR \"diffusion equation*\" OR \"reaction diffusion\" OR \"heat equation*\" OR \"heat transfer\" OR thermal OR \"fluid dynamic*\" OR \"fluid flow*\" OR \"fluid mechanic*\" OR fluids OR porous OR \"anomalous diffusion\" OR \"mass transfer\" OR \"gas diffusion\" OR \"partial differential equation*\" OR \"finite element*\" OR \"navier stokes\" OR turbulen* OR \"traveling wave*\" OR wavefront* OR predator OR \"life table*\" OR dispersal OR oxide OR homogenization OR \"mean curvature\" OR smoluchowski OR kpp OR \"diffusion system*\" OR \"diffusion epidemic*\" OR \"diffusion type equation*\" OR epidemic* OR burgers OR microextraction OR dllme OR \"disc diffusion\" OR \"disk diffusion\" OR antimicrobial) AND NOT (\"diffusion of innovation*\" OR \"innovation diffusion\" OR \"diffusion of technolog*\" OR \"technology diffusion\" OR \"diffusion of information\" OR \"information diffusion\" OR \"diffusion of knowledge\" OR \"rapid diffusion\" OR \"policy diffusion\" OR \"norm diffusion\" OR \"cultural diffusion\" OR \"social network*\" OR twitter OR tweets) AND NOT (\"stable diffusion\") AND NOT (\"human motion\" OR \"motion generation\" OR \"motion synthesis\" OR animation OR layout OR gan OR gans OR gesture* OR facial OR handwritten OR wireless OR \"video diffusion\" OR \"image quality\" OR \"visual quality\" OR \"time series\" OR \"anomaly detection\" OR music OR \"speech synthesis\" OR \"text to speech\" OR \"voice conversion\" OR \"voice cloning\" OR \"scene text\" OR \"visual text\" OR \"text rendering\" OR \"autonomous driving\" OR \"driving scenario*\" OR \"driving simulation\" OR robot* OR \"internet of things\" OR iot OR 6g OR tabular OR \"image editing\" OR \"image synthesis\" OR lora OR \"low rank\" OR quantiz* OR \"preference optimization\" OR \"diffusion polic*\" OR federated OR unlearning OR watermark* OR jailbreak* OR \"retrieval augmented\" OR \"knowledge distillation\" OR 3d OR \"pose estimation\" OR sketch OR cad)"
+  },
+  "S2''": {
+   "M": "((\"unified multimodal\" OR \"unified multi-modal\" OR \"unified understanding and generation\" OR \"understanding and generation\" OR \"any-to-any\" OR \"mixed-modal*\" OR \"mixed-modality\") AND (diffusion OR \"masked generative\" OR \"discrete flow*\" OR \"flow matching\" OR \"rectified flow\" OR \"discrete denoising\") AND (multimodal OR \"multi-modal\" OR \"vision-language\" OR \"text-to-image\" OR \"image generation\" OR mllm OR mllms OR \"visual understanding\" OR \"image understanding\")) AND (language OR llm* OR \"language model*\" OR mllm OR mllms OR \"multimodal understanding\" OR \"multi-modal understanding\" OR \"visual understanding\" OR \"image understanding\" OR \"text generation\" OR \"language generation\" OR \"vision-language model*\" OR vlm* OR \"large multimodal model*\" OR lmm*)",
+   "VLA": "(\"vision-language-action\" OR vla OR vlas) AND (\"discrete diffusion\" OR \"discrete denoising\" OR \"masked diffusion\" OR \"unified diffusion\" OR \"diffusion language model*\" OR dllm OR dllms OR (\"diffusion-based\" AND (\"diffusion vision language action\" OR \"diffusion vla\" OR dvla)))"
+  }
+ }
+}

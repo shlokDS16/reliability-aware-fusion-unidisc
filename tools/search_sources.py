@@ -129,6 +129,82 @@ P_SPECS = {"S1'": _OR(*S1P_PARTS.values()), "S2'": _OR(*S2P_PARTS.values())}
 P_PARTS = {"S1'": S1P_PARTS, "S2'": S2P_PARTS}
 P_ARG = {"S1": "S1", "S2": "S2", "S1p": "S1'", "S2p": "S2'"}
 
+# ---------------------------------------------------------------- round 4: S1'' and S2'' (D0027), precision only
+# Every part of S1'' / S2'' is a subset of the same part of S1' / S2' (exclusions and extra requirements only; no term is added
+# that could match a record S1' / S2' does not match), so the recall of the seeds can only fall. Terms were taken from the false
+# positives in screening-queue-2026-10-15.jsonl; the count each removes is in corpus/string-revision-round4-2026-10-15.json.
+R4_INNOV = ["diffusion of innovation*", "innovation diffusion", "diffusion of technolog*", "technology diffusion",
+            "diffusion of information", "information diffusion", "diffusion of knowledge", "rapid diffusion", "policy diffusion",
+            "norm diffusion", "cultural diffusion"]
+R4_NET = ["social network*", "twitter", "tweets"]
+R4_MRI = ["mri", "fmri", "dmri", "diffusion weighted", "diffusion tensor", "diffusion imaging", "tractograph*", "magnetic resonance",
+          "dti", "dwi", "white matter"]
+R4_PHYS = ["diffusion equation*", "reaction diffusion", "heat equation*", "heat transfer", "thermal",
+           "fluid dynamic*", "fluid flow*", "fluid mechanic*", "fluids", "porous", "anomalous diffusion", "mass transfer",
+           "gas diffusion", "partial differential equation*", "finite element*", "navier stokes", "turbulen*"]
+R4_PDE = ["traveling wave*", "wavefront*", "predator", "life table*", "dispersal", "oxide", "homogenization",
+          "mean curvature", "smoluchowski", "kpp", "diffusion system*", "diffusion epidemic*", "diffusion type equation*",
+          "epidemic*", "burgers"]
+R4_CHEM = ["microextraction", "dllme"]
+R4_BIOMED = ["disc diffusion", "disk diffusion", "antimicrobial"]
+R4_SOC = R4_INNOV + R4_NET
+R4_NN = R4_MRI + R4_PHYS + R4_PDE + R4_CHEM + R4_BIOMED
+R4_STABLE = ["stable diffusion"]
+# non-text outputs (X1): speech, music, motion, time series ... used where a language word is not required (A2 without context,
+# A3 non-autoregressive + diffusion) and, in the longer form R4_NT_BC, in the broad branches B and C
+R4_NT = ["speech synthesis", "text to speech", "tts", "vocoder*", "voice conversion", "voice cloning", "speech generation",
+         "audio generation", "music", "singing", "waveform", "gesture*", "talking head", "dance", "time series", "point cloud",
+         "novel view", "video generation", "video to audio", "scene synthesis", "fault diagnosis", "anomaly detection", "imputation",
+         "precipitation", "hand object", "motion generation"]
+R4_NT_BC = ["human motion", "motion generation", "motion synthesis", "animation", "layout", "gan", "gans", "gesture*", "facial",
+            "handwritten", "wireless", "video diffusion", "image quality", "visual quality", "time series", "anomaly detection",
+            "music", "speech synthesis", "text to speech", "voice conversion", "voice cloning", "scene text", "visual text",
+            "text rendering", "autonomous driving", "driving scenario*", "driving simulation", "robot*",
+            "internet of things", "iot", "6g",
+            "tabular", "image editing", "image synthesis", "lora", "low rank", "quantiz*", "preference optimization", "diffusion polic*",
+            "federated", "unlearning", "watermark*", "jailbreak*", "retrieval augmented", "knowledge distillation", "3d",
+            "pose estimation", "sketch", "cad"]
+# diffusion used as a model (not as dissemination): required in B and C
+R4_DS = _OR("diffusion model*", "diffusion-based", "diffusion process*", "diffusion probabilistic", "denoising",
+            "diffusion transformer*", "diffusion language", "discrete diffusion", "masked diffusion", "latent diffusion",
+            "diffusion llm*", "diffusion decoding", "diffusion network*", "diffusion framework*", "diffusion paradigm*",
+            "diffusion lm*", "diffusion mllm*", "diffusion bridge*", "diffusion generat*", "continuous diffusion", "diffusion step*",
+            "diffusion objective*", "diffusion head*", "diffusion prior*", "reverse diffusion", "forward diffusion",
+            "diffusion sampl*", "diffusion training", "diffusion refinement",
+            "guided diffusion", "conditional diffusion", "diffusion augmentation", "embedding diffusion", "diffusion method*",
+            "diffusion approach*", "diffusion technique*", "using diffusion", "via diffusion", "with diffusion",
+            "through diffusion", "by diffusion", "diffusion for", "diffusion ar", "ar diffusion", "diffusion equipped",
+            "diffusion directed", "diffusion supervision", "flow matching", "discrete flow*")
+R4_A2_CTX_DD = _OR("discrete diffusion", "masked diffusion", "discrete flow matching", _AND("discrete flow*", "diffusion"),
+                   _AND("discrete state-space*", _OR("diffusion", "generative", "flow matching")))
+R4_A2_NOCTX_DD = _OR("masked diffusion", "discrete diffusion", "discrete flow matching")
+R4_A3_CTX = _OR("language model*", "llm*", "text generation", "language generation", "language modeling", "autoregressive",
+                "diffusion", "masked")
+R4_LMW = _OR("language", "llm*", "language model*", "mllm", "mllms", "multimodal understanding", "multi-modal understanding",
+             "visual understanding", "image understanding", "text generation", "language generation", "vision-language model*",
+             "vlm*", "large multimodal model*", "lmm*")
+S1PP_PARTS = {
+    "A1": _AND(S1P_PARTS["A1"], _NOT(*(R4_MRI + R4_CHEM))),
+    "A2": _OR(_AND(R4_A2_CTX_DD, P_CTX4, _NOT(*R4_NN), _NOT(*R4_SOC)),
+              _AND(R4_A2_NOCTX_DD, _NOT(P_BIO), _NOT(P_VIS), _NOT(*R4_NN), _NOT(*R4_SOC), _NOT(*R4_NT))),
+    "A3": _OR(_AND("absorbing state", P_CTX, R4_A3_CTX), _AND("any-order", P_CTX, R4_A3_CTX), "non-autoregressive language model*",
+              _AND("non-autoregressive", "diffusion", _NOT(P_BIO), _NOT(*R4_NT), _NOT(*R4_NN), _NOT(*R4_SOC))),
+    "B": _AND("diffusion", S1P_PARTS["B"][1][1], R4_DS, _NOT(P_BIO), _NOT(*R4_NN), _NOT(*R4_SOC), _NOT(*R4_STABLE), _NOT(*R4_NT_BC)),
+    "C": _AND("diffusion", P_LM, R4_DS, _NOT(P_BIO), _NOT(P_VIS), _NOT(*R4_NN), _NOT(*R4_SOC), _NOT(*R4_STABLE), _NOT(*R4_NT_BC)),
+}
+S2PP_PARTS = {
+    "M": _AND(S2P_PARTS["M"], R4_LMW),
+    "VLA": _AND(_OR("vision-language-action", "vla", "vlas"),
+                _OR("discrete diffusion", "discrete denoising", "masked diffusion", "unified diffusion", "diffusion language model*",
+                    "dllm", "dllms",
+                    _AND("diffusion-based", _OR("diffusion vision language action", "diffusion vla", "dvla")))),
+}
+P_SPECS["S1''"] = _OR(*S1PP_PARTS.values())
+P_SPECS["S2''"] = _OR(*S2PP_PARTS.values())
+P_PARTS["S1''"] = S1PP_PARTS
+P_PARTS["S2''"] = S2PP_PARTS
+P_ARG["S1pp"], P_ARG["S2pp"] = "S1''", "S2''"
+
 
 def ev_p(spec, t):
     if isinstance(spec, str):

@@ -1,4 +1,4 @@
-# Search v2 report, 2026-10-15 (decision D0026)
+# Search v2 report, 2026-10-15 (decisions D0026 and D0027; D0027 is section 12 onward)
 
 Agent: lit-scout. Brief: D0026 items 1, 2, 4 and the follow-on tasks (revise S1/S2, rerun every accessible source, merge, string-filter the snowball records, enrich abstracts, update the subscription sheet). Nothing here is a screening decision. Every count is read from the JSON files named in section 10; the tools that produce them are `tools/string_rounds.py`, `tools/search_sources.py`, `tools/merge_new_records_v2.py`, `tools/make_search_sheet_v2.py`.
 
@@ -306,3 +306,199 @@ Queue records by S1' part: A1 740, A2 1,038, B 1,577, A3 303, C 1,478; by S2' pa
 - `research/sources/search-raw/` (raw responses, run logs)
 - `tools/search_sources.py`, `tools/merge_new_records_v2.py`, `tools/string_rounds.py`, `tools/make_search_sheet_v2.py`, `tools/write_search_report_v2.py`
 - `research/review/protocol.md` section 10 (amendment entry of 2026-10-15)
+
+## 12. Round 4: precision only (decision D0027)
+
+D0027 allowed one further string round, restricted to precision: exclusion terms for the noise seen in the real results and a language-word requirement in the broad branches, accepted only if the seed recall stays at 525/540 with MM28 28/28 and R50 47/50. The result is S1'' and S2''. Nothing was screened. The tools are `tools/search_sources.py` (strings: `S1PP_PARTS`, `S2PP_PARTS`, lists `R4_*`), `tools/string_rounds.py round4` (recall, steps, per-term counts), `tools/merge_new_records_v2.py final-filter` (application to the queue, validation sets) and `tools/precision_actual.py` (modes `r4`, `lost-sample`).
+
+### 12.1 Result in one table
+
+| | S1'/S2' (D0026) | S1''/S2'' (D0027) |
+|---|---|---|
+| Seed recall, 540 entries (539 distinct IDs) | 525/540 | 525/540 |
+| MM28 | 28/28 | 28/28 |
+| Random 50 | 47/50 | 47/50 |
+| Queue records matching (of 6,376) | 4,184 | 1,842 |
+| of which tier T1 | 1,293 | 1,084 |
+| of which tier T2 | 220 | 120 |
+| of which tier T3 | 2,221 | 512 |
+| of which tier T4 | 450 | 126 |
+| Estimated share of the matching queue records that look in scope (title labels, stratified sample, 40 per tier) | 11.8% of the whole queue of 6,376 (second estimate, section 2.4) | 35.1% |
+
+Seed entries lost against S1'/S2': 0. Records of the 19,328 new records that match S1''/S2'' but not S1'/S2': 0 (every part of S1'' and S2'' is a subset of the same part of S1' and S2', so this holds by construction and was checked). The set evaluation used here agrees with the word-based test of `search_sources.matches` on 187 records checked (0 disagreements). Seed entries still not captured: 15, the same 15 as in section 2.5.
+
+### 12.2 S1'' and S2'' (verbatim)
+
+Reading rule as in section 2.2: AND binds tighter than OR; a trailing `*` is a word-prefix wildcard; `NOT (...)` excludes any of the listed words; title, abstract and keywords.
+
+S1'':
+```
+(("diffusion language model*" OR "language diffusion model*" OR "diffusion llm*" OR "diffusion lm*" OR dllm OR dllms OR "diffusion-based language model*" OR "diffusion-based llm*" OR "diffusion large language model*" OR "diffusion-based large language model*" OR "text diffusion" OR "block diffusion" OR "absorbing diffusion" OR "diffusion mllm*" OR "diffusion vlm*" OR "diffusion vision-language model*" OR dmllm OR dmllms OR dvlm OR dvlms) AND NOT (mri OR fmri OR dmri OR "diffusion weighted" OR "diffusion tensor" OR "diffusion imaging" OR tractograph* OR "magnetic resonance" OR dti OR dwi OR "white matter" OR microextraction OR dllme)) OR ((("discrete diffusion" OR "masked diffusion" OR "discrete flow matching" OR ("discrete flow*" AND diffusion) OR ("discrete state-space*" AND (diffusion OR generative OR "flow matching"))) AND (language OR text OR token* OR "language model*" OR llm* OR vocabulary OR autoregressive OR reasoning) AND NOT (mri OR fmri OR dmri OR "diffusion weighted" OR "diffusion tensor" OR "diffusion imaging" OR tractograph* OR "magnetic resonance" OR dti OR dwi OR "white matter" OR "diffusion equation*" OR "reaction diffusion" OR "heat equation*" OR "heat transfer" OR thermal OR "fluid dynamic*" OR "fluid flow*" OR "fluid mechanic*" OR fluids OR porous OR "anomalous diffusion" OR "mass transfer" OR "gas diffusion" OR "partial differential equation*" OR "finite element*" OR "navier stokes" OR turbulen* OR "traveling wave*" OR wavefront* OR predator OR "life table*" OR dispersal OR oxide OR homogenization OR "mean curvature" OR smoluchowski OR kpp OR "diffusion system*" OR "diffusion epidemic*" OR "diffusion type equation*" OR epidemic* OR burgers OR microextraction OR dllme OR "disc diffusion" OR "disk diffusion" OR antimicrobial) AND NOT ("diffusion of innovation*" OR "innovation diffusion" OR "diffusion of technolog*" OR "technology diffusion" OR "diffusion of information" OR "information diffusion" OR "diffusion of knowledge" OR "rapid diffusion" OR "policy diffusion" OR "norm diffusion" OR "cultural diffusion" OR "social network*" OR twitter OR tweets)) OR (("masked diffusion" OR "discrete diffusion" OR "discrete flow matching") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation) AND NOT (mri OR fmri OR dmri OR "diffusion weighted" OR "diffusion tensor" OR "diffusion imaging" OR tractograph* OR "magnetic resonance" OR dti OR dwi OR "white matter" OR "diffusion equation*" OR "reaction diffusion" OR "heat equation*" OR "heat transfer" OR thermal OR "fluid dynamic*" OR "fluid flow*" OR "fluid mechanic*" OR fluids OR porous OR "anomalous diffusion" OR "mass transfer" OR "gas diffusion" OR "partial differential equation*" OR "finite element*" OR "navier stokes" OR turbulen* OR "traveling wave*" OR wavefront* OR predator OR "life table*" OR dispersal OR oxide OR homogenization OR "mean curvature" OR smoluchowski OR kpp OR "diffusion system*" OR "diffusion epidemic*" OR "diffusion type equation*" OR epidemic* OR burgers OR microextraction OR dllme OR "disc diffusion" OR "disk diffusion" OR antimicrobial) AND NOT ("diffusion of innovation*" OR "innovation diffusion" OR "diffusion of technolog*" OR "technology diffusion" OR "diffusion of information" OR "information diffusion" OR "diffusion of knowledge" OR "rapid diffusion" OR "policy diffusion" OR "norm diffusion" OR "cultural diffusion" OR "social network*" OR twitter OR tweets) AND NOT ("speech synthesis" OR "text to speech" OR tts OR vocoder* OR "voice conversion" OR "voice cloning" OR "speech generation" OR "audio generation" OR music OR singing OR waveform OR gesture* OR "talking head" OR dance OR "time series" OR "point cloud" OR "novel view" OR "video generation" OR "video to audio" OR "scene synthesis" OR "fault diagnosis" OR "anomaly detection" OR imputation OR precipitation OR "hand object" OR "motion generation"))) OR (("absorbing state" AND (language OR text OR token* OR "language model*") AND ("language model*" OR llm* OR "text generation" OR "language generation" OR "language modeling" OR autoregressive OR diffusion OR masked)) OR ("any-order" AND (language OR text OR token* OR "language model*") AND ("language model*" OR llm* OR "text generation" OR "language generation" OR "language modeling" OR autoregressive OR diffusion OR masked)) OR "non-autoregressive language model*" OR ("non-autoregressive" AND diffusion AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*) AND NOT ("speech synthesis" OR "text to speech" OR tts OR vocoder* OR "voice conversion" OR "voice cloning" OR "speech generation" OR "audio generation" OR music OR singing OR waveform OR gesture* OR "talking head" OR dance OR "time series" OR "point cloud" OR "novel view" OR "video generation" OR "video to audio" OR "scene synthesis" OR "fault diagnosis" OR "anomaly detection" OR imputation OR precipitation OR "hand object" OR "motion generation") AND NOT (mri OR fmri OR dmri OR "diffusion weighted" OR "diffusion tensor" OR "diffusion imaging" OR tractograph* OR "magnetic resonance" OR dti OR dwi OR "white matter" OR "diffusion equation*" OR "reaction diffusion" OR "heat equation*" OR "heat transfer" OR thermal OR "fluid dynamic*" OR "fluid flow*" OR "fluid mechanic*" OR fluids OR porous OR "anomalous diffusion" OR "mass transfer" OR "gas diffusion" OR "partial differential equation*" OR "finite element*" OR "navier stokes" OR turbulen* OR "traveling wave*" OR wavefront* OR predator OR "life table*" OR dispersal OR oxide OR homogenization OR "mean curvature" OR smoluchowski OR kpp OR "diffusion system*" OR "diffusion epidemic*" OR "diffusion type equation*" OR epidemic* OR burgers OR microextraction OR dllme OR "disc diffusion" OR "disk diffusion" OR antimicrobial) AND NOT ("diffusion of innovation*" OR "innovation diffusion" OR "diffusion of technolog*" OR "technology diffusion" OR "diffusion of information" OR "information diffusion" OR "diffusion of knowledge" OR "rapid diffusion" OR "policy diffusion" OR "norm diffusion" OR "cultural diffusion" OR "social network*" OR twitter OR tweets))) OR (diffusion AND ("text generation" OR "language generation" OR "natural language generation" OR "sequence-to-sequence" OR seq2seq OR "discrete sequence*" OR "speculative decoding" OR "categorical data" OR "discrete data" OR paraphras* OR "textual diffusion" OR "text modeling" OR "named entity" OR sentiment OR summarization OR dialog* OR dialogue OR "machine translation" OR "text style" OR commonsense OR "topic model*" OR "triple extraction" OR "information extraction") AND ("diffusion model*" OR "diffusion-based" OR "diffusion process*" OR "diffusion probabilistic" OR denoising OR "diffusion transformer*" OR "diffusion language" OR "discrete diffusion" OR "masked diffusion" OR "latent diffusion" OR "diffusion llm*" OR "diffusion decoding" OR "diffusion network*" OR "diffusion framework*" OR "diffusion paradigm*" OR "diffusion lm*" OR "diffusion mllm*" OR "diffusion bridge*" OR "diffusion generat*" OR "continuous diffusion" OR "diffusion step*" OR "diffusion objective*" OR "diffusion head*" OR "diffusion prior*" OR "reverse diffusion" OR "forward diffusion" OR "diffusion sampl*" OR "diffusion training" OR "diffusion refinement" OR "guided diffusion" OR "conditional diffusion" OR "diffusion augmentation" OR "embedding diffusion" OR "diffusion method*" OR "diffusion approach*" OR "diffusion technique*" OR "using diffusion" OR "via diffusion" OR "with diffusion" OR "through diffusion" OR "by diffusion" OR "diffusion for" OR "diffusion ar" OR "ar diffusion" OR "diffusion equipped" OR "diffusion directed" OR "diffusion supervision" OR "flow matching" OR "discrete flow*") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*) AND NOT (mri OR fmri OR dmri OR "diffusion weighted" OR "diffusion tensor" OR "diffusion imaging" OR tractograph* OR "magnetic resonance" OR dti OR dwi OR "white matter" OR "diffusion equation*" OR "reaction diffusion" OR "heat equation*" OR "heat transfer" OR thermal OR "fluid dynamic*" OR "fluid flow*" OR "fluid mechanic*" OR fluids OR porous OR "anomalous diffusion" OR "mass transfer" OR "gas diffusion" OR "partial differential equation*" OR "finite element*" OR "navier stokes" OR turbulen* OR "traveling wave*" OR wavefront* OR predator OR "life table*" OR dispersal OR oxide OR homogenization OR "mean curvature" OR smoluchowski OR kpp OR "diffusion system*" OR "diffusion epidemic*" OR "diffusion type equation*" OR epidemic* OR burgers OR microextraction OR dllme OR "disc diffusion" OR "disk diffusion" OR antimicrobial) AND NOT ("diffusion of innovation*" OR "innovation diffusion" OR "diffusion of technolog*" OR "technology diffusion" OR "diffusion of information" OR "information diffusion" OR "diffusion of knowledge" OR "rapid diffusion" OR "policy diffusion" OR "norm diffusion" OR "cultural diffusion" OR "social network*" OR twitter OR tweets) AND NOT ("stable diffusion") AND NOT ("human motion" OR "motion generation" OR "motion synthesis" OR animation OR layout OR gan OR gans OR gesture* OR facial OR handwritten OR wireless OR "video diffusion" OR "image quality" OR "visual quality" OR "time series" OR "anomaly detection" OR music OR "speech synthesis" OR "text to speech" OR "voice conversion" OR "voice cloning" OR "scene text" OR "visual text" OR "text rendering" OR "autonomous driving" OR "driving scenario*" OR "driving simulation" OR robot* OR "internet of things" OR iot OR 6g OR tabular OR "image editing" OR "image synthesis" OR lora OR "low rank" OR quantiz* OR "preference optimization" OR "diffusion polic*" OR federated OR unlearning OR watermark* OR jailbreak* OR "retrieval augmented" OR "knowledge distillation" OR 3d OR "pose estimation" OR sketch OR cad)) OR (diffusion AND ("language model*" OR llm*) AND ("diffusion model*" OR "diffusion-based" OR "diffusion process*" OR "diffusion probabilistic" OR denoising OR "diffusion transformer*" OR "diffusion language" OR "discrete diffusion" OR "masked diffusion" OR "latent diffusion" OR "diffusion llm*" OR "diffusion decoding" OR "diffusion network*" OR "diffusion framework*" OR "diffusion paradigm*" OR "diffusion lm*" OR "diffusion mllm*" OR "diffusion bridge*" OR "diffusion generat*" OR "continuous diffusion" OR "diffusion step*" OR "diffusion objective*" OR "diffusion head*" OR "diffusion prior*" OR "reverse diffusion" OR "forward diffusion" OR "diffusion sampl*" OR "diffusion training" OR "diffusion refinement" OR "guided diffusion" OR "conditional diffusion" OR "diffusion augmentation" OR "embedding diffusion" OR "diffusion method*" OR "diffusion approach*" OR "diffusion technique*" OR "using diffusion" OR "via diffusion" OR "with diffusion" OR "through diffusion" OR "by diffusion" OR "diffusion for" OR "diffusion ar" OR "ar diffusion" OR "diffusion equipped" OR "diffusion directed" OR "diffusion supervision" OR "flow matching" OR "discrete flow*") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation) AND NOT (mri OR fmri OR dmri OR "diffusion weighted" OR "diffusion tensor" OR "diffusion imaging" OR tractograph* OR "magnetic resonance" OR dti OR dwi OR "white matter" OR "diffusion equation*" OR "reaction diffusion" OR "heat equation*" OR "heat transfer" OR thermal OR "fluid dynamic*" OR "fluid flow*" OR "fluid mechanic*" OR fluids OR porous OR "anomalous diffusion" OR "mass transfer" OR "gas diffusion" OR "partial differential equation*" OR "finite element*" OR "navier stokes" OR turbulen* OR "traveling wave*" OR wavefront* OR predator OR "life table*" OR dispersal OR oxide OR homogenization OR "mean curvature" OR smoluchowski OR kpp OR "diffusion system*" OR "diffusion epidemic*" OR "diffusion type equation*" OR epidemic* OR burgers OR microextraction OR dllme OR "disc diffusion" OR "disk diffusion" OR antimicrobial) AND NOT ("diffusion of innovation*" OR "innovation diffusion" OR "diffusion of technolog*" OR "technology diffusion" OR "diffusion of information" OR "information diffusion" OR "diffusion of knowledge" OR "rapid diffusion" OR "policy diffusion" OR "norm diffusion" OR "cultural diffusion" OR "social network*" OR twitter OR tweets) AND NOT ("stable diffusion") AND NOT ("human motion" OR "motion generation" OR "motion synthesis" OR animation OR layout OR gan OR gans OR gesture* OR facial OR handwritten OR wireless OR "video diffusion" OR "image quality" OR "visual quality" OR "time series" OR "anomaly detection" OR music OR "speech synthesis" OR "text to speech" OR "voice conversion" OR "voice cloning" OR "scene text" OR "visual text" OR "text rendering" OR "autonomous driving" OR "driving scenario*" OR "driving simulation" OR robot* OR "internet of things" OR iot OR 6g OR tabular OR "image editing" OR "image synthesis" OR lora OR "low rank" OR quantiz* OR "preference optimization" OR "diffusion polic*" OR federated OR unlearning OR watermark* OR jailbreak* OR "retrieval augmented" OR "knowledge distillation" OR 3d OR "pose estimation" OR sketch OR cad))
+```
+
+S2'':
+```
+((("unified multimodal" OR "unified multi-modal" OR "unified understanding and generation" OR "understanding and generation" OR "any-to-any" OR "mixed-modal*" OR "mixed-modality") AND (diffusion OR "masked generative" OR "discrete flow*" OR "flow matching" OR "rectified flow" OR "discrete denoising") AND (multimodal OR "multi-modal" OR "vision-language" OR "text-to-image" OR "image generation" OR mllm OR mllms OR "visual understanding" OR "image understanding")) AND (language OR llm* OR "language model*" OR mllm OR mllms OR "multimodal understanding" OR "multi-modal understanding" OR "visual understanding" OR "image understanding" OR "text generation" OR "language generation" OR "vision-language model*" OR vlm* OR "large multimodal model*" OR lmm*)) OR (("vision-language-action" OR vla OR vlas) AND ("discrete diffusion" OR "discrete denoising" OR "masked diffusion" OR "unified diffusion" OR "diffusion language model*" OR dllm OR dllms OR ("diffusion-based" AND ("diffusion vision language action" OR "diffusion vla" OR dvla))))
+```
+
+Parts (S1'' = A1 OR A2 OR A3 OR B OR C; S2'' = M OR VLA). Seeds and queue records by part (a record can match several parts):
+
+| Part | Seed entries | Queue T1 | T2 | T3 | T4 |
+|---|---|---|---|---|---|
+| S1'':A1 | 432 | 738 | 0 | 0 | 0 |
+| S1'':A2 | 192 | 476 | 70 | 6 | 126 |
+| S1'':A3 | 66 | 114 | 52 | 0 | 0 |
+| S1'':B | 170 | 142 | 5 | 279 | 0 |
+| S1'':C | 340 | 393 | 2 | 270 | 0 |
+| S2'':M | 8 | 106 | 0 | 0 | 0 |
+| S2'':VLA | 4 | 20 | 0 | 0 | 0 |
+
+### 12.3 What changed, step by step (cumulative; counts are queue records that match S1'/S2' and stop matching at that step)
+
+| Step | Seed recall | Queue after the step (T1 / T2 / T3 / T4) | Removed by the step (T1 / T2 / T3 / T4) | Seeds lost |
+|---|---|---|---|---|
+| 1 diffusion of innovation, information, technology; social networks (R4_SOC) | 525/540, 28/28, 47/50 | 1293 / 219 / 1847 / 445 | 0 / 1 / 374 / 5 | none |
+| 2 MRI, physics, PDE, chemistry (R4_NN; A1 only MRI and chemistry) | 525/540, 28/28, 47/50 | 1287 / 213 / 1766 / 379 | 6 / 6 / 81 / 66 | none |
+| 3 'stable diffusion' in B and C | 525/540, 28/28, 47/50 | 1287 / 213 / 1632 / 379 | 0 / 0 / 134 / 0 | none |
+| 4 non-text outputs: speech, music, motion, time series (R4_NT in A2 without context and A3 non-autoregressive; R4_NT_BC in B and C) | 525/540, 28/28, 47/50 | 1235 / 186 / 1015 / 356 | 52 / 27 / 617 / 23 | none |
+| 5 A2: without context only masked / discrete diffusion and discrete flow matching; with context 'discrete flow*' needs 'diffusion', 'discrete state-space*' needs diffusion, generative or flow matching | 525/540, 28/28, 47/50 | 1235 / 160 / 1015 / 126 | 0 / 26 / 0 / 230 | none |
+| 6 A3: 'absorbing state' and 'any-order' need a language-model or diffusion word besides the language word | 525/540, 28/28, 47/50 | 1224 / 120 / 1015 / 126 | 11 / 40 / 0 / 0 | none |
+| 7 B and C: 'diffusion' must be used as a model (R4_DS) | 525/540, 28/28, 47/50 | 1224 / 120 / 512 / 126 | 0 / 0 / 503 / 0 | none |
+| 8 S2'': M needs a language word (R4_LMW); VLA: plain 'diffusion-based' needs 'diffusion VLA' wording | 525/540, 28/28, 47/50 | 1084 / 120 / 512 / 126 | 140 / 0 / 0 / 0 | none |
+
+The steps overlap: a record that two steps would remove is counted at the first. The next table counts each exclusion list **alone** (the list added to S1'/S2' on its own, in the branches it applies to):
+
+| List (terms; applies to) | Removes T1 | T2 | T3 | T4 | Total | Seeds lost |
+|---|---|---|---|---|---|---|
+| R4_INNOV (11 terms; A2, A3 non-autoregressive, B, C) | 0 | 0 | 258 | 3 | 261 | none |
+| R4_NET (3 terms; A2, A3 non-autoregressive, B, C) | 0 | 1 | 184 | 2 | 187 | none |
+| R4_MRI (11 terms; A1, A2, A3 non-autoregressive, B, C) | 1 | 3 | 21 | 1 | 26 | none |
+| R4_PHYS (17 terms; A2, A3 non-autoregressive, B, C) | 0 | 3 | 41 | 37 | 81 | none |
+| R4_PDE (15 terms; A2, A3 non-autoregressive, B, C) | 2 | 0 | 24 | 38 | 64 | none |
+| R4_CHEM (2 terms; A1, A2, A3 non-autoregressive, B, C) | 1 | 0 | 2 | 0 | 3 | none |
+| R4_BIOMED (3 terms; A2, A3 non-autoregressive, B, C) | 2 | 0 | 7 | 0 | 9 | none |
+| R4_STABLE (1 term; B, C) | 0 | 0 | 140 | 0 | 140 | none |
+| R4_NT (A2 without context, A3) (26 terms; A2 without context, A3 non-autoregressive) | 43 | 28 | 0 | 23 | 94 | none |
+| R4_NT_BC (B, C) (49 terms; B, C) | 0 | 0 | 720 | 0 | 720 | none |
+
+Records removed by each term alone (total over T1 to T4; a record with two listed terms is counted under both; the split by tier is in `string-revision-round4-2026-10-15.json`, key `per_term_standalone_removal`):
+
+- R4_INNOV: `diffusion of innovation*` 66; `innovation diffusion` 17; `diffusion of technolog*` 2; `technology diffusion` 7; `diffusion of information` 11; `information diffusion` 93; `diffusion of knowledge` 3; `rapid diffusion` 41; `policy diffusion` 8; `norm diffusion` 11; `cultural diffusion` 9
+- R4_NET: `social network*` 106; `twitter` 94; `tweets` 62
+- R4_MRI: `mri` 16; `fmri` 4; `dmri` 2; `diffusion weighted` 8; `diffusion tensor` 6; `diffusion imaging` 0; `tractograph*` 0; `magnetic resonance` 11; `dti` 3; `dwi` 5; `white matter` 4
+- R4_PHYS: `diffusion equation*` 17; `reaction diffusion` 6; `heat equation*` 5; `heat transfer` 4; `thermal` 16; `fluid dynamic*` 9; `fluid flow*` 2; `fluid mechanic*` 1; `fluids` 4; `porous` 8; `anomalous diffusion` 0; `mass transfer` 3; `gas diffusion` 1; `partial differential equation*` 12; `finite element*` 7; `navier stokes` 5; `turbulen*` 6
+- R4_PDE: `traveling wave*` 9; `wavefront*` 4; `predator` 2; `life table*` 4; `dispersal` 3; `oxide` 4; `homogenization` 6; `mean curvature` 5; `smoluchowski` 1; `kpp` 1; `diffusion system*` 15; `diffusion epidemic*` 2; `diffusion type equation*` 2; `epidemic*` 16; `burgers` 4
+- R4_CHEM: `microextraction` 3; `dllme` 1
+- R4_BIOMED: `disc diffusion` 3; `disk diffusion` 2; `antimicrobial` 6
+- R4_STABLE: `stable diffusion` 140
+- R4_NT (A2 without context, A3): `speech synthesis` 19; `text to speech` 23; `tts` 24; `vocoder*` 5; `voice conversion` 3; `voice cloning` 4; `speech generation` 5; `audio generation` 3; `music` 13; `singing` 4; `waveform` 7; `gesture*` 5; `talking head` 2; `dance` 1; `time series` 20; `point cloud` 2; `novel view` 1; `video generation` 2; `video to audio` 1; `scene synthesis` 1; `fault diagnosis` 2; `anomaly detection` 5; `imputation` 6; `precipitation` 1; `hand object` 1; `motion generation` 1
+- R4_NT_BC (B, C): `human motion` 20; `motion generation` 33; `motion synthesis` 17; `animation` 29; `layout` 40; `gan` 29; `gans` 60; `gesture*` 22; `facial` 22; `handwritten` 18; `wireless` 14; `video diffusion` 17; `image quality` 24; `visual quality` 18; `time series` 39; `anomaly detection` 10; `music` 36; `speech synthesis` 13; `text to speech` 18; `voice conversion` 0; `voice cloning` 3; `scene text` 15; `visual text` 22; `text rendering` 12; `autonomous driving` 22; `driving scenario*` 5; `driving simulation` 1; `robot*` 81; `internet of things` 14; `iot` 13; `6g` 8; `tabular` 29; `image editing` 13; `image synthesis` 34; `lora` 37; `low rank` 26; `quantiz*` 46; `preference optimization` 16; `diffusion polic*` 32; `federated` 20; `unlearning` 7; `watermark*` 7; `jailbreak*` 8; `retrieval augmented` 50; `knowledge distillation` 13; `3d` 46; `pose estimation` 3; `sketch` 7; `cad` 2
+
+The terms come from the false positives in the queue (titles read, then terms with seed counts of zero and a coherent meaning kept): diffusion of innovation, information or technology and social-network diffusion (R4_INNOV, R4_NET); diffusion MRI (R4_MRI); diffusion, heat and fluid equations, traveling waves, epidemics, oxide layers (R4_PHYS, R4_PDE); microextraction, disc diffusion (R4_CHEM, R4_BIOMED); Stable Diffusion; speech, music, motion, time series and a few technique words in the branches that need no language word (R4_NT, R4_NT_BC). Two terms that looked noisy but removed seed entries were dropped: `knowledge diffusion` (DiffuCOMET, 2402.17011) and `social media` (DiffuDetox, 2306.08505); `pde*`, `trajector*` and `heat` were narrowed for the same reason (2605.14531 and masked-diffusion theory papers), `fluid*` because of the model name FLUID-Omni, `susceptibility` because of a masked-diffusion sampling paper.
+
+The structural changes: (5) the no-context branch of A2 keeps `masked diffusion`, `discrete diffusion` and `discrete flow matching` only (`discrete state-space*` alone and `discrete flow*` alone accounted for 195 and 89 of the 450 T4 records, almost all control, physics and signal processing); with a language word, `discrete flow*` needs `diffusion` and `discrete state-space*` needs a diffusion, generative or flow-matching word; (6) `absorbing state` (Markov chains) and `any-order` (Shapley interactions) need, besides the language word, a language-model, autoregressive, diffusion or masked word; (7) in B and C `diffusion` must occur as a model (`diffusion model*`, `diffusion-based`, `denoising`, `discrete diffusion`, `using diffusion`, `flow matching`, ...; list R4_DS), which removes the dissemination sense (cultural, policy, French *diffusion*); (8) in S2'' the unified-multimodal branch M needs a language word and the VLA branch no longer accepts plain `diffusion-based` (robot diffusion policies). Two seed entries are held by the no-context branch of A2 alone (2509.13866, 2608.10615): their abstracts have no language word, which is why a strict language-word requirement there fails the acceptance rule (next subsection).
+
+### 12.4 The language-word requirement as asked, tried alone
+
+| Requirement added to S1'/S2' on its own | Seed recall | Queue records removed (T1 / T2 / T3 / T4) | Seeds lost |
+|---|---|---|---|
+| language word (language, text, token*, language model*, llm*, vocabulary, autoregressive, reasoning) required in A2 without context | 523/540, 28/28, 47/50 | 0 / 0 / 0 / 450 | 2509.13866, 2608.10615 |
+| language word (language, text, token*, language model*) required in B | 520/540, 28/28, 47/50 | 0 / 0 / 706 / 0 | 2402.17011, 2403.00808, 2501.00862, 2305.01735, 2305.13298 |
+| language word (language, text, token*, language model*) required in C | 525/540, 28/28, 47/50 | 0 / 0 / 110 / 0 | none |
+
+A language word in the no-context branch of A2 contradicts what the branch is (a branch for abstracts without one) and costs two seeds; the same word in B costs five seeds (NLP-task diffusion papers whose abstract names the task, not the language) and in C removes only 110 records because C already requires `language model*` or `llm*`. Both were therefore relaxed as reported: the no-context branch is restricted instead (its own terms and the exclusion lists), B and C get the diffusion-as-a-model requirement and the exclusion lists, and the language word is required where it costs nothing (M, A3).
+
+### 12.5 Precision on the same stratified real-result design (new seed)
+
+Stratified random sample of the final screening queue (records passing S1'' and S2'', D0027): 40 records per tier (seed 20261019), labelled from the title as in 2.3 (`precision-round4-labels-2026-10-15.json`). Estimated number of in-scope-looking records in the queue of 1,842: 647 (35.1%); in scope or unclear: 939 (51.0%). Per tier:
+
+| Tier | Records | Sampled | IN | U | O | IN share (Wilson 95%) | Estimated IN records |
+|---|---|---|---|---|---|---|---|
+| T1 | 1,084 | 40 | 20 | 6 | 14 | 50% (35% to 65%) | 542 |
+| T2 | 120 | 40 | 3 | 7 | 30 | 8% (3% to 20%) | 9 |
+| T3 | 512 | 40 | 7 | 6 | 27 | 18% (9% to 32%) | 90 |
+| T4 | 126 | 40 | 2 | 10 | 28 | 5% (1% to 16%) | 6 |
+
+Estimated in-scope-looking records in the 1,842 that pass: 647 (35.1%); in scope or unclear: 939 (51.0%). Stratified normal-approximation 95% interval for the in-scope-looking count: about 470 to 830 (25% to 45%). The earlier estimate for the queue before round 4 was 755 of 6,376 (11.8%); the two estimates have wide intervals and the numbers of in-scope-looking records are not different beyond that noise, while the queue is 71% smaller. Caveats: the labels are mine, from titles only (U means the title does not settle it); I proposed the strings and labelled the sample, so this is not an independent precision estimate; and the sample is drawn from the same queue from which the exclusion terms were derived (in-sample), so it is optimistic about records of the kinds I looked at. T3 is the loosest stratum: a first draw with the same seed, made on a string that kept 7% more records (1,976, before `tabular`, `lora`, `quantiz*` and a few other technique words were added to R4_NT_BC and `disc diffusion` to R4_BIOMED; 88 of its 160 records are in the final sample), gave 1 in-scope-looking record of 40 in T3, the final draw gives 7 of 40, and the second estimate before round 4 gave 2 of 40: a sample of 40 from a tier of 512 cannot separate 2% from 18%, and T3 stays the weakest tier (B and C carry NLP-task diffusion papers and generic LLM-plus-diffusion papers side by side).
+
+### 12.6 What the filter removed: a check by title, and the validation sets
+
+Check by me (not the validation sets): a stratified random sample of the database records the filter removed from T1 to T4, drawn from the records outside validation set V1 (seed 20261022; 30, 10, 40 and 20 titles from T1 to T4), read as in 12.5:
+
+| Original tier | Removed | Sampled | Looks in scope | Unclear | Other |
+|---|---|---|---|---|---|
+| T1 | 212 | 30 | 0 | 2 | 28 |
+| T2 | 100 | 10 | 0 | 0 | 10 |
+| T3 | 1,708 | 40 | 0 | 1 | 39 |
+| T4 | 323 | 20 | 0 | 0 | 20 |
+
+None of the 100 looked in scope; three were unclear (a generic multi-task diffusion paper, a unified multimodal latent-diffusion framework, a diffusion-styled preference-optimization paper). T5 (2,188 records that match no string locally) had 0 of 40 in scope or unclear in the second estimate (section 2.4). With zero observed the upper end is set by the sample sizes, not by the filter: a Jeffreys-prior simulation of the stratified sample gives an upper 95% bound of about 100 in-scope-looking records among the 2,343 removed database records of T1 to T4, and about 100 among the 2,188 of T5 — too wide to settle the 2% reversal criterion of D0027. That is what the validation sets are for.
+
+Validation sets (written, **not screened**; `research/review/screening/validation-autoexcl-2026-10-15.jsonl`, 300 rows with `id`, `title`, `abstract`, `set`, in shuffled order; the sampling record with each sampled ID and its tier, source and abstract status is `research/review/corpus/validation-autoexcl-sampling-2026-10-15.json`):
+
+- V1: 200 of the 4,531 database records that fail S1''/S2'' (snowball-only records excluded), `random.Random(20261020).sample(sorted(ids), 200)`. By original tier the population is T1 212, T2 100, T3 1,708, T4 323, T5 2,188; 426 have no abstract.
+- V2: 100 of the 2,107 snowball-only records excluded in D0026 on the title alone (no abstract after enrichment), `random.Random(20261021).sample(sorted(ids), 100)`.
+
+Estimating the loss: if the screener finds k in-scope records among the 200 of V1, the estimate for V1's population is 4,531 x k/200 with a Clopper-Pearson or Wilson interval; V2 likewise with 2,107 x k/100. V1 mixes tiers in proportion to the population (T5 and T3 dominate), so the tier-by-tier split of the findings is in the sampling record. The sets overlap the records whose titles I read while building S1''/S2'' (well over a thousand titles of removed T1 to T4 records, and 40 T5 titles); the estimate from V1 is therefore slightly optimistic for those and unbiased for the rest.
+
+### 12.7 The strings applied to the queue (all tiers, T5 included)
+
+S1'' and S2'' were evaluated on title, abstract and keywords of every one of the 6,376 queue records. **1,842 pass** (`screening-queue-final-2026-10-15.jsonl`: the queue fields plus `string_match` for S1, S2, S1', S2', S1'', S2'', `s1pp_parts`, `s2pp_parts`, `queue_tier` as before and `queue_tier_final` recomputed on S1''/S2'' parts); **4,534 fail** and are marked `auto_excluded`, reason 'string filter, D0027' (`auto-excluded-2026-10-15.jsonl`).
+
+| Original tier | In queue | Pass | Auto-excluded | Pass: database | Pass: snowball | Excluded: database | Excluded: snowball |
+|---|---|---|---|---|---|---|---|
+| T1 | 1,297 | 1,084 | 213 | 997 | 87 | 212 | 1 |
+| T2 | 220 | 120 | 100 | 119 | 1 | 100 | 0 |
+| T3 | 2,221 | 512 | 1,709 | 499 | 13 | 1,708 | 1 |
+| T4 | 450 | 126 | 324 | 106 | 20 | 323 | 1 |
+| T5 | 2,188 | 0 | 2,188 | 0 | 0 | 2,188 | 0 |
+| Total | 6,376 | 1,842 | 4,534 | 1,721 | 121 | 4,531 | 3 |
+
+Passing records by recomputed tier: T1 1,083, T2 120, T3 513, T4 126. Passing records without an abstract: 171. Auto-excluded without an abstract: 426 database, 1 snowball (judged on the title alone, as the 2,107 snowball records of D0026; V1 contains these in proportion).
+
+By source (a record found by several sources counts under each):
+
+| Source | In queue | Pass | Auto-excluded |
+|---|---|---|---|
+| semantic-scholar-bulk | 5,369 | 1,065 | 4,304 |
+| openalex | 322 | 207 | 115 |
+| arxiv-protocol-rerun | 1,439 | 515 | 924 |
+| acl-anthology | 138 | 87 | 51 |
+| snowball-backward | 261 | 214 | 47 |
+| snowball-forward | 678 | 515 | 163 |
+| openreview | 715 | 651 | 64 |
+
+Of the 4,534 auto-excluded records, 2,188 matched no string locally (T5), 2,342 matched S1' or S2', and **111 matched the original protocol strings S1 or S2**: 72 match S1 (64 of them through the non-autoregressive-with-diffusion branch, i.e. speech, music, time-series and similar non-text diffusion papers that S1 accepts because it has no exclusion) and 39 match S2 only (unified multimodal image, video or 3D generation with no language word in the abstract). They are excluded as X1 (no text output) by the exclusion lists and the language-word requirement of M. If the orchestrator wants records that match the protocol strings S1 or S2 never to be excluded by automation, they can be released from `auto-excluded-2026-10-15.jsonl` (field `string_match`).
+
+## 13. Numbers for the PRISMA 2020 flow diagram, updated for D0027
+
+Rows 1 to 6 of section 8 are unchanged. The row 'Records to screen' becomes:
+
+| Box | Count | Note |
+|---|---|---|
+| Records to screen after D0026 (before D0027) | 6,376 | 6,252 database + 124 snowball matching a string |
+| Marked ineligible by automation tool (string filter, D0027) | 4,534 | 4,531 database records and 3 snowball records that fail S1''/S2'' (T5 2,188, T4 324, T3 1,709, T2 100, T1 213) |
+| Marked ineligible by automation tool, in all (D0026 + D0027) | 17,486 | 12,952 + 4,534 |
+| **Records to screen (title and abstract), final queue** | **1,842** | 1,721 database + 121 snowball; tiers T1 1,084, T2 120, T3 512, T4 126, T5 0 |
+| Of which without an abstract | 171 | screened on title alone, flagged |
+| Validation of the automation filter | 200 + 100 records | V1 200 of 4,531 database exclusions; V2 100 of 2,107 title-only snowball exclusions; sets written, not screened |
+
+The 4,534 + 12,952 records marked by automation are reported as 'records marked as ineligible by automation tools' (PRISMA 2020 item 16a), with the reasons given here and in the protocol amendment. Dual screening by two Claude screeners (D0026 item 5, D0027 item 4) then applies to the final queue, T1 and T2 first; this has not started.
+
+## 14. Files added or changed by D0027
+
+- `research/review/corpus/string-revision-round4-2026-10-15.json`
+- `research/review/corpus/screening-queue-final-2026-10-15.jsonl`
+- `research/review/corpus/auto-excluded-2026-10-15.jsonl`
+- `research/review/corpus/final-filter-stats-2026-10-15.json`
+- `research/review/corpus/validation-autoexcl-sampling-2026-10-15.json`
+- `research/review/corpus/precision-round4-sample-2026-10-15.json`
+- `research/review/corpus/precision-round4-labels-2026-10-15.json`
+- `research/review/corpus/precision-round4-2026-10-15.json`
+- `research/review/corpus/lost-check-sample-2026-10-15.json`
+- `research/review/corpus/lost-check-labels-2026-10-15.json`
+- `research/review/corpus/lost-check-2026-10-15.json`
+- `research/review/corpus/subscription-search-sheet.md`
+- `research/review/screening/validation-autoexcl-2026-10-15.jsonl`
+- `tools/search_sources.py` (S1PP_PARTS, S2PP_PARTS, R4_* lists), `tools/string_rounds.py` (`round4`), `tools/merge_new_records_v2.py` (`final-filter`), `tools/precision_actual.py` (`r4`, `lost-sample`, `lost-report`), `tools/make_search_sheet_v2.py`, `tools/write_search_report_v2.py`
+- `research/review/protocol.md` section 10 (amendment entry D0027)
