@@ -1,0 +1,125 @@
+id,A_decision,A_code,A_reason,B_decision,B_code,B_reason
+M01743,unclear,,Simplex diffusion theory report with text generation extension mentioned,include,,Mirror diffusion on simplex with extension to text generation
+M02084,exclude,X1,Privacy of discrete diffusion on generic datasets,unclear,,Privacy theory of discrete diffusion; data type not specified
+M02145,exclude,X1,Discrete probability flow tested on toy data and CIFAR-10,unclear,,Discrete probability flow theory; experiments on toy and CIFAR-10 only
+M03137,exclude,X1,Image generation from multimodal prompts,unclear,,LLM plus diffusion multimodal generation; unified training unclear
+M03633,include,,Unified fashion model integrating diffusion model and LLM,unclear,,LLM integrated with diffusion for fashion text and image generation; unification unclear
+M04018,exclude,X0,"LLMs for autonomous driving, no diffusion",unclear,,Mixed review and benchmark; proposes vision-language diffusion framework ViLaD
+M04350,exclude,X1,Autoregressive-diffusion transformer for visual generation,include,,Block autoregressive diffusion transformer validated including text generation
+M04373,exclude,X1,"Discrete diffusion guidance on genomic, molecule and image data; no text",unclear,,"Generic discrete diffusion guidance; listed domains non-text, text not stated"
+M04458,exclude,X1,Diffusion refines change features; no text diffusion,unclear,,Diffusion refines features for change captioning; text output path unclear
+M04571,unclear,,Embedding diffusion mechanism in LLMs; unclear if generative diffusion,exclude,X0,"Spectral embedding diffusion mechanism, not a generative diffusion model"
+M05242,exclude,X1,"Diffusion generates prompt embeddings, not code or text",unclear,,Diffusion generates soft prompt embeddings; text produced by AR LLM
+M05850,exclude,X1,Generic continuous diffusion inference-time control; no text,unclear,,Modality-agnostic diffusion control incl. discrete diffusion; text use unstated
+M05966,unclear,,Benchmark with diffusion inpainting variants for input generation; role unclear,include,,Benchmark and methods incl. diffusion inpainting to generate fluent text inputs
+M06216,exclude,X1,Metamaterial geometry diffusion transformers,unclear,,Diffusion over algebraic-language geometry sentences for metamaterials
+M06218,exclude,X1,Rectified discrete flow; abstract shows image generation only,unclear,,General rectified discrete flow method; only image experiments mentioned
+M06272,exclude,X0,Discrete autoregressive image generation with RL,unclear,,Unified AR image-text model with offline diffusion decoder; unification via diffusion unclear
+M06505,unclear,,Activation sparsity across LLMs including first diffusion LLM study,include,,Activation sparsity study including diffusion-based LLMs
+M06714,exclude,X1,"Schrodinger bridge benchmark on discrete spaces, no text",unclear,,Benchmark of discrete SchrÃ¶dinger bridge solvers; text domain not stated
+M07228,exclude,X1,"Parallel sampling theory for any-order AR and continuous diffusion, no text",unclear,,Parallel sampling theory for any-order AR and continuous diffusion; text unspecified
+M07270,unclear,,Diffusion-driven coarse-to-fine LLM recommendation; text diffusion unclear,include,,Recommendation built on a fine-tuned masked diffusion language model
+M07750,exclude,X2,MLLM plus separate T2I backbone pipeline; text conditions image generation,unclear,,MLLM linked to T2I backbone by adapter; unified or pipeline unclear
+M08006,include,,Search-augmented masked diffusion for constrained symbolic generation,unclear,,Search-augmented masked diffusion for biology and symbolic reasoning; text unclear
+M08275,unclear,,Masked VLA diffusion for driving; text reasoning output unclear,include,,Masked vision-language-action diffusion with explainable reasoning output
+M08652,unclear,,Unified discrete diffusion VLA jointly denoising goal image and actions,include,,Unified discrete diffusion VLA generating goal images and actions
+M08827,exclude,X1,Statistical mechanics of discrete diffusion on Ising data,unclear,,"Statistical mechanics of discrete diffusion; Ising data, real datasets unspecified"
+M08935,unclear,,LLM plus diffusion transformer image system; unification unclear,exclude,X2,"Image generation system; LLM used for conditioning, no text generation"
+M08950,exclude,X1,"Robot world model; language only as input, outputs video and actions",unclear,,"Discrete diffusion world model over vision, language, actions; text generation unclear"
+M09141,exclude,X1,"Discrete flow matching theory, no text stated",unclear,,Generic discrete flow matching convergence theory; text not stated
+M09412,exclude,X0,MoE hyperparameter transfer,unclear,,Hyperparameter transfer tested on diffusion pretraining; domain unstated
+M09718,exclude,X1,Speculative sampling for continuous diffusions,unclear,,Speculative sampling for continuous diffusions; data domain not stated
+M09782,exclude,X0,Causal draft head; diffusion drafters only baselines,unclear,,Parallel draft head vs block-diffusion drafters; own diffusion component unclear
+M09851,unclear,,Discrete diffusion VLA; text generation role unstated,exclude,X1,Discrete diffusion VLA generating robot actions; no text output
+M10430,exclude,X1,Driving VLA inference acceleration,include,,Diffusion drafter for speculative decoding in driving VLA
+M10538,exclude,X1,"Score matching theory, image experiments",unclear,,Loss-floor theory for score matching incl. masked diffusion; text unstated
+M10696,exclude,X1,"Diffusion LM on numeric fusion waveforms, no language or code",unclear,,Diffusion LM predicting numeric waveform tokens; natural-language output doubtful
+M10706,unclear,,Transformers simulate diffusion samplers in context; link to LM text unclear,exclude,X1,Transformers emulating continuous diffusion samplers in context; no text diffusion
+M10834,include,,Block diffusion drafter for speculative decoding,unclear,,Parallel drafter in block diffusion lineage; diffusion nature not explicit
+M10840,unclear,,Uniform discrete flow sampler on Sudoku and images; text relevance unclear,include,,Entropy-ordered sampler for uniform discrete flow incl. multimodal understanding
+M10881,exclude,X1,"Diffusion network inference acceleration, image U-Net blocks",include,,Spectral layer scheduling evaluated on LLaDA and image diffusion
+M11053,unclear,,Diffusion distillation across scales; data modality not stated,exclude,X1,On-policy distillation for guided diffusion models; no text
+M11153,unclear,,Discrete diffusion generating symbolic alpha formulas; structured text status unclear,include,,Hierarchical discrete diffusion generating symbolic alpha formulas
+M11784,exclude,X1,Diffusion image synthesis for pest classification,unclear,,No abstract; diffusion-VLM data synthesis for pest classification
+M11786,exclude,X0,"Political YouTube analysis, unrelated",unclear,,No abstract; title suggests social-media issue diffusion study
+M12066,exclude,X1,Traffic forecasting; no abstract,unclear,,No abstract; spatio-temporal LLM with DDIM for transport prediction
+M12295,exclude,X0,Retrieval-augmented language modeling thesis,include,,Thesis includes diffusion LLM-based text embeddings
+M12440,unclear,,Comparison drawing on published diffusion-versus-AR results; secondary or primary unclear,exclude,X3,Comparison compiled from published results; secondary synthesis
+M12468,unclear,,ODE sampler for discrete diffusion; text not mentioned,include,,ODE-based sampler for discrete diffusion on text and code
+M12531,exclude,X3,Survey of anime generation; no abstract,unclear,,No abstract; title indicates a survey on anime generation
+M12583,exclude,X3,Beginner book on generative AI; no abstract,unclear,,No abstract; title suggests introductory book on generative AI
+M12594,exclude,X0,Proposes autoregressive parallel decoder; dLLMs only baselines,unclear,,AR parallel decoder compared with diffusion LLMs; own method non-diffusion
+M12811,include,,Inference orchestration for diffusion language models in IoT,exclude,X1,Masked diffusion over tokenized sensor readings for anomaly detection; no text
+M12848,include,,"Draft refinement language models for parallel reasoning, denoiser-based",unclear,,Uniform-corruption denoiser for reasoning drafts; diffusion status and text output ambiguous
+M12918,exclude,X1,Visual-condition token compression for image generation,unclear,,Token compression for image generation incl. unified multimodal backbones
+M13102,include,,Empirical comparison of diffusion and autoregressive LMs with fine-tuning,unclear,,Diffusion versus AR LM comparison; thesis possibly not in English
+M13361,exclude,X1,Crystal structure generation,unclear,,Masked diffusion LMs generating crystal records; text-like output uncertain
+M13549,exclude,X1,Diffusion LM adapted for speech synthesis; abstract missing,unclear,,No abstract; diffusion language model adapted for TTS
+M13568,include,,Theory of masked diffusion versus autoregression for sequences,unclear,,Theory of autoregression and masked diffusion for sequences; text not explicit
+M13723,include,,Diffusion language models for automated literature review,unclear,,Literature review agent built on diffusion LM; model-level finding unclear
+M13760,include,,Diffusion LLMs as model of human speech production,unclear,,Existing dLLM representations correlated with ECoG; model-level finding unclear
+M13808,exclude,X1,"Symbolic music generation, not text; no abstract",unclear,,No abstract; Diffusion-LM applied to symbolic music
+M13890,exclude,X1,Vector font generation; no abstract,unclear,,No abstract; masked diffusion for vector fonts
+M13909,include,,Mamba-based diffusion language model architecture,unclear,,Mamba diffusion text architecture without any empirical evaluation
+M14181,exclude,X3,Survey of efficient diffusion language models; no abstract,unclear,,No abstract; title indicates survey of efficient diffusion LMs
+M14471,exclude,X2,Prompt expansion reinforcement learning for text-to-image,unclear,,Joint text-image RL in unified model; diffusion role and unification unclear
+M14533,exclude,X1,Title: MLLM plus diffusion transformer for garment images; abstract missing,unclear,,No abstract; MLLM plus diffusion transformer for garment synthesis
+M14721,unclear,,Theory linking attention and diffusion on simplex; text relevance unclear,include,,"OT theory linking attention and diffusion, validated on diffusion LLMs"
+M14735,exclude,X1,"Discrete flow matching theory, no text stated",unclear,,Generic theory of discrete flow matching; text domain not stated
+M14752,exclude,X1,Thesis on randomized networks and image diffusion,include,,Thesis including unified discrete diffusion for vision-language generation
+M14799,exclude,X3,Survey of fusing LLMs and diffusion models,unclear,,No abstract; title indicates a survey
+M14935,unclear,,Thesis on diffusion and flow models; language and code only briefly mentioned,include,,Thesis including anchored diffusion language models for text and code
+M14971,unclear,,Theory of discrete diffusion concrete scores; text domain not stated,include,,Geometry of concrete scores in discrete diffusion language models
+M14980,exclude,X7,Shared-task system using prompted LLMs; diffusion reasoning only briefly explored,unclear,,SemEval syllogism system; diffusion-based reasoning only briefly explored
+M15106,exclude,X1,Text-to-image reinforcement learning,unclear,,Diffusion RL for image generation applied to a unified multimodal model
+M15140,exclude,X1,Speech synthesis; no abstract,unclear,,No abstract; discrete flow matching for codec TTS
+M15367,unclear,,Diffusion LM used for data augmentation; modification versus unchanged use unclear,include,,Diffusion LM based text data augmentation for aggressiveness detection
+M15408,exclude,X4,Partnership announcement; no method or result,unclear,,No abstract; title suggests industry news on Mercury diffusion LLMs
+M15515,unclear,,Diffusion LM generating captions from traces; method versus unchanged use unclear,include,,Diffusion LM generating trace-controlled image captions
+M15587,exclude,X0,"Crystal growth study; abstract missing, title decides",unclear,,"No abstract; title concerns crystal materials, not ML"
+M15597,unclear,,Diffusion inversion to explain LLM features; whether it generates text unclear,include,,Diffusion posterior sampling with diffusion LM prior for SAE interpretation
+M15667,exclude,X1,Structured entity and tabular data generation,unclear,,Mixed diffusion over KB entities incl. strings; text output uncertain
+M15684,unclear,,Dissertation on multimodal knowledge; includes discrete-diffusion self-revision part,include,,Dissertation incl. self-revision in discrete-diffusion text generation
+M15731,exclude,X7,Evaluates existing diffusion LM among models for clinical coding,unclear,,Clinical coding evaluation including one diffusion LM; possibly unchanged application
+M15767,exclude,X1,Scene generation; no abstract,unclear,,No abstract; absorbing discrete diffusion for scene generation
+M15792,unclear,,Frozen VLM plus diffusion decoder framed as unified; unification degree unclear,include,,"Unified understanding, generation, editing with jointly trained diffusion decoder over VLM"
+M15839,exclude,X1,Image diffusion and LLM synthetic data for vision-language; abstract missing,unclear,,No abstract; synthetic data from diffusion and LLMs
+M15863,unclear,,Fine-tuned Diffusion-LLM for information diffusion prediction; model nature unclear,exclude,X0,Information diffusion prediction in social networks; not a diffusion model
+M15897,exclude,X1,"Masked diffusion VLM generating navigation actions, not text",unclear,,Masked diffusion VLM fine-tuned to output navigation actions; text generation unclear
+M15918,exclude,X1,Title: LLM-guided diffusion augmentation for object detection images; abstract missing,unclear,,No abstract; title suggests LLM-guided image diffusion augmentation
+M16043,unclear,,Bidirectional diffusion linked to LLM by projection; unification unclear,include,,Bidirectional diffusion with LLM for image-to-text and text-to-image
+M16044,unclear,,Replaces masked-diffusion semantic-ID decoding; output not natural language,exclude,X1,Masked latent completion for semantic-ID recommendation; no text
+M16055,exclude,X1,Lane graph coordinates generation,unclear,,Block diffusion over lane-graph tokens; unclear if language model output
+M16154,exclude,X1,Medical image generative modeling,unclear,,Unified multimodal model adapted for image-output medical tasks only
+M16270,exclude,X1,Protein sequence generation; no abstract,unclear,,No abstract; diffusion language model for protein sequences
+M16328,include,,Shared diffusion VLM extended to continuous control,unclear,,Diffusion VLM backbone adapted to actions; text generation role unclear
+M16346,exclude,X1,Motion synthesis; no abstract,unclear,,No abstract; absorbing discrete diffusion for motion synthesis
+M16397,unclear,,Thesis spanning segmentation and unified generation; diffusion text status unclear,exclude,X1,Thesis on segmentation and vision diffusion transformer
+M16633,include,,Number-theoretic denoise schedule for diffusion language models,unclear,,Numerology-like DLM noise schedule; no empirical DLM results reported
+M16820,unclear,,Discrete diffusion synthesizes optimization problem structures; output form unclear,exclude,X1,Discrete diffusion over graph specifications for data synthesis
+M16987,unclear,,Discrete diffusion over textual tree strings for phylogenies; text status unclear,exclude,X1,"Discrete diffusion over textual phylogenetic tree strings, not natural language"
+M17004,exclude,X0,"Tool planning, no diffusion",include,,Plan repair evaluated with masked diffusion tool planners
+M17285,unclear,,VLM plus DiT with skill calls; unified status unclear,include,,Unified VLM-DiT multimodal model for interleaved visual programs
+M17317,exclude,X0,"Cognitive architecture programme, no diffusion model",unclear,,Research programme with preliminary masked-diffusion findings; largely position
+M17320,exclude,X0,"Encryption technique, no diffusion model",unclear,,"No abstract; title suggests cryptographic diffusion, not generative model"
+M17321,unclear,,Continual learning Fisher analysis evaluated on masked diffusion LMs,include,,Rank-1 Fisher continual learning evaluated on masked diffusion LMs
+M17332,include,,"Generation order study AR versus masked diffusion, includes language",unclear,,Generation-order study contrasting AR and masked diffusion via causal any-order model
+M17425,exclude,X1,"Multimodal sentiment diffusion; abstract missing, title decides",unclear,,No abstract; diffusion reconstructing representations for sentiment analysis
+M17444,exclude,X1,Reference-image guided image editing,unclear,,Image relation editing possibly within unified multimodal models; output images only
+M17772,exclude,X1,Robot world model evaluation with discrete diffusion,include,,Unified discrete diffusion world model jointly generating observations and progress text
+M17812,exclude,X1,Title: bird recognition with LLM and diffusion; abstract missing,unclear,,No abstract; LLM and diffusion for bird recognition
+M17929,exclude,X1,"Sign language generation diffusion; abstract missing, title decides",unclear,,"No abstract; spoken-to-sign diffusion, likely non-text output"
+M17979,exclude,X0,Social media opinion spread; no abstract,unclear,,No abstract; title suggests social sentiment diffusion modelling
+M18015,exclude,X0,"LLM spatial reasoning study, no diffusion model",unclear,,LLM physics grounding study; one diffusion LLM among evaluated models
+M18096,exclude,X2,Diffusion image generation conditioned on MLLM,unclear,,MLLM conditioning diffusion generator in unified model; joint training unclear
+M18270,exclude,X2,Benchmark of text-to-image models; text only conditions,unclear,,T2I reasoning benchmark evaluating diffusion and unified multimodal models
+M18390,exclude,X1,"Discrete diffusion text-to-motion; abstract missing, title decides",unclear,,No abstract; text-to-motion discrete diffusion likely conditioning only
+M18636,exclude,X0,Title is PDE diffusion-convection equation; abstract missing,unclear,,"No abstract; title suggests a PDE paper, not ML"
+M18656,unclear,,Diffusion likelihood estimator failure with learned embeddings; text domain unclear,include,,Failure of diffusion likelihood estimators shown on diffusion language model
+M18811,exclude,X1,Dissertation on image diffusion models,include,,Dissertation includes one-step continuous diffusion language model
+M18816,include,,Dissertation incl. unified VLM-diffusion architecture for understanding and generation,unclear,,Dissertation on unified multimodal models; diffusion component not stated
+M18820,unclear,,Dissertation on unified multimodal models; diffusion component not stated,include,,Dissertation on unified AR plus diffusion models for understanding and generation
+M18993,unclear,,Unified multimodal self-evolution; diffusion component not stated in abstract,include,,Self-evolving test-time training of unified multimodal diffusion models
+M19094,include,,Masked diffusion models with RL for chess puzzle sequences,unclear,,Masked diffusion for chess puzzles; output not natural language text
+M19106,exclude,X1,"Speech output translation, not text",unclear,,LLaDA adapted for speech-to-speech translation; output modality unclear
+M19130,exclude,X1,Title: protein design with language diffusion; abstract missing,unclear,,No abstract; language diffusion model for protein design

@@ -1,0 +1,10 @@
+A rows 1953, B rows 1953, both 1953
+pass vs exclude  raw 0.955 kappa 0.911 [0.892, 0.929] AC1 0.911
+three-way        raw 0.937 kappa 0.892 [0.874, 0.910] AC1 0.910
+binary detail: {'n': 1953, 'both_pass': 867, 'both_exclude': 999, 'A_only': 12, 'B_only': 75, 'p_pos': 0.952, 'p_neg': 0.958, 'bias_index': 0.032, 'prevalence_index': 0.068}
+three-way table: {('exclude', 'exclude'): 999, ('unclear', 'unclear'): 215, ('include', 'include'): 615, ('unclear', 'include'): 23, ('exclude', 'unclear'): 67, ('include', 'unclear'): 14, ('exclude', 'include'): 8, ('unclear', 'exclude'): 11, ('include', 'exclude'): 1}
+screener A: {'exclude': 1074, 'include': 630, 'unclear': 249}
+screener B: {'exclude': 1011, 'include': 646, 'unclear': 296}
+records passed by A or B (to full text or adjudication): 954
+rescue vs validation on 110 V1 records: reference positives 2, caught 2, missed 0, extra 6
+rescue decisions: {'exclude': 2548, 'unclear': 107, 'include': 15} rows 2670

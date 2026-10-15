@@ -56,3 +56,10 @@ Deviation to disclose: about 20 records with truncated abstracts were decided af
 ## Rescue screener (Haiku), batches 1-2
 - Batch 2 caveat: most abstracts read only to the visible 550-900 characters; about 14 ambiguous records read in full. Mitigation: every rescue record had already failed S1''/S2'' applied to the full title and abstract, so a diffusion-LM phrase in an unread tail would normally have matched the strings. Disclose.
 - Pipelines (LLM + separate diffusion image generator) coded X2; tabular diffusion unclear; text rendered in images X2; symbolic music, graphs, molecules X1; missing abstract with a decisive title unclear.
+
+## Screener B, batch 4
+1. Puzzle/maze/ARC/chess-only discrete denoising (M15835, M12848, M19094): structured text or X1?
+2. Motion/behaviour as the other modality (M15235, M15236).
+3. Generic discrete diffusion/flow theory (M06218, M09141, M14735, M02145, M06714) unclear; masked-diffusion theory included (M10159, M06333). One shared rule needed.
+4. SMILES, Newick, HLS pragma strings (M14279, M16987, M12789) coded X1; "structured text" note could cover them.
+5. LLM + separately trained/offline diffusion decoder presented as unified (M03150, M06272, M03633, M14249) unclear; joint training or shared backbone stated (M19019, M17285, M15184) included.
