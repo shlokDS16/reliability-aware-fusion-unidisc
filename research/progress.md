@@ -1,7 +1,28 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 2 (2026-10-15, 08:10 IST; newest block, overrides all older). Start here.**
+- **HANDOFF 3 (2026-10-15, about 08:45 IST; newest block, overrides all older). Start here.**
+  **Two worktrees.** The EXP-003 driver runs in `.claude/worktrees/dlm-discovery-resume-ca3357`
+  (its `runs/EXP-003/` is untracked and only there). All other work now happens in
+  `.claude/worktrees/resume-dlm-discovery-exp-003-334706` (branch fast-forwarded to the ca3357 tip
+  6573351; the harness blocks writes into another worktree). Check the driver at
+  `<ca3357>/runs/EXP-003/driver.log`; when DONE.txt exists, run the frozen analysis there.
+  **Done this session:** no restart since HANDOFF 2 (boot 04:32; no events 41, 1001, 6008, 1074
+  after 08:00); driver PID 37236 alive in M1. D0018: engineer's interpretation calls accepted,
+  card 1.2 erratum appended (unconditional branch masks all observed positions, verified in code),
+  firewall disclosure recorded. **User decision 2026-10-15:** run everything now despite weekly
+  88 percent (user will upgrade the plan if the limit is hit); save work often.
+  **Running (agents write as they go):** novelty-auditor on EXP-003 ->
+  `review/audits/2026-10-15-novelty-EXP-003.md`; census coder B (Claude Opus) ranks 92-128 ->
+  `review/census/coder-B-claude-r092-r128.jsonl`; coder A (Claude Sonnet, blind) ranks 1-40 ->
+  `coder-A-claude-r001-r040.jsonl`. Brief for all coders: `review/census/CLAUDE-CODER-BRIEF.md`.
+  **Remaining batches:** B 129-165, 166-202 (stop when B's eligible count, Codex ranks 1-91 plus
+  Claude, reaches 150; Codex had 66 eligible); A 41-80, 81-120, 121-160, 161-202 (A codes every rank
+  B coded). Then agreement (before reconciliation, raw disagreements kept), adjudication,
+  census-result-v2. Then EXP-003 analysis and gate-auditor, then manuscript.
+  **User side task:** delete datasets for storage (Paper 3 `data/raw` 187.9 GB, ML paper `data`
+  0.3 GB, Dam `periyar_ccd_rnn/data` 0.14 GB); commands given in chat; Claude does not hard-delete.
+- **HANDOFF 2 (2026-10-15, 08:10 IST).**
   Overnight: the EXP-003 driver finished the pilot (no stop rule; n_generate 138, 120 eligible,
   share 0.875) and the controls generation and scoring, then stopped at 03:16 on a **code bug**
   (UTF-8 files read with the Windows code page; KeyError on a non-ASCII noun). The laptop
