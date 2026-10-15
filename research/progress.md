@@ -38,6 +38,18 @@
   acmart skeleton, Introduction, Review method, census section in `paper/review/`.
   **Next:** apply audit corrections; EXP-003 frozen analysis + gate-auditor when DONE.txt exists;
   manuscript sections design space, error budget, open problems; then research-humanizer.
+  **Update 2026-10-15 ~10:50 IST.** Census v2 corrected after gate audit (D0021): 147/153 =
+  0.961 [0.917, 0.982]. Manuscript started (`paper/review/`, commit 7c71535): OUTLINE.md, acmsmall
+  skeleton, Introduction, Review method, census section drafted (18 pp; ~2.8 pp over budget);
+  stubs: notation, design space, RQ evidence, error budget, open problems, EXP-003, limitations,
+  conclusion. **PRISMA blockers found by the writer (need the user and professor):** (a) only two
+  arXiv searches run; the protocol's other databases and snowballing not run; (b) logged S1 query
+  differs from the protocol string; recall vs seed list 421/540 = 78 percent, no pilot record;
+  (c) human validation (218 sample) and the 120 screening disagreements still undone; (d) no
+  full-text screening of the 1123 passed records (only the 176-record census sample read);
+  (e) protocol never frozen (still DRAFT); (f) PLAN.md and D0011 still cite the old meta-analysis
+  title and 47-model counts; (g) professor's name, school, e-mail, ORCIDs, and exact model IDs of
+  screener A and the Claude coders not recorded. Weekly usage 98 percent at 10:50.
   **User side task (done):** delete datasets for storage (Paper 3 `data/raw` 187.9 GB, ML paper `data`
   0.3 GB, Dam `periyar_ccd_rnn/data` 0.14 GB); commands given in chat; Claude does not hard-delete.
 - **HANDOFF 2 (2026-10-15, 08:10 IST).**
