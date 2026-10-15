@@ -108,3 +108,16 @@ Conventions: eligible "Y"/"NA"; F1 = NA rows have F2-F6 NA; missing Table 1 cell
   for 92-128 were in the shared scratchpad until 09:00.
 - Value vocabularies differ across files ("Y"/"yes", "" / "NA" exclusion codes, "Co-varied");
   `analysis/census/agreement_random.py` normalises eligibility; F5/F6 categories need a mapping.
+
+### Coder A, ranks 161-176 (15 of 16 eligible; 169 X0)
+1. Ranks 162, 170: LLaDA used only as ELBO scorer or probed representation; no text generated;
+   eligible with F1 = NA (X0/X7 plausible).
+2. Rank 165: convergence theory for absorbing diffusion on a generic state space; text only as
+   motivation; eligible with F1 = NA (I1 exclusion plausible).
+3. Rank 172: joint flow-matching plus discrete text diffusion for scene-text super-resolution;
+   I1(b) accepted though the "text" is a recognised string; F1 multi-metric row.
+4. Rank 166: no abstract number, Figure 2 only, Table 1 MaskGIT images; used Table 2 "Evenly"
+   (Toxic 65.0); G for reward guidance with token rule unstated (how to combine G with NS);
+   F5, F6 Not stated (NFE rises via particles and iterations).
+5. Ranks 168, 163: no abstract number; first row of the first results table taken (168 appendix
+   Table 2, Duo-distilled 8 NFE; 163 Table 2, Dream 16 steps on C++); somewhat arbitrary.
