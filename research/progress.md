@@ -20,7 +20,16 @@
   Claude, reaches 150; Codex had 66 eligible); A 41-80, 81-120, 121-160, 161-202 (A codes every rank
   B coded). Then agreement (before reconciliation, raw disagreements kept), adjudication,
   census-result-v2. Then EXP-003 analysis and gate-auditor, then manuscript.
-  **User side task:** delete datasets for storage (Paper 3 `data/raw` 187.9 GB, ML paper `data`
+  **Update 2026-10-15 ~10:00 IST.** Novelty audit done (D0019: incremental 0.65; wording limits).
+  Census coding complete: sample = ranks 1-176; coder B (Codex 1-91, Claude Opus 92-176 plus
+  19, 79) 151 eligible; coder A (Sonnet, blind) all 176 ranks. Agreement before reconciliation in
+  `analysis/census/agreement-random.log` (script `agreement_random.py`), 158 field disagreements in
+  `review/census/disagreements-random.csv`; ambiguities in `review/census/coder-ambiguities-2026-10-15.md`.
+  **Running:** adjudicator (Opus) writing `review/coverage/census-codebook-v1.2.md` (rules only).
+  **Next:** two adjudicators apply v1.2 to the disagreements (ranks 1-88, 89-176) ->
+  `review/census/census-random-final.jsonl` + notes; census-result-v2; then EXP-003 analysis when
+  DONE.txt exists; then manuscript. Datasets deleted by the user (C: 203 GB free).
+  **User side task (done):** delete datasets for storage (Paper 3 `data/raw` 187.9 GB, ML paper `data`
   0.3 GB, Dam `periyar_ccd_rnn/data` 0.14 GB); commands given in chat; Claude does not hard-delete.
 - **HANDOFF 2 (2026-10-15, 08:10 IST).**
   Overnight: the EXP-003 driver finished the pilot (no stop rule; n_generate 138, 120 eligible,
