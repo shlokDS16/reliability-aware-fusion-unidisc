@@ -1,15 +1,122 @@
-% Section 7. The error budget as a taxonomy (C3). STUB. Plan: OUTLINE.md "7 Error budget".
+% Section 7. The error budget as a taxonomy (contribution C3).
+% Evidence map: OUTLINE.md section 2, "7 Error budget". Sources: research/review/framework-v2.md sections A to D (D3, "Not claimed"),
+% framework-v1.md sections 2.1, 2.2, 2.5, 2.6 and 3, method/selection-term.md (Theorem 1, written up by the method-architect, audited by
+% the red team: audits/2026-10-14-red-team-selection-term.md), dossier/primer-samplers.md, dossier/prior-art-selection.md.
+% Not claimed here (framework-v2.md section D "Not claimed"): E_sel or E_tilt as new terms; any per-step impossibility; any size of V, G or
+% S_theta on a real model; the U-shape in the number of steps (toy only).
 \section{The error budget as a taxonomy}
 \label{sec:budget}
 
-\todo{stub: write from framework-v2 sections B and C; every identity credited to its source, every withdrawn item listed as withdrawn}
+An error budget here is a way to say where a sampler's design acts. It is bookkeeping for classifying methods, not a bound that we estimate, and no size of any term on a real model is claimed. Whatever is not elementary algebra is credited to the paper that has it. % src: framework-v2.md section B (last sentence) and section D "Not claimed"
 
-Plan.
+\subsection{The factorisation identity and its sources}
+\label{sec:budget-identity}
+
+Take the erasure channel with a marginal predictor, a position law that is a function of the state $s_n$ plus fresh noise independent of $x$ given the state, and values drawn independently from the predicted marginals, Eq.~\eqref{eq:product-kernel}. Let $Q$ be the \emph{data path} (draw $x\sim q$; at each state $s_n(x)$ draw $A_n\sim\rho(\cdot\mid s_n)$ and reveal $x^{A_n}$) and $P$ the sampler's own path. Write $q_A$ for the true law of $x^A$ given the revealed tokens and $q^i$ for that of $x^i$. The \emph{total correlation} of a joint law is $\TC(\pi)=\KL{\pi}{\prod_j\pi_j}$, and $\KL{\pi}{\prod_j\nu_j}=\TC(\pi)+\sum_j\KL{\pi_j}{\nu_j}$. The chain rule over the path gives
+\begin{equation}
+  \KL{Q}{P}\;=\;\underbrace{\sum_n\mathbb E_Q\big[\TC(q_{A_n})\big]}_{\Efact}
+  \;+\;\underbrace{\sum_n\mathbb E_Q\Big[\sum_{i\in A_n}\KL{q^i}{p_\theta^i(\cdot\mid s_n)}\Big]}_{\Elearn},
+  \label{eq:identity}
+\end{equation}
+and $\KL{q}{p}\le\KL{Q}{P}$ for the output law $p$, with equality when the position law is deterministic given the state. In words: the divergence is the price of committing several positions at once ($\Efact$, the dependence among tokens committed together) plus the model error on the states the policy visits ($\Elearn$). % src: framework-v1.md section 2.1; method/selection-term.md T1.3 (with V = 0)
+
+The identity is published in pieces, and we claim none of it. For random orders it is in the autoregressive diffusion models paper~\cite{arXiv:2110.02037} (Eq.~3 and~4); Li and Cai bound it for random mask sets and add the training error exactly~\cite{arXiv:2505.21400}; for fixed partitions ParallelBench has a lower bound with equality when the committed conditionals are the data's~\cite{arXiv:2510.04767}, Feng et al.\ the chain-rule steps~\cite{arXiv:2502.09622}, and Zhang et al.\ both KL directions~\cite{arXiv:2602.00286}. For adaptive, state-dependent policies it is the entropy-bounded sampler paper (Eq.~7, App.~A.1: equality for deterministic policies, an upper bound for randomised ones)~\cite{arXiv:2505.24857}, which also gives the bound $\TC\le\sum_iH(q^i)-\max_iH(q^i)$ behind its entropy rule; two more papers give the total-correlation form for exact predictors~\cite{arXiv:2608.25505,arXiv:2603.22248}. % src: framework-v1.md section 2.1 ("Attribution"); primer-samplers.md sections 2.1 to 2.5; prior-art-selection.md P4; primer-foundations.md 2c (ARDM cost equals the conditional TC, checked numerically)
+At $k=1$ at every step $\Efact=0$ for any order, so parallel commitment is the only source of $\Efact$ under this channel; $\Efact$ depends on the policy only through which tokens are committed together in which state. % src: framework-v1.md section 2.1 "Corollaries"
+
+Two cautions. First, $\Elearn$ is model error on the visited states, not a policy-free constant: an ordering policy moves it~\cite{arXiv:2502.06768,arXiv:2602.00286,arXiv:2505.24857}. Second, uniform and Gaussian channels have no committed set before the last step. The per-step total correlation is defined for discrete flows and few-step distillation~\cite{arXiv:2507.15897,arXiv:2605.10518} and a total-variation bound of order $1/N$ exists~\cite{arXiv:2410.08709}, but we found no summed budget for those channels in the works we read and do not write one; the chain rule gives an equality only for path measures, and a Gaussian sampler adds a last parallel commitment of all $L$ positions. % src: framework-v1.md section 2.3 (G13); primer-samplers.md sections 4(d), 5 and 3 (statement 3: no theorem for the adaptive additive form); ``not found'' is about the works read
+
+\subsection{One signed slot for the value rule}
+\label{sec:budget-value}
+
+Identity~\eqref{eq:identity} needs the values to be drawn from the product of the predicted marginals. Most reported samplers sharpen, truncate, take the mode, guide, select among drawn values or draw jointly. The chain rule accepts any commit kernel: with the same position law in $Q$ and $P$ the position factor cancels, and adding and subtracting $\KL{q_{A}}{\prod_{i\in A}p_\theta^i}$ in each step gives
+\begin{equation}
+  \begin{split}
+  \KL{Q_\kappa}{P_\kappa}&=\Efact+\Elearn+V,\\
+  V&=\sum_n\mathbb E_Q\Big[\KL{q_{A_n}}{\kappa(\cdot\mid A_n,s_n)}-\KL{q_{A_n}}{\textstyle\prod_{i\in A_n}p_\theta^i(\cdot\mid s_n)}\Big],
+  \end{split}
+  \label{eq:value}
+\end{equation}
+and the output law obeys $\KL{q}{p_\kappa}=\KL{Q_\kappa}{P_\kappa}-G$, where
+\begin{equation*}
+  G=\mathbb E_{x\sim q}\,\KL{Q_\kappa(\text{path}\mid x)}{P_\kappa(\text{path}\mid x)}\;\ge\;0.
+\end{equation*}
+Equation~\eqref{eq:value} is a corollary of the chain rule that we write out; the published two-term identity is the case $V=0$~\cite{arXiv:2505.24857}. % src: method/selection-term.md T1.3 (Theorem 1, proof); framework-v2.md section B
+$V$ is one signed slot for every departure of the committed values from the product of the predicted marginals. It is zero for plain sampling, positive when the sampler's value law is farther from the data's conditional block than the product is, and negative when closer. A draw from the exact joint ($\kappa=q_A$) gives $V=-(\Efact+\Elearn)$: joint draws are negative and can cancel $\Efact$. For truncation and argmax the forward $V$ is infinite whenever the data puts mass outside the kept set. % src: method/selection-term.md T1.3 "Consequences"; framework-v2.md section B
+$G$ is the coupling between the output law and the path law; it is zero for deterministic state-only policies (App.~A.1 of~\cite{arXiv:2505.24857}) and positive for randomised position laws. We name it so that the output-law statement is exact and make no claim about its size.
+The decomposition is not unique. It depends on the coupling of the data path with the sampler, and any ``selection'' share depends on a reference policy (it changes sign with the reference in some configurations of the red-team enumeration). We present $V$ as a way to say where a value rule acts, not as a quantity with a canonical size. % src: framework-v2.md section B ("The decomposition is not unique"); red-team F2 and M1 (audits/2026-10-14-red-team-selection-term.md)
+
+\paragraph{What was withdrawn.} An earlier version of our framework proposed two new terms, a selection bias for value-dependent rules and a tilting cost for temperature, truncation, argmax and guidance. Both are withdrawn (decision D0011): at one token per step the law of sample-then-filter equals that of a position-dependent state-only tilt in exact enumeration, and at more tokens per step it is a joint value law, so ``reads the sampled values'' describes an implementation and not a distribution; the claimed impossibility of per-step accounting of selection depended on one coupling; and the selection share is not canonical. What remains is published, and we credit it: the commit law at $k=1$ with heterogeneous competitors, its majorisation and the ``sample, select, resample'' fix~\cite{arXiv:2605.12522}; sampling then choosing against choosing then sampling, and the closeness of noised MaskGIT to a tilted sampler~\cite{arXiv:2510.04525}; confidence-based remasking against top-probability selection~\cite{arXiv:2609.34509}; the sample-then-filter and rank-then-sample vocabulary~\cite{arXiv:2604.00375}; and the one-token best-of-$N$ law with its $\log N-(N-1)/N$ bound~\cite{arXiv:2401.01879}. % src: decisions.jsonl D0011; framework-v2.md section A; dossier/prior-art-selection.md (comparison table; P1 to P5, EXTRA)
+
+\subsection{Mechanisms placed by their law}
+\label{sec:budget-mechanisms}
+
+What a sampler's code reads is an implementation detail; the law it induces is what the budget sees. We place the mechanisms of Table~\ref{tab:design} as follows. % src: framework-v2.md section B ("Implementation mechanisms")
 \begin{itemize}
-  \item The identity: along a data path with the same position law, $\mathrm{KL}(Q\Vert P)=E_{\mathrm{fact}}+E_{\mathrm{learn}}+V$ (numbered equation). Source of the two-term case ($V=0$): EB-sampler~\cite{arXiv:2505.24857}; the three-term form is a chain-rule corollary written out in \texttt{research/review/method/selection-term.md}. % src: framework-v2.md section B
-  \item $V$ as one signed slot for temperature, truncation, argmax, guidance, sample-then-filter and joint draws; $G\ge0$ for the gap between path law and output law; $E_{\mathrm{approx}}$ for lossy compute reuse. Non-uniqueness: depends on the data-path coupling and on a reference policy. % src: framework-v2.md section B; red-team F2, M1
-  \item Mechanisms placed by their law: state-only tilts; sample-then-filter (one-token tilt with majorisation, from 2605.12522~\cite{arXiv:2605.12522}; the $k\ge2$ law, ours, with a tie-handling correction pending); joint draws; sequence-level selection; Gaussian and embedding channels. Regime caveat for noised MaskGIT~\cite{arXiv:2510.04525}. % src: framework-v2.md section B; dossier/prior-art-selection.md
-  \item Lever table (Table 7 in OUTLINE.md): lever, term lowered, what it pays, which of the 47 models use it. % src: framework-v1.md section 3; design-space-v1.csv
-  \item Propositions as corollaries, stated as in framework-v2: P1 (a step sweep identifies only the $k=1$ point), P3 (a revision sampler's gain needs the value rule matched), P5 (cross-modal split with the mixture-reference estimator, checked on toy models only). Withdrawn: P2, the selection and tilt terms, the U-shape in steps. % src: framework-v2.md section C and D "Not claimed"
-  \item Each lever stated with what the census says papers report about it (Section~\ref{sec:census}).
+  \item \emph{State-only tilts}: temperature, top-$p$ or top-$k$, argmax and classifier-free guidance (one extra pass per step, which also changes the conditioning). Equation~\eqref{eq:value} is then the published identity with the tilted marginals in place of $p_\theta$.
+  \item \emph{Sample-then-filter} (MaskGIT~\cite{arXiv:2202.04200}; LLaDA above temperature zero~\cite{arXiv:2502.09992}). At $k=1$ its commit law is a position-dependent tilt that sharpens the marginals by majorisation, as derived for independent data in~\cite{arXiv:2605.12522}. At $k\ge2$ it is a non-product value law; a closed form is in our working notes, but a correction for tied scores is pending, so we do not state it. % src: method/selection-term.md T2; dossier/prior-art-selection.md concerns 2 and 3
+  \item \emph{Joint draws}: autoregressive heads, copulas, energy reweighting, verifiers~\cite{arXiv:2410.01949,arXiv:2410.08709}; $V$ is negative.
+  \item \emph{Sequence-level selection}: best-of-$N$, minimum Bayes risk. These choose among finished samples and lie outside the commit-kernel form; we place them as a reweighting of the output law, with the one-token best-of-$N$ law~\cite{arXiv:2401.01879} as the analogue.
+  \item \emph{Gaussian and embedding channels}: the final rounding is a value rule on one fully parallel step, so argmax there is a rounding choice and not a per-step tilt.
 \end{itemize}
+The second item depends on the regime: the released MaskGIT sampler adds Gumbel noise that decays to zero at the last step~\cite{arXiv:2503.17076}, and the noised sampler approaches a tilted one when the number of masked positions is large against the square of the number committed times a power of the vocabulary size~\cite{arXiv:2510.04525}; noiseless sample-then-filter, as in LLaDA, is a different regime. % src: dossier/prior-art-selection.md P3 (E3 reading of the released sampler), EXTRA and concern 5
+
+\subsection{Other terms: stale computation, memory, revision}
+\label{sec:budget-other}
+
+\emph{Approximate compute reuse.} Exact reuse adds nothing: block-causal attention makes cross-block key--value caching exact~\cite{arXiv:2503.09573}, and the output of a time-free network can be reused when no token has changed~\cite{arXiv:2406.03736,arXiv:2406.07524}. Lossy caches replace $p_\theta(\cdot\mid s_n)$ by an approximation computed from an earlier state; we name the added divergence $\Eapprox$ and do not decompose it. Fast-dLLM's cache is described by its authors as approximate~\cite{arXiv:2505.22618}, and Lumina-DiMOO's max-logit cache is lossy~\cite{arXiv:2510.06308}. Exactness bought by restricting the attention mask changes the model and so moves $\Elearn$: LaViDa's prefix mask makes its cache exact and reports CIDEr 117.3 against 121.0 for the uncached full-attention model~\cite{arXiv:2505.16839}. % src: framework-v1.md section 2.5; framework-v2.md section C ("Remark (was P4)"); design-space-v1.md section 3(a) item 8
+\emph{Memory.} Self-conditioning is a trained memory, not staleness, and belongs in $m_n$ and in $\Elearn$ on augmented states. With a memory the identity holds on the augmented path and is an equality for $x$ only if $m_n$ is a deterministic function of the revealed path; this is our inference, unchecked, and Simplax is a case where it fails (Section~\ref{sec:design-limits}). % src: framework-v1.md section 2.1 (tagged [I]) and 2.5
+\emph{Revision} removes nothing from the budget by itself: it spends forward passes to undo errors already made. Remasking has no general guarantee of repairing factorisation error (Prop.~C.5 of~\cite{arXiv:2602.00286}, under a stated assumption), and the lower bound on sequence-level error survives it (App.~E.3 of~\cite{arXiv:2502.09622}). % src: framework-v1.md section 2.6; primer-samplers.md section 3 (statement 6)
+
+\subsection{The cross-modal part of the factorisation term}
+\label{sec:budget-crossmodal}
+
+When $A_n$ holds a text set $a$ and an image set $b$ of two discrete modalities, the chain rule for total correlation splits the term of Eq.~\eqref{eq:identity} in two ways, all under the true law given the revealed tokens:
+\begin{equation}
+  \TC(x^{a\cup b})
+  \;=\;\TC(x^a)+\underbrace{\sum_{j\in b}I(x^a;x^j)}_{S_{\mathrm T\to\mathrm I}}+\TC(x^b\mid x^a)
+  \;=\;\TC(x^a)+\TC(x^b)+\underbrace{I(x^a;x^b)}_{X},
+  \label{eq:crossmodal}
+\end{equation}
+and symmetrically with the image set first, giving $S_{\mathrm I\to\mathrm T}$. The cross term $X$ differs from both directed terms, with either sign. The split is elementary algebra; we use it to name what a schedule changes when it keeps dependent text and image positions apart. A modality-sequential schedule removes the cross term and pays within-modality total correlation instead, and in a toy enumeration it can be worse than an interleaved one. A continuous image channel has no such split. % src: framework-v2.md section C (P5, first paragraph), red-team M10; framework-v1.md section 2.2 ([V], toy)
+$S_\theta$ is the same directed quantity under the model's own joint over the co-committed tokens, so it concerns the model's dependence and not the data's. We found no paper that measures a cross-modal quantity of this kind per step; the estimator is in Section~\ref{sec:open-op3}. % src: framework-v2.md section C (last paragraph); dossier/primer-multimodal.md section 4 (E2, works read)
+
+\subsection{The lever table}
+\label{sec:budget-levers}
+
+Table~\ref{tab:levers} places each method by the term it acts on and what it pays, with the value rows merged into one row keyed by mechanism. Position and value choice stay separate because in practice one often depends on the other (Section~\ref{sec:design-limits}). ``Rows'' counts the models of Table~\ref{tab:design} whose long-form entry lists the lever; the assignment is our reading, and the training count is not a count of trained models. % src: framework-v1.md section 3 with the merge of framework-v2.md D3; tables/design-space-counts.log (lever counts; value-rule row: L11 or L12 or sequence-level selection)
+
+\begin{table}[t]
+\caption{Lever table. $\Efact$, $\Elearn$, $V$ and $\Eapprox$ as in Section~\ref{sec:budget}. ``Rows'' is the number of the 47 models listing the lever.}
+\label{tab:levers}
+\footnotesize
+\begin{tabular}{@{}p{3.6cm}p{3.4cm}p{3.2cm}r@{}}
+\toprule
+Lever (row in Table~\ref{tab:design}) & Acts on & Pays & Rows \\
+\midrule
+Fewer tokens per step; adaptive $k$ (L1) & $\Efact$ & forward passes & 21 \\ % src: tables/design-space-counts.log
+Choose weakly dependent sets, i.e.\ position order (L2) & $\Efact$; also moves $\Elearn$ (visited states) & planner cost & 9 \\
+Joint draw inside the set (L3) & $\Efact$, through $V<0$ & a second model or head & 2 \\
+Block-wise generation (L4) & $\Efact$ across blocks & global parallelism & 8 \\
+Modality-ordered or planned schedules (L5) & the cross-modal part of $\Efact$ & forward passes; within-modality total correlation & 6 \\
+Training: objective, scale, fine-tuning, RL (L6) & $\Elearn$ & training compute & 11 \\
+Self-conditioning, learned schedules, time warping (L7) & $\Elearn$ (Gaussian models) & training compute & 4 \\
+Distillation into few steps (L8) & moves $\Efact$ into the model class & training; the student must represent joint structure & 3 \\
+Token-level revision (L9) & repairs realised errors & forward passes & 7 \\
+Output-level revision (L10) & repairs finished samples & full generations & 2 \\
+Value rules: argmax, temperature, truncation, guidance and modality dropout, sample-then-filter, sequence-level selection (L11, L12, SL) & $V$; guidance also re-conditions & diversity; an extra pass per step for guidance; samples for selection & 29 \\
+Exact compute reuse (L13) & nothing & wall-clock only (an $\Elearn$ cost if bought by an attention mask) & 4 \\
+Lossy compute reuse (L14) & adds $\Eapprox$ & wall-clock only & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Two corollaries, one withdrawn proposition, and what the census says}
+\label{sec:budget-props}
+
+\emph{What a step sweep identifies.} Take a deterministic state-only position rule and its base, both with plain sampled values. At $k=1$ every committed set is one position, so $\Efact=0$, and $G=0$ for such a policy. Equation~\eqref{eq:identity} then gives $\KL{q}{p}=\Elearn$ for both samplers, and the gain of the rule at $k=1$ is the difference of their learning terms. At $k>1$ the visited states differ from those at $k=1$, so the learning terms differ too, and the growth of the gain with $k$ mixes a change in $\Efact$ with a change in $\Elearn$. A sweep therefore identifies the $k=1$ point and nothing more without a rerun that fixes the visited states. In a toy enumeration (four positions, $k\in\{1,2\}$, perturbed predictors) the learning-term gain at $k=2$ differed from the $k=1$ gain by more than 25\% or in sign in 11 of 12 cases. % src: framework-v2.md section C (P1); audits/2026-10-14-red-team-selection-term.md M6 (block I, redteam_selection.log lines 180-204)
+
+\emph{Where a revision gain comes from.} When $T\ge L$ further steps cannot lower $\Efact$, so a revision sampler's gain over its base at matched forward passes comes through $\Elearn$ on the states it visits or through its value rule $V$. Which of the two can be settled only by rerunning with the value rule matched on both arms. The closest published table does not separate them: with nucleus sampling at $p=0.9$ in its text experiments, ReMDM's MAUVE rises from 0.403 to 0.610 and 0.656 at $T=1024$, 2048 and 4096, while the MDLM baseline is flat at 0.042, 0.037 and 0.035~\cite{arXiv:2503.00307}. % src: framework-v2.md section C (P3); primer-samplers.md section 2.7 (ReMDM Table 1)
+
+\emph{Withdrawn.} That output entropy below a reference indicates value sharpening is false: with exact marginals and only factorisation error the entropy can fall far below the data entropy while the divergence stays small, so no reported entropy can by itself attribute a gain to a value rule, and attribution needs a controlled arm on the same checkpoint. The U-shaped dependence on the number of steps that a toy model produces is also not claimed (it appears in 20 of 32 toy variants and is sensitive to ties). % src: framework-v2.md section C (P2 withdrawn) and section D "Not claimed"; method/selection-term.md T4(b); red-team S4
+
+\emph{What the census says about the levers.} Of 153 headline results with a codable value rule, 147 use a non-plain rule or do not state one (the value-rule row of Table~\ref{tab:levers}); of 152 with a generated-sample metric, 55 report the headline at two or more step settings (the rows for tokens per step and position order), only 20 of those state that the value rule was held fixed, and 28 report a diversity or entropy measure, which by the withdrawn proposition does not close the gap. These count what is written, not how much any rule changed any number.\aud % src: coverage/census-result-v2.md ("Result"); the same numbers as Table~\ref{tab:census-main}

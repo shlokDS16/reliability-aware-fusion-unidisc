@@ -1,15 +1,99 @@
-% Section 4. Design space tested on 47 models (C1). STUB. Plan: OUTLINE.md "4 Design space on 47 models".
+% Section 4. The design space, tested on 47 models (contribution C1).
+% Evidence map: OUTLINE.md section 2, "4 Design space on 47 models". Sources: research/review/coverage/design-space-v1.md and
+% design-space-v1.csv (counts by paper/review/scripts/design_space_tables.py, log paper/review/tables/design-space-counts.log),
+% framework-v1.md section 3 (lever rows), framework-v2.md section D1, dossier/competitor-anatomy.md sections 1 to 3.
+% The condensed table is generated: paper/review/tables/design-space-condensed.tex.
 \section{The design space, tested on 47 models}
 \label{sec:design}
 
-\todo{stub: this section answers RQ1 for the 47 models of the table; it does not yet answer RQ1 for all included studies}
+This section answers RQ1 for 47 models. It does not yet answer RQ1 for every included study (Section~\ref{sec:intro-rq}). The question is whether the vocabulary of Section~\ref{sec:notation} is enough to write down how each model generates, and where it is not.
 
-Plan.
-\begin{itemize}
-  \item The test: place each of 47 models in C1--C5 and in fourteen lever rows (L1--L14) using only the cell values the notation already names; ``fits'' means every choice is expressible and the factorisation identity applies as written, ``partly'' means a new value or an exception is needed. Result: 36 fit, 11 partly, none unplaceable. % src: research/review/coverage/design-space-v1.csv column "fits" (36 yes, 11 partly, counted by script 2026-10-15); design-space-v1.md section 0
-  \item Selection of the 47: family balance (unified multimodal 15, Gaussian or embedding 7, absorbing 6, sampler-only 5, and others), rows M01--M29 copied from primer readings, M30--M47 read at section level; dropped candidates and why. % src: design-space-v1.md section 2
-  \item The 11 partial fits define the stated limits of the notation: length-changing edit channels, stochastic memory, graded evidence at uncommitted positions, joint-over-set predictors, sequence-level selection. % src: design-space-v1.md section 3 (a) misfit list; claims block
-  \item What the test could and could not fail: the vocabulary is inclusive, so a stricter test gives a lower fit rate; evidence level E2 at confidence 0.6 for the counts; no code (E3) inspected. % src: design-space-v1.md "competing_explanations", "coverage"
-  \item Table: condensed 47-row table (long form in the supplement). Fig.: master taxonomy tree with citations at the leaves. Comparison with the two existing surveys' taxonomies. % src: dossier/competitor-anatomy.md sections 1--3
-  \item Per-modality notes for unified models: guidance, per-modality weights and schedules, continuous image channels in hybrids and output-level revision are four additions, not ``no new machinery''. % src: framework-v1.md section 3 last paragraph
-\end{itemize}
+\subsection{The test}
+\label{sec:design-test}
+
+For each model we filled the cells of C1 to C5 and assigned it to fourteen \emph{lever} rows, L1 to L14 (Section~\ref{sec:budget-levers}), using only cell values the notation already names. A model \emph{fits} if every choice can be written with those values and the factorisation identity of Section~\ref{sec:budget} applies as it stands. It fits \emph{partly} if a cell needs a new value or the identity does not apply as written, and the missing piece is recorded. It does not fit if it cannot be placed. % src: coverage/design-space-v1.md section 0 ("fits")
+The lever rows are our numbering of the rows of the lever table, and the assignment of a model to a lever is our reading of the mechanism it describes, not a statement by the paper. % src: design-space-v1.md section 0 and the claims block header ("my numbering ... my inference")
+
+The 47 models are a purposive sample, not a random one. Twenty-nine rows (M01 to M29) were copied into the notation from four earlier readings of primary sources (absorbing channels, sampler theory, Gaussian and embedding channels, unified multimodal models) and were not re-read for the table. Eighteen rows (M30 to M47) were read at section level: the method and sampling sections, the set-up paragraphs that state steps, temperature, truncation and guidance, and the step-sweep tables or paragraphs. Results tables other than step sweeps, proofs, most appendices and released code were not read, so no row is above evidence level E2 and none rests on code (E3). % src: design-space-v1.md front matter ("coverage"), CSV column "evidence level" (29 "as recorded in the primer", 18 "for the sections listed"); counts in tables/design-space-counts.log
+A statement ``not stated'' in the table means not found in the parts read.
+By family the rows are: unified multimodal models and hybrids 15 (32\%), Gaussian, embedding or logit-simplex models 7, absorbing 6, sampler-only 5, general discrete 3, uniform 3, adapted from autoregressive models 4 (one with an edit channel), and one each for block, hybrid-channel, flow and distillation. % src: tables/design-space-counts.log ("groups"; the Gaussian group there counts CANDI, which Table 4 files under hybrid-channel); design-space-v1.md section 2
+The multimodal share is higher than a balanced draw would give, because the multimodal reading supplied ten rows at no extra reading cost. % src: design-space-v1.md section 2 (last sentence)
+Four of the 47 (Show-o, Dream~7B, UDLM and D-DiT) are not records of the curated list that seeds our corpus, which bears on the recall of that list and not on the table. % src: design-space-v1.md section 2 ("not in the corpus"; Show-o absent from the corpus)
+Four candidates were dropped for repeating a row already present or for not being read (LLaDA~1.5, Dream-Coder~7B, LLaDA-V, Esoteric Language Models). % src: design-space-v1.md section 2 ("Dropped, and why")
+
+\subsection{The table}
+\label{sec:design-table}
+
+Table~\ref{tab:design} gives the condensed table; the long form, with every cell and its source location, is in the supplement (S5). The codes are as follows. \emph{C1}: Er erasure, Un uniform, Gs Gaussian on embeddings, Sx Gaussian on a logit simplex, Q general Markov or continuous-time transition matrices, Fl probability path (flow), Ed edit channel, AR+$X$ autoregressive text with diffusion component $X$ for images, +aux an auxiliary latent. \emph{Position rule (C4)}: rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position updated each step with no committed set, ar left to right, ns not stated. \emph{Value rule (C4)}: A argmax or greedy, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance, M sequence-level selection; plain sampled values; lik.\ the headline is a likelihood bound; ns not stated in the parts read; $\dagger$ temperature varied on purpose to trace an entropy frontier; (M) an optional variant. \emph{Revision (C5)}: none, impl implicit, corr corrector, remask, edit, out output-level, ns not stated. \emph{Levers}: L1 to L14 as in Table~\ref{tab:levers}; SL sequence-level selection, for which the lever table has no row.
+The value-rule column is our coding of what was found in the parts read. It is a pilot, kept for the structure of the table. Any statement about how often the field uses a non-plain value rule rests on the random sample of Section~\ref{sec:census}. % src: design-space-v1.md section 0 (value-rule classes) and section 4; OUTLINE.md section 2 "6" (the 47-model result is a pilot, not evidence)
+Position and revision codes in Table~\ref{tab:design} are condensed by us from the free-text cells of the long form.\todo{check the condensed C1, position and revision codes against design-space-v1.csv row by row; they were assigned from design-space-v1.md section 1, not copied from a CSV column}
+
+{\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}l p{3.0cm} l l l l p{1.9cm} l@{}}
+\caption{Condensed design-space table of 47 models (M01 to M47). Codes as in the text. Rows M01 to M29 were copied from earlier readings; M30 to M47 were read at section level. ``partly'' marks the 11 stated limits of the notation (Section~\ref{sec:design-limits}).}\label{tab:design}\\
+\toprule
+Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
+\midrule
+\endfirsthead
+\toprule
+Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\input{tables/design-space-condensed.tex}
+\end{longtable}
+}
+
+\begin{figure}[t]
+\centering
+\fbox{\begin{minipage}{0.92\linewidth}\small
+\textbf{Placeholder for Figure~\ref{fig:taxonomy}.} Master taxonomy: channel (C1) at the root, then reveal law, predictor, commitment policy and revision, with the 47 models as leaves carrying citations. Built by script from \texttt{research/review/coverage/design-space-v1.csv}.
+\end{minipage}}
+\caption{The design space as a tree over the five choices; leaves are the 47 models of Table~\ref{tab:design}.}
+\label{fig:taxonomy}
+\Description{A tree whose levels are the five design choices and whose leaves are the 47 models of the design-space table.}
+\end{figure}
+
+\subsection{Result: what fits, and the stated limits}
+\label{sec:design-limits}
+
+Thirty-six of the 47 models fit, 11 fit partly, and none could not be placed. % src: design-space-v1.csv column "fits (yes/partly/no)" (36 yes, 11 partly, 0 no; tables/design-space-counts.log); design-space-v1.md claims block (level E2, confidence 0.6)
+We give no interval for this proportion, because the rows were not drawn at random and the count says nothing about the field. The 11 partial fits are the stated limits of the notation. Six of them come from five features that the notation does not express without an extension, and five from two further reasons. Each is stated with the smallest extension we can see, and with what we recommend. % src: framework-v2.md section D1 (the five features); design-space-v1.md section 3(a) items 1 to 5 and 9
+
+\paragraph{Five features beyond the notation (six rows).}
+\begin{enumerate}
+  \item \emph{An edit channel that changes length} (Seed Diffusion, second stage~\cite{arXiv:2508.02193}). Corruption by insertion, deletion and substitution leaves no position index to which a per-position state can be attached, so the committed-set identity is undefined. We mark such channels as outside the identity of Section~\ref{sec:budget} and keep them in the taxonomy under token-level revision. % src: design-space-v1.md section 3(a) item 1 (Seed Diffusion Sec 3.1, Eq 3-4, Remark 3.1)
+  \item \emph{Stochastic memory} (Simplax~\cite{arXiv:2608.10615}). The state carries an auxiliary Dirichlet variable beside the categorical one. The identity then holds on the augmented path and is an equality for $x$ only if $m_n$ is a deterministic function of the revealed path; here $m_n$ is a latent chain with its own kernel (in the variant used for the main results it is a function of the state and the prediction). We have not checked the augmented statement beyond this reading. % src: design-space-v1.md section 3(a) item 2; framework-v1.md section 2.1 ("Attribution", tagged [I], open item)
+  \item \emph{Graded evidence at uncommitted positions} (CANDI~\cite{arXiv:2510.22510}; related to the mixture channel of discrete flow matching~\cite{arXiv:2407.15595}). A position is either a clean anchor or a Gaussian-noised one-hot vector that evolves by an ordinary differential equation until it flips. The identity covers the flips conditional on the continuous residual; the continuous part needs the per-step term of Section~\ref{sec:budget-other}. % src: design-space-v1.md section 3(a) item 3
+  \item \emph{Predictors that output a joint over a set} (Di4C~\cite{arXiv:2410.08709}, Discrete Copula Diffusion~\cite{arXiv:2410.01949}). C3 assumes marginals; here the head returns a latent-mixture joint, or a copula combines two models. The joint draw (C4) is then a property of the predictor. The extension is ``joint predictor over any subset''. % src: design-space-v1.md section 3(a) item 4
+  \item \emph{Sequence-level selection} (DiffuSeq, minimum Bayes risk over ten samples~\cite{arXiv:2210.08933}; also the optional judge-based best-of-$n$ of FUDOKI~\cite{arXiv:2505.20147}). Choosing among finished samples is neither revision nor a token-level value rule. The lever table has no row for it, and Section~\ref{sec:budget-mechanisms} places it outside the commit-kernel form. % src: design-space-v1.md section 3(a) item 5
+\end{enumerate}
+
+\paragraph{Two further reasons (five rows).} The continuous image channels of Transfusion, BAGEL, Show-o2 and D-DiT~\cite{arXiv:2408.11039,arXiv:2505.14683,arXiv:2506.15564,arXiv:2501.00289} are placed in the notation but have no committed set, so the cross-modal part of the factorisation term is undefined for them (Section~\ref{sec:budget-crossmodal}). FUDOKI uses a metric-structured kernel, a softmax of embedding distance, that is none of the listed channels; it falls under the general transition matrices of D3PM~\cite{arXiv:2107.03006} and we place it with the symmetric channels. % src: design-space-v1.md section 3(a) item 9 and "Not misfits" (continuous channels are placement only); CSV rows M24, M26 to M28, M46
+
+\paragraph{Rows marked ``yes'' that still changed the wording.} Four refinements were needed for rows that fit. Guidance by a classifier or reward gradient on logits or scores edits the state, not the marginals, so lever row L12 was renamed to cover it. The position rule often reads sampled or tempered values (MaskGIT, Show-o, UniDisc, Dynin-Omni, DiffuCoder), so position and value rules are separate rows in the table but coupled in practice. An exact cache can be bought by restricting the attention mask, which changes the learning term (LaViDa's prefix mask)~\cite{arXiv:2505.16839}. And the structured transition matrices already in D3PM need the same C1 entry as FUDOKI. % src: design-space-v1.md section 3(a) items 6 to 9
+Three features that look like misfits are not: the shift operation of Dream~7B, DiffuLLaMA and TESS~2 only relabels the marginals, complementary masks change the estimator but not the marginal reveal law, and the token-level reweighting of Dream~7B is an objective weight. % src: design-space-v1.md section 3(a) "Not misfits"
+
+\subsection{What the test could and could not fail}
+\label{sec:design-weak}
+
+The fit count is weak evidence, and we say so for four reasons.
+First, the vocabulary was written to be inclusive and most cells accept free text, so a stricter test (every cell filled from the paper, the identity applying as stated) would give a lower fit rate. % src: design-space-v1.md competing_explanations (first item)
+Second, the test is partly in-sample. The notation of Section~\ref{sec:notation} was built from the readings that supplied rows M01 to M29. Of those, 25 fit and 4 fit partly. Of the 18 rows read after the notation was fixed, 11 fit and 7 fit partly. The second batch was also chosen to fill empty lever rows (for example, Discrete Copula Diffusion was added so that the joint-draw row had an occupant), so it is not a random draw either, but it is the fairer of the two tests, and its fit rate is lower. % src: tables/design-space-counts.log (M01-M29: yes 25, partly 4; M30-M47: yes 11, partly 7); design-space-v1.md section 2 ("Added outside the list, and why")
+Third, rows M01 to M29 were copied from earlier readings and not re-read, and the primers' own lists of what they did not read apply to them (for example, the LLaDA experiments and part of the LaViDa-O appendix). The table has one reader, a language model (Section~\ref{sec:ai-use}), no second reader, and no check against released code; the evidence level is E2 and we put confidence in the counts at 0.6. % src: design-space-v1.md front matter (coverage; claims block confidence 0.6)
+Fourth, the sharper results are the cells that could not be filled. The position or value rule could not be found in the parts read for Dream~7B, Seed Diffusion, LaViDa, Campbell et al.\ and one setting of discrete flow matching, and the value rule only for MMaDA and Lumina-DiMOO. % src: design-space-v1.md section 3 ("What the test could and could not fail") and the claims block "unknowns"
+The lever table also had no occupant for sequence-level selection, and the joint-draw and output-level-revision rows have two occupants each. % src: design-space-v1.md section 3 (last paragraph); tables/design-space-counts.log (lever counts: L3 2, L10 2)
+A reader should take the result as ``the vocabulary was not contradicted by any of the 47 models, and seven of the 18 later rows needed a stated extension'', not as evidence that the vocabulary is correct for the field.
+
+\subsection{Against the taxonomies of the two closest surveys}
+\label{sec:design-surveys}
+
+Both surveys we compared (Section~\ref{sec:intro-related}) organise the field by section topic. The survey of discrete diffusion~\cite{arXiv:2506.13759} has an outline tree with models at the leaves and no comparison table; its mathematics specifies the channel in one notation but leaves the reveal law and the commitment policy as filed techniques. The survey of diffusion language models~\cite{arXiv:2508.10875} classifies models by one axis, continuous, discrete or hybrid with autoregression, and its model table has columns for parameters, diffusion type, task and training data, of which only the diffusion type is a design choice. % src: dossier/competitor-anatomy.md sections 1b, 1c, 2b and 3 (verdicts i and ii); both read in full or in the body (competitor-anatomy.md section 0)
+Table~\ref{tab:design} differs in that every column is a choice a model makes. That is a difference of purpose, not a claim to a better taxonomy for readers who want applications or training recipes.
+
+\subsection{Unified multimodal models}
+\label{sec:design-unified}
+
+Fifteen of the 47 rows are unified models, and for them the notation needs four additions, not none: guidance (including whole-modality dropout), per-modality loss weights and schedules, continuous image channels in the hybrids, and output-level revision by planning or reflection loops. The factorisation term gains a cross-modal part only for co-committed tokens of two discrete modalities (Section~\ref{sec:budget-crossmodal}). % src: framework-v1.md section 3 (last paragraph, "four additions, not no new machinery"); design-space-v1.csv family counts

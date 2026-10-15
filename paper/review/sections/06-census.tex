@@ -15,11 +15,11 @@ The reported quality of a diffusion language model depends on how the committed 
 \subsection{Agreement between the two coders}
 \label{sec:census-agreement}
 
-Table~\ref{tab:census-agree} gives agreement before any reconciliation, under codebook v1.1, on the 172 ranks that have a full text.% src: analysis/census/agreement-random.log; census-result-v2.md ("Agreement before reconciliation")
-Class-level agreement is good: kappa is 0.82 to 0.97 for the letters A, T, P, G and M among the 62 papers where both coders could determine a rule. The exception is S (sample-then-filter), with kappa 0.40, which is the confusion that led codebook v1.2 to add the code C for confidence-ranked or threshold unmasking whose token rule is not stated.% src: agreement-random.log (class rows); census-codebook-v1.2.md B-15; decision D0020(4) (the class-S kappa of 0.31 in the first log came from a parsing bug that read G+NS as containing S; the corrected log is used)
-Whether a value rule can be determined at all is the weaker point: the two coders agree on whether the rule is non-plain, unknown or plain for 149 papers with kappa 0.65, and on whether the rule is determinable with kappa 0.65.% src: agreement-random.log
-Eligibility has a kappa of 0.05 at raw agreement of 0.87. This is a prevalence effect, because nearly every record is eligible, compounded by tool failures: 20 of the 22 eligibility disagreements are coder~A yes and coder~B no, and 15 of those 20 are papers Codex could not read (placeholder codes, adjudicated from the paper). Without these 15 ranks, eligibility agreement is 0.96 with kappa 0.20.% src: census-result-v2.md ("Reading" paragraph, corrected per audit C2); analysis/census/agreement-random-excl-readfail.log
-F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for both coders.% src: census-result-v2.md (agreement table, F6 row)
+Table~\ref{tab:census-agree} gives agreement before any reconciliation, under codebook v1.1, on the 172 ranks that have a full text. % src: analysis/census/agreement-random.log; census-result-v2.md ("Agreement before reconciliation")
+Class-level agreement is good: kappa is 0.82 to 0.97 for the letters A, T, P, G and M among the 62 papers where both coders could determine a rule. The exception is S (sample-then-filter), with kappa 0.40, which is the confusion that led codebook v1.2 to add the code C for confidence-ranked or threshold unmasking whose token rule is not stated. % src: agreement-random.log (class rows); census-codebook-v1.2.md B-15; decision D0020(4) (the class-S kappa of 0.31 in the first log came from a parsing bug that read G+NS as containing S; the corrected log is used)
+Whether a value rule can be determined at all is the weaker point: the two coders agree on whether the rule is non-plain, unknown or plain for 149 papers with kappa 0.65, and on whether the rule is determinable with kappa 0.65. % src: agreement-random.log
+Eligibility has a kappa of 0.05 at raw agreement of 0.87. This is a prevalence effect, because nearly every record is eligible, compounded by tool failures: 20 of the 22 eligibility disagreements are coder~A yes and coder~B no, and 15 of those 20 are papers Codex could not read (placeholder codes, adjudicated from the paper). Without these 15 ranks, eligibility agreement is 0.96 with kappa 0.20. % src: census-result-v2.md ("Reading" paragraph, corrected per audit C2); analysis/census/agreement-random-excl-readfail.log
+F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for both coders. % src: census-result-v2.md (agreement table, F6 row)
 
 \begin{table}[t]
 \caption{Agreement between the two census coders before reconciliation, codebook v1.1. Raw agreement, Cohen's $\kappa$, and the number of papers compared. Rows ``class $X$'' compare the presence of letter $X$ in the headline value rule among papers where both coders could determine a rule.}
@@ -29,8 +29,8 @@ F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for bot
 \toprule
 Field & Raw & $\kappa$ & $n$ \\
 \midrule
-Eligible, all ranks with text & 0.87 & 0.05 & 172 \\% src: agreement-random.log
-Eligible, without 15 Codex read failures & 0.96 & 0.20 & 157 \\% src: agreement-random-excl-readfail.log
+Eligible, all ranks with text & 0.87 & 0.05 & 172 \\ % src: agreement-random.log
+Eligible, without 15 Codex read failures & 0.96 & 0.20 & 157 \\ % src: agreement-random-excl-readfail.log
 Non-plain value rule (yes/no/unknown), both eligible & 0.81 & 0.65 & 149 \\
 Non-plain value rule, both determinable & 0.97 & 0.73 & 62 \\
 Value rule determinable (not NS or NA) & 0.83 & 0.65 & 149 \\
@@ -51,8 +51,8 @@ F6, guidance held fixed & 0.97 & 0.68 & 149 \\
 \subsection{Results}
 \label{sec:census-results}
 
-Of the 176 sampled ranks, 4 have no full text, 167 of the remaining 172 are eligible (X1 for 4 and X0 for 1), 14 eligible papers report no generated-sample metric, one shows samples only, and 152 report a metric.% src: census-result-v2.md ("Result", first paragraph); summary-random.log (final block)
-The value rule is counted on the 153 eligible papers with a value-rule code, and F3 to F6 on the 152 with a metric. Table~\ref{tab:census-main} gives the proportions with 95\% Wilson intervals~\cite{wilson1927probable} that treat the ranks as a simple random sample of the 1106-record pool.% src: census-result-v2.md ("Result" table and the paragraph after it); summary_random.py
+Of the 176 sampled ranks, 4 have no full text, 167 of the remaining 172 are eligible (X1 for 4 and X0 for 1), 14 eligible papers report no generated-sample metric, one shows samples only, and 152 report a metric. % src: census-result-v2.md ("Result", first paragraph); summary-random.log (final block)
+The value rule is counted on the 153 eligible papers with a value-rule code, and F3 to F6 on the 152 with a metric. Table~\ref{tab:census-main} gives the proportions with 95\% Wilson intervals~\cite{wilson1927probable} that treat the ranks as a simple random sample of the 1106-record pool. % src: census-result-v2.md ("Result" table and the paragraph after it); summary_random.py
 
 \begin{table*}[t]
 \caption{Census result for the random sample. ``Final'' uses the adjudicated rows (codebook v1.2). ``Sensitivity'' restores every cell on which both coders had agreed to the agreed value. ``Stated non-plain'' counts any of the letters A, T, P, S, G, M or C, including the 20 papers coded C and the 15 coded with the suffix +NS, whose base token rule is not stated. Intervals are 95\% Wilson intervals. Pool: 1106 records; sample: ranks 1 to 176.}
@@ -62,7 +62,7 @@ The value rule is counted on the 153 eligible papers with a value-rule code, and
 \toprule
 Quantity & Final & Sensitivity \\
 \midrule
-Headline uses a non-plain value rule or does not state it & 147/153 = 0.961 [0.917, 0.982]\aud & 148/154 = 0.961 [0.918, 0.982] \\% src: census-result-v2.md Result table, row 1; summary-random.log
+Headline uses a non-plain value rule or does not state it & 147/153 = 0.961 [0.917, 0.982]\aud & 148/154 = 0.961 [0.918, 0.982] \\ % src: census-result-v2.md Result table, row 1; summary-random.log
 Headline uses a stated non-plain value rule & 97/153 = 0.634 [0.555, 0.706]\aud & 86/154 = 0.558 [0.480, 0.634] \\
 Plain sampling stated (U) & 6/153 & 6/154 \\
 Value rule not stated (NS) & 50/153 & 62/154 \\
@@ -73,9 +73,9 @@ Among those, value rule stated as held fixed (F5) & 20/55 = 0.364 [0.249, 0.496]
 \end{tabular}
 \end{table*}
 
-In the random sample, 147 of 153 papers (96\%, 95\% interval 92 to 98) either decode the headline with a value rule other than plain sampling at temperature one or do not state the rule. The two parts differ in kind: 97 papers state a non-plain rule and 50 do not state one; only 6 state plain sampling.% src: census-result-v2.md ("Result" table and "What can be said")
-Among the 152 papers with a metric, 28 (18\%) report a diversity or entropy measure for the headline setting. Of the 55 that report the headline at two or more step settings (denoising steps, function evaluations or tokens per step; 49 yes and 6 with exactly two settings), 20 state that the value rule was held fixed across the sweep.% src: census-result-v2.md; summary-random.log (F4: yes 49, partial 6; F5: stated 20, not stated 35)
-Counting papers that carry each letter (a paper can carry several), the sample has A 33, C 20, G 22, M 12, P 12, S 12 and T 14.% src: census-result-v2.md ("Letters among the 153"); summary-random.log
+In the random sample, 147 of 153 papers (96\%, 95\% interval 92 to 98) either decode the headline with a value rule other than plain sampling at temperature one or do not state the rule. The two parts differ in kind: 97 papers state a non-plain rule and 50 do not state one; only 6 state plain sampling. % src: census-result-v2.md ("Result" table and "What can be said")
+Among the 152 papers with a metric, 28 (18\%) report a diversity or entropy measure for the headline setting. Of the 55 that report the headline at two or more step settings (denoising steps, function evaluations or tokens per step; 49 yes and 6 with exactly two settings), 20 state that the value rule was held fixed across the sweep. % src: census-result-v2.md; summary-random.log (F4: yes 49, partial 6; F5: stated 20, not stated 35)
+Counting papers that carry each letter (a paper can carry several), the sample has A 33, C 20, G 22, M 12, P 12, S 12 and T 14. % src: census-result-v2.md ("Letters among the 153"); summary-random.log
 
 \begin{figure}[t]
 \centering
@@ -90,11 +90,11 @@ Counting papers that carry each letter (a paper can carry several), the sample h
 \subsection{How much depends on coding choices}
 \label{sec:census-sensitivity}
 
-Codebook v1.2 was written after both codings, so its rulings could move counts, and adjudication reopened 45 cells on which the coders had agreed (42 of them affect a count; 25 are F2 codes, 20 of those 25 using the new code C or the suffix +NS).% src: census-result-v2.md (sensitivity paragraph, audit C4); audits/2026-10-15-gate-census-v2.md
-Restoring every agreed cell leaves the headline proportion where it is (148/154 = 0.961, Table~\ref{tab:census-main}) and lowers the number of papers with a \emph{stated} non-plain rule from 97 to 86 of the denominator, because many of the reopened cells moved a paper from not stated to a coded letter.% src: census-result-v2.md Result table; summary-random.log (sensitivity block)
+Codebook v1.2 was written after both codings, so its rulings could move counts, and adjudication reopened 45 cells on which the coders had agreed (42 of them affect a count; 25 are F2 codes, 20 of those 25 using the new code C or the suffix +NS). % src: census-result-v2.md (sensitivity paragraph, audit C4); audits/2026-10-15-gate-census-v2.md
+Restoring every agreed cell leaves the headline proportion where it is (148/154 = 0.961, Table~\ref{tab:census-main}) and lowers the number of papers with a \emph{stated} non-plain rule from 97 to 86 of the denominator, because many of the reopened cells moved a paper from not stated to a coded letter. % src: census-result-v2.md Result table; summary-random.log (sensitivity block)
 
-Table~\ref{tab:census-gap} shows how many papers each gap-filling ruling of v1.2 decided.% src: census-result-v2.md ("Effect of the v1.2 gap rulings"); analysis/census/gap-rulings.log (script analysis/census/gap_rulings.py)
-A ruling can lower ``non-plain or not stated'' only by turning a row into plain sampling, and ``stated non-plain'' by at most the number of non-plain rows it decided. The largest exposure is B-15 (code C): if those 39 non-plain papers were instead read as not stated, ``stated non-plain'' would fall by at most 39, and ``non-plain or not stated'' would not change. The eligibility rulings B-3, B-4, B-6 and B-8 decided 2, 3, 3 and 4 ranks.% src: gap-rulings.log (B-15 row, trailing "Reading" line); census-result-v2.md
+Table~\ref{tab:census-gap} shows how many papers each gap-filling ruling of v1.2 decided. % src: census-result-v2.md ("Effect of the v1.2 gap rulings"); analysis/census/gap-rulings.log (script analysis/census/gap_rulings.py)
+A ruling can lower ``non-plain or not stated'' only by turning a row into plain sampling, and ``stated non-plain'' by at most the number of non-plain rows it decided. The largest exposure is B-15 (code C): if those 39 non-plain papers were instead read as not stated, ``stated non-plain'' would fall by at most 39, and ``non-plain or not stated'' would not change. The eligibility rulings B-3, B-4, B-6 and B-8 decided 2, 3, 3 and 4 ranks. % src: gap-rulings.log (B-15 row, trailing "Reading" line); census-result-v2.md
 
 \begin{table}[t]
 \caption{Papers decided by each gap-filling ruling of codebook v1.2, among the value-rule denominator (153 papers). Columns give the value-rule class the ruling produced: non-plain, not stated (NS), plain stated (U). B-10 decided 15 ranks, of which 12 are in the value-rule count.}
@@ -104,7 +104,7 @@ A ruling can lower ``non-plain or not stated'' only by turning a row into plain 
 \toprule
 Ruling & Subject & Papers & Non-plain & NS & U \\
 \midrule
-B-15 & code C, confidence-ranked unmasking & 40 & 39 & 0 & 1 \\% src: analysis/census/gap-rulings.log (columns: ranks in F2 denom, non-plain, NS, U)
+B-15 & code C, confidence-ranked unmasking & 40 & 39 & 0 & 1 \\ % src: analysis/census/gap-rulings.log (columns: ranks in F2 denom, non-plain, NS, U)
 B-21 & combined letters; G or M with token rule unstated (+NS) & 19 & 18 & 1 & 0 \\
 B-24 & sweep must be on the F1 task & 18 & 12 & 6 & 0 \\
 B-10 & benchmark accuracy as generated-sample metric & 12 & 7 & 5 & 0 \\
@@ -124,21 +124,21 @@ The result is about reporting at least as much as about decoding. A reader of mo
 
 It is not a finding that non-plain rules inflate the reported numbers. The census records the rule, not its effect; whether a given paper's headline would change under another rule can be settled only by rerunning it (Section~\ref{sec:open}).
 
-Reported diversity does not close the gap. Even for the 28 papers that pair the headline with a diversity or entropy measure, such a measure cannot by itself attribute a gain to the model, the schedule or the value rule, because output entropy can fall far below the data entropy with exact marginals and only factorisation error (Section~\ref{sec:budget}, withdrawn proposition P2).% src: research/review/framework-v2.md section C (P2 withdrawn) and D2
-Whether a particular paper reports enough elsewhere, in ablations, appendices or code, to separate those contributions is a per-paper question that these counts do not answer.% src: framework-v2.md section D2 (Codex round 4 wording)
+Reported diversity does not close the gap. Even for the 28 papers that pair the headline with a diversity or entropy measure, such a measure cannot by itself attribute a gain to the model, the schedule or the value rule, because output entropy can fall far below the data entropy with exact marginals and only factorisation error (Section~\ref{sec:budget}, withdrawn proposition P2). % src: research/review/framework-v2.md section C (P2 withdrawn) and D2
+Whether a particular paper reports enough elsewhere, in ablations, appendices or code, to separate those contributions is a per-paper question that these counts do not answer. % src: framework-v2.md section D2 (Codex round 4 wording)
 
-The point that reported quality depends on the sampling setting has been made for other metrics and model families: for a fairness metric in diffusion language models~\cite{openreview:Gq4yt8pxRo}, for parallel-decoding rankings under prompt templates~\cite{arXiv:2606.29228}, for the randomness of generative-model evaluation~\cite{arXiv:2606.20536}, and in a compute-aware evaluation protocol for remasking~\cite{arXiv:2607.24763}. The census adds a count of how often the value rule behind a diffusion language model headline is non-plain or unstated.% src: census-result-v2.md ("What can be said", credit); decision D0019; ledger P0113, P0079, P0088, P0098 (E1: abstracts read)
+The point that reported quality depends on the sampling setting has been made for other metrics and model families: for a fairness metric in diffusion language models~\cite{openreview:Gq4yt8pxRo}, for parallel-decoding rankings under prompt templates~\cite{arXiv:2606.29228}, for the randomness of generative-model evaluation~\cite{arXiv:2606.20536}, and in a compute-aware evaluation protocol for remasking~\cite{arXiv:2607.24763}. The census adds a count of how often the value rule behind a diffusion language model headline is non-plain or unstated. % src: census-result-v2.md ("What can be said", credit); decision D0019; ledger P0113, P0079, P0088, P0098 (E1: abstracts read)
 
 \subsection{Limits of the census}
 \label{sec:census-limits}
 
 \begin{itemize}
-  \item The frame is the 1106 records that passed title-and-abstract screening and have an arXiv identifier, sampled at random. It is not the whole field, and intervals treat the ranks as a simple random sample; they ignore clustering by research group.% src: census-result-v2.md ("Result", interval note)
-  \item No human has coded the sample. Coder~B is two systems (Codex, then Claude Opus); coder~A, the Claude part of coder~B, both adjudicators and the harmoniser are Claude models, and the adjudicators and harmoniser were not blind to the coders. Agreement may therefore overstate the agreement of independent human coders, and the 15 Codex read-failure ranks are in effect coded once plus adjudication.% src: census-result-v2.md ("Limits")
-  \item A possible blindness leak is described in Section~\ref{sec:census-method}; we know of no effect on coder~A's codes.% src: decision D0019 item 2
-  \item Codebook v1.2 was written after the agreement was computed; agreement is reported under v1.1. Table~\ref{tab:census-gap} shows the rulings that decided the most papers.% src: census-codebook-v1.2.md "Disclosure"
-  \item Fifteen rows carry F1 as a relative gain or a ratio rather than a level.% src: census-result-v2.md ("Limits"; harmonisation reading 5)
-  \item Four process-level sampler papers with guidance (ranks 91, 114, 120, 141) are coded G+NS; the alternative reading would make them G. Neither reading changes a non-plain count.% src: census-result-v2.md ("Limits"; harmonisation reading 2)
-  \item Only the text of each paper was coded. Released code, which may state a rule the paper omits, was not opened.% src: census-codebook-v1.md "Rules"
-  \item The stopping rule counted Codex read failures as ineligible, so 19 more ranks were coded than intended (Section~\ref{sec:census-method}).% src: census-result-v2.md ("Sample")
+  \item The frame is the 1106 records that passed title-and-abstract screening and have an arXiv identifier, sampled at random. It is not the whole field, and intervals treat the ranks as a simple random sample; they ignore clustering by research group. % src: census-result-v2.md ("Result", interval note)
+  \item No human has coded the sample. Coder~B is two systems (Codex, then Claude Opus); coder~A, the Claude part of coder~B, both adjudicators and the harmoniser are Claude models, and the adjudicators and harmoniser were not blind to the coders. Agreement may therefore overstate the agreement of independent human coders, and the 15 Codex read-failure ranks are in effect coded once plus adjudication. % src: census-result-v2.md ("Limits")
+  \item A possible blindness leak is described in Section~\ref{sec:census-method}; we know of no effect on coder~A's codes. % src: decision D0019 item 2
+  \item Codebook v1.2 was written after the agreement was computed; agreement is reported under v1.1. Table~\ref{tab:census-gap} shows the rulings that decided the most papers. % src: census-codebook-v1.2.md "Disclosure"
+  \item Fifteen rows carry F1 as a relative gain or a ratio rather than a level. % src: census-result-v2.md ("Limits"; harmonisation reading 5)
+  \item Four process-level sampler papers with guidance (ranks 91, 114, 120, 141) are coded G+NS; the alternative reading would make them G. Neither reading changes a non-plain count. % src: census-result-v2.md ("Limits"; harmonisation reading 2)
+  \item Only the text of each paper was coded. Released code, which may state a rule the paper omits, was not opened. % src: census-codebook-v1.md "Rules"
+  \item The stopping rule counted Codex read failures as ineligible, so 19 more ranks were coded than intended (Section~\ref{sec:census-method}). % src: census-result-v2.md ("Sample")
 \end{itemize}

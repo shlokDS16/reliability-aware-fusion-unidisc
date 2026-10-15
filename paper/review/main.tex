@@ -9,6 +9,16 @@
 \AtBeginDocument{\providecommand\BibTeX{{Bib\TeX}}}
 \citestyle{acmnumeric}
 
+% Packages and notation macros added with Sections 3, 4, 7 and 8 (framework sections).
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{longtable}
+\newcommand{\mask}{\mathsf{m}}                 % mask (erasure) symbol, not in the vocabulary
+\newcommand{\KL}[2]{\mathrm{KL}\!\left(#1\,\middle\|\,#2\right)}
+\newcommand{\TC}{\mathrm{TC}}                  % total correlation
+\newcommand{\Efact}{E_{\mathrm{fact}}}
+\newcommand{\Elearn}{E_{\mathrm{learn}}}
+\newcommand{\Eapprox}{E_{\mathrm{approx}}}
+
 \acmJournal{CSUR}
 % Filled by ACM at production:
 \acmVolume{1}\acmNumber{1}\acmArticle{1}\acmMonth{1}\acmYear{2027}

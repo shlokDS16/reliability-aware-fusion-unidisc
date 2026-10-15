@@ -1,15 +1,60 @@
-% Section 8. Open problems and the evidence each needs (C4). STUB. Plan: OUTLINE.md "8 Open problems".
+% Section 8. Open problems and the evidence each needs (contribution C4).
+% Evidence map: OUTLINE.md section 2, "8 Open problems". Sources: research/review/framework-v2.md sections C (P1, P3, P5) and D item 4 and E,
+% dossier/prior-art-2605.12522-experiments.md, dossier/primer-multimodal.md section 4, coverage/census-result-v2.md.
+% Fig. 6 (map of problems against evidence) is not built; Table 8 carries the same content.
 \section{Open problems and the evidence each needs}
 \label{sec:open}
 
-\todo{stub: each problem gets (i) the statement, (ii) the evidence now with its level, (iii) the measurement that settles it, (iv) what would refute it; a map figure and a table}
+Each problem is stated with what is known now and at which evidence level, the measurement that would settle it, and what would refute it; Table~\ref{tab:open} gives the map and the subsections the detail. The levels are those of our evidence records: E0 is a derived expectation or a model suggestion, E1 an abstract or a summary read, E2 a paper read in full or at the sections named, E3 released code inspected at a stated commit, E4 reproduced here. Section~\ref{sec:budget} supplies the vocabulary. No problem below is answered by a result in this paper. % src: research/CONTRACT.md rule 2 (evidence tags E0 to E5)
 
-Plan.
-\begin{itemize}
-  \item OP1, what a step sweep identifies: only the $k=1$ point of a deterministic state-only policy; beyond it the visited states change (11 of 12 toy cases differ by more than 25\% or in sign). Needs a rerun that fixes the visited states. % src: framework-v2.md section C (P1)
-  \item OP2, revision against value rule: whether a revision sampler's gain over its base at matched forward passes survives matching the value rule on both arms (the published table for the closest revision sampler does not separate them). Needs top-$p$ on and off on both arms. % src: framework-v2.md section C (P3); dossier/prior-art-selection.md
-  \item OP3, cross-modal dependence in unified models (P5a front-loading, P5b schedule consequence): no paper in the sources read measures a cross-modal quantity per step; needs the corrected mixture-reference estimator on a frozen model. % src: framework-v2.md section C (P5); dossier/primer-multimodal.md section 4
-  \item OP4, the four-arm measurement on one frozen checkpoint: sample-then-filter against its resampled twin, a confidence-ranked sampler and the tilted twin, at matched passes with an entropy-matched frontier; the first item to check is how much of it arXiv 2605.12522 already covers. % src: framework-v2.md section D4 and E; dossier/prior-art-2605.12522-experiments.md
-  \item OP5, generation order and parallelism: the trade-off statements already in the literature~\cite{arXiv:2602.00286,arXiv:2510.04767} and what remains open; stated as a conjecture with supporting and refuting counts and a status-and-scope paragraph. % src: survey-landscape.md section 2 (CB); decision D0007
-  \item OP6, reporting: what a community checklist for decoding rule, step sweeps and diversity would need, following the census (Section~\ref{sec:census}).
-\end{itemize}
+\begin{table}[t]
+\caption{Open problems, the evidence now, the measurement that would settle each, and what would refute it. $S_\theta$ is the model's own directed cross-modal dependence (Section~\ref{sec:budget-crossmodal}).}
+\label{tab:open}
+\footnotesize
+\begin{tabular}{@{}p{2.2cm}p{3.0cm}p{3.6cm}p{3.2cm}@{}}
+\toprule
+Problem & Evidence now & Measurement that would settle it & Refuted if \\
+\midrule
+OP1 What a step sweep identifies & derived (E0); toy enumeration, 11 of 12 cases & rerun two position rules with the visited states fixed, at $k=1$ and $k>1$ & the learning-term difference at $k>1$ equals the one at $k=1$ across rules and models \\
+OP2 Revision against the value rule & one published table that does not separate them (E2) & revision sampler against its base at matched passes, top-$p$ on both arms and off on both arms & either outcome informs: a gain that persists is a learning-term effect, one that vanishes a value-rule effect \\
+OP3 Cross-modal dependence in unified models & no per-step measurement found; indirect hints (E2) & $S_\theta$ by the mixture-reference estimator on a frozen model; schedules at matched passes & $S_\theta$ not concentrated early; no schedule difference at matched passes \\
+OP4 Four-arm value-rule measurement & two arms at $k=1$ on small models (E3); no frontier & sample-then-filter, its resampled twin, a confidence-ranked sampler and the tilted twin, at matched passes and entropy & sample-then-filter and its resampled twin agree at matched passes and entropy \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{OP1. What a step sweep identifies}
+\label{sec:open-op1}
+
+A step sweep identifies the learning-term difference between a position rule and its base only at one token per step (Section~\ref{sec:budget-props}). The statement is derived, with a toy enumeration in which the learning-term gain at two tokens per step departed from the one-token gain by more than 25\% or in sign in 11 of 12 cases (E0). % src: framework-v2.md section C (P1); red-team M6 (audits/2026-10-14-red-team-selection-term.md)
+The census counts how often a sweep is reported with the value rule said to be fixed: 55 of 152 papers with a generated-sample metric report the headline at two or more step settings, and 20 of those state that the value rule was held fixed (Section~\ref{sec:census-results}).\aud % src: coverage/census-result-v2.md; Table~\ref{tab:census-main}
+In the 47-model pilot table, one of the 14 models that use guidance (Show-o2) reports a step sweep with guidance held fixed. % src: design-space-v1.md section 5 (c) (Show-o2 Table 11); pilot, parts read only
+Settling it needs a rerun of two position rules, for example random and confidence-ranked, on one frozen model, in which each rule's learning term is evaluated on the states visited by the other. If the learning-term difference at larger $k$ matched the one at $k=1$ within noise across rules and models, a sweep would identify more than we state.
+
+\subsection{OP2. A revision sampler's gain against its value rule}
+\label{sec:open-op2}
+
+The question is whether a revision sampler's gain over its base at matched forward passes survives matching the value rule on both arms. We make no claim about any particular sampler. The closest published table (ReMDM, Section~\ref{sec:budget-props}) shows the gain but does not separate it from the effect of nucleus sampling (E2). % src: framework-v2.md section C (P3); primer-samplers.md section 2.7
+The test is the revision sampler and its base at the same number of forward passes, with top-$p$ at 0.9 on both arms and with truncation off on both arms. Either outcome is informative. The claim that part of a reported revision gain belongs to the value rule would be refuted by a gain that persists with the rule matched.
+
+\subsection{OP3. Cross-modal dependence in unified models}
+\label{sec:open-op3}
+
+Two parts. P5a: the model's directed cross-modal dependence $S_\theta$ between co-committed text and image tokens is concentrated in early steps and on layout and object tokens. P5b: at matched forward passes and tokens per pass, a schedule that does not co-commit high-$S_\theta$ pairs scores better on text--image consistency than joint commitment, and a modality-sequential schedule need not beat an alternating one. Both concern the model, not the data law. % src: framework-v2.md section C (P5, P5a, P5b)
+In the works we read, none measures a cross-modal quantity per step (E2, not exhaustive). Indirect hints exist. In UniDisc the distance between conditional and unconditional logits shrinks as tokens are decoded, and guidance on steps 1 to 3 of 24 gives CLIP 0.301, against 0.312 for all steps and 0.283 for steps 22 to 24~\cite{arXiv:2503.20853}. The one joint-against-sequential contrast we found, in MMaDA-Parallel (output alignment 59.8 parallel, 57.5 semi-parallel, 54.1 sequential), is confounded: the sequential text cannot see the image, training differs, there is one run, a language-model judge and no interval~\cite{arXiv:2511.09611}; its released sampler also commits no image tokens in the first quarter of the steps, unlike the paper's text (E3). % src: framework-v1.md section 4 (P5a, P5b evidence); framework-v2.md section C (last two lines); primer-multimodal.md section 4
+The estimator draws the text set from the model's joint ($k_{\mathrm T}$ sequential passes per sample, $R$ samples), re-queries the image marginals, and estimates $\hat I_j=\frac1R\sum_{r}\KL{p(b_j\mid s,a_r)}{\bar m_j}$, with $\bar m_j$ the mean of the $R$ re-queried marginals. The mixture is the reference because comparing with the one-pass marginal adds a marginal-inconsistency term that is non-zero even at zero dependence (0.081 nats per token in the red-team enumeration). The algebra was checked on toy models only and says nothing about re-query fidelity on a real network; the cost is $Rk_{\mathrm T}+R$ passes per probed step. % src: framework-v2.md section C (estimator paragraph, check_crossmodal_mixture.py); red-team block J
+A preregistered measurement on a frozen unified model is in progress. It concerns the role of the value rule in joint text--image consistency and not the estimator above, and no result of it is stated here (Section~\ref{sec:exp003}). % src: research/preregistration/EXP-003-value-rule-consistency.md header; decision D0019
+An earlier preregistered attempt at P5a on the same frozen model stopped at its feasibility gate: under plain sampling at temperature 1 without guidance, the joint completions showed no text--image link beyond the shared prefix, so there was no completion-specific dependence for a per-step estimator to locate. P5a therefore needs a regime in which the joint link exists before its timing can be measured. % src: decision D0016; runs/EXP-001/gates/verdict-pgv-rung1.json, verdict-pgv-rung2.json
+
+\subsection{OP4. A four-arm value-rule measurement on one checkpoint}
+\label{sec:open-op4}
+
+On one frozen checkpoint: sample-then-filter against its sample-select-resample twin, a confidence-ranked rank-then-sample sampler and the tilted twin, at matched forward passes and with an entropy-matched frontier. The contrast between the first two isolates choosing the set after seeing the values; the contrast between the twin and the confidence-ranked sampler isolates the position law; the tilted twin is the state-only sampler whose law matches sample-then-filter at one token per step. The red-team enumeration names this measurement as missing from the literature. % src: framework-v2.md section D item 4; method/selection-term.md T1.4 (the matched twin as reference)
+The first check was how much of it the closest paper already covers. We read its text and code at the commit in its repository (E3)~\cite{arXiv:2605.12522}. It runs sample-then-filter at one token per step on small models trained from scratch, at three block lengths, and the resample twin. It does not run a confidence-ranked sampler that ranks by the largest marginal (its nearest arm ranks by entropy), a tilted twin, any temperature sweep or entropy-matched frontier, any step above one token, or any image or unified model, and its main figure has one seed and no intervals. % src: dossier/prior-art-2605.12522-experiments.md claims block (E3 at 8bafc9e; confidence 0.85 to 0.95)
+The work left is the four arms with the frontier, at more than one token per step, on a text model and preferably a unified one. If sample-then-filter and its resampled twin agreed at matched passes and matched entropy, choosing after seeing the values would not be what moves the numbers. % src: design-space-v1.md claims block (next_test, falsifier)
+
+\subsection{Reporting}
+\label{sec:open-reporting}
+
+The census (Section~\ref{sec:census}) is the evidence for a reporting problem, and it gives a checklist its content: the value rule of the headline result; the position rule; the guidance level and whether it was held fixed in any sweep; a quality--diversity frontier in place of a single point; and intervals or seeds. We do not propose that every paper report all of these. What is missing is mostly the first item: 50 of the 153 papers with a codable value rule do not state it.\aud % src: coverage/census-result-v2.md (Result table); Section~\ref{sec:census-results}
+Settling the underlying question needs human coding of the census sample (not yet done), extension from the random sample to all included records, and a repeat on a later sample. A human-coded replicate whose interval for non-plain or unstated value rules lay clearly below that of Table~\ref{tab:census-main} would refute it. % src: OUTLINE.md section 5 (open items that block submission); census-result-v2.md Limits
