@@ -1,17 +1,22 @@
-% Section 10. Threats to validity and limitations. STUB with the limits known now.
+% Section 10. Threats to validity and limitations. Prose version of the stub list; every limit of the stub is kept.
+% Added 2026-10-15: census limits (all-Claude coders, no human coder, codebook v1.2 written after agreement was computed) and the EXP-003 limits.
 \section{Threats to validity and limitations}
 \label{sec:limits}
 
-\todo{stub: expand when extraction and appraisal are complete}
+\paragraph{Selection of studies.}
+Only arXiv and one curated list were searched. Other databases and snowballing are pending, and 22\% of the seed list was not retrieved by the logged strings (Section~\ref{sec:method-sources}). Preprints are rated in their latest arXiv version, and differences from published versions are not measured. Closed models and non-English work are outside the evidence, and positive-result bias in what papers report is not corrected. % src: corpus/search-log.jsonl; protocol.md section 3 "Version rated"; screening/dedup-report.json
 
-Known now.
-\begin{itemize}
-  \item Selection: only arXiv and one curated list were searched; other databases and snowballing are pending, and 22\% of the seed list was not retrieved by the logged strings (Section~\ref{sec:method-sources}). Preprints are rated in their latest arXiv version; differences from published versions are not measured. % src: corpus/search-log.jsonl; protocol.md section 3 "Version rated"; screening/dedup-report.json
-  \item Screening: two language-model screeners; no human agreement yet; 120 split decisions unresolved (Section~\ref{sec:method-screening}). % src: tools/screening_agreement.py
-  \item Protocol: not frozen or registered before screening (Section~\ref{sec:method-design}).
-  \item Census: limits listed in Section~\ref{sec:census-limits}; text only, no code inspection.
-  \item Design space: inclusive vocabulary, 29 of 47 rows not re-read (Section~\ref{sec:design}). % src: design-space-v1.md
-  \item Theory: the budget is bookkeeping, not a measured quantity; several statements are checked by exact enumeration on toy models only. % src: framework-v2.md sections B and D
-  \item Closed models and non-English work are outside the evidence; positive-result bias in what papers report is not corrected.
-  \item AI assistance: all research steps listed in Table~\ref{tab:ai} used language models; models of one family did most of the coding, adjudication and drafting.
-\end{itemize}
+\paragraph{Screening and protocol.}
+Two language-model screeners did the title-and-abstract screening. No human agreement has been computed, and 120 split decisions are unresolved (Section~\ref{sec:method-screening}). The protocol was not frozen or registered before screening (Section~\ref{sec:method-design}), so the reader cannot check that the eligibility rules preceded the data. % src: tools/screening_agreement.py; protocol.md header
+
+\paragraph{The census.}
+The census limits are listed in Section~\ref{sec:census-limits}; three matter most. First, the sample is a random sample of records that passed screening and have an arXiv identifier, not of the field. Second, no human coded it: both coders, both adjudicators and the harmoniser are language models, the adjudicators were not blind to the coders, and the agreement may overstate that of independent human coders. Third, codebook v1.2 was written after the agreement was computed, so its gap-filling rulings are post hoc; Table~\ref{tab:census-gap} shows how many papers each ruling decided. Only the text of each paper was coded, and released code was not opened. % src: census-result-v2.md ("Limits"); census-codebook-v1.2.md "Disclosure"
+
+\paragraph{Synthesis.}
+The design-space table uses an inclusive vocabulary, and 29 of its 47 rows were copied from earlier reading and not re-read (Section~\ref{sec:design}). The error budget is bookkeeping and not a measured quantity, and several statements about it are checked by exact enumeration on toy models only. % src: design-space-v1.md; framework-v2.md sections B and D
+
+\paragraph{The measurement on a frozen model.}
+Section~\ref{sec:exp003} reports one run, on one checkpoint, at one resolution, with 138 prefixes from short COCO captions and a 32-step variant of the official sampler. We did not test other models, other prefixes, other step counts or a second seed set. Presence is judged by one small vision-language checker, and that checker is itself a language model; no human check of its answers on generated images is recorded. The control that tests whether it can register a link at all failed (PC-1), so no null can be read from this run, and its sensitivity to within-prefix differences on guided images is untested. The primary result was not confirmed by a second instrument: the CLIP contrast did not meet the preregistered concordance rule. Quality-mediated coupling is not excluded, and the noun-composition check could not be computed. The positive attribution term bundles ordering, schedule and selection, so it supports no claim about the value rule alone. The analysis had deviations (Section~\ref{sec:exp003-deviations}), among them a raised time limit and five items computed after the freeze. The gate audit found none that a main-stage outcome could have influenced, but the diversity intervals are exploratory. No human reviewed the preregistration, and concurrent submissions under review are not visible to us, so the novelty check must be repeated before submission. % src: gate audit 2026-10-15-gate-EXP-003.md sections 1.4, 4 and 6; novelty audit section 7; decisions D0017, D0022, D0023, D0025
+
+\paragraph{Use of AI.}
+All research steps listed in Table~\ref{tab:ai} used language models, and models of one family did most of the coding, adjudication and drafting. Their errors are therefore likely to be correlated, and the checks recorded for them are mostly checks by other models of the same family.

@@ -1,11 +1,83 @@
-% Section 9. Targeted measurement on a frozen unified model. PLACEHOLDER ONLY: no result, no number, no direction.
+% Section 9. A preregistered measurement on a frozen unified model (EXP-003). Supports the reading of the census (Section 6); not a contribution of its own.
+% Sources: F = runs/EXP-003/analysis/confirmatory.json (frozen confirmatory output; worktree dlm-discovery-resume-ca3357, commit 077fb1d);
+% X = runs/EXP-003/analysis/postfreeze.json (exploratory, post-freeze; label kept in the text); A = research/review/audits/2026-10-15-gate-EXP-003.md;
+% C = research/preregistration/EXP-003-value-rule-consistency.md (v0.3.2 with the D0018 erratum); N = research/review/audits/2026-10-15-novelty-EXP-003.md.
+% Wording follows A section 5 (permitted) and section 6 (what must not be said): no "completion-specific link"; no null or "no guidance effect" wording for Delta2a (W2);
+% no share of effect; no "at least 0.10"; no claim that plain sampling shows no link; no value-rule claim from Delta2b; credit per decision D0019 and N section 4.
 \section{A targeted measurement on a frozen unified model}
 \label{sec:exp003}
 
-\todo{EXP-003 pending; wording rules in research/preregistration/EXP-003-value-rule-consistency.md section 10 and decision D0019}
+The census (Section~\ref{sec:census}) counts how often the value rule behind a headline result is not plain or not stated. It does not show that the rule changes any number. This section measures one number on one model in a preregistered run. It is a single run on one checkpoint, it serves the reading of the census in Section~\ref{sec:census-reading}, and it is not a contribution of the review. That the sampler changes joint text--image agreement in unified masked-diffusion models is already reported~\cite{arXiv:2607.13188,arXiv:2511.09611,arXiv:2503.20853}. Our scope is narrower: matched network calls on frozen released weights, guidance separated from the rest of the sampler, and a statistic that removes what the prefix alone explains. % src: C section 1.3; N sections 1, 4 and 5; decision D0019
 
-% Bullet plan (no result is stated anywhere in this paper):
-% - state the question in the preregistered wording only; scope as limited by D0019 (matched network calls, guidance separated from ordering, frozen weights);
-% - credit the closest work named in D0019 (CO2Jump 2607.13188, UniDisc 2503.20853, MUNITE 2610.09866) and do not imply that sampler effects on joint consistency are unreported;
-% - report only after the frozen analysis and the gate audit; every null is worded under card rule W2;
-% - move to the supplement if the section would exceed 0.75 page.
+\subsection{Question and design}
+\label{sec:exp003-design}
+
+The question is whether a 32-step variant of the official guided sampler of UniDisc 1.4B~\cite{arXiv:2503.20853} (guidance weight 3.0; the shipped default is 50 steps) gives a larger seed-specific, noun-level dependence between a generated caption tail and its image than plain sampling at the same number of network calls, and how much remains when guidance is switched off. Every statement below is scoped to UniDisc 1.4B, at 512 px, after prefixes of 5 to 9 words from COCO val2017 captions, with 32 masked tail tokens, guidance weight 3.0 (and 0) at 32 steps, and the Qwen3-VL-2B presence checker. A preregistration card (v0.3.2), reviewed by two Claude agent roles, a statistician and a red team, fixed the analysis before the run; no human review of it is recorded. % src: C sections 1.1, 3 and 11
+
+\paragraph{Arms.}
+Four arms see the same 138 fresh prefixes, two seeds per prefix. P64 and P32 are plain sampling at temperature one with within-modality confidence ranking, at 64 and 32 passes. O0 and G are the official sampler at 32 steps with guidance weight 0 and 3.0. As we read the released code, it ranks positions across both modalities by the log-probability of the drawn token plus Gumbel noise, commits by an arccos schedule and ends with an argmax pass. Guidance adds a network call per step, so G and P64 cost 64 calls, O0 33 and P32 32. The primary contrast, G against P64, is matched on calls and favours the plain sampler, which has the finer schedule. G against O0 changes guidance alone; O0 against P32 bundles selection on the drawn value, pooled ordering and schedule, and so makes no value-rule claim. % src: C sections 0 and 2; n_conf.json (138 generated prefixes)
+
+\paragraph{Statistic.}
+For prefix $p$ and seed $e\in\{0,1\}$ let $x_{pe}$ be the image and $D_{pe}$ the nouns that this completion names and the sibling completion (same prefix, other seed) does not, compared after removing a plural suffix. Let $y(n,x)\in\{0,1\}$ be the checker's answer to ``Is there a $n$ in this image?'', yes when $P(\text{yes})\ge 0.5$. A prefix is eligible when $D_{p0}$ and $D_{p1}$ are both non-empty. Within one arm its seed-balanced link is
+\begin{equation}
+  L_p \;=\; \tfrac12\Biggl[\frac{1}{|D_{p0}|}\sum_{n\in D_{p0}}\bigl(y(n,x_{p0})-y(n,x_{p1})\bigr)\;+\;\frac{1}{|D_{p1}|}\sum_{n\in D_{p1}}\bigl(y(n,x_{p1})-y(n,x_{p0})\bigr)\Biggr],
+  \label{eq:exp003-link}
+\end{equation}
+and the link of arm $a$ is the mean over its eligible prefixes $\mathcal P_a$,
+\begin{equation}
+  \Lambda_{\mathrm b}(a) \;=\; \frac{1}{|\mathcal P_a|}\sum_{p\in\mathcal P_a} L_p^{(a)} .
+  \label{eq:exp003-lambda}
+\end{equation}
+Equation~\eqref{eq:exp003-link} asks how much more often a noun that one seed's completion names is found in that seed's own image than in the sibling image. The sibling shares the prefix, the arm and the guidance setting, so what the prefix explains cancels; each seed has weight one half, so an additive yes-bias of either image cancels. The contrasts are $\Delta_1=\Lambda_{\mathrm b}(G)-\Lambda_{\mathrm b}(P64)$, $\Delta_{2a}=\Lambda_{\mathrm b}(G)-\Lambda_{\mathrm b}(O0)$ and $\Delta_{2b}=\Lambda_{\mathrm b}(O0)-\Lambda_{\mathrm b}(P32)$, each on the prefixes eligible in both its arms. On the prefixes eligible in all four arms,
+\begin{equation}
+  \Delta_1 \;=\; \Delta_{2a}+\Delta_{2b}+\bigl[\Lambda_{\mathrm b}(P32)-\Lambda_{\mathrm b}(P64)\bigr],
+  \label{eq:exp003-identity}
+\end{equation}
+by telescoping; the bracket is the change from 32 to 64 plain passes. % src: C sections 4.1 and 4.2
+The same-prefix sibling baseline is an instance of the same-condition independent-draw control used for co-generated outputs in MUNITE and CoDi~\cite{arXiv:2610.09866,arXiv:2305.11846}; seed balancing and the discordant-noun restriction are the parts we add. Yes/no presence probes follow POPE, TIFA and DSG~\cite{arXiv:2305.10355,arXiv:2303.11897,arXiv:2310.18235}, and judging joint coherence with a separate model is the criterion of multimodal VAEs~\cite{arXiv:1911.03393}. % src: N section 4 items 4 and 5; decision D0019 (1)
+
+\paragraph{Inference and controls.}
+The prefix is the cluster; intervals are percentile bootstrap intervals with 10,000 replicates and the same resampled prefixes in every arm. The one primary test is $\Delta_1$ against zero, two-sided at 0.05; if it rejects, Holm's procedure at 0.05 covers $\Delta_{2a}$ and $\Delta_{2b}$. The minimum effect of interest, 0.10, is our choice and describes point estimates only. Four controls fix the wording: NC-1, a plain arm whose image ignores the completion given the prefix (link zero); NC-2, placebo nouns from another prefix; PC-1, a plain arm whose image is generated after the whole completion (link recoverable); PC-2, the checker on guided text-to-image images. A failed PC-1 turns every null label into ``not measurable with this instrument'' (rule W2) and leaves a positive readable. % src: C sections 4.5, 5, 6 and 7
+
+\subsection{Results}
+\label{sec:exp003-results}
+
+All 138 prefixes were generated in every arm, with no failed unit. Table~\ref{tab:exp003-arms} gives the link of each arm. % src: F arms.*.n_prefix; A section 1.3
+
+\begin{table}[t]
+\caption{Seed-balanced link $\Lambda_{\mathrm b}$ by arm (Equation~\eqref{eq:exp003-lambda}), with 95\% percentile prefix-cluster bootstrap intervals. The per-arm intervals are descriptive and uncorrected; the preregistered tests are on the contrasts. Calls are network calls per sample.}
+\label{tab:exp003-arms}
+\small
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Arm & Sampler & Calls & Eligible prefixes & $\Lambda_{\mathrm b}$ & 95\% interval \\
+\midrule
+P64 & plain, 64 passes & 64 & 134 & 0.051 & 0.023 to 0.079 \\ % src: F arms.P64.lambda_b, lambda_b_pct95, n_eligible
+P32 & plain, 32 passes & 32 & 135 & 0.085 & 0.053 to 0.120 \\ % src: F arms.P32
+O0 & official, guidance 0 & 33 & 129 & 0.159 & 0.115 to 0.205 \\ % src: F arms.O0
+G & official, guidance 3.0 & 64 & 126 & 0.180 & 0.138 to 0.222 \\ % src: F arms.G
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Primary result.}
+Under a 32-step variant of the official guided sampler (guidance weight 3.0; the shipped default is 50 steps), UniDisc 1.4B shows higher VLM noun presence in the own image than in the sibling image, not confirmed by CLIP, for nouns that one seed's completion names and the other's does not, and this difference is larger than under plain sampling at the same number of network calls (64): $\Delta_1=0.126$ (95\% interval 0.076 to 0.177; BCa interval 0.075 to 0.176; $p=0.0002$, the smallest value 10,000 replicates can return; 123 prefixes). The difference may include quality-mediated, class-level coupling. The point estimate is at or above the minimum effect of interest of 0.10; its lower limit is 0.076, so we do not state that the effect is at least 0.10. Computed after the freeze, the achieved minimum detectable effect is 0.084 at power 0.90 (0.119 was planned) and the power at 0.10 is 0.97 (Wald approximation). % src: F confirmatory.delta1 (d, pct95, bca95, p, n_prefix); A section 5 (primary sentence; W0 clause kept per decision D0025 (2)); X item2_achieved_mde_and_power (delta1)
+
+\paragraph{Second result.}
+The official sampler without guidance minus plain sampling at 32 steps is positive: $\Delta_{2b}=0.077$ (95\% interval 0.024 to 0.131; Holm-adjusted $p=0.012$; 127 prefixes). The official sampler's bundle of selection, pooled ordering and schedule raises the link. A guidance effect is not detected: $\Delta_{2a}=0.023$ (95\% interval $-0.032$ to 0.078; Holm-adjusted $p=0.43$; 122 prefixes). Because PC-1 failed, this interval is not read as a null: it is not measurable with this instrument. On the 118 prefixes eligible in all four arms, Equation~\eqref{eq:exp003-identity} reads $0.126 = 0.026 + 0.072 + 0.029$ (rounded to three decimals; the unrounded terms sum exactly), and we state no share of the effect. Descriptive and uncorrected, G minus P32 is 0.094 (0.042 to 0.146; 125 prefixes) and P64 minus P32 is $-0.033$ ($-0.076$ to 0.009; 132 prefixes); we draw no conclusion from the second. % src: F confirmatory.delta2a, delta2b, identity, steps_matched_G_minus_P32, plain_doubling_P64_minus_P32; A sections 4.2 and 5
+
+\paragraph{Checks and controls.}
+In the half of prefixes whose sibling images differ least in CLIP-IQA, $\Lambda_{\mathrm b}(G)$ is 0.131 (0.071 to 0.184; 63 prefixes), and the slope on the sibling quality difference is 0.160 ($-0.027$ to 0.366): the preregistered flag for quality-mediated coupling is not triggered, which does not exclude it. CLIP did not confirm the dependence: the sibling-link contrast of G against P64 on the completion text alone is 0.38 (100 times cosine similarity), 90\% interval $-0.085$ to 0.861 over 138 prefixes, where the rule requires a lower limit above zero. The composition sensitivity cannot be computed: G completions name more COCO-category nouns (share 0.110 against 0.065), but only 2 prefixes are eligible for it in both arms. NC-1 passed (link $-0.0003$, 95\% interval $-0.052$ to 0.050; 45 prefixes), NC-2 passed on G (0.002; $-0.016$ to 0.021) and on P64 (0.005; $-0.012$ to 0.023), and PC-2 passed (matched presence 0.77, other-caption 0.17; 113 nouns). PC-1 failed: the image-after-completion arm exceeds the independent arm by 0.031 (95\% interval $-0.042$ to 0.100; 44 prefixes), where 0.10 was required. We therefore cannot say that the checker registers a link even when the image sees the whole completion, and its sensitivity to within-prefix differences on guided images is untested. Guardrails (i) to (iii) pass: the completion length of G is 0.79 times that of P64 (limits 0.5 to 2.0), no completion is empty, and G has 1,084 discordant nouns against 1,666 (ratio 0.65; limit 0.4). Guardrail (iv), near-uniform G images, was not computed by the frozen analysis; recomputed afterwards from the stored per-image flags it is 1 image of 276 (limit 0.15). The plain arms' intervals in Table~\ref{tab:exp003-arms} exclude zero; they are descriptive, uncorrected and a different statistic from the gate statistic of the earlier attempt on this model (Section~\ref{sec:open-op3}), so we make no statement that plain sampling shows no link and do not read them as replicating or contradicting that attempt. % src: F arms.G.quality_matched, clip_sibling_link_G_minus_P64_completion_only, W1_concordant, guardrails, arms.*.completion; runs/EXP-003/ctrl/controls_decision.json; X item1_guardrail_iv_near_uniform, item4_w3_composition; A sections 4.1 and 6 item 9; decision D0025 (5)
+
+\paragraph{Diversity.}
+The hypothesis that the guided arm lowers diversity (E3-H4) was not tested by the frozen analysis. A post-freeze, exploratory computation (bias-centred percentile intervals) puts the text side in the predicted direction: unigram entropy of the completion words is lower for G than for P64 by 0.44 nats (95\% interval $-0.55$ to $-0.33$), and the Jaccard overlap of the two seeds' noun sets is higher by 0.054 (0.035 to 0.075). The image side runs the other way: the mean sibling-image cosine is 0.68 for G and 0.76 for P64, with no interval. We make no statement that guidance lowers diversity; the text-side direction is the one expected when guidance trades diversity for fidelity~\cite{arXiv:2207.12598}. % src: X item5_e3h4_diversity ("exploratory, post-freeze"); F arms.*.image_sibling_cosine; A section 6 item 8; N section 4 item 5
+
+\subsection{Deviations}
+\label{sec:exp003-deviations}
+
+(1) An encoding error in the analysis and scoring code mis-keyed non-ASCII nouns; it was fixed before the controls were evaluated and before any main-stage sample existed, and the pilot analysis, which served for sizing only, may carry it. PC-1 then failed and the main stage continued as the card allows, under W2. (2) Eleven interpretive readings of the card and one erratum were accepted before scoring; the erratum corrects the mechanism paragraph, since the unconditional guidance branch masks every observed position and not only the prefix. (3) The hard stop on GPU time was raised from 7.0 to 8.5 hours, with the user's approval, during generation and before any main-stage sample was scored; the run used 8.02 hours against a plan of 6. (4) The pilot freeze was re-recorded for one analysis file, after generation and before scoring, for the encoding fix and a change of line endings. (5) A scoring-driver progress check that looked in the wrong directory stopped scoring falsely; it was fixed and scoring resumed. (6) The frozen analysis omitted five items, computed afterwards and labelled post-freeze: guardrail (iv), the composition contrast, the diversity intervals, the achieved detectable effect, and the counts of undersized placebo pools; three secondary contrasts used 5,000 bootstrap replicates, not 10,000. The gate audit verified the freeze hashes and the order of events, reproduced the confirmatory file byte for byte, and found no deviation that a main-stage outcome could have influenced. The evidence is a single preregistered run, and its outputs are not yet archived.\todo{archive runs/EXP-003 (untracked in the worktree that ran it) with the code and give the DOI; generated images are withheld because UniDisc states no licence} % src: decisions D0017, D0018, D0022, D0023, D0024, D0025; A sections 1.2 to 1.4 and 3; runs/EXP-003/clock.json
+
+\subsection{What this means for the review}
+\label{sec:exp003-meaning}
+
+On this model, at equal network calls and equal weights, the link between a completion and its image depends on the sampler: 0.180 for the guided variant and 0.051 for plain sampling, a difference that is not confirmed by CLIP and may include quality-mediated coupling. The official sampler's selection, ordering and schedule contribute a positive term; a guidance term is not detected but cannot be excluded. A joint-consistency number reported without its sampler is therefore not attributable to the model. Other metrics and model families depend on sampling or evaluation settings~\cite{openreview:Gq4yt8pxRo,arXiv:2606.29228,arXiv:2606.20536,arXiv:2607.24763}, and the sampler's effect on joint agreement is known~\cite{arXiv:2607.13188,arXiv:2511.09611}; the measurement adds one controlled instance at matched calls. It does not show that the value rule matters in other models, metrics or prefixes, or that it carries joint consistency, since the positive term bundles ordering and schedule with selection. Splitting O0 into a selection-only and an ordering-only variant at matched calls would attribute the bundle term; we have not run it. The guided arms supply a regime in which the statistic is above zero, which bears on the open problem of Section~\ref{sec:open-op3}, with the caveat that the instrument's sensitivity there is untested. % src: F Table~\ref{tab:exp003-arms}; N section 4 item 6; decision D0019; A (competing_explanations, next_test); framework-v2.md section C (P5a)
