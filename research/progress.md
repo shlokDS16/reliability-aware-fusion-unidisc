@@ -1,7 +1,25 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF (2026-10-15, about 01:50 IST; newest block, overrides all older). Start here.**
+- **HANDOFF 2 (2026-10-15, 08:10 IST; newest block, overrides all older). Start here.**
+  Overnight: the EXP-003 driver finished the pilot (no stop rule; n_generate 138, 120 eligible,
+  share 0.875) and the controls generation and scoring, then stopped at 03:16 on a **code bug**
+  (UTF-8 files read with the Windows code page; KeyError on a non-ASCII noun). The laptop
+  restart at 04:29-04:32 was **Windows Update** (System log 1074, MoUsoCoreWorker and
+  TrustedInstaller), not a GPU crash, and interrupted nothing. Fixed (explicit UTF-8 in
+  tables.py, frozen_analysis.py, score.py, chunks.py; pilot_analysis.py left as run under its
+  frozen hash). Controls (D0017): NC-1 pass (-0.0003), PC-2 pass (guided T2I matched 0.77 vs
+  cross 0.17), **PC-1 fail** (TF - Ind = 0.031, p 0.40): under plain sampling even an image
+  generated after the whole completion shows no detectable noun-level dependence on it, so every
+  EXP-003 null is "not measurable with this instrument" (W2), while a positive G - P64 stays
+  readable. Main stage restarted 08:06: driver PID 37236 (`runs/EXP-003/DRIVER_PID.txt`),
+  M1 (P64 and G) -> M2 (O0) -> M3 (P32) -> scoring -> DONE.txt.
+  **If the laptop restarts again:** check `runs/EXP-003/driver.log` tail and STOPPED.txt; restart
+  with the `Start-Process` command in `runs/EXP-003/IMPLEMENTATION.md` section 4 (every unit is
+  resumable; the GPU clock persists in clock.json). Ask Shlok to pause Windows Update while runs
+  are going (Settings > Windows Update > Pause updates).
+  Everything in HANDOFF (below) still applies.
+- **HANDOFF (2026-10-15, about 01:50 IST).**
   **Running now, unattended:** EXP-003 driver, PID 54920 (`runs/EXP-003/DRIVER_PID.txt`, log
   `runs/EXP-003/driver.log`). Card `research/preregistration/EXP-003-value-rule-consistency.md`
   v0.3.2 SIGNED (statistician and red-team; ledger H0004-H0006, X0002). Implementation and how to
