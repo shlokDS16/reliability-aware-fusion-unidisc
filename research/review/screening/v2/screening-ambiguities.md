@@ -30,3 +30,11 @@ X7 practice: pipelines applying a DLM without saying whether it was modified (M1
 3. Discrete-diffusion VLA models, text generation unstated (M15330, M09851, M09916): unclear.
 4. NLP-task diffusion producing labels or spans (NER, ABSA: M17653, M11849, M09557, M12328, M01553): unclear; M12807, M14235 X7.
 5. Missing abstract with a clearly out-of-scope title excluded (e.g. M17320 X0; music, fonts, protein, motion X1): confirm this reading.
+
+## Screener A, batch 3
+Deviation to disclose: about 20 records with truncated abstracts were decided after reading the full text (title-and-abstract stage should not); ids not listed by the screener.
+1. Frozen VLM plus added diffusion decoder, or MoT unified 3D (M15792, M09294): joint training unstated, unclear; M07750 X2.
+2. Generic discrete-diffusion theory without text: unclear unless language named.
+3. Diffusion VLA/driving on a diffusion-LM backbone outputting actions or trajectories: X1; possible reasoning-text output left unclear.
+4. Masked-diffusion TTS/ASR/captioning: speech-token output X1; text output (transcripts, captions) included.
+5. Diffusion as metaphor or non-generative role: X0 when no diffusion model; one ambiguous case unclear.
