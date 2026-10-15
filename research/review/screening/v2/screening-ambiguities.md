@@ -23,3 +23,10 @@ Also: M18918 and M09530 duplicate (TrustLDM); M13102 Catalan title, English abst
 4. Diffusion LM repurposed as encoder or estimator (M16168 pplx-embed, M15450 InfoSEDD): does "output includes text" apply?
 5. Motion or cell-expression as the other modality (M15992 unclear, M12951 CellUMM X1).
 X7 practice: pipelines applying a DLM without saying whether it was modified (M17603, M13234, M14428, M15731) marked unclear.
+
+## Screener A, batch 2
+1. Generic discrete-diffusion/flow theory with no text (M07423, M13280, M08183, M06698, M01824): unclear; proposed rule: include only if language is named, else X1.
+2. VLM/MLLM feeding a separately named diffusion decoder, presented as unified, joint training unstated (M19015, M15989, M16043, M18394, M14797, M08935): unclear; JanusFlow (M04162) included.
+3. Discrete-diffusion VLA models, text generation unstated (M15330, M09851, M09916): unclear.
+4. NLP-task diffusion producing labels or spans (NER, ABSA: M17653, M11849, M09557, M12328, M01553): unclear; M12807, M14235 X7.
+5. Missing abstract with a clearly out-of-scope title excluded (e.g. M17320 X0; music, fonts, protein, motion X1): confirm this reading.
