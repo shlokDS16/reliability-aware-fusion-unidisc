@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-15",
+  "decision": "D0029 item 2",
+  "script": "tools/resolve_title_only.py",
+  "mode": "finish",
+  "population": 2107,
+  "population_definition": "snowball_only and auto_excluded and auto_excluded_abstract_missing in corpus/new-records-2026-10-15-v2.jsonl",
+  "population_with_identifier": 698,
+  "population_fragments_without_identifier": 1409,
+  "duplicates_of_existing_records": 105,
+  "duplicates_by_stage": {
+    "local": 102,
+    "after-resolution": 3
+  },
+  "duplicates_by_match_kind": {
+    "title:jaccard": 52,
+    "title:exact": 42,
+    "title:squashed": 2,
+    "title:prefix-truncated": 6,
+    "within-population": 2,
+    "id:arxiv": 1
+  },
+  "duplicates_of_records_jsonl_R": 27,
+  "duplicates_of_v2_file_M": 78,
+  "duplicates_within_population": 2,
+  "slow_pass": {
+    "fast_pass_resolved": 825,
+    "unresolved_after_fast_pass": 978,
+    "with_reference_marker_queried": 333,
+    "without_marker_not_queried": 585,
+    "without_marker_random_check_sample": {
+      "n": 60,
+      "resolved": 0
+    }
+  },
+  "resolved": 830,
+  "resolved_with_abstract": 141,
+  "resolved_without_abstract": 689,
+  "resolved_by_source": {
+    "s2-id": 669,
+    "datacite-arxiv": 96,
+    "s2-match": 5,
+    "crossref-title": 57,
+    "openalex-title": 3
+  },
+  "resolved_by_title_agreement": {
+    "identifier": 669,
+    "exact": 119,
+    "squashed": 30,
+    "jaccard": 12
+  },
+  "resolved_abstract_source": {
+    "none": 689,
+    "datacite-arxiv": 96,
+    "crossref-title": 13,
+    "openalex-title": 3,
+    "s2-match": 3,
+    "crossref-doi": 14,
+    "datacite-arxiv-title": 11,
+    "semantic-scholar-batch": 1
+  },
+  "unresolved_lookup_incomplete": 340,
+  "unresolvable": 832,
+  "unresolvable_by_reason": {
+    "no title-agreeing record in Semantic Scholar, OpenAlex or arXiv": 45,
+    "no title-agreeing record in DataCite (arXiv) or Crossref; Semantic Scholar/arXiv API not queried (no reference-list marker, see random check)": 585,
+    "not a bibliographic title (fewer than 2 or more than 40 words, equations, prose or symbols)": 202
+  },
+  "resolved_and_matching_strings_queued": 0,
+  "unresolved_fragments_with_cleaned_title_matching_strings_queued_title_only": 7,
+  "queue_total": 7,
+  "unresolved_fragment_queue_possible_duplicates": 2,
+  "queued_by_rule_hit": {},
+  "queued_with_abstract": 0,
+  "queued_without_abstract": 0,
+  "resolved_not_matching": 830,
+  "check_sum": {
+    "duplicates+resolved+unresolvable+incomplete": 2107,
+    "population": 2107
+  },
+  "lookup_calls_this_run": {},
+  "openalex": "free budget exhausted on 2026-10-15 (HTTP 429, X-RateLimit-Remaining 0, reset at midnight UTC) apart from a few early answers (3 resolutions)",
+  "notes": [
+    "Sources used, in order: Semantic Scholar /paper/batch (698 records with a paperId; 670 answered, none returned an abstract), DataCite REST API restricted to client arxiv.content (arXiv records with abstracts), Crossref query.bibliographic, Semantic Scholar /paper/search/match, arXiv API ti:\"...\", OpenAlex.",
+    "OpenAlex: free budget exhausted on 2026-10-15 (HTTP 429, X-RateLimit-Remaining 0) apart from a few early answers; no OpenAlex DOI batch could be run for the abstract-less records. Rerunning 'python tools/resolve_title_only.py run' after the daily reset (cache-resumable) would use it.",
+    "Semantic Scholar (unauthenticated shared pool) answered HTTP 429 to about two requests in three for hours; the title-match step is therefore incomplete: records listed under unresolved_lookup_incomplete were not answered by it. The arXiv API added no match beyond DataCite.",
+    "A fragment whose cleaned title (or the title joined to the venue field it spilled into) matches S1, S2, S1', S2', S1'' or S2'' but which could not be resolved is queued title-only and counted apart (unresolved_fragments_with_cleaned_title_matching_strings_queued_title_only); possible duplicates are flagged."
+  ],
+  "title_agreement_rules": "normalised-title equality; token-set Jaccard >= 0.85 (stop words removed, >= 3 tokens each); letters-and-digits equality (>= 25 chars); prefix-truncated (fragment of >= 4 words equals the start of the target, last word may be cut, target has at most one more word)",
+  "queue_rule": "S1'' or S2'' or S1 or S2 on title + abstract of the resolved record, or the resolved title alone matches S1, S2, S1' or S2'",
+  "queue_file": "research/review/screening/v2/title-resolved-queue.jsonl",
+  "records_file": "research/review/corpus/title-resolution-records-2026-10-15.jsonl",
+  "queue_sha256": "57d8c06afe420305885ed7856f9aaef9dc40578dd3014f0399ad819e9dda0b44",
+  "elapsed_seconds": 14
+}
