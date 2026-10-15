@@ -10,7 +10,7 @@
 \subsection{Question and unit}
 \label{sec:census-question}
 
-The reported quality of a diffusion language model depends on how the committed values are chosen at each step (Section~\ref{sec:budget}). The census asks, for the headline result of each paper, whether a reader can tell which value rule produced it, whether that rule departs from plain sampling at temperature one, whether the diversity cost of the headline setting is shown, and whether a step sweep holds the rule fixed. It is a count of what the papers say. It does not measure how much any rule changed any number. The sample, fields, codebooks, coders and adjudication are described in Section~\ref{sec:census-method}.
+The reported quality of a diffusion language model depends on how the committed values are chosen at each step (Section~\ref{sec:budget}). For the headline result of each paper, the census asks whether a reader can tell which value rule produced it and whether that rule departs from plain sampling at temperature one. It also asks whether the diversity cost of the headline setting is shown and whether a step sweep holds the rule fixed. The census counts what the papers say; it does not measure how much any rule changed any number. The sample, fields, codebooks, coders and adjudication are described in Section~\ref{sec:census-method}.
 
 \subsection{Agreement between the two coders}
 \label{sec:census-agreement}
@@ -88,44 +88,24 @@ Counting papers that carry each letter (a paper can carry several), the sample h
 \subsection{How much depends on coding choices}
 \label{sec:census-sensitivity}
 
-Codebook v1.2 was written after both codings, so its rulings could move counts, and adjudication reopened 45 cells on which the coders had agreed (42 of them affect a count; 25 are F2 codes, 20 of those 25 using the new code C or the suffix +NS). % src: census-result-v2.md (sensitivity paragraph, audit C4); audits/2026-10-15-gate-census-v2.md
+Codebook v1.2 was written after both codings, so its rulings could move counts. Adjudication reopened 45 cells on which the coders had agreed; 42 of them affect a count, and 25 are F2 codes, 20 of those 25 using the new code C or the suffix +NS. % src: census-result-v2.md (sensitivity paragraph, audit C4); audits/2026-10-15-gate-census-v2.md
 Restoring every agreed cell leaves the headline proportion where it is (148/154 = 0.961, Table~\ref{tab:census-main}) and lowers the number of papers with a \emph{stated} non-plain rule from 97 to 86 of the denominator, because many of the reopened cells moved a paper from not stated to a coded letter. % src: census-result-v2.md Result table; summary-random.log (sensitivity block)
 
-Table~\ref{tab:census-gap} shows how many papers each gap-filling ruling of v1.2 decided. % src: census-result-v2.md ("Effect of the v1.2 gap rulings"); analysis/census/gap-rulings.log (script analysis/census/gap_rulings.py)
+\suppTabGap{} (supplement, Section~S3) shows how many papers each gap-filling ruling of v1.2 decided. % src: census-result-v2.md ("Effect of the v1.2 gap rulings"); analysis/census/gap-rulings.log (script analysis/census/gap_rulings.py)
 A ruling can lower ``non-plain or not stated'' only by turning a row into plain sampling, and ``stated non-plain'' by at most the number of non-plain rows it decided. The largest exposure is B-15 (code C): if those 39 non-plain papers were instead read as not stated, ``stated non-plain'' would fall by at most 39, and ``non-plain or not stated'' would not change. The eligibility rulings B-3, B-4, B-6 and B-8 decided 2, 3, 3 and 4 ranks. % src: gap-rulings.log (B-15 row, trailing "Reading" line); census-result-v2.md
 
-\begin{table}[t]
-\caption{Papers decided by each gap-filling ruling of codebook v1.2, among the value-rule denominator (153 papers). Columns give the value-rule class the ruling produced: non-plain, not stated (NS), plain stated (U). B-10 decided 15 ranks, of which 12 are in the value-rule count.}
-\label{tab:census-gap}
-\small
-\begin{tabular}{@{}llrrrr@{}}
-\toprule
-Ruling & Subject & Papers & Non-plain & NS & U \\
-\midrule
-B-15 & code C, confidence-ranked unmasking & 40 & 39 & 0 & 1 \\ % src: analysis/census/gap-rulings.log (columns: ranks in F2 denom, non-plain, NS, U)
-B-21 & combined letters; G or M with token rule unstated (+NS) & 19 & 18 & 1 & 0 \\
-B-24 & sweep must be on the F1 task & 18 & 12 & 6 & 0 \\
-B-10 & benchmark accuracy as generated-sample metric & 12 & 7 & 5 & 0 \\
-B-9 & F1 from the in-scope task & 14 & 7 & 5 & 2 \\
-B-19 & particle resampling as M & 6 & 6 & 0 & 0 \\
-B-13 & conflicting statements about the rule & 3 & 3 & 0 & 0 \\
-B-17 & best-of-$N$ and filtering as M & 3 & 3 & 0 & 0 \\
-B-22 & diversity metrics not on the v1.1 list (decides F3) & 1 & 1 & 0 & 0 \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \subsection{What the census shows, and what it does not}
 \label{sec:census-reading}
 
-The result is about reporting at least as much as about decoding. A reader of most headline results in this sample cannot tell which value rule produced them: 50 of 153 do not state it, and only 6 state plain sampling. Where a rule is stated, it is rarely plain. That is a limit on what comparisons across papers can mean, because a number produced with a sharpened or guided rule is not comparable to one produced with plain sampling at the same step budget.
+The result is about reporting at least as much as about decoding. For about a third of the headline results in this sample (50 of 153) a reader cannot tell which value rule produced them, and only 6 state plain sampling. Where a rule is stated, it is rarely plain. That is a limit on what comparisons across papers can mean, because a number produced with a sharpened or guided rule is not comparable to one produced with plain sampling at the same step budget.
 
 It is not a finding that non-plain rules inflate the reported numbers. The census records the rule, not its effect; whether a given paper's headline would change under another rule can be settled only by rerunning it (Section~\ref{sec:open}).
 
-Reported diversity does not close the gap. Even for the 28 papers that pair the headline with a diversity or entropy measure, such a measure cannot by itself attribute a gain to the model, the schedule or the value rule, because output entropy can fall far below the data entropy with exact marginals and only factorisation error (Section~\ref{sec:budget}, withdrawn proposition P2). % src: research/review/framework-v2.md section C (P2 withdrawn) and D2
+Reported diversity does not close the gap. This holds even for the 28 papers that pair the headline with a diversity or entropy measure. Such a measure cannot by itself attribute a gain to the model, the schedule or the value rule, because output entropy can fall far below the data entropy with exact marginals and only factorisation error (Section~\ref{sec:budget}, withdrawn proposition P2). % src: research/review/framework-v2.md section C (P2 withdrawn) and D2
 Whether a particular paper reports enough elsewhere, in ablations, appendices or code, to separate those contributions is a per-paper question that these counts do not answer. % src: framework-v2.md section D2 (Codex round 4 wording)
 
-The point that reported quality depends on the sampling setting has been made for other metrics and model families: for a fairness metric in diffusion language models~\cite{openreview:Gq4yt8pxRo}, for parallel-decoding rankings under prompt templates~\cite{arXiv:2606.29228}, for the randomness of generative-model evaluation~\cite{arXiv:2606.20536}, and in a compute-aware evaluation protocol for remasking~\cite{arXiv:2607.24763}. The census adds a count of how often the value rule behind a diffusion language model headline is non-plain or unstated. % src: census-result-v2.md ("What can be said", credit); decision D0019; ledger P0113, P0079, P0088, P0098 (E1: abstracts read)
+That reported quality depends on the sampling setting has been argued for other metrics and model families: a fairness metric in diffusion language models~\cite{openreview:Gq4yt8pxRo}, parallel-decoding rankings under prompt templates~\cite{arXiv:2606.29228}, the randomness of generative-model evaluation~\cite{arXiv:2606.20536}, and a compute-aware evaluation protocol for remasking~\cite{arXiv:2607.24763}. The census adds a count of how often the value rule behind a diffusion language model headline is non-plain or unstated. % src: census-result-v2.md ("What can be said", credit); decision D0019; ledger P0113, P0079, P0088, P0098 (E1: abstracts read)
 
 \subsection{Limits of the census}
 \label{sec:census-limits}
@@ -134,7 +114,7 @@ The point that reported quality depends on the sampling setting has been made fo
   \item The frame is the 1106 records that passed title-and-abstract screening and have an arXiv identifier, sampled at random. It is not the whole field, and intervals treat the ranks as a simple random sample; they ignore clustering by research group. % src: census-result-v2.md ("Result", interval note)
   \item No human has coded the sample. Coder~B is two systems (Codex, then Claude Opus); coder~A, the Claude part of coder~B, both adjudicators and the harmoniser are Claude models, and the adjudicators and harmoniser were not blind to the coders. Agreement may therefore overstate the agreement of independent human coders, and the 15 Codex read-failure ranks are in effect coded once plus adjudication. % src: census-result-v2.md ("Limits")
   \item A possible blindness leak is described in Section~\ref{sec:census-method}; we know of no effect on coder~A's codes. % src: decision D0019 item 2
-  \item Codebook v1.2 was written after the agreement was computed; agreement is reported under v1.1. Table~\ref{tab:census-gap} shows the rulings that decided the most papers. % src: census-codebook-v1.2.md "Disclosure"
+  \item Codebook v1.2 was written after the agreement was computed; agreement is reported under v1.1. \suppTabGap{} shows the rulings that decided the most papers. % src: census-codebook-v1.2.md "Disclosure"
   \item Fifteen rows carry F1 as a relative gain or a ratio rather than a level. % src: census-result-v2.md ("Limits"; harmonisation reading 5)
   \item Four process-level sampler papers with guidance (ranks 91, 114, 120, 141) are coded G+NS; the alternative reading would make them G. Neither reading changes a non-plain count. % src: census-result-v2.md ("Limits"; harmonisation reading 2)
   \item Only the text of each paper was coded. Released code, which may state a rule the paper omits, was not opened. % src: census-codebook-v1.md "Rules"

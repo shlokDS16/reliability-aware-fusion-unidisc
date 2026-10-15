@@ -1,0 +1,218 @@
+% supplement.tex: electronic supplement to main.tex (Paper 1, ACM Computing Surveys).
+% Compiled separately: latexmk -pdf supplement.tex (main.tex is compiled first so that cross-references to it resolve; xr-hyper reads main.aux).
+% Not counted in the 35 pages of the main paper (CSUR author guidelines, "Paper Length"; research/review/dossier/csur.md Part A).
+% Sections keep the numbers promised in the main text and in OUTLINE.md section 1 (S1 search strings, S3 census tables, S5 design-space table in full,
+% S7 EXP-003 detail). Material moved out of the main text on 2026-10-15 to bring it to 35 pages is in S5, S7 and S8; every moved block keeps its
+% original "% src:" comment. S1 to S4 and S6 of the OUTLINE are not assembled yet.
+\documentclass[acmsmall]{acmart}
+
+\AtBeginDocument{\providecommand\BibTeX{{Bib\TeX}}}
+\citestyle{acmauthoryear}
+
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{longtable}
+% Cross-references to main.tex: scripts/mainrefs.py reads main.aux and writes mainrefs.tex (run it after compiling main.tex).
+\makeatletter
+\InputIfFileExists{mainrefs.tex}{}{}
+\newcommand{\Mref}[1]{\@ifundefined{mr@#1}{\textbf{??}}{\csname mr@#1\endcsname}}
+\makeatother
+\newcommand{\mask}{\mathsf{m}}                 % mask (erasure) symbol, not in the vocabulary
+\newcommand{\KL}[2]{\mathrm{KL}\!\left(#1\,\middle\|\,#2\right)}
+\newcommand{\TC}{\mathrm{TC}}                  % total correlation
+\newcommand{\Efact}{E_{\mathrm{fact}}}
+\newcommand{\Elearn}{E_{\mathrm{learn}}}
+\newcommand{\Eapprox}{E_{\mathrm{approx}}}
+
+\acmJournal{CSUR}
+\acmVolume{1}\acmNumber{1}\acmArticle{1}\acmMonth{1}\acmYear{2027}
+
+% ---- drafting aids (same as main.tex) ----
+\newcommand{\todo}[1]{{\color{red}\textbf{[TODO: #1]}}}
+\newcommand{\aud}{\textsuperscript{\color{red}\scriptsize audit}}
+
+% Supplement numbering: sections S5, S7, ...; tables S1, ...; algorithms S1, ...
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thealgocf}{S\arabic{algocf}}
+
+\begin{document}
+
+\title[Supplement to the review of diffusion language models]{Supplement to ``Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review of Discrete and Continuous Approaches''}
+
+\author{Shlok Kumar Goenka}
+\affiliation{%
+  \institution{Vellore Institute of Technology}
+  \city{Vellore}
+  \state{Tamil Nadu}
+  \country{India}}
+\email{shlok.goenka2023@vitstudent.ac.in}
+
+\begin{abstract}
+This file holds the material that the main paper points to and that is not counted in its 35 pages: the condensed design-space table of the 47 models, the details of the EXP-003 measurement that are not needed to follow the argument, and four passages moved out of Sections 3, 4 and 7 of the main text. Section numbers refer to this file when written S\textit{n}, and to the main paper otherwise.
+\end{abstract}
+
+\maketitle
+
+\todo{assemble S1 (search strings and PRISMA checklist), S2 (screening table), S3 (census codebooks and the 176-row table), S4 (agreement tables), S6 (extraction and quality-appraisal tables) and the readme.txt that CSUR asks for; OUTLINE.md section 1 lists them}
+
+\setcounter{section}{1}
+\section{Screening: confusion table}
+\label{sec:s-screen}
+
+The per-record screening table is still to be assembled (see the note above). The table below is moved from Section~\Mref{sec:method-screening}, where its reading is given.
+
+\begin{table}[t]
+\caption{Title-and-abstract screening, 1453 records. Rows: screener A; columns: screener B. Three-way agreement 0.865 ($\kappa=0.673$); pass versus exclude agreement 0.917 ($\kappa=0.728$). Agreement is between two language-model screeners; it is not agreement with a human.}
+\label{tab:screening}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+ & B include & B unclear & B exclude & Total \\
+\midrule
+A include & 1013 & 13 & 45 & 1071 \\ % src: tools/screening_agreement.py confusion table
+A unclear & 63 & 34 & 51 & 148 \\
+A exclude & 6 & 18 & 210 & 234 \\
+\midrule
+Total & 1082 & 65 & 306 & 1453 \\ % src: screening_agreement.py "A: {...} B: {...}" lines
+\bottomrule
+\end{tabular}
+\end{table}
+
+\setcounter{section}{2}
+\section{Census: tables moved from the main text}
+\label{sec:s-census}
+
+The codebooks and the 176-row final table are still to be assembled (see the note above). The table below is moved from Section~\Mref{sec:census-sensitivity}, where its reading is given.
+
+\begin{table}[t]
+\caption{Papers decided by each gap-filling ruling of codebook v1.2, among the value-rule denominator (153 papers). Columns give the value-rule class the ruling produced: non-plain, not stated (NS), plain stated (U). B-10 decided 15 ranks, of which 12 are in the value-rule count.}
+\label{tab:census-gap}
+\small
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Ruling & Subject & Papers & Non-plain & NS & U \\
+\midrule
+B-15 & code C, confidence-ranked unmasking & 40 & 39 & 0 & 1 \\ % src: analysis/census/gap-rulings.log (columns: ranks in F2 denom, non-plain, NS, U)
+B-21 & combined letters; G or M with token rule unstated (+NS) & 19 & 18 & 1 & 0 \\
+B-24 & sweep must be on the F1 task & 18 & 12 & 6 & 0 \\
+B-10 & benchmark accuracy as generated-sample metric & 12 & 7 & 5 & 0 \\
+B-9 & F1 from the in-scope task & 14 & 7 & 5 & 2 \\
+B-19 & particle resampling as M & 6 & 6 & 0 & 0 \\
+B-13 & conflicting statements about the rule & 3 & 3 & 0 & 0 \\
+B-17 & best-of-$N$ and filtering as M & 3 & 3 & 0 & 0 \\
+B-22 & diversity metrics not on the v1.1 list (decides F3) & 1 & 1 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\setcounter{section}{4}
+\section{The design-space table of the 47 models}
+\label{sec:s-design}
+
+\subsection{Condensed table and code key}
+\label{sec:s-design-table}
+
+Table~\ref{tab:design} is the condensed table of the 47 models (Section~\Mref{sec:design-table}); Figure~\Mref{fig:taxonomy} shows the same models as a dot matrix. The codes are as follows. \emph{C1}: Er erasure, Un uniform, Gs Gaussian on embeddings, Sx Gaussian on a logit simplex, Q general Markov or continuous-time transition matrices, Fl probability path (flow), Ed edit channel, AR+$X$ autoregressive text with diffusion component $X$ for images, +aux an auxiliary latent. \emph{Position rule (C4)}: rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position updated each step with no committed set, ar left to right, ns not stated. \emph{Value rule (C4)}: A argmax or greedy, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance, M sequence-level selection; plain sampled values; lik.\ the headline is a likelihood bound; ns not stated in the parts read; $\dagger$ temperature varied on purpose to trace an entropy frontier; (M) an optional variant. \emph{Revision (C5)}: none, impl implicit, corr corrector, remask, edit, out output-level, ns not stated. \emph{Levers}: L1 to L14 as in Table~\Mref{tab:levers}; SL sequence-level selection, for which the lever table has no row.
+Position and revision codes in Table~\ref{tab:design} are condensed by us from the free-text cells of the long form.
+
+{\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}l p{3.0cm} l l l l p{1.9cm} l@{}}
+\caption{Condensed design-space table of 47 models (M01 to M47). Codes as in the text. Rows M01 to M29 were copied from earlier readings; M30 to M47 were read at section level. ``partly'' marks the 11 stated limits of the notation (Section~\Mref{sec:design-limits}).}\label{tab:design}\\
+\toprule
+Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
+\midrule
+\endfirsthead
+\toprule
+Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\input{tables/design-space-condensed.tex}
+\end{longtable}
+}
+
+\subsection{Long form}
+\label{sec:s-design-long}
+
+\todo{long form of the design-space table with every cell and its source location (research/review/coverage/design-space-v1.csv); it is promised in Section~\Mref{sec:design-table}}
+
+\setcounter{section}{6}
+\section{Additional detail on the EXP-003 measurement}
+\label{sec:s-exp003}
+
+These three blocks are moved from Section~\Mref{sec:exp003}. The results they refer to are in Table~\Mref{tab:exp003-arms}.
+
+\subsection{Deviations from the preregistered plan}
+\label{sec:s-exp003-dev}
+
+(1) An encoding error in the analysis and scoring code mis-keyed non-ASCII nouns; it was fixed before the controls were evaluated and before any main-stage sample existed, and the pilot analysis, which served for sizing only, may carry it. PC-1 then failed and the main stage continued as the card allows, under W2. (2) Eleven interpretive readings of the card and one erratum were accepted before scoring; the erratum corrects the mechanism paragraph, since the unconditional guidance branch masks every observed position and not only the prefix. (3) The hard stop on GPU time was raised from 7.0 to 8.5 hours, with the user's approval, during generation and before any main-stage sample was scored; the run used 8.02 hours against a plan of 6. (4) The pilot freeze was re-recorded for one analysis file, after generation and before scoring, for the encoding fix and a change of line endings. (5) A scoring-driver progress check that looked in the wrong directory stopped scoring falsely; it was fixed and scoring resumed. (6) The frozen analysis omitted five items, computed afterwards and labelled post-freeze: guardrail (iv), the composition contrast, the diversity intervals, the achieved detectable effect, and the counts of undersized placebo pools; three secondary contrasts used 5,000 bootstrap replicates, not 10,000. The gate audit verified the freeze hashes and the order of events, reproduced the confirmatory file byte for byte, and found no deviation that a main-stage outcome could have influenced. % src: decisions D0017, D0018, D0022, D0023, D0024, D0025; A sections 1.2 to 1.4 and 3; runs/EXP-003/clock.json
+
+\subsection{Diversity of the guided arm (exploratory, post-freeze)}
+\label{sec:s-exp003-div}
+
+The hypothesis that the guided arm lowers diversity (E3-H4) was not tested by the frozen analysis. A post-freeze, exploratory computation (bias-centred percentile intervals) puts the text side in the predicted direction: unigram entropy of the completion words is lower for G than for P64 by 0.44 nats (95\% interval $-0.55$ to $-0.33$), and the Jaccard overlap of the two seeds' noun sets is higher by 0.054 (0.035 to 0.075). The image side runs the other way: the mean sibling-image cosine is 0.68 for G and 0.76 for P64, with no interval. We make no statement that guidance lowers diversity; the text-side direction is the one expected when guidance trades diversity for fidelity~\cite{arXiv:2207.12598}. % src: X item5_e3h4_diversity ("exploratory, post-freeze"); F arms.*.image_sibling_cosine; A section 6 item 8; N section 4 item 5
+
+\subsection{Negative and positive controls, and guardrails}
+\label{sec:s-exp003-ctrl}
+
+NC-1 passed (link $-0.0003$, 95\% interval $-0.052$ to 0.050; 45 prefixes), NC-2 passed on G (0.002; $-0.016$ to 0.021) and on P64 (0.005; $-0.012$ to 0.023), and PC-2 passed (matched presence 0.77, other-caption 0.17; 113 nouns). Guardrails (i) to (iii) pass: the completion length of G is 0.79 times that of P64 (limits 0.5 to 2.0), no completion is empty, and G has 1,084 discordant nouns against 1,666 (ratio 0.65; limit 0.4). Guardrail (iv), near-uniform G images, was not computed by the frozen analysis; recomputed afterwards from the stored per-image flags it is 1 image of 276 (limit 0.15).
+% src: runs/EXP-003/ctrl/controls_decision.json; F guardrails; X item1_guardrail_iv_near_uniform; A sections 4.1 and 6 item 9 (moved with the sentences from the "Checks and controls" paragraph of sections/09-exp003.tex, whose own src comment is unchanged)
+
+\setcounter{section}{7}
+\section{Material moved from Sections 3, 4, 7 and 8}
+\label{sec:s-moved}
+
+Each block below is moved unchanged in content from the section named, where a one-sentence pointer remains.
+
+\subsection{The commit-kernel sampler (from Section~\Mref{sec:notation-alg})}
+\label{sec:s-alg}
+
+Algorithm~\ref{alg:generate} is the sampler loop that calls Algorithm~\Mref{alg:commit} (Section~\Mref{sec:notation-alg}) once per step.
+
+\begin{algorithm}[t]
+\caption{\textsc{Generate}: the commit-kernel sampler}
+\label{alg:generate}
+\KwIn{predictor $p_\theta$; policy for \textsc{Commit} and a schedule $(k_n)_{n\le T}$; optional revision rule $\mathcal R$; conditioning $c$}
+\KwOut{a sequence $\hat x\in\mathcal V^L$}
+\KwData{state $s_n=(z_n,m_n)$ with memory $m_n$; the channel C1 fixes the initial state $z_0$}
+$z_0\leftarrow$ all positions masked except those fixed by $c$; $m_0\leftarrow\varnothing$\;
+\For{$n\leftarrow 1$ \KwTo $T$}{
+  $(p_n,m_n)\leftarrow p_\theta(s_{n-1})$ \tcp*{one forward pass}
+  $(A_n,y_n)\leftarrow\textsc{Commit}(s_{n-1},p_n,k_n)$ \tcp*{Algorithm~\Mref{alg:commit}; $k_n=|A_n|$}
+  $z_n\leftarrow z_{n-1}$ with $y_n$ written at the positions $A_n$\;
+  \If{$\mathcal R$ is given}{
+    choose $R_n\subseteq\{1,\dots,L\}$ by $\mathcal R(z_n,p_n)$; set $z_n^{R_n}\leftarrow\mask$ \tcp*{C5, revision}
+  }
+}
+\Return $z_T$\;
+\end{algorithm}
+
+\subsection{Rows marked ``yes'' that still changed the wording (from Section~\Mref{sec:design-limits})}
+\label{sec:s-refine}
+
+Four refinements were needed for rows that fit. Guidance by a classifier or reward gradient on logits or scores edits the state, not the marginals, so lever row L12 was renamed to cover it. The position rule often reads sampled or tempered values (MaskGIT, Show-o, UniDisc, Dynin-Omni, DiffuCoder), so position and value rules are separate rows in the table but coupled in practice. An exact cache can be bought by restricting the attention mask, which changes the learning term (LaViDa's prefix mask)~\cite{arXiv:2505.16839}. And the structured transition matrices already in D3PM need the same C1 entry as FUDOKI. % src: design-space-v1.md section 3(a) items 6 to 9
+
+\subsection{Memory in the error budget (from Section~\Mref{sec:budget-other})}
+\label{sec:s-memory}
+
+Self-conditioning is a trained memory, not staleness, and belongs in $m_n$ and in $\Elearn$ on augmented states. With a memory the identity holds on the augmented path and is an equality for $x$ only if $m_n$ is a deterministic function of the revealed path; this is our inference, unchecked, and Simplax is a case where it fails (Section~\Mref{sec:design-limits}). % src: framework-v1.md section 2.1 (tagged [I]) and 2.5
+
+\subsection{Withdrawn terms and statements (from Sections~\Mref{sec:budget-value} and~\Mref{sec:budget-props})}
+\label{sec:s-withdrawn}
+
+Terms (Section~\Mref{sec:budget-value}). An earlier version of our framework proposed two new terms, a selection bias for value-dependent rules and a tilting cost for temperature, truncation, argmax and guidance. Both are withdrawn (decision D0011). At one token per step the law of sample-then-filter equals that of a position-dependent state-only tilt in exact enumeration, and at more tokens per step it is a joint value law, so ``reads the sampled values'' describes an implementation and not a distribution. The claimed impossibility of per-step accounting of selection depended on one coupling, and the selection share is not canonical. What remains is published, and we credit it: the commit law at $k=1$ with heterogeneous competitors, its majorisation and the ``sample, select, resample'' fix~\cite{arXiv:2605.12522}; sampling then choosing against choosing then sampling, and the closeness of noised MaskGIT to a tilted sampler~\cite{arXiv:2510.04525}; confidence-based remasking against top-probability selection~\cite{arXiv:2609.34509}; the sample-then-filter and rank-then-sample vocabulary~\cite{arXiv:2604.00375}; and the one-token best-of-$N$ law with its $\log N-(N-1)/N$ bound~\cite{arXiv:2401.01879}. % src: decisions.jsonl D0011; framework-v2.md section A; dossier/prior-art-selection.md (comparison table; P1 to P5, EXTRA)
+
+Statements (Section~\Mref{sec:budget-props}). That output entropy below a reference indicates value sharpening is false: with exact marginals and only factorisation error the entropy can fall far below the data entropy while the divergence stays small, so no reported entropy can by itself attribute a gain to a value rule, and attribution needs a controlled arm on the same checkpoint. The U-shaped dependence on the number of steps that a toy model produces is also not claimed (it appears in 20 of 32 toy variants and is sensitive to ties). % src: framework-v2.md section C (P2 withdrawn) and section D "Not claimed"; method/selection-term.md T4(b); red-team S4
+
+
+\subsection{The cross-modal estimator (from Section~\Mref{sec:open-op3})}
+\label{sec:s-estimator}
+
+The estimator draws the text set from the model's joint ($k_{\mathrm T}$ sequential passes per sample, $R$ samples), re-queries the image marginals, and estimates $\hat I_j=\frac1R\sum_{r}\KL{p(b_j\mid s,a_r)}{\bar m_j}$, with $\bar m_j$ the mean of the $R$ re-queried marginals. The mixture is the reference because comparing with the one-pass marginal adds a marginal-inconsistency term that is non-zero even at zero dependence (0.081 nats per token in the red-team enumeration). The algebra was checked on toy models only and says nothing about re-query fidelity on a real network; the cost is $Rk_{\mathrm T}+R$ passes per probed step. % src: framework-v2.md section C (estimator paragraph, check_crossmodal_mixture.py); red-team block J
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

@@ -24,32 +24,13 @@ Four candidates were dropped for repeating a row already present or for not bein
 \subsection{The table}
 \label{sec:design-table}
 
-Table~\ref{tab:design} gives the condensed table; the long form, with every cell and its source location, is in the supplement (S5). The codes are as follows. \emph{C1}: Er erasure, Un uniform, Gs Gaussian on embeddings, Sx Gaussian on a logit simplex, Q general Markov or continuous-time transition matrices, Fl probability path (flow), Ed edit channel, AR+$X$ autoregressive text with diffusion component $X$ for images, +aux an auxiliary latent. \emph{Position rule (C4)}: rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position updated each step with no committed set, ar left to right, ns not stated. \emph{Value rule (C4)}: A argmax or greedy, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance, M sequence-level selection; plain sampled values; lik.\ the headline is a likelihood bound; ns not stated in the parts read; $\dagger$ temperature varied on purpose to trace an entropy frontier; (M) an optional variant. \emph{Revision (C5)}: none, impl implicit, corr corrector, remask, edit, out output-level, ns not stated. \emph{Levers}: L1 to L14 as in Table~\ref{tab:levers}; SL sequence-level selection, for which the lever table has no row.
-The value-rule column is our coding of what was found in the parts read. It is a pilot, kept for the structure of the table. Any statement about how often the field uses a non-plain value rule rests on the random sample of Section~\ref{sec:census}. % src: design-space-v1.md section 0 (value-rule classes) and section 4; OUTLINE.md section 2 "6" (the 47-model result is a pilot, not evidence)
-Position and revision codes in Table~\ref{tab:design} are condensed by us from the free-text cells of the long form.
-
-{\scriptsize
-\setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}l p{3.0cm} l l l l p{1.9cm} l@{}}
-\caption{Condensed design-space table of 47 models (M01 to M47). Codes as in the text. Rows M01 to M29 were copied from earlier readings; M30 to M47 were read at section level. ``partly'' marks the 11 stated limits of the notation (Section~\ref{sec:design-limits}).}\label{tab:design}\\
-\toprule
-Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
-\midrule
-\endfirsthead
-\toprule
-Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\input{tables/design-space-condensed.tex}
-\end{longtable}
-}
+The condensed table of the 47 models (\suppTabDesign{}, with its code key) is in the supplement (Section~S5), as is the long form with every cell and its source location. Figure~\ref{fig:taxonomy} shows the same models.
+The value-rule column of \suppTabDesign{} is our coding of what was found in the parts read. It is a pilot, kept for the structure of the table. Any statement about how often the field uses a non-plain value rule rests on the random sample of Section~\ref{sec:census}. % src: design-space-v1.md section 0 (value-rule classes) and section 4; OUTLINE.md section 2 "6" (the 47-model result is a pilot, not evidence)
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=\linewidth]{figures/fig03-design-space.pdf} % src: paper/review/scripts/fig03_design_space.py (design-space-v1.csv and tables/design-space-condensed.tex); log figures/fig03-design-space.log
-\caption{The 47 models on the design space. Rows are models, grouped by channel (C1) and marked by family; a hollow marker and a tinted row mean the notation fits the model only partly. Columns are the cells of the position rule and value rule (C4) and of revision (C5), with the codes of Table~\ref{tab:design}; a hollow grey dot is ``not stated in the parts read''.}
+\caption{The 47 models on the design space. Rows are models, grouped by channel (C1) and marked by family; a hollow marker and a tinted row mean the notation fits the model only partly. Columns are the cells of the position rule and value rule (C4) and of revision (C5), with the codes of \suppTabDesign{}; a hollow grey dot is ``not stated in the parts read''.}
 \label{fig:taxonomy}
 \Description{A dot matrix with one row per model and one column per cell of the position rule, value rule and revision choices. Rows are grouped into six channel groups: erasure (26 models), Gaussian on embeddings or logits (7), mixed or hybrid channel (7), uniform (3), general Markov or CTMC (2) and flow (2). Thirty-six rows are marked as fitting the notation and eleven, tinted, as fitting it partly.}
 \end{figure}
@@ -57,7 +38,7 @@ Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
 \subsection{Result: what fits, and the stated limits}
 \label{sec:design-limits}
 
-Thirty-six of the 47 models fit, 11 fit partly, and none could not be placed. % src: design-space-v1.csv column "fits (yes/partly/no)" (36 yes, 11 partly, 0 no; tables/design-space-counts.log); design-space-v1.md claims block (level E2, confidence 0.6)
+Thirty-six of the 47 models fit, 11 fit partly, and none was left unplaced. % src: design-space-v1.csv column "fits (yes/partly/no)" (36 yes, 11 partly, 0 no; tables/design-space-counts.log); design-space-v1.md claims block (level E2, confidence 0.6)
 We give no interval for this proportion, because the rows were not drawn at random and the count says nothing about the field. The 11 partial fits are the stated limits of the notation. Six of them come from five features that the notation does not express without an extension, and five from two further reasons. Each is stated with the smallest extension we can see, and with what we recommend. % src: framework-v2.md section D1 (the five features); design-space-v1.md section 3(a) items 1 to 5 and 9
 
 \paragraph{Five features beyond the notation (six rows).}
@@ -71,7 +52,7 @@ We give no interval for this proportion, because the rows were not drawn at rand
 
 \paragraph{Two further reasons (five rows).} The continuous image channels of Transfusion, BAGEL, Show-o2 and D-DiT~\cite{arXiv:2408.11039,arXiv:2505.14683,arXiv:2506.15564,arXiv:2501.00289} are placed in the notation but have no committed set, so the cross-modal part of the factorisation term is undefined for them (Section~\ref{sec:budget-crossmodal}). FUDOKI uses a metric-structured kernel, a softmax of embedding distance, that is none of the listed channels; it falls under the general transition matrices of D3PM~\cite{arXiv:2107.03006} and we place it with the symmetric channels. % src: design-space-v1.md section 3(a) item 9 and "Not misfits" (continuous channels are placement only); CSV rows M24, M26 to M28, M46
 
-\paragraph{Rows marked ``yes'' that still changed the wording.} Four refinements were needed for rows that fit. Guidance by a classifier or reward gradient on logits or scores edits the state, not the marginals, so lever row L12 was renamed to cover it. The position rule often reads sampled or tempered values (MaskGIT, Show-o, UniDisc, Dynin-Omni, DiffuCoder), so position and value rules are separate rows in the table but coupled in practice. An exact cache can be bought by restricting the attention mask, which changes the learning term (LaViDa's prefix mask)~\cite{arXiv:2505.16839}. And the structured transition matrices already in D3PM need the same C1 entry as FUDOKI. % src: design-space-v1.md section 3(a) items 6 to 9
+\paragraph{Rows marked ``yes'' that still changed the wording.} Four refinements were needed for rows that fit; they are listed in the supplement (Section~S8.2).
 Three features that look like misfits are not: the shift operation of Dream~7B, DiffuLLaMA and TESS~2 only relabels the marginals, complementary masks change the estimator but not the marginal reveal law, and the token-level reweighting of Dream~7B is an objective weight. % src: design-space-v1.md section 3(a) "Not misfits"
 
 \subsection{What the test could and could not fail}
@@ -89,7 +70,7 @@ A reader should take the result as ``the vocabulary was not contradicted by any 
 \label{sec:design-surveys}
 
 Both surveys we compared (Section~\ref{sec:intro-related}) organise the field by section topic. The survey of discrete diffusion~\cite{arXiv:2506.13759} has an outline tree with models at the leaves and no comparison table; its mathematics specifies the channel in one notation but leaves the reveal law and the commitment policy as filed techniques. The survey of diffusion language models~\cite{arXiv:2508.10875} classifies models by one axis, continuous, discrete or hybrid with autoregression, and its model table has columns for parameters, diffusion type, task and training data, of which only the diffusion type is a design choice. % src: dossier/competitor-anatomy.md sections 1b, 1c, 2b and 3 (verdicts i and ii); both read in full or in the body (competitor-anatomy.md section 0)
-Table~\ref{tab:design} differs in that every column is a choice a model makes. That is a difference of purpose, not a claim to a better taxonomy for readers who want applications or training recipes.
+\suppTabDesign{} differs in that every column is a choice a model makes. That is a difference of purpose, not a claim to a better taxonomy for readers who want applications or training recipes.
 
 \subsection{Unified multimodal models}
 \label{sec:design-unified}

@@ -38,7 +38,7 @@ A generator in scope is specified by five choices: the first two are fixed by tr
     q(z_t^i\mid x^i)=\mathrm{Cat}\big(\alpha_t\,e_{x^i}+(1-\alpha_t)\,e_{\mask}\big),
     \label{eq:erasure}
   \end{equation}
-  where $t\in[0,1]$ is training time ($t=0$ clean), $\alpha_t$ the signal level ($\alpha_0=1$, $\alpha_1=0$), $e_v$ the one-hot vector of $v$ and $\mathrm{Cat}$ the categorical law~\cite{arXiv:2310.16834,arXiv:2406.07524,arXiv:2406.04329}. The \emph{symmetric} (uniform) channel mixes the token with uniform noise, so $P(z_t^i=x^i)=\alpha_t+(1-\alpha_t)/K$~\cite{arXiv:2107.03006,arXiv:2406.07524}. Others are general Markov or continuous-time Markov-chain kernels~\cite{arXiv:2107.03006,arXiv:2205.14987}, mixtures of erasure and uniform noise~\cite{arXiv:2407.15595}, Gaussian corruption of learned embeddings~\cite{arXiv:2205.14217,arXiv:2211.15089,arXiv:2305.18619}, and Gaussian noise added to almost-one-hot vectors over the vocabulary in simplex-based models~\cite{arXiv:2210.17432}; a genuine simplex diffusion was tried and abandoned by one of these works, so we write ``Gaussian on embeddings or logits''. % src: framework-v1.md section 1, C1 (G4: CDCD App. B.3); primer-gaussian.md section 1
+  where $t\in[0,1]$ is training time ($t=0$ clean), $\alpha_t$ the signal level ($\alpha_0=1$, $\alpha_1=0$), $e_v$ the one-hot vector of $v$ and $\mathrm{Cat}$ the categorical law~\cite{arXiv:2310.16834,arXiv:2406.07524,arXiv:2406.04329}. The \emph{symmetric} (uniform) channel mixes the token with uniform noise, so $P(z_t^i=x^i)=\alpha_t+(1-\alpha_t)/K$~\cite{arXiv:2107.03006,arXiv:2406.07524}. Others are general Markov or continuous-time Markov-chain kernels~\cite{arXiv:2107.03006,arXiv:2205.14987}, mixtures of erasure and uniform noise~\cite{arXiv:2407.15595}, Gaussian corruption of learned embeddings~\cite{arXiv:2205.14217,arXiv:2211.15089,arXiv:2305.18619}, and Gaussian noise added to almost-one-hot vectors over the vocabulary in simplex-based models~\cite{arXiv:2210.17432}. One of these works tried a genuine simplex diffusion and abandoned it, so we write ``Gaussian on embeddings or logits''. % src: framework-v1.md section 1, C1 (G4: CDCD App. B.3); primer-gaussian.md section 1
   In unified models C1 may differ by modality, and continuous image latents with a Gaussian or flow channel~\cite{arXiv:2408.11039,arXiv:2505.14683,arXiv:2506.15564} have no committed set. % src: framework-v1.md section 1, C1 (M2)
   \item[C2, reveal law.] Which positions are clean together during training, and with which weight: independent Bernoulli$(\alpha_t)$ (masked diffusion), prefixes (autoregression), prefixes of a random permutation (any-order autoregression~\cite{arXiv:2110.02037}), or a clean prefix of blocks with an independent level per block~\cite{arXiv:2503.09573}. For Gaussian channels the counterpart is the conditioning law; in unified models it is a joint law over per-modality reveal sets (one shared level~\cite{arXiv:2503.20853,arXiv:2505.15809}, clean input with noised output~\cite{arXiv:2511.09611}, whole-modality dropout~\cite{arXiv:2503.20853}). The pair (law, weight), not the law alone, fixes the objective. % src: framework-v1.md section 1, C2 (G6, G7, M3); primer-foundations.md 2a ("Number check")
   \item[C3, predictor.] What the network outputs from the state: clean-token posterior marginals; a concrete-score ratio; a regression onto the clean embedding with a rounding head; logits turned into a posterior-mean embedding; or a velocity~\cite{arXiv:2310.16834,arXiv:2205.14217,arXiv:2305.18619,arXiv:2407.15595}. Self-conditioning puts the previous prediction into $m_n$. In unified models the head layout (one shared head or one per modality) restricts the sampling support. Two works output a joint over a set instead of marginals~\cite{arXiv:2410.08709,arXiv:2410.01949}, which the notation covers only with an extension (Section~\ref{sec:design-limits}). % src: framework-v1.md section 1, C3 (G8, G9, M4); design-space-v1.md section 3(a) item 4
@@ -59,15 +59,15 @@ For the erasure channel with a common schedule and a predictor that puts no mass
 where $p_\theta^i(x^i\mid z_t,t)$ is the probability the network gives the true token at a masked position and $\alpha_t'=\mathrm d\alpha_t/\mathrm dt$ (MD4 Eq.~5, MDLM Eq.~13, Zheng et al.\ Eq.~6~\cite{arXiv:2406.04329,arXiv:2406.07524,arXiv:2409.02908}). % src: dossier/primer-foundations.md section 2a ("Statement A") and its conditions
 Of the corruption, the bound keeps only the reveal law (here the Bernoulli mask) and the weight; for the linear schedule $\alpha_t=1-t$ the weight is $1/t$~\cite{arXiv:2502.09992}. With a network that takes no time input, the integral can be done against the binomial count of masked positions: $\mathcal L_\infty(x)=\sum_{r=1}^{L}\frac1r\,\mathbb E_{|M|=r}\big[\sum_{i\in M}-\log p_\theta^i(x^i\mid x^{M^c})\big]$, with $M$ a uniformly chosen set of $r$ masked positions and $x^{M^c}$ the unmasked tokens (Zheng et al.\ Prop.~3.1~\cite{arXiv:2409.02908}; RADD~\cite{arXiv:2406.03736}). This is the any-order autoregressive objective~\cite{arXiv:2406.03736,arXiv:2110.02037}. % src: primer-foundations.md section 2b (B1) and 2c; verdict on claim 1
 The restrictions are these.
-\emph{Same objective, not the same model:} the any-order loss is a Jensen bound on a mixture over orders whose conditionals need not agree with one joint, the model class differs (a bidirectional network with mask inputs against a causal one), and the samplers coincide only in the exact event-driven limit, the first-hitting sampler~\cite{arXiv:2409.02908}; a finite-step sampler commits several positions with independent draws and pays for it (Section~\ref{sec:budget}); autoregression arises from the same forward process only through the deterministic, non-factorised process of D3PM~\cite{arXiv:2107.03006}. % src: primer-foundations.md section 2c ("Not equivalent", items 1 to 4)
+\emph{Same objective, not the same model:} the any-order loss is a Jensen bound on a mixture over orders whose conditionals need not agree with one joint, and the model class differs (a bidirectional network with mask inputs against a causal one). The samplers coincide only in the exact event-driven limit, the first-hitting sampler~\cite{arXiv:2409.02908}; a finite-step sampler commits several positions with independent draws and pays for it (Section~\ref{sec:budget}). Autoregression arises from the same forward process only through the deterministic, non-factorised process of D3PM~\cite{arXiv:2107.03006}. % src: primer-foundations.md section 2c ("Not equivalent", items 1 to 4)
 \emph{Ratio and marginal:} for the erasure channel the concrete score at a masked position is the clean-token marginal times $\alpha_t/(1-\alpha_t)$~\cite{arXiv:2406.03736,arXiv:2406.04329}, for the true score or a constrained network, but not for the symmetric channel, where it is affine in two posterior entries. % src: primer-foundations.md section 2d (restrictions 1 to 3) and 2e item 3
 \emph{Symmetric channel:} every position stays revisable, and the time-free parameterisation and the any-order link are lost (the last two are inference in the primer). % src: primer-foundations.md section 2e items 1, 2, 4, 5
-\emph{Gaussian and uniform:} a Gaussian on one-hot vectors and the uniform-state channel coincide per position and per time through a map given by Duo~\cite{arXiv:2506.10892}, not along trajectories, and embedding Gaussians~\cite{arXiv:2205.14217,arXiv:2211.15089,arXiv:2305.18619} have no such map, so the uniform-state accounting cannot be read off the Gaussian one. % src: framework-v1.md section 1 (G12); primer-gaussian.md section 2.5
+\emph{Gaussian and uniform:} a Gaussian on one-hot vectors and the uniform-state channel coincide per position and per time through a map given by Duo~\cite{arXiv:2506.10892}, not along trajectories. Embedding Gaussians~\cite{arXiv:2205.14217,arXiv:2211.15089,arXiv:2305.18619} have no such map, so the uniform-state accounting cannot be read off the Gaussian one. % src: framework-v1.md section 1 (G12); primer-gaussian.md section 2.5
 
 \subsection{Two algorithms}
 \label{sec:notation-alg}
 
-Algorithm~\ref{alg:commit} draws one commit from a policy, and Algorithm~\ref{alg:generate} wraps it in the sampler loop. The same kernel~\eqref{eq:kernel} results whether the set is chosen before the values (rank-then-sample, line~\ref{l:rts}) or after them (sample-then-filter, line~\ref{l:stf}); Section~\ref{sec:budget-mechanisms} places the two by their laws. % src: method/selection-term.md T1.2 (policies as kernels); framework-v2.md section B
+Algorithm~\ref{alg:commit} draws one commit from a policy; the sampler loop that calls it at every step is Algorithm~S1 in the supplement (Section~S8.1). The same kernel~\eqref{eq:kernel} results whether the set is chosen before the values (rank-then-sample, line~\ref{l:rts}) or after them (sample-then-filter, line~\ref{l:stf}); Section~\ref{sec:budget-mechanisms} places the two by their laws. % src: method/selection-term.md T1.2 (policies as kernels); framework-v2.md section B
 
 \begin{algorithm}[t]
 \caption{\textsc{Commit}: one draw from a commit kernel}
@@ -86,25 +86,6 @@ Algorithm~\ref{alg:commit} draws one commit from a policy, and Algorithm~\ref{al
 }
 \Return $(A,y)$\;
 \end{algorithm}
-
-\begin{algorithm}[t]
-\caption{\textsc{Generate}: the commit-kernel sampler}
-\label{alg:generate}
-\KwIn{predictor $p_\theta$; policy for \textsc{Commit} and a schedule $(k_n)_{n\le T}$; optional revision rule $\mathcal R$; conditioning $c$}
-\KwOut{a sequence $\hat x\in\mathcal V^L$}
-\KwData{state $s_n=(z_n,m_n)$ with memory $m_n$; the channel C1 fixes the initial state $z_0$}
-$z_0\leftarrow$ all positions masked except those fixed by $c$; $m_0\leftarrow\varnothing$\;
-\For{$n\leftarrow 1$ \KwTo $T$}{
-  $(p_n,m_n)\leftarrow p_\theta(s_{n-1})$ \tcp*{one forward pass}
-  $(A_n,y_n)\leftarrow\textsc{Commit}(s_{n-1},p_n,k_n)$ \tcp*{Algorithm~\ref{alg:commit}; $k_n=|A_n|$}
-  $z_n\leftarrow z_{n-1}$ with $y_n$ written at the positions $A_n$\;
-  \If{$\mathcal R$ is given}{
-    choose $R_n\subseteq\{1,\dots,L\}$ by $\mathcal R(z_n,p_n)$; set $z_n^{R_n}\leftarrow\mask$ \tcp*{C5, revision}
-  }
-}
-\Return $z_T$\;
-\end{algorithm}
-
 For channels without a committed set (Gaussian, uniform), the commit step is replaced by an update of every position and a re-noising step, and a final rounding commits all $L$ positions at once; in the notation this is a last step with $k=L$. % src: framework-v1.md section 1, C4 (G10)
 
 \begin{figure}[t]
