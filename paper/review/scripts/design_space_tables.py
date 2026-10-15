@@ -19,7 +19,7 @@ K_LEV = "lever row(s)"
 
 # id -> (C1 channel, C4 position rule, C5 revision)
 CODE = {
- "M01": ("Q", "rnd", "impl"), "M02": ("Q", "rnd", "corr"), "M03": ("Er/Un", "rnd", "none/impl"),
+ "M01": ("Q", "rnd", "none/impl"), "M02": ("Q", "rnd", "corr"), "M03": ("Er/Un", "rnd", "none/impl"),
  "M04": ("Er", "rnd", "none"), "M05": ("Er", "rnd", "none"), "M06": ("Er", "rnd", "none"),
  "M07": ("Er", "rnd", "none"), "M08": ("Er", "rnd", "none"), "M09": ("Er", "cnf", "none"),
  "M10": ("Er", "cnf", "none"), "M11": ("Er", "rnd", "remask"), "M12": ("Er", "ent", "none"),
@@ -31,7 +31,7 @@ CODE = {
  "M28": ("AR+Fl", "ar, all", "impl"), "M29": ("Er", "ns", "out"), "M30": ("Sx", "all", "impl"),
  "M31": ("Sx", "all", "impl"), "M32": ("Gs", "all", "impl"), "M33": ("Er+Gs", "rnd", "none"),
  "M34": ("Un+aux", "all", "impl"), "M35": ("Er", "ns", "ns"), "M36": ("Er", "rnd", "none"),
- "M37": ("Er", "cnf", "none"), "M38": ("Er+Ed", "blk", "edit"), "M39": ("Er", "cnf", "none"),
+ "M37": ("Er", "cnf", "none"), "M38": ("Er+Ed", "blk", "edit"), "M39": ("Er", "ent", "none"),
  "M40": ("Er", "rnd", "none"), "M41": ("Er", "blk", "none"), "M42": ("Un", "all", "impl"),
  "M43": ("Er", "ns", "none"), "M44": ("Er", "ns", "none"), "M45": ("Er", "cnf", "none"),
  "M46": ("Er+Fl", "all, rnd", "impl"), "M47": ("Er", "cnf", "none"),
