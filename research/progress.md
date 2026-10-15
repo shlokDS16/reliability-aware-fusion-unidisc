@@ -1,6 +1,33 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 4 (2026-10-16 early; newest, overrides older blocks). Start here.**
+  Read memory `dlm-tool-access-requests` and the KB `research/expert/dlm-expert-kb.md` (+ three
+  `web-digest-*.md`). New core agent `dlm-expert` (tools/build_agents.py) is the default worker;
+  auditors unchanged; max 3 agents at once (was breached twice; keep to it).
+  **Done since HANDOFF 3:** EXP-003 done + audited (D0022-D0025; result in H0007-H0009); census v2
+  (D0020-D0021); manuscript 35 pp + 8 pp supplement, abstract 100 words, citations validated;
+  free-source searches + string revisions (D0026-D0028: S1''/S2''); screening of 1,953 records by
+  A (Sonnet) and B (Opus): kappa 0.911 [0.892, 0.929] (`analysis/screening/agreement-v2.log`),
+  rule D0030 = pass if either passes -> 954 pass; validation of the automation filter (D0029,
+  reversal triggered) -> Haiku rescue pass over 4,421 exclusions done (15+ includes, ~300 unclear;
+  sensitivity 2/2 on V1); `screening-ambiguities.md` lists every class to settle in criteria v1.1
+  before full text. **User decisions 2026-10-16:** full-text screen ALL records, extract RQ data on
+  a stratified sample + all multimodal; e-gateway first.
+  **In progress:** (1) title resolution of 2,107 title-only snowball records (lit-scout running ->
+  `research/review/screening/v2/title-resolved-queue.jsonl`, `corpus/title-resolution-2026-10-15.json`);
+  (2) Scopus via the user's Chrome (Claude in Chrome; VIT access works there, the built-in browser
+  lacks the user's access extension): five queries run (`research/sources/search-raw/scopus/
+  scopus-queries-20261016.md`, counts 876/530/134/1,670/836); EXPORT needs the user to sign in to a
+  personal Scopus account; user approved the five CSV downloads. Then Web of Science, IEEE, ACM DL,
+  SpringerLink, ScienceDirect the same way (combined NOT-free query + NOT parts separately; record
+  counts; ask download approval per database).
+  **Next after searches:** lit-scout ingest + dedup of exports; dual-screen new database records;
+  criteria v1.1 from the ambiguities; full-text screening of all passing records (two screeners on
+  key sections); extraction on the sample; section 05 RQ evidence; PRISMA counts final; red-team
+  referee pass. **Still needs the user:** human screening sample (218) + 120 disagreements (RAISE
+  validation); professor's name/school/e-mail, ORCIDs; OSF registration (retrospective) of the
+  protocol; protocol freeze.
 - **STATE 2026-10-15 ~17:30 IST (newest; overrides older blocks).** Order of work confirmed by the
   user: Paper 1 (review, ACM CSUR) first, Paper 2 (research article) second; keep the framework
   (D0011) as the spine. **EXP-003 done and audited** (gate PASS WITH CORRECTIONS): E3-H1 positive,
