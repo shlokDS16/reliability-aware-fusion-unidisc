@@ -38,3 +38,10 @@ Deviation to disclose: about 20 records with truncated abstracts were decided af
 3. Diffusion VLA/driving on a diffusion-LM backbone outputting actions or trajectories: X1; possible reasoning-text output left unclear.
 4. Masked-diffusion TTS/ASR/captioning: speech-token output X1; text output (transcripts, captions) included.
 5. Diffusion as metaphor or non-generative role: X0 when no diffusion model; one ambiguous case unclear.
+
+## Screener B, batch 3
+1. Adapter-attached diffusion decoders on frozen/separate VLMs called unified (M15792 LayerBridge included, M07750 Forge-and-Quench unclear).
+2. Domain-agnostic discrete/masked diffusion theory or methods (M10437, M10584, M03863, M18094, M10535, M07561, M00285): unclear; theory mentioning text generation included (M11387, M14364).
+3. dWorldEval two versions (M08950 unclear, M17772 included): does a progress/success token count as natural-language output?
+4. Embedding models on a diffusion-pretrained LM backbone (M08140 pplx-embed): I1(a)?
+5. Non-diffusion parallel decoders benchmarked against DLMs (M09782 JetSpec, M12594 pcLLM): does evaluating a DLM only as a baseline meet I1?
