@@ -48,6 +48,15 @@ def low(v):
     return (v or "").strip().lower()
 
 
+def wilson(k, n, z=1.959964):
+    if n == 0:
+        return "n=0"
+    p = k / n
+    c = (p + z * z / (2 * n)) / (1 + z * z / n)
+    h = z * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / (1 + z * z / n)
+    return f"{k}/{n} = {p:.3f} [95% Wilson {c - h:.3f}, {c + h:.3f}]"
+
+
 def report(name, R):
     el = [d for d in R if low(d.get("eligible")) == "yes"]
     met = [d for d in el if (d.get("F1_metric") or "NA") != "NA" or low(d.get("F1_task")) == "ql"]
@@ -67,6 +76,12 @@ def report(name, R):
     print(f"F4 step sweep: {dict(Counter(low(d.get('F4')) for d in f2))}")
     print(f"F5 among sweeps: {dict(Counter(low(d.get('F5')) for d in sweeps))}; F6 among sweeps: "
           f"{dict(Counter(low(d.get('F6')) for d in sweeps))}")
+    print("proportions (sample of the screened corpus; intervals treat ranks as a simple random sample):")
+    print(f"  non-plain or not stated: {wilson(np_['yes'] + np_['unknown'], len(f2))}")
+    print(f"  non-plain stated:        {wilson(np_['yes'], len(f2))}")
+    print(f"  diversity paired (F3):   {wilson(sum(low(d.get('F3')) == 'yes' for d in f2), len(f2))}")
+    print(f"  step sweep (F4 yes/partial): {wilson(len(sweeps), len(f2))}")
+    print(f"  rule fixed stated among sweeps (F5): {wilson(sum(low(d.get('F5')) == 'stated' for d in sweeps), len(sweeps))}")
 
 
 R = [rows[r] for r in sorted(rows)]
