@@ -46,14 +46,12 @@ Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
 \end{longtable}
 }
 
-\begin{figure}[t]
+\begin{figure}[p]
 \centering
-\fbox{\begin{minipage}{0.92\linewidth}\small
-\textbf{Placeholder for Figure~\ref{fig:taxonomy}.} Master taxonomy: channel (C1) at the root, then reveal law, predictor, commitment policy and revision, with the 47 models as leaves carrying citations. Built by script from \texttt{research/review/coverage/design-space-v1.csv}.
-\end{minipage}}
-\caption{The design space as a tree over the five choices; leaves are the 47 models of Table~\ref{tab:design}.}
+\includegraphics[width=\linewidth]{figures/fig03-design-space.pdf} % src: paper/review/scripts/fig03_design_space.py (design-space-v1.csv and tables/design-space-condensed.tex); log figures/fig03-design-space.log
+\caption{The 47 models on the design space. Rows are models, grouped by channel (C1) and marked by family; a hollow marker and a tinted row mean the notation fits the model only partly. Columns are the cells of the position rule and value rule (C4) and of revision (C5), with the codes of Table~\ref{tab:design}; a hollow grey dot is ``not stated in the parts read''.}
 \label{fig:taxonomy}
-\Description{A tree whose levels are the five design choices and whose leaves are the 47 models of the design-space table.}
+\Description{A dot matrix with one row per model and one column per cell of the position rule, value rule and revision choices. Rows are grouped into six channel groups: erasure (26 models), Gaussian on embeddings or logits (7), mixed or hybrid channel (7), uniform (3), general Markov or CTMC (2) and flow (2). Thirty-six rows are marked as fitting the notation and eleven, tinted, as fitting it partly.}
 \end{figure}
 
 \subsection{Result: what fits, and the stated limits}
