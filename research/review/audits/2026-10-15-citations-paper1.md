@@ -203,3 +203,28 @@ Keys unchanged. Brace balance checked (90 entries, none unbalanced). `main.bbl` 
 - Published versions: OpenReview search (venue field), OpenAlex title search (type, DOI, retraction flag), Crossref `works/<doi>` for each DOI listed (title, container, year, `update-to`), arXiv `journal_ref` and `doi` fields, and the venue header of the arXiv PDF where present. DBLP returned a bot challenge and could not be used.
 - Support: arXiv abstracts for all cited keys; converted PDFs (markitdown) for 33 keys, searched for the numbers, equations and sections named in the sentences. Searches were keyword-based, not whole-paper reads.
 - Working files are in the session scratchpad (`arxiv.json`, `openalex.json`, `ort.json`, the converted PDFs). None are in the repository.
+
+## 7. Section 9 additions (six entries; citation-validator, 2026-10-15)
+
+Scope: the six keys added to `paper/review/references.bib` for `paper/review/sections/09-exp003.tex` (lines 37 and 73). Ledger rows R0091 to R0096. Only `references.bib` was edited (comments only, so the typeset list is unchanged); no `.tex` file was touched.
+
+| Key | arXiv metadata (API) | Published version | DOI | Support |
+|---|---|---|---|---|
+| 2305.11846 CoDi | title, 5 authors, 2023 match (v1) | NeurIPS 2023 (Crossref, NeurIPS 36) | 10.52202/075280-0707 | supports (line 37) |
+| 2305.10355 POPE | match (v3) | EMNLP 2023 main (Crossref; arXiv comment) | 10.18653/v1/2023.emnlp-main.20 | supports (line 37) |
+| 2303.11897 TIFA | match (v3; "Noah A Smith" without period) | ICCV 2023 (Crossref; arXiv comment) | 10.1109/ICCV51070.2023.01866 | supports (line 37) |
+| 2310.18235 DSG | match (v4), 9 authors | ICLR 2024 poster (arXiv comment; iclr.cc/virtual/2024/poster/18963) | none | supports (line 37) |
+| 2207.12598 CFG | match (v1) | NeurIPS 2021 Workshop DGMs and Downstream Applications, short version (arXiv comment; neurips.cc/virtual/2021/33972; mlanthology). The arXiv text is the longer version. | none | supports (line 73) |
+| 1911.03393 MMVAE | match (v1) | NeurIPS 2019 (proceedings.neurips.cc page, title and authors match) | none | supports (line 37) |
+
+Retraction check: Crossref `works/<doi>` returned no `updated-by` and no `update-to` for the three DOIs, and the filter `updates:<doi>` for POPE returned zero items. The three non-DOI items have no Crossref record to test; no retraction notice was found, but that search was limited to the venue pages and one Crossref title query.
+
+Support, from converted PDFs (keyword search of the sections named, not whole-paper reads):
+- CoDi: Section 5.3 and Table 10 compare SIM of two outputs generated separately ({P to A, P to B}) against jointly. The separate generation from the same prompt is the independent-draw control. Fits the sentence. Note that CoDi's control is separate generation per modality from one prompt; the sentence says "same-condition independent-draw", which is a fair reading, though CoDi does not use seed balancing or a sibling draw of the same modality.
+- POPE: polling questions "Is there a X in the image?" with Yes/No answers.
+- TIFA: questions are binary yes/no (17,226) and multiple-choice (8,603). Yes/no presence probes are part of its question set, not all of it.
+- DSG: questions have an expected binary yes/no answer; entity questions of the form "is there a motorcycle?".
+- MMVAE: Section 4, Table 2: joint-generation coherence scored by off-the-shelf MNIST and SVHN digit classifiers. The sentence says "the criterion of multimodal VAEs"; this holds for MMVAE, and the generalisation to the whole family was not checked.
+- CFG: abstract and text state that guidance trades sample quality against diversity and decreases diversity. It is cited only for the direction expected, not for the measured numbers on line 73, which are labelled exploratory in the text.
+
+No does-not-support entry. Gate: pass for these six. Limits: OpenReview (blocked by a challenge page) was not usable for the CFG workshop record; the workshop venue rests on the arXiv comment, the neurips.cc listing and mlanthology, which agree.
