@@ -1,0 +1,75 @@
+% main.tex: Paper 1, critical systematic review for ACM Computing Surveys.
+% Class: acmart v2.20 (2026/08/16), installed in MiKTeX; same version as the pinned copy in
+% paper/style/acm/minimal-csur/ (see research/review/dossier/csur.md Part A).
+% Page counting uses acmsmall (6.75 x 10 in). For the review submission switch to
+% \documentclass[manuscript,review]{acmart} (csur.md section 2); its page count is not the CSUR count.
+% Build: latexmk -pdf main.tex   (bibliography: ACM-Reference-Format.bst, copied from paper/style/acm/minimal-csur)
+\documentclass[acmsmall]{acmart}
+
+\AtBeginDocument{\providecommand\BibTeX{{Bib\TeX}}}
+\citestyle{acmnumeric}
+
+\acmJournal{CSUR}
+% Filled by ACM at production:
+\acmVolume{1}\acmNumber{1}\acmArticle{1}\acmMonth{1}\acmYear{2027}
+
+% ---- drafting aids (removed at submission) ----
+% \todo marks a missing fact, a pending audit or an author query ([AUTHOR: ...] convention).
+\newcommand{\todo}[1]{{\color{red}\textbf{[TODO: #1]}}}
+% \aud tags a number that comes from census-result-v2.md and awaits the gate audit.
+\newcommand{\aud}{\textsuperscript{\color{red}\scriptsize audit}}
+
+\begin{document}
+
+\title[Diffusion Language Models and Unified Multimodal Generation]{Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review of Discrete and Continuous Approaches}
+% Working title, decision D0007 (research/ledgers/decisions.jsonl). Not "and Meta-Analysis": the pooling threshold is not met.
+
+\author{Shlok Kumar Goenka}
+\affiliation{%
+  \institution{Vellore Institute of Technology}
+  \city{Vellore}
+  \state{Tamil Nadu}
+  \country{India}}
+\email{shlok.goenka2023@vitstudent.ac.in}
+% [AUTHOR: second author is the professor; name, school and e-mail are not recorded in research/ or research/review/dossier/]
+\author{[AUTHOR: name of the professor]}
+\affiliation{%
+  \institution{Vellore Institute of Technology}
+  \city{Vellore}
+  \state{Tamil Nadu}
+  \country{India}}
+% TODO (author query): ORCIDs for both authors and the single corresponding author (ACM requires them at submission).
+
+\begin{abstract}
+% Rule: at most 100 words, no first person, no citations (csur.md section 2). Written last; numbers need the gate audit.
+\todo{abstract is a placeholder, written last. Draft: Diffusion language models and unified multimodal diffusion models are reviewed under PRISMA 2020 from \todo{N} included studies. We place 47 models in one design space, count how many headline results state and hold fixed their value rule in a random sample of the corpus, organise sampler error as a budget with a single value term, and state open problems with the evidence each needs. In a random sample, 147 of 153 papers with a generated-sample or samples-only headline use a non-plain value rule or do not state one \todo{audit}.}
+\end{abstract}
+
+\ccsdesc{General and reference~Surveys and overviews}
+\ccsdesc{Computing methodologies~Natural language generation}
+\ccsdesc{Computing methodologies~Machine learning}
+% TODO: generate the CCSXML block with the ACM indexing tool (csur.md section 2); concept ids are not copied from memory.
+\keywords{diffusion language models, masked diffusion, discrete diffusion, unified multimodal models, decoding, systematic review}
+
+\maketitle
+
+\input{sections/01-introduction}
+\input{sections/02-method}
+\input{sections/03-notation}
+\input{sections/04-design-space}
+\input{sections/05-rq-evidence}
+\input{sections/06-census}
+\input{sections/07-error-budget}
+\input{sections/08-open-problems}
+\input{sections/09-exp003}
+\input{sections/10-limitations}
+\input{sections/11-conclusion}
+
+\begin{acks}
+\todo{acknowledgements: non-author helpers who only edited text may be named here (ACM authorship policy, csur.md section 3); funding statement}
+\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

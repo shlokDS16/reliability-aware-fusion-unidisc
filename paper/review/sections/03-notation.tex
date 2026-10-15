@@ -1,0 +1,14 @@
+% Section 3. A unified notation. STUB (carries C1 and C3). Plan: OUTLINE.md sections 1 and 2, "3 A unified notation".
+\section{A unified notation}
+\label{sec:notation}
+
+\todo{stub: write after the design-space table is frozen; at most 8 numbered equations, one symbol table, two short algorithms}
+
+Plan.
+\begin{itemize}
+  \item Generation as a commitment process: a sequence $x$ drawn from $q$, a state $s_n=(z_n,m_n)$ of partially revealed or noised sequence and optional memory, and at each step a commit kernel with a position law and a value law. % src: research/review/framework-v1.md section 1; framework-v2.md section B
+  \item The five choices C1 channel, C2 reveal law, C3 predictor, C4 commitment policy (position rule, value rule, joint draw), C5 revision, with the instances of each (erasure, symmetric, mixture and Gaussian channels; prefix, any-order and block reveal laws; marginal, ratio and embedding predictors; confidence, planner and joint-draw policies; remasking and output-level revision). % src: framework-v1.md section 1 table; dossier/primer-foundations.md section 0.1 and 2; primer-gaussian.md sections 1--3; primer-multimodal.md sections 1--3
+  \item Unification claims with their restrictions: for the erasure channel the continuous-time bound is a weighted masked cross-entropy and equals the any-order autoregressive objective, so objectives coincide but model classes and samplers do not; the symmetric channel loses the time-free parameterisation; the Gaussian-to-uniform-state map of Duo holds per position and per time, not for trajectories. % src: framework-v1.md section 1 "Unification claims"; primer-foundations.md section 3 (verdicts); primer-gaussian.md Q5
+  \item Derived quantities: parallelism $k_n=|A_n|$ and compute reuse. Symbol table (Table 3 in OUTLINE.md). Fig.~2 formalism diagram. Alg.~1 training objective in this notation; Alg.~2 generic commit-kernel sampler.
+  \item Credit: every unification result is cited to its source; the notation is ours, the results are not.
+\end{itemize}

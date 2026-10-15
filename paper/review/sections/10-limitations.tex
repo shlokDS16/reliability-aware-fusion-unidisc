@@ -1,0 +1,17 @@
+% Section 10. Threats to validity and limitations. STUB with the limits known now.
+\section{Threats to validity and limitations}
+\label{sec:limits}
+
+\todo{stub: expand when extraction and appraisal are complete}
+
+Known now.
+\begin{itemize}
+  \item Selection: only arXiv and one curated list were searched; other databases and snowballing are pending, and 22\% of the seed list was not retrieved by the logged strings (Section~\ref{sec:method-sources}). Preprints are rated in their latest arXiv version; differences from published versions are not measured. % src: corpus/search-log.jsonl; protocol.md section 3 "Version rated"; screening/dedup-report.json
+  \item Screening: two language-model screeners; no human agreement yet; 120 split decisions unresolved (Section~\ref{sec:method-screening}). % src: tools/screening_agreement.py
+  \item Protocol: not frozen or registered before screening (Section~\ref{sec:method-design}).
+  \item Census: limits listed in Section~\ref{sec:census-limits}; text only, no code inspection.
+  \item Design space: inclusive vocabulary, 29 of 47 rows not re-read (Section~\ref{sec:design}). % src: design-space-v1.md
+  \item Theory: the budget is bookkeeping, not a measured quantity; several statements are checked by exact enumeration on toy models only. % src: framework-v2.md sections B and D
+  \item Closed models and non-English work are outside the evidence; positive-result bias in what papers report is not corrected.
+  \item AI assistance: all research steps listed in Table~\ref{tab:ai} used language models; models of one family did most of the coding, adjudication and drafting.
+\end{itemize}

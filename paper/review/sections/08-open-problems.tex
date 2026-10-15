@@ -1,0 +1,15 @@
+% Section 8. Open problems and the evidence each needs (C4). STUB. Plan: OUTLINE.md "8 Open problems".
+\section{Open problems and the evidence each needs}
+\label{sec:open}
+
+\todo{stub: each problem gets (i) the statement, (ii) the evidence now with its level, (iii) the measurement that settles it, (iv) what would refute it; a map figure and a table}
+
+Plan.
+\begin{itemize}
+  \item OP1, what a step sweep identifies: only the $k=1$ point of a deterministic state-only policy; beyond it the visited states change (11 of 12 toy cases differ by more than 25\% or in sign). Needs a rerun that fixes the visited states. % src: framework-v2.md section C (P1)
+  \item OP2, revision against value rule: whether a revision sampler's gain over its base at matched forward passes survives matching the value rule on both arms (the published table for the closest revision sampler does not separate them). Needs top-$p$ on and off on both arms. % src: framework-v2.md section C (P3); dossier/prior-art-selection.md
+  \item OP3, cross-modal dependence in unified models (P5a front-loading, P5b schedule consequence): no paper in the sources read measures a cross-modal quantity per step; needs the corrected mixture-reference estimator on a frozen model. % src: framework-v2.md section C (P5); dossier/primer-multimodal.md section 4
+  \item OP4, the four-arm measurement on one frozen checkpoint: sample-then-filter against its resampled twin, a confidence-ranked sampler and the tilted twin, at matched passes with an entropy-matched frontier; the first item to check is how much of it arXiv 2605.12522 already covers. % src: framework-v2.md section D4 and E; dossier/prior-art-2605.12522-experiments.md
+  \item OP5, generation order and parallelism: the trade-off statements already in the literature~\cite{arXiv:2602.00286,arXiv:2510.04767} and what remains open; stated as a conjecture with supporting and refuting counts and a status-and-scope paragraph. % src: survey-landscape.md section 2 (CB); decision D0007
+  \item OP6, reporting: what a community checklist for decoding rule, step sweeps and diversity would need, following the census (Section~\ref{sec:census}).
+\end{itemize}

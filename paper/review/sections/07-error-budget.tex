@@ -1,0 +1,15 @@
+% Section 7. The error budget as a taxonomy (C3). STUB. Plan: OUTLINE.md "7 Error budget".
+\section{The error budget as a taxonomy}
+\label{sec:budget}
+
+\todo{stub: write from framework-v2 sections B and C; every identity credited to its source, every withdrawn item listed as withdrawn}
+
+Plan.
+\begin{itemize}
+  \item The identity: along a data path with the same position law, $\mathrm{KL}(Q\Vert P)=E_{\mathrm{fact}}+E_{\mathrm{learn}}+V$ (numbered equation). Source of the two-term case ($V=0$): EB-sampler~\cite{arXiv:2505.24857}; the three-term form is a chain-rule corollary written out in \texttt{research/review/method/selection-term.md}. % src: framework-v2.md section B
+  \item $V$ as one signed slot for temperature, truncation, argmax, guidance, sample-then-filter and joint draws; $G\ge0$ for the gap between path law and output law; $E_{\mathrm{approx}}$ for lossy compute reuse. Non-uniqueness: depends on the data-path coupling and on a reference policy. % src: framework-v2.md section B; red-team F2, M1
+  \item Mechanisms placed by their law: state-only tilts; sample-then-filter (one-token tilt with majorisation, from 2605.12522~\cite{arXiv:2605.12522}; the $k\ge2$ law, ours, with a tie-handling correction pending); joint draws; sequence-level selection; Gaussian and embedding channels. Regime caveat for noised MaskGIT~\cite{arXiv:2510.04525}. % src: framework-v2.md section B; dossier/prior-art-selection.md
+  \item Lever table (Table 7 in OUTLINE.md): lever, term lowered, what it pays, which of the 47 models use it. % src: framework-v1.md section 3; design-space-v1.csv
+  \item Propositions as corollaries, stated as in framework-v2: P1 (a step sweep identifies only the $k=1$ point), P3 (a revision sampler's gain needs the value rule matched), P5 (cross-modal split with the mixture-reference estimator, checked on toy models only). Withdrawn: P2, the selection and tilt terms, the U-shape in steps. % src: framework-v2.md section C and D "Not claimed"
+  \item Each lever stated with what the census says papers report about it (Section~\ref{sec:census}).
+\end{itemize}

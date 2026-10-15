@@ -1,0 +1,179 @@
+% Section 2. Review method. PRISMA 2020 adaptation, screening, census sampling and coding, the
+% blindness incident, deviations, and the ACM AI-use description (Methods section, csur.md section 3).
+% Evidence map: paper/review/OUTLINE.md section 2, "2 Review method".
+\section{Review method}
+\label{sec:method}
+
+\subsection{Design, reporting standard and protocol status}
+\label{sec:method-design}
+
+The review is reported against PRISMA~2020~\cite{page2021prisma} and follows the procedure of Kitchenham and Charters for systematic reviews in computing~\cite{kitchenham2007guidelines}. The protocol (research questions, eligibility, sources, selection, extraction, appraisal, synthesis) is the file \texttt{research/review/protocol.md}, version~0.1 of 2026-10-13.% src: research/review/protocol.md header line "DRAFT v0.1, 2026-10-13; not frozen"
+It was \emph{not} frozen or registered before screening. The protocol's freeze rule required a git tag after sign-off and before any screening decision; the repository holds no such tag and the file still describes itself as an unfrozen draft, while the screening decisions were recorded on 2026-10-14.% src: protocol.md "Freeze rule"; `git tag` returned no tags on 2026-10-15; git log of screening/screener-A (commit d087a89, 2026-10-14)
+One amendment was made later and is recorded in protocol section~10: on 2026-10-15, after the census coding of Section~\ref{sec:census-method} and before its adjudication, eligibility rule I1(b) was tightened (``unified'' means one model, not a pipeline; ``another modality'' means image, video, audio or speech, or 3D) and exclusion code X1 was widened to every diffusion model whose diffusion part produces no text or code and is not covered by I1(b).% src: protocol.md section 10; decision D0020
+Section~\ref{sec:method-deviations} lists every other departure from the protocol.
+
+\subsection{Information sources, search dates and strings}
+\label{sec:method-sources}
+
+Table~\ref{tab:sources} lists the sources searched. The seed is the curated list Awesome-DLMs at commit 194aa6bd of 2026-10-02, parsed on 2026-10-13 into 572 unique works, of which 540 have an arXiv identifier.% src: research/review/PLAN.md section 6 ("Corpus seed"); protocol.md section 3 table; research/review/feasibility-inventory.md (540 arXiv records)
+Two logged searches of the arXiv API were run on 2026-10-14, one for diffusion language models (S1) and one for unified multimodal models with a diffusion-type component (S2). Both restrict to the categories cs.CL, cs.LG, cs.CV, cs.AI and stat.ML and to first submission between 2021-01-01 and 2026-10-14 23:59; they return 1158 and 173 records.% src: research/review/corpus/search-log.jsonl (executed_utc 20261014T074854Z and 20261014T074905Z; hits_reported 1158 and 173)
+The exact queries and the SHA-256 of each export are in the log and printed in the supplement (S1).% src: search-log.jsonl fields "query" and "sha256"
+Each query matches title-and-abstract terms for the topic joined to a generic language or multimodal term (the S1 language terms are ``language'', ``text'' and ``token'').
+
+\begin{table}[t]
+\caption{Sources searched and records identified. Counts are before deduplication.}
+\label{tab:sources}
+\small
+\begin{tabular}{@{}p{3.4cm}p{3.2cm}r@{}}
+\toprule
+Source & Date retrieved & Records \\
+\midrule
+Awesome-DLMs list (commit 194aa6bd) & parsed 2026-10-13 & 572 \\% src: PLAN.md section 6; protocol.md section 3
+arXiv API, string S1 & 2026-10-14 07:48 UTC & 1158 \\% src: corpus/search-log.jsonl
+arXiv API, string S2 & 2026-10-14 07:49 UTC & 173 \\% src: corpus/search-log.jsonl
+\midrule
+Total identified & & 1903 \\% src: 572 + 1158 + 173 = 1903 = 1453 records after dedup + 450 duplicates merged (screening/dedup-report.json)
+\bottomrule
+\end{tabular}
+\end{table}
+
+The protocol also names OpenReview, the ACL Anthology, Semantic Scholar, OpenAlex, DBLP, Scopus, Web of Science, IEEE Xplore, the ACM Digital Library, SpringerLink, ScienceDirect and citation snowballing.% src: protocol.md section 3 table
+None of these has been searched for primary studies; the search log holds only the two arXiv runs.% src: corpus/search-log.jsonl (two rows only)
+\todo{run the remaining database searches and snowballing, or state in the submitted version that the identification is arXiv plus a curated list and justify it}
+Recall was checked once against the seed: 421 of the 540 seed records with an arXiv identifier (78\%) were also retrieved by S1 or S2.% src: research/review/screening/dedup-report.json (by_source_combination: 414 + 6 + 1 records with source awesome and arxiv-S1/S2) / 540; research/progress.md ("recall 78 percent")
+The protocol required the strings to retrieve all 28 records of the seed's multimodal section and a random 50 of the others before the logged run, and to be revised from the misses.% src: protocol.md section 3, "Pilot"
+\todo{no record of this pilot check is in the repository; either locate it or report the 22\% of the seed missed by S1 and S2 as a recall limit}
+
+\subsection{Eligibility}
+\label{sec:method-eligibility}
+
+A record is included if it proposes, analyses, evaluates or benchmarks (a) a diffusion model, in discrete or continuous state space, whose output includes natural-language text or code, or (b) a unified model that both understands and generates across text and at least one other modality with a diffusion, masked-generative or discrete-flow component; it is a primary study with a method, theory or empirical result; its full text is in English; and its first public version is dated 2021-01-01 or later.% src: protocol.md section 2 (I1 to I4) and section 10 (I1(b) amendment)
+Records are excluded with one code: X0 no diffusion component (added at screening), X1 non-text diffusion, X2 text only as conditioning, X3 secondary study, X4 no method, theory or result, X5 duplicate, X6 full text unavailable, X7 application of an unchanged model with no model-level finding, X8 outside the date window or not English.% src: protocol.md section 2 table; screening/criteria-v1.md (X0 added); census/CLAUDE-CODER-BRIEF.md
+Surveys are kept in a separate list for positioning (X3).
+
+\subsection{Selection process and agreement}
+\label{sec:method-screening}
+
+\paragraph{Deduplication.}
+Records were merged on arXiv identifier, then on normalised title; this left 1453 records from 1903, with 450 duplicates merged and 31 records without an abstract.% src: screening/dedup-report.json (records 1453; duplicates_merged 450; without_abstract 31)
+Two further duplicate pairs were found afterwards by identical abstracts (R0117 with R0831, R0713 with R0931); the later record of each pair is to be coded X5 at full-text screening.% src: screening/dedup-addendum.md
+The protocol lists DOI and OpenReview identifiers as additional keys; the tool used arXiv identifier and title only. \todo{confirm in \texttt{tools/\allowbreak build\_\allowbreak screening\_\allowbreak set.py} and state exactly}
+
+\paragraph{Title-and-abstract screening.}
+Two screeners applied one fixed written criteria text (\texttt{criteria-v1}) to every record, from the title and abstract only, in 15 batches of up to 100 records. Screener~A is a Claude agent; screener~B is a Codex call (model identifier \texttt{gpt-6-luna} in the run log) made as a fresh read-only session for each batch, so that no batch sees another. Each decision is include, exclude with a code, or unclear; unclear records go to full-text screening. Neither screener saw the other's decisions.% src: screening/criteria-v1.md; tools/screen_codex.py docstring; screening/screener-B/run-log.jsonl (15 rows, model gpt-6-luna, n = 100 in batch 1, criteria_sha dba0c3b1...)
+\todo{screener A: exact Claude model identifier, date and time of the run, and the prompt hash; none is recorded in screening/screener-A}
+
+Table~\ref{tab:screening} gives the result.% src: tools/screening_agreement.py, run 2026-10-15 (output reproduced in the table)
+The two screeners agree on 1257 of 1453 records on the three-way decision (0.865; Cohen's $\kappa=0.673$)~\cite{cohen1960coefficient}. On the binary question that matters for what goes forward, pass to full text (include or unclear) against exclude, they agree on 1333 (0.917; $\kappa=0.728$).% src: tools/screening_agreement.py output: "three-way agree 0.865 kappa 0.673 | pass-to-full-text agree 0.917 kappa 0.728"; counts 1013+34+210 = 1257 and 1257 + 76 = 1333 are derived from the confusion table, see table caption
+Both passed 1123 records, both excluded 210, and 120 are split: 96 passed by A and excluded by B, 24 the reverse.% src: screening_agreement.py output ("records both screeners pass to full text: 1123", "disagreements written: 120"); confusion table cells (45 + 51 = 96; 6 + 18 = 24)
+
+\begin{table}[t]
+\caption{Title-and-abstract screening, 1453 records. Rows: screener A; columns: screener B. Three-way agreement 0.865 ($\kappa=0.673$); pass versus exclude agreement 0.917 ($\kappa=0.728$). Agreement is between two language-model screeners; it is not agreement with a human.}
+\label{tab:screening}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+ & B include & B unclear & B exclude & Total \\
+\midrule
+A include & 1013 & 13 & 45 & 1071 \\% src: tools/screening_agreement.py confusion table
+A unclear & 63 & 34 & 51 & 148 \\
+A exclude & 6 & 18 & 210 & 234 \\
+\midrule
+Total & 1082 & 65 & 306 & 1453 \\% src: screening_agreement.py "A: {...} B: {...}" lines
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Human validation.}
+The protocol requires a human author to screen a random 15\% sample (here 218 records, seed 20261014) and requires each machine screener to reach $\kappa\ge0.70$ against the human, or its prompt is revised and the stage rerun. The sample and its instructions exist; no human decisions have been entered yet, so no agreement with a human is reported.% src: protocol.md section 4 step 3; screening/HUMAN-SCREENING-INSTRUCTIONS.md (218 records, seed 20261014); screening/human-sample.csv has 218 rows and `human sample decisions filled: 0` in the screening_agreement.py output
+\todo{human screening of the 218-record sample and of the 120 disagreements; then report $\kappa$ of each screener against the human and the confusion tables, as the protocol requires}
+
+\paragraph{Full-text screening.}
+Full-text screening of the 1123 records both screeners passed has not been done as a stage. Full-text eligibility has been judged for a random sample of 176 of them as part of the census (Section~\ref{sec:census-method}), which is where the exclusion counts of Figure~\ref{fig:prisma} come from.% src: census-result-v2.md ("Sample"); research/review/census/census-order.csv
+\todo{full-text screening of the remaining included records, with a code from X0 to X8 for every exclusion, and the PRISMA counts that follow}
+
+\begin{figure}[t]
+\centering
+\fbox{\begin{minipage}{0.92\linewidth}\small
+\textbf{Identification.} Records identified 1903 (Awesome-DLMs 572, arXiv S1 1158, arXiv S2 173); duplicates merged 450.\\% src: Table 1 and screening/dedup-report.json
+\textbf{Screening.} 1453 records screened (title and abstract). Both exclude: 210. Split: 120 (unresolved). Both pass to full text: 1123, of which 1106 have an arXiv identifier (the census pool).\\% src: screening_agreement.py; tools/census_sample.py output "population 1106"; research/review/census/census-order.csv has 1106 rows
+\textbf{Full-text eligibility, random sample.} Ranks 1 to 176 of a random order of the 1106; no full text: 4; eligible: 167; excluded: 5 (X1: 4, X0: 1). Of the eligible, 14 report no generated-sample metric, 1 shows samples only, and 152 report a metric.% src: coverage/census-result-v2.md ("Result"); analysis/census/summary-random.log
+\textbf{Not yet done.} Human validation; full-text screening of the other records; other databases; snowballing.
+\end{minipage}}
+\caption{PRISMA 2020 flow of records (placeholder in text form; the diagram is generated from the logs by script). The flow stops at the sample because full-text screening of the whole corpus is not complete.}
+\label{fig:prisma}
+\Description{A text-form flow of record counts from identification through title-and-abstract screening to the full-text eligibility check of a random sample of 176 records.}
+\end{figure}
+
+\subsection{Census: sampling, coding and adjudication}
+\label{sec:census-method}
+
+\paragraph{Pool, order and stopping rule.}
+The census pool is every record that neither screener excluded and that has an arXiv identifier, 1106 records. The pool was put in a random order with a fixed seed (20261015) before any coding. Coders worked down the order, checked full-text eligibility, and stopped when the primary coder's eligible count reached 150; it reached 151 at rank 176, so the sample is ranks 1 to 176. That count treated the 15 papers Codex could not read as ineligible; under the final eligibility the 150th eligible paper falls at rank 157, so 19 more ranks were coded than intended. The sample is still the first 176 ranks of a random order, so the proportions are not biased by this.% src: census-result-v2.md ("Sample", commit 8dd2af3); audits/2026-10-15-gate-census-v2.md P2; src: tools/census_sample.py docstring and code (SEED = 20261015); coverage/census-result-v2.md ("Sample")
+Full texts are the arXiv HTML rendering of the latest version on the coding date, converted to plain text; four of the 176 ranks (23, 33, 90, 144) have no full text and are left out of every count.% src: tools/census_sample.py; census-result-v2.md ("Ranks 23, 33, 90 and 144 have no full text")
+Code repositories were not opened; the census records what the paper says, not what the released code does.% src: coverage/census-codebook-v1.md "Rules"
+
+\paragraph{What is coded.}
+Per paper the coder first judges eligibility under the protocol. For an eligible paper the coder identifies the headline result, defined as the first quantitative result for the paper's own main generative method in the abstract (skipping speed-only and likelihood-only numbers), or else the first row of the first main results table for the final method (field F1).% src: coverage/census-codebook-v1.md F1; census-codebook-v1.1.md A-2
+If the paper reports no generated-sample metric, F1 is not applicable and the reporting fields are not coded; this applies to 14 eligible papers. One further paper shows samples only (F1 QL); by codebook rule B-28 it enters the value-rule count but not F3 to F6, so the value rule is counted on 153 papers and F3 to F6 on 152.% src: census-result-v2.md ("Result", first paragraph); analysis/census/summary-random.log (denominator lines); codebook B-10 and B-28
+The value rule used for the headline (F2) is coded with letters: A argmax or greedy commit; T temperature other than one; P top-$p$ or top-$k$; S sample-then-filter (values are sampled and positions chosen by a score of the sampled value); G guidance; M sequence-level selection such as best-of-$N$; C confidence-ranked or threshold unmasking with the token rule unstated (added in v1.2); U plain sampling at temperature one with no truncation or guidance, coded only when the paper says so; and NS not stated. A suffix \texttt{+NS} marks a stated letter with the base token rule unstated.% src: coverage/census-codebook-v1.md F2; census-codebook-v1.2.md B-15 (C), census-result-v2.md ("15 carry +NS")
+``Non-plain or unstated'' means any code other than U. The other fields are F3 (a diversity or entropy measure paired with the headline), F4 (the headline reported at two or more step settings, counting denoising steps, function evaluations or tokens per step; exactly two settings is coded ``partial''), F5 (the value rule stated as held fixed across the sweep) and F6 (guidance held fixed).% src: census-codebook-v1.md F3 to F6; v1.1 A-1, A-8, A-9
+Conservative codes (NS, not stated) are used whenever a paper is ambiguous.% src: census-codebook-v1.md "Rules"
+
+\paragraph{Codebook versions.}
+Codebook v1 was written on 2026-10-14 and used for a first, purposive census of 47 models that is kept as a pilot and not used as evidence here. Amendments v1.1 (A-1 to A-10, 2026-10-14) governed the coding of the random sample. Codebook v1.2 (B-1 to B-28, 2026-10-15) was written by a separate adjudicator after both codings of the random sample and after agreement was computed, from the coders' own ambiguity reports, without opening the row files or the papers; it governs the adjudication, and agreement is reported under v1.1.% src: coverage/census-codebook-v1.md, -v1.1.md, -v1.2.md ("Disclosure"); coverage/census-result-v1.md; decision D0020
+Rules in v1.2 that settle a gap and move a count are named where they matter (B-10, B-15, B-19, B-24).% src: decision D0020 item 3
+
+\paragraph{Coders.}
+Coder~A (Claude Sonnet) coded all 176 ranks, blind to coder~B. Coder~B was Codex (\texttt{gpt-6-luna}) for ranks 1 to 91, which gave 86 rows (ranks 19 and 79 failed), and then Claude Opus for ranks 92 to 176 and for ranks 19 and 79, because Codex reached its usage limit. This makes coder~A and part of coder~B models of the same family, so their agreement may overstate the agreement of independent human coders.% src: coverage/census-result-v2.md ("Process" step 1 and "Limits"); decision D0015; census/coder-B-run-log.jsonl (model gpt-6-luna in every row)
+Codex could not read the paper for 15 ranks among 1 to 88; its codes there are tool-failure placeholders, and those rows were coded from the paper at adjudication.% src: census/adjudication-notes-r001-r088.md ("Coder B (Codex) could not read the file for 15 ranks"); census-result-v2.md
+\todo{exact model identifiers and versions for coder~A and for coder~B (Claude Opus); the run logs record Codex only}
+
+\paragraph{Agreement before reconciliation.}
+Agreement between the two coders is computed on the 172 ranks with text before any reconciliation, under v1.1, and again without the 15 ranks Codex could not read; the 158 field-level disagreements are kept.% src: analysis/census/agreement-random.log and agreement-random-excl-readfail.log; census/disagreements-random.csv (158 rows)
+
+\paragraph{Adjudication.}
+Two adjudicators (Claude Opus; ranks 1 to 88 and 89 to 176) applied codebook v1.2 and checked the paper for each disputed cell, and one harmoniser then fixed six readings that the halves had settled differently. Adjudicators read both coders' rows and notes and were not blind. Of the 158 field-level disagreements, 73 were resolved to coder~A's value, 66 to coder~B's and 19 to neither; in addition, 45 cells on which both coders had agreed were reopened under a v1.2 rule, mostly because the coders' own notes showed its trigger; three (ranks 114, 120, 141) were kept under the harmoniser's standard that an agreed value is changed when it cannot express a code that only v1.2 has (decision D0021). Of the 45, 42 affect a count, and the \emph{agreed cells restored} sensitivity of Section~\ref{sec:census} undoes those 42.% src: census-result-v2.md (sensitivity paragraph, commit 8dd2af3); audits/2026-10-15-gate-census-v2.md C3, C8; decision D0021; adjudication counts: census/adjudication-notes-r001-r088.md (99 rows: A 59, B 31, neither 9); adjudication-notes-r089-r176.md (48 field rows: A 12, B 27, neither 9; 11 derived nonplain rows: A 2, B 8, neither 1); sum A 73, B 66, neither 19 = 158; census/harmonisation-notes.md (Date, harmoniser, six readings); census-result-v2.md ("45 cells")
+The final rows, with both coders' values and the basis for every changed or disputed cell, are in \texttt{research/review/census/census-random-final.jsonl} and in the supplement (S3).% src: census-result-v2.md ("Process" step 4)
+
+\paragraph{A blindness incident.}
+Coder~B's Claude batch for ranks 92 to 128 left scratch copies of its rows and an append script in a shared scratch folder. The first batch of coder~A (ranks 1 to 40) ran that script once, so it may have seen coder~B's rows for ranks 92 to 128, which coder~A did not code. The copies were deleted and later batches ran as fresh agents in private scratch folders. We report it because it is a possible leak of one coder's labels into the other's workspace, and we know of no effect on coder~A's codes.% src: decision D0019 item 2; census-result-v2.md ("Limits")
+
+\subsection{Use of AI in conducting the research}
+\label{sec:ai-use}
+
+ACM's authorship policy requires that AI used to conduct the research be described in the Methods section, including code, data and figures that rely on it, and that all authors remain responsible for the content.% src: research/review/dossier/csur.md section 3 (ACM Policy on Authorship, updated 2026-05-14)
+Table~\ref{tab:ai} lists each step in which a language model did the work, the model, and what was checked. No language model is listed as an author, and none of the screeners or coders is presented as a human reviewer.% src: csur.md section 3 item 4; protocol.md section 4 last paragraph
+\begin{table*}[t]
+\caption{Steps of the research that used a language model. ``Checked by'' lists only checks that are recorded in the repository.}
+\label{tab:ai}
+\small
+\begin{tabular}{@{}p{3.2cm}p{3.4cm}p{6.3cm}@{}}
+\toprule
+Step & Model (as recorded) & Checked by \\
+\midrule
+Search and ingestion scripts, deduplication & Claude Code (scripts under \texttt{tools/}) & Run logs with query, time and SHA-256; two duplicate pairs found afterwards. No human check recorded. \\% src: tools/; corpus/search-log.jsonl
+Title-and-abstract screening & A: Claude agent \todo{model id}; B: Codex \texttt{gpt-6-luna} & Agreement between A and B (Table~\ref{tab:screening}); human validation pending. \\% src: screening/; screener-B/run-log.jsonl
+Census coding & A: Claude Sonnet \todo{id}; B: Codex \texttt{gpt-6-luna} (ranks 1--91), Claude Opus \todo{id} (ranks 92--176) & Agreement before reconciliation (Section~\ref{sec:census}); adjudication against the paper text; no human coder yet. \\% src: census-result-v2.md; decision D0015
+Census adjudication, harmonisation, codebook v1.2 & Claude Opus 5.5 (adjudicators, harmoniser); a separate Claude Opus adjudicator for v1.2 & Rows keep both coders' values and the basis for each change; gate audit of the result pending. \\% src: census/harmonisation-notes.md ("Claude (Opus 5.5)"); adjudication-notes
+Design-space table, primers & Claude reading agents (Sonnet) & Evidence level per row; rows M01--M29 copied from primers, not re-read; no human check recorded. \\% src: coverage/design-space-v1.md (claims block, coverage); dossier/primer-*.md headers
+Framework, derivations, exact-enumeration checks & Claude (method design), Claude red-team (Opus) & Scripts under \texttt{analysis/framework/} reproduce the checks; a red-team report found two fatal and eleven major problems, which led to withdrawing two proposed terms (decision D0011). \\% src: framework-v2.md section A; decisions D0011
+Analysis scripts, figures, tables & Claude Code & Numbers in the text carry a source path; a gate audit of the numbers is pending. \\
+Drafting of this manuscript & Claude (manuscript-writer agent) & Every empirical sentence carries a source path in the \LaTeX{} source; citation validation, a clarity edit and a human read are pending. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+\todo{record exact model identifiers and dates for each row; state which human author checked what (no human check is recorded in the repository for screening, coding, the design-space table or the derivations)}
+\todo{repository commit and archive DOI for the code, logs and row-level data}
+
+\subsection{Departures from the protocol}
+\label{sec:method-deviations}
+
+\begin{enumerate}
+  \item The protocol was not frozen or registered before screening (Section~\ref{sec:method-design}).
+  \item Only the Awesome-DLMs list and two arXiv searches were run; the other sources and snowballing named in the protocol are pending (Section~\ref{sec:method-sources}).% src: corpus/search-log.jsonl; protocol.md section 3
+  \item The logged arXiv queries are adaptations of the protocol's core strings. The S1 query leaves out the terms ``absorbing state'' and the clause ``non-autoregressive AND diffusion'' that the protocol lists, adds the title term ``Diffusion-LM'', and uses the three language words above in place of ``language OR text OR token* OR language model*''.% src: protocol.md section 3 (core string S1) against corpus/search-log.jsonl (query S1); S2 differs only by omitting the redundant phrase "unified understanding and generation"
+  \item Human validation of screening, the quality appraisal of included studies (QA1 to QA9) and the extraction of every included study are not complete.% src: protocol.md sections 4, 5, 6; screening_agreement.py output
+  \item A claim-evaluability extension (hypotheses E1 to E3 and a rubric) was added to protocol section~6 on 2026-10-14. Two development rounds on 40 papers did not reach the preset reliability for the criterion (kappa for the evaluable flag 0.33), the hypotheses were suspended, and nothing from that work is reported here.% src: protocol.md section 6 "Claim evaluability"; research/review/reliability/RESULTS.md; decisions D0008, D0009
+  \item The census was not part of the first protocol. It was added after the 47-model pilot (decision D0011) and defined by a codebook before the random sample was drawn; the codebook was then amended after coding (v1.2) with the disclosure above.% src: framework-v2.md section D2; decision D0011; census-codebook-v1.2.md "Disclosure"
+\end{enumerate}

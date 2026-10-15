@@ -1,0 +1,15 @@
+% Section 5. Evidence by research question. STUB. Needs gate R2 (full extraction and appraisal) before any verdict.
+\section{What the evidence shows, by research question}
+\label{sec:rq}
+
+\todo{stub: no verdict may be written from the stage-two samples; needs the full extraction and the quality appraisal (QA1--QA9) of every included study}
+
+Plan, one subsection per question, each ending with a verdict (well supported, mixed, weakly supported, untested) and the counts behind it.
+\begin{itemize}
+  \item RQ2, diffusion against autoregressive models: protocol-comparability table; pooled only where task, metric and budget match. No contrast table exists yet (stage two recorded none). % src: research/review/protocol.md section 1; feasibility/stage2/summary-steps.md (RQ2-vs-AR row: 0)
+  \item RQ3, training strategies: within-paper ablations; the sampled strata have candidate rows but almost none with an interval. % src: feasibility/stage2/summary-steps.md and summary-remask-synergy.md (RQ3-training rows)
+  \item RQ4, quality against compute: dose-response of step sweeps; non-monotone sweeps exist (quality peaks at 32 steps in two papers), so any interpolation rule must say what it does there; the census supplies the reporting side (Section~\ref{sec:census}). % src: feasibility/stage2/summary-steps.md ("Quality is not monotone in steps")
+  \item RQ5, synergy: claims against the ablation that supports them. Of 8 unified-model papers in the sampled synergy stratum, 3 contain a real task-removal or shared-versus-decoupled contrast, direction mixed, no interval. Prior statements that synergy is conditional~\cite{arXiv:2609.01607,arXiv:2607.04423} and a benchmark reporting it largely absent~\cite{arXiv:2509.24897} are credited. % src: feasibility/stage2/summary-remask-synergy.md ("Synergy"); survey-landscape.md section 2 (CA)
+  \item RQ6, rigour: quality appraisal table (supplement) and distributions by year and venue type; 92\% of rule-poolable contrasts in the stage-two sample report no variance. % src: summary-remask-synergy.md; protocol.md section 6
+  \item Statement of the pooling decision: threshold of protocol section 7 not met for remasking and synergy, borderline for steps. % src: research/progress.md (2026-10-14 results); feasibility/stage2/summary-*.md
+\end{itemize}
