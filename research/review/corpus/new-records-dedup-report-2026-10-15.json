@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-15",
+  "existing_records": 1453,
+  "sources": {
+    "openalex": {
+      "identified": 681,
+      "identified_by_string": {
+        "S2": 115,
+        "S1": 566
+      },
+      "unique_within_source": 655,
+      "duplicates_within_source": 26,
+      "duplicates_against_existing": 380,
+      "new": 275
+    },
+    "semantic-scholar-bulk": {
+      "identified": 1715,
+      "identified_by_string": {
+        "S1": 1487,
+        "S2": 228
+      },
+      "unique_within_source": 1667,
+      "duplicates_within_source": 48,
+      "duplicates_against_existing": 1330,
+      "new": 337
+    },
+    "arxiv-protocol-rerun": {
+      "identified": 1476,
+      "identified_by_string": {
+        "S1": 1286,
+        "S2": 190
+      },
+      "unique_within_source": 1442,
+      "duplicates_within_source": 34,
+      "duplicates_against_existing": 1343,
+      "new": 99
+    },
+    "acl-anthology": {
+      "identified": 118,
+      "identified_by_string": {
+        "S1": 113,
+        "S2": 5
+      },
+      "unique_within_source": 116,
+      "duplicates_within_source": 2,
+      "duplicates_against_existing": 74,
+      "new": 42
+    },
+    "openreview": {
+      "identified": 1456,
+      "identified_by_string": {
+        "S1": 1301,
+        "S2": 155
+      },
+      "unique_within_source": 939,
+      "duplicates_within_source": 517,
+      "duplicates_against_existing": 445,
+      "new": 494,
+      "filter_stats": {
+        "retrieved": 2481,
+        "fails_local_clause": 1025
+      }
+    },
+    "snowball-backward": {
+      "identified": 19423,
+      "identified_by_string": {
+        "snowball-backward": 19423
+      },
+      "unique_within_source": 6456,
+      "duplicates_within_source": 12967,
+      "duplicates_against_existing": 520,
+      "new": 5936,
+      "filter_stats": {
+        "edges": 25509,
+        "before_2021": 6086,
+        "no_date_kept": 2250
+      }
+    },
+    "snowball-forward": {
+      "identified": 25998,
+      "identified_by_string": {
+        "snowball-forward": 25998
+      },
+      "unique_within_source": 9837,
+      "duplicates_within_source": 16161,
+      "duplicates_against_existing": 1211,
+      "new": 8626,
+      "filter_stats": {
+        "edges": 26003,
+        "before_2021": 5,
+        "no_date_kept": 495
+      }
+    }
+  },
+  "union_new_records": 14794,
+  "union_new_by_source_combination": {
+    "openalex": 106,
+    "snowball-backward": 5458,
+    "snowball-backward+snowball-forward": 409,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk+snowball-backward": 2,
+    "snowball-forward": 7989,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk+snowball-backward+snowball-forward": 8,
+    "openalex+semantic-scholar-bulk": 64,
+    "acl-anthology+arxiv-protocol-rerun+openalex+semantic-scholar-bulk+snowball-backward+snowball-forward": 1,
+    "openalex+semantic-scholar-bulk+snowball-forward": 37,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk": 14,
+    "semantic-scholar-bulk+snowball-forward": 58,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk+snowball-forward": 4,
+    "openreview+snowball-backward": 12,
+    "arxiv-protocol-rerun+openalex+openreview+semantic-scholar-bulk+snowball-forward": 2,
+    "arxiv-protocol-rerun+openalex+openreview+semantic-scholar-bulk+snowball-backward": 2,
+    "arxiv-protocol-rerun+openalex+openreview+semantic-scholar-bulk": 6,
+    "openalex+semantic-scholar-bulk+snowball-backward": 3,
+    "acl-anthology+openalex+openreview+semantic-scholar-bulk+snowball-backward": 1,
+    "arxiv-protocol-rerun+semantic-scholar-bulk": 15,
+    "openreview+snowball-backward+snowball-forward": 9,
+    "semantic-scholar-bulk": 45,
+    "arxiv-protocol-rerun+openreview+semantic-scholar-bulk+snowball-backward+snowball-forward": 3,
+    "arxiv-protocol-rerun": 5,
+    "openreview+snowball-forward": 15,
+    "arxiv-protocol-rerun+openalex+openreview+semantic-scholar-bulk+snowball-backward+snowball-forward": 2,
+    "openalex+semantic-scholar-bulk+snowball-backward+snowball-forward": 2,
+    "acl-anthology+openalex+semantic-scholar-bulk": 2,
+    "semantic-scholar-bulk+snowball-backward+snowball-forward": 8,
+    "semantic-scholar-bulk+snowball-backward": 2,
+    "arxiv-protocol-rerun+semantic-scholar-bulk+snowball-forward": 17,
+    "arxiv-protocol-rerun+semantic-scholar-bulk+snowball-backward+snowball-forward": 6,
+    "arxiv-protocol-rerun+openreview+semantic-scholar-bulk": 2,
+    "openreview+semantic-scholar-bulk+snowball-forward": 8,
+    "arxiv-protocol-rerun+openreview+semantic-scholar-bulk+snowball-forward": 5,
+    "openalex+snowball-forward": 5,
+    "acl-anthology+arxiv-protocol-rerun+semantic-scholar-bulk+snowball-forward": 1,
+    "openreview+semantic-scholar-bulk": 2,
+    "arxiv-protocol-rerun+openreview": 2,
+    "arxiv-protocol-rerun+snowball-forward": 2,
+    "openreview": 416,
+    "acl-anthology+snowball-forward": 17,
+    "acl-anthology+semantic-scholar-bulk+snowball-backward+snowball-forward": 2,
+    "acl-anthology+openalex+semantic-scholar-bulk+snowball-forward": 5,
+    "acl-anthology": 7,
+    "openalex+openreview": 2,
+    "acl-anthology+openalex+snowball-forward": 1,
+    "acl-anthology+openalex+semantic-scholar-bulk+snowball-backward+snowball-forward": 2,
+    "openreview+semantic-scholar-bulk+snowball-backward+snowball-forward": 1,
+    "acl-anthology+semantic-scholar-bulk+snowball-forward": 1,
+    "openalex+openreview+semantic-scholar-bulk+snowball-forward": 3,
+    "acl-anthology+snowball-backward+snowball-forward": 2,
+    "openalex+openreview+semantic-scholar-bulk+snowball-backward+snowball-forward": 1
+  },
+  "exclusive_new_by_source": {
+    "openalex": 106,
+    "snowball-backward": 5458,
+    "snowball-forward": 7989,
+    "semantic-scholar-bulk": 45,
+    "arxiv-protocol-rerun": 5,
+    "openreview": 416,
+    "acl-anthology": 7
+  },
+  "union_new_matching_S1_or_S2_locally": 1014,
+  "union_new_from_database_searches_only": 938,
+  "union_new_without_abstract": 2705,
+  "new_records_file": "research/review/corpus/new-records-2026-10-15.jsonl",
+  "new_records_sha256": "5320cd6ed1e536689165120181a43d1a425ea491eeebf1894b537749d13eed80",
+  "records_jsonl_sha256_unchanged": "240d8e65dd7a1bf0547b32f5bb9c249f0249e7fa09f25b21aff7bb330cf3234f",
+  "dedup_rules": "keys in order: arXiv ID (version stripped), DOI (via S2 venue file for existing records), normalised title (>=3 words), normalised abstract (>=200 characters); union-find within and across sources; possible_duplicate_of = title token-set Jaccard >= 0.8 against an existing record (flag only, not dropped)"
+}

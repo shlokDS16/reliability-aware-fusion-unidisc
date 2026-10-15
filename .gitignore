@@ -20,3 +20,8 @@ research/sources/html/
 # EXP-001 generated images: unlicensed checkpoint (UniDisc), kept local; hashes in runs/EXP-001/image-hashes.txt
 runs/EXP-001/**/*.png
 runs/EXP-003/**/*.png
+
+# search raw caches too large for git (hashes of every file are in research/review/corpus/search-log.jsonl; JSON kept locally)
+research/sources/search-raw/acl-anthology/*.bib.gz
+research/sources/search-raw/semantic-scholar/snowball-*.jsonl
+research/sources/search-raw/run-*.log

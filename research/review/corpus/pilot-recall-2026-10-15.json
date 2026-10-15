@@ -1,0 +1,194 @@
+{
+  "date": "2026-10-15",
+  "seed_list": "Awesome-DLMs@194aa6bd: 572 records, 540 with arXiv IDs; recall is over the 540 arXiv-ID records",
+  "random_seed": 20261015,
+  "random50_note": "50 drawn without replacement from the 512 non-'Multimodal DLMs' arXiv records, sorted by arXiv ID, random.Random(20261015).sample",
+  "matching": "arXiv ID where the source has one, else normalised title; snowballing excluded (seeds are cited by construction)",
+  "local_string_recall": {
+    "MM28": {
+      "S1": 26,
+      "S2": 5,
+      "S1|S2": 26,
+      "n": 28
+    },
+    "random50_other": {
+      "S1": 40,
+      "S2": 0,
+      "S1|S2": 40,
+      "n": 50
+    },
+    "all540_arxiv": {
+      "S1": 453,
+      "S2": 6,
+      "S1|S2": 453,
+      "n": 540
+    }
+  },
+  "by_source": {
+    "openalex": {
+      "S2": {
+        "retrieved_titles": 115,
+        "MM28": "3/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "4/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 657,
+        "MM28": "8/28",
+        "random50_other": "17/50",
+        "all540_arxiv": "168/540"
+      },
+      "S1": {
+        "retrieved_titles": 553,
+        "MM28": "8/28",
+        "random50_other": "17/50",
+        "all540_arxiv": "168/540"
+      }
+    },
+    "semantic-scholar-bulk": {
+      "S1": {
+        "retrieved_titles": 1484,
+        "MM28": "26/28",
+        "random50_other": "41/50",
+        "all540_arxiv": "463/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 1678,
+        "MM28": "26/28",
+        "random50_other": "41/50",
+        "all540_arxiv": "463/540"
+      },
+      "S2": {
+        "retrieved_titles": 228,
+        "MM28": "5/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "7/540"
+      }
+    },
+    "arxiv-protocol-rerun": {
+      "S1": {
+        "retrieved_titles": 1284,
+        "MM28": "26/28",
+        "random50_other": "41/50",
+        "all540_arxiv": "463/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 1442,
+        "MM28": "26/28",
+        "random50_other": "41/50",
+        "all540_arxiv": "463/540"
+      },
+      "S2": {
+        "retrieved_titles": 190,
+        "MM28": "5/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "7/540"
+      }
+    },
+    "acl-anthology": {
+      "S1": {
+        "retrieved_titles": 113,
+        "MM28": "0/28",
+        "random50_other": "6/50",
+        "all540_arxiv": "53/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 116,
+        "MM28": "0/28",
+        "random50_other": "6/50",
+        "all540_arxiv": "53/540"
+      },
+      "S2": {
+        "retrieved_titles": 5,
+        "MM28": "0/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "0/540"
+      }
+    },
+    "openreview": {
+      "S1": {
+        "retrieved_titles": 856,
+        "MM28": "8/28",
+        "random50_other": "16/50",
+        "all540_arxiv": "148/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 942,
+        "MM28": "9/28",
+        "random50_other": "16/50",
+        "all540_arxiv": "149/540"
+      },
+      "S2": {
+        "retrieved_titles": 108,
+        "MM28": "4/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "5/540"
+      }
+    },
+    "arxiv-existing-logged": {
+      "S1": {
+        "retrieved_titles": 1156,
+        "MM28": "23/28",
+        "random50_other": "36/50",
+        "all540_arxiv": "420/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 1301,
+        "MM28": "24/28",
+        "random50_other": "36/50",
+        "all540_arxiv": "421/540"
+      },
+      "S2": {
+        "retrieved_titles": 173,
+        "MM28": "5/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "7/540"
+      }
+    },
+    "ALL-COMBINED": {
+      "S1": {
+        "retrieved_titles": 2057,
+        "MM28": "27/28",
+        "random50_other": "41/50",
+        "all540_arxiv": "470/540"
+      },
+      "S2": {
+        "retrieved_titles": 322,
+        "MM28": "5/28",
+        "random50_other": "0/50",
+        "all540_arxiv": "7/540"
+      },
+      "S1|S2": {
+        "retrieved_titles": 2331,
+        "MM28": "27/28",
+        "random50_other": "41/50",
+        "all540_arxiv": "470/540"
+      }
+    }
+  },
+  "scope_restricted_recall": {
+    "openreview": {
+      "definition": "seeds whose Semantic Scholar venue string (venues-semantic-scholar.json, 2026-10-14) matches the source's venue family by regex (heuristic)",
+      "seeds_in_scope": 63,
+      "retrieved": 41
+    },
+    "acl-anthology": {
+      "definition": "seeds whose Semantic Scholar venue string (venues-semantic-scholar.json, 2026-10-14) matches the source's venue family by regex (heuristic)",
+      "seeds_in_scope": 67,
+      "retrieved": 48
+    }
+  },
+  "missed_MM28_combined": [
+    {
+      "arxiv": "2511.01718",
+      "title": "Unified Diffusion VLA: Vision-Language-Action Model via Joint Discrete Denoising Diffusion Process",
+      "matches_S1_locally": false,
+      "matches_S2_locally": false
+    }
+  ],
+  "missed_by_string_logic": {
+    "all540_missed_by_combined_searches": 70,
+    "of_which_text_matches_neither_string_locally": 70,
+    "of_which_text_matches_a_string_locally_but_not_retrieved": 0
+  }
+}
