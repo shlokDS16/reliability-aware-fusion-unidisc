@@ -45,3 +45,10 @@ Deviation to disclose: about 20 records with truncated abstracts were decided af
 3. dWorldEval two versions (M08950 unclear, M17772 included): does a progress/success token count as natural-language output?
 4. Embedding models on a diffusion-pretrained LM backbone (M08140 pplx-embed): I1(a)?
 5. Non-diffusion parallel decoders benchmarked against DLMs (M09782 JetSpec, M12594 pcLLM): does evaluating a DLM only as a baseline meet I1?
+
+## Screener A, batch 4
+1. Humanoid motion/pose as the other modality (M15235 HumanExpert, M15236 HuMoGPT unclear; M12859 PoseDLLM included): does "3D" cover motion and pose?
+2. LLM/VLM connected to separately trained diffusion decoders called unified or any-to-any (M03150 X-VILA, M17285 Qwen-Image-Omni, M14249 EmoSym unclear; M03633 UniFashion included).
+3. Generic discrete-diffusion or flow-matching theory without text (M14735, M09141, M06218, M09003, M07228, M17869): A coded X1 here (batches 1-3 and B used unclear); text-framed theory included (M10159, M00847, M07124). Inconsistent across batches: adjudicate.
+4. M12793 Binary Discrete Diffusion (Sudoku etc. plus Text8/OWT language modelling): included on the language-modelling results.
+5. Abstract-less records: unclear unless obviously unrelated (M11786, M15533 X0) or a survey by title (M14799 X3).
