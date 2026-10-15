@@ -22,6 +22,17 @@
   personal Scopus account; user approved the five CSV downloads. Then Web of Science, IEEE, ACM DL,
   SpringerLink, ScienceDirect the same way (combined NOT-free query + NOT parts separately; record
   counts; ask download approval per database).
+  **Update 2026-10-16 ~03:00 IST: Scopus DONE.** User signed in to a personal Scopus account in
+  Chrome; five CSV exports (4,046 rows, all with abstracts) in `research/sources/search-raw/scopus/`
+  (hashes in `scopus-queries-20261016.md`; D0031). Export dialog recipe: select all, Export > CSV,
+  tick Bibliographical information + Abstract & keywords, turn OFF "Truncate to optimize for Excel",
+  do not tick "Save as preference"; files land in C:\Users\Shlok\Downloads as scopus_export_*.csv.
+  **Remaining databases (in the user's Chrome, Claude in Chrome tools):** Web of Science (TS=,
+  export cap 1,000 per file: split by PY), IEEE Xplore, ACM DL, SpringerLink, ScienceDirect; same
+  plan (combined NOT-free union query + NOT parts separately, counts first, then ask download
+  approval per database). The title-resolution lit-scout agent was still running at handoff: check
+  for `research/review/screening/v2/title-resolved-queue.jsonl` and
+  `research/review/corpus/title-resolution-2026-10-15.json`; if absent, rerun it (brief in D0029 item 2).
   **Next after searches:** lit-scout ingest + dedup of exports; dual-screen new database records;
   criteria v1.1 from the ambiguities; full-text screening of all passing records (two screeners on
   key sections); extraction on the sample; section 05 RQ evidence; PRISMA counts final; red-team
