@@ -66,10 +66,13 @@ def kappa(pairs):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--upto", type=int, default=None)
+    ap.add_argument("--exclude", default="", help="comma-separated ranks to leave out (e.g. coder read failures)")
+    ap.add_argument("--out", default="disagreements-random.csv")
     a = ap.parse_args()
+    excl = {int(x) for x in a.exclude.split(",") if x.strip()}
     B = load([CEN / "coder-B.jsonl", *sorted(CEN.glob("coder-B-claude-*.jsonl"))])
     A = load(sorted(CEN.glob("coder-A-claude-*.jsonl")))
-    ranks = sorted(r for r in set(A) & set(B) if a.upto is None or r <= a.upto)
+    ranks = sorted(r for r in set(A) & set(B) if (a.upto is None or r <= a.upto) and r not in excl)
     ranks = [r for r in ranks if A[r].get("exclusion_code") != "NO_TEXT" and B[r].get("exclusion_code") != "NO_TEXT"]
     print(f"coder B rows {len(B)} (eligible {sum(elig(d) == 'yes' for d in B.values())}); "
           f"coder A rows {len(A)}; ranks both coded with text: {len(ranks)}")
@@ -102,11 +105,11 @@ def main():
             if va != vb:
                 dis.append({"rank": r, "sid": A[r].get("sid"), "arxiv": A[r].get("arxiv"), "field": f,
                             "coder_A": va, "coder_B": vb, "coder_B_source": B[r].get("coder", "B-codex")})
-    with open(CEN / "disagreements-random.csv", "w", newline="", encoding="utf8") as fh:
+    with open(CEN / a.out, "w", newline="", encoding="utf8") as fh:
         w = csv.DictWriter(fh, fieldnames=["rank", "sid", "arxiv", "field", "coder_A", "coder_B", "coder_B_source"])
         w.writeheader()
         w.writerows(dis)
-    print(f"\n{len(dis)} disagreements written to disagreements-random.csv")
+    print(f"\n{len(dis)} disagreements written to {a.out}")
 
     for name, C in (("coder A", A), ("coder B", B)):
         el = [d for r, d in C.items() if r in set(ranks) and elig(d) == "yes"]
