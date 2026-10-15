@@ -328,7 +328,7 @@
 {"id": "M15401", "decision": "exclude", "code": "X0", "reason": "mupirocin MRSA susceptibility study", "screener": "R-claude-haiku"}
 {"id": "M16422", "decision": "exclude", "code": "X0", "reason": "HER2 brain metastases review", "screener": "R-claude-haiku"}
 {"id": "M12905", "decision": "exclude", "code": "X0", "reason": "argument in agent-based models; no diffusion", "screener": "R-claude-haiku"}
-{"id": "M06596", "decision": "unclear", "code": "", "reason": "LLM tool-use agent orchestrating diffusion image tool; unified status unclear", "screener": "R-claude-haiku"}
+{"id": "M06596", "decision": "exclude", "code": "X2", "reason": "LLM tool-use agent calling diffusion tool; pipeline, not unified", "screener": "R-claude-haiku"}
 {"id": "M09278", "decision": "exclude", "code": "X0", "reason": "LoCO parameter-efficient fine-tuning; no diffusion", "screener": "R-claude-haiku"}
 {"id": "M00682", "decision": "exclude", "code": "X0", "reason": "dynamic discrete choice estimation; no diffusion", "screener": "R-claude-haiku"}
 {"id": "M02680", "decision": "exclude", "code": "X3", "reason": "tutorial-survey on generative AI in 6G wireless", "screener": "R-claude-haiku"}
@@ -383,7 +383,7 @@
 {"id": "M13894", "decision": "exclude", "code": "X0", "reason": "manager digital competencies study; diffusion of digitalization", "screener": "R-claude-haiku"}
 {"id": "M18894", "decision": "exclude", "code": "X0", "reason": "predator-prey PDE model; no abstract", "screener": "R-claude-haiku"}
 {"id": "M14298", "decision": "exclude", "code": "X0", "reason": "LiTa2PO8 ceramic sintering; no diffusion model", "screener": "R-claude-haiku"}
-{"id": "M13587", "decision": "unclear", "code": "", "reason": "LLM text plus diffusion image system with layout optimisation; unified status unclear", "screener": "R-claude-haiku"}
+{"id": "M13587", "decision": "exclude", "code": "X2", "reason": "LLM text plus diffusion visuals in a pipeline system; not unified", "screener": "R-claude-haiku"}
 {"id": "M18171", "decision": "exclude", "code": "X0", "reason": "CO2 flooding oil recovery experiments", "screener": "R-claude-haiku"}
 {"id": "M17145", "decision": "exclude", "code": "X0", "reason": "communist publishing history", "screener": "R-claude-haiku"}
 {"id": "M16645", "decision": "exclude", "code": "X0", "reason": "sexism detection shared task; no abstract, no diffusion", "screener": "R-claude-haiku"}
@@ -643,7 +643,7 @@
 {"id": "M06042", "decision": "exclude", "code": "X0", "reason": "distributed neural architecture; no diffusion visible", "screener": "R-claude-haiku"}
 {"id": "M18167", "decision": "exclude", "code": "X0", "reason": "CO2 desublimation lattice Boltzmann simulation", "screener": "R-claude-haiku"}
 {"id": "M12315", "decision": "exclude", "code": "X0", "reason": "paediatric sepsis aetiology study", "screener": "R-claude-haiku"}
-{"id": "M08288", "decision": "unclear", "code": "", "reason": "VLM document synthesis with handwriting diffusion; unified status unclear", "screener": "R-claude-haiku"}
+{"id": "M08288", "decision": "exclude", "code": "X2", "reason": "VLM text plus handwriting diffusion pipeline; not unified", "screener": "R-claude-haiku"}
 {"id": "M16425", "decision": "exclude", "code": "X0", "reason": "fake news graph neural network with LLM", "screener": "R-claude-haiku"}
 {"id": "M13257", "decision": "exclude", "code": "X0", "reason": "periampullary carcinoma MRI; no abstract", "screener": "R-claude-haiku"}
 {"id": "M04484", "decision": "exclude", "code": "X0", "reason": "ChatGPT finite element code study; diffusion is physical", "screener": "R-claude-haiku"}
@@ -890,3 +890,261 @@
 {"id": "M12979", "decision": "exclude", "code": "X0", "reason": "rice paddy methane review", "screener": "R-claude-haiku"}
 {"id": "M18646", "decision": "exclude", "code": "X0", "reason": "furnace wafer slip defects study", "screener": "R-claude-haiku"}
 {"id": "M14133", "decision": "exclude", "code": "X3", "reason": "edge intelligence perspective for generative AI", "screener": "R-claude-haiku"}
+{"id": "M17484", "decision": "exclude", "code": "X0", "reason": "ZnO heavy metal removal; no abstract", "screener": "R-claude-haiku"}
+{"id": "M08813", "decision": "include", "code": "", "reason": "discrete flow maps generating text sequences in one pass; text-generating flow model", "screener": "R-claude-haiku"}
+{"id": "M04388", "decision": "unclear", "code": "", "reason": "discrete-state diffusion memorization in tabular data; structured data, not clearly text", "screener": "R-claude-haiku"}
+{"id": "M14940", "decision": "exclude", "code": "X3", "reason": "comparative review of generative model families", "screener": "R-claude-haiku"}
+{"id": "M13478", "decision": "exclude", "code": "X0", "reason": "financial development and carbon bibliometrics", "screener": "R-claude-haiku"}
+{"id": "M08400", "decision": "unclear", "code": "", "reason": "RL-compiled diffusion for fan-out retrieval; diffusion output modality unclear", "screener": "R-claude-haiku"}
+{"id": "M18289", "decision": "exclude", "code": "X0", "reason": "zinc-ion battery cathode review", "screener": "R-claude-haiku"}
+{"id": "M15425", "decision": "exclude", "code": "X3", "reason": "review of diffusion for anomaly detection; no abstract", "screener": "R-claude-haiku"}
+{"id": "M18087", "decision": "unclear", "code": "", "reason": "staged diffusion with mixture-of-experts for multimodal sentiment; output role unclear", "screener": "R-claude-haiku"}
+{"id": "M18219", "decision": "exclude", "code": "X0", "reason": "intellectual property and sustainability review", "screener": "R-claude-haiku"}
+{"id": "M19152", "decision": "exclude", "code": "X3", "reason": "review of visual text generation with diffusion in Khmer", "screener": "R-claude-haiku"}
+{"id": "M09025", "decision": "exclude", "code": "X0", "reason": "acoustic token LM for music; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "M02182", "decision": "exclude", "code": "X3", "reason": "review of generative AI model families", "screener": "R-claude-haiku"}
+{"id": "M14442", "decision": "exclude", "code": "X0", "reason": "discrete diffusion SIR traveling waves; no abstract", "screener": "R-claude-haiku"}
+{"id": "M17039", "decision": "exclude", "code": "X0", "reason": "polyanionic Na-ion cathode review", "screener": "R-claude-haiku"}
+{"id": "M10033", "decision": "exclude", "code": "X1", "reason": "diffusion spectral reconstruction; non-text spectra output", "screener": "R-claude-haiku"}
+{"id": "M14145", "decision": "exclude", "code": "X0", "reason": "edutainment violence prevention review", "screener": "R-claude-haiku"}
+{"id": "M05494", "decision": "exclude", "code": "X0", "reason": "barycenter statistics on metric spaces", "screener": "R-claude-haiku"}
+{"id": "M16690", "decision": "exclude", "code": "X0", "reason": "adjoint discretization for aerodynamics", "screener": "R-claude-haiku"}
+{"id": "M16185", "decision": "exclude", "code": "X0", "reason": "MOF nanosheet catalysis review", "screener": "R-claude-haiku"}
+{"id": "M07330", "decision": "exclude", "code": "X0", "reason": "LLM anamnesis system; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M17173", "decision": "exclude", "code": "X0", "reason": "EU norm diffusion in Vietnam policy", "screener": "R-claude-haiku"}
+{"id": "M15545", "decision": "exclude", "code": "X0", "reason": "legend intertextuality study", "screener": "R-claude-haiku"}
+{"id": "M12533", "decision": "exclude", "code": "X2", "reason": "LLM story plus diffusion character art pipeline; text not generated by diffusion", "screener": "R-claude-haiku"}
+{"id": "M07771", "decision": "exclude", "code": "X2", "reason": "multi-objective alignment for text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "M13028", "decision": "exclude", "code": "X0", "reason": "Clinacanthus ethnobotany review", "screener": "R-claude-haiku"}
+{"id": "M14885", "decision": "exclude", "code": "X3", "reason": "review of generative AI for network security", "screener": "R-claude-haiku"}
+{"id": "M18574", "decision": "exclude", "code": "X0", "reason": "Gandhi pacifism essay", "screener": "R-claude-haiku"}
+{"id": "M17355", "decision": "exclude", "code": "X0", "reason": "water diversion control operation", "screener": "R-claude-haiku"}
+{"id": "M14452", "decision": "exclude", "code": "X0", "reason": "geo-filament anchor experiments", "screener": "R-claude-haiku"}
+{"id": "M17980", "decision": "exclude", "code": "X0", "reason": "social media institutional communication conceptual paper", "screener": "R-claude-haiku"}
+{"id": "M06604", "decision": "exclude", "code": "X1", "reason": "VLM reflection with diffusion action expert; robot action output", "screener": "R-claude-haiku"}
+{"id": "M12078", "decision": "exclude", "code": "X0", "reason": "Li-rich cathode coating study", "screener": "R-claude-haiku"}
+{"id": "M10791", "decision": "exclude", "code": "X1", "reason": "sampling acceleration for diffusion VLA; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M05830", "decision": "exclude", "code": "X0", "reason": "drift-diffusion statistical physics of LM reasoning; not a diffusion model", "screener": "R-claude-haiku"}
+{"id": "M17557", "decision": "exclude", "code": "X0", "reason": "high-altitude nuclear explosion simulation review", "screener": "R-claude-haiku"}
+{"id": "M02118", "decision": "exclude", "code": "X1", "reason": "text-conditioned motion denoiser; non-text motion output", "screener": "R-claude-haiku"}
+{"id": "M17521", "decision": "exclude", "code": "X0", "reason": "gas plume dispersion; no abstract", "screener": "R-claude-haiku"}
+{"id": "M01247", "decision": "exclude", "code": "X1", "reason": "text-to-3D diffusion for NeRF; 3D output", "screener": "R-claude-haiku"}
+{"id": "M09794", "decision": "exclude", "code": "X1", "reason": "diffusion image inpainting; image output", "screener": "R-claude-haiku"}
+{"id": "M17587", "decision": "exclude", "code": "X0", "reason": "letter on neuroanatomy history", "screener": "R-claude-haiku"}
+{"id": "M14139", "decision": "exclude", "code": "X0", "reason": "tinnitus neuroimaging editorial", "screener": "R-claude-haiku"}
+{"id": "M17978", "decision": "exclude", "code": "X0", "reason": "social media opinion study; no abstract", "screener": "R-claude-haiku"}
+{"id": "M16221", "decision": "exclude", "code": "X0", "reason": "ideological attitudes system dynamics", "screener": "R-claude-haiku"}
+{"id": "M04421", "decision": "exclude", "code": "X0", "reason": "multilingual visual information extraction pretraining; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M15894", "decision": "exclude", "code": "X0", "reason": "metal ion capacitor review", "screener": "R-claude-haiku"}
+{"id": "M17081", "decision": "exclude", "code": "X0", "reason": "prostate MRI sequence prediction study", "screener": "R-claude-haiku"}
+{"id": "M13144", "decision": "exclude", "code": "X0", "reason": "adolescent sexual health trends analysis", "screener": "R-claude-haiku"}
+{"id": "M01157", "decision": "exclude", "code": "X0", "reason": "turbulent droplet supersaturation simulation", "screener": "R-claude-haiku"}
+{"id": "M17142", "decision": "exclude", "code": "X0", "reason": "summarization workshop proceedings", "screener": "R-claude-haiku"}
+{"id": "M04266", "decision": "exclude", "code": "X1", "reason": "diffusion policy component study; robot action output", "screener": "R-claude-haiku"}
+{"id": "M13382", "decision": "exclude", "code": "X0", "reason": "parotid DWI review", "screener": "R-claude-haiku"}
+{"id": "M05424", "decision": "exclude", "code": "X3", "reason": "survey of text-to-image generation and editing", "screener": "R-claude-haiku"}
+{"id": "M17060", "decision": "exclude", "code": "X0", "reason": "robotic surgery platforms review", "screener": "R-claude-haiku"}
+{"id": "M11140", "decision": "exclude", "code": "X0", "reason": "look-ahead Markov chain estimators", "screener": "R-claude-haiku"}
+{"id": "M13350", "decision": "exclude", "code": "X0", "reason": "hot issue diffusion on Weibo study", "screener": "R-claude-haiku"}
+{"id": "M12371", "decision": "exclude", "code": "X1", "reason": "quality metric for AI-generated videos; no text output", "screener": "R-claude-haiku"}
+{"id": "M17752", "decision": "exclude", "code": "X0", "reason": "6G distributed automation scalability", "screener": "R-claude-haiku"}
+{"id": "M11347", "decision": "exclude", "code": "X1", "reason": "video diffusion physical alignment; video output", "screener": "R-claude-haiku"}
+{"id": "M17182", "decision": "exclude", "code": "X0", "reason": "steel discrete oxide layer study", "screener": "R-claude-haiku"}
+{"id": "M12569", "decision": "exclude", "code": "X0", "reason": "metal nanomaterials lithium battery review", "screener": "R-claude-haiku"}
+{"id": "M16926", "decision": "exclude", "code": "X1", "reason": "part-centric diffusion policy for robot manipulation; no abstract, action output", "screener": "R-claude-haiku"}
+{"id": "M13832", "decision": "unclear", "code": "", "reason": "unified multi-modal diffusion framework; modalities and text role unstated", "screener": "R-claude-haiku"}
+{"id": "M14032", "decision": "exclude", "code": "X0", "reason": "cryptographic diffusion matrices; not generative", "screener": "R-claude-haiku"}
+{"id": "M00889", "decision": "exclude", "code": "X0", "reason": "translation of 1840 mechanics memoir", "screener": "R-claude-haiku"}
+{"id": "M11718", "decision": "exclude", "code": "X1", "reason": "diffusion 3D sign language gesture generation; non-text motion output", "screener": "R-claude-haiku"}
+{"id": "M17818", "decision": "exclude", "code": "X0", "reason": "speech encryption method", "screener": "R-claude-haiku"}
+{"id": "M05009", "decision": "exclude", "code": "X0", "reason": "tactile-language-action robot model; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M14500", "decision": "exclude", "code": "X0", "reason": "metaverse education public sentiment study", "screener": "R-claude-haiku"}
+{"id": "M15304", "decision": "exclude", "code": "X0", "reason": "EU human rights legal essay", "screener": "R-claude-haiku"}
+{"id": "M17131", "decision": "exclude", "code": "X0", "reason": "privacy-secure dialogue framework for robots; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M12864", "decision": "exclude", "code": "X0", "reason": "hospitality ML systematic review", "screener": "R-claude-haiku"}
+{"id": "M18446", "decision": "exclude", "code": "X0", "reason": "Papez circuit review", "screener": "R-claude-haiku"}
+{"id": "M14285", "decision": "exclude", "code": "X0", "reason": "hate speech classification", "screener": "R-claude-haiku"}
+{"id": "M09236", "decision": "exclude", "code": "X0", "reason": "quantized RL importance sampling for LLMs; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M17449", "decision": "exclude", "code": "X0", "reason": "entrepreneurship reflection", "screener": "R-claude-haiku"}
+{"id": "M18786", "decision": "exclude", "code": "X0", "reason": "LLM board game personalisation study", "screener": "R-claude-haiku"}
+{"id": "M08198", "decision": "exclude", "code": "X0", "reason": "RAG framework; graph-style diffusion, not generative", "screener": "R-claude-haiku"}
+{"id": "M12650", "decision": "exclude", "code": "X0", "reason": "turbulence reduced model for fusion plasma", "screener": "R-claude-haiku"}
+{"id": "M16582", "decision": "exclude", "code": "X0", "reason": "NOx combustion study; no abstract", "screener": "R-claude-haiku"}
+{"id": "M16198", "decision": "exclude", "code": "X0", "reason": "non-Markovian relaxation theory; no abstract", "screener": "R-claude-haiku"}
+{"id": "M18757", "decision": "exclude", "code": "X0", "reason": "topic evolution social media study", "screener": "R-claude-haiku"}
+{"id": "M12496", "decision": "exclude", "code": "X0", "reason": "public sentiment crisis analysis", "screener": "R-claude-haiku"}
+{"id": "M13359", "decision": "exclude", "code": "X0", "reason": "MOF membrane helium recovery; no abstract", "screener": "R-claude-haiku"}
+{"id": "M11936", "decision": "exclude", "code": "X0", "reason": "AI divide high school IT teaching study", "screener": "R-claude-haiku"}
+{"id": "M10655", "decision": "exclude", "code": "X0", "reason": "moral foundation detection with fine-tuned LLM", "screener": "R-claude-haiku"}
+{"id": "M17571", "decision": "exclude", "code": "X0", "reason": "CsI scintillation film review", "screener": "R-claude-haiku"}
+{"id": "M09555", "decision": "exclude", "code": "X3", "reason": "survey of interactive video world modelling", "screener": "R-claude-haiku"}
+{"id": "M05912", "decision": "exclude", "code": "X1", "reason": "training-free acceleration of diffusion VLA; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M07984", "decision": "include", "code": "", "reason": "diffusion model generates latent reasoning decoded to code and math text", "screener": "R-claude-haiku"}
+{"id": "M05208", "decision": "exclude", "code": "X1", "reason": "conditional diffusion for LoRA weight generation; non-text output", "screener": "R-claude-haiku"}
+{"id": "M04542", "decision": "exclude", "code": "X1", "reason": "training-free diffusion style transfer; image output", "screener": "R-claude-haiku"}
+{"id": "M18375", "decision": "exclude", "code": "X0", "reason": "short video fake news detection", "screener": "R-claude-haiku"}
+{"id": "M14420", "decision": "exclude", "code": "X0", "reason": "information literacy topic model", "screener": "R-claude-haiku"}
+{"id": "M18072", "decision": "exclude", "code": "X1", "reason": "diffusion gesture generation; non-text motion output", "screener": "R-claude-haiku"}
+{"id": "M14784", "decision": "exclude", "code": "X0", "reason": "PMDD neuroimaging systematic review", "screener": "R-claude-haiku"}
+{"id": "M15463", "decision": "exclude", "code": "X0", "reason": "energy efficiency governance study", "screener": "R-claude-haiku"}
+{"id": "M18138", "decision": "exclude", "code": "X0", "reason": "biochar mortar carbonation study", "screener": "R-claude-haiku"}
+{"id": "M05860", "decision": "exclude", "code": "X0", "reason": "discrete diffusion numerical scheme for curvature flow; not generative", "screener": "R-claude-haiku"}
+{"id": "M18129", "decision": "exclude", "code": "X0", "reason": "LNG production optimisation", "screener": "R-claude-haiku"}
+{"id": "M12899", "decision": "exclude", "code": "X0", "reason": "investor sentiment study; no abstract", "screener": "R-claude-haiku"}
+{"id": "M05450", "decision": "exclude", "code": "X2", "reason": "diffusion scene text editing with glyph encoder; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "M13329", "decision": "exclude", "code": "X0", "reason": "critical dialogue; no abstract", "screener": "R-claude-haiku"}
+{"id": "M16267", "decision": "exclude", "code": "X2", "reason": "LLM multi-agent vision framework with image generation; pipeline", "screener": "R-claude-haiku"}
+{"id": "M11318", "decision": "exclude", "code": "X1", "reason": "VLA flow-matching action expert; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M14241", "decision": "exclude", "code": "X0", "reason": "potassium-ion carbon anode review", "screener": "R-claude-haiku"}
+{"id": "M13595", "decision": "exclude", "code": "X1", "reason": "AIGC popular-science animation pathway; animation output", "screener": "R-claude-haiku"}
+{"id": "M11904", "decision": "exclude", "code": "X1", "reason": "diffusion color image encryption; image output, no abstract", "screener": "R-claude-haiku"}
+{"id": "M11783", "decision": "exclude", "code": "X0", "reason": "multimodal LLM driver assistance architecture; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M14356", "decision": "exclude", "code": "X0", "reason": "grouting equivalent elastic model", "screener": "R-claude-haiku"}
+{"id": "M12986", "decision": "exclude", "code": "X0", "reason": "chatbot dialog design for science gateways", "screener": "R-claude-haiku"}
+{"id": "M15434", "decision": "exclude", "code": "X0", "reason": "network inference from reaction-diffusion patterns", "screener": "R-claude-haiku"}
+{"id": "M17589", "decision": "exclude", "code": "X0", "reason": "standardization survey report; no abstract", "screener": "R-claude-haiku"}
+{"id": "M11193", "decision": "exclude", "code": "X0", "reason": "activation steering component study", "screener": "R-claude-haiku"}
+{"id": "M11442", "decision": "exclude", "code": "X0", "reason": "proton vs photon radiotherapy white matter study", "screener": "R-claude-haiku"}
+{"id": "M03771", "decision": "exclude", "code": "X0", "reason": "NFT visual analytics tool", "screener": "R-claude-haiku"}
+{"id": "M17110", "decision": "exclude", "code": "X0", "reason": "malnutrition prevalence meta-analysis", "screener": "R-claude-haiku"}
+{"id": "M15725", "decision": "exclude", "code": "X0", "reason": "language policy book review", "screener": "R-claude-haiku"}
+{"id": "M03657", "decision": "exclude", "code": "X2", "reason": "generative diffusion image augmentation with text prompts; image output", "screener": "R-claude-haiku"}
+{"id": "M18503", "decision": "exclude", "code": "X0", "reason": "autonomous vehicle impact review", "screener": "R-claude-haiku"}
+{"id": "M12932", "decision": "exclude", "code": "X1", "reason": "hybrid diffusion CBCT-to-CT image synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "M13625", "decision": "exclude", "code": "X0", "reason": "UTI MIC study; no abstract", "screener": "R-claude-haiku"}
+{"id": "M12715", "decision": "exclude", "code": "X0", "reason": "influence maximization fairness framework", "screener": "R-claude-haiku"}
+{"id": "M17001", "decision": "unclear", "code": "", "reason": "diffusion over grid tags for sentiment quad prediction; text output role unclear", "screener": "R-claude-haiku"}
+{"id": "M12083", "decision": "exclude", "code": "X3", "reason": "review comparing detection architectures", "screener": "R-claude-haiku"}
+{"id": "M18783", "decision": "exclude", "code": "X0", "reason": "vascularized neural organoid review", "screener": "R-claude-haiku"}
+{"id": "M07316", "decision": "exclude", "code": "X0", "reason": "token-aware PEFT for LLMs; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M13947", "decision": "exclude", "code": "X0", "reason": "X-ray binary discrete flow; no abstract", "screener": "R-claude-haiku"}
+{"id": "M12788", "decision": "exclude", "code": "X0", "reason": "diffusive plankton model bifurcation analysis", "screener": "R-claude-haiku"}
+{"id": "M15748", "decision": "exclude", "code": "X0", "reason": "LLM multi-agent fake news simulation; no diffusion model; no abstract", "screener": "R-claude-haiku"}
+{"id": "M16366", "decision": "exclude", "code": "X0", "reason": "Stewart-Treves MRI case series", "screener": "R-claude-haiku"}
+{"id": "M13495", "decision": "exclude", "code": "X3", "reason": "deep learning cultural heritage review", "screener": "R-claude-haiku"}
+{"id": "M15429", "decision": "exclude", "code": "X0", "reason": "aggregate hidden Markov inference", "screener": "R-claude-haiku"}
+{"id": "M19215", "decision": "exclude", "code": "X0", "reason": "Markov process weak convergence theory", "screener": "R-claude-haiku"}
+{"id": "M14238", "decision": "exclude", "code": "X1", "reason": "diffusion image steganography; image output", "screener": "R-claude-haiku"}
+{"id": "M12834", "decision": "exclude", "code": "X2", "reason": "synthetic images for NER with diffusion; text NER output not generated", "screener": "R-claude-haiku"}
+{"id": "M11981", "decision": "exclude", "code": "X0", "reason": "journalism and pandemic qualitative study", "screener": "R-claude-haiku"}
+{"id": "M07009", "decision": "exclude", "code": "X0", "reason": "granular intruder pullout mechanics", "screener": "R-claude-haiku"}
+{"id": "M15387", "decision": "exclude", "code": "X0", "reason": "PEMFC cold start materials study", "screener": "R-claude-haiku"}
+{"id": "M17188", "decision": "exclude", "code": "X0", "reason": "sodium-ion cathode prospects; no abstract", "screener": "R-claude-haiku"}
+{"id": "M16298", "decision": "exclude", "code": "X0", "reason": "sports news SEIR diffusion model", "screener": "R-claude-haiku"}
+{"id": "M18476", "decision": "exclude", "code": "X0", "reason": "nurse alarm education quasi-experiment", "screener": "R-claude-haiku"}
+{"id": "M15546", "decision": "exclude", "code": "X0", "reason": "FAIR and CARE principles reflection", "screener": "R-claude-haiku"}
+{"id": "M14535", "decision": "exclude", "code": "X0", "reason": "inkjet printed batteries review", "screener": "R-claude-haiku"}
+{"id": "M18150", "decision": "exclude", "code": "X0", "reason": "low-temperature anode review", "screener": "R-claude-haiku"}
+{"id": "M16416", "decision": "exclude", "code": "X0", "reason": "Weibo dissemination model", "screener": "R-claude-haiku"}
+{"id": "M15482", "decision": "exclude", "code": "X0", "reason": "digital human GPT-2 integration; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M16967", "decision": "exclude", "code": "X0", "reason": "periodontal liver disease review; no abstract", "screener": "R-claude-haiku"}
+{"id": "M13112", "decision": "exclude", "code": "X0", "reason": "biochar phenol adsorption; no abstract", "screener": "R-claude-haiku"}
+{"id": "M12922", "decision": "unclear", "code": "", "reason": "deception benchmark incl. Stable Diffusion among architectures; diffusion output modality unclear", "screener": "R-claude-haiku"}
+{"id": "M17057", "decision": "exclude", "code": "X0", "reason": "yam postharvest browning review", "screener": "R-claude-haiku"}
+{"id": "M17120", "decision": "exclude", "code": "X0", "reason": "boundary vorticity flux diagnostics", "screener": "R-claude-haiku"}
+{"id": "M05761", "decision": "exclude", "code": "X1", "reason": "music generation diffusion; audio output, non-text", "screener": "R-claude-haiku"}
+{"id": "M03614", "decision": "include", "code": "", "reason": "end-to-end LLM with stable diffusion for photo-sharing dialogue; text and image generation", "screener": "R-claude-haiku"}
+{"id": "M18587", "decision": "exclude", "code": "X0", "reason": "communication network flow distribution", "screener": "R-claude-haiku"}
+{"id": "M10824", "decision": "include", "code": "", "reason": "DuetGen jointly trains autoregressive text planner with diffusion renderer for text-rich images", "screener": "R-claude-haiku"}
+{"id": "M12276", "decision": "exclude", "code": "X3", "reason": "review of generative models for materials discovery", "screener": "R-claude-haiku"}
+{"id": "M19155", "decision": "exclude", "code": "X0", "reason": "ideological discourse visualization study", "screener": "R-claude-haiku"}
+{"id": "M01741", "decision": "exclude", "code": "X0", "reason": "speech-driven gesture synthesis with WavLM; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M17641", "decision": "exclude", "code": "X0", "reason": "superalloy rhenium review; no abstract", "screener": "R-claude-haiku"}
+{"id": "M03558", "decision": "exclude", "code": "X1", "reason": "latent diffusion audio generation for egocentric video; audio output", "screener": "R-claude-haiku"}
+{"id": "M17983", "decision": "exclude", "code": "X0", "reason": "sodium alginate wound healing review", "screener": "R-claude-haiku"}
+{"id": "M10830", "decision": "exclude", "code": "X1", "reason": "LoRA serving analysis for production diffusion image models; non-text output", "screener": "R-claude-haiku"}
+{"id": "M16147", "decision": "exclude", "code": "X0", "reason": "flexible battery mechano-electrochemistry review", "screener": "R-claude-haiku"}
+{"id": "M18093", "decision": "exclude", "code": "X0", "reason": "BSSRDF translucent rendering review", "screener": "R-claude-haiku"}
+{"id": "M09243", "decision": "exclude", "code": "X0", "reason": "language-conditioned humanoid control; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M11770", "decision": "exclude", "code": "X0", "reason": "hydrogen embrittlement bibliometric analysis", "screener": "R-claude-haiku"}
+{"id": "M18925", "decision": "exclude", "code": "X0", "reason": "research on research exploratory study", "screener": "R-claude-haiku"}
+{"id": "M02635", "decision": "exclude", "code": "X0", "reason": "EV charging innovation diffusion model", "screener": "R-claude-haiku"}
+{"id": "M18593", "decision": "exclude", "code": "X0", "reason": "Islamic acculturation history", "screener": "R-claude-haiku"}
+{"id": "M17242", "decision": "exclude", "code": "X0", "reason": "TCM public perception Twitter text mining", "screener": "R-claude-haiku"}
+{"id": "M17411", "decision": "exclude", "code": "X0", "reason": "2D conductive MOF energy storage review", "screener": "R-claude-haiku"}
+{"id": "M09430", "decision": "exclude", "code": "X2", "reason": "MLLM-guided diffusion facial demorphing; images output, text conditions", "screener": "R-claude-haiku"}
+{"id": "M14407", "decision": "exclude", "code": "X0", "reason": "bibliotherapy services evaluation", "screener": "R-claude-haiku"}
+{"id": "M14611", "decision": "exclude", "code": "X0", "reason": "Irish referendum Twitter network analysis", "screener": "R-claude-haiku"}
+{"id": "M10728", "decision": "exclude", "code": "X1", "reason": "VLA serving with diffusion action transformer; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M18522", "decision": "exclude", "code": "X0", "reason": "PV panel spacing LCOE simulation", "screener": "R-claude-haiku"}
+{"id": "M00399", "decision": "exclude", "code": "X0", "reason": "active inference Python library; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M14830", "decision": "exclude", "code": "X0", "reason": "gel thermocell review", "screener": "R-claude-haiku"}
+{"id": "M10424", "decision": "exclude", "code": "X0", "reason": "consumer technology ownership prediction study", "screener": "R-claude-haiku"}
+{"id": "M14726", "decision": "exclude", "code": "X0", "reason": "iron matrix composites review", "screener": "R-claude-haiku"}
+{"id": "M12740", "decision": "exclude", "code": "X0", "reason": "Bessel functions on time scales", "screener": "R-claude-haiku"}
+{"id": "M15436", "decision": "exclude", "code": "X0", "reason": "sentiment influence maximisation algorithm", "screener": "R-claude-haiku"}
+{"id": "M15573", "decision": "exclude", "code": "X0", "reason": "streptococcal surveillance report", "screener": "R-claude-haiku"}
+{"id": "M18259", "decision": "exclude", "code": "X0", "reason": "spinal cord injury training study", "screener": "R-claude-haiku"}
+{"id": "M15881", "decision": "exclude", "code": "X0", "reason": "perovskite tandem review; no abstract", "screener": "R-claude-haiku"}
+{"id": "M08445", "decision": "exclude", "code": "X0", "reason": "LLM-aided manipulation benchmark with VQ memory; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M12710", "decision": "exclude", "code": "X0", "reason": "neonatal septicemia bacteriology study", "screener": "R-claude-haiku"}
+{"id": "M17440", "decision": "exclude", "code": "X0", "reason": "personal data extraction tool; no abstract", "screener": "R-claude-haiku"}
+{"id": "M01112", "decision": "exclude", "code": "X0", "reason": "reduced-order convection-diffusion model", "screener": "R-claude-haiku"}
+{"id": "M02273", "decision": "exclude", "code": "X1", "reason": "text-to-motion diffusion model; non-text motion output", "screener": "R-claude-haiku"}
+{"id": "M12243", "decision": "exclude", "code": "X0", "reason": "vegan product review analysis", "screener": "R-claude-haiku"}
+{"id": "M17272", "decision": "exclude", "code": "X0", "reason": "LLM labour automation estimate for Ukraine", "screener": "R-claude-haiku"}
+{"id": "M05974", "decision": "exclude", "code": "X1", "reason": "flow matching for dysarthric speech conversion; speech output", "screener": "R-claude-haiku"}
+{"id": "M13352", "decision": "exclude", "code": "X0", "reason": "Ru catalyst PEM electrolysis study", "screener": "R-claude-haiku"}
+{"id": "M17634", "decision": "exclude", "code": "X0", "reason": "tea frost disaster review; no abstract", "screener": "R-claude-haiku"}
+{"id": "M16461", "decision": "exclude", "code": "X0", "reason": "Hopf bifurcation reaction-diffusion-advection analysis", "screener": "R-claude-haiku"}
+{"id": "M16570", "decision": "exclude", "code": "X3", "reason": "review of multimodal foundation models for text-to-media", "screener": "R-claude-haiku"}
+{"id": "M19317", "decision": "exclude", "code": "X0", "reason": "zeolite single-atom catalyst review", "screener": "R-claude-haiku"}
+{"id": "M17611", "decision": "exclude", "code": "X0", "reason": "Li2MnO3 doping DFT study", "screener": "R-claude-haiku"}
+{"id": "M15313", "decision": "unclear", "code": "", "reason": "masked diffusion image captioning; title clear but no abstract", "screener": "R-claude-haiku"}
+{"id": "M18981", "decision": "exclude", "code": "X0", "reason": "Li2MnO3 4d-metal doping DFT study", "screener": "R-claude-haiku"}
+{"id": "M16226", "decision": "exclude", "code": "X0", "reason": "Italian LLM safety evaluation datasets", "screener": "R-claude-haiku"}
+{"id": "M15916", "decision": "exclude", "code": "X2", "reason": "LLM caption expansion for diffusion dataset condensation; image output", "screener": "R-claude-haiku"}
+{"id": "M11890", "decision": "exclude", "code": "X1", "reason": "generative image steganography; image output, no abstract", "screener": "R-claude-haiku"}
+{"id": "M14392", "decision": "exclude", "code": "X0", "reason": "EU telemedicine projects review", "screener": "R-claude-haiku"}
+{"id": "M06030", "decision": "exclude", "code": "X2", "reason": "MLLM story text with video generation pipeline; video output", "screener": "R-claude-haiku"}
+{"id": "M15593", "decision": "exclude", "code": "X0", "reason": "fresh concrete leaching review", "screener": "R-claude-haiku"}
+{"id": "M14946", "decision": "unclear", "code": "", "reason": "generative text-image pair augmentation for MNER; diffusion role unclear", "screener": "R-claude-haiku"}
+{"id": "M16017", "decision": "exclude", "code": "X0", "reason": "carbon-supported single-atom catalyst review", "screener": "R-claude-haiku"}
+{"id": "M16830", "decision": "exclude", "code": "X0", "reason": "organophosphate ester minireview", "screener": "R-claude-haiku"}
+{"id": "M08881", "decision": "exclude", "code": "X0", "reason": "defensive training of language models; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M13507", "decision": "exclude", "code": "X3", "reason": "review of remote sensing super-resolution", "screener": "R-claude-haiku"}
+{"id": "M15332", "decision": "exclude", "code": "X0", "reason": "optic neuritis imaging review", "screener": "R-claude-haiku"}
+{"id": "M15849", "decision": "exclude", "code": "X0", "reason": "public relations activism study", "screener": "R-claude-haiku"}
+{"id": "M07118", "decision": "exclude", "code": "X0", "reason": "reward model reasoning; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M17049", "decision": "exclude", "code": "X0", "reason": "archaeology content diffusion Twitter study", "screener": "R-claude-haiku"}
+{"id": "M16782", "decision": "exclude", "code": "X0", "reason": "2D carbon nanomaterials review", "screener": "R-claude-haiku"}
+{"id": "M17660", "decision": "exclude", "code": "X0", "reason": "conspiracy rhetoric essay", "screener": "R-claude-haiku"}
+{"id": "M15063", "decision": "exclude", "code": "X0", "reason": "solder IMC growth review", "screener": "R-claude-haiku"}
+{"id": "M12414", "decision": "exclude", "code": "X0", "reason": "Newton-Schwarz reservoir solver", "screener": "R-claude-haiku"}
+{"id": "M17830", "decision": "exclude", "code": "X0", "reason": "traffic imputation attention network", "screener": "R-claude-haiku"}
+{"id": "M15320", "decision": "exclude", "code": "X3", "reason": "review of diffusion image generation", "screener": "R-claude-haiku"}
+{"id": "M03272", "decision": "exclude", "code": "X0", "reason": "LLM standard cell layout optimisation; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M06539", "decision": "exclude", "code": "X0", "reason": "nanofluid magnetorotational instability review", "screener": "R-claude-haiku"}
+{"id": "M02282", "decision": "exclude", "code": "X1", "reason": "diffusion video editing; video output", "screener": "R-claude-haiku"}
+{"id": "M12640", "decision": "exclude", "code": "X0", "reason": "fintech sentiment NLP study", "screener": "R-claude-haiku"}
+{"id": "M15191", "decision": "exclude", "code": "X0", "reason": "insect symbiont defence study", "screener": "R-claude-haiku"}
+{"id": "M07075", "decision": "exclude", "code": "X1", "reason": "diffusion model for cardinality estimation over tabular attributes; numeric output", "screener": "R-claude-haiku"}
+{"id": "M12996", "decision": "exclude", "code": "X0", "reason": "ChatGPT consumer acceptance study", "screener": "R-claude-haiku"}
+{"id": "M11706", "decision": "exclude", "code": "X0", "reason": "2D TMD hydrogen evolution review", "screener": "R-claude-haiku"}
+{"id": "M16195", "decision": "exclude", "code": "X0", "reason": "hierarchical network modelling methodology", "screener": "R-claude-haiku"}
+{"id": "M08533", "decision": "exclude", "code": "X1", "reason": "diffusion policy behaviour prior for robot learning; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M17504", "decision": "exclude", "code": "X0", "reason": "influence maximisation review", "screener": "R-claude-haiku"}
+{"id": "M19272", "decision": "exclude", "code": "X0", "reason": "echo chamber social media analysis", "screener": "R-claude-haiku"}
+{"id": "M17879", "decision": "exclude", "code": "X0", "reason": "news and social media sentiment study", "screener": "R-claude-haiku"}
+{"id": "M06206", "decision": "exclude", "code": "X0", "reason": "urban planning AI agent perspective; no diffusion visible", "screener": "R-claude-haiku"}
+{"id": "M13376", "decision": "exclude", "code": "X0", "reason": "ECMO engineering review; no abstract", "screener": "R-claude-haiku"}
+{"id": "M18968", "decision": "exclude", "code": "X0", "reason": "topic modelling of generative art discourse; no abstract", "screener": "R-claude-haiku"}
+{"id": "M09726", "decision": "exclude", "code": "X1", "reason": "training-free diffusion noise selection for VLA; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M16399", "decision": "exclude", "code": "X0", "reason": "distillation column optimisation", "screener": "R-claude-haiku"}
+{"id": "M06446", "decision": "exclude", "code": "X1", "reason": "normalizing flow action decoder for VLA; non-text action output", "screener": "R-claude-haiku"}
+{"id": "M18558", "decision": "exclude", "code": "X0", "reason": "science communication survey study", "screener": "R-claude-haiku"}
+{"id": "M14778", "decision": "exclude", "code": "X0", "reason": "heat sink optimisation review", "screener": "R-claude-haiku"}
+{"id": "M06252", "decision": "exclude", "code": "X0", "reason": "LLM-induced dependency graph tabular augmentation; no diffusion", "screener": "R-claude-haiku"}
+{"id": "M17114", "decision": "exclude", "code": "X0", "reason": "otitis media bacteriology study; no abstract", "screener": "R-claude-haiku"}
+{"id": "M12104", "decision": "exclude", "code": "X3", "reason": "survey of text-to-music generation", "screener": "R-claude-haiku"}
+{"id": "M13637", "decision": "exclude", "code": "X0", "reason": "development assistance case study", "screener": "R-claude-haiku"}
+{"id": "M19070", "decision": "exclude", "code": "X0", "reason": "driving adoption sentiment and diffusion of innovation", "screener": "R-claude-haiku"}
+{"id": "M15818", "decision": "exclude", "code": "X0", "reason": "hidden influence learning in social networks", "screener": "R-claude-haiku"}
+{"id": "M04753", "decision": "exclude", "code": "X2", "reason": "localized parameters for in-image text generation in diffusion models; image output", "screener": "R-claude-haiku"}
+{"id": "M13065", "decision": "exclude", "code": "X0", "reason": "COVID vaccine tweet cognitive networks", "screener": "R-claude-haiku"}
+{"id": "M16417", "decision": "exclude", "code": "X0", "reason": "sandstorm voltage control", "screener": "R-claude-haiku"}
+{"id": "M16275", "decision": "exclude", "code": "X0", "reason": "phishing webpage detection", "screener": "R-claude-haiku"}
+{"id": "M13340", "decision": "exclude", "code": "X2", "reason": "diffusion visual text stylization; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "M12089", "decision": "exclude", "code": "X0", "reason": "perovskite TRPL model review", "screener": "R-claude-haiku"}
+{"id": "M18168", "decision": "exclude", "code": "X0", "reason": "diesel spray combustion experiment", "screener": "R-claude-haiku"}
+{"id": "M04513", "decision": "exclude", "code": "X2", "reason": "training-free diffusion for curved visual text generation; image output", "screener": "R-claude-haiku"}

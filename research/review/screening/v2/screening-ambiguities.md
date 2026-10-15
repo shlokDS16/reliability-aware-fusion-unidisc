@@ -52,3 +52,7 @@ Deviation to disclose: about 20 records with truncated abstracts were decided af
 3. Generic discrete-diffusion or flow-matching theory without text (M14735, M09141, M06218, M09003, M07228, M17869): A coded X1 here (batches 1-3 and B used unclear); text-framed theory included (M10159, M00847, M07124). Inconsistent across batches: adjudicate.
 4. M12793 Binary Discrete Diffusion (Sudoku etc. plus Text8/OWT language modelling): included on the language-modelling results.
 5. Abstract-less records: unclear unless obviously unrelated (M11786, M15533 X0) or a survey by title (M14799 X3).
+
+## Rescue screener (Haiku), batches 1-2
+- Batch 2 caveat: most abstracts read only to the visible 550-900 characters; about 14 ambiguous records read in full. Mitigation: every rescue record had already failed S1''/S2'' applied to the full title and abstract, so a diffusion-LM phrase in an unread tail would normally have matched the strings. Disclose.
+- Pipelines (LLM + separate diffusion image generator) coded X2; tabular diffusion unclear; text rendered in images X2; symbolic music, graphs, molecules X1; missing abstract with a decisive title unclear.
