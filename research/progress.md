@@ -50,6 +50,15 @@
   (e) protocol never frozen (still DRAFT); (f) PLAN.md and D0011 still cite the old meta-analysis
   title and 47-model counts; (g) professor's name, school, e-mail, ORCIDs, and exact model IDs of
   screener A and the Claude coders not recorded. Weekly usage 98 percent at 10:50.
+  **Update 2026-10-15 ~12:00 IST (after weekly reset; user upgraded plan).** D0022: EXP-003 hard
+  stop raised to 8.5 GPU-h with the user's yes (cost overrun ~1.4x; watcher kills the driver at
+  8.5 h; `runs/EXP-003/ACK_STOP_BUDGET.txt`). Manuscript now 33 pp, sections 01-04, 06-08 drafted,
+  figures 1-4 from scripts (`paper/review/scripts/`), Table 4 codes verified, citations validated
+  (`review/audits/2026-10-15-citations-paper1.md`; support fixes applied; anonymous OpenReview
+  source kept once, flagged). **Next:** when DONE.txt exists (expected ~15:00): frozen analysis in
+  the ca3357 worktree, gate-auditor, ledger + section 09 under card rules W0-W5 and D0019 wording
+  limits; then limitations, conclusion, abstract; clarity edit (research-humanizer); cut to budget
+  (candidate: Table 4 to the supplement, Fig. 3 duplicates it).
   **User side task (done):** delete datasets for storage (Paper 3 `data/raw` 187.9 GB, ML paper `data`
   0.3 GB, Dam `periyar_ccd_rnn/data` 0.14 GB); commands given in chat; Claude does not hard-delete.
 - **HANDOFF 2 (2026-10-15, 08:10 IST).**
