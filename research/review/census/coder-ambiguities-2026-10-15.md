@@ -121,3 +121,18 @@ Conventions: eligible "Y"/"NA"; F1 = NA rows have F2-F6 NA; missing Table 1 cell
    F5, F6 Not stated (NFE rises via particles and iterations).
 5. Ranks 168, 163: no abstract number; first row of the first results table taken (168 appendix
    Table 2, Duo-distilled 8 NFE; 163 Table 2, Dream 16 steps on C++); somewhat arbitrary.
+
+### Coder A, ranks 121-160 (37 eligible; 123 X1, 151 X1, 144 no text)
+- F1 = NA: 142 (theory), 149 (token-level denoising accuracy only), 157 (detector, AUROC), 158 (theory).
+1. I1(b) when the diffusion/flow component generates only a non-text modality and text is AR:
+   EO-1 (123, robot actions) X1; Twins (151, separate DiT on ImageNet plus separate AR MLLM) X1;
+   Mammoth2 (137), TtT (150, discrete-diffusion audio), VocalNet-MDM (154) eligible. Needs a rule.
+2. Ranks 128, 158: theory or analysis with synthetic token sequences, coded eligible; 125
+   (DiffLM, latent diffusion with AR decoder) eligible.
+3. A-2 versus eligibility (145 alpha-Flow, 153 E-MoE, 159 NSD): took the text task for F1 (Text8,
+   LM1B, App E.5 toxicity) instead of the first-named image/toy/molecule task. Needs a rule.
+4. Beam or best-first inference has no code: 156 (DDCap) coded G (image-free guidance s = 1.17);
+   132 (DiffusER) NS (27.2 BLEU equals the 2D-beam row of Table 4 but Table 2 does not say so).
+5. Confidence-ranked or thresholded unmasking without a stated token rule or temperature (122,
+   134, 139, 140, 148, 154): NS throughout (A or S both plausible). 138 (CDC) A+G, treating
+   constraint-gradient steering as G.
