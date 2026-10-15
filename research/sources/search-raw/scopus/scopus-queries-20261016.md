@@ -19,3 +19,11 @@ Run 2026-10-16 (IST), Chrome, VIT institutional access, "Documents" tab (Preprin
 - Q4 S1p-B: 1,670
 - Q5 S1p-C: 836
 Export blocked: Scopus export needs a personal Scopus account signed in (user to sign in); user approved downloading the five CSVs (citation, bibliographic, abstract and keywords). Rerun each query from its results URL after sign-in, then export.
+
+Exports (CSV: citation, bibliographic, abstract and keywords; no truncation), downloaded 2026-10-16 with the user's approval:
+- scopus-Q1-20261016.csv sha256 48c62d7ff8dc6375f7b4912486ae605eebf38feed52271404427ea58dc7cd2ff bytes 2805766
+- scopus-Q2-20261016.csv sha256 6d6b816c6f3cdd43f6c54eb8ef13dc28017f77a69f39694e8c813faeb2e9e70e bytes 1570161
+- scopus-Q3-20261016.csv sha256 564f30bd90893d7a26a06f548a14b7861eb61ab22887e66c7faf06b4c0df3d70 bytes 433400
+- scopus-Q4-20261016.csv sha256 e06cb91831a0b5d4f8b18c922aa60c6de82fa02e43c6c9f823fb61b159a91ee8 bytes 5225244
+- scopus-Q5-20261016.csv sha256 4bc5c79f3ada4a64b1c703704526354d1958d29ca4caa7e6c2b8bc066a89ffb3 bytes 2751667
+Rows: Q1 876, Q2 530, Q3 134, Q4 1,670, Q5 836 (all with abstracts; equal to the hit counts).
