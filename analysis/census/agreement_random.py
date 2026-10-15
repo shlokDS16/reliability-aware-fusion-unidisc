@@ -34,8 +34,9 @@ def elig(d):
 
 
 def letters(d):
+    # tokens joined by "+": "G+NS" is {G}, not {G, S} (bug in the first run, fixed 2026-10-15)
     s = (d.get("F2_codes") or "").strip()
-    return set() if s in ("NS", "NA", "U", "") else set(re.findall(r"[ATPSGM]", s))
+    return {t.strip() for t in re.split(r"\+", s)} & set("ATPSGMC")
 
 
 def nonplain(d):
