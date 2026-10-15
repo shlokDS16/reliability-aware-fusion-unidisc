@@ -55,7 +55,7 @@ class Clock:
 
     def __init__(self, path: Path = RUNS / "clock.json"):
         self.path = path
-        self.d = json.loads(path.read_text()) if path.exists() else dict(gpu_wall_s=0.0, by_stage={})
+        self.d = json.loads(path.read_text(encoding="utf-8")) if path.exists() else dict(gpu_wall_s=0.0, by_stage={})
 
     def add(self, stage: str, s: float):
         self.d["gpu_wall_s"] += s
@@ -124,7 +124,7 @@ def _progressed(sdir: Path) -> bool:
     """Progress = the stage log grew since the previous chunk (a unit or scoring record was written)."""
     p = sdir.parent / "gen" / sdir.name / "stage_log.jsonl"
     p2 = sdir / "stage_log.jsonl"
-    n = sum(len(q.read_text().splitlines()) for q in (p, p2) if q.exists())
+    n = sum(len(q.read_text(encoding="utf-8").splitlines()) for q in (p, p2) if q.exists())
     prev = _last.get(str(sdir), -1)
     _last[str(sdir)] = n
     return n > prev + 1                      # more than the chunk_start line itself

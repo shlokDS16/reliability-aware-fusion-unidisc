@@ -32,7 +32,7 @@ SPOOL = {"pilot": "E3-PILOT", "ctrl": "E3-CTRL", "main": "E3-MAIN"}
 
 
 def n_prefix(scope):
-    return N_PREFIX.get(scope) or json.loads((C.RUNS / "n_conf.json").read_text())["n_generate"]
+    return N_PREFIX.get(scope) or json.loads((C.RUNS / "n_conf.json").read_text(encoding="utf-8"))["n_generate"]
 
 
 def near_uniform(pil, thr=6.0) -> bool:

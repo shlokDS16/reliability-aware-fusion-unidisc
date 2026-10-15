@@ -1,0 +1,357 @@
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1015 01:55:07.855000 52896 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1015 01:55:10.021000 52896 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-15 01:55:09] [Rank:0] Forcing cudnn spda context
+[2026-10-15 01:55:09] [Rank:0] Not using Flash Attention 3!
+[2026-10-15 01:55:09] [Rank:0] Imported Flash Attention 2!
+[2026-10-15 01:55:21] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-15 01:55:21] [Rank:0] Setting torch defaults
+[2026-10-15 01:55:22] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-15 01:55:23] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-15 01:55:23] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-15 01:55:23] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-15 01:55:23] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-15 01:55:24] [Rank:0] Using Scale factor: 1
+[2026-10-15 01:55:24] [Rank:0] Using Scale factor: 2
+[2026-10-15 01:55:24] [Rank:0] Using Scale factor: 3
+[2026-10-15 01:55:24] [Rank:0] Using Scale factor: 4
+[2026-10-15 01:55:24] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-15 01:55:24] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-15 01:55:24] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-15 01:55:24] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-15 01:55:31] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-15 01:55:31] [Rank:0] Moving model to cuda
+Sources: [[{'from': 'human', 'value': 'Two people sitting on a bench silhouetted against the<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Two people sitting on a bench silhouetted against the<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1097]), input ids: torch.Size([1097]), modality: torch.Size([1097])
+Sources: [[{'from': 'human', 'value': 'Two people sitting on a bench silhouetted against the<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Two people sitting on a bench silhouetted against the<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1097]), input ids: torch.Size([1097]), modality: torch.Size([1097])
+seq_len: 1056
+schedule: tensor([[ 1,  4,  6,  7,  9, 10, 11, 11, 12, 13, 14, 15, 15, 16, 16, 17, 18, 18,
+         19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
+         28, 28, 29, 29, 29, 30, 30, 31, 31, 32, 32, 32, 33, 35]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+Sources: [[{'from': 'human', 'value': 'A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A plane is parked in an airport<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1093]), input ids: torch.Size([1093]), modality: torch.Size([1093])
+seq_len: 1056
+schedule: tensor([[ 1,  4,  6,  7,  9, 10, 11, 11, 12, 13, 14, 15, 15, 16, 16, 17, 18, 18,
+         19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
+         28, 28, 29, 29, 29, 30, 30, 31, 31, 32, 32, 32, 33, 35]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A large cock sitting in the middle of a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  4,  6,  7,  9, 10, 11, 11, 12, 13, 14, 15, 15, 16, 16, 17, 18, 18,
+         19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
+         28, 28, 29, 29, 29, 30, 30, 31, 31, 32, 32, 32, 33, 35]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Person in a parka taking<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>Guy falling off his surfboard after losing<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A formation of airplanes flying through a blue<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A man holding a tv<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1089]), input ids: torch.Size([1089]), modality: torch.Size([1089])
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+Sources: [[{'from': 'human', 'value': 'shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>shirtless skateboarder going down a<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1094]), input ids: torch.Size([1094]), modality: torch.Size([1094])
+Sources: [[{'from': 'human', 'value': 'A gold clock with ornate<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A gold clock with ornate<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+Sources: [[{'from': 'human', 'value': 'A gold clock with ornate<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m>'}, {'from': 'gpt', 'value': '<image>'}]]
+After pre-processing: ['You are a highly intelligent multimodal AI with the ability to analyze and generate images.</s><s>A gold clock with ornate<m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m><m></s><s><image></s>']
+Attention mask: torch.Size([1090]), input ids: torch.Size([1090]), modality: torch.Size([1090])
+seq_len: 1056
+schedule: tensor([[ 1,  8, 12, 15, 17, 19, 21, 23, 24, 26, 28, 29, 30, 32, 33, 34, 35, 37,
+         38, 39, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, 51, 52]],
+       device='cuda:0', dtype=torch.int32)
+gpu_guard: child exited 75; telemetry in C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\dlm-discovery-resume-ca3357\runs\EXP-003\pilot\telemetry-pilot-002.csv

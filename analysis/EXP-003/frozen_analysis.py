@@ -249,7 +249,7 @@ def controls_decision(bundles, pc2_path, B=B_MAIN, seed=SEED):
     th, _ = S.bootstrap([pi], B, seed)
     ci = S.percentile_ci(th[:, 0])
     c = S.contrast_report("PC-1 Lambda_b(TF) - Lambda_b(Ind)", S.contrast_parts(LT, LI), B, seed + 1)
-    pc2 = json.loads(Path(pc2_path).read_text()) if Path(pc2_path).exists() else None
+    pc2 = json.loads(Path(pc2_path).read_text(encoding="utf-8")) if Path(pc2_path).exists() else None
     return dict(nc1=dict(lambda_b_ind=S.point(pi), pct95=ci, n_eligible=int(pi[1].sum()), passes=S.nc_pass(ci)),
                 pc1=dict(contrast=c, passes=bool(c["d"] >= 0.10 and c["pct90"][0] > 0)),
                 pc2=None if pc2 is None else {k: pc2[k] for k in ("matched", "cross", "matched_minus_cross", "passes", "n_nouns")},
@@ -283,8 +283,8 @@ def main():
         out = dict(digest_sha256=dig, ran_end_to_end=True, B=500, scrambled=True, note="numbers deliberately not stored (pilot firewall)")
         p = C.RUNS / "pilot" / "scrambled_analysis_digest.json"
     else:
-        n = json.loads((C.RUNS / "n_conf.json").read_text())["n_generate"]
-        coco = {nounkey.key(w) for w in Path(HERE / "coco_object_nouns.txt").read_text().split()} if (HERE / "coco_object_nouns.txt").exists() else None
+        n = json.loads((C.RUNS / "n_conf.json").read_text(encoding="utf-8"))["n_generate"]
+        coco = {nounkey.key(w) for w in Path(HERE / "coco_object_nouns.txt").read_text(encoding="utf-8").split()} if (HERE / "coco_object_nouns.txt").exists() else None
         b = _bundles("main", ("P64", "G", "O0", "P32"), n, load_pool_items("E3-MAIN"), tools)
         out = analyse(b, coco_set=coco, score_root=T.SCORE, scope="main", n=n)
         p = C.RUNS / "analysis" / "confirmatory.json"

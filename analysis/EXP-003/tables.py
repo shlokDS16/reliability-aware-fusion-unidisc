@@ -148,7 +148,7 @@ def build_records(scope, arm, n_prefix, sets, plac, root: Path = SCORE, cross_pi
         if s is None or not f.exists():
             recs.append(dict(ok=False))
             continue
-        js = json.loads(f.read_text())
+        js = json.loads(f.read_text(encoding="utf-8"))
         y = {(n, k): (1.0 if v >= 0.5 else 0.0) for n, k, v in js["q"]}
         g = lambda n, k: y[(n, k)]
         r = dict(ok=True, N=s["N"], D=s["D"], iqa=js.get("iqa"))

@@ -1,0 +1,32 @@
+{
+ "seconds": 9.783064600000216,
+ "steps": 50,
+ "cfg": 3.0,
+ "torch_seed": 7061008,
+ "n_masked_text": 0,
+ "n_masked_img": 0,
+ "n_masked_before_final": 0,
+ "calls": 100,
+ "forwards": 51,
+ "assert_calls": 1,
+ "guidance": {
+  "t": 0.98046875,
+  "max_abs_diff_text": 0.046875,
+  "max_abs_diff_img": 0.9989013671875,
+  "acted": true
+ },
+ "stage": "pilot",
+ "arm": "G",
+ "tag": "G50",
+ "pool": "E3-PILOT",
+ "p": 4,
+ "e": 0,
+ "seed_index": 61008,
+ "image_id": 227511,
+ "prefix": "Several cars parked along the side of a",
+ "tail_text": "street. The cars in the foreground are parked next to each other, and buildings on the street. It's raining. which is why it",
+ "peak_gb": 4.608055808,
+ "eval_mode_asserted": true,
+ "wall_unit_s": 9.98380940000061,
+ "failed": false
+}
