@@ -12,7 +12,8 @@ from pathlib import Path
 
 CEN = Path(__file__).resolve().parents[2] / "research" / "review" / "census"
 rows = {}
-for p in sorted(CEN.glob("census-random-final-*.jsonl")):
+merged = CEN / "census-random-final.jsonl"   # harmonised merge of the two halves, when present
+for p in [merged] if merged.exists() else sorted(CEN.glob("census-random-final-r*.jsonl")):
     for line in open(p, encoding="utf8"):
         if line.strip():
             d = json.loads(line)
