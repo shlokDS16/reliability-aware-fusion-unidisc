@@ -29,6 +29,15 @@
   **Next:** two adjudicators apply v1.2 to the disagreements (ranks 1-88, 89-176) ->
   `review/census/census-random-final.jsonl` + notes; census-result-v2; then EXP-003 analysis when
   DONE.txt exists; then manuscript. Datasets deleted by the user (C: 203 GB free).
+  **Update 2026-10-15 ~10:35 IST.** Census adjudicated (v1.2, two adjudicators + harmoniser;
+  D0020; protocol section 10 amended) -> `review/census/census-random-final.jsonl`; result
+  `review/coverage/census-result-v2.md` (146/152 headlines non-plain or unstated; summary log
+  `analysis/census/summary-random.log`). Codex coder B failed to read 15 papers in ranks 1-88
+  (adjudicated from the paper; agreement also reported without them). **Running:** gate-auditor on
+  census-result-v2 -> `review/audits/2026-10-15-gate-census-v2.md`; manuscript-writer: outline,
+  acmart skeleton, Introduction, Review method, census section in `paper/review/`.
+  **Next:** apply audit corrections; EXP-003 frozen analysis + gate-auditor when DONE.txt exists;
+  manuscript sections design space, error budget, open problems; then research-humanizer.
   **User side task (done):** delete datasets for storage (Paper 3 `data/raw` 187.9 GB, ML paper `data`
   0.3 GB, Dam `periyar_ccd_rnn/data` 0.14 GB); commands given in chat; Claude does not hard-delete.
 - **HANDOFF 2 (2026-10-15, 08:10 IST).**
