@@ -1068,3 +1068,9 @@ are the validators.
   pages of 2508.10875 (v3), 2506.13759 (v5), 2505.02567 (v6) confirmed unchanged. Not yet done: the
   [W] layer of B (NEW-90D items) and confirmation of C.1-C.7 identifiers; three research agents were
   dispatched for these and had not returned. Next run: fill B.1-B.7 [W], B.9, C.1-C.7, C.9 and append here.
+
+### 2026-10-15 (orchestrator): web layer added
+- Three web digests now complement this KB: `research/expert/web-digest-text-dlm-field-2026-10-15.md` (text-only DLMs, 5 clusters, items since 2026-04), `web-digest-multimodal-eval-2026-10-15.md` (unified multimodal discrete diffusion, evaluation pitfalls, new surveys, checkpoints), `web-digest-methods-standards-2026-10-15.md` (PRISMA 2020, PRISMA-S, LLM-screening validation, agreement statistics, ACM/CSUR, arXiv, OSF). Read the relevant digest for anything newer than the primers; evidence is E1 unless marked.
+- Novelty note for EXP-003 (D0019): 2610.15227 (per-head CFG response on Muddit, per direction) does not anticipate EXP-003's joint-consistency comparison; cite as related. No study of guidance scale on joint text-image consistency in unified discrete diffusion was found.
+- Census framing: 2609.33947 (few-step gap largely sampler configuration), 2606.08417 (generative perplexity hackable), 2606.12232 and 2604.00375 (remasking effects setting-dependent) strengthen the value-rule census point; credit them.
+- Error budget: 2608.25505 (exact conditional total-correlation identity for adaptive parallel sampling) and 2609.20539 (parallelism separation) are the current references for the identity and its theory.
