@@ -184,7 +184,7 @@ question, quality assessment). The full landscape is in `survey-landscape.md`.
 3. Whether to register the protocol publicly (OSF) before screening; it strengthens the paper.
 
 ## 10. Amendments
-None yet.
+(Entries below.)
 - 2026-10-15 (D0020; census codebook v1.2 B-4, B-6). Eligibility I1(b): "unified" means one model
   (shared weights or one jointly trained system), not a pipeline of separately trained models;
   "another modality" means image, video, audio or speech, or 3D. A unified model whose text is
