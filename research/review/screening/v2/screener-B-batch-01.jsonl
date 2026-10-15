@@ -1,0 +1,175 @@
+{"id": "M16180", "decision": "exclude", "code": "X1", "reason": "LLM plus separate diffusion model generating metasurface elements; no text diffusion", "screener": "B-claude-opus"}
+{"id": "M06713", "decision": "exclude", "code": "X1", "reason": "Flow-based speech enhancement; no text generation", "screener": "B-claude-opus"}
+{"id": "M19242", "decision": "include", "code": "", "reason": "Unified understanding-generation model; RL on flow-based image generation expert", "screener": "B-claude-opus"}
+{"id": "M04453", "decision": "exclude", "code": "X1", "reason": "Pipeline of MLLM and separate image diffusion model; not unified", "screener": "B-claude-opus"}
+{"id": "M13927", "decision": "exclude", "code": "X1", "reason": "Masked discrete diffusion over catalog items, not text", "screener": "B-claude-opus"}
+{"id": "M14706", "decision": "unclear", "code": "", "reason": "No abstract; title suggests diffusion LM monograph, possibly secondary", "screener": "B-claude-opus"}
+{"id": "M14484", "decision": "exclude", "code": "X1", "reason": "Diffusion over entity span boundaries; produces no text", "screener": "B-claude-opus"}
+{"id": "M03364", "decision": "exclude", "code": "X1", "reason": "Explains image generative model latents with MLLM; no text diffusion", "screener": "B-claude-opus"}
+{"id": "M15433", "decision": "include", "code": "", "reason": "Inference-time search analysis in masked diffusion LMs incl. LLaDA-8B", "screener": "B-claude-opus"}
+{"id": "M16168", "decision": "unclear", "code": "", "reason": "Embedding models built on diffusion-LM backbone; output embeddings, not text", "screener": "B-claude-opus"}
+{"id": "M14291", "decision": "exclude", "code": "X0", "reason": "Battery materials chemistry; no diffusion model", "screener": "B-claude-opus"}
+{"id": "M17005", "decision": "exclude", "code": "X0", "reason": "Chaotic image encryption; diffusion is not a generative model", "screener": "B-claude-opus"}
+{"id": "M13774", "decision": "include", "code": "", "reason": "Diffusion model generating image captions (text)", "screener": "B-claude-opus"}
+{"id": "M15776", "decision": "exclude", "code": "X1", "reason": "Protein diffusion LM representations; no natural-language text", "screener": "B-claude-opus"}
+{"id": "M12355", "decision": "exclude", "code": "X0", "reason": "Qualitative study of AI art literacy; no diffusion model studied", "screener": "B-claude-opus"}
+{"id": "M07318", "decision": "exclude", "code": "X1", "reason": "Latent diffusion for CAD command sequences; not natural text or code", "screener": "B-claude-opus"}
+{"id": "M17323", "decision": "include", "code": "", "reason": "Training-free parallel decoding for masked diffusion LLMs (LLaDA)", "screener": "B-claude-opus"}
+{"id": "M12867", "decision": "unclear", "code": "", "reason": "Diffusion LM attention dynamics, but applied to time-series forecasting", "screener": "B-claude-opus"}
+{"id": "M10739", "decision": "exclude", "code": "X2", "reason": "Reward fine-tuning of text-to-image SD3.5", "screener": "B-claude-opus"}
+{"id": "M05850", "decision": "unclear", "code": "", "reason": "Modality-agnostic diffusion control incl. discrete diffusion; text use unstated", "screener": "B-claude-opus"}
+{"id": "M13989", "decision": "unclear", "code": "", "reason": "No abstract; title suggests diffusion-based question generation", "screener": "B-claude-opus"}
+{"id": "M03209", "decision": "exclude", "code": "X2", "reason": "Text-to-speech models incl. diffusion variant; text only conditioning", "screener": "B-claude-opus"}
+{"id": "M16910", "decision": "unclear", "code": "", "reason": "MoE serving study includes diffusion MoE LM throughput; DLM peripheral", "screener": "B-claude-opus"}
+{"id": "M03416", "decision": "exclude", "code": "X1", "reason": "Diffusion denoises hidden states for classification; no text output", "screener": "B-claude-opus"}
+{"id": "M06472", "decision": "exclude", "code": "X2", "reason": "Long-form text-to-speech with next-token diffusion; text only conditioning", "screener": "B-claude-opus"}
+{"id": "M17655", "decision": "exclude", "code": "X1", "reason": "Discrete flow matching for RNA sequences; no natural-language text", "screener": "B-claude-opus"}
+{"id": "M13590", "decision": "exclude", "code": "X2", "reason": "Semantic communication; diffusion recovers images from text semantics", "screener": "B-claude-opus"}
+{"id": "M02061", "decision": "exclude", "code": "X0", "reason": "Marginalization models for discrete data; no diffusion component", "screener": "B-claude-opus"}
+{"id": "M15672", "decision": "include", "code": "", "reason": "Diversity-preserving SMC resampling for diffusion LLM decoding", "screener": "B-claude-opus"}
+{"id": "M14643", "decision": "include", "code": "", "reason": "Flow matching for conditional text generation (FlowSeq)", "screener": "B-claude-opus"}
+{"id": "M17603", "decision": "unclear", "code": "", "reason": "Diffusion LM generates query snippets for intent classification; may be unchanged application", "screener": "B-claude-opus"}
+{"id": "M06310", "decision": "exclude", "code": "X2", "reason": "RLHF for diffusion text-to-speech; text only conditioning", "screener": "B-claude-opus"}
+{"id": "M05911", "decision": "exclude", "code": "X1", "reason": "Latent diffusion for 3D facial animation", "screener": "B-claude-opus"}
+{"id": "M08100", "decision": "include", "code": "", "reason": "LLaDA2.1 block-diffusion LLM with token editing and RL", "screener": "B-claude-opus"}
+{"id": "M13734", "decision": "exclude", "code": "X1", "reason": "Diffusion reconstructs missing modality features for sentiment classification", "screener": "B-claude-opus"}
+{"id": "M13544", "decision": "unclear", "code": "", "reason": "No abstract; diffusion model for NER", "screener": "B-claude-opus"}
+{"id": "M01570", "decision": "exclude", "code": "X1", "reason": "Scene-level diffusion for traffic simulation guided by LLM", "screener": "B-claude-opus"}
+{"id": "M16546", "decision": "exclude", "code": "X1", "reason": "EEG latent diffusion plus separate GPT-2 dialogue module", "screener": "B-claude-opus"}
+{"id": "M13758", "decision": "include", "code": "", "reason": "Continuous diffusion generating counterfactual text for augmentation", "screener": "B-claude-opus"}
+{"id": "M17643", "decision": "include", "code": "", "reason": "Theory of revision in diffusion language models", "screener": "B-claude-opus"}
+{"id": "M13712", "decision": "exclude", "code": "X1", "reason": "Diffusion for computation offloading decisions", "screener": "B-claude-opus"}
+{"id": "M13889", "decision": "exclude", "code": "X1", "reason": "Diffusion over span boundary indices for triplet extraction; no text output", "screener": "B-claude-opus"}
+{"id": "M13573", "decision": "include", "code": "", "reason": "Dependency-aware masking for masked diffusion LMs", "screener": "B-claude-opus"}
+{"id": "M07888", "decision": "unclear", "code": "", "reason": "Diffusion-inspired parallel drafter for speculative decoding; unclear if diffusion model", "screener": "B-claude-opus"}
+{"id": "M16233", "decision": "exclude", "code": "X0", "reason": "Group DRO dynamics; no diffusion model", "screener": "B-claude-opus"}
+{"id": "M13857", "decision": "exclude", "code": "X1", "reason": "Diffusion features for hyperspectral image clustering", "screener": "B-claude-opus"}
+{"id": "M11008", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for graph combinatorial optimization", "screener": "B-claude-opus"}
+{"id": "M15146", "decision": "exclude", "code": "X1", "reason": "Masked diffusion feature reconstruction for visual anomaly detection", "screener": "B-claude-opus"}
+{"id": "M17010", "decision": "include", "code": "", "reason": "Planned diffusion: hybrid autoregressive and diffusion text generation", "screener": "B-claude-opus"}
+{"id": "M06840", "decision": "include", "code": "", "reason": "Unified non-autoregressive text-image generation with edit flows", "screener": "B-claude-opus"}
+{"id": "M17423", "decision": "exclude", "code": "X1", "reason": "Unified image perception and synthesis; no text generation or text understanding", "screener": "B-claude-opus"}
+{"id": "M08779", "decision": "exclude", "code": "X1", "reason": "LLM scenarios plus latent diffusion sensor degradations; no text diffusion", "screener": "B-claude-opus"}
+{"id": "M13770", "decision": "unclear", "code": "", "reason": "Diffusion LLM for generative recommendation over item feature tokens; text output unclear", "screener": "B-claude-opus"}
+{"id": "M06457", "decision": "exclude", "code": "X2", "reason": "Training-free preference alignment for text-to-image diffusion", "screener": "B-claude-opus"}
+{"id": "M14917", "decision": "exclude", "code": "X3", "reason": "Review of generative AI in geospatial applications", "screener": "B-claude-opus"}
+{"id": "M07135", "decision": "exclude", "code": "X0", "reason": "Agentic retrieval framework; diffusion-based exploration is not a generative diffusion model", "screener": "B-claude-opus"}
+{"id": "M14428", "decision": "unclear", "code": "", "reason": "LLaDA used as mutation operator for jailbreaks; possible unchanged application", "screener": "B-claude-opus"}
+{"id": "M14924", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion with genomic LM for gene cluster design", "screener": "B-claude-opus"}
+{"id": "M06854", "decision": "exclude", "code": "X1", "reason": "Autoregressive text-to-audio model; no text diffusion", "screener": "B-claude-opus"}
+{"id": "M03669", "decision": "exclude", "code": "X0", "reason": "Non-autoregressive LM for speaker tagging; no diffusion component", "screener": "B-claude-opus"}
+{"id": "M03053", "decision": "exclude", "code": "X1", "reason": "Alternator dynamical models for non-text sequences; no diffusion", "screener": "B-claude-opus"}
+{"id": "M13440", "decision": "include", "code": "", "reason": "Constrained decoding compiler for diffusion language models", "screener": "B-claude-opus"}
+{"id": "M09057", "decision": "exclude", "code": "X1", "reason": "Masked discrete diffusion planner for driving trajectories", "screener": "B-claude-opus"}
+{"id": "M15575", "decision": "unclear", "code": "", "reason": "No abstract; diffusion language models for metamaterial design", "screener": "B-claude-opus"}
+{"id": "M13806", "decision": "unclear", "code": "", "reason": "No abstract; title fragment suggests Diffusion-LM controllable text generation", "screener": "B-claude-opus"}
+{"id": "M13331", "decision": "include", "code": "", "reason": "Continuous latent guided masked diffusion for language", "screener": "B-claude-opus"}
+{"id": "M18118", "decision": "include", "code": "", "reason": "Evaluation of approximate KV caching in diffusion LLMs", "screener": "B-claude-opus"}
+{"id": "M15863", "decision": "exclude", "code": "X0", "reason": "Information diffusion prediction in social networks; not a diffusion model", "screener": "B-claude-opus"}
+{"id": "M12758", "decision": "unclear", "code": "", "reason": "No abstract; RL with external rollouts for diffusion LLMs", "screener": "B-claude-opus"}
+{"id": "M05829", "decision": "exclude", "code": "X1", "reason": "Adaptation data augmentation; diffusion used only for images", "screener": "B-claude-opus"}
+{"id": "M07586", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion guidance for Sudoku; no text", "screener": "B-claude-opus"}
+{"id": "M09103", "decision": "exclude", "code": "X1", "reason": "Convergence theory of first hitting diffusion on spheres; no text", "screener": "B-claude-opus"}
+{"id": "M15671", "decision": "include", "code": "", "reason": "Mixture of absorbing and uniform discrete diffusion for language", "screener": "B-claude-opus"}
+{"id": "M11893", "decision": "exclude", "code": "X0", "reason": "Aging biomarker data record; no diffusion model", "screener": "B-claude-opus"}
+{"id": "M14278", "decision": "exclude", "code": "X1", "reason": "Multi-agent RL with discrete diffusion for vehicular crowdsensing", "screener": "B-claude-opus"}
+{"id": "M11771", "decision": "exclude", "code": "X1", "reason": "Masked diffusion DNA model; no natural-language text", "screener": "B-claude-opus"}
+{"id": "M15219", "decision": "exclude", "code": "X0", "reason": "Autoregressive scene-motion-language model; no diffusion component", "screener": "B-claude-opus"}
+{"id": "M17761", "decision": "exclude", "code": "X1", "reason": "Marginalization models for lattice thermodynamics; no text", "screener": "B-claude-opus"}
+{"id": "M04355", "decision": "exclude", "code": "X1", "reason": "DDPM for video summarization scores", "screener": "B-claude-opus"}
+{"id": "M04373", "decision": "unclear", "code": "", "reason": "Generic discrete diffusion guidance; listed domains non-text, text not stated", "screener": "B-claude-opus"}
+{"id": "M16428", "decision": "exclude", "code": "X0", "reason": "Neuroimaging study; diffusion MRI not a generative model", "screener": "B-claude-opus"}
+{"id": "M12244", "decision": "exclude", "code": "X3", "reason": "General overview of generative AI", "screener": "B-claude-opus"}
+{"id": "M15457", "decision": "include", "code": "", "reason": "Relational graph diffusion for knowledge-grounded language generation", "screener": "B-claude-opus"}
+{"id": "M06277", "decision": "exclude", "code": "X1", "reason": "RLHF training system; diffusion workflows not text generation", "screener": "B-claude-opus"}
+{"id": "M15430", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion refinement for antibody sequences", "screener": "B-claude-opus"}
+{"id": "M12969", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion channel denoising over constellation symbols", "screener": "B-claude-opus"}
+{"id": "M04113", "decision": "include", "code": "", "reason": "Discrete flow matching with optimal transport and perplexity bounds", "screener": "B-claude-opus"}
+{"id": "M15372", "decision": "include", "code": "", "reason": "Joint order-token search for diffusion LM reasoning", "screener": "B-claude-opus"}
+{"id": "M10988", "decision": "include", "code": "", "reason": "Data compression with personalized diffusion LLMs via hypernetworks", "screener": "B-claude-opus"}
+{"id": "M07512", "decision": "include", "code": "", "reason": "Training-free confidence-aware acceleration of diffusion LLMs", "screener": "B-claude-opus"}
+{"id": "M11958", "decision": "exclude", "code": "X0", "reason": "Chaos-based image encryption; not a diffusion model", "screener": "B-claude-opus"}
+{"id": "M06123", "decision": "exclude", "code": "X0", "reason": "LLM agents in social simulation; Bass diffusion is not a generative model", "screener": "B-claude-opus"}
+{"id": "M18885", "decision": "exclude", "code": "X3", "reason": "Survey of translation-based multimodal learning", "screener": "B-claude-opus"}
+{"id": "M14015", "decision": "exclude", "code": "X1", "reason": "Masked discrete diffusion for driving trajectory actions", "screener": "B-claude-opus"}
+{"id": "M08548", "decision": "exclude", "code": "X1", "reason": "Reflected diffusion on permutations", "screener": "B-claude-opus"}
+{"id": "M17283", "decision": "include", "code": "", "reason": "KV-cache quantization for block diffusion language models", "screener": "B-claude-opus"}
+{"id": "M15897", "decision": "unclear", "code": "", "reason": "Masked diffusion VLM fine-tuned to output navigation actions; text generation unclear", "screener": "B-claude-opus"}
+{"id": "M18976", "decision": "exclude", "code": "X1", "reason": "Quantum latent diffusion models on image data", "screener": "B-claude-opus"}
+{"id": "M15787", "decision": "include", "code": "", "reason": "Speculative verification lattices for masked diffusion LM decoding", "screener": "B-claude-opus"}
+{"id": "M11153", "decision": "include", "code": "", "reason": "Hierarchical discrete diffusion generating symbolic alpha formulas", "screener": "B-claude-opus"}
+{"id": "M15918", "decision": "unclear", "code": "", "reason": "No abstract; title suggests LLM-guided image diffusion augmentation", "screener": "B-claude-opus"}
+{"id": "M14955", "decision": "exclude", "code": "X1", "reason": "Diffusion regularization for multimodal sentiment regression; no text generation", "screener": "B-claude-opus"}
+{"id": "M11599", "decision": "unclear", "code": "", "reason": "No abstract; title suggests PLM-based discrete diffusion language models", "screener": "B-claude-opus"}
+{"id": "M01838", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for integer factorization over bit sequences", "screener": "B-claude-opus"}
+{"id": "M10909", "decision": "exclude", "code": "X1", "reason": "Latent flow matching for human mobility trajectories", "screener": "B-claude-opus"}
+{"id": "M14377", "decision": "include", "code": "", "reason": "Rare-event probability estimation in masked diffusion language models", "screener": "B-claude-opus"}
+{"id": "M17985", "decision": "include", "code": "", "reason": "Position-selection rules for masked diffusion LM decoding", "screener": "B-claude-opus"}
+{"id": "M13938", "decision": "unclear", "code": "", "reason": "No abstract; title suggests discrete diffusion image captioning", "screener": "B-claude-opus"}
+{"id": "M14727", "decision": "include", "code": "", "reason": "Denoising dynamics and endpoint uncertainty in masked diffusion LMs", "screener": "B-claude-opus"}
+{"id": "M15408", "decision": "unclear", "code": "", "reason": "No abstract; title suggests industry news on Mercury diffusion LLMs", "screener": "B-claude-opus"}
+{"id": "M16318", "decision": "exclude", "code": "X0", "reason": "Visual tokenizer for autoregressive unified model; no diffusion component", "screener": "B-claude-opus"}
+{"id": "M06579", "decision": "exclude", "code": "X2", "reason": "Latent diffusion for sign pose generation from spoken text", "screener": "B-claude-opus"}
+{"id": "M01293", "decision": "exclude", "code": "X2", "reason": "Latent diffusion text-to-speech; text only conditioning", "screener": "B-claude-opus"}
+{"id": "M19293", "decision": "include", "code": "", "reason": "Unified AR world-language-action model with diffusion head for future scenes", "screener": "B-claude-opus"}
+{"id": "M16653", "decision": "include", "code": "", "reason": "Training objective effects on representation geometry in sequence diffusion LMs", "screener": "B-claude-opus"}
+{"id": "M18051", "decision": "include", "code": "", "reason": "Distillation and decoding for parallel diffusion LM decoding", "screener": "B-claude-opus"}
+{"id": "M10948", "decision": "include", "code": "", "reason": "Distilling AR transformers into recurrent diffusion language models", "screener": "B-claude-opus"}
+{"id": "M14932", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for set cover neighborhood search", "screener": "B-claude-opus"}
+{"id": "M16452", "decision": "exclude", "code": "X1", "reason": "Multimodal RAG pipeline using Stable Diffusion inpainting for geometry", "screener": "B-claude-opus"}
+{"id": "M14861", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion for melody continuation", "screener": "B-claude-opus"}
+{"id": "M05891", "decision": "exclude", "code": "X0", "reason": "Preference learning with diffusion priors; no generative diffusion model", "screener": "B-claude-opus"}
+{"id": "M12440", "decision": "exclude", "code": "X3", "reason": "Comparison compiled from published results; secondary synthesis", "screener": "B-claude-opus"}
+{"id": "M12803", "decision": "include", "code": "", "reason": "Insertion-based masked diffusion with corrections for text generation", "screener": "B-claude-opus"}
+{"id": "M17953", "decision": "include", "code": "", "reason": "Dependency-aware slot scheduling for diffusion LLM decoding", "screener": "B-claude-opus"}
+{"id": "M03927", "decision": "exclude", "code": "X2", "reason": "Masked generative text-to-image model", "screener": "B-claude-opus"}
+{"id": "M16119", "decision": "unclear", "code": "", "reason": "No abstract; diffusion model with MRC for NER", "screener": "B-claude-opus"}
+{"id": "M01048", "decision": "exclude", "code": "X1", "reason": "Diffusion for spatio-temporal graph forecasting", "screener": "B-claude-opus"}
+{"id": "M16684", "decision": "include", "code": "", "reason": "On-policy residual learning for diffusion language models", "screener": "B-claude-opus"}
+{"id": "M09648", "decision": "include", "code": "", "reason": "Token-level routing between autoregressive and diffusion drafters in speculative decoding", "screener": "B-claude-opus"}
+{"id": "M15772", "decision": "unclear", "code": "", "reason": "No abstract; title indicates latent diffusion for language generation", "screener": "B-claude-opus"}
+{"id": "M09544", "decision": "include", "code": "", "reason": "Prefix tree selection for diffusion-drafted speculative decoding", "screener": "B-claude-opus"}
+{"id": "M14721", "decision": "include", "code": "", "reason": "OT theory linking attention and diffusion, validated on diffusion LLMs", "screener": "B-claude-opus"}
+{"id": "M10063", "decision": "include", "code": "", "reason": "Tree drafting with block-diffusion drafter for speculative decoding", "screener": "B-claude-opus"}
+{"id": "M14052", "decision": "unclear", "code": "", "reason": "No abstract; diffusion supervision for a vision-language model", "screener": "B-claude-opus"}
+{"id": "M11003", "decision": "include", "code": "", "reason": "Block-diffusion drafter for long-context speculative decoding", "screener": "B-claude-opus"}
+{"id": "M07570", "decision": "exclude", "code": "X0", "reason": "Denoising error-correction LMs for ASR; no diffusion process", "screener": "B-claude-opus"}
+{"id": "M17658", "decision": "exclude", "code": "X1", "reason": "Rectified flow predicts latent intervention vectors; flow produces no text", "screener": "B-claude-opus"}
+{"id": "M15450", "decision": "unclear", "code": "", "reason": "Discrete diffusion for information estimation on text and genomics; no generation", "screener": "B-claude-opus"}
+{"id": "M15731", "decision": "unclear", "code": "", "reason": "Clinical coding evaluation including one diffusion LM; possibly unchanged application", "screener": "B-claude-opus"}
+{"id": "M17892", "decision": "unclear", "code": "", "reason": "Theory of parallel masked sampling; diffusion LM link not explicit", "screener": "B-claude-opus"}
+{"id": "M13881", "decision": "exclude", "code": "X1", "reason": "Diffusion generates sequence tags, not natural-language text", "screener": "B-claude-opus"}
+{"id": "M11391", "decision": "include", "code": "", "reason": "RL with forked exploration for diffusion LLM reasoning", "screener": "B-claude-opus"}
+{"id": "M18229", "decision": "exclude", "code": "X2", "reason": "Flow-based text-to-motion synthesis", "screener": "B-claude-opus"}
+{"id": "M17211", "decision": "exclude", "code": "X1", "reason": "Bayesian flow networks for protein sequences", "screener": "B-claude-opus"}
+{"id": "M14029", "decision": "include", "code": "", "reason": "Joint GRPO and Flow-GRPO training of unified BAGEL model for editing", "screener": "B-claude-opus"}
+{"id": "M17763", "decision": "unclear", "code": "", "reason": "No abstract; lookahead parallel decoding for diffusion LLMs", "screener": "B-claude-opus"}
+{"id": "M18553", "decision": "unclear", "code": "", "reason": "No abstract; mathematics of diffusion versus autoregressive LLMs", "screener": "B-claude-opus"}
+{"id": "M02843", "decision": "exclude", "code": "X1", "reason": "Diffusion transformer for unified motion generation", "screener": "B-claude-opus"}
+{"id": "M13730", "decision": "include", "code": "", "reason": "Acceleration framework for diffusion LLM unit test generation", "screener": "B-claude-opus"}
+{"id": "M13342", "decision": "include", "code": "", "reason": "Cross-modal diffusion generating translation text codewords", "screener": "B-claude-opus"}
+{"id": "M11737", "decision": "unclear", "code": "", "reason": "No abstract; title fragment on 7B diffusion large language models", "screener": "B-claude-opus"}
+{"id": "M07724", "decision": "exclude", "code": "X0", "reason": "LLM agents simulate news propagation; no diffusion generative model", "screener": "B-claude-opus"}
+{"id": "M17999", "decision": "include", "code": "", "reason": "Interpretability of readouts during commitment in masked diffusion LMs", "screener": "B-claude-opus"}
+{"id": "M12174", "decision": "include", "code": "", "reason": "Parallel-scan decoding for block diffusion language models", "screener": "B-claude-opus"}
+{"id": "M11976", "decision": "exclude", "code": "X1", "reason": "VLM-guided diffusion for image super-resolution", "screener": "B-claude-opus"}
+{"id": "M06955", "decision": "exclude", "code": "X0", "reason": "Numerical upscaling of physical diffusion problems", "screener": "B-claude-opus"}
+{"id": "M13932", "decision": "include", "code": "", "reason": "Discrete diffusion with OT position coupling for text infilling", "screener": "B-claude-opus"}
+{"id": "M11930", "decision": "exclude", "code": "X0", "reason": "Jacobi diffusion process for market volatility", "screener": "B-claude-opus"}
+{"id": "M18376", "decision": "exclude", "code": "X2", "reason": "Text-guided discrete graph diffusion for molecules", "screener": "B-claude-opus"}
+{"id": "M14667", "decision": "include", "code": "", "reason": "Causal discrete diffusion for streaming omni-modal generation", "screener": "B-claude-opus"}
+{"id": "M08092", "decision": "exclude", "code": "X1", "reason": "Normalization architecture; diffusion used only for image transformers", "screener": "B-claude-opus"}
+{"id": "M12672", "decision": "exclude", "code": "X1", "reason": "Diffusion for co-speech gesture generation", "screener": "B-claude-opus"}
+{"id": "M09155", "decision": "exclude", "code": "X1", "reason": "Video summarization without diffusion; non-text", "screener": "B-claude-opus"}
+{"id": "M15848", "decision": "include", "code": "", "reason": "Length-conditioned diffusion model generating audio captions", "screener": "B-claude-opus"}
+{"id": "M13397", "decision": "include", "code": "", "reason": "Extracting alignment data by steering masked diffusion LMs", "screener": "B-claude-opus"}
+{"id": "M12193", "decision": "exclude", "code": "X1", "reason": "Video diffusion prior for action segmentation", "screener": "B-claude-opus"}
+{"id": "M17671", "decision": "unclear", "code": "", "reason": "Masked diffusion LM for crystal structure text; text domain ambiguous", "screener": "B-claude-opus"}
+{"id": "M12918", "decision": "unclear", "code": "", "reason": "Token compression for image generation incl. unified multimodal backbones", "screener": "B-claude-opus"}
+{"id": "M12080", "decision": "exclude", "code": "X1", "reason": "Diffusion-LM style model generating music", "screener": "B-claude-opus"}
+{"id": "M02361", "decision": "exclude", "code": "X2", "reason": "Text-guided video editing with masked generative transformers", "screener": "B-claude-opus"}
+{"id": "M05946", "decision": "exclude", "code": "X1", "reason": "Flow diffusion for robot manipulation motion flows", "screener": "B-claude-opus"}
+{"id": "M14971", "decision": "include", "code": "", "reason": "Geometry of concrete scores in discrete diffusion language models", "screener": "B-claude-opus"}
+{"id": "M06735", "decision": "exclude", "code": "X1", "reason": "Benchmark for image-to-video diffusion models", "screener": "B-claude-opus"}
+{"id": "M09922", "decision": "exclude", "code": "X1", "reason": "Flow models for Sudoku and puzzle structured outputs; no text", "screener": "B-claude-opus"}
+{"id": "M08045", "decision": "exclude", "code": "X2", "reason": "Flow-matching text-to-speech", "screener": "B-claude-opus"}
