@@ -1,6 +1,22 @@
 # Progress ledger
 
 ## RESUME
+- **STATE 2026-10-15 ~17:30 IST (newest; overrides older blocks).** Order of work confirmed by the
+  user: Paper 1 (review, ACM CSUR) first, Paper 2 (research article) second; keep the framework
+  (D0011) as the spine. **EXP-003 done and audited** (gate PASS WITH CORRECTIONS): E3-H1 positive,
+  Delta1 = 0.126 [0.076, 0.177] (not confirmed by CLIP; may include quality-mediated coupling);
+  E3-H2a not detected (W2); E3-H2b positive 0.077 [0.024, 0.131]; ledger H0007-H0009, X0003,
+  D0022-D0025; results committed on branch claude/dlm-discovery-resume-ca3357 (077fb1d, b007f05).
+  **Manuscript** `paper/review/`: all sections drafted except 05 (RQ evidence, needs full-text
+  extraction), main 35 pp (CSUR limit incl. references) + supplement 8 pp; clarity edit done;
+  citations validated (96 entries). **Running:** lit-scout on the free databases (OpenReview, ACL
+  Anthology, Semantic Scholar, OpenAlex, DBLP, snowballing) -> `review/corpus/new-records-2026-10-15.jsonl`
+  and `subscription-search-sheet.md`. **Needs the user:** subscription databases (Scopus, WoS, IEEE,
+  ACM DL, Springer, ScienceDirect) through the VIT e-gateway in the built-in browser (user logs in;
+  Claude runs searches and exports with per-download consent); human screening sample (218) and
+  120 disagreements; professor's details; protocol freeze decision. **Then:** screen new records,
+  full-text screening and extraction for RQ1-RQ6 (section 05), PRISMA counts final, red-team
+  referee pass, release package.
 - **HANDOFF 3 (2026-10-15, about 08:45 IST; newest block, overrides all older). Start here.**
   **Two worktrees.** The EXP-003 driver runs in `.claude/worktrees/dlm-discovery-resume-ca3357`
   (its `runs/EXP-003/` is untracked and only there). All other work now happens in
