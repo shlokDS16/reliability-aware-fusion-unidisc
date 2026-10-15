@@ -193,3 +193,50 @@ question, quality assessment). The full landscape is in `survey-landscape.md`.
   from "non-text diffusion only" to every diffusion model whose diffusion component produces no
   natural-language text or code and is not covered by I1(b). Made after the random-sample census
   coding; applies to adjudication of that sample and to all later coding.
+
+- 2026-10-15 (D0026; the pilot criterion of section 3 was not met). Made before any screening decision on the records the
+  searches found, and before the freeze rule of this file's header is applied. **Strings S1 and S2 are replaced as the primary
+  search by the revised strings S1' and S2' below; S1 and S2 stay in the logs and are run a second time on the subscription
+  databases.** Eligibility (I1 to I4, X1 to X8, and the amendment of 2026-10-15 under D0020 above) is unchanged.
+  *Reason.* On the free sources the original strings retrieved 27 of the 28 'Multimodal DLMs' seed records, 41 of
+  the random 50 others and 470 of the 540 seed entries with an arXiv ID (539 distinct IDs); every one of the
+  70 entries not retrieved fails S1 and S2 on its own title and abstract, so the strings, not the sources, limit
+  recall. The revision follows the pilot rule of section 3 (missed records are used to revise the strings): the vocabulary comes from
+  the abstracts of the missed entries (`dLLM`, `diffusion-based LLM`, `large language diffusion model`; `discrete diffusion` or
+  `masked diffusion` without a language word; diffusion drafters for speculative decoding; continuous and latent diffusion language
+  models; text-generation and NLP-task diffusion models; vision-language-action models with discrete diffusion). Three rounds were
+  run and are recorded in `corpus/string-revision-2026-10-15.json` and the report `corpus/search-v2-report-2026-10-15.md`.
+  *Recall* on title and abstract, tested locally on the seed entries: S1/S2 453/540, MM28 26/28, random 50
+  40/50; S1'/S2' 525/540, MM28 28/28, random 50 47/50. The 15 entries not captured are
+  listed with reasons in the report; those in the random 50 are two image-generation foundation papers (DDPM-type, no text) and
+  one protein-design paper, all outside I1 (X1). *Precision proxy*, first estimate: of a random 200 (seed 20261017) of the
+  539 records of the 14,794 collected earlier that S1'/S2' add, 67 look in scope from the title, 46 are unclear and 87
+  are not (labels by the proposing agent, titles only). Second estimate, on what the databases actually returned (stratified
+  sample of the screening queue, 40 per tier, seed 20261018): an estimated 12% of the 6,376 queued records look in scope
+  and 18% in scope or unclear; the broad branches B and C and the records a database returned that match no string locally carry most of the noise
+  (table in the report, 2.4). Apart from writing five abbreviations as exact tokens after the first database run (below), the strings were not changed after
+  the three local rounds, because D0026 allowed three; the queue carries a tier per record so that screening can be ordered or sampled by tier.
+  *S1' and S2' (verbatim; AND binds tighter than OR; a trailing `*` is a word-prefix wildcard; `NOT (...)` excludes any listed word;
+  title, abstract and keywords; 2021-01-01 to the search date; English):*
+
+  S1' =
+  ```
+  ("diffusion language model*" OR "language diffusion model*" OR "diffusion llm*" OR "diffusion lm*" OR dllm OR dllms OR "diffusion-based language model*" OR "diffusion-based llm*" OR "diffusion large language model*" OR "diffusion-based large language model*" OR "text diffusion" OR "block diffusion" OR "absorbing diffusion" OR "diffusion mllm*" OR "diffusion vlm*" OR "diffusion vision-language model*" OR dmllm OR dmllms OR dvlm OR dvlms) OR ((("discrete diffusion" OR "masked diffusion" OR "discrete flow*" OR "discrete state-space*") AND (language OR text OR token* OR "language model*" OR llm* OR vocabulary OR autoregressive OR reasoning)) OR (("discrete diffusion" OR "masked diffusion" OR "discrete flow*" OR "discrete state-space*") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation))) OR (("absorbing state" AND (language OR text OR token* OR "language model*")) OR ("any-order" AND (language OR text OR token* OR "language model*")) OR "non-autoregressive language model*" OR ("non-autoregressive" AND diffusion AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*))) OR (diffusion AND ("text generation" OR "language generation" OR "natural language generation" OR "sequence-to-sequence" OR seq2seq OR "discrete sequence*" OR "speculative decoding" OR "categorical data" OR "discrete data" OR paraphras* OR "textual diffusion" OR "text modeling" OR "named entity" OR sentiment OR summarization OR dialog* OR dialogue OR "machine translation" OR "text style" OR commonsense OR "topic model*" OR "triple extraction" OR "information extraction") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*)) OR (diffusion AND ("language model*" OR llm*) AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR "graph generation" OR "traveling salesman" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation))
+  ```
+  S2' =
+  ```
+  (("unified multimodal" OR "unified multi-modal" OR "unified understanding and generation" OR "understanding and generation" OR "any-to-any" OR "mixed-modal*" OR "mixed-modality") AND (diffusion OR "masked generative" OR "discrete flow*" OR "flow matching" OR "rectified flow" OR "discrete denoising") AND (multimodal OR "multi-modal" OR "vision-language" OR "text-to-image" OR "image generation" OR mllm OR mllms OR "visual understanding" OR "image understanding")) OR (("vision-language-action" OR vla OR vlas) AND ("discrete diffusion" OR "discrete denoising" OR "masked diffusion" OR "diffusion-based" OR "unified diffusion" OR "diffusion language model*" OR dllm OR dllms))
+  ```
+  The biochemical exclusion (`protein*`, `molecul*`, ..., `recommend*`) and the visual exclusion (`image*`, `video*`, ...) implement X1
+  and apply only where no language word is required (the second branch of A2) or in the broad branches (A3 with
+  non-autoregressive, B, C); a paper with a language word in the abstract is not removed by them in A2. Search terms such as `named
+  entity` and `sentiment` in B reach NLP-task diffusion papers that Awesome-DLMs lists under Applications; whether they meet I1 (output
+  includes natural-language text) or fall under X2 or X7 is decided at full text, not by the search. Each source was run part by part
+  (A1, A2, A3, B, C; M, VLA); the union of the parts is the string; the adapted forms are in `search-log.jsonl`. `dllm`, `dllms`, `dmllm`,
+  `dmllms`, `dvlm`, `dvlms`, `vla`, `vlas`, `mllm`, `mllms` are exact tokens, not prefixes (`dllm*` matched DLLME, dispersive liquid-liquid
+  microextraction). In arXiv wildcard terms were written as stem forms because arXiv switches stemming off for a wildcard term.
+  *Consequences (D0026).* Sources rerun with S1'/S2': arXiv, Semantic Scholar bulk, OpenReview (search by term, boolean string applied locally),
+  ACL Anthology (local); OpenAlex partly (free daily credits exhausted: S1' parts A1 and A2 incomplete, A3, B, C, M, VLA not run; resume command in
+  the report); DBLP not searched; the six subscription databases wait for the user (`subscription-search-sheet.md`: S1'/S2' first, S1/S2 second
+  run). Snowball records enter title-and-abstract screening only if their title and abstract match S1, S2, S1' or S2'; the others
+  (12,952) are reported in the flow diagram as records marked ineligible by an automation tool (string filter, D0026).

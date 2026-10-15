@@ -1,0 +1,1495 @@
+{
+ "date": "2026-10-15",
+ "decision": "D0026",
+ "seed_list": "Awesome-DLMs@194aa6bd, 540 entries with an arXiv ID (539 distinct IDs; 2506.17298 is listed twice)",
+ "matching": "title + abstract of the arXiv record, word-based, case-insensitive, trailing * = word prefix (tools/search_sources.py matches())",
+ "original": {
+  "all540_entries": 453,
+  "MM28": 26,
+  "R50": 40
+ },
+ "rounds": {
+  "R1": {
+   "recall": {
+    "all540_entries": 521,
+    "MM28": 28,
+    "R50": 48
+   },
+   "recall_S1prime_only": {
+    "all540_entries": 520,
+    "MM28": 27,
+    "R50": 48
+   },
+   "recall_S2prime_only": {
+    "all540_entries": 13,
+    "MM28": 10,
+    "R50": 0
+   },
+   "records_added_over_S1_S2_in_v1_pool": 1016,
+   "v1_pool_records": 14794,
+   "sample": {
+    "seed": 20261015,
+    "n": 200,
+    "reproduced": true,
+    "labels": {
+     "O": 137,
+     "U": 29,
+     "IN": 34
+    },
+    "share_in": 0.17,
+    "share_in_or_unclear": 0.315
+   },
+   "missed_seed_entries": [
+    "2209.03003",
+    "2011.13456",
+    "2010.02502",
+    "2006.11239",
+    "1907.05600",
+    "1503.03585",
+    "2102.05379",
+    "2604.02028",
+    "2208.00638",
+    "2206.05895",
+    "2509.06040",
+    "2512.17065",
+    "2501.00862",
+    "2404.08938",
+    "2402.17011",
+    "2403.00808",
+    "2402.15289",
+    "2305.13298",
+    "2305.01735"
+   ]
+  },
+  "R2": {
+   "recall": {
+    "all540_entries": 528,
+    "MM28": 28,
+    "R50": 48
+   },
+   "recall_S1prime_only": {
+    "all540_entries": 527,
+    "MM28": 27,
+    "R50": 48
+   },
+   "recall_S2prime_only": {
+    "all540_entries": 12,
+    "MM28": 9,
+    "R50": 0
+   },
+   "records_added_over_S1_S2_in_v1_pool": 660,
+   "v1_pool_records": 14794,
+   "sample": {
+    "seed": 20261016,
+    "n": 200,
+    "reproduced": true,
+    "labels": {
+     "O": 92,
+     "IN": 63,
+     "U": 45
+    },
+    "share_in": 0.315,
+    "share_in_or_unclear": 0.54
+   },
+   "missed_seed_entries": [
+    "2209.03003",
+    "2011.13456",
+    "2010.02502",
+    "2006.11239",
+    "1907.05600",
+    "1503.03585",
+    "2604.02028",
+    "2402.19009",
+    "2208.00638",
+    "2509.06040",
+    "2604.24089",
+    "2506.21557"
+   ]
+  },
+  "R3": {
+   "recall": {
+    "all540_entries": 525,
+    "MM28": 28,
+    "R50": 47
+   },
+   "recall_S1prime_only": {
+    "all540_entries": 523,
+    "MM28": 26,
+    "R50": 47
+   },
+   "recall_S2prime_only": {
+    "all540_entries": 12,
+    "MM28": 9,
+    "R50": 0
+   },
+   "records_added_over_S1_S2_in_v1_pool": 539,
+   "v1_pool_records": 14794,
+   "sample": {
+    "seed": 20261017,
+    "n": 200,
+    "reproduced": true,
+    "labels": {
+     "IN": 67,
+     "O": 87,
+     "U": 46
+    },
+    "share_in": 0.335,
+    "share_in_or_unclear": 0.565
+   },
+   "missed_seed_entries": [
+    "2209.03003",
+    "2011.13456",
+    "2010.02502",
+    "2006.11239",
+    "1907.05600",
+    "1503.03585",
+    "2402.04997",
+    "2604.02028",
+    "2402.19009",
+    "2208.00638",
+    "2509.06040",
+    "2406.01572",
+    "2604.24089",
+    "2506.21557",
+    "2305.20009"
+   ]
+  }
+ },
+ "missed_by_v1_searches": {
+  "n": 70,
+  "n_captured_by_revised": 55,
+  "by_category": {
+   "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)": 10,
+   "NLP task or text generation with a diffusion model": 21,
+   "out of scope: image, video or foundation model without text (X1)": 8,
+   "context clause (discrete or masked diffusion, no language word)": 4,
+   "out of scope: protein or molecule (X1)": 5,
+   "other vocabulary (any-order, non-autoregressive language models; no diffusion term)": 2,
+   "continuous or latent diffusion language model": 9,
+   "dropped by an exclusion, arguably in scope": 2,
+   "no diffusion or flow term in title or abstract": 1,
+   "vision-language-action": 1,
+   "diffusion drafter for speculative decoding": 7
+  },
+  "seeds": [
+   {
+    "arxiv": "2502.09992",
+    "title": "Large Language Diffusion Models",
+    "sections": [
+     "Must-Read",
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2303.07576",
+    "title": "Diffusion Models in NLP: A Survey",
+    "sections": [
+     "Surveys"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2209.03003",
+    "title": "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow",
+    "sections": [
+     "Diffusion Foundation"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "image generative-model foundation (rectified flow); no text (X1)"
+   },
+   {
+    "arxiv": "2011.13456",
+    "title": "Score-Based Generative Modeling through Stochastic Differential Equations",
+    "sections": [
+     "Diffusion Foundation"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "image generative-model foundation (score-based SDE); no text (X1)"
+   },
+   {
+    "arxiv": "2010.02502",
+    "title": "Denoising Diffusion Implicit Models",
+    "sections": [
+     "Diffusion Foundation"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "image generative-model foundation (DDIM); no text (X1)"
+   },
+   {
+    "arxiv": "2006.11239",
+    "title": "Denoising Diffusion Probabilistic Models",
+    "sections": [
+     "Diffusion Foundation"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "image generative-model foundation (DDPM); no text (X1)"
+   },
+   {
+    "arxiv": "1907.05600",
+    "title": "Generative Modeling by Estimating Gradients of the Data Distribution",
+    "sections": [
+     "Diffusion Foundation"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "image generative-model foundation (score matching); no text (X1)"
+   },
+   {
+    "arxiv": "1503.03585",
+    "title": "Deep Unsupervised Learning using Nonequilibrium Thermodynamics",
+    "sections": [
+     "Diffusion Foundation"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "image generative-model foundation (non-equilibrium thermodynamics); no text (X1)"
+   },
+   {
+    "arxiv": "2608.10615",
+    "title": "Simplex Relaxation for Discrete Diffusion",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: phrase 'discrete diffusion' but no language word",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A2"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "context clause (discrete or masked diffusion, no language word)",
+    "note": "S1'/S2' part(s) A2"
+   },
+   {
+    "arxiv": "2607.05722",
+    "title": "Nemotron-Labs-Diffusion: A Tri-Mode Language Model Unifying Autoregressive, Diffusion, and Self-Speculation Decoding",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/C"
+   },
+   {
+    "arxiv": "2603.21342",
+    "title": "Generalized Discrete Diffusion from Snapshots",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: phrase 'discrete diffusion' but no language word",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A2"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "context clause (discrete or masked diffusion, no language word)",
+    "note": "S1'/S2' part(s) A2"
+   },
+   {
+    "arxiv": "2509.13866",
+    "title": "Masked Diffusion Models as Energy Minimization",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: phrase 'masked diffusion' but no language word",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A2"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "context clause (discrete or masked diffusion, no language word)",
+    "note": "S1'/S2' part(s) A2"
+   },
+   {
+    "arxiv": "2507.19227",
+    "title": "Jailbreaking Large Language Diffusion Models: Revealing Hidden Safety Flaws in Diffusion-Based Text Generation",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2402.04997",
+    "title": "Generative Flows on Discrete State-Spaces: Enabling Multimodal Flows with Applications to Protein Co-Design",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: phrase 'discrete diffusion' but no language word",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: protein or molecule (X1)",
+    "note": "discrete flows for protein co-design; biochemical exclusion (abstract mentions protein)"
+   },
+   {
+    "arxiv": "2310.09930",
+    "title": "FiLM: Fill-in Language Models for Any-Order Generation",
+    "sections": [
+     "Discrete DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A3"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "other vocabulary (any-order, non-autoregressive language models; no diffusion term)",
+    "note": "S1'/S2' part(s) A3"
+   },
+   {
+    "arxiv": "2605.14531",
+    "title": "Language Generation as Optimal Control: Closed-Loop Diffusion in Latent Control Space",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2605.11577",
+    "title": "BitLM: Unlocking Multi-Token Language Generation with Bitwise Continuous Diffusion",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2604.24416",
+    "title": "Scaling Properties of Continuous Diffusion Spoken Language Models",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) C"
+   },
+   {
+    "arxiv": "2604.02028",
+    "title": "Why Gaussian Diffusion Models Fail on Discrete Data and How to Prevent It?",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "dropped by an exclusion, arguably in scope",
+    "note": "Gaussian diffusion on discrete data (toy model); abstract mentions protein, so the biochemical exclusion drops it"
+   },
+   {
+    "arxiv": "2510.04573",
+    "title": "LaDiR: Latent Diffusion Enhances LLMs for Text Reasoning",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) C"
+   },
+   {
+    "arxiv": "2507.12469",
+    "title": "Perfect diffusion is $\\mathsf{TC}^0$ -- Bad diffusion is Turing-complete",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/C"
+   },
+   {
+    "arxiv": "2402.19009",
+    "title": "Unified Generation, Reconstruction, and Representation: Generalized Diffusion with Adaptive Latent Encoding-Decoding",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "dropped by an exclusion, arguably in scope",
+    "note": "generalised diffusion with latent encoder-decoder; abstract mentions protein and image, dropped by both exclusions"
+   },
+   {
+    "arxiv": "2307.13949",
+    "title": "How Does Diffusion Influence Pretrained Language Models on Out-of-Distribution Data?",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) C"
+   },
+   {
+    "arxiv": "2304.12519",
+    "title": "GlyphDiffusion: Text Generation as Image Generation",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2302.10025",
+    "title": "DINOISER: Diffused Conditional Sequence Learning by Manipulating Noises",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2211.15089",
+    "title": "Continuous diffusion for categorical data",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2208.00638",
+    "title": "Composable Text Controls in Latent Space with ODEs",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "no diffusion or flow term in title or abstract",
+    "note": "latent-space text control with ODEs; the abstract has no diffusion or flow term, no string reaches it"
+   },
+   {
+    "arxiv": "2206.05895",
+    "title": "Latent Diffusion Energy-Based Model for Interpretable Text Modeling",
+    "sections": [
+     "Continuous DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2511.01718",
+    "title": "Unified Diffusion VLA: Vision-Language-Action Model via Joint Discrete Denoising Diffusion Process",
+    "sections": [
+     "Multimodal DLMs"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [
+     "VLA"
+    ],
+    "captured": true,
+    "category": "vision-language-action",
+    "note": "S1'/S2' part(s) VLA"
+   },
+   {
+    "arxiv": "2509.06040",
+    "title": "BranchGRPO: Stable and Efficient GRPO with Structured Branching in Diffusion Models",
+    "sections": [
+     "Training Strategies"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "reinforcement-learning for image and video diffusion; no text (X1)"
+   },
+   {
+    "arxiv": "2305.04465",
+    "title": "Can Diffusion Model Achieve Better Performance in Text Generation? Bridging the Gap between Training and Inference!",
+    "sections": [
+     "Training Strategies"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2608.13524",
+    "title": "DARTree: Speculative Diffusion Decoding with Autoregressive Draft Trees",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2608.05448",
+    "title": "DBLAST: Dependent Block Drafting for Stochastic Speculative Decoding",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2607.25852",
+    "title": "AngelSpec: Towards Real-World High Performance Inference with Speculative Decoding",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2606.31315",
+    "title": "BlockPilot: Instance-Adaptive Policy Learning for Diffusion-based Speculative Decoding",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2606.02091",
+    "title": "DFlare: Scaling Up Draft Capacity for Block Diffusion Speculative Decoding",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2606.01813",
+    "title": "Cost-Aware Diffusion Draft Trees for Speculative Decoding",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2604.12989",
+    "title": "Accelerating Speculative Decoding with Block Diffusion Draft Trees",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "diffusion drafter for speculative decoding",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2602.23792",
+    "title": "Divide and Conquer: Accelerating Diffusion-Based Large Language Models via Adaptive Parallel Decoding",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/C"
+   },
+   {
+    "arxiv": "2512.21336",
+    "title": "Optimizing Decoding Paths in Masked Diffusion Models by Quantifying Uncertainty",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: phrase 'masked diffusion' but no language word",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A2",
+     "A3"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "context clause (discrete or masked diffusion, no language word)",
+    "note": "S1'/S2' part(s) A2/A3"
+   },
+   {
+    "arxiv": "2510.11052",
+    "title": "Latent Refinement Decoding: Enhancing Diffusion-Based Language Models by Refining Belief States",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/B/C"
+   },
+   {
+    "arxiv": "2509.23094",
+    "title": "d$^2$Cache: Accelerating Diffusion-Based LLMs via Dual Adaptive Caching",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/C"
+   },
+   {
+    "arxiv": "2406.01572",
+    "title": "Unlocking Guidance for Discrete State-Space Diffusion and Flow Models",
+    "sections": [
+     "Inference Optimization"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: protein or molecule (X1)",
+    "note": "guidance for discrete state-space models, natural-science applications; biochemical exclusion"
+   },
+   {
+    "arxiv": "2512.17065",
+    "title": "XLM: A Python package for non-autoregressive language models",
+    "sections": [
+     "Training Frameworks"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A3"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "other vocabulary (any-order, non-autoregressive language models; no diffusion term)",
+    "note": "S1'/S2' part(s) A3"
+   },
+   {
+    "arxiv": "2604.24089",
+    "title": "BiMol-Diff: A Unified Diffusion Framework for Molecular Generation and Captioning",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: protein or molecule (X1)",
+    "note": "molecular generation and captioning; biochemical exclusion (X1)"
+   },
+   {
+    "arxiv": "2507.19081",
+    "title": "Arg-LLaDA: Argument Summarization via Large Language Diffusion Models and Sufficiency-Aware Refinement",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/B"
+   },
+   {
+    "arxiv": "2506.21557",
+    "title": "Debunk and Infer: Multimodal Fake News Detection via Diffusion-Generated Evidence and LLM Reasoning",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: image, video or foundation model without text (X1)",
+    "note": "multimodal fake-news detection with diffusion-generated images; visual exclusion"
+   },
+   {
+    "arxiv": "2501.00862",
+    "title": "DiffETM: Diffusion Process Enhanced Embedded Topic Model",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2410.22971",
+    "title": "Private Synthetic Text Generation with Diffusion Models",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2409.13739",
+    "title": "Table-to-Text Generation with Pretrained Diffusion Models",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2404.10763",
+    "title": "LaDiC: Are Diffusion Models Really Inferior to Autoregressive Counterparts for Image-to-Text Generation?",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2404.08938",
+    "title": "Improved Paraphrase Generation via Controllable Latent Diffusion",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2404.06760",
+    "title": "DiffusionDialog: A Diffusion Model for Diverse Dialog Generation with Latent Space",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2402.17011",
+    "title": "DiffuCOMET: Contextual Commonsense Knowledge Diffusion",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2403.00808",
+    "title": "IPED: An Implicit Perspective for Relational Triple Extraction based on Diffusion Model",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2402.15289",
+    "title": "Let's Rectify Step by Step: Improving Aspect-based Sentiment Analysis with Diffusion Models",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2402.10699",
+    "title": "Thinker-DDM: Modeling Deliberation for Machine Translation with a Drift-Diffusion Process",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2401.03514",
+    "title": "ROIC-DM: Robust Text Inference and Classification via Diffusion Model",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) C"
+   },
+   {
+    "arxiv": "2310.15587",
+    "title": "ScanDL: A Diffusion Model for Generating Synthetic Scanpaths on Texts",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2310.15296",
+    "title": "DeTiME: Diffusion-Enhanced Topic Modeling using Encoder-decoder based LLM",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2310.10605",
+    "title": "ForceGen: End-to-end de novo protein generation based on nonlinear mechanical unfolding responses using a protein language diffusion model",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "out of scope: protein or molecule (X1)",
+    "note": "S1'/S2' part(s) A1"
+   },
+   {
+    "arxiv": "2308.15459",
+    "title": "ParaGuide: Guided Diffusion Paraphrasers for Plug-and-Play Textual Style Transfer",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2306.08456",
+    "title": "PoetryDiffusion: Towards Joint Semantic and Metrical Manipulation in Poetry Generation",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2306.08505",
+    "title": "DiffuDetox: A Mixed Diffusion Model for Text Detoxification",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2306.02531",
+    "title": "PLANNER: Generating Diversified Paragraph via Latent Language Diffusion Model",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/B"
+   },
+   {
+    "arxiv": "2305.19512",
+    "title": "Fine-grained Text Style Transfer with Diffusion-Based Language Models",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "A1",
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "name variant (dLLM, diffusion-based LLM, large language diffusion model, language diffusion)",
+    "note": "S1'/S2' part(s) A1/B"
+   },
+   {
+    "arxiv": "2305.20009",
+    "title": "Protein Design with Guided Discrete Diffusion",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: phrase 'discrete diffusion' but no language word",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [],
+    "captured_by_S2prime_parts": [],
+    "captured": false,
+    "category": "out of scope: protein or molecule (X1)",
+    "note": "protein design with discrete diffusion; biochemical exclusion (X1)"
+   },
+   {
+    "arxiv": "2305.15025",
+    "title": "Dior-CVAE: Pre-trained Language Models and Diffusion Priors for Variational Dialog Generation",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B",
+     "C"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "continuous or latent diffusion language model",
+    "note": "S1'/S2' part(s) B/C"
+   },
+   {
+    "arxiv": "2305.13298",
+    "title": "DiffusionNER: Boundary Diffusion for Named Entity Recognition",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   },
+   {
+    "arxiv": "2305.01735",
+    "title": "DiffuSum: Generation Enhanced Extractive Summarization with Diffusion",
+    "sections": [
+     "Applications"
+    ],
+    "fails_S1_S2_because": [
+     "S1: none of its phrases",
+     "S2: no group-A phrase"
+    ],
+    "captured_by_S1prime_parts": [
+     "B"
+    ],
+    "captured_by_S2prime_parts": [],
+    "captured": true,
+    "category": "NLP task or text generation with a diffusion model",
+    "note": "S1'/S2' part(s) B"
+   }
+  ]
+ },
+ "note_rounds": "R1 broad (no exclusions), R2 adds biochemical and visual exclusions and NLP-task terms, R3 (final) narrows the context clause of the discrete-diffusion branch, drops 'natural language' alone from B; see report",
+ "final_round_sample_by_part": {
+  "A1": {
+   "IN": 41,
+   "U": 5,
+   "O": 7
+  },
+  "A2": {
+   "O": 35,
+   "U": 23,
+   "IN": 9
+  },
+  "A3": {
+   "IN": 3,
+   "O": 7,
+   "U": 1
+  },
+  "B": {
+   "O": 14,
+   "U": 18,
+   "IN": 27
+  },
+  "C": {
+   "U": 10,
+   "IN": 24,
+   "O": 25
+  },
+  "S2':M": {
+   "O": 6,
+   "IN": 1
+  },
+  "S2':VLA": {
+   "O": 4,
+   "U": 1,
+   "IN": 2
+  }
+ },
+ "S1prime_plain": "(\"diffusion language model*\" OR \"language diffusion model*\" OR \"diffusion llm*\" OR \"diffusion lm*\" OR dllm OR dllms OR \"diffusion-based language model*\" OR \"diffusion-based llm*\" OR \"diffusion large language model*\" OR \"diffusion-based large language model*\" OR \"text diffusion\" OR \"block diffusion\" OR \"absorbing diffusion\" OR \"diffusion mllm*\" OR \"diffusion vlm*\" OR \"diffusion vision-language model*\" OR dmllm OR dmllms OR dvlm OR dvlms) OR (((\"discrete diffusion\" OR \"masked diffusion\" OR \"discrete flow*\" OR \"discrete state-space*\") AND (language OR text OR token* OR \"language model*\" OR llm* OR vocabulary OR autoregressive OR reasoning)) OR ((\"discrete diffusion\" OR \"masked diffusion\" OR \"discrete flow*\" OR \"discrete state-space*\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation))) OR ((\"absorbing state\" AND (language OR text OR token* OR \"language model*\")) OR (\"any-order\" AND (language OR text OR token* OR \"language model*\")) OR \"non-autoregressive language model*\" OR (\"non-autoregressive\" AND diffusion AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*))) OR (diffusion AND (\"text generation\" OR \"language generation\" OR \"natural language generation\" OR \"sequence-to-sequence\" OR seq2seq OR \"discrete sequence*\" OR \"speculative decoding\" OR \"categorical data\" OR \"discrete data\" OR paraphras* OR \"textual diffusion\" OR \"text modeling\" OR \"named entity\" OR sentiment OR summarization OR dialog* OR dialogue OR \"machine translation\" OR \"text style\" OR commonsense OR \"topic model*\" OR \"triple extraction\" OR \"information extraction\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*)) OR (diffusion AND (\"language model*\" OR llm*) AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation))",
+ "S2prime_plain": "((\"unified multimodal\" OR \"unified multi-modal\" OR \"unified understanding and generation\" OR \"understanding and generation\" OR \"any-to-any\" OR \"mixed-modal*\" OR \"mixed-modality\") AND (diffusion OR \"masked generative\" OR \"discrete flow*\" OR \"flow matching\" OR \"rectified flow\" OR \"discrete denoising\") AND (multimodal OR \"multi-modal\" OR \"vision-language\" OR \"text-to-image\" OR \"image generation\" OR mllm OR mllms OR \"visual understanding\" OR \"image understanding\")) OR ((\"vision-language-action\" OR vla OR vlas) AND (\"discrete diffusion\" OR \"discrete denoising\" OR \"masked diffusion\" OR \"diffusion-based\" OR \"unified diffusion\" OR \"diffusion language model*\" OR dllm OR dllms))",
+ "parts": {
+  "S1'": {
+   "A1": "\"diffusion language model*\" OR \"language diffusion model*\" OR \"diffusion llm*\" OR \"diffusion lm*\" OR dllm OR dllms OR \"diffusion-based language model*\" OR \"diffusion-based llm*\" OR \"diffusion large language model*\" OR \"diffusion-based large language model*\" OR \"text diffusion\" OR \"block diffusion\" OR \"absorbing diffusion\" OR \"diffusion mllm*\" OR \"diffusion vlm*\" OR \"diffusion vision-language model*\" OR dmllm OR dmllms OR dvlm OR dvlms",
+   "A2": "((\"discrete diffusion\" OR \"masked diffusion\" OR \"discrete flow*\" OR \"discrete state-space*\") AND (language OR text OR token* OR \"language model*\" OR llm* OR vocabulary OR autoregressive OR reasoning)) OR ((\"discrete diffusion\" OR \"masked diffusion\" OR \"discrete flow*\" OR \"discrete state-space*\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation))",
+   "A3": "(\"absorbing state\" AND (language OR text OR token* OR \"language model*\")) OR (\"any-order\" AND (language OR text OR token* OR \"language model*\")) OR \"non-autoregressive language model*\" OR (\"non-autoregressive\" AND diffusion AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*))",
+   "B": "diffusion AND (\"text generation\" OR \"language generation\" OR \"natural language generation\" OR \"sequence-to-sequence\" OR seq2seq OR \"discrete sequence*\" OR \"speculative decoding\" OR \"categorical data\" OR \"discrete data\" OR paraphras* OR \"textual diffusion\" OR \"text modeling\" OR \"named entity\" OR sentiment OR summarization OR dialog* OR dialogue OR \"machine translation\" OR \"text style\" OR commonsense OR \"topic model*\" OR \"triple extraction\" OR \"information extraction\") AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*)",
+   "C": "diffusion AND (\"language model*\" OR llm*) AND NOT (protein* OR molecul* OR antibod* OR peptide* OR rna OR dna OR drug* OR crystal* OR chemi* OR genom* OR biolog* OR \"graph generation\" OR \"traveling salesman\" OR recommend*) AND NOT (image* OR video* OR 3d OR audio OR visual* OR pixel* OR photo* OR segmentation)"
+  },
+  "S2'": {
+   "M": "(\"unified multimodal\" OR \"unified multi-modal\" OR \"unified understanding and generation\" OR \"understanding and generation\" OR \"any-to-any\" OR \"mixed-modal*\" OR \"mixed-modality\") AND (diffusion OR \"masked generative\" OR \"discrete flow*\" OR \"flow matching\" OR \"rectified flow\" OR \"discrete denoising\") AND (multimodal OR \"multi-modal\" OR \"vision-language\" OR \"text-to-image\" OR \"image generation\" OR mllm OR mllms OR \"visual understanding\" OR \"image understanding\")",
+   "VLA": "(\"vision-language-action\" OR vla OR vlas) AND (\"discrete diffusion\" OR \"discrete denoising\" OR \"masked diffusion\" OR \"diffusion-based\" OR \"unified diffusion\" OR \"diffusion language model*\" OR dllm OR dllms)"
+  }
+ }
+}

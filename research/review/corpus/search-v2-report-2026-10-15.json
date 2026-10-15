@@ -1,0 +1,333 @@
+{
+  "date": "2026-10-15",
+  "new_records_v2_file": "research/review/corpus/new-records-2026-10-15-v2.jsonl",
+  "queue_file": "research/review/corpus/screening-queue-2026-10-15.jsonl",
+  "union_new_records": 19328,
+  "union_new_also_in_v1": 14254,
+  "database_records": 6252,
+  "snowball_only_records": 13076,
+  "snowball_only_matching_a_string": 124,
+  "snowball_only_matching_by_string": {
+    "S1": 53,
+    "S2": 1,
+    "S1'": 124,
+    "S2'": 1
+  },
+  "snowball_only_auto_excluded": 12952,
+  "snowball_only_auto_excluded_abstract_missing": 2107,
+  "to_screen": 6376,
+  "to_screen_database_records": 6252,
+  "to_screen_snowball_matching": 124,
+  "to_screen_missing_abstract": 598,
+  "to_screen_missing_abstract_by_kind": {
+    "database": 482,
+    "snowball": 116
+  },
+  "database_records_matching_by_string_locally": {
+    "S1": 805,
+    "S2": 115,
+    "S1'": 3851,
+    "S2'": 268
+  },
+  "database_records_matching_no_string_locally": 2188,
+  "database_records_added_by_revised_strings": 3157,
+  "queue_by_tier": {
+    "T1 matches S1 or S2, S1' part A1, or S2'": 1297,
+    "T2 matches S1' A2 with a language word, or A3": 220,
+    "T3 matches only S1' B or C (diffusion with text-generation, NLP-task or language-model words)": 2221,
+    "T4 matches only S1' A2 without a language word": 450,
+    "T5 database record that matches no string locally": 2188
+  },
+  "queue_by_tier_and_kind": {
+    "T1 matches S1 or S2, S1' part A1, or S2'": {
+      "database": 1209,
+      "snowball": 88
+    },
+    "T2 matches S1' A2 with a language word, or A3": {
+      "database": 219,
+      "snowball": 1
+    },
+    "T3 matches only S1' B or C (diffusion with text-generation, NLP-task or language-model words)": {
+      "database": 2207,
+      "snowball": 14
+    },
+    "T4 matches only S1' A2 without a language word": {
+      "database": 429,
+      "snowball": 21
+    },
+    "T5 database record that matches no string locally": {
+      "database": 2188,
+      "snowball": 0
+    }
+  },
+  "queue_by_s1p_part": {
+    "A1": 740,
+    "A2": 1038,
+    "B": 1577,
+    "A3": 303,
+    "C": 1478
+  },
+  "queue_by_s2p_part": {
+    "M": 174,
+    "VLA": 97
+  },
+  "queue_by_source_combination": {
+    "semantic-scholar-bulk": 3705,
+    "arxiv-protocol-rerun+semantic-scholar-bulk": 837,
+    "openreview": 535,
+    "arxiv-protocol-rerun+semantic-scholar-bulk+snowball-forward": 199,
+    "semantic-scholar-bulk+snowball-forward": 155,
+    "arxiv-protocol-rerun": 130,
+    "openalex": 114,
+    "snowball-backward": 98,
+    "openalex+semantic-scholar-bulk": 85,
+    "arxiv-protocol-rerun+openreview+semantic-scholar-bulk+snowball-forward": 56,
+    "openalex+semantic-scholar-bulk+snowball-forward": 41,
+    "acl-anthology+arxiv-protocol-rerun+semantic-scholar-bulk": 37,
+    "arxiv-protocol-rerun+semantic-scholar-bulk+snowball-backward+snowball-forward": 35,
+    "arxiv-protocol-rerun+semantic-scholar-bulk+snowball-backward": 25,
+    "snowball-forward": 25,
+    "acl-anthology": 25,
+    "arxiv-protocol-rerun+openreview+semantic-scholar-bulk": 24,
+    "acl-anthology+snowball-forward": 23,
+    "openreview+snowball-forward": 21,
+    "arxiv-protocol-rerun+openreview+semantic-scholar-bulk+snowball-backward+snowball-forward": 17,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk": 16,
+    "openreview+semantic-scholar-bulk+snowball-forward": 16,
+    "acl-anthology+semantic-scholar-bulk": 15,
+    "semantic-scholar-bulk+snowball-backward+snowball-forward": 13,
+    "openreview+snowball-backward": 13,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk+snowball-backward+snowball-forward": 12,
+    "arxiv-protocol-rerun+openalex+semantic-scholar-bulk+snowball-forward": 8,
+    "acl-anthology+arxiv-protocol-rerun+semantic-scholar-bulk+snowball-forward": 8,
+    "arxiv-protocol-rerun+openalex+openreview+semantic-scholar-bulk": 7,
+    "arxiv-protocol-rerun+snowball-forward": 5,
+    "acl-anthology+semantic-scholar-bulk+snowball-backward+snowball-forward": 5,
+    "acl-anthology+openalex+semantic-scholar-bulk+snowball-forward": 5,
+    "arxiv-protocol-rerun+snowball-backward": 4,
+    "openalex+semantic-scholar-bulk+snowball-backward": 4,
+    "openreview+snowball-backward+snowball-forward": 4,
+    "arxiv-protocol-rerun+openalex+openreview+semantic-scholar-bulk+snowball-backward+snowball-forward": 4,
+    "semantic-scholar-bulk+snowball-backward": 4,
+    "openreview+semantic-scholar-bulk": 4,
+    "acl-anthology+semantic-scholar-bulk+snowball-forward": 4,
+    "acl-anthology+arxiv-protocol-rerun+semantic-scholar-bulk+snowball-backward+snowball-forward": 3
+  },
+  "abstract_source_all_records": {
+    "semantic-scholar-bulk": 3430,
+    "openalex": 197,
+    "snowball-backward": 3756,
+    "arxiv-protocol-rerun": 1388,
+    "acl-anthology": 138,
+    "snowball-forward": 7027,
+    "arxiv-api": 84,
+    "openreview": 594,
+    "crossref-doi": 8,
+    "none": 2705,
+    "semantic-scholar-batch": 1
+  },
+  "abstract_source_queue": {
+    "semantic-scholar-bulk": 3430,
+    "openalex": 197,
+    "arxiv-protocol-rerun": 1388,
+    "acl-anthology": 138,
+    "arxiv-api": 11,
+    "snowball-backward": 1,
+    "openreview": 594,
+    "snowball-forward": 10,
+    "crossref-doi": 8,
+    "none": 598,
+    "semantic-scholar-batch": 1
+  },
+  "title_fragments_in_queue": 98,
+  "title_fragments_in_queue_with_near_duplicate_candidate": 40,
+  "possible_duplicates_of_existing_in_queue": 55,
+  "dedup_extra_key_merges": 280,
+  "per_source": {
+    "openalex": {
+      "identified": 1081,
+      "identified_by_string": {
+        "S2": 115,
+        "S1": 566,
+        "S1'": 400
+      },
+      "unique_within_source": 713,
+      "duplicates_within_source": 368,
+      "duplicates_against_existing": 391,
+      "new": 322,
+      "new_matching_locally": {
+        "S1": 191,
+        "S2": 33,
+        "S1'": 247,
+        "S2'": 37
+      }
+    },
+    "semantic-scholar-bulk": {
+      "identified": 10572,
+      "identified_by_string": {
+        "S1": 1487,
+        "S2": 228,
+        "S1'": 8462,
+        "S2'": 395
+      },
+      "unique_within_source": 6768,
+      "duplicates_within_source": 3804,
+      "duplicates_against_existing": 1399,
+      "new": 5369,
+      "new_matching_locally": {
+        "S1": 261,
+        "S2": 47,
+        "S1'": 3172,
+        "S2'": 184
+      }
+    },
+    "arxiv-protocol-rerun": {
+      "identified": 6105,
+      "identified_by_string": {
+        "S1": 1286,
+        "S2": 190,
+        "S1'": 4318,
+        "S2'": 311
+      },
+      "unique_within_source": 2841,
+      "duplicates_within_source": 3264,
+      "duplicates_against_existing": 1402,
+      "new": 1439,
+      "new_matching_locally": {
+        "S1": 73,
+        "S2": 12,
+        "S1'": 1109,
+        "S2'": 102
+      }
+    },
+    "acl-anthology": {
+      "identified": 355,
+      "identified_by_string": {
+        "S1": 113,
+        "S2": 5,
+        "S1'": 230,
+        "S2'": 7
+      },
+      "unique_within_source": 234,
+      "duplicates_within_source": 121,
+      "duplicates_against_existing": 96,
+      "new": 138,
+      "new_matching_locally": {
+        "S1": 40,
+        "S2": 3,
+        "S1'": 134,
+        "S2'": 5
+      }
+    },
+    "openreview": {
+      "identified": 3357,
+      "identified_by_string": {
+        "S1": 1301,
+        "S2": 155,
+        "S1'": 1728,
+        "S2'": 173
+      },
+      "unique_within_source": 1205,
+      "duplicates_within_source": 2152,
+      "duplicates_against_existing": 490,
+      "new": 715,
+      "filter_stats": {
+        "retrieved": 5182,
+        "fails_local_clause": 1825
+      },
+      "new_matching_locally": {
+        "S1": 489,
+        "S2": 55,
+        "S1'": 659,
+        "S2'": 77
+      }
+    },
+    "snowball-backward": {
+      "identified": 19423,
+      "identified_by_string": {
+        "snowball-backward": 19423
+      },
+      "unique_within_source": 6176,
+      "duplicates_within_source": 13247,
+      "duplicates_against_existing": 530,
+      "new": 5646,
+      "filter_stats": {
+        "edges": 25509,
+        "before_2021": 6086,
+        "no_date_kept": 2250
+      },
+      "new_matching_locally": {
+        "S1": 88,
+        "S2": 5,
+        "S1'": 225,
+        "S2'": 16
+      }
+    },
+    "snowball-forward": {
+      "identified": 25998,
+      "identified_by_string": {
+        "snowball-forward": 25998
+      },
+      "unique_within_source": 9822,
+      "duplicates_within_source": 16176,
+      "duplicates_against_existing": 1211,
+      "new": 8611,
+      "filter_stats": {
+        "edges": 26003,
+        "before_2021": 5,
+        "no_date_kept": 495
+      },
+      "new_matching_locally": {
+        "S1": 183,
+        "S2": 4,
+        "S1'": 579,
+        "S2'": 29
+      }
+    }
+  },
+  "records_jsonl_sha256_unchanged": "240d8e65dd7a1bf0547b32f5bb9c249f0249e7fa09f25b21aff7bb330cf3234f",
+  "queue_sha256": "08e23ec4064a2ec6e80c471f92f3f6b48d19040cbbeb4f17a4de8e39fa8506b8",
+  "v2_sha256": "c593e2e10945d8bbe039b4a91f09737471e5e4bd850c333dbdd4169fca40546d",
+  "enrichment": {
+    "date": "2026-10-15",
+    "attempted": 2798,
+    "by_source": {
+      "semantic-scholar-batch": 1,
+      "arxiv-api": 84,
+      "crossref-doi": 8
+    },
+    "notes": [
+      "OpenAlex status 429 at 0 (remaining credits 0); stopped"
+    ],
+    "still_missing": 2705,
+    "passes": [
+      {
+        "date": "2026-10-15",
+        "attempted": 2798,
+        "by_source": {
+          "semantic-scholar-batch": 1,
+          "arxiv-api": 84
+        },
+        "notes": [
+          "OpenAlex status 429 at 0 (remaining credits 0); stopped"
+        ],
+        "still_missing": 2713
+      },
+      {
+        "date": "2026-10-15",
+        "attempted": 2713,
+        "by_source": {
+          "crossref-doi": 8
+        },
+        "notes": [],
+        "crossref_attempted": 396,
+        "still_missing": 2705,
+        "skipped": [
+          "arxiv",
+          "openalex",
+          "s2"
+        ]
+      }
+    ]
+  }
+}

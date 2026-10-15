@@ -7,6 +7,11 @@
     python tools/search_sources.py acl                  # ACL Anthology metadata export, strings applied locally
     python tools/search_sources.py snowball backward|forward [--resume FILE]
 
+Revised strings (D0026, protocol section 10 amendment of 2026-10-15): the same commands accept S1p and S2p
+(logged as S1' and S2'); each is run part by part (arXiv, Semantic Scholar, OpenAlex), the union of the parts
+being the string. `acl` applies all four strings to the snapshot of the ACL export already on disk
+(`acl --refresh` downloads it again).
+
 Every search appends one row to research/review/corpus/search-log.jsonl (same keys as the arXiv rows:
 database, string, query, filters, executed_utc, hits_reported, records_retrieved, export, sha256; `export`
 is a repository-relative path under research/sources/search-raw/). Raw responses are kept as JSON.
@@ -71,9 +76,144 @@ def phrase_in(tokens: list[str], p: str) -> bool:
     return False
 
 
+
+# ---------------------------------------------------------------- revised strings S1' and S2' (D0026)
+# Nested specification: a phrase (str; trailing * = word-prefix wildcard) or ("OR"|"AND"|"NOT", [children]).
+# ("NOT", [x, y]) means NOT (x OR y) and is only used as a child of an AND. Derived from the 540 seed
+# abstracts and checked in three rounds (research/review/corpus/string-revision-2026-10-15.json).
+_OR = lambda *a: ("OR", list(a))
+_AND = lambda *a: ("AND", list(a))
+_NOT = lambda *a: ("NOT", list(a))
+P_BIO = _OR("protein*", "molecul*", "antibod*", "peptide*", "rna", "dna", "drug*", "crystal*", "chemi*", "genom*",
+            "biolog*", "graph generation", "traveling salesman", "recommend*")
+P_VIS = _OR("image*", "video*", "3d", "audio", "visual*", "pixel*", "photo*", "segmentation")
+P_CTX = _OR("language", "text", "token*", "language model*")
+P_CTX4 = _OR("language", "text", "token*", "language model*", "llm*", "vocabulary", "autoregressive", "reasoning")
+P_LM = _OR("language model*", "llm*")
+A2_DD = _OR("discrete diffusion", "masked diffusion", "discrete flow*", "discrete state-space*")
+A2_WITH_CONTEXT = _AND(A2_DD, P_CTX4)                      # discrete / masked diffusion or flow with a language word
+A2_NO_CONTEXT = _AND(A2_DD, _NOT(P_BIO), _NOT(P_VIS))      # the same without a language word, outside biochemical and visual contexts
+S1P_PARTS = {
+    # A1: names of diffusion language models (no context clause needed)
+    "A1": _OR("diffusion language model*", "language diffusion model*", "diffusion llm*", "diffusion lm*", "dllm", "dllms",
+              "diffusion-based language model*", "diffusion-based llm*", "diffusion large language model*",
+              "diffusion-based large language model*", "text diffusion", "block diffusion", "absorbing diffusion",
+              "diffusion mllm*", "diffusion vlm*", "diffusion vision-language model*", "dmllm", "dmllms", "dvlm", "dvlms"),
+    # A2: discrete-state-space diffusion and flow: a language context, or no biochemical and no visual context
+    "A2": _OR(A2_WITH_CONTEXT, A2_NO_CONTEXT),
+    # A3: the original absorbing-state and non-autoregressive terms, any-order generation
+    "A3": _OR(_AND("absorbing state", P_CTX), _AND("any-order", P_CTX), "non-autoregressive language model*",
+              _AND("non-autoregressive", "diffusion", _NOT(P_BIO))),
+    # B: diffusion together with text-generation or NLP-task vocabulary
+    "B": _AND("diffusion",
+              _OR("text generation", "language generation", "natural language generation", "sequence-to-sequence",
+                  "seq2seq", "discrete sequence*", "speculative decoding", "categorical data", "discrete data",
+                  "paraphras*", "textual diffusion", "text modeling", "named entity", "sentiment", "summarization",
+                  "dialog*", "dialogue", "machine translation", "text style", "commonsense", "topic model*",
+                  "triple extraction", "information extraction"),
+              _NOT(P_BIO)),
+    # C: diffusion with a language model, outside biochemical and visual contexts
+    "C": _AND("diffusion", P_LM, _NOT(P_BIO), _NOT(P_VIS)),
+}
+S2P_PARTS = {
+    "M": _AND(_OR("unified multimodal", "unified multi-modal", "unified understanding and generation",
+                  "understanding and generation", "any-to-any", "mixed-modal*", "mixed-modality"),
+              _OR("diffusion", "masked generative", "discrete flow*", "flow matching", "rectified flow", "discrete denoising"),
+              _OR("multimodal", "multi-modal", "vision-language", "text-to-image", "image generation", "mllm", "mllms",
+                  "visual understanding", "image understanding")),
+    "VLA": _AND(_OR("vision-language-action", "vla", "vlas"),
+                _OR("discrete diffusion", "discrete denoising", "masked diffusion", "diffusion-based", "unified diffusion",
+                    "diffusion language model*", "dllm", "dllms")),
+}
+P_SPECS = {"S1'": _OR(*S1P_PARTS.values()), "S2'": _OR(*S2P_PARTS.values())}
+P_PARTS = {"S1'": S1P_PARTS, "S2'": S2P_PARTS}
+P_ARG = {"S1": "S1", "S2": "S2", "S1p": "S1'", "S2p": "S2'"}
+
+
+def ev_p(spec, t):
+    if isinstance(spec, str):
+        return phrase_in(t, spec)
+    op, items = spec
+    if op == "OR":
+        return any(ev_p(i, t) for i in items)
+    if op == "AND":
+        return all(ev_p(i, t) for i in items)
+    return not any(ev_p(i, t) for i in items)
+
+
+def part_of(name: str, text: str):
+    """Names of the parts of S1' / S2' that match the text (the tier of the match)."""
+    t = re.findall(r"[a-z0-9]+", text.lower())
+    return [k for k, sp in P_PARTS[name].items() if ev_p(sp, t)]
+
+
+# OpenAlex stems words but has no wildcard: wildcard terms are expanded by hand where the stem differs
+OA_EXPAND = {"molecul*": ["molecule", "molecular"], "antibod*": ["antibody"], "chemi*": ["chemical", "chemistry"],
+             "genom*": ["genome", "genomic"], "biolog*": ["biology", "biological"],
+             "recommend*": ["recommendation", "recommender"], "paraphras*": ["paraphrase", "paraphrasing"],
+             "token*": ["token", "tokens", "tokenizer"], "visual*": ["visual", "visually"],
+             "photo*": ["photo", "photograph"], "drug*": ["drug"], "crystal*": ["crystal"], "peptide*": ["peptide"],
+             "protein*": ["protein"], "image*": ["image"], "video*": ["video"], "dialog*": ["dialog", "dialogue"],
+             "sequence*": ["sequence"], "visual*": ["visual", "visualization"]}
+
+
+def _alts(p: str, syntax: str):
+    """Alternatives (OR-ed) that express one phrase in a syntax."""
+    if syntax == "oa":
+        return [q(x, False) for x in OA_EXPAND[p]] if p in OA_EXPAND else [q(p, False)]
+    if syntax == "arxiv":
+        if p.endswith("*") and " " not in p and "-" not in p:
+            # arXiv stems plain terms but a wildcard term switches stemming off (abs:image* finds 11,800 records, abs:image 104,864,
+            # and ANDNOT abs:image* removes almost nothing), so the stem forms are written out as for OpenAlex
+            return [f"(ti:{x} OR abs:{x})" for x in (OA_EXPAND.get(p) or [p.rstrip("*")])]
+        base = p.rstrip("*")
+        out = []
+        for b in [base] + ([base + "s"] if p.endswith("*") else []):
+            out.append(f'(ti:"{b}" OR abs:"{b}")' if " " in b or "-" in b else f"(ti:{b} OR abs:{b})")
+        return out
+    return [q(p, True)]
+
+
+def _terms(items, syntax):
+    out = []
+    for i in items:
+        out += _alts(i, syntax) if isinstance(i, str) else _terms(i[1], syntax)
+    return out
+
+
+def render_spec(spec, syntax: str, top: bool = True) -> str:
+    """syntax: plain (AND, OR, AND NOT), s2 (+, |, -), oa (AND, OR, AND NOT; no wildcards), arxiv (ti: / abs:, ANDNOT)."""
+    orr, andd = (" | ", " + ") if syntax == "s2" else (" OR ", " AND ")
+    if isinstance(spec, str):
+        a = _alts(spec, syntax)
+        return a[0] if len(a) == 1 else "(" + orr.join(a) + ")"
+    op, items = spec
+    if op == "OR":
+        body = orr.join(render_spec(i, syntax, False) for i in items)
+    else:
+        pos = [i for i in items if not (isinstance(i, tuple) and i[0] == "NOT")]
+        neg = [i for i in items if isinstance(i, tuple) and i[0] == "NOT"]
+        body = andd.join(render_spec(i, syntax, False) for i in pos)
+        for n in neg:
+            terms = _terms(n[1], syntax)
+            if syntax == "s2":
+                body += " + " + " + ".join("-" + t for t in terms)
+            elif syntax == "arxiv":
+                body = f"({body}) ANDNOT (" + " OR ".join(terms) + ")"
+            else:
+                body += " AND NOT (" + " OR ".join(terms) + ")"
+    return body if top else "(" + body + ")"
+
+
+def render_part(name: str, part: str, syntax: str) -> str:
+    return render_spec(P_PARTS[name][part], syntax)
+
+
 def matches(name: str, text: str) -> bool:
     """Exact local evaluation of the protocol string on title + abstract (case-insensitive, word-based)."""
     t = re.findall(r"[a-z0-9]+", text.lower())
+    if name in P_SPECS:
+        return ev_p(P_SPECS[name], t)
     anyp = lambda ps: any(phrase_in(t, p) for p in ps)
     if name == "S1":
         a = anyp(S1_PHRASES) or (phrase_in(t, S1_NAR[0]) and phrase_in(t, S1_NAR[1]))
@@ -121,14 +261,29 @@ def http(url, gap, data=None, headers=None, tries=7, timeout=180):
                 return r.status, r.read(), dict(r.headers)
         except urllib.error.HTTPError as e:
             body = e.read()
+            if e.code == 429 and e.headers.get("X-RateLimit-Remaining") == "0":
+                return e.code, body, dict(e.headers)            # daily quota exhausted (OpenAlex): waiting is pointless
             if e.code in (429, 500, 502, 503, 504):
                 ra = e.headers.get("Retry-After")
-                time.sleep(float(ra) if ra and ra.replace(".", "").isdigit() else min(20 * 2 ** k, 300))
+                time.sleep(min(float(ra), 300) if ra and ra.replace(".", "").isdigit() else min(20 * 2 ** k, 300))
                 continue
             return e.code, body, dict(e.headers)
         except (urllib.error.URLError, TimeoutError, ConnectionError):
             time.sleep(min(10 * 2 ** k, 120))
     return None, b"", {}
+
+
+def units(name):
+    """(label, part) pairs to run for a string: S1 / S2 run as one query, S1' / S2' part by part (union = the string).
+    A name with a part ("S1':A2") runs that part only."""
+    base, _, part = name.partition(":")
+    if part:
+        return [(f"{base}:{part}", part)]
+    return [(name, None)] if name in ("S1", "S2") else [(f"{name}:{k}", k) for k in P_PARTS[name]]
+
+
+def fname(label: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]+", "-", label.replace("'", "p")).strip("-")
 
 
 def stamp() -> str:
@@ -153,7 +308,11 @@ def log(database, string, query, filters, executed, hits, got, path: Path):
 
 
 # ---------------------------------------------------------------- arXiv, protocol strings verbatim
-def arxiv_query(name: str) -> str:
+def arxiv_query(name: str, part=None) -> str:
+    if part:
+        cats = "(cat:cs.CL OR cat:cs.LG OR cat:cs.CV OR cat:cs.AI OR cat:stat.ML)"
+        win = f"submittedDate:[{DATE_FROM.replace('-', '')}0000 TO {DATE_TO.replace('-', '')}2359]"
+        return f"({render_part(name, part, 'arxiv')}) AND {cats} AND {win}"
     f = lambda p, wild=True: (f'(ti:"{p.replace("*", "")}" OR abs:"{p.replace("*", "")}")' if " " in p or "-" in p
                               else f'(ti:{p} OR abs:{p})')
     if name == "S1":
@@ -178,14 +337,14 @@ def arxiv_query(name: str) -> str:
 
 def cmd_arxiv_exact(names):
     ns = {"a": "http://www.w3.org/2005/Atom", "o": "http://a9.com/-/spec/opensearch/1.1/"}
-    for name in names:
-        qq, start, total, rows, ex = arxiv_query(name), 0, None, [], stamp()
+    for name, label, part in [(n.split(":")[0], l, k) for n in names for l, k in units(n)]:
+        qq, start, total, rows, ex = arxiv_query(name, part), 0, None, [], stamp()
         while total is None or start < total:
             url = "https://export.arxiv.org/api/query?" + urllib.parse.urlencode(
                 {"search_query": qq, "start": start, "max_results": 200, "sortBy": "submittedDate", "sortOrder": "ascending"})
             st, raw, _ = http(url, 3.5)
             if st != 200 or b"<!ENTITY" in raw or b"<!DOCTYPE" in raw:
-                print(f"  arXiv {name}: request failed at {start} (status {st})")
+                print(f"  arXiv {label}: request failed at {start} (status {st})")
                 break
             root = ET.fromstring(raw)
             total = int(root.findtext("o:totalResults", "0", ns))
@@ -196,11 +355,11 @@ def cmd_arxiv_exact(names):
                 aid = re.sub(r"v\d+$", "", e.findtext("a:id", "", ns).rsplit("/", 1)[-1])
                 rows.append({"arxiv": aid, "title": " ".join(e.findtext("a:title", "", ns).split()),
                              "published": e.findtext("a:published", "", ns)[:10],
-                             "abstract": " ".join(e.findtext("a:summary", "", ns).split()), "string": name})
+                             "abstract": " ".join(e.findtext("a:summary", "", ns).split()), "string": label})
             start += len(ents)
-            print(f"  arXiv {name}: {start}/{total}", flush=True)
-        out = save_raw("arxiv", f"arxiv-protocol-{name}-{ex}.json", {"query": qq, "total": total, "records": rows})
-        log("arXiv API (export.arxiv.org), protocol string verbatim", name, qq,
+            print(f"  arXiv {label}: {start}/{total}", flush=True)
+        out = save_raw("arxiv", f"arxiv-protocol-{fname(label)}-{ex}.json", {"query": qq, "total": total, "records": rows})
+        log("arXiv API (export.arxiv.org), " + ("protocol string verbatim" if not part else "revised string, part " + part), label, qq,
             "categories cs.CL cs.LG cs.CV cs.AI stat.ML and submittedDate window inside the query; ti OR abs per term; "
             "no wildcard inside phrases (model/models listed separately)", ex, total, len(rows), out)
 
@@ -210,27 +369,32 @@ S2_FIELDS = "paperId,externalIds,title,abstract,year,publicationDate,venue,publi
 
 
 def cmd_s2(names):
-    for name in names:
-        qq, ex, token, pages, total = render(name, "s2"), stamp(), None, [], None
+    for name, label, part in [(n.split(":")[0], l, k) for n in names for l, k in units(n)]:
+        qq, ex, token, pages, total = (render_part(name, part, "s2") if part else render(name, "s2")), stamp(), None, [], None
         while True:
             p = {"query": qq, "fields": S2_FIELDS, "publicationDateOrYear": f"{DATE_FROM}:{DATE_TO}", "limit": 1000}
             if token:
                 p["token"] = token
-            st, raw, _ = http("https://api.semanticscholar.org/graph/v1/paper/search/bulk?" + urllib.parse.urlencode(p), 4.0)
+            for attempt in range(40):                       # the shared unauthenticated pool is often throttled: wait and retry the same page
+                st, raw, _ = http("https://api.semanticscholar.org/graph/v1/paper/search/bulk?" + urllib.parse.urlencode(p), 4.0, tries=3)
+                if st == 200 or st not in (None, 429):
+                    break
+                print(f"  S2 {label}: throttled (status {st}); waiting 90 s [{attempt + 1}/40]", flush=True)
+                time.sleep(90)
             if st != 200:
-                print(f"  S2 {name}: status {st}: {raw[:200]!r}")
+                print(f"  S2 {label}: status {st}: {raw[:200]!r}")
                 break
             d = json.loads(raw)
             total = d.get("total")
             pages.append(d.get("data", []))
-            print(f"  S2 {name}: {sum(map(len, pages))}/{total}", flush=True)
+            print(f"  S2 {label}: {sum(map(len, pages))}/{total}", flush=True)
             token = d.get("token")
             if not token:
                 break
         recs = [r for pg in pages for r in pg]
-        out = save_raw("semantic-scholar", f"s2bulk-{name}-{ex}.json",
+        out = save_raw("semantic-scholar", f"s2bulk-{fname(label)}-{ex}.json",
                        {"endpoint": "/graph/v1/paper/search/bulk", "query": qq, "fields": S2_FIELDS, "total": total, "records": recs})
-        log("Semantic Scholar Graph API (paper/search/bulk)", name, qq,
+        log("Semantic Scholar Graph API (paper/search/bulk)", label, qq,
             f"publicationDateOrYear={DATE_FROM}:{DATE_TO}; title+abstract match (S2 field semantics); no language filter available; "
             "wildcard kept in quoted phrases as S2 documents prefix wildcard", ex, total, len(recs), out)
 
@@ -243,8 +407,8 @@ OA_SELECT = ("id,doi,title,publication_date,publication_year,type,language,ids,p
 def cmd_oa(names, max_pages=1000):
     import os
     key = os.environ.get("OPENALEX_API_KEY")
-    for name in names:
-        qq, ex, cursor, recs, count, done = render(name, "oa"), stamp(), "*", [], None, False
+    for name, label, part in [(n.split(":")[0], l, k) for n in names for l, k in units(n)]:
+        qq, ex, cursor, recs, count, done = (render_part(name, part, "oa") if part else render(name, "oa")), stamp(), "*", [], None, False
         flt = (f"title_and_abstract.search:{qq},from_publication_date:{DATE_FROM},to_publication_date:{DATE_TO},language:en")
         pageno = 0
         for _ in range(max_pages):
@@ -257,7 +421,7 @@ def cmd_oa(names, max_pages=1000):
             url = "https://api.openalex.org/works?" + urllib.parse.urlencode(p, safe=':,()*"|')
             st, raw, hdr = http(url, 1.5, tries=2)
             if st != 200:
-                print(f"  OA {name}: status {st}: {raw[:300]!r}; stopping (remaining credits "
+                print(f"  OA {label}: status {st}: {raw[:300]!r}; stopping (remaining credits "
                       f"{hdr.get('X-RateLimit-Remaining')})")
                 break
             d = json.loads(raw)
@@ -265,17 +429,17 @@ def cmd_oa(names, max_pages=1000):
             recs += d["results"]
             cursor = d["meta"].get("next_cursor") if key else (True if len(recs) < count else None)
             rem = int(hdr.get("X-RateLimit-Remaining", "0") or 0)
-            print(f"  OA {name}: {len(recs)}/{count}, credits remaining {rem}", flush=True)
+            print(f"  OA {label}: {len(recs)}/{count}, credits remaining {rem}", flush=True)
             if not cursor:
                 done = True
                 break
             if not key and rem < 20:
                 print("  OA: stopping to keep a credit reserve (daily unauthenticated limit)")
                 break
-        out = save_raw("openalex", f"openalex-{name}-{ex}.json",
+        out = save_raw("openalex", f"openalex-{fname(label)}-{ex}.json",
                        {"endpoint": "/works", "filter": flt, "count": count, "complete": done, "next_cursor": cursor,
                         "records": recs})
-        log("OpenAlex works API (title_and_abstract.search)", name, flt,
+        log("OpenAlex works API (title_and_abstract.search)", label, flt,
             "from/to_publication_date window, language:en (drops works whose language is null); stemmed search, wildcards "
             "unsupported on this field so token* and model* are written without the star; "
             + ("COMPLETE" if done else "PARTIAL: stopped by the unauthenticated daily credit limit, resume with cursor in the raw file"),
@@ -286,7 +450,25 @@ def cmd_oa(names, max_pages=1000):
 OR_GROUPS = ["ICLR.cc", "NeurIPS.cc", "ICML.cc", "TMLR"]
 
 
+# search terms of the revised strings: the phrase lists of A1, A2, A3 and the text-generation terms of B and C as
+# short phrases (the API is a term search; the full boolean string is applied locally to title, abstract and keywords)
+OR_TERMS_P = {
+    "S1'": ["diffusion language model", "language diffusion model", "diffusion llm", "diffusion lm", "dllm",
+            "diffusion-based language model", "diffusion large language model", "text diffusion", "block diffusion",
+            "absorbing diffusion", "diffusion mllm", "diffusion vision-language model", "dmllm", "discrete diffusion",
+            "masked diffusion", "discrete flow", "discrete state-space", "any-order", "non-autoregressive language model",
+            "diffusion text generation", "diffusion speculative decoding", "diffusion machine translation",
+            "diffusion summarization", "diffusion dialogue", "diffusion paraphrase", "diffusion language generation",
+            "diffusion large language model reasoning"],
+    "S2'": ["unified multimodal", "unified multi-modal", "unified understanding and generation",
+            "understanding and generation", "any-to-any", "mixed-modal", "vision-language-action diffusion",
+            "multimodal discrete diffusion", "multimodal masked diffusion", "multimodal flow matching"],
+}
+
+
 def or_terms(name):
+    if name in OR_TERMS_P:
+        return [f'"{t}"' for t in OR_TERMS_P[name]]
     if name == "S1":
         return [f'"{p.replace("*", "")}"' for p in S1_PHRASES] + ['"non-autoregressive"']
     return [f'"{p}"' for p in S2_A]
@@ -340,19 +522,24 @@ def parse_bib(text: str):
         yield m.group(2), f
 
 
-def cmd_acl():
+def cmd_acl(names=("S1", "S2"), refresh=True):
     ex = stamp()
-    st, raw, hdr = http(ACL_URL, 2.0, timeout=600)
-    if st != 200:
-        sys.exit(f"ACL Anthology export not retrieved: status {st}")
     d = RAW / "acl-anthology"
     d.mkdir(parents=True, exist_ok=True)
-    gz = d / f"anthology+abstracts-{ex}.bib.gz"
-    gz.write_bytes(raw)
+    snaps = sorted(d.glob("anthology+abstracts-*.bib.gz"))
+    if snaps and not refresh:
+        gz = snaps[-1]                                   # same snapshot as the earlier run: strings compared on identical data
+        raw = gz.read_bytes()
+    else:
+        st, raw, hdr = http(ACL_URL, 2.0, timeout=600)
+        if st != 200:
+            sys.exit(f"ACL Anthology export not retrieved: status {st}")
+        gz = d / f"anthology+abstracts-{ex}.bib.gz"
+        gz.write_bytes(raw)
     gz_sha = hashlib.sha256(raw).hexdigest()
     entries = list(parse_bib(gzip.decompress(raw).decode("utf-8", "replace")))
     print(f"  ACL: {len(raw)} bytes gz, {len(entries)} entries, sha256 {gz_sha[:12]}", flush=True)
-    for name in ("S1", "S2"):
+    for name in names:
         hits = []
         for key, f in entries:
             try:
@@ -367,10 +554,12 @@ def cmd_acl():
                 hits.append({"bibkey": key, "acl_id": url.rstrip("/").rsplit("/", 1)[-1] if "aclanthology.org" in url else None,
                              "title": title, "abstract": abstract, "year": yr, "month": f.get("month"), "doi": f.get("doi"),
                              "url": url, "booktitle": clean_tex(f.get("booktitle", "") or f.get("journal", ""))})
-        out = save_raw("acl-anthology", f"acl-matches-{name}-{ex}.json",
+        out = save_raw("acl-anthology", f"acl-matches-{fname(name)}-{ex}.json",
                        {"source_file": gz.name, "source_url": ACL_URL, "source_sha256": gz_sha, "entries_in_file": len(entries),
-                        "query_evaluated_locally": render(name, "plain"), "records": hits})
-        log("ACL Anthology (metadata export anthology+abstracts.bib.gz, string applied locally)", name, render(name, "plain"),
+                        "query_evaluated_locally": render_spec(P_SPECS[name], "plain") if name in P_SPECS else render(name, "plain"),
+                       "records": hits})
+        log("ACL Anthology (metadata export anthology+abstracts.bib.gz, string applied locally)", name,
+            render_spec(P_SPECS[name], "plain") if name in P_SPECS else render(name, "plain"),
             f"year>=2021 (month not in all entries, so the window is by year); title+abstract only (the export has no keywords); "
             f"word-based case-insensitive match of the protocol string; no language field in the export; source file {gz.name} sha256 {gz_sha}",
             ex, len(hits), len(hits), out)
@@ -464,7 +653,7 @@ if __name__ == "__main__":
     a = sys.argv[1:]
     if not a:
         sys.exit(__doc__)
-    names = [x for x in a[1:] if x in ("S1", "S2")] or ["S1", "S2"]
+    names = [P_ARG[x.split(":")[0]] + (":" + x.split(":")[1] if ":" in x else "") for x in a[1:] if x.split(":")[0] in P_ARG] or ["S1", "S2"]
     if a[0] == "arxiv-exact":
         cmd_arxiv_exact(names)
     elif a[0] == "s2":
@@ -474,7 +663,7 @@ if __name__ == "__main__":
     elif a[0] == "orv":
         cmd_orv(names)
     elif a[0] == "acl":
-        cmd_acl()
+        cmd_acl([P_ARG[x] for x in a[1:] if x in P_ARG] or ["S1", "S2"], refresh="--refresh" in a)
     elif a[0] == "snowball":
         cmd_snowball(a[1], a[a.index("--resume") + 1] if "--resume" in a else None)
     else:

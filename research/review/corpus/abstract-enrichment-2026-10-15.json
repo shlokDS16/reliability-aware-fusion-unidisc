@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-15",
+  "attempted": 2798,
+  "by_source": {
+    "semantic-scholar-batch": 1,
+    "arxiv-api": 84,
+    "crossref-doi": 8
+  },
+  "notes": [
+    "OpenAlex status 429 at 0 (remaining credits 0); stopped"
+  ],
+  "still_missing": 2705,
+  "passes": [
+    {
+      "date": "2026-10-15",
+      "attempted": 2798,
+      "by_source": {
+        "semantic-scholar-batch": 1,
+        "arxiv-api": 84
+      },
+      "notes": [
+        "OpenAlex status 429 at 0 (remaining credits 0); stopped"
+      ],
+      "still_missing": 2713
+    },
+    {
+      "date": "2026-10-15",
+      "attempted": 2713,
+      "by_source": {
+        "crossref-doi": 8
+      },
+      "notes": [],
+      "crossref_attempted": 396,
+      "still_missing": 2705,
+      "skipped": [
+        "arxiv",
+        "openalex",
+        "s2"
+      ]
+    }
+  ]
+}
