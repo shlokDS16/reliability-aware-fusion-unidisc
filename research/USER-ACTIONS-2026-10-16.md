@@ -17,8 +17,13 @@ Do these together in one sitting. Claude keeps this list current; items are stru
 ## Decisions / approvals
 4. Commits: Claude committed the crash-surviving untracked files in the exp-003 worktree (f9041a9,
    local only, not pushed). Say if you want a different commit policy.
-5. Full texts for full-text screening: open-access PDFs (arXiv etc.) and paywalled ones via the
-   e-gateway both need your yes before any download (count and size will be given first).
+5. **Full-text downloads (need your yes).** Records passing title/abstract so far: 1,000 (954 from the
+   free-source update + 46 from the subscription databases), plus the 100-record re-check sample, the 32
+   C8 records and up to 7 title-resolved records; the 797 re-check frame only if the sample triggers it.
+   By route (of the 1,000): OpenReview 403, arXiv 225, ACL Anthology 45 (open access, about 673 PDFs,
+   roughly 1-2 GB); DOI only 197 (mostly need the e-gateway in your Chrome); Semantic Scholar id only 23
+   and no identifier 107 (Claude looks these up first). Proposed: approve the open-access batch as one
+   download job (Claude logs every file and hash), then do the DOI-only ones together through the e-gateway.
 
 6a. **Adjudicator for full-text screening (criteria v1.5, route F or H):** C = claude-fable-5-1 only if
    you approve any usage spend it needs (or confirm there is none); otherwise route H: every full-text
