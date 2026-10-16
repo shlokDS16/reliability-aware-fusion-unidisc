@@ -20,9 +20,11 @@ Do these together in one sitting. Claude keeps this list current; items are stru
 5. Full texts for full-text screening: open-access PDFs (arXiv etc.) and paywalled ones via the
    e-gateway both need your yes before any download (count and size will be given first).
 
-6a. **Adjudicator model for full-text screening (criteria v1.4, V4):** C = claude-fable-5-1 (A = Sonnet 5.5,
-   B = Opus 5.5), fallback claude-haiku-5-5. Fable may draw usage credits on your plan; if so that is
-   spend and needs your yes. Otherwise C falls back to Haiku 5.5 (decided now, before any full-text row).
+6a. **Adjudicator for full-text screening (criteria v1.5, route F or H):** C = claude-fable-5-1 only if
+   you approve any usage spend it needs (or confirm there is none); otherwise route H: every full-text
+   disagreement and 'adjudicate' row goes straight to you (no model fallback; Haiku is excluded because it
+   made many of the title/abstract exclusions being re-checked). Route H adds those rows to your
+   workload on top of the 15 percent validation sample. Decide before the first full-text row.
 
 ## Carried over from HANDOFF 4 (still open)
 6. Human screening sample (218 records) + 120 disagreements (RAISE validation).

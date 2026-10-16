@@ -1,32 +1,37 @@
 """Check that every evidence quote in full-text screening rows occurs in the screened full text.
 
-Criteria v1.4 (screener copy, brief): each row carries "evidence": [{"cond", "quote", "loc"}]. A quote is
-ONE CONTIGUOUS passage copied from the full-text file of that record. It must occur there verbatim, up to:
+Criteria v1.5 (screener copy, brief): each row carries "evidence": [{"cond", "quote", "loc"}]. A quote is
+ONE CONTIGUOUS passage of at least 6 and at most 40 words copied from the full-text file of that record. It
+must occur there verbatim, up to:
   - Unicode compatibility forms (NFKC: ligatures such as "fi", full-width characters, the ellipsis character),
   - quote and dash variants (curly quotes, en/em dashes, minus sign),
   - whitespace (any run of spaces, tabs or line breaks counts as one space),
   - line-end hyphenation ("exam-\\nple" matches "example") and soft hyphens,
-  - markdown emphasis and link markup left by PDF-to-markdown conversion (*, _, `, [, ]).
-Case is kept (verbatim means verbatim).
+  - markdown emphasis and link markup left by PDF-to-markdown conversion (*, _, `, [, ]); since v1.5 also
+    the target of a markdown link ("[LLaDA](https://...)" reads as "LLaDA"),
+  - HTML tags (since v1.5): a <sup> element holding only a footnote marker (digits, commas, *, daggers, at most
+    6 characters) is removed with its content; every other tag is removed and its content kept.
+Case is kept (verbatim means verbatim). Citations, page headers and footers inside a passage are part of the
+file: a quote either copies them as they appear or is split into two entries.
 
-v1.4 changes (red-team audit of criteria v1.3, finding V2):
-  - No elision. An ellipsis ("..." or the ellipsis character) is an ordinary character sequence: it matches
-    only an ellipsis at the same place in the file. A quote that contains an ellipsis and is not found as a
-    contiguous passage gets status "elided" (v1.3 split it into fragments with an unbounded gap, so a quote
-    could drop a negation and still pass).
-  - Whole words. A match must start and end at a word boundary; a letter, digit or hyphen joined to either
-    end of the match rejects that occurrence ("shared" inside "unshared", "autoregressive" inside
-    "non-autoregressive").
-  - Negation guard. An occurrence whose preceding word in the file is a negation (not, no, never, without,
-    nor, neither, cannot, none, nothing, or a word ending in n't) is rejected with status
-    "negation_before": the screener must extend the quote to include that word.
-A quote is accepted if at least one occurrence passes all checks.
+Checks (a quote is accepted if at least one occurrence passes all of them):
+  - Length (v1.5): at least 6 words, else status "too_short".
+  - No elision (v1.4): an ellipsis matches only an ellipsis at the same place in the file; a quote with an
+    ellipsis that is not found as a contiguous passage gets status "elided".
+  - Whole words (v1.4): a letter, digit or hyphen joined to either end of the match rejects that occurrence.
+  - Negation before (v1.4, widened in v1.5): an occurrence is rejected with status "negation_before" if any of
+    the 6 words before it, in the same sentence, is a negation word (NEG_BEFORE below, any word ending in
+    n't, or "w/o"). The screener must extend the quote back to include that word.
+  - Negation after (v1.5): an occurrence is rejected with status "negation_after" if any of the 3 words after
+    it, in the same sentence, is a strong negation word (NEG_AFTER below). The screener extends the quote.
+What the script cannot check: a qualifier that is not a negation ("only in stage 1", "which is kept frozen")
+outside these windows, and the meaning of a passage. Those stay with the adjudicator and the human author.
 
     python analysis/screening/quote_check.py --rows <screener.jsonl> --texts <dir> [--out <report.jsonl>]
     python analysis/screening/quote_check.py --self-test
 
 The full text of record <id> is the first file in <dir> named <id>.md, <id>.txt or <id>.html.
-Statuses: found, not_found, elided, negation_before, no_text, no_evidence.
+Statuses: found, not_found, too_short, elided, negation_before, negation_after, no_text, no_evidence.
 Exit status: 0 if every quote is found, 1 otherwise.
 """
 import argparse
@@ -36,6 +41,15 @@ import sys
 import unicodedata
 from pathlib import Path
 
+MIN_WORDS = 6
+WINDOW_BEFORE = 6
+WINDOW_AFTER = 3
+NEG_BEFORE = {"not", "no", "never", "without", "nor", "neither", "cannot", "none", "nothing", "lack", "lacks",
+              "lacking", "lacked", "rather", "instead", "unlike", "dont", "doesnt", "didnt", "isnt", "arent",
+              "wasnt", "werent", "cant", "wont", "hardly", "neglect", "neglects", "absent", "fail", "fails",
+              "failed"}
+NEG_AFTER = {"not", "no", "never", "neither", "nor", "without", "none"}
+
 _TRANS = str.maketrans({
     "‘": "'", "’": "'", "‚": "'", "‛": "'", "′": "'",
     "“": '"', "”": '"', "„": '"', "″": '"',
@@ -44,13 +58,19 @@ _TRANS = str.maketrans({
     "*": "", "_": "", "`": "", "[": "", "]": "",
 })
 _ELLIPSIS = re.compile(r"\.\.\.|…")
-_NEGATIONS = {"not", "no", "never", "without", "nor", "neither", "cannot", "none", "nothing"}
-_PREV_WORD = re.compile(r"([A-Za-z']+)\W*$")
+_LINK_TARGET = re.compile(r"\]\([^)\s]*\)")
+_SUP_MARK = re.compile(r"<sup>\s*[0-9,*†‡\s]{1,6}\s*</sup>", re.IGNORECASE)
+_TAG = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(\s[^<>]*)?/?>")
+_SENT_END = re.compile(r"[.;:!?](\s|$)")
+_WORD = re.compile(r"w/o|[A-Za-z']+")
 
 
 def normalise(s):
     s = unicodedata.normalize("NFKC", s)                # also turns the ellipsis character into "..."
     s = s.replace("­", "")                         # soft hyphen
+    s = _LINK_TARGET.sub("]", s)                        # [text](url) -> [text]
+    s = _SUP_MARK.sub("", s)                            # footnote markers
+    s = _TAG.sub("", s)                                 # other HTML tags, content kept
     s = s.translate(_TRANS)
     s = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", s)        # line-end hyphenation
     s = re.sub(r"\s+", " ", s)
@@ -66,21 +86,38 @@ def _joined(ch):
     return ch.isalnum() or ch == "-"
 
 
-def _negated(prefix):
-    m = _PREV_WORD.search(prefix[-40:])
-    if not m:
-        return False
-    w = m.group(1).lower()
-    return w in _NEGATIONS or w.endswith("n't")
+def _words(s):
+    return [w.lower().replace("'", "") if not w.lower().endswith("n't") else "n't" for w in _WORD.findall(s)]
+
+
+def _negated_before(prefix):
+    clause = prefix[-300:]
+    ends = list(_SENT_END.finditer(clause))
+    if ends:
+        clause = clause[ends[-1].end():]
+    for w in _words(clause)[-WINDOW_BEFORE:]:
+        if w in NEG_BEFORE or w == "n't" or w == "w/o":
+            return True
+    return False
+
+
+def _negated_after(suffix):
+    clause = suffix[:200]
+    m = _SENT_END.search(clause)
+    if m:
+        clause = clause[:m.start()]
+    return any(w in NEG_AFTER for w in _words(clause)[:WINDOW_AFTER])
 
 
 def quote_status(quote, text):
-    """Return 'found', 'not_found', 'elided' or 'negation_before' for one quote against one text."""
+    """Return found, not_found, too_short, elided, negation_before or negation_after for one quote."""
     q = normalise(quote)
     if not q:
         return "not_found"
+    if len(q.split()) < MIN_WORDS:
+        return "too_short"
     t = normalise(text)
-    saw_negation = False
+    seen = None
     for hay, needle in ((t, q), (_dehyphen(t), _dehyphen(q))):
         if not needle:
             continue
@@ -90,13 +127,15 @@ def quote_status(quote, text):
             left_ok = start == 0 or not (_joined(hay[start - 1]) and _joined(needle[0]))
             right_ok = end == len(hay) or not (_joined(hay[end]) and _joined(needle[-1]))
             if left_ok and right_ok:
-                if _negated(hay[:start]):
-                    saw_negation = True
+                if _negated_before(hay[:start]):
+                    seen = seen or "negation_before"
+                elif _negated_after(hay[end:]):
+                    seen = seen or "negation_after"
                 else:
                     return "found"
             start = hay.find(needle, start + 1)
-    if saw_negation:
-        return "negation_before"
+    if seen:
+        return seen
     if _ELLIPSIS.search(q):
         return "elided"
     return "not_found"
@@ -149,33 +188,59 @@ def check(rows_path, texts_dir, out_path=None):
 def self_test():
     text = ("We train a masked diffusion lan-\nguage model with a random masking ratio – sampled "
             "uniformly – per sequence.\n\nThe **understanding** and genera-\ntion branches share all "
-            "transformer weights (Table 3). Efﬁcient decoding uses “remasking”.")
+            "transformer weights (Table 3). Efﬁcient decoding uses “remasking” in every "
+            "experiment we report.")
     # Probe text of the v1.3 red-team audit (V2): the source says the modules do NOT share weights.
     neg = ("The understanding module and the generation module are trained separately; the two modules "
            "do not share weights. Unlike non-autoregressive decoding, the unshared weights keep each "
-           "module fixed. We index tokens as x_1, ..., x_n.")
+           "module fixed in all runs. We index the tokens of a sequence as x_1, ..., x_n in this paper.")
+    # Probes of the v1.4 red-team audit (n1, n2).
+    neg2 = ("In our design the encoder and the decoder do not fully share weights across layers. "
+            "We do not, however, share weights between the two branches in any stage. "
+            "It is not the case that both modules share weights in our final system. "
+            "The baseline lacks shared weights between the vision and text towers entirely. "
+            "Our variant w/o shared weights between towers is weaker on every benchmark. "
+            "Both towers of the model share weights in neither stage of training.")
+    md = ("We fine-tune [LLaDA](https://github.com/ML-GSAI/LLaDA) on SMILES strings from the ZINC "
+          "database.<sup>2</sup> The model<sup>*</sup> generates valid molecules in most trials. "
+          "Energy is E = mc<sup>2</sup> in this toy example.")
     cases = [
         # (quote, text, expected status)
         ("masked diffusion language model with a random masking ratio", text, "found"),   # hyphenation + newline
         ("ratio - sampled uniformly - per sequence", text, "found"),                      # en dash vs hyphen
         ("The understanding and generation branches share all transformer weights", text, "found"),  # markdown
-        ("Efficient decoding uses \"remasking\"", text, "found"),                         # ligature + curly quotes
+        ("Efficient decoding uses \"remasking\" in every experiment", text, "found"),     # ligature + curly quotes
         ("We train a masked ... share all transformer weights", text, "elided"),          # v1.3 accepted this
         ("share all transformer weights ... We train a masked", text, "elided"),          # elision, wrong order
         ("we train a masked diffusion language model", text, "not_found"),                # case kept
         ("The understanding and generation branches share no weights", text, "not_found"),  # altered wording
         ("", text, "not_found"),                                                          # empty quote
-        # adversarial cases added in v1.4
+        # v1.4 adversarial cases (audit of v1.3, V2)
         ("The understanding ... and the generation ... share weights", neg, "elided"),    # audit probe 1
-        ("understanding ... share weights", neg, "elided"),                               # audit probe 2
-        ("share weights", neg, "negation_before"),                                        # drops the "not"
+        ("the two modules ... share weights", neg, "elided"),                             # audit probe 2
+        ("share weights", neg, "too_short"),                                              # v1.5: minimum length
         ("the two modules do not share weights", neg, "found"),                           # negation kept
-        ("shared weights keep each module fixed", neg, "not_found"),                      # inside "unshared"
-        ("autoregressive decoding", neg, "not_found"),                                    # inside "non-autoregressive"
-        ("Unlike non-autoregressive decoding", neg, "found"),                             # whole hyphenated word
-        ("x_1, ..., x_n", neg, "found"),                                                  # literal ellipsis in source
-        ("x_1, …, x_n", neg, "found"),                                               # ellipsis character form
-        ("ransformer weights", text, "not_found"),                                        # starts inside a word
+        ("shared weights keep each module fixed in all runs", neg, "not_found"),          # inside "unshared"
+        ("autoregressive decoding, the unshared weights keep each", neg, "not_found"),    # inside "non-autoregressive"
+        ("Unlike non-autoregressive decoding, the unshared weights keep", neg, "found"),   # whole hyphenated word
+        ("We index the tokens of a sequence as x_1, ..., x_n", neg, "found"),             # literal ellipsis
+        ("We index the tokens of a sequence as x_1, …, x_n", neg, "found"),          # ellipsis character
+        ("ransformer weights (Table 3). Efficient decoding", text, "not_found"),          # starts inside a word
+        # v1.5 adversarial cases (audit of v1.4, n1): negation further back, other lexicon, after
+        ("fully share weights across layers", neg2, "too_short"),                         # 5 words
+        ("the decoder do not fully share weights across layers", neg2, "found"),          # negation included
+        ("fully share weights across layers in our design", neg2, "not_found"),           # not a passage
+        ("encoder and the decoder do not fully share", neg2, "found"),
+        ("share weights between the two branches in any stage", neg2, "negation_before"),  # "not, however,"
+        ("both modules share weights in our final system", neg2, "negation_before"),      # "not the case that"
+        ("shared weights between the vision and text towers", neg2, "negation_before"),   # "lacks"
+        ("shared weights between towers is weaker on every", neg2, "negation_before"),    # "w/o"
+        ("Both towers of the model share weights", neg2, "negation_after"),               # "in neither" after
+        ("Both towers of the model share weights in neither stage", neg2, "found"),       # negation included
+        # v1.5 markup cases (audit of v1.4, n2)
+        ("We fine-tune LLaDA on SMILES strings from the ZINC database.", md, "found"),    # link target dropped
+        ("The model generates valid molecules in most trials.", md, "found"),             # footnote marker dropped
+        ("Energy is E = mc2 in this toy example.", md, "not_found"),                      # sup content typed in
     ]
     fails = 0
     for q, t, want in cases:
