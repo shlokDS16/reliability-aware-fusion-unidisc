@@ -1,0 +1,34 @@
+{
+ "scope": "T1 batches t1b001-t1b034 (part 1 and part 2; 332 records)",
+ "status": "model screening complete (A, B, C route F); before the human validation sample and the human author review (protocol s4); not final",
+ "n": 332,
+ "decision": {
+  "include": 228,
+  "exclude": 104
+ },
+ "exclude_codes": {
+  "X1": 40,
+  "X0": 37,
+  "X2": 22,
+  "X3": 3,
+  "X4": 2
+ },
+ "include_i1": {
+  "a": 206,
+  "ab": 5,
+  "b": 17
+ },
+ "include_nonlang_only": 4,
+ "adjudicated_by_C": 66,
+ "C_decision": {
+  "exclude": 38,
+  "include": 28
+ },
+ "C_basis": {
+  "B": 33,
+  "neither": 21,
+  "A": 12
+ },
+ "C_queue_reasons": "c-queue-1.jsonl (53: disagreement, adjudicate row, M09594 quote) + c-queue-2.jsonl (13: quote_return_not_possible)",
+ "files": "t1-decisions-b001-b034.jsonl; c/c-t1-01..08; analysis/screening/c-run-log.jsonl"
+}
