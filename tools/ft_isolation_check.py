@@ -18,7 +18,7 @@ D = str(disp).replace("\\", "/").lower()
 flags = []
 BAD_TOOLS = re.compile(r"^(Skill|Agent|Task|WebFetch|WebSearch|ToolSearch|mcp__.*)$")
 BAD_CMD = re.compile(r"graph-memory|graph_memory|graphify|obsidian|vault|\brtk\b", re.I)
-PATHLIKE = re.compile(r"((?<![\w.~/-])[A-Za-z]:[\\/][^\s\"'|<>]*|(?<![\w.~:/-])/[A-Za-z][^\s\"'|<>]*|(?<!\w)\.\.[\\/]?|(?<!\w)~[\\/]?)")   # absolute only when not inside a relative path
+PATHLIKE = re.compile(r"((?<![\w.~/-])[A-Za-z]:[\\/][^\s\"'|<>]*|(?<![\w.~:/-])/(?:[A-Za-z]/|(?:tmp|temp|home|usr|etc|mnt|var|opt|Users|root|proc|dev|Windows|ProgramData|bin)(?![\w-]))[^\s\"'|<>]*|(?<!\w)\.\.[\\/]?|(?<!\w)~[\\/]?)")   # absolute = drive letter or a POSIX path from a filesystem root; '/x' inside code strings is not a path
 
 def inside(p):
     q = p.replace("\\", "/").lower()
