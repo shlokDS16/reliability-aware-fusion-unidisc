@@ -1,0 +1,43 @@
+{"id": "M11014", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (one-pass drafter; no multi-step denoising or distilled sampler stated)", "loc": "p.2, §I", "status": "found"}
+{"id": "M11014", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2", "loc": "p.10, §V", "status": "found"}
+{"id": "M11014", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D3/R4 (drafter reused unchanged; training objective not stated)", "loc": "p.2, §I", "status": "found"}
+{"id": "M11030", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (corruption reversed: masking plus confidence-mixed model-error substitutions)", "loc": "p.3, §3.3", "status": "found"}
+{"id": "M11030", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (substitution level varies per example)", "loc": "p.3, §3.3", "status": "found"}
+{"id": "M11030", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 (more than one denoising pass)", "loc": "p.3, §3.2", "status": "found"}
+{"id": "M11030", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R6 (text output of the drafter in results)", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M09648", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (single forward pass; no multi-step denoising stated)", "loc": "p.2, §2", "status": "found"}
+{"id": "M09648", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2", "loc": "p.4, §3.3.1", "status": "found"}
+{"id": "M09648", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D3/R4 (drafter is an official release used unchanged; training objective not stated)", "loc": "p.12, §A", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1", "loc": "p.10, Fig. 4", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b2", "loc": "p.9, §3.3", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b2/D2", "loc": "p.10, §4.1", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b3 (trained parameters on both sides)", "loc": "p.10, §4.1", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 (ii) (one network trained with both losses)", "loc": "p.11, §4.1", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 (understanding side: Hcap computes text from the image)", "loc": "p.7, §3.1", "status": "found"}
+{"id": "M03137", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "b3 (generation side: Sw)", "loc": "p.7, §3.1", "status": "found"}
+{"id": "M04458", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2/R6 (diffusion output is a change-detection map, an image)", "loc": "p.3, Fig. 2", "status": "found"}
+{"id": "M04458", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R6 (text comes from a separate autoregressive decoder stage)", "loc": "p.3, Fig. 2", "status": "found"}
+{"id": "M04458", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R6", "loc": "p.6, §III-C", "status": "found"}
+{"id": "M04458", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R9 step 3 (diffusion conditioned on images, not text)", "loc": "p.5, §III-B", "status": "found"}
+{"id": "M10953", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2/D5 (diffusion objective on the text backbone)", "loc": "p.3, §3.1", "status": "found"}
+{"id": "M10953", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D5 (loaded weights)", "loc": "p.7, §6.1", "status": "found"}
+{"id": "M10953", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 (diffusion decoding mode of the weights used)", "loc": "p.11, References (Fu et al., 2026)", "status": "found"}
+{"id": "M10953", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R6 (text results)", "loc": "p.7, §6.1", "status": "found"}
+{"id": "M10953", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R14(a)", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M10953", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R14(c)", "loc": "p.9, Figure 5", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1", "loc": "p.4, §3.2", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b2", "loc": "p.5, §3.3", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b2", "loc": "p.7, §4.2", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b3 (ii) joint stage", "loc": "p.17, §A.2 Stage III", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 (ii) joint stage", "loc": "p.17, §A.2 Stage III", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 (understanding side: connector computes the answer)", "loc": "p.17, §A.2 Stage II", "status": "found"}
+{"id": "M06731", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "b3 (generation side: adapter and LoRA)", "loc": "p.17, §A.2 Stage I", "status": "found"}
+{"id": "M06963", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "R7/D1 (output is a logical query over KG ids, not language or code)", "loc": "p.2, §1", "status": "found"}
+{"id": "M06963", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D1", "loc": "p.8, §6", "status": "found"}
+{"id": "M06963", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "not D5 (trained from scratch on KG data)", "loc": "p.6, §5.1", "status": "found"}
+{"id": "M06963", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R9 step 3 (condition is an entity set, not text)", "loc": "p.6, §5.1", "status": "found"}
+{"id": "M04018", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "R1 / R9 step 1 (own benchmark evaluates autoregressive LLMs writing text)", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M04018", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D5 (diffusion component is a fine-tuned text-pretrained LVLD)", "loc": "p.26, §VII-B1", "status": "found"}
+{"id": "M04018", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R12 (diffusion output is actions and waypoints)", "loc": "p.25, §VII-A", "status": "found"}
+{"id": "M04018", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R12/D2", "loc": "p.25, §VII-A", "status": "found"}
+{"id": "M04018", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R6 (results evaluate trajectories only; no text output of ViLaD stated)", "loc": "p.26, §VII-B1", "status": "found"}
