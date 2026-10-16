@@ -4,6 +4,8 @@ Uses the official client (openreview-py). Credentials are NEVER passed or printe
 reads OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD from the environment, which the user sets.
 
     pip install openreview-py
+    either put the two lines OPENREVIEW_USERNAME=... and OPENREVIEW_PASSWORD=... in the git-ignored .env file at the
+    repository root (the user writes it; Claude never opens it), or set them in the shell:
     set OPENREVIEW_USERNAME=...   (PowerShell: $env:OPENREVIEW_USERNAME="...")
     set OPENREVIEW_PASSWORD=...
     python tools/fetch_openreview.py --limit 3     # test first
@@ -23,7 +25,20 @@ OUT = ROOT / "research/sources/pdfs/fulltext"
 LOG = ROOT / "research/review/fulltext/fetch-log.jsonl"
 
 
+def load_dotenv():
+    """Read OPENREVIEW_USERNAME / OPENREVIEW_PASSWORD from the git-ignored .env at the repository root, if present.
+    Values go straight into this process's environment; nothing is printed or logged."""
+    f = ROOT / ".env"
+    if not f.exists():
+        return
+    for line in f.read_text(encoding="utf8-sig").splitlines():
+        k, sep, v = line.strip().partition("=")
+        if sep and k.strip() in ("OPENREVIEW_USERNAME", "OPENREVIEW_PASSWORD") and not os.environ.get(k.strip()):
+            os.environ[k.strip()] = v.strip().strip("'\"")
+
+
 def main():
+    load_dotenv()
     if not (os.environ.get("OPENREVIEW_USERNAME") and os.environ.get("OPENREVIEW_PASSWORD")):
         sys.exit("Set OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD in this shell first (see the docstring).")
     import openreview  # openreview-py
