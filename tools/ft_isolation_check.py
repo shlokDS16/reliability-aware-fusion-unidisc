@@ -18,7 +18,7 @@ D = str(disp).replace("\\", "/").lower()
 flags = []
 BAD_TOOLS = re.compile(r"^(Skill|Agent|Task|WebFetch|WebSearch|ToolSearch|mcp__.*)$")
 BAD_CMD = re.compile(r"graph-memory|graph_memory|graphify|obsidian|vault|\brtk\b", re.I)
-PATHLIKE = re.compile(r"([A-Za-z]:[\/][^\s\"'|<>]*|/[A-Za-z][^\s\"'|<>]*|\.\.[\/]?|~[\/]?)")
+PATHLIKE = re.compile(r"((?<![\w.~/-])[A-Za-z]:[\\/][^\s\"'|<>]*|(?<![\w.~:/-])/[A-Za-z][^\s\"'|<>]*|(?<!\w)\.\.[\\/]?|(?<!\w)~[\\/]?)")   # absolute only when not inside a relative path
 
 def inside(p):
     q = p.replace("\\", "/").lower()

@@ -1,0 +1,35 @@
+{
+ "batch": "pilot01",
+ "n": 8,
+ "decision_and_code_agreement": 8,
+ "full_text_version": "markitdown 0.1.7 (superseded by PyMuPDF text; these rows are a pilot, not screening decisions; the 8 records are screened again in the main pass)",
+ "isolation_check": {
+  "A": "pass",
+  "B": "pass (after fixing a checker false positive on relative paths)"
+ },
+ "quote_check": {
+  "A": "34 quotes, 2 not accepted (glued words in markitdown text)",
+  "B": "2 not found (quotes spanning line breaks)"
+ },
+ "subagent_tokens": {
+  "A": 355004,
+  "B": 385486
+ },
+ "tokens_per_paper_per_screener": 46281,
+ "weekly_usage_percent": {
+  "before": 29,
+  "after": 29
+ },
+ "five_hour_percent": {
+  "before": 23,
+  "after": 25
+ },
+ "rule_gaps_reported": [
+  "D1(b) first-order-logic queries over KG ids",
+  "R10 b3 side of input projectors",
+  "R10 b3 (i) when the diffusion decoder is trained separately as a tokenizer",
+  "evidence fallback for run-together text",
+  "RQ2/RQ4 scope (AR text path in I1(b); token pruning ratios)",
+  "R14 vs R4 precedence for training-free modules"
+ ]
+}
