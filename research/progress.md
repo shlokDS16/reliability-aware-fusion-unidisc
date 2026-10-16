@@ -1,6 +1,16 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 8 (2026-10-16 ~15:45 IST; newest; HANDOFF 7 below still applies except the status).**
+  Full-text T1: t1b001-t1b024 COMPLETE (agreement 220/240; 39 ids to adjudication; all counted sessions
+  isolated; one discarded for mkdir /tmp, one rerun after a network drop). NEXT: t1b025-t1b031 (part 1) and
+  t1b032-t1b034 (part 2), ids in tools/ft-session/t1b0NN.ids. tools/ft-session/next.sh (build/postbatch) and
+  agent-map.txt are copies from the old session: EDIT the two paths at its top (S = your dispatch root in your
+  scratchpad, P = your session's subagents transcript dir ~/.claude/projects/<project>/<session>/subagents).
+  ScienceDirect ingested (12 files kept after the user's cleanup; 7,170 unique, 179 queued): rescue pass on
+  the new SD string failures with abstracts, then dual TA of the 2 new queued + rescued, still TO DO.
+  OpenReview: .env template created at the repo root (user fills it; never open it); user is testing
+  python tools/fetch_openreview.py --limit 3. IEEE I3-I5 blocked by IEEE's account outage.
 - **HANDOFF 7 (2026-10-16 ~13:45 IST; newest, overrides older blocks).** Work happens in THIS worktree
   (exp-003-334706); the driving session runs in worktree crash-a57ec7, whose Edit/Write tools are blocked
   here by a hook, so files here are written by Bash/python (user approved).
