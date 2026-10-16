@@ -1,0 +1,42 @@
+TY  - JOUR
+T1  - Diffulex: Diffusion based lexically constrained text generation with mixed absorbing state and constraint balance
+AU  - Kang, Fengrui
+AU  - Huang, Xianying
+AU  - Li, Bingyu
+JO  - Expert Systems with Applications
+VL  - 281
+SP  - 127614
+PY  - 2025
+DA  - 2025/07/01/
+SN  - 0957-4174
+DO  - https://doi.org/10.1016/j.eswa.2025.127614
+UR  - https://www.sciencedirect.com/science/article/pii/S0957417425012369
+KW  - Lexically constrained
+KW  - Diffusion model
+KW  - Absorbing state
+KW  - Constraint balance
+AB  - Lexically constrained text generation aims to generate complete text with given keywords, which can be applied in many fields, such as dialogue systems, automatic summarization, and story generation. However, the current methods often find it difficult to strike a balance between generation quality, constraint ability, and generation speed, and most of them can only focus on one aspect, which seriously limits their applications. To solve this problem, we propose Diffulex, a lexically constrained text generation model based on the diffusion model, which achieves faster generation speed and higher flexibility. In response to the characteristics of lexically constrained text generation tasks, Diffulex employs a forward process of mixed absorbing states, converting tokens into different types of [MASK] tags to capture the semantic relationship between constraints and tokens. Through the constraint balance of the reverse process, more attention will be paid to the prediction tokens that meet the constraint conditions and promote the dynamic fusion of the hidden state constraint information, achieving the balance between the generation quality and the constraint ability. We compared Diffulex with advanced work in the field and popular large language models as baselines, and our results on multiple datasets show that Diffulex outperforms the baseline in various aspects. Our code is available on https://github.com/Kenfree0/Diffulex.
+ER  - 
+
+TY  - JOUR
+T1  - Text-derived Bayesian reconstruction of causal state transitions in railway perimeter safety events
+AU  - Zhang, Tiange
+AU  - Wang, Yanhui
+AU  - Jia, Limin
+AU  - Ji, Guang
+JO  - Accident Analysis & Prevention
+VL  - 237
+SP  - 108743
+PY  - 2026
+DA  - 2026/11/01/
+SN  - 0001-4575
+DO  - https://doi.org/10.1016/j.aap.2026.108743
+UR  - https://www.sciencedirect.com/science/article/pii/S0001457526003520
+KW  - Railway perimeter
+KW  - Accident causation
+KW  - Grounded theory
+KW  - Bayesian analysis
+KW  - Markov chain
+KW  - Safety management
+AB  - Railway perimeter safety events are rarely determined at the moment an external disturbance enters the operating boundary; their consequences emerge through subsequent state transitions that are recorded only incompletely in accident narratives. This study develops a text-derived Bayesian state-transition framework that reconstructs these narratives as auditable probabilistic state flows. Grounded coding defines the causal states, sentence-level coding identifies directed transitions, and first- and second-order Bayesian models are combined with absorbing-state analysis to characterize local continuation, path dependence and eventual outcome convergence. Among 335 screened cases, 281 contributed transition evidence to a 90-state model. The results reveal that path dependence is selective rather than universal. Preceding mechanisms can strongly redirect the successor distribution of the same intermediate state, yet adding preceding-state information reduces out-of-sample performance when the corresponding triadic evidence is absent and improves it only when that path is sufficiently represented. More historical context is therefore not inherently more informative under sparse narrative evidence. A complementary pattern emerges between evolutionary distance and outcome certainty: upstream and mid-chain states retain longer remaining paths but unstable terminal destinations, whereas near-outcome states have short remaining paths and highly stable outcome convergence. The framework therefore shifts perimeter-safety analysis from identifying hazardous factors to determining when history changes the future of a state and when that future has become sufficiently constrained for targeted intervention.
+ER  - 

@@ -1,0 +1,216 @@
+TY  - JOUR
+T1  - Multi-MELO: Unified multimodal model editing with dynamic LoRA
+AU  - Chen, Qin
+AU  - Yin, Jianghao
+AU  - Yu, Lang
+AU  - Zhou, Jie
+AU  - He, Liang
+JO  - Expert Systems with Applications
+VL  - 273
+SP  - 126766
+PY  - 2025
+DA  - 2025/05/10/
+SN  - 0957-4174
+DO  - https://doi.org/10.1016/j.eswa.2025.126766
+UR  - https://www.sciencedirect.com/science/article/pii/S0957417425003884
+KW  - Model editing
+KW  - Knowledge editing
+KW  - Vision-language model
+KW  - Diffusion model
+AB  - Model editing aims to correct hallucinations or incorporate new knowledge into the pre-trained neural networks. Most previous researches focus on model editing with merely the textual modality, while editing for multimodal models is not well studied. Recent research investigates how to adapt language model editors to multimodal scenarios. However, these methods are limited to image-to-text tasks and similar model architectures. The text-to-image editing task remains unexplored, presenting significant challenges due to the diversity of complex network architectures. In this paper, we propose a unified multimodal model editing framework based on dynamic LoRA (Multi-MELO), which enables effective editing for various multimodal models by dynamically activating corresponding LoRA blocks that encode the related knowledge. We explore the framework for editing diverse multimodal models (i.e., BLIP-2, and latent diffusion model) on three downstream tasks, including image captioning, visual question answering and text-to-image generation. The experimental results show that Multi-MELO achieves superior editing performance compared to the recent state-of-the-art baselines, and meanwhile requires no extra training for additional modules.
+ER  - 
+
+TY  - JOUR
+T1  - Towards unified bijective image–text generation for text-to-image person re-identification
+AU  - Wang, Qianqian
+AU  - Ma, Xiaoguang
+AU  - Jiang, Xiaoyu
+AU  - Ji, Jianmin
+AU  - Pan, Honghu
+JO  - Knowledge-Based Systems
+VL  - 325
+SP  - 114014
+PY  - 2025
+DA  - 2025/09/05/
+SN  - 0950-7051
+DO  - https://doi.org/10.1016/j.knosys.2025.114014
+UR  - https://www.sciencedirect.com/science/article/pii/S0950705125010597
+KW  - T2I person re-identification
+KW  - Latent diffusion model
+KW  - CLIP
+AB  - This paper proposes a unified multi-modal generative model to address two key challenges in text-to-image person re-identification (T2I ReID): lack of sufficient training data and large cross-modal difference. To this end, this paper adapts diffusion probabilistic models for bijective generation of text–image pairs, achieving both text-to-image generation and image-to-text generation by a unified framework. For the purpose of bijective generation and computational efficiency, this paper leverages the latent diffusion model as generative models, collaborating with text/image encoders and decoders. Specifically, a CLIP-based text encoder and an image one first transform the raw data into a shared feature space, then a mutual-conditional diffusion model (MCDiff) is implemented to estimate the probability density of the latent features, and finally an image decoder and a text decoder generate required data from the latent features. In MCDiff, the latent features of paired image–text serve as mutual conditions to input to UNet. The text latent features guide the refinement of image features, while the image latent features condition the generation of text features, forming a bidirectional conditioning mechanism that effectively captures the semantic alignment between modalities. By this fashion, dual path of text-to-image generation and image-to-text generation can be integrated into a unified framework, enabling both training sample augmentation and cross-modal generation. Experimental results on CUHK-PEDES, ICFG-PEDES, and RSTPReid demonstrate that the proposed approach significantly outperforms multiple baseline T2I ReID models. In particular, our method achieves Rank-1 accuracy gains of 2.1% and 2.0% on CUHK-PEDES compared to IRRA and CADA, respectively.
+ER  - 
+
+TY  - JOUR
+T1  - Multimodal generative AI for human motion understanding and generation: A survey and way forward
+AU  - Islam, Muhammad
+AU  - Huang, Tao
+AU  - Ahn, Euijoon
+AU  - Naseem, Usman
+JO  - Information Fusion
+VL  - 135
+SP  - 104435
+PY  - 2026
+DA  - 2026/11/01/
+SN  - 1566-2535
+DO  - https://doi.org/10.1016/j.inffus.2026.104435
+UR  - https://www.sciencedirect.com/science/article/pii/S1566253526003155
+KW  - Multimodal GenAI
+KW  - Multimodal LLM
+KW  - Multimodal diffusion model
+KW  - Multimodal transformer
+KW  - Text to human motion
+KW  - Autoregressive model
+KW  - Motion understanding
+KW  - Motion generation
+AB  - This paper presents an in-depth survey of the use of multimodal Generative Artificial Intelligence (GenAI) with autoregressive Large Language Models (LLMs) for human motion understanding and generation, offering insights into emerging methods and architectures and their potential to advance realistic and versatile motion synthesis. Focusing exclusively on text and motion modalities, this research investigates how textual descriptions can guide the generation of complex, human-like motion sequences. The paper explores various generative approaches, including multimodal autoregressive LLMs, multimodal diffusion, and multimodal transformers and their variants, and analyzes their strengths and limitations with respect to motion quality, computational efficiency, and adaptability. It highlights recent advances in text-conditioned motion generation, where textual inputs are used to control and refine motion outputs with greater precision. The use of LLMs further enhances these models by enabling semantic alignment between instructions and motion, improving coherence and contextual relevance. This systematic survey underscores the transformative potential of text-to-motion GenAI and LLM architectures in applications such as healthcare, humanoids, gaming, animation, and assistive technologies, while addressing ongoing challenges and research directions to guide future developments in human-centric GenAI.
+ER  - 
+
+TY  - JOUR
+T1  - DMWFuse: A degradation-adaptive unified framework for RGB-IR image fusion
+AU  - Bai, Keming
+AU  - He, Linyuan
+AU  - Ma, Shiping
+AU  - Dang, Jiahao
+AU  - Ni, Jiacheng
+AU  - Liu, Kun
+AU  - Han, Mingzhao
+AU  - Cai, Xiaoyu
+JO  - Neural Networks
+VL  - 204
+SP  - 109276
+PY  - 2026
+DA  - 2026/12/01/
+SN  - 0893-6080
+DO  - https://doi.org/10.1016/j.neunet.2026.109276
+UR  - https://www.sciencedirect.com/science/article/pii/S0893608026007367
+KW  - Image fusion
+KW  - Degraded scenarios
+KW  - Task-aware temporal segmented MoE diffusion
+KW  - Spatial-frequency interaction
+AB  - In recent years, object detection using visible (RGB) and infrared (IR) images has garnered widespread attention as a promising solution for achieving robust detection in real-world application scenarios. However, real-world imaging is frequently plagued by degradation issues-such as noise, blur, and haze in visible light imaging, as well as stripe noise in infrared imaging-which significantly degrade model performance. To address the research challenges in infrared-visible image fusion under degraded scenarios, this paper proposes a unified framework unifying multi-modal image restoration and fusion, adopting a two-stage training strategy. Its core innovations include a Task-Aware Temporal Segmented Mixture of Experts Diffusion Module (TDMoE), which optimizes expert selection through a gating mechanism to adaptively learn various degradation types during the restoration stage and aggregate high-value multi-modal information during the fusion stage; a Wavelet Domain Fusion Module (WFM) enabling differential fusion of structures and details; and a Wavelet-Enhanced Transformer Block (WETB) that strengthens spatial-frequency domain information interaction and suppresses degradation-induced noise. The proposed network reduces task interference through two-stage collaborative learning, and extensive experiments on multiple RGB-IR datasets validate that our method achieves superior performance and robust generalization for downstream tasks. Code is available at https://github.com/M2FLab/DMWFuse.
+ER  - 
+
+TY  - JOUR
+T1  - Unifying multimodal interactions for rumor diffusion prediction with global hypergraph modeling
+AU  - Zhang, Qi
+AU  - Li, Yuan
+AU  - Zou, Jialing
+AU  - Zhu, Jianming
+AU  - Liu, Dingning
+AU  - Jiao, Jianbin
+JO  - Knowledge-Based Systems
+VL  - 301
+SP  - 112246
+PY  - 2024
+DA  - 2024/10/09/
+SN  - 0950-7051
+DO  - https://doi.org/10.1016/j.knosys.2024.112246
+UR  - https://www.sciencedirect.com/science/article/pii/S0950705124008803
+KW  - Social network services
+KW  - Rumor diffusion prediction
+KW  - Deep learning
+KW  - Hypergraph neural network
+KW  - Multimodal interactions
+AB  - A central issue in rumor surveillance and management is decoding the complex dynamics of rumor propagation, with an emphasis on predicting diffusion cascades. Recent studies focus on node embedding or the sequence of dissemination in a rumor cascade based on user social interaction, while neglecting interactions between users and rumors, as well as between various rumors. Online rumor diffusion is a complex system that encompasses two fundamental components: rumors and users. A comprehensive understanding of this system’s dynamics requires a global perspective. Consequently, it is necessary to develop models that capture the inherent multimodal interactions in rumor propagation. To tackle this challenge, we propose an HG2RLink framework of rumor diffusion prediction, which unifies multimodal interactions by global encoding. Specifically, our methodology begins with the establishment of a hypergraph structure. We then refine these interactions by leveraging a hypergraph neural network that aggregates users’ preferences for rumors. Two high-order graphs are generated to capture latent spatial interactions of rumors. By employing a learning approach for multimodal interactions, each rumor diffusion sequence is modeled with a long-range vision field of users in a deep neural network. Moreover, to validate the effectiveness of our method, we introduce a new dataset available for further exploration of new methods. Finally, experimental results show that HG2RLink outperforms other methods with improvements ranging from 0.8% to 7.6% for the Hits@k metric and from 0.4% to 2.6% for the MAP@k metric across four diverse datasets.
+ER  - 
+
+TY  - JOUR
+T1  - A Research Framework for Controllable Multimodal Visual Design Generation
+AU  - Wang, Zhenyu
+AU  - Malik, Ifrah
+AU  - Diao, Zhengze
+AU  - Wang, Chenhao
+JO  - Journal of Organizational and End User Computing
+VL  - 38
+IS  - 1
+PY  - 2026
+DA  - 2026/01/22/
+SN  - 1546-2234
+DO  - https://doi.org/10.4018/JOEUC.406954
+UR  - https://www.sciencedirect.com/science/article/pii/S1546223426000250
+KW  - Multimodal Generation
+KW  - Diffusion Models
+KW  - Layout-to-Image
+KW  - Design-Aware Synthesis
+KW  - Controllable Generation
+AB  - ABSTRACT
+Controllable image generation has advanced rapidly with diffusion models, yet existing approaches struggle to integrate multiple heterogeneous control signals and lack mechanisms for enforcing professional design principles. Addressing this challenge requires a unified framework capable of harmonizing semantic, structural, and stylistic modalities while maintaining geometric precision and aesthetic coherence. This study proposes UMC-Design, a unified multimodal controllable framework that introduces a shared control representation, a cross-domain fusion mechanism, and a dual-path diffusion architecture synchronized through a design prior network. The model jointly processes text, vector layouts, semantic maps, and reference images, enabling flexible and scalable multimodal conditioning. Experiments on COCO-Stuff, RICO + PubLayNet, and Crello demonstrate that UMC-Design achieves state-of-the-art performance, reducing FID to 22.3 and improving multimodal alignment to 0.81, surpassing leading baselines by large margins.
+ER  - 
+
+TY  - JOUR
+T1  - A Unified multi-modality conditional latent diffusion model for point cloud generation
+AU  - Yang, Yihang
+AU  - Zhao, Zibo
+AU  - Yin, Fukun
+AU  - Liu, Wen
+AU  - Ding, Yuhan
+AU  - Jiang, Biao
+AU  - Yu, Gang
+AU  - Chen, Tao
+JO  - Pattern Recognition
+VL  - 172
+SP  - 112716
+PY  - 2026
+DA  - 2026/04/01/
+SN  - 0031-3203
+DO  - https://doi.org/10.1016/j.patcog.2025.112716
+UR  - https://www.sciencedirect.com/science/article/pii/S0031320325013792
+KW  - Point cloud generation
+KW  - Multi-modality
+KW  - Diffusion model
+AB  - Recent advancements in deep learning for point cloud tasks like detection, segmentation, and classification face challenges due to the scarcity and diversity of annotated point cloud data, leading to persistent overfitting. To address this, we introduce a novel multi-modal conditional point cloud generation approach to enhance point cloud data augmentation. Recent diffusion models have shown great potentiality in conditional point cloud generation. However, it remains an ongoing obstacle how to introduce a multitude of multi-modality conditions in the pursuit of an efficient conditional point cloud generation. In this work, we present a novel approach for multi-modality conditional point cloud generation, which effectively extends the utilization of conditions from one single and rigid type of condition into multi-modality and collaborative conditions in point cloud generation tasks. In particular, we propose a unified framework to address the issue of multi-modality conditional point cloud generation. A Point Cloud Variational AutoEncoder (PCVAE) compresses point clouds into a normalized latent space. Later, a multi-conditional latent diffusion model is used to introduce multi-modality conditions to generate the latent code compressed by the former PCVAE module. Multi-modality conditions can lead the process of point cloud generation individually or collectively, and the quality of generated point clouds can be enhanced by additionally incorporating other conditions as input. Extensive experiments demonstrate that our method achieves the task of multi-modality conditional point cloud generation with a unified framework without fine-tuning on each modality. Our source code is available at https://github.com/hangyi2000/UniPointDiffusion.
+ER  - 
+
+TY  - JOUR
+T1  - A generative framework for predicting cellular morphological and transcriptomic perturbation responses
+AU  - Peng, Rui
+AU  - Liu, Ziru
+AU  - Gao, Yuanxu
+AU  - Wang, Jinzhuo
+JO  - Cell Reports Methods
+VL  - 6
+IS  - 7
+SP  - 101459
+PY  - 2026
+DA  - 2026/07/20/
+SN  - 2667-2375
+DO  - https://doi.org/10.1016/j.crmeth.2026.101459
+UR  - https://www.sciencedirect.com/science/article/pii/S2667237526001591
+KW  - virtual cell modeling
+KW  - multimodal generative model
+KW  - diffusion model
+KW  - perturbation response prediction
+KW  - virtual screening
+KW  - Cell Painting
+KW  - L1000
+KW  - cellular morphology synthesis
+KW  - gene expression prediction
+KW  -  phenotypic screening
+AB  - Summary
+Predicting coordinated cellular responses to perturbations is crucial for phenotypic drug discovery and building virtual cell models. Current methods typically predict isolated modalities or require empirical post-perturbation data, precluding true de novo virtual screening. To address this, we introduce MultiVCDiff, a unified multimodal generative diffusion framework that simultaneously predicts high-fidelity cellular morphology images and transcriptomic profiles directly from chemical or genetic perturbations. This framework was trained on a comprehensive trimodal corpus encompassing 1,118 chemical and 130 genetic perturbations across four datasets. Evaluated under strict zero-shot settings on unseen drugs, MultiVCDiff outperforms state-of-the-art single-modality baselines. It successfully overcomes morphological mode collapse, generates highly accurate gene expression signatures, and captures complex biological relationships to reliably retrieve drug mechanisms of action. By eliminating the dependency on prior post-perturbation readouts, MultiVCDiff enables scalable in silico hypothesis generation, significantly accelerating drug discovery and advancing holistic virtual cell modeling.
+ER  - 
+
+TY  - JOUR
+T1  - Reinforcement Learning-Driven Multimodal Medical Foundation Model for Unified Understanding, Reasoning and Generation
+AU  - Chen, W.
+AU  - Xing, L.
+JO  - International Journal of Radiation Oncology*Biology*Physics
+VL  - 126
+IS  - 1, Supplement 
+SP  - e194
+PY  - 2026
+DA  - 2026/09/01/
+T2  - ASTRO 2026: 68th Annual Meeting
+SN  - 0360-3016
+DO  - https://doi.org/10.1016/j.ijrobp.2026.06.1081
+UR  - https://www.sciencedirect.com/science/article/pii/S0360301626019231
+AB  - Purpose/Objective(s)
+To develop and validate a unified multimodal medical foundation model that combines visual understanding, cross-modal generation (image-text translation), and interpretable reasoning with visual grounding, and to quantify the gains enabled by multi-objective reinforcement learning (RL).
+Materials/Methods
+A discrete-diffusion Multimodal Large Language Model (dMLLM) was developed that represents both medical images and text as sequences of discrete tokens and generates outputs by parallel denoising. The model was pretrained on large-scale multimodal corpora covering understanding tasks (e.g., VQA/diagnosis) and generation tasks (e.g., radiology report generation and text-to-image synthesis). Unified optimization was performed using RL with a composite reward: (1) a cycle-consistency reward enforcing bidirectional coarse-grained alignment via image-to-report-to-image and report-to-image-to-report reconstruction; and (2) a multimodal inpainting reward enforcing fine-grained alignment by randomly masking 15–30% of image or text tokens and rewarding reconstruction conditioned on the complementary modality. For interpretability, a medical reasoning dataset was constructed by augmenting curated multimodal examples with chain-of-thought rationales and spatial annotations. Evaluation spanned report generation and report-to-image generation using standard quantitative metrics and expert review of reasoning and grounding quality.
+Results
+The proposed model improved report generation over a representative baseline from BLEU-1 0.256 to 0.416 (+0.160; +62.5%) and ROUGE-L 0.244 to 0.366 (+0.122; +50.0%) on IU X-Ray dataset, as shown in Table 1 of Supporting Document. For text-to-image synthesis, FID decreased from 1.66 to 1.594 (−0.066; 4.0% reduction). Grounded chain-of-thought produced spatially anchored explanations suitable for quantitative assessment and clinician review.
+Conclusion
+This work indicates the potential for a single RL-optimized medical foundation model to deliver high-performing and interpretable multimodal AI. Performance gains were observed across both recognition (report generation) and generative (text-to-image) tasks through RL-based cross-modal alignment, while visual grounding enabled transparent, spatially verifiable reasoning.
+ER  - 

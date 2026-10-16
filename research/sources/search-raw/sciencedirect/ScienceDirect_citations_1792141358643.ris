@@ -1,0 +1,52 @@
+TY  - JOUR
+T1  - The duality of generative AI and reinforcement learning in robotics: A review
+AU  - Moroncelli, Angelo
+AU  - Soni, Vishal
+AU  - Forgione, Marco
+AU  - Piga, Dario
+AU  - Spahiu, Blerina
+AU  - Roveda, Loris
+JO  - Information Fusion
+VL  - 129
+SP  - 104003
+PY  - 2026
+DA  - 2026/05/01/
+SN  - 1566-2535
+DO  - https://doi.org/10.1016/j.inffus.2025.104003
+UR  - https://www.sciencedirect.com/science/article/pii/S1566253525010656
+KW  - Robotics
+KW  - Generative AI
+KW  - Foundation model
+KW  - Reinforcement learning
+KW  - Data fusion
+KW  - Review
+AB  - Recently, generative AI and reinforcement learning (RL) have been redefining what is possible for AI agents that take information flows as input and produce intelligent behavior. As a result, we are seeing similar advancements in embodied AI and robotics for control policy generation. Our review paper examines the integration of generative AI models with RL to advance robotics. Our primary focus is on the duality between generative AI and RL for robotics downstream tasks. Specifically, we investigate: (1) The role of prominent generative AI tools as modular priors for multi-modal input fusion in RL tasks. (2) How RL can train, fine-tune and distill generative models for policy generation, such as VLA models, similarly to RL applications in large language models. We then propose a new taxonomy based on a considerable amount of selected papers. Lastly, we identify open challenges accounting for model scalability, adaptation and grounding, giving recommendations and insights on future research directions. We reflect on which generative AI models best fit the RL tasks and why. On the other side, we reflect on important issues inherent to RL-enhanced generative policies, such as safety concerns and failure modes, and what are the limitations of current methods. A curated collection of relevant research papers is maintained on our GitHub repository, serving as a resource for ongoing research and development in this field.
+ER  - 
+
+TY  - JOUR
+T1  - Multimodal fusion with vision-language-action models for robotic manipulation: A systematic review
+AU  - Ud Din, Muhayy
+AU  - Akram, Waseem
+AU  - Saad Saoud, Lyes
+AU  - Rosell, Jan
+AU  - Hussain, Irfan
+JO  - Information Fusion
+VL  - 129
+SP  - 104062
+PY  - 2026
+DA  - 2026/05/01/
+SN  - 1566-2535
+DO  - https://doi.org/10.1016/j.inffus.2025.104062
+UR  - https://www.sciencedirect.com/science/article/pii/S1566253525011248
+KW  - Information fusion
+KW  - Vision-Language-Action models
+KW  - Robotic and embodied control
+KW  - Foundation models
+KW  - Language-conditioned manipulation
+KW  - Robotic manipulation
+KW  - Multimodal learning
+KW  - Cross-modal alignment
+KW  - Embodied AI
+KW  - Agentic AI
+AB  - Vision Language Action (VLA) models represent a new frontier in robotics by unifying perception, reasoning, and control within a single multimodal learning framework. By integrating visual, linguistic, and action modalities, they enable multimodal fusion systems designed for instruction-driven manipulation and generalist autonomy. This systematic review synthesizes the state of the art in VLA research with an emphasis on architectures, algorithms, and applications relevant to robotic manipulation. We examine 102 models, 26 foundational datasets, and 12 simulation platforms, categorizing them according to their fusion strategies and integration mechanisms. Foundational datasets are evaluated using a novel criterion based on task complexity, modality richness, and dataset scale, allowing a comparative analysis of their suitability for generalist policy learning. We further introduce a structured taxonomy of fusion hierarchies and encoder-decoder families, together with a two-dimensional dataset characterization framework and a meta-analytic benchmarking protocol that quantitatively links design variables to empirical performance across benchmarks. Our analysis shows that hierarchical and late fusion architectures achieve the highest manipulation success and generalization, confirming the benefit of multi-level cross-modal integration. Diffusion-based decoders demonstrate superior cross-domain transfer and robustness compared to autoregressive heads. Dataset analysis highlights a persistent lack of benchmarks that combine high-complexity, multimodal, and long-horizon tasks, while existing simulators offer limited multimodal synchronization and real-to-sim consistency. To address these gaps, we propose the VLA Fusion Evaluation Benchmark to quantify fusion efficiency and alignment. Drawing on both academic and industrial advances, the review outlines future research directions in adaptive and modular fusion architectures, computational resource optimization, and the deployment of interpretable, resource-efficient robotic systems. We further propose a forward-looking agentic VLA paradigm where LLM planners integrate VLA skills as verifiable tools within a closed feedback loop for adaptive and self-improving robotic control. This work provides both a conceptual foundation and a quantitative roadmap for advancing embodied intelligence through multimodal information fusion across robotic domains. A public repository summarizing models, datasets, and simulators is available at: https://muhayyuddin.github.io/VLAs/.
+ER  - 

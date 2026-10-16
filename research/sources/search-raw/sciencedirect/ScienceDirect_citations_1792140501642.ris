@@ -1,0 +1,585 @@
+TY  - JOUR
+T1  - DiffuStory: Improving text diffusion models for creative story generation with contrastive learning and decoder-decoder Transformers
+AU  - Li, Zhenyu
+AU  - Xu, Kaijie
+AU  - Liang, Yian
+AU  - Wang, Yuechuan
+AU  - Zou, Zongfeng
+JO  - Expert Systems with Applications
+VL  - 299
+SP  - 130154
+PY  - 2026
+DA  - 2026/03/01/
+SN  - 0957-4174
+DO  - https://doi.org/10.1016/j.eswa.2025.130154
+UR  - https://www.sciencedirect.com/science/article/pii/S0957417425037698
+KW  - Neural story generation
+KW  - Text diffusion models
+KW  - Transformers
+KW  - Contrastive learning
+KW  - Knowledge distillation
+KW  - LLM-based metrics
+AB  - Neural story generation (NSG) is an advanced task in natural language processing (NLP). Its major challenges lie in the significant information gap between short prompts and long narrative outputs. Most recent NSG models rely on explicit plot planning to enhance consistency or employ the conditional variational autoencoder (CVAE) to improve word diversity. However, these models lack creativity and struggle to be applied in real-world scenarios. This study proposes a two-stage NSG model, DiffuStory, comprising a memory module and an expression module. In the first stage, the memory module leverages a text diffusion model to learn an implicit plot representation (IPR). We incorporate a novel token-level contrastive learning (TLCL) objective to calibrate the anisotropic representation space, mitigating the drift effect of diffusion models on open-ended language generation. In the second stage, the expression module with decoder-decoder Transformer architecture captures long-range dependencies within the IPR and performs autoregressive decoding to generate coherent story text. At the same time, we introduce an optimal transport knowledge distillation (OTKD) approach that guides the decoding process with pre-trained models and supports cross-tokenizer knowledge transfer. Following a multidimensional evaluation framework, including automatic, large language model (LLM)-based, and human evaluations, we validate the proposed DiffuStory on two widely used English NSG datasets (ROCStories and WikiPlots) and a newly curated Chinese NSG dataset (CHGStories). Experimental results reveal a significant bias when NSG models are evaluated solely using automatic metrics. DiffuStory achieves competitive performance on LLM-based metrics across three datasets and effectively addresses the limitations of text diffusion models under human evaluation. Moreover, the ablation study demonstrates the effectiveness of each component in DiffuStory. In the case study, human evaluations further confirm that the learned IPR can serve as an implicit intermediate representation that bridges the information gap and fosters creativity in NSG, resulting in higher human satisfaction.
+ER  - 
+
+TY  - JOUR
+T1  - TWDT: Training-free word-level controllable diffusion model for text generation
+AU  - Gao, Nan
+AU  - Lu, Yangjie
+AU  - Chen, Peng
+AU  - Sun, Guodao
+AU  - Liang, Ronghua
+AU  - Zhang, Yilong
+JO  - Knowledge-Based Systems
+VL  - 330
+SP  - 114437
+PY  - 2025
+DA  - 2025/11/25/
+SN  - 0950-7051
+DO  - https://doi.org/10.1016/j.knosys.2025.114437
+UR  - https://www.sciencedirect.com/science/article/pii/S0950705125014765
+KW  - Controlled text generation
+KW  - Diffusion model
+KW  - Word-level controllable diffusion,
+AB  - Existing controlled text generation (CTG) methods typically require the training of additional components, whereas diffusion models have already achieved fine control in image generation by adjusting latent feature information during the inference process. However, existing diffusion models still face issues such as “attribute leakage” and “overgeneration” when applied to text generation, leading to generated texts lacking precise control. To address these problems, we propose a training-free word-level controllable diffusion language network (TWDT). This network achieves fine-grained control of text generation by adjusting latent space features during the inference process. Specifically, TWDT introduces an Alignment and Word Evaluation (AWE) module, which ensures accurate mapping of the text to a predefined set of feature words through syntactic segmentation and multi-level semantic alignment. At the same time, a similarity threshold filtering mechanism is applied to inject Gaussian noise into low-consistency nodes, ensuring semantic consistency and stability during generation. To evaluate the rigor and accuracy of the model, we have developed a high-quality multi-disease dental diagnostic dataset, all of which are annotated by experienced dental experts, serving as the benchmark for model evaluation. Experimental results show that TWDT outperforms existing diffusion models in terms of generation accuracy and rigor.
+ER  - 
+
+TY  - JOUR
+T1  - Finite difference/finite element method for multi-term time fractional diffusion equation with constant delay
+AU  - Bu, Weiping
+AU  - Liao, Weizhi
+AU  - Tang, Yifa
+JO  - Communications in Nonlinear Science and Numerical Simulation
+VL  - 155
+SP  - 109616
+PY  - 2026
+DA  - 2026/04/01/
+SN  - 1007-5704
+DO  - https://doi.org/10.1016/j.cnsns.2025.109616
+UR  - https://www.sciencedirect.com/science/article/pii/S1007570425010251
+KW  - Multi-term time fractional diffusion equation with constant delay
+KW  - L1 formula
+KW  - Finite element method
+KW  - Stability and convergence
+AB  - This work considers to numerically solve a multi-term time fractional diffusion equation with constant delay. First, we investigate the regularity of the solution and reveal that it possesses first-order differentiability in time, with the second-order derivative exhibiting singularity only at t=0. In view of the favorable smoothness of the solution, we develop a finite difference/finite element scheme for the considered problem using a uniform temporal mesh combined with L1 formulation and backward Euler formulation. To analyze the stability and convergence, a novel discrete sequence is introduced and its properties are discussed. By employing these properties, the unconditional stability of the numerical scheme is obtained and a new discrete fractional Gronwall inequality with delay is established. By using this Gronwall inequality, we obtain a local temporal error estimate for the proposed numerical scheme. Finally, some numerical tests are presented to validate the theoretical results.
+ER  - 
+
+TY  - JOUR
+T1  - Optimization of Multiparametric MRI Sequence Combinations for Early Detection of Chronic Kidney Disease
+AU  - Liu, Zhenni
+AU  - Gong, Yunan
+AU  - Liu, Zhonglin
+AU  - Wu, Xiaoqing
+AU  - Zhou, Zhiqiang
+AU  - Shen, Daming
+AU  - Shang, Song’an
+AU  - Liu, Wenjin
+AU  - Lu, Siyuan
+AU  - Ye, Jing
+JO  - Academic Radiology
+PY  - 2026
+DA  - 2026/07/25/
+SN  - 1076-6332
+DO  - https://doi.org/10.1016/j.acra.2026.07.011
+UR  - https://www.sciencedirect.com/science/article/pii/S1076633226005179
+KW  - Chronic kidney disease
+KW  - Multiparametric MRI
+KW  - Diffusion-weighted imaging
+KW  - T1 mapping
+KW  - Machine learning
+AB  - Rationale and Objectives
+To evaluate renal multiparametric MRI sequence combinations for early chronic kidney disease (CKD) detection and identify an approach balancing performance and clinical feasibility.
+Methods
+This prospective study included 105 patients with early CKD and 127 healthy controls. All participants underwent renal MRI with T1WI, DWI, T1 mapping, and BOLD imaging. Twenty four features were extracted from T1WI, ADC, T1, and R2* maps. Participants were divided into training and temporally independent test cohorts by enrollment date. Fifteen predefined models were developed using elastic net regularized logistic regression. Representative models were selected by fivefold cross validation and evaluated using ROC analysis, calibration analysis, decision curve analysis, and fixed threshold diagnostic metrics.
+Results
+Feature reproducibility was acceptable to good, with intraclass correlation coefficients of 0.731 to 0.891. In training, the model using all four sequences achieved the highest AUC of 0.903. DWI was the best single sequence model (AUC, 0.874), T1WI+DWI was the best two sequence model (AUC, 0.884), and T1WI+DWI+T1 mapping was selected as the representative three sequence model (AUC, 0.895). Cortical ADC variability, medullary ADC variability, and ADC corticomedullary difference were consistently retained. In the test cohort, the model using all four sequences showed the highest AUC of 0.866 and the best calibration. T1WI+DWI achieved the highest accuracy and F1 score, at 0.844 and 0.815.
+Conclusion
+Renal multiparametric MRI supports noninvasive early CKD detection. DWI was the most important single sequence. Multi sequence integration improved diagnostic performance, while T1WI+DWI offered a practical balance between performance and feasibility.
+ER  - 
+
+TY  - JOUR
+T1  - Scatterometer data calibration using the precision-converged calibration method for improved predictions
+AU  - Ye, Shiping
+AU  - Chen, Chaoxiang
+AU  - Golovko, Vladimir
+AU  - Abbas, Ghulam
+AU  - Wang, Jinming
+AU  - Touti, Ezzeddine
+JO  - Expert Systems with Applications
+VL  - 289
+SP  - 128389
+PY  - 2025
+DA  - 2025/09/15/
+SN  - 0957-4174
+DO  - https://doi.org/10.1016/j.eswa.2025.128389
+UR  - https://www.sciencedirect.com/science/article/pii/S0957417425020081
+KW  - Deep Learning
+KW  - Error Calibration
+KW  - Federated Learning
+KW  - Remote Sensing
+KW  - Scatterometer
+AB  - Scatterometers use light beams and wave diffusion via different materials to track environmental changes. The information gathered by these instruments on climate, ocean, and wind changes helps to improve forecasting. However, there is a risk of a high rate of erroneous readings due to calibration problems and shifting ambient conditions. This article presents the Precision-Converged Calibration Method (PCCM), which uses discrete data inputs to overcome these obstacles. Using isolated samples of sensed data, PCCM canpinpoint where accurate and incorrect forecasts diverge. The underlying verification process is enhanced by federated learning approaches, allowing for the detection of discrepancies by verifyinghistorical and discrete data patterns. PCCM’s non-linear learning approach relies solely on discrete inputs to discover precision variations and decrease calibration mistakes. It is crucial to synchronize across several edge-running learning processes toguarantee improvements in forecasting and analysis accuracy. The entire process is designed to provide suggestions for improving or replacing sensors and enhancing data for designated uses. Accuracy, recommendation ratio, error rate, and analysis time are used as primary indicators to gauge the success of the given approach. The experimental results reveal that the suggested strategy decreases the error by 8.05% and the false rate by 8.96% for varying amounts of input data while increasing accuracy by 16%, the recommendation ratio by 15.7%, and reducing data consumption by 12.97%.
+ER  - 
+
+TY  - JOUR
+T1  - A novel maritime traffic complexity model based on ship trajectory prediction
+AU  - Xiao, Zhongming
+AU  - Zhang, Jiaxue
+AU  - Li, Chanshu
+AU  - Cao, Wenjie
+AU  - Yu, Jun
+AU  - Bo, Feng
+AU  - Wang, Xinjian
+JO  - Ocean Engineering
+VL  - 357
+SP  - 125519
+PY  - 2026
+DA  - 2026/06/01/
+SN  - 0029-8018
+DO  - https://doi.org/10.1016/j.oceaneng.2026.125519
+UR  - https://www.sciencedirect.com/science/article/pii/S0029801826013533
+KW  - Maritime safety
+KW  - Maritime traffic situation
+KW  - Ship trajectory prediction
+KW  - Bi-GRU Seq2Seq
+KW  - DBSCAN clustering
+KW  - Shapley value
+AB  - As global shipping density increases, maritime traffic in complex waterways exhibits pronounced dynamic and multi-scale characteristics, while traditional static assessments struggle to support proactive risk warning. To address this gap, this study proposes a novel, unified framework that integrates prediction, clustering, micro-level complexity quantification, and Shapley-based cross-scale fusion into a single methodology. First, a Bidirectional Gated Recurrent Unit Sequence to Sequence (Bi-GRU Seq2Seq) model with a fusion attention mechanism is constructed to achieve short term vessel trajectory prediction based on AIS data. Second, predicted trajectories are clustered using the density based spatial clustering of applications with noise algorithm to identify potential encounter clusters. Third, a micro level complexity model is developed from four dimensions, namely motion trend, relative distance, distance at closest point of approach, and relative bearing, to quantify vessel interaction risk. Finally, Shapley value theory is utilized to realise nonlinear cross scale fusion from vessels to clusters and to the regional level, enabling marginal contribution analysis and interpretable macro level assessment. A case study in the Laotieshan Channel of the Bohai Sea demonstrates that the prediction model achieves a Root Mean Square Error of 84.99 m, with a maximum error reduction of 76 per cent compared with baseline models. The proposed framework effectively identifies risk hotspots and captures the aggregation and diffusion patterns of traffic complexity. By enabling a transition from static assessment to proactive risk warning, this study provides a quantifiable and interpretable methodological basis for intelligent maritime supervision, refined vessel traffic services management, and proactive traffic risk warning.
+ER  - 
+
+TY  - JOUR
+T1  - A fractional-order hyperchaotic framework for dynamic affine S-box parameterization and bidirectional diffusion with neural nonlinear mixing
+AU  - Das, Devasmito
+JO  - Nonlinear Science
+VL  - 8
+SP  - 100162
+PY  - 2026
+DA  - 2026/10/15/
+SN  - 3050-5178
+DO  - https://doi.org/10.1016/j.nls.2026.100162
+UR  - https://www.sciencedirect.com/science/article/pii/S3050517826000572
+KW  - Fractional-order systems
+KW  - Hyperchaos
+KW  - Neural networks
+KW  - Dynamic affine S-box parameterization
+KW  - Affine-equivalent S-box transformation
+KW  - Chaotic key generation
+KW  - Bidirectional diffusion
+KW  - Cryptographic primitive generation
+AB  - The increasing need for adaptive and nonlinear security mechanisms has stimulated interest in chaos-based cryptographic primitive generation. This paper proposes a fractional-order hyperchaotic neural framework for dynamic keystream generation, affine S-box parameterization, and bidirectional diffusion. The proposed method combines a four-dimensional fractional-order hyperchaotic oscillator, discretized using the Grünwald–Letnikov formulation, with a bounded feedforward neural transformation to generate chaotic-neural sequences. These sequences are used to derive round-dependent keystreams, permutation vectors, and invertible affine transformations over GF(2)8. Instead of constructing a fundamentally new S-box family through chaotic sorting, the proposed approach applies key-dependent and round-dependent invertible affine transformations around a strong public base S-box. The resulting S-boxes are affine-equivalent to the base S-box and therefore inherit its principal substitution properties while introducing temporal variability within the multi-round substitution-diffusion process. The dynamical behavior of the fractional-order system is investigated through Lyapunov exponent analysis, dissipativity, Kaplan–Yorke dimension, and bifurcation analysis, confirming the presence of complex hyperchaotic dynamics. The cryptographic behavior is evaluated through entropy, pixel correlation, key and plaintext sensitivity, S-box quality metrics, NIST randomness tests, and ablation analysis. The results indicate that the proposed framework produces noise-like ciphertexts, strong image-domain diffusion behavior, robust sensitivity to small parameter variations, and stable affine-equivalent S-box characteristics. These results are interpreted as empirical evidence of randomness and diffusion, not as formal cryptographic security proofs. The method is not intended to replace standardized ciphers such as AES; rather, it is presented as a nonlinear adaptive primitive-generation framework that links fractional-order hyperchaotic dynamics, neural nonlinear transformation, and dynamic substitution–diffusion design.
+ER  - 
+
+TY  - JOUR
+T1  - Kolmogorov n–width and Lagrangian physics-informed neural networks: A causality-conforming manifold for convection-dominated PDEs
+AU  - Mojgani, Rambod
+AU  - Balajewicz, Maciej
+AU  - Hassanzadeh, Pedram
+JO  - Computer Methods in Applied Mechanics and Engineering
+VL  - 404
+SP  - 115810
+PY  - 2023
+DA  - 2023/02/01/
+SN  - 0045-7825
+DO  - https://doi.org/10.1016/j.cma.2022.115810
+UR  - https://www.sciencedirect.com/science/article/pii/S0045782522007666
+KW  - Deep learning
+KW  - Kolmogorov n-width
+KW  - Partial differential equations
+KW  - Method of characteristics
+KW  - Lagrangian frame of reference
+AB  - We make connections between complexity of training of physics-informed neural networks (PINNs) and Kolmogorov n-width of the solution. Leveraging this connection, we then propose Lagrangian PINNs (LPINNs) as a partial differential equation (PDE)-informed solution for convection-dominated problems. PINNs employ neural-networks to find the solutions of PDE-constrained optimization problems with initial conditions and boundary conditions as soft or hard constraints. These soft constraints are often blamed to be the sources of the complexity in the training phase of PINNs. Here, we demonstrate that the complexity of training (i) is closely related to the Kolmogorov n-width associated with problems demonstrating transport, convection, traveling waves, or moving fronts, and therefore becomes apparent in convection-dominated flows, and (ii) persists even when the boundary conditions are strictly enforced. Given this realization, we describe the mechanism underlying the training schemes such as those used in eXtended PINNs (XPINN), curriculum learning, and sequence-to-sequence learning. For an important category of PDEs, i.e., governed by non-linear convection–diffusion equation, we propose reformulating PINNs on a Lagrangian frame of reference, i.e., LPINNs, as a PDE-informed solution. A parallel architecture with two branches is proposed. One branch solves for the state variables on the characteristics, and the second branch solves for the low-dimensional characteristics curves. The proposed architecture conforms to the causality innate to the convection, and leverages the direction of travel of the information in the domain, i.e., on the characteristics. This approach is unique as it reduces the complexity of convection-dominated PINNs at the PDE level, instead of optimization strategies and/or schedulers. Finally, we demonstrate that the loss landscapes of LPINNs are less sensitive to the so-called “complexity” of the problems, i.e., convection, compared to those in the traditional PINNs in the Eulerian framework.
+ER  - 
+
+TY  - JOUR
+T1  - DiffuCom: A novel diffusion model for comment generation
+AU  - Liu, Jiamiao
+AU  - Cheng, Pengsen
+AU  - Dai, Jinqiao
+AU  - Liu, Jiayong
+JO  - Knowledge-Based Systems
+VL  - 281
+SP  - 111069
+PY  - 2023
+DA  - 2023/12/03/
+SN  - 0950-7051
+DO  - https://doi.org/10.1016/j.knosys.2023.111069
+UR  - https://www.sciencedirect.com/science/article/pii/S0950705123008195
+KW  - Comment generation
+KW  - Diffusion model
+KW  - Self-conditioning
+KW  - Context-aware Cross-attention
+KW  - Blended control
+AB  - Given that the diffusion model has good advantages in diversity, an increasing number of researchers have recently begun exploring natural language generation. However, despite significant progress in modeling based on text diffusion, there are still several challenges to be overcome in comment tasks. On the one hand, the source sentences in the comment task are long. If each timestep in the diffusion carries and computes the source sentence, it will significantly increase the computational overhead. On the other hand, the diffusion model is essentially an iterative non-autoregressive model, which lacks target decomposition in the decoding. This makes vanilla cross-attention prone to overlook local perceptual content, leading to the problem of poor correlation. To solve the aforementioned problem, we propose a novel diffusion model for comment generation (named DiffuCom). Specifically, DiffuCom employs the transformer-based encoder–decoder structure, encoding only once during the reverse diffusion process, effectively reducing computational overhead. Additionally, we design a context-aware cross-attention module (CACAM) that integrates global and local cross-attention information through a gating mechanism, which more accurately captures relevant fragment information in the source sentence and improves the correlation. Second, self-conditioning technology was introduced in the training process, which can effectively improve the quality of the samples. Furthermore, to enhance the controllability of DiffuCom, we also propose a blended control. It combines class-conditional and classifier guidance by utilizing the difference between training and inference. Extensive experiments on four comment datasets demonstrate that the proposed DiffuCom model can generate comments that are both diverse and relevant.
+ER  - 
+
+TY  - JOUR
+T1  - Anti-denoising profile pollution attacks on diffusion model-based recommender systems
+AU  - Zhou, Quanqiang
+AU  - Yang, Tongxue
+AU  - Wang, Keke
+JO  - Neurocomputing
+VL  - 706
+SP  - 135083
+PY  - 2026
+DA  - 2026/12/28/
+SN  - 0925-2312
+DO  - https://doi.org/10.1016/j.neucom.2026.135083
+UR  - https://www.sciencedirect.com/science/article/pii/S0925231226024811
+KW  - Recommender system
+KW  - Diffusion model
+KW  - Profile pollution attack
+KW  - Evolutionary algorithm
+KW  - Reinforcement learning
+AB  - In recent years, diffusion model-based recommender systems have significantly improved recommendation performance. Due to their excellent structural denoising mechanisms, they also exhibit strong robustness against traditional data poisoning attacks. Existing attack methods mainly rely on fake user injection. Because the fake nodes and discrete edges constructed by these methods lack inherent logical consistency, they are typically identified as abnormal data and smoothed out by the diffusion process. To break through this defense, we propose an anti-denoising profile pollution attack named RMGAE. Unlike traditional fake user injection, RMGAE aims to covertly bypass the structural denoising mechanism of diffusion models by implanting a small number of logically consistent adversarial interaction sequences into the historical records of real users. First, we utilize semantic associations in the knowledge graph to construct intermediate bridging items, thereby enhancing the logical connectivity between target and popular item clusters. Subsequently, we model the construction of adversarial interaction sequences as a bilevel combinatorial optimization problem and design a collaborative search strategy that integrates reinforcement learning (RL) and an evolutionary algorithm (EA). This strategy uses an RL module to dynamically capture gradient feedback from the target model, precisely guiding the EA to bypass denoising filtration even within a massive discrete search space. By adaptively searching for adversarial interaction sequences that conform to normal user behavior distributions while maintaining high attack efficacy, the proposed method ultimately constructs highly covert polluted profiles. Extensive experiments on three real-world datasets demonstrate that RMGAE outperforms 12 existing baselines.
+ER  - 
+
+TY  - JOUR
+T1  - IPv6 active address detection model based on diffusion model
+AU  - Yang, Wei
+AU  - Wang, Qianyi
+AU  - Yao, Yu
+JO  - Computer Networks
+VL  - 261
+SP  - 111047
+PY  - 2025
+DA  - 2025/04/01/
+SN  - 1389-1286
+DO  - https://doi.org/10.1016/j.comnet.2025.111047
+UR  - https://www.sciencedirect.com/science/article/pii/S1389128625000155
+KW  - IPv6 address
+KW  - Deep learning
+KW  - Diffusion model
+KW  - Address detection
+KW  - Network security
+AB  - Cyberspace mapping is of great significance to the research of network security. The current work of cyberspace mapping is mainly based on IPv4 address. Due to the exhaustion of IPv4 address allocation, the world has begun to vigorously promote the deployment of IPv6 address. However, due to the wide range of IPv6 address space, the traditional exhaustive search detection method cannot be applied to IPv6 address detection. In order to find active IPv6 addresses, researchers have proposed to build a target address generation model to generate high-quality candidate target detection address set, so as to provide support for IPv6 address space exploration work. Nowadays, many researchers have proposed IPv6 target address generation models. However, the existing target address generation model still has the problems of low hit rate and single address generation pattern. In order to generate more active and diverse candidate target detection address set, We propose an IPv6 active address detection model based on the diffusion model. First, the collected seed addresses will be divided according to the interface identifier type, and then the divided address set will complete the transformation from discrete data to continuous data. After that, the transformed data will be input into the diffusion model for IPv6 address generation. Finally, alias checking will be performed on the generated addresses to reduce the waste of detection resources. The experimental results show that the IPv6 address generation model based on diffusion model has a higher hit rate than other existing address generation algorithms.
+ER  - 
+
+TY  - JOUR
+T1  - DSTrack: Diffusion-based sequence learning for visual object tracking
+AU  - Wang, Zhixing
+AU  - Wang, Kai
+AU  - Tang, Chuanming
+AU  - Li, Xiang
+AU  - Zhang, Jianlin
+AU  - Gao, Lianli
+JO  - Pattern Recognition
+VL  - 168
+SP  - 111694
+PY  - 2025
+DA  - 2025/12/01/
+SN  - 0031-3203
+DO  - https://doi.org/10.1016/j.patcog.2025.111694
+UR  - https://www.sciencedirect.com/science/article/pii/S0031320325003541
+KW  - Visual tracking
+KW  - Diffusion models
+KW  - Sequence learning
+AB  - Visual object tracking (VOT) is vital in pattern recognition. Traditional methods often use classification and regression heads. Recent autoregressive methods in visual tracking, treating tracking as bounding-box sequence generation, have shown better performance by framing tracking as discrete sequence generation. These approaches convert bounding box coordinates to discrete tokens in a shared vocabulary for sequential regression. However, this shift from a continuous to a discrete representation introduces quantization and positional biases, adversely affecting performance with larger vocabularies. To overcome this constraint, we propose a diffusion-based sequence learning tracking approach, named DSTrack. In this method, we employ the diffusion model to predict bounding-box coordinates in a parallel manner and transform the discrete variable distribution estimation into continuous probability distribution estimation. Furthermore, to enhance the representational prowess of the Vision Transformer (ViT) backbones, we amplify the pre-trained ViT model by integrating additional Ladder modules. This strategic enhancement is designed to effectively bridge the gaps between different dataset domains. This novel diffusion-based sequence learning paradigm theoretically circumvents the constraints of the discrete token vocabulary and improves tracking performance. With fair comparison in our experiments, the proposed DSTrack achieves state-of-the-art results on benchmark datasets such as LaSOT and TrackingNet.
+ER  - 
+
+TY  - JOUR
+T1  - Secure color image encryption algorithm for face recognition using Zaslavsky and Arnold cat maps with binary bit-plane decomposition
+AU  - Shang, Wenli
+AU  - Liu, Zhenyu
+AU  - Wang, Shuang
+AU  - Ding, Lei
+AU  - Shang, Xinyi
+AU  - Zhou, Zheng
+AU  - Wang, Lianhai
+JO  - Information Sciences
+VL  - 719
+SP  - 122502
+PY  - 2025
+DA  - 2025/11/01/
+SN  - 0020-0255
+DO  - https://doi.org/10.1016/j.ins.2025.122502
+UR  - https://www.sciencedirect.com/science/article/pii/S0020025525006346
+KW  - Chaotic map
+KW  - Image encryption
+KW  - Binary bit-plane decomposition
+KW  - Face recognition
+AB  - During airport security checks, prompt identification and data processing of face images are critical. To address this, a real-time and high-security face image encryption scheme is proposed, which leverages the Haar Cascade Classifier to precisely locate facial regions and encrypts only the identified areas.The encryption algorithm takes the identified facial region and encryption key as inputs. Using the key as a seed, the two-dimensional Zaslavsky chaotic map generates pseudo-random chaotic sequences. A sequence of encryption operations is then performed, including random noise addition, binary bit-plane decomposition, confusion, diffusion, and RGB channel obfuscation. Eventually, the processed image is output as the encrypted face image. For algorithm evaluation, image data are randomly sampled from the IMDB-WIKI dataset. Additionally, a benchmark public dataset is employed to compare the proposed scheme with state-of-the-art encryption methods. Experimental results demonstrate that the scheme exhibits superior encryption security and efficiency.
+ER  - 
+
+TY  - JOUR
+T1  - Materium: An autoregressive approach for material generation
+AU  - Dobberstein, Niklas
+AU  - Hamaekers, Jan
+JO  - Computational Materials Science
+VL  - 274
+SP  - 114980
+PY  - 2026
+DA  - 2026/09/05/
+SN  - 0927-0256
+DO  - https://doi.org/10.1016/j.commatsci.2026.114980
+UR  - https://www.sciencedirect.com/science/article/pii/S0927025626004994
+KW  - Material discovery
+KW  - Transformers
+KW  - Machine learning
+KW  - Generation
+AB  - We present Materium: an autoregressive transformer for crystal-structure token sequences. These sequences include elements with oxidation states, fractional coordinates and lattice parameters. Unlike diffusion approaches, which refine atomic positions iteratively through many denoising steps, Materium places atoms at precise fractional coordinates, enabling fast, scalable generation. With this design, the model can be trained in a few hours on a single GPU and generate samples much faster on GPUs and CPUs than diffusion-based approaches. The model was trained and evaluated using multiple properties as conditions, including fundamental properties, such as density and space group, as well as more practical targets, such as band gap and magnetic density. In both single- and multi-condition settings, the model shows controllable trends toward the requested inputs, although exact target matching remains challenging for high-variance properties.
+ER  - 
+
+TY  - JOUR
+T1  - The relationship between diffusion heterogeneity and microstructural changes in high-grade gliomas using Monte Carlo simulations
+AU  - Lee, Chu-Yu
+AU  - Bennett, Kevin M.
+AU  - Debbins, Josef P.
+AU  - Choi, In-Young
+AU  - Lee, Phil
+JO  - Magnetic Resonance Imaging
+VL  - 85
+SP  - 108
+EP  - 120
+PY  - 2022
+DA  - 2022/01/01/
+SN  - 0730-725X
+DO  - https://doi.org/10.1016/j.mri.2021.10.001
+UR  - https://www.sciencedirect.com/science/article/pii/S0730725X21001685
+KW  - Diffusion
+KW  - Simulation
+KW  - MRI
+KW  - Gamma
+KW  - Kurtosis
+KW  - Diffusivity
+KW  - Heterogeneity
+KW  - Gliomas
+AB  - Purpose
+Diffusion-weighted imaging (DWI) may aid accurate tumor grading. Decreased diffusivity and increased diffusion heterogeneity measures have been observed in high-grade gliomas using the non-monoexponential models for DWI. However, DWI measures concerning tissue characteristics in terms of pathophysiological and structural changes are yet to be established. Thus, this study aims to investigate the relationship between the diffusion measurements and microstructural changes in the presence of high-grade gliomas using a three-dimensional Monte Carlo simulation with systematic changes of microstructural parameters.
+Methods
+Water diffusion was simulated in a microenvironment along with changes associated with the presence of high-grade gliomas, including increases in cell density, nuclear volume, extracellular volume (VFex), and extracellular tortuosity (λex), and changes in membrane permeability (Pmem). DWI signals were simulated using a pulsed gradient spin-echo sequence. The sequence parameters, including the maximum gradient strength and diffusion time, were set to be comparable to those of clinical scanners and advanced human MRI systems. The DWI signals were fitted using the gamma distribution and diffusional kurtosis models with b-values up to 6000 and 2500 s/mm2, respectively.
+Results
+The diffusivity measures (apparent diffusion coefficients (ADC), Dgamma of the gamma distribution model and Dapp of the diffusional kurtosis model) decreased with increases in cell density and λex, and a decrease in Pmem. These diffusivity measures increased with increases in nuclear volume and VFex. The diffusion heterogeneity measures (σgamma of the gamma distribution model and Kapp of the diffusional kurtosis model) increased with increases in cell density or nuclear volume at the low Pmem, and a decrease in Pmem. Increased σgamma was also associated with an increase in VFex.
+Conclusion
+Among simulated microstructural changes, only increases in cell density at low Pmem or decreases in Pmem corresponded to both the decreased diffusivity and increased diffusion heterogeneity measures. The results suggest that increases in cell density at low Pmem or decreases in Pmem may be associated with the diffusion changes observed in high-grade gliomas.
+ER  - 
+
+TY  - JOUR
+T1  - Efficient space-dependent source retrieval method for a time-fractional diffusion model
+AU  - Bazán, Fermín S.V.
+AU  - Bedin, Luciano
+JO  - Journal of Computational and Applied Mathematics
+VL  - 485
+SP  - 117590
+PY  - 2026
+DA  - 2026/10/15/
+SN  - 0377-0427
+DO  - https://doi.org/10.1016/j.cam.2026.117590
+UR  - https://www.sciencedirect.com/science/article/pii/S0377042726002347
+KW  - Time fractional models
+KW  - Source recovering problems
+KW  - Filter-based regularization methods
+KW  - Pseudospectral methods
+AB  - We consider the problem of recovering the space dependent source for a time-fractional diffusion equation with variable coefficients To obtain a reliable numerical solution, we propose a filter-based regularization method based on the singular system of a proper compact operator. An error estimate is derived under the assumption that the regularization parameter is determined by the Morozov discrepancy principle. As a result, as long as the unknown source satisfies a Hölder source condition, under smoothness assumptions that are often met in practical problems, we show that the error estimate can become close to O(δ), where δ denotes the level of noise in the data. For practical calculations, we propose a method based on a semi-discrete approach where spatial derivatives are properly discretized and the forward problem is stated as a time-varying ODE system. By doing so, we show that the regularization method proposed in the functional space setting is readily adapted to the discrete data case without any substantial modification. The method does not require any linear system solver and it is therefore easy to implement and inexpensive when compared to existing recovering source methods. Furthermore, an error bound for the discrete data case, with the same quality as that obtained in the functional space scenario, is derived. Numerical experiments involving 1D and 2D problems are provided to illustrate the effectiveness of the proposed method.
+ER  - 
+
+TY  - JOUR
+T1  - A spatio-temporal sequence-to-sequence network for traffic flow prediction
+AU  - Cao, Shuqin
+AU  - Wu, Libing
+AU  - Wu, Jia
+AU  - Wu, Dan
+AU  - Li, Qingan
+JO  - Information Sciences
+VL  - 610
+SP  - 185
+EP  - 203
+PY  - 2022
+DA  - 2022/09/01/
+SN  - 0020-0255
+DO  - https://doi.org/10.1016/j.ins.2022.07.125
+UR  - https://www.sciencedirect.com/science/article/pii/S0020025522008234
+KW  - Traffic flow prediction
+KW  - Spatio-temporal correlations
+KW  - Diffusion convolution
+KW  - Dilated causal convolution
+KW  - Encoder-decoder attention
+AB  - Spatio-temporal prediction has drawn much attention given its wide application, of which traffic flow prediction is a typical task. Within the vision of smart cities, traffic flow prediction plays a vital role in traffic control and optimization. The current approaches commonly use a graph convolutional network (GCN) to capture any spatial correlations and a recurrent neural network (RNN) to mine any temporal correlations. However, GCNs cannot detect spatial heterogeneity and time-varying spatial correlations, and RNNs cannot model the periodicity of traffic series data. Further, iterative training of RNNs may come at a high computational cost and result in problems with error propagation. To this end, we propose STSSN, a spatio-temporal sequence-to-sequence network, that not only explores heterogeneous and time-varying spatial correlations, but also efficiently exploits sequential and periodic temporal correlations. STSSN is based on an encoder-decoder framework. In the network, the model’s input is processed to extract the periodic daily and weekly patterns in traffic flows. Both the encoder and decoder mainly consist of an enhanced diffusion convolutional network (EDCN) and a temporal convolutional network (TCN). In the EDCN module, the diffusion convolution incorporates time-varying node representations so as to capture both node-specific patterns and time-varying spatial correlations. In the TCN module, we take full advantage of the parallel computing in the dilated causal convolution to mine local (short-term) temporal correlations. More importantly, global (long-term) temporal correlations are discovered through an encoder-decoder attention (EDA) module. This EDA mechanism directly models the relationship between the encoder and decoder to mitigate problems with error propagation. Experiments on two real-world datasets verify the superiority of STSSN, with STSSN’s MAE at between 3.85%-6.17% lower than the state-of-the-art baselines on the PEMS-BAY dataset.
+ER  - 
+
+TY  - JOUR
+T1  - Multistep traffic speed prediction: A sequence-to-sequence spatio-temporal attention model
+AU  - Yang, Di
+AU  - Li, Hong
+AU  - Wang, Peng
+AU  - Yuan, Lihong
+JO  - Physica A: Statistical Mechanics and its Applications
+VL  - 638
+SP  - 129636
+PY  - 2024
+DA  - 2024/03/15/
+SN  - 0378-4371
+DO  - https://doi.org/10.1016/j.physa.2024.129636
+UR  - https://www.sciencedirect.com/science/article/pii/S0378437124001444
+KW  - Multistep traffic speed prediction
+KW  - Adaptive tuning module
+KW  - Sequence-to-sequence architecture
+KW  - Diffusion graph convolution
+KW  - Recalling attention mechanism
+AB  - Multistep traffic speed prediction plays a crucial role in alleviating road congestion and improving transport efficiency. In actual traffic networks, the spatio-temporal dependence among roads dynamically changes over time due to factors such as road conditions and unforeseen incidents, which brings great challenges to multistep traffic speed prediction. Additionally, multistep traffic speed prediction commonly faces the problem of error accumulation, resulting in a loss of prediction accuracy. To address these issues, we propose a Sequence-to-Sequence Spatio-Temporal Attention model (STSSTA) for multistep traffic speed prediction. Specifically, we build an adaptive tuning module to select road preferences and automatically obtain global information about the roads. Then we construct a Sequence-to-Sequence architecture for spatio-temporal feature learning and multistep traffic speed prediction. In particular, in the encoder, we design a Diffusion Graph Convolutional Network (DGCN) and combine it with a Gated Recurrent Unit (GRU) to effectively capture the complex spatio-temporal features within the traffic networks. In the decoder, we introduce a Recalling attention mechanism to alleviate the problem of local information loss caused by encoder compression, thereby reducing error accumulation in multistep prediction. Experiments on METR-LA and PeMS-BAY datasets demonstrate that STSSTA outperforms the baseline models in long-term prediction.
+ER  - 
+
+TY  - JOUR
+T1  - DiffuPercom: A novel simplex-based diffusion framework for personalized comment generation
+AU  - Liu, Jiamiao
+AU  - Cheng, Pengsen
+AU  - Dai, Jinqiao
+AU  - Liu, Jiayong
+JO  - Applied Soft Computing
+VL  - 201
+SP  - 115493
+PY  - 2026
+DA  - 2026/09/01/
+SN  - 1568-4946
+DO  - https://doi.org/10.1016/j.asoc.2026.115493
+UR  - https://www.sciencedirect.com/science/article/pii/S1568494626009415
+KW  - Simplex diffusion
+KW  - Personalized comment generation
+KW  - Personalized fusion attention
+KW  - Self-conditioning
+AB  - Diffusion models have recently shown promising results for language generation, yet extending them to multi-constraint sequence-to-sequence settings remains challenging. Personalized comment generation is a representative multi-constraint sequence-to-sequence task, where the model must condition on both user attributes and the source article to produce comments that are simultaneously relevant and personalized. To address this problem, a novel simplex-based diffusion model framework for personalized comments (named DiffuPercom) is proposed. Specifically, the denoising network adopts a Transformer encoder–decoder structure. By separately encoding personalized information and article content, the proposed PFA (Personalized Fusion Attention) module is used to integrate the two. The PFA module can effectively integrate personalized attribute information through weighting and masking mechanisms, thus enhancing the expression of personalized information. In addition, the current lack of publicly available datasets for personalized comment tasks hinders the progress of personalized comment generation tasks. Therefore, a personalized attribute comment dataset (named PersonalComment) is proposed, which assigns sentiment labels to each comment and can serve as a foundation for subsequent research. Finally, extensive experiments on the PersonalComment dataset have demonstrated that DiffuPercom achieves substantial improvements in diversity and attribute control, with increases of 8% and 1.7% respectively, outperforming current personalized models. In addition, in the manual evaluation, the controllability of DiffuPercom’s attributes as well as the p-value for the significant test compared to the baseline model are both less than 0.05. Furthermore, personalized comment with sentiment tendencies using classifier guidance is explored.
+ER  - 
+
+TY  - JOUR
+T1  - A neural-driven stochastic degradation model for state-of-health estimation of lithium-ion battery
+AU  - Long, Zhendong
+AU  - Yuan, Lian
+AU  - Yin, Aijun
+AU  - Zhou, Junlin
+AU  - Song, Lei
+JO  - Journal of Energy Storage
+VL  - 79
+SP  - 110248
+PY  - 2024
+DA  - 2024/02/15/
+SN  - 2352-152X
+DO  - https://doi.org/10.1016/j.est.2023.110248
+UR  - https://www.sciencedirect.com/science/article/pii/S2352152X23036472
+KW  - Battery degradation
+KW  - State of health estimation
+KW  - Martingale methodology
+KW  - Stochastic model
+KW  - Seq2Seq neural network
+AB  - Due to usage for a long time, lithium-ion battery degradation issues may endanger security operations for service equipment. As batteries usually operate under uncertain usage profiles and experience random aging processes, accurately estimating the battery state of health (SOH) can be challenging. Most existing SOH estimation methods are either empirical knowledge-based with complicated parameters or serve as a black box neural network-based without stochastic nature. To address this limitation, a neural-driven stochastic degradation model for battery health estimation is proposed to ensure the security and reliability of the operation. Firstly, the parameters of a stochastic process are estimated by martingale methodology to describe battery degradation characteristics. Then the optimized sequence-to-sequence (Seq2Seq) neural network is utilized to develop a mapping model in order to update drift coefficient online. Concurrently, the martingale estimating function is used to obtain the diffusion coefficient function. Finally, the transition probability density function of SOH estimation is derived. Comparative experiments are carried out on different battery datasets to show the effectiveness of the proposed model against traditional Wiener process-based models and existing methods in SOH estimation. The model proposed provides an effective solution for battery SOH estimation of energy storage equipment.
+ER  - 
+
+TY  - JOUR
+T1  - MGDM: Molecular generation using a multinomial diffusion model
+AU  - Yuan, Sisi
+AU  - Zhao, Chen
+AU  - Liu, Lin
+AU  - Zhou, Guifei
+JO  - Methods
+VL  - 239
+SP  - 1
+EP  - 9
+PY  - 2025
+DA  - 2025/07/01/
+SN  - 1046-2023
+DO  - https://doi.org/10.1016/j.ymeth.2025.03.001
+UR  - https://www.sciencedirect.com/science/article/pii/S1046202325000532
+KW  - Molecular generation
+KW  - Multinomial diffusion
+KW  - Denoise
+KW  - Gumbel-Max sampling
+KW  - Kullback-Leibler divergence
+AB  - Accurate analysis of molecular structures and the rapid generation of valid molecules remain significant challenges in De Novo drug design. In this study, we propose the Multinomial Generated Diffusion Model (MGDM) for molecular generation. This model leverages a multinomial diffusion framework to process discrete data, with a focus on learning the multinomial distribution inherent in the dataset. During the generation process, the model progressively denoises molecules, transitioning from a uniform noise distribution to ultimately produce valid molecular structures. Initially, we generate molecules unconditionally to expand the compound library. In the next phase, we focus on generating molecules with specific properties to assess the model’s capacity for conditional generation. For this, we implement a classifier-free guidance strategy, which directs the diffusion model’s task without the need for training separate classifier models. To validate the effectiveness of our framework, we conducted experiments using the Molecular Sets (MOSES) dataset. The results demonstrate that, compared to several state-of-the-art methods, MGDM generates valid molecules while achieving superior or comparable performance in terms of novelty and diversity.
+ER  - 
+
+TY  - JOUR
+T1  - A Critical Evaluation of Using Physics-Informed Neural Networks for Simulating Voltammetry: Strengths, Weaknesses and Best Practices
+AU  - Chen, Haotian
+AU  - Batchelor-McAuley, Christopher
+AU  - Kätelhön, Enno
+AU  - Elliott, Joseph
+AU  - Compton, Richard G.
+JO  - Journal of Electroanalytical Chemistry
+VL  - 925
+SP  - 116918
+PY  - 2022
+DA  - 2022/11/15/
+SN  - 1572-6657
+DO  - https://doi.org/10.1016/j.jelechem.2022.116918
+UR  - https://www.sciencedirect.com/science/article/pii/S1572665722009109
+KW  - Physics-Informed Neural Network
+KW  - Artificial Intelligence
+KW  - Efficient numerical simulation of voltammetry
+KW  - Diffusion in variable geometries
+AB  - The recent explosion of applications of physics-informed neural networks (PINNs) as a discretization-free tool to solve partial differential equations (PDEs) shows great potential for applications in electroanalytical simulations. However, a simple, naive PINN approach may fail to make analytical level predictions in even only moderately complicated systems. Here, we explore eight test cases, spanning 1D to 3D simulations, including both cyclic voltammetry and chronoamperometry, and a wide selection of electrode geometries from macroelectrode, (hemi-)spherical electrode, microband electrode, cube electrode and microdisc electrode to serve the dual-purposes of expanding PINNs to more challenging electrode geometries and to recommend best practices in the context of electroanalytical simulation. These best practices, include the use of dimensionless parameters, non-zero conditioning times, mathematical transformation of PDEs, sequence-to-sequence training, adaptive weights algorithms, optimal batch sizing, domain decomposition, learning rate scheduling and transformation of coordinates. These suggested best practices are the intended key contribution of this paper, as to position future PINN users with a well-informed starting position for generic electroanalytical PINN simulations, to avoid known difficulties and to skip the trial-and-error phase with hyperparameter tuning. We believe that these recommendations can serve as primers for PINN simulations for sophisticated Multiphysics problems, and make PINN simulations more accessible.
+ER  - 
+
+TY  - JOUR
+T1  - Harris Hawk optimization driven adaptive image encryption integrating Hilbert vibrational decomposition and chaos
+AU  - Sharma, Vinay Kumar
+AU  - Sharma, Janki Ballabh
+JO  - Applied Soft Computing
+VL  - 164
+SP  - 112016
+PY  - 2024
+DA  - 2024/10/01/
+SN  - 1568-4946
+DO  - https://doi.org/10.1016/j.asoc.2024.112016
+UR  - https://www.sciencedirect.com/science/article/pii/S1568494624007907
+KW  - Harris Hawk optimization (HHO)
+KW  - Hilbert vibrational decomposition (HVD)
+KW  - Image encryption
+KW  - Henon map
+KW  - Duffing map
+KW  - Lorenz equation and Arnold Cat map
+AB  - Image encryption is a technique used to protect the confidentiality of digital images. Existing encryption algorithms use chaotic maps for generating random sequences. These sequences purely depend on the fixed initial parameters, which are not adaptive to different input images, thereby limiting their ability to produce the best-possible encrypted image. This paper introduces a new Harris Hawk optimization (HHO) based adaptive image encryption algorithm that integrates Hilbert vibrational decomposition (HVD), and multiple chaotic maps. The new fitness function is specifically designed to optimize the security and robustness of the encrypted image, considering statistical and differential attack parameters (NPCR, UACI, Entropy, and correlation coefficient values). HHO is used to optimize the initial parameters of chaotic maps (Henon map, Duffing map, Lorenz equation) subject to variations in the input image. In the confusion stage, the input image is decomposed into four components of same dimension but decreasing energy using HVD. Subsequently, the block based pixel scrambling is performed on alternate components using the Henon map and Duffing map. In the diffusion stage, the image from the confusion stage undergoes a first level diffusion by bitwise XOR operation with a random image generated from the Lorenz equation. Further, second level of diffusion is achieved with a complex operation generated image from the input image, enhancing its adaptability. Finally, Arnold Cat map having number of iterations determined by the input image is used for final pixel permutation to produces the encrypted image. The optimized initial parameters and input image dependent confusion and diffusion operations enable the encryption system to adapt to changes in the input image, thereby enhancing its resistance against known plain text and known cipher text attacks. Moreover, the integration of HVD with multiple chaotic maps makes the scheme more complex to decrypt with plain text attacks. The performance of proposed algorithm is evaluated on five standard test images in terms of security and quality measures. Experimental results exhibit statistical and differential attack parameters close to ideal values (with Max. Entropy≈7.9996, Min. CC≈ 10−5, Max. NPCR≈99.64, Max. UACI≈33.62). The use of multiple chaotic maps at different stages makes the key space larger. Robustness analysis demonstrates the algorithm's capability in withstanding noise and image enhancement attacks. The comparison with state of the arts metaheuristic based and classical encryption algorithms highlights the superior performance of proposed HHO driven algorithm. The significant improvement in security parameters and overall fitness compared to fixed initial parameters is achieved by optimizing the encryption process.
+ER  - 
+
+TY  - JOUR
+T1  - Regional wind power forecasting guided by physics-based wind field modeling and image fusion
+AU  - Cai, Xuduo
+AU  - Zhou, Yao
+AU  - Wang, Zhixian
+AU  - Lei, Xingyu
+AU  - Jia, Yixiong
+JO  - Electric Power Systems Research
+VL  - 253
+SP  - 112527
+PY  - 2026
+DA  - 2026/04/01/
+SN  - 0378-7796
+DO  - https://doi.org/10.1016/j.epsr.2025.112527
+UR  - https://www.sciencedirect.com/science/article/pii/S0378779625011149
+KW  - Regional wind power forecasting
+KW  - Physics-based wind field simulation
+KW  - Spatial-temporal fusion
+AB  - Accurate forecasting of aggregated wind power output highly relies on numerical weather prediction (NWP) data. However, due to the resolution limitations, there is a geographic scale mismatch between NWP data and wind power data, which poses significant challenges to accurate wind farm modeling. To address this challenge, this work proposes a novel modelling framework. The wind evolution is simulated using physical diffusion equations derived from fluid dynamics, and the resulting wind fields are corrected using a mask-CNN model to obtain features that integrate spatial information from the entire region. These features are then encoded as a sequence of images and fed into a sequence-to-sequence (Seq2Seq) prediction model, allowing for the fusion of spatial and temporal features. For 15-min forecasting scenario, the RMSE improvement for the proposed framework exceeded 10 % on two real-world wind farm datasets. In addition, incorporating the physical diffusion equation into the modeling process reveals the mutual influence of wind speeds within the regional wind field, improving the interpretability of predictions.
+ER  - 
+
+TY  - JOUR
+T1  - Application Value of Intelligent Quick Magnetic Resonance for Accelerating Brain MR Scanning and Improving Image Quality in Acute Ischemic Stroke
+AU  - Xue, Bo
+AU  - Duan, Dengjie
+AU  - Feng, Junbang
+AU  - Zhao, Zhenjun
+AU  - Tan, Jinkun
+AU  - Zhang, Jinrui
+AU  - Peng, Chao
+AU  - Li, Chang
+AU  - Li, Chuanming
+JO  - Current Medical Imaging
+VL  - 21
+PY  - 2025
+DA  - 2025/01/01/
+SN  - 1573-4056
+DO  - https://doi.org/10.2174/0115734056418245250912095159
+UR  - https://www.sciencedirect.com/science/article/pii/S1573405625001195
+KW  - Acute ischemic stroke
+KW  - magnetic resonance imaging
+KW  - fast imaging
+KW  - image quality
+KW  - intelligent quick magnetic resonance
+AB  - Introduction
+This study aimed to evaluate the effectiveness of intelligent quick magnetic resonance (IQMR) for accelerating brain MRI scanning and improving image quality in patients with acute ischemic stroke.
+Methods
+In this prospective study, 58 patients with acute ischemic stroke underwent head MRI examinations between July 2023 and January 2024, including diffusion-weighted imaging and both conventional and accelerated T1-weighted, T2-weighted, and T2 fluid-attenuated inversion recovery fat-saturated (T2-FLAIR) sequences. Accelerated sequences were processed using IQMR, producing IQMR-T1WI, IQMR-T2WI, and IQMR-T2-FLAIR images. Image quality was assessed qualitatively by two readers using a five-point Likert scale (1 = non-diagnostic to 5 = excellent). Signal-to-noise ratio (SNR) and contrast-to-noise ratio (CNR) of lesions and surrounding tissues were quantitatively measured. The Alberta Stroke Program Early CT Score (ASPECTS) was used to evaluate ischemia severity.
+Results
+Total scan time was reduced from 5 minutes 9 seconds to 2 minutes 40 seconds, accounting for a reduction of 48.22%. IQMR significantly improved SNR/CNR in accelerated sequences (P < .05), achieving parity with routine sequences (P > .05). Qualitative scores for lesion conspicuity and internal display improved post-IQMR (P < .05).. ASPECTS showed no significant difference between IQMR and routine images (P = 0.79; ICC = 0.91–0.93).
+Discussion
+IQMR addressed MRI’s slow scanning limitation without hardware modifications, enhancing diagnostic efficiency. The results have been found to align with advancements in deep learning. Limitations included the small sample size and the exclusion of functional sequences.
+Conclusion
+IQMR could significantly reduce brain MRI scanning time and enhance image quality in patients with acute ischemic stroke.
+ER  - 

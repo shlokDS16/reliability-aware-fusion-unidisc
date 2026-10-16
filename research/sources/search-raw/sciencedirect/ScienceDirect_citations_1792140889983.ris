@@ -1,0 +1,2198 @@
+TY  - JOUR
+T1  - Higher-order generalized finite differences for variable coefficient diffusion operators
+AU  - Kraus, Heinrich
+AU  - Kuhnert, Jörg
+AU  - Suchde, Pratik
+JO  - Computers & Mathematics with Applications
+VL  - 194
+SP  - 257
+EP  - 271
+PY  - 2025
+DA  - 2025/09/15/
+SN  - 0898-1221
+DO  - https://doi.org/10.1016/j.camwa.2025.06.018
+UR  - https://www.sciencedirect.com/science/article/pii/S0898122125002640
+AB  - We present a novel approach of discretizing variable coefficient diffusion operators in the context of meshfree generalized finite difference methods. Our ansatz uses properties of derived operators and combines the discrete Laplace operator with reconstruction functions approximating the diffusion coefficient. Provided that the reconstructions are of a sufficiently high order, we prove that the order of accuracy of the discrete Laplace operator transfers to the derived diffusion operator. We show that the new discrete diffusion operator inherits the diagonal dominance property of the discrete Laplace operator. Finally, we present the possibility of discretizing anisotropic diffusion operators with the help of derived operators. Our numerical results for Poisson's equation and the heat equation show that even low-order reconstructions preserve the order of the underlying discrete Laplace operator for sufficiently smooth diffusion coefficients. In experiments, we demonstrate the applicability of the new discrete diffusion operator to interface problems with point clouds not aligning to the interface and numerically show first-order convergence.
+ER  - 
+
+TY  - JOUR
+T1  - Discrete diffusion models with Refined Language-Image Pre-trained representations for remote sensing image captioning
+AU  - Leng, Guannan
+AU  - Xiong, Yu-Jie
+AU  - Qiu, Chunping
+AU  - Guo, Congzhou
+JO  - Pattern Recognition Letters
+VL  - 186
+SP  - 164
+EP  - 169
+PY  - 2024
+DA  - 2024/10/01/
+SN  - 0167-8655
+DO  - https://doi.org/10.1016/j.patrec.2024.09.019
+UR  - https://www.sciencedirect.com/science/article/pii/S0167865524002861
+KW  - Discrete diffusion model
+KW  - Contrastive Language-Image Pre-training
+KW  - Transformer
+KW  - Remote sensing image captioning
+AB  - RS image captioning (RSIC) utilizes natural language to provide a description of image content, assisting in the comprehension of object properties and relationships. Nonetheless, RS images are characterized by variations in object scales, distributions, and quantities, which make it challenging to obtain global semantic information and object connections. To enhance the accuracy of captions produced from RS images, this paper proposes a novel method referred to as Discrete Diffusion Models with Refined Language-Image Pre-trained representations (DDM-RLIP), leveraging an advanced discrete diffusion model (DDM) for nosing and denoising text tokens. DDM-RLIP is based on an advanced DDM-based method designed for natural pictures. The primary approach for refining image representations involves fine-tuning a CLIP image encoder on RS images, followed by adapting the transformer with an additional attention module to focus on crucial image regions and relevant words. Furthermore, experiments were conducted on three datasets, Sydney-Captions, UCM-Captions, and NWPU-Captions, and the results demonstrated the superior performance of the proposed method compared to conventional autoregressive models. On the NWPU-Captions dataset, the CIDEr score improved from 116.4 to 197.7, further validating the efficacy and potential of DDM-RLIP. The implementation codes for our approach DDM-RLIP are available at https://github.com/Leng-bingo/DDM-RLIP.
+ER  - 
+
+TY  - JOUR
+T1  - Projective surjectivity of quadratic stochastic operators on L1 and its application
+AU  - Mukhamedov, Farrukh
+AU  - Khakimov, O.
+AU  - Embong, A. Fadillah
+JO  - Chaos, Solitons & Fractals
+VL  - 148
+SP  - 111034
+PY  - 2021
+DA  - 2021/07/01/
+SN  - 0960-0779
+DO  - https://doi.org/10.1016/j.chaos.2021.111034
+UR  - https://www.sciencedirect.com/science/article/pii/S096007792100388X
+KW  - Quadratic stochastic operator
+KW  - Projective surjection
+KW  - Nonlinear equation
+AB  - A nonlinear Markov chain is a discrete time stochastic process whose transitions depend on both the current state and the current distribution of the process. The nonlinear Markov chain over an infinite state space can be identified by a continuous mapping (the so-called nonlinear Markov operator) defined on a set of all probability distributions (which is a simplex). In the present paper, we consider a continuous analogue of the mentioned mapping acting on L1-spaces. Main aim of the current paper is to investigate projective surjectivity of quadratic stochastic operators (QSO) acting on the set of all probability measures. To prove the main result, we study the surjectivity of infinite dimensional nonlinear Markov operators and apply them to the projective surjectivity of the considered QSO. Furthermore, the obtained results are applied to the existence of the positive solution of some Hammerstein integral equations.
+ER  - 
+
+TY  - JOUR
+T1  - Energy management strategy for space probes considering the uncertainty of power conversion efficiency
+AU  - Jiang, Yuan
+AU  - Zhu, Liying
+AU  - Lei, Zhan
+JO  - Electric Power Systems Research
+VL  - 246
+SP  - 111710
+PY  - 2025
+DA  - 2025/09/01/
+SN  - 0378-7796
+DO  - https://doi.org/10.1016/j.epsr.2025.111710
+UR  - https://www.sciencedirect.com/science/article/pii/S0378779625003025
+KW  - Space probe
+KW  - Energy management
+KW  - Electric propulsion
+KW  - Battery
+KW  - Energy efficiency
+AB  - Space exploration is a captivating yet challenging endeavor. During the exploration, space probes face several power-related issues. The power of solar arrays and DC voltage fluctuate greatly. There are also discretized electric propulsion (EP) loads and inevitable energy conversion losses. To overcome these challenges, an energy management strategy named EEF-MPC is present in present work, which means efficiency estimating and a fuzzy-model predictive control. Firstly, the efficiency of the power conversion module (PCM) is often uncertain. To deal with this problem, a power compensation strategy is introduced, which is based on a disturbance observer that estimates the efficiency real-time. It can compensate for the losses caused by the uncertain efficiency. Secondly, fuzzy rules are used to analyze the state of health (SOH) of the battery. Based on the SOH, the charge and discharge modes of battery can be controlled, as well as the EP levels is adjusted accordingly to optimize energy usage. Then, a discrete state-space model for the battery is established in the form of control increments. Through quadratic programming, the compensated battery current can be tracked and controlled accurately. Simulation results indicate that the EEF-MPC strategy has a maximum efficiency estimation deviation of approximately 4 %. Additionally, the maximum error of current is reduced by about 35 % compared with the traditional MPC method, which demonstrates that the EEF-MPC strategy can manage energy effectively in complex conditions and improve battery current tracking performance. Finally, a hardware-in-loop experiment is conducted, validating the effectiveness of the proposed strategy.
+ER  - 
+
+TY  - JOUR
+T1  - Identification of electromechanical participation matrices via scaled-derivative DMDc for improved PPF active vibration control of thin-walled structures
+AU  - Ouyang, Qinshan
+AU  - Dong, Longlei
+AU  - Liu, Jian
+AU  - Zhou, Jiaming
+JO  - Engineering Structures
+VL  - 353
+SP  - 122232
+PY  - 2026
+DA  - 2026/04/15/
+SN  - 0141-0296
+DO  - https://doi.org/10.1016/j.engstruct.2026.122232
+UR  - https://www.sciencedirect.com/science/article/pii/S0141029626001458
+KW  - Data-driven modelling
+KW  - Dynamic mode decomposition with control
+KW  - Active vibration control
+KW  - Positive position feedback
+KW  - Electromechanical participation matrix
+KW  - Thin-walled composite structures
+AB  - Positive Position Feedback (PPF) is a widely used algorithm for active vibration control of thin-walled structures. Its control performance critically depends on the accurate identification of the participation matrices, which characterize the dynamic electromechanical coupling between piezoelectric actuators/sensors and the host structure. However, this identification remains challenging for multi-input multi-output systems involving composite materials. This study presents a novel data-driven participation matrix identification method for PPF controller design. By constructing a hybrid state vector that incorporates both displacement and strain measurements, we develop a data-driven modelling method called scaled-derivative Dynamic Mode Decomposition with Control (sd-DMDc). The resulting discrete state-space model can accurately reconstruct responses, extract modal parameters, and more importantly, identify participation matrices. Based on this model, we formulate an sd-DMDc-based PPF (sd-DMDc-PPF) controller and validate its effectiveness experimentally on a thin-walled composite plate with a non-collocated Macro Fiber Composite (MFC) configuration. Experimental results demonstrate effective suppression of six vibration modes using only two MFC actuators and two MFC sensors. A comparative study confirms that the sd-DMDc-PPF controller achieves superior performance over the mainstream Least Squares Estimation (LSE)-based PPF controller. An acoustic excitation experiment further validates the capability and robustness of the proposed sd-DMDc-PPF controller under operating conditions. By providing more accurate participation matrices, the sd-DMDc model improves the PPF control performance and highlights the potential advantages of the data-driven modelling paradigm for such applications.
+ER  - 
+
+TY  - JOUR
+T1  - Dependency-based fault diagnosis approach for SOA-based systems using Colored Petri Nets
+AU  - Bhandari, Guru Prasad
+AU  - Ratneshwer, 
+JO  - Journal of King Saud University - Computer and Information Sciences
+VL  - 34
+IS  - 2
+SP  - 480
+EP  - 491
+PY  - 2022
+DA  - 2022/02/01/
+SN  - 1319-1578
+DO  - https://doi.org/10.1016/j.jksuci.2018.12.002
+UR  - https://www.sciencedirect.com/science/article/pii/S1319157818304026
+KW  - Fault
+KW  - Service Oriented Architecture
+KW  - Data dependency
+KW  - Control dependency
+KW  - SOA
+KW  - Fault detection
+KW  - Colored Petri Nets
+AB  - A faulty situation occurred in Service Oriented Architecture (SOA) based systems can affect its functionality. It is challenging to guarantee the reliability of service utilization in a distributed, concurrent and dynamic composition of web services. This paper aims to present a fault detection approach of SOA using dependency analysis. Data and control dependencies are identified and a fault diagnosis approach based on these dependencies is proposed in this paper. The presented approach extends discrete state space techniques to simulate the concurrent and distributed behavior through Colored Petri Nets (CPNs) for the SOA-based systems in case of the faulty situation. Concrete translation from SOA based system to a CPN model is presented. Model-based technique is used and some heuristics are presented for dependency analysis and fault detection purpose. The experimental performance analysis shows the feasibility of our proposed approach.
+ER  - 
+
+TY  - JOUR
+T1  - Impact load identification method based on frequency response pattern recognition and dynamic sensor filter strategy
+AU  - Sun, Li
+AU  - Wang, Deyu
+AU  - Shi, Guijie
+JO  - Journal of Ocean Engineering and Science
+VL  - 10
+IS  - 4
+SP  - 411
+EP  - 425
+PY  - 2025
+DA  - 2025/08/01/
+SN  - 2468-0133
+DO  - https://doi.org/10.1016/j.joes.2024.05.003
+UR  - https://www.sciencedirect.com/science/article/pii/S2468013324000299
+KW  - Impact load identification
+KW  - Pattern recognition
+KW  - Matching network
+KW  - Feature extraction
+KW  - Sensor selection
+AB  - Identification of impact loads plays important role in marine structures health monitoring but is difficult to be measured directly most time. This study investigates a two-stage framework for impact load localization and reconstruction, consisting of load region identification and local refined nodal search. For the region identification, a novel frequency response feature preprocessing method based on FFT is proposed and incorporated into a multi-layer perceptron (MLP) neural network as the embedding function of the Matching Network (MN), the core model adopted for pattern recognition. Based on the region probabilities predicted by MN, a local refined nodal search strategy is provided, which is initialized by a region correction method for amending the possible region misclassification and further guided by error metrics with iteration search strategy. Moreover, the inverse problem in this study is formulated in the discretized state space expression with the reduced modal coordinates. For improving the load inverse accuracy affected by Zero Order Hold (ZOH) simplification in this formulation, a dynamic sensor filter strategy is provided. Eventually, a numerical experiment of impact load identification on a steel plate is performed and discussed, whose results indicate the validity and robustness of the proposed method.
+ER  - 
+
+TY  - JOUR
+T1  - Adaptive hybrid Kalman filter for attitude motion parameters estimation of space non-cooperative tumbling target
+AU  - Wei, Yaqiang
+AU  - Yang, Xiao
+AU  - Bai, Xinlin
+AU  - Xu, Zhigang
+JO  - Aerospace Science and Technology
+VL  - 144
+SP  - 108832
+PY  - 2024
+DA  - 2024/01/01/
+SN  - 1270-9638
+DO  - https://doi.org/10.1016/j.ast.2023.108832
+UR  - https://www.sciencedirect.com/science/article/pii/S1270963823007289
+KW  - Adaptive hybrid Kalman filter
+KW  - Space non-cooperative tumbling target
+KW  - Local convergence
+KW  - First-order linearization technique
+AB  - Attitude motion parameters estimation of the space non-cooperative tumbling target is the premise of the on-orbit target capture task. However, existing methods cannot balance the estimation accuracy and efficiency. In this paper, an adaptive hybrid Kalman filter is presented to estimate the attitude, angular velocity and inertia motion parameters of the space non-cooperative tumbling target. First, the dynamic model of the non-cooperative tumbling target is derived, and the nonlinear discrete state-space equation is obtained. Then, a hybrid Kalman filter is designed by combining the extended Kalman filter and the unscented Kalman filter. The adaptive technique is introduced to track time-varying uncertain measurement noise caused by complex space disturbances. After that, based on the first-order linearization technique, the sufficient condition for the local convergence of the proposed method is proved. Finally, the numerical simulation experiment was conducted to compare the proposed method with the adaptive extended Kalman filter and the adaptive unscented Kalman filter. The experimental results show that the estimation accuracy of the proposed method is much higher than that of the adaptive extended Kalman filter and slightly lower than that of the adaptive unscented Kalman filter, and the iteration-average Central-Processing-Unit time is 64.2% smaller than that of the adaptive unscented Kalman filter and slightly longer than that of the adaptive extended Kalman filter. The proposed method achieves a much higher accuracy with a slight loss of iteration-average Central-Processing-Unit time.
+ER  - 
+
+TY  - JOUR
+T1  - Multivariate adaptive Brownian Motion-Particle Filter framework for remaining useful life prediction of nonlinear and state-noise coupled degradation process
+AU  - Bu, Zhiyuan
+AU  - Long, Bing
+AU  - Liu, Zhen
+AU  - Wu, Kunping
+AU  - Geng, Hang
+AU  - Cheng, Yuhua
+JO  - Reliability Engineering & System Safety
+VL  - 264
+SP  - 111356
+PY  - 2025
+DA  - 2025/12/01/
+SN  - 0951-8320
+DO  - https://doi.org/10.1016/j.ress.2025.111356
+UR  - https://www.sciencedirect.com/science/article/pii/S0951832025005575
+KW  - Remaining useful life
+KW  - Brownian motion
+KW  - Generic particle filter
+KW  - State-noise coupled
+KW  - RUL distribution uncertainty
+AB  - Degradation modeling and remaining useful life (RUL) prediction are key techniques in prognostics and health management (PHM). However, existing frameworks driven by Brownian Motion struggle to effectively integrate nonlinear degradation features or accurately separate degradation state from the inherent model noise and observation noise, leading to prediction inaccuracies. To address these limitations, a multivariate adaptive Brownian Motion-Generic Particle Filter framework is proposed. The framework enhances prediction accuracy and reduces uncertainty by comprehensively coordinating the three stages of RUL prediction. In degradation modeling stage, multiple drift terms are introduced to accommodate complex nonlinear degradation patterns, while the first-order difference with nonlinear least square (NLS) provides accurate and robust initial parameter estimation. In parameter update stage, a state-noise coupled discrete state-space model is constructed, which considers the uncertainty of all hidden variables, enabling real-time adjustment of parameter distributions based on degradation data. Hidden variables are adaptively updated using two particle filter strategies tailored to different dimensions, mitigating particle degeneracy and improving the separation of true degradation state. In RUL solution stage, the RUL distribution is extended into a stochastic process to quantify prediction uncertainty. Simulation experiments demonstrate the framework’s ability to switch particle filter strategies based on dimensionality and illustrate its overall workflow. Validations on the mechanical torsion bars dataset and the MOSFET dataset demonstrate a 31.5 % improvement in average prediction accuracy over the baseline method.
+ER  - 
+
+TY  - JOUR
+T1  - Nonequilibrium physics of brain dynamics
+AU  - Nartallo-Kaluarachchi, Ramón
+AU  - Kringelbach, Morten
+AU  - Deco, Gustavo
+AU  - Lambiotte, Renaud
+AU  - Goriely, Alain
+JO  - Physics Reports
+VL  - 1152
+SP  - 1
+EP  - 43
+PY  - 2026
+DA  - 2026/01/11/
+T2  - Nonequilibrium physics of brain dynamics
+SN  - 0370-1573
+DO  - https://doi.org/10.1016/j.physrep.2025.10.003
+UR  - https://www.sciencedirect.com/science/article/pii/S0370157325002789
+KW  - Nonequilibrium dynamics
+KW  - Neural dynamics
+KW  - Stochastic processes
+KW  - Time-series reversibility
+KW  - Stochastic thermodynamics
+KW  - Neuroimaging
+KW  - Neural spike-trains
+AB  - Information processing in the brain is coordinated by the dynamic activity of neurons and neural populations at a range of spatiotemporal scales. These dynamics, captured in the form of electrophysiological recordings and neuroimaging, show evidence of time-irreversibility and broken detailed balance suggesting that the brain operates in a nonequilibrium stationary state. Furthermore, the level of nonequilibrium, measured by entropy production or irreversibility appears to be a crucial signature of cognitive complexity and consciousness. The subsequent study of neural dynamics from the perspective of nonequilibrium statistical physics is an emergent field that challenges the assumptions of symmetry and maximum-entropy that are common in traditional models. In this review, we discuss the plethora of exciting results emerging at the interface of nonequilibrium dynamics and neuroscience. We begin with an introduction to the mathematical paradigms necessary to understand nonequilibrium dynamics in both continuous and discrete state–spaces. Next, we review both model-free and model-based approaches to analysing nonequilibrium dynamics in both continuous-state recordings and neural spike-trains, as well as the results of such analyses. We briefly consider the topic of nonequilibrium computation in neural systems, before concluding with a discussion and outlook on the field.
+ER  - 
+
+TY  - JOUR
+T1  - Hybrid deep reinforcement learning based eco-driving for low-level connected and automated vehicles along signalized corridors
+AU  - Guo, Qiangqiang
+AU  - Angah, Ohay
+AU  - Liu, Zhijun
+AU  - Ban, Xuegang (Jeff)
+JO  - Transportation Research Part C: Emerging Technologies
+VL  - 124
+SP  - 102980
+PY  - 2021
+DA  - 2021/03/01/
+SN  - 0968-090X
+DO  - https://doi.org/10.1016/j.trc.2021.102980
+UR  - https://www.sciencedirect.com/science/article/pii/S0968090X21000164
+KW  - Connected and automated vehicles
+KW  - Hybrid reinforcement learning
+KW  - Policy gradient
+KW  - Deep Q-learning
+KW  - Eco-driving
+KW  - Lane-changing
+AB  - Eco-Driving has great potential in reducing the fuel consumption of road vehicles, especially under the connected and automated vehicles (CAVs) environment. Traditional model-based Eco-Driving methods usually require sophisticated models and cannot deal with complex driving scenarios. This paper proposes a hybrid reinforcement learning (RL) based Eco-Driving algorithm considering both the longitudinal acceleration/deceleration and the lateral lane-changing operations. A deep deterministic policy gradient (DDPG) algorithm is designed to learn the continuous longitudinal acceleration/deceleration to reduce the fuel consumption as well as to maintain acceptable travel time. Collecting the critic’s value of each single lane from DDPG and integrating the information of adjacent lanes, a deep Q-learning algorithm is developed to make the discrete lane-changing decision. Together, a hybrid deep Q-learning and policy gradient (HDQPG) method is developed for vehicles driving along multi-lane urban signalized corridors. The method can enable the controlled vehicle to learn well-established longitudinal fuel-saving strategies, and to perform appropriate lane-changing operations at proper times to avoid congested lanes. Numerical experiments show that HDQPG can reduce fuel consumption by up to 46% with marginal or no increase of travel times.
+ER  - 
+
+TY  - JOUR
+T1  - Microstructural Descriptors-Aware Diffusion-Based model for stochastic reconstruction of composite microstructures
+AU  - Hwang, Hyeonho
+AU  - Hamza, Mohamed H.
+AU  - Tetteh, Obed
+AU  - Chattopadhyay, Aditi
+JO  - Composite Structures
+VL  - 393
+SP  - 120615
+PY  - 2026
+DA  - 2026/08/01/
+SN  - 0263-8223
+DO  - https://doi.org/10.1016/j.compstruct.2026.120615
+UR  - https://www.sciencedirect.com/science/article/pii/S0263822326005805
+KW  - Deep learning
+KW  - Conditional diffusion-based generative models
+KW  - Microstructure reconstruction
+KW  - Microstructural descriptors
+KW  - Uncertainty quantification
+AB  - A deep learning-based microstructure characterization and reconstruction framework is developed to generate an ensemble of stochastic representative volume elements (SRVEs) that captures intrinsic microstructural variability of unidirectional fiber tows. The workflow integrates quantitative characterization from scanning electron microscopy images, including categorical segmentation and uncertainty-aware descriptors, with a novel conditional discrete diffusion model. The descriptors include the volume fractions of constituents and manufacturing-induced defects, as well as probabilistic measures of their spatial distributions. These descriptors are processed through a multilayer perceptron to generate conditional embedding, which is enforced through multi-head cross-attention blocks within a U-Net. The descriptor-based embedding guides the diffusion model toward a subset of the microstructural space consistent with the observed variability in fiber and defect morphology and volume fractions, as well as in fiber-related spatial distributions and higher-order point statistics. Incorporating descriptors accelerates training convergence and more accurately captures microstructural variability relative to descriptor-guidance-free diffusion models. To streamline micromechanical analysis, geometric periodicity is imposed during diffusion model sampling by applying circular padding after each Markov denoising step. A second-order semi-analytical micromechanical method is then used to evaluate the effective composite properties of the SRVE ensemble, enabling propagation of stochasticity to the weave scale through bottom-up hierarchical multiscale modeling.
+ER  - 
+
+TY  - JOUR
+T1  - Multi-strategy fuzzy controller based on polar coordinates
+AU  - García Peris, Pablo
+AU  - Al-Hadithi, Basil Mohammed
+JO  - Applied Soft Computing
+VL  - 171
+SP  - 112843
+PY  - 2025
+DA  - 2025/03/01/
+SN  - 1568-4946
+DO  - https://doi.org/10.1016/j.asoc.2025.112843
+UR  - https://www.sciencedirect.com/science/article/pii/S1568494625001541
+KW  - Fuzzy control
+KW  - Takagi–Sugeno model
+KW  - Multi-strategy control
+KW  - Polar coordinates
+AB  - This work presents a multi-strategy fuzzy controller (MSFC) based on the Takagi–Sugeno (T–S) model, where the membership functions are based on polar coordinates. Adopting a polar coordinate system helps to reduce the number of rules significantly, especially when fuzzy variables exhibit extreme values. This approach also allows more rules to be assigned in certain directions (angles) than others, while the radius represents the distance to the reference. The MSFC uses three strategies: constant input (CI), where a predefined gain is set in the exterior rules; standard discrete state–space model linear–quadratic regulator (LQR), in the intermediate rules; and an incremental state–space model LQR (INC-LQR) in the central rule. A technique employing fuzzy fusion is suggested to facilitate smooth transitions among the various methods. The results show that the proposed MSFC in polar coordinates has a faster transient response and zero steady-state error compared to other fuzzy controllers, and it requires fewer rules compared to an MSFC based on Cartesian coordinates.
+ER  - 
+
+TY  - JOUR
+T1  - Model predictive vibration control for a six-degree-of-freedom rigid-flexible coupled parallel platform
+AU  - Xing, Zheng
+AU  - Tang, Jie
+AU  - Min, Qiang
+AU  - Li, Meng
+AU  - Li, Yinghui
+AU  - Chen, Huatao
+AU  - Cao, Dengqing
+JO  - Thin-Walled Structures
+VL  - 228
+SP  - 115061
+PY  - 2026
+DA  - 2026/09/01/
+SN  - 0263-8231
+DO  - https://doi.org/10.1016/j.tws.2026.115061
+UR  - https://www.sciencedirect.com/science/article/pii/S0263823126005859
+KW  - Rigid–flexible coupled system
+KW  - Six-degree-of-freedom platform
+KW  - Global mode method
+KW  - Piezoelectric actuator
+KW  - Model predictive control
+AB  - The six-degree-of-freedom (6-DOF) platform is extensively employed for positioning, pointing, and vibration isolation in aerospace, marine, and precision machinery applications. However, the classical Gough-Stewart configuration suffers from joint backlash and friction, and its dynamic performance degrades under high-frequency vibration, thereby compromising operational accuracy. Recently, rigid–flexible coupled structures have attracted considerable attention because judicious kinematic design can eliminate the above shortcomings while offering superior isolation and transient response. This paper investigates a 6-DOF rigid–flexible coupling parallel platform. The dynamic equations are derived by recourse to Timoshenko beam theory and the generalized Hamilton principle. Global mode shapes are extracted through the Global Mode Method (GMM), and the natural frequencies of the rigid–flexible assembly are computed and benchmarked against finite-element predictions. The governing ordinary differential equations are subsequently converted into a state-space representation. The Model Predictive Control (MPC) system, which relies on piezoelectric actuation, is then synthesized based on the global mode model. Following the optimal tuning of the control hyper-parameters, numerical vibration isolation simulations are conducted under a variety of service conditions and the results are critically evaluated. The simulations demonstrate that the parallel platform provides excellent 6-DOF isolation against various excitations, thereby confirming the effectiveness of the proposed piezoelectric active isolation system under MPC. The study provides a dynamic modeling framework that is both accurate and computationally efficient, together with an MPC controller for six-degree-of-freedom rigid–flexible coupled parallel platforms operating in vibratory environments. It also offers theoretical guidance and engineering insights into the optimal placement of piezoelectric actuators and control strategy design in parallel kinematic machines.
+ER  - 
+
+TY  - JOUR
+T1  - Decision making under uncertain and dependent system rates in service systems
+AU  - Ekin, Tahir
+AU  - Aktekin, Tevfik
+JO  - European Journal of Operational Research
+VL  - 291
+IS  - 1
+SP  - 335
+EP  - 348
+PY  - 2021
+DA  - 2021/05/16/
+SN  - 0377-2217
+DO  - https://doi.org/10.1016/j.ejor.2020.09.005
+UR  - https://www.sciencedirect.com/science/article/pii/S037722172030789X
+KW  - Decision analysis
+KW  - Simulation
+KW  - Bayesian inference
+KW  - Stochastic service systems
+KW  - Call center
+AB  - In this paper, we propose decision analysis methods for determining the optimal number of agents of a service system where the system rates (arrival, service, and abandonment) are modeled as dependent random variables. In doing so, we take the Bayesian point of view of inference and obtain joint posterior distributions of the system rates. We solve the proposed stochastic staffing decision problem with augmented probability simulation based optimization methods. The novelty of our approach stems from the use of dependent system rates to determine optimal staffing in a constrained optimization setting for stochastic service systems. We demonstrate the implications of ignoring dependence and uncertainty in system rates on simulated data for general service systems, and illustrate the application of the proposed methodology on call center operations.
+ER  - 
+
+TY  - JOUR
+T1  - Traveling waves of the SIR epidemic model with discrete diffusion and treatment
+AU  - Lu, Lei
+AU  - Wang, Jia-Bing
+JO  - Applied Mathematics Letters
+VL  - 138
+SP  - 108515
+PY  - 2023
+DA  - 2023/04/01/
+SN  - 0893-9659
+DO  - https://doi.org/10.1016/j.aml.2022.108515
+UR  - https://www.sciencedirect.com/science/article/pii/S0893965922003780
+KW  - SIR epidemic models
+KW  - Traveling waves
+KW  - Discrete diffusion
+KW  - Treatment
+AB  - In a recent paper (Deng and Zhang, 2021), Deng and Zhang studied a discrete diffusive SIR epidemic model with treatment, and obtained some existence result for R0>1 and c≥c∗ and nonexistence results for R0>1 and 0<c<c∗ or R0<1 on the traveling waves with speed c, where R0 denotes the basic reproduction number and c∗>0 is a critical number. However, the convergence of susceptible component as the wave variable goes to infinity remains open. In this paper, we aim to solve this open problem and estimate the L1−norm of infectious components. Moreover, we establish the nonexistence of traveling waves with any non-positive speed c≤0 for R0>1.
+ER  - 
+
+TY  - JOUR
+T1  - A stochastic approximation method for probability prediction of docking success for aerial refueling
+AU  - Liu, Ying
+AU  - Zhao, Zhiyao
+AU  - Ma, Haibiao
+AU  - Quan, Quan
+JO  - Applied Soft Computing
+VL  - 103
+SP  - 107139
+PY  - 2021
+DA  - 2021/05/01/
+SN  - 1568-4946
+DO  - https://doi.org/10.1016/j.asoc.2021.107139
+UR  - https://www.sciencedirect.com/science/article/pii/S1568494621000624
+KW  - Aerial refueling
+KW  - Docking
+KW  - Docking success probability
+KW  - Stochastic approximation method
+KW  - Markov chain
+AB  - Aerial refueling is capable of increasing the endurance and flight range of aircraft. However, during the docking phase of aerial refueling, the docking risk increases as the receiver aircraft approaches the tanker aircraft. A high docking risk indicates docking failure or even flight collision. In order to guarantee docking reliability and safety, a stochastic approximation method is proposed to predict the docking success probability during the docking phase of aerial refueling. If the success probability is lower than the specified value, the receiver aircraft needs to increase its relative distance from the tanker aircraft to reduce the risk. In our method, a stochastic differential equation is used to model the relative motion between the receiver and tanker aircrafts, where the receiver aircraft flies along a predefined flight path with influence of additive wind perturbations. The correlation between the magnitude of wind perturbations and the distance between the receiver and tanker aircrafts is considered. Then, based on the established relative motion model, the probability that the receiver aircraft enters the target set during a given time interval is predicted by the Markov chain stochastic approximation method. The docking success probability is computed by propagating the transition probabilities of the Markov chain backwards starting from the target set during the time interval. Comparing with the widely used Monte Carlo method in previous studies, our method demonstrates substantial effectiveness and efficiency.
+ER  - 
+
+TY  - JOUR
+T1  - Proactive water-thermal management of PEM electrolyzer based on model predictive control for electro-thermal stabilization
+AU  - Wang, Kaichen
+AU  - Xiao, Feng
+AU  - Li, Yuxin
+AU  - Liao, Zhirong
+AU  - Xu, Chao
+JO  - Process Safety and Environmental Protection
+VL  - 221
+SP  - 109725
+PY  - 2026
+DA  - 2026/11/15/
+SN  - 0957-5820
+DO  - https://doi.org/10.1016/j.psep.2026.109725
+UR  - https://www.sciencedirect.com/science/article/pii/S0957582026013431
+KW  - PEM electrolyzer cell
+KW  - Dynamic electro-thermal-mass model
+KW  - Model predictive control
+KW  - Water-thermal management
+AB  - Proactive water-thermal management is essential for securing operational safety and extending the lifespan of proton exchange membrane (PEM) electrolyzer cells under dynamic renewable power fluctuations. In this research, a predictive water and thermal management strategy based on model predictive control (MPC) is developed and experimentally validated. A fully coupled transient mechanism model is established to capture multiphysics dynamics over a wide operational range up to 4 A/cm2. To meet real time computational constraints, the nonlinear governing equations are analytically reconstructed into a discrete state-space predictor via localized linearization, preserving physical consistency. This specific control formulation aims to proactively optimize convective cooling and achieve electro-thermal stabilization. Experimental investigations under unregulated constant flow operations highlight severe thermal risks driven by internal heat accumulation. In contrast, dynamic control validations demonstrate that the proposed predictive strategy effectively suppresses the temperature rise and keeps the cell temperature near the target threshold of 62.0 °C under both step-current transitions and random renewable power fluctuations. In addition, this approach effectively suppresses transient voltage overshoots, improving electro-thermal stability under the tested dynamic operating conditions.
+ER  - 
+
+TY  - JOUR
+T1  - Intelligent fault detection of reciprocating compressor using a novel discrete state space
+AU  - Zhang, Ying
+AU  - Zhang, Lingling
+JO  - Mechanical Systems and Signal Processing
+VL  - 169
+SP  - 108583
+PY  - 2022
+DA  - 2022/04/15/
+SN  - 0888-3270
+DO  - https://doi.org/10.1016/j.ymssp.2021.108583
+UR  - https://www.sciencedirect.com/science/article/pii/S088832702100916X
+KW  - Fault detection
+KW  - Reciprocating compressor
+KW  - Feature discretization
+KW  - State space
+AB  - Aiming to the intelligent fault detection of reciprocating compressors (RCs), a novel method based on discrete state space construction and state space transformation is proposed in this paper. Conventional fault detection methods were conducted with continuous data, which tend to cause overfitting on establishing a model. This paper proposes a novel framework of fault detection on the basis of discrete data. High-dimensional features are extracted from raw signals and discretized into labels representing potential states of operating conditions. These discrete features of normal data are constructed into raw state space, and then transformed into a new state space by latent Dirichlet allocation subsequently. The transformed state space and its distribution can reflect operating conditions with more representative information. Then the distributions of real-time data under the transformed normal state space are calculated. The divergences of real-time state space distribution and normal state space are determined to identify the operating condition of reciprocating compressors, including normal condition and abnormal condition. This proposed method was validated on four cases of RC faults. The result demonstrates the effectiveness of the proposed method on detecting abnormal conditions of RCs.
+ER  - 
+
+TY  - JOUR
+T1  - Multi-time scale framework for co-estimation of state of charge and unknown parameters of lithium-ion batteries based on fractional-order model
+AU  - Chai, Haoyu
+AU  - Chen, Yong
+JO  - Journal of Energy Storage
+VL  - 133
+SP  - 117956
+PY  - 2025
+DA  - 2025/10/20/
+SN  - 2352-152X
+DO  - https://doi.org/10.1016/j.est.2025.117956
+UR  - https://www.sciencedirect.com/science/article/pii/S2352152X25026696
+KW  - State of charge
+KW  - Adaptive center differential Kalman filter
+KW  - Multi-time scale
+KW  - Fractional-order calculus
+KW  - Lithium-ion battery
+AB  - For the state of charge(SOC) estimation under unknown parameters, an adaptive fractional-order center difference Kalman filter(AFCDKF) algorithm in the framework of multi-time scales is proposed in this paper. First, discrete state space equations with memory properties are obtained using fractional-order derivatives, and the influence of the initial state on the SOC estimation is weakened via the fractional-order calculus theory. Then, we design a multi-time scale estimation framework to address the problem of large differences in the rates of change of SOC and model parameters. The unknown parameters are estimated at the macroscale by the extended Kalman filter algorithm, and SOC is estimated at the microscale by the AFCDKF algorithm. Finally, we introduce the multi-innovation theory and forgetting factor into the AFCDKF algorithm to further improve the estimation performance of the algorithm, and the effectiveness of the proposed algorithm in this paper is verified by multiple sets of experiments.
+ER  - 
+
+TY  - JOUR
+T1  - Advanced multi contact-point detection of bridge modal parameters using a two-axle test vehicle: From theory to experiment
+AU  - Yang, Y.B.
+AU  - Chen, X.G.
+AU  - Xu, Hao
+AU  - Chen, J.
+AU  - Shi, L.K.
+AU  - Liu, Y.Z.
+JO  - Engineering Structures
+VL  - 366
+SP  - 123471
+PY  - 2026
+DA  - 2026/11/01/
+SN  - 0141-0296
+DO  - https://doi.org/10.1016/j.engstruct.2026.123471
+UR  - https://www.sciencedirect.com/science/article/pii/S0141029626013854
+KW  - Frequency
+KW  - Mode shape
+KW  - Damping ratio
+KW  - Vehicle scanning method
+KW  - Stochastic subspace identification
+AB  - An advanced multi contact-point detection method for the identification of all bridge modal parameters using a moving two-axle test vehicle is proposed by modifying the stochastic subspace identification (SSI) procedure. Initially, closed-form solutions are derived for both the bridge and vehicle-bridge contact point responses, along with a back-calculation formula to extract the front/rear contact responses from vehicle data. The system’s discrete state-space equations are then established for the two contact responses, from which modal frequencies and damping ratios are obtained by eigenvalue analysis. To mitigate damping-induced mode shape distortion, a segmentation approach making use of the two contact points is introduced, allowing the recovery of mode shapes via the spatial correlation of SSI-derived modal amplitudes. Theoretical, numerical, and experimental studies confirm that: (1) Multi contact-point responses can be effectively dealt with by using a modified SSI method; (2) the front and rear contacts provide the spatial relation needed for bridge identification, independent of vehicle frequencies; (3) segmentation enables mode shapes to be derived without damping distortion; (4) the technique was validated by field tests for bridge frequencies and mode shapes; and (5) it applies to beam-like structures with rough pavement, aided by ongoing traffic.
+ER  - 
+
+TY  - JOUR
+T1  - Sublinear expectation structure under discrete state space
+AU  - Yang, Shuzhen
+AU  - Zhang, Wenqing
+JO  - Statistics & Probability Letters
+VL  - 236
+SP  - 110758
+PY  - 2026
+DA  - 2026/09/01/
+SN  - 0167-7152
+DO  - https://doi.org/10.1016/j.spl.2026.110758
+UR  - https://www.sciencedirect.com/science/article/pii/S0167715226001227
+KW  - Sublinear expectation
+KW  - Discrete state space
+KW  - Repeated summation formula
+KW  - Convergence theorems
+KW  - Law of large numbers
+AB  - In this study, we develop a sublinear expectation structure on a discrete state space. To describe a nonlinear randomized trial, we construct a family of probability measures by a convex compact domain. Parallel to Peng’s sublinear expectation in continuous settings, we define its discrete concepts, which admits an explicit recursive summation calculation. Furthermore, we establish discrete analogs of the Monotone convergence theorem, Fatou’s lemma and the Dominated convergence theorem for the sublinear expectation. Based on a newly defined notion of independence, we derive a nonlinear law of large numbers and obtain the maximal distribution under sublinear expectation.
+ER  - 
+
+TY  - JOUR
+T1  - A novel Dual Fractional-Order Extended Kalman Filter for the improved estimation of battery state of charge
+AU  - Rodríguez-Iturriaga, Pablo
+AU  - Alonso-del-Valle, Jorge
+AU  - Rodríguez-Bolívar, Salvador
+AU  - Anseán, David
+AU  - Viera, Juan Carlos
+AU  - López-Villanueva, Juan Antonio
+JO  - Journal of Energy Storage
+VL  - 56
+SP  - 105810
+PY  - 2022
+DA  - 2022/12/01/
+SN  - 2352-152X
+DO  - https://doi.org/10.1016/j.est.2022.105810
+UR  - https://www.sciencedirect.com/science/article/pii/S2352152X22017984
+KW  - Battery modeling
+KW  - Fractional-order model
+KW  - Parameter identification
+KW  - Dual Extended Kalman Filter
+KW  - SOC estimation
+AB  - Fractional-order models are gaining increasing relevance in battery modeling in light of the experimental measurements from Electrochemical Impedance Spectroscopy (EIS) tests, unequivocally indicating the presence of equivalent circuit components with an impedance of non-integer order. To attain their discrete state-space representation, the approach based on the Grünwald–Letnikov (GL) definition of the fractional derivative has been widely used, albeit its applicability beyond driving cycles remains open to discussion. In this article, we present a novel Dual Fractional-Order Extended Kalman Filter (DFOEKF) for the simultaneous estimation of State of Charge (SOC) and all fractional parameters, based on the multiple-RC approximation instead. We discuss the parameter identification of fractional-order elements on a NMC811/Si-Gr cell from both frequency and time-domain data, highlighting the importance of EIS measurements for the search of appropriate time-domain values. We validate the performance of this method experimentally at different operation stages, as well as its robustness to incorrect initializations, obtaining a SOC root-mean-square (RMS) error of 0.28% and a voltage RMS error of 15.2 mV in 20 complete charge–discharge cycles. The greatly accurate estimation results both within and outside the driving cycle stage make this method an interesting alternative for the fractional modeling of LIBs in online applications.
+ER  - 
+
+TY  - JOUR
+T1  - Deep reinforcement learning-based current control of grid following inverters with digital real-time simulation
+AU  - Pokharel, Kajal
+AU  - K.C., Krishna
+AU  - Hummels, Don
+AU  - Li, Hepeng
+JO  - Cyber-Physical Energy Systems
+PY  - 2026
+DA  - 2026/08/28/
+SN  - 3050-7448
+DO  - https://doi.org/10.1016/j.cpes.2026.04.005
+UR  - https://www.sciencedirect.com/science/article/pii/S3050744826000344
+KW  - Grid following inverter
+KW  - Deep reinforcement learning
+KW  - Robust policy learning
+KW  - Current regulation
+KW  - Real-time simulation
+AB  - Fast and accurate current control is a fundamental requirement for grid-connected voltage source inverters, as the performance of the inner current loop directly affects the stability, bandwidth, and power quality of higher-level control functions. While deep reinforcement learning (DRL) has recently been explored for power inverter control, many existing studies rely on training and evaluation in the same environment, which limits the assessment of generalization and deployment feasibility. This paper proposes a deployment-oriented DRL framework for inverter current control that enables efficient training and robust cross-model implementation. Instead of training on computationally intensive switching-level simulations, the control policy is learned using a discrete state-space model of the inverter dynamics in Python. To improve robustness against modeling inaccuracies, parameter randomization is introduced during training to account for uncertainty in filter inductance. The learned policy is subsequently deployed without retraining in a high-fidelity switching inverter model implemented on an OPAL-RT real-time simulation platform. Simulation results demonstrate that the proposed controller achieves accurate current tracking, reduced harmonic distortion, and strong robustness to parameter variations when transferred from the training model to the real-time switching inverter environment. These results highlight the potential of combining efficient state-space training with robust policy design for practical learning-based control of power inverters.
+ER  - 
+
+TY  - JOUR
+T1  - Numerical investigation of droplet formation and regulation mechanisms in cross flow microchannels
+AU  - Wang, Jiayi
+AU  - Cui, Shijia
+AU  - Wang, Jinlong
+AU  - Li, Qiang
+AU  - Xu, Weiwei
+JO  - Applied Thermal Engineering
+VL  - 289
+SP  - 129863
+PY  - 2026
+DA  - 2026/03/01/
+SN  - 1359-4311
+DO  - https://doi.org/10.1016/j.applthermaleng.2026.129863
+UR  - https://www.sciencedirect.com/science/article/pii/S1359431126001717
+KW  - Numerical simulation
+KW  - Cross flow microchannel
+KW  - Droplet
+KW  - Discrete phase flow regimes
+KW  - Prediction correlation
+AB  - Microdroplets have an extremely wide range of applications in biomedical, chemical, and petroleum fields. A three-dimensional numerical model of a cross flow microchannel was developed using the OpenFOAM framework to investigate the dynamics and controlling factors of droplet generation. Four discrete flow regimes (slug, drip, jet, parallel flow) were identified within the ranges of 0 ≤ Cac ≤ 0.14 and 0 ≤ Cad ≤ 0.0014. Their formation is governed by either an extrusion or shear mechanism. Quantitative analysis revealed that elevating the continuous phase flow velocity or its dynamic viscosity significantly reduced droplet length by up to 78.86% and increased the droplet generation frequency by a factor of 11.5. Decreasing surface tension or increasing contact angle promoted droplet formation. Additionally, an increase in microchannel width was observed to cause a 113% increase in droplet length and a 17.5% reduction in generation frequency. Furthermore, a correlative model was developed to forecast the dimensionless droplet length, featuring a maximum error of ± 15%.
+ER  - 
+
+TY  - JOUR
+T1  - Bayesian neural network modeling and synchronization control of spatio-temporal diffusion dynamics with application to human gait kinematics
+AU  - Qu, Huizhen
+AU  - Li, Huiqiong
+AU  - Tang, Niansheng
+JO  - Engineering Applications of Artificial Intelligence
+VL  - 181
+SP  - 115759
+PY  - 2026
+DA  - 2026/10/01/
+SN  - 0952-1976
+DO  - https://doi.org/10.1016/j.engappai.2026.115759
+UR  - https://www.sciencedirect.com/science/article/pii/S0952197626020439
+KW  - Kinematics and dynamics of mechanical systems
+KW  - Spatio-temporal diffusion networks
+KW  - Sparse Bayesian learning
+KW  - Exponential synchronization
+KW  - Gait biomechanics
+AB  - This paper addresses data-driven modeling and control of spatio-temporal dynamics in biomechanical systems by combining Bayesian neural networks(BNNs) with classical control theory. We consider discrete diffusion-type neural network representations of mechanical motion with time-varying delays, motivated in particular by human gait kinematics and related mechatronic applications such as prosthetic or exoskeleton assistance. To identify the distributed coupling structure and time-delay effects from measured motion data, we develop an enhanced sparse Bayesian learning scheme for spatio-temporal BNNs. The method employs an adaptive learning rate strategy for hyperparameter updates together with a Laplacian-regularized hierarchical prior that enforces spatial smoothness while retaining parameter sparsity, thus improving identifiability, numerical robustness and convergence in practical engineering use. On top of the learned dynamic model, a proportional–integral–derivative controller is embedded in the slave system of a master–slave architecture to achieve accurate tracking and synchronization of mechanical motion. To support controller analysis and implementation, a tailored Lyapunov-Krasovskii functional is constructed, from which tractable linear matrix inequality conditions are derived to verify global exponential synchronization of the corresponding nominal error system, providing a rigorous and implementable analysis tool for the kinematics, dynamics and control of delayed mechanical systems. The overall framework is validated on human gait kinematics data, demonstrating effective oscillation suppression, elimination of steady-state error and reliable recovery of spatio-temporal interaction patterns. The results highlight how advanced artificial intelligence(AI) techniques—specifically sparse BNNs—can be systematically integrated with the proposed controller to solve real-world problems in machine science, bioengineering and intelligent mechanical systems.
+ER  - 
+
+TY  - JOUR
+T1  - Traveling wave solutions in a discrete diffusive epidemic model with stage structure and nonlinear incidence rate
+AU  - Yang, Peng
+JO  - Journal of Mathematical Analysis and Applications
+VL  - 555
+IS  - 1
+SP  - 130027
+PY  - 2026
+DA  - 2026/03/01/
+SN  - 0022-247X
+DO  - https://doi.org/10.1016/j.jmaa.2025.130027
+UR  - https://www.sciencedirect.com/science/article/pii/S0022247X2500808X
+KW  - Traveling wave solutions
+KW  - The basic reproduction number
+KW  - Discrete diffusion stage epidemic model
+KW  - The general nonlinear incidence rate
+AB  - In order to understand the geographical spread of infectious diseases, classical epidemic models should consider spatial effects. Compared to the continuous diffusion version, the discrete diffusive version will be more realistic and meaningful. To our knowledge, there are not many studies on discrete diffusive epidemic models, therefore, this article investigates the existence, nonexistence, and asymptotic behavior of traveling wave solutions for a discrete diffusive epidemic model incorporating stage structure and a nonlinear incidence rate. Concretely, to begin with, we obtain the basic reproduction number. And then, we get that the critical wave speed determines the existence and nonexistence of traveling wave solutions. Meanwhile, by establishing an appropriate Lyapunov functional and applying Lebesgue dominated convergence theorem, we derive the boundary asymptotic behavior of traveling wave solutions. Ultimately, we employ these results to two examples (i.e. discrete diffusion stage epidemic models).
+ER  - 
+
+TY  - JOUR
+T1  - PepGate: A Dual-Path Diffusion Framework for ACE Inhibitory Peptide De Novo Design
+AU  - Sun, Wanhao
+AU  - Yang, Xihe
+AU  - Huang, Xin
+AU  - Xiong, Neng
+AU  - Feng, Hongru
+AU  - Pan, Yuanjiang
+JO  - Journal of Medicinal Chemistry
+PY  - 2026
+DA  - 2026/08/28/
+SN  - 1520-4804
+DO  - https://doi.org/10.1021/acs.jmedchem.6c01875
+UR  - https://www.sciencedirect.com/science/article/pii/S1520480426009816
+AB  - Hypertension remains a global health burden, driving demand for effective therapies. Short bioactive peptides offer high specificity and low toxicity for antihypertensive treatment, but their discovery traditionally relies on low-throughput extraction from natural proteins. Here we introduce PepGate, a gated dual-path discrete diffusion framework for de novo ACE inhibitory peptide design. By fine-tuning a protein language model into a short-peptide-specific foundation model (PepGPT), we developed an integrated pipeline comprising a generative diffusion model (PepGen) and discriminators (PepClass and PepIC50). PepGate identified 30 promising peptides with a median IC50 of 4.79 μM. In vivo validation of the top candidate, YIPVPF, demonstrated sustained blood pressure reduction in SHRs (acute SBP reduction: 48 mmHg; chronic: 43 mmHg). Computational target-network analyses further suggested broader blood-pressure-related mechanisms beyond ACE inhibition. This pipeline shifts from empirical mining to precision digital design, offering a scalable tool for next-generation therapeutic peptide development.
+
+ER  - 
+
+TY  - JOUR
+T1  - Physics-informed hierarchical perception modulation network for lithium-ion battery health management
+AU  - Hao, Shuai
+AU  - Feng, Jirou
+AU  - Dong, Jinrun
+AU  - Cui, Wenyue
+AU  - Cheng, Jinhua
+AU  - Gong, Maoguo
+JO  - Energy
+VL  - 335
+SP  - 138229
+PY  - 2025
+DA  - 2025/10/30/
+SN  - 0360-5442
+DO  - https://doi.org/10.1016/j.energy.2025.138229
+UR  - https://www.sciencedirect.com/science/article/pii/S036054422503871X
+KW  - Lithium-ion battery
+KW  - State of health
+KW  - Physics-informed neural network
+KW  - Deep learning
+AB  - The rapid proliferation of electric vehicles has underscored the critical role of lithium-ion batteries in ensuring energy efficiency and operational safety. Accurate state of health (SOH) estimation of battery, remains a significant challenge due to the complexity and variability of real-world usage conditions. To address this issue, a novel physics-informed hierarchical perception modulation network is proposed to model battery degradation dynamics and predict SOH with enhanced accuracy and robustness. The proposed framework employs a convolutional neural network to capture local fine-grained electrochemical signatures. These local representations are subsequently modulated by degradation-aware parameters derived from a Transformer-based module, which models long-range temporal dependencies and encapsulates the global aging trajectory. This hierarchical modulation mechanism enables dynamic balancing between short-term micro-patterns and long-term degradation trends, thus enhancing the model’s resilience under varying operating conditions. Furthermore, a physics-informed loss function is introduced, derived from a discretized state-space degradation equation, to incorporate domain-specific knowledge and regularize the learning process. Experimental evaluations conducted on benchmark LiFePO4 battery datasets from MIT and HUST demonstrate the superior performance of the proposed method, achieving higher predictive accuracy and stronger generalization compared to state-of-the-art approaches.
+ER  - 
+
+TY  - JOUR
+T1  - Recursive estimators and hybrid Cramér–Rao bounds for discrete-time Markovian dynamic systems
+AU  - El Bouch, Sara
+AU  - Labsir, Samy
+AU  - Galy, Jérôme
+AU  - Vilà-Valls, Jordi
+AU  - Chaumette, Eric
+JO  - Signal Processing
+VL  - 239
+SP  - 110284
+PY  - 2026
+DA  - 2026/02/01/
+SN  - 0165-1684
+DO  - https://doi.org/10.1016/j.sigpro.2025.110284
+UR  - https://www.sciencedirect.com/science/article/pii/S0165168425003986
+KW  - Recursive estimation
+KW  - Hybrid Cramér–Rao bounds
+KW  - Markovian dynamic systems
+KW  - Radar applications
+AB  - This article addresses the joint estimation of random states and deterministic parameters within a wide class of linear discrete state-space (DSS) models when a large set of dependent observations is available. Two models are considered, depending on whether the initial state is assumed to be deterministic or random: the generalized conditional signal model and the generalized unconditional signal model. A unified recursive method for estimating the initial state, current state, and unknown deterministic parameters, is obtained by resorting to the Kalman Filter (KF), then generalized to the class of nonlinear DSS models compatible with the extended KF. Hence, to assess the efficiency of these estimators, we also derive recursive hybrid Cramér–Rao bounds for Markovian dynamic systems. A unified framework is established for bounds on complex-valued initial and current states in the presence of unknown deterministic parameters. Finally, the article includes numerical simulations of the empirical mean squared error of the proposed estimators, provides closed-form expressions of the bounds, and demonstrates their practical relevance through two radar application examples.
+ER  - 
+
+TY  - JOUR
+T1  - Stochastic occupancy modeling for spaces with irregular occupancy patterns using adaptive B-Spline-based inhomogeneous Markov Chains
+AU  - Zhang, Hanbei
+AU  - Thilker, Christian Ankerstjerne
+AU  - Madsen, Henrik
+AU  - Li, Rongling
+AU  - Xiao, Fu
+AU  - Ma, Tianyou
+AU  - Xu, Kan
+JO  - Building and Environment
+VL  - 261
+SP  - 111721
+PY  - 2024
+DA  - 2024/08/01/
+SN  - 0360-1323
+DO  - https://doi.org/10.1016/j.buildenv.2024.111721
+UR  - https://www.sciencedirect.com/science/article/pii/S0360132324005638
+KW  - Stochastic occupancy prediction
+KW  - In-homogeneous Markov Chains
+KW  - Adaptive B-Splines
+KW  - Irregular occupancy patterns
+KW  - Office meeting room
+AB  - This paper presents a discrete time, discrete state-space in-homogeneous Markov Chains model for stochastic occupancy modeling in spaces with irregular occupancy patterns. The goal of the model is to provide accurate predictions of occupancy numbers, enabling appropriate actions to be taken for HVAC system to maintain optimal indoor environment. The proposed Markov Chain model incorporates time in-homogeneity by coupling the time-varying model parameters using a Periodic B-Spline expansion with adaptive knots, which effectively captures patterns in occupancy activity. This method optimizes the distribution of knots based on specific occupancy characteristics observed in different types of rooms. To evaluate the effectiveness of the proposed method, six months of occupancy data collected from a meeting room are utilized. A comprehensive comparison is conducted between the proposed adaptive B-Spline method and other approaches, including the counting method and uniform B-Spline method. The comparison considers both model accuracy and complexity, using metrics such as the Akaike Information Criterion and Bayesian Information Criterion. Results indicate that the proposed model achieves more accurate predictions with fewer model parameters compared to other methods. These forecasts are particularly useful in optimizing the control of HVAC systems, where accurate predictions of future occupancy numbers are essential.
+ER  - 
+
+TY  - JOUR
+T1  - Algorithmic randomness in continuous-time Markov chains
+AU  - Huang, Xiang
+AU  - Lutz, Jack H.
+AU  - Lutz, Neil
+AU  - Migunov, Andrei N.
+JO  - Information and Computation
+VL  - 312
+SP  - 105502
+PY  - 2026
+DA  - 2026/09/01/
+SN  - 0890-5401
+DO  - https://doi.org/10.1016/j.ic.2026.105502
+UR  - https://www.sciencedirect.com/science/article/pii/S0890540126000994
+KW  - Algorithmic randomness
+KW  - Continuous-time Markov chain
+KW  - Chemical reaction network
+AB  - In this paper we develop the elements of the theory of algorithmic randomness in continuous-time Markov chains (CTMCs). Our main contribution is a rigorous, useful notion of what it means for an individual trajectory of a CTMC to be random. CTMCs have discrete state spaces and operate in continuous time. This, together with the fact that trajectories may or may not halt, presents challenges not encountered in more conventional developments of algorithmic randomness. Although we formulate algorithmic randomness in the general context of CTMCs, we are primarily interested in the computational power of stochastic chemical reaction networks, which are special cases of CTMCs. This leads us to embrace situations in which the long-term behavior of a network depends essentially on its initial state and hence to eschew assumptions that are frequently made in Markov chain theory to avoid such dependencies. After defining the randomness of trajectories in terms of martingales (algorithmic betting strategies), we prove equivalent characterizations in terms of algorithmic measure theory and Kolmogorov complexity. As a preliminary application we prove that, in any stochastic chemical reaction network, every random trajectory with bounded molecular counts has the non-Zeno property that infinitely many reactions do not occur in any finite interval of time.
+ER  - 
+
+TY  - JOUR
+T1  - Feasible initial conditions for 2D discrete state-space systems
+AU  - Pereira, R.
+AU  - Rocha, P.
+JO  - IFAC-PapersOnLine
+VL  - 55
+IS  - 30
+SP  - 127
+EP  - 131
+PY  - 2022
+DA  - 2022/01/01/
+T2  - 25th International Symposium on Mathematical Theory of Networks and Systems MTNS 2022
+SN  - 2405-8963
+DO  - https://doi.org/10.1016/j.ifacol.2022.11.040
+UR  - https://www.sciencedirect.com/science/article/pii/S2405896322026684
+KW  - 2D systems
+KW  - state-space models
+KW  - initial conditions
+AB  - The aim of this contribution is to characterize the set of feasible initial conditions on a diagonal line in order to compute the solutions of a 2D discrete state-space system (defined over Z2) on a half-plane of the 2D grid. This characterization is given in terms of the system matrices for the state updating.
+ER  - 
+
+TY  - JOUR
+T1  - Asymptotics for Markov chain mixture detection
+AU  - Fitzpatrick, Matthew
+AU  - Stewart, Michael
+JO  - Econometrics and Statistics
+VL  - 22
+SP  - 56
+EP  - 66
+PY  - 2022
+DA  - 2022/04/01/
+T2  - The 2nd Special issue on Mixture Models
+SN  - 2452-3062
+DO  - https://doi.org/10.1016/j.ecosta.2021.11.004
+UR  - https://www.sciencedirect.com/science/article/pii/S2452306221001337
+KW  - Markov chain
+KW  - Mixture model
+KW  - Asymptotics
+AB  - Sufficient conditions are provided under which the log-likelihood ratio test statistic fails to have a limiting chi-squared distribution under the null hypothesis when testing between one and two components under a general two-component mixture model, but rather tends to infinity in probability. These conditions are verified when the component densities describe continuous-time, discrete-state-space Markov chains and the results are illustrated via a parametric bootstrap simulation on an analysis of the migrations over time of a set of corporate bonds ratings. The precise limiting distribution is derived in a simple case with two states, one of which is absorbing which leads to a right-censored exponential scale mixture model. In that case, when centred by a function growing logarithmically in the sample size, the statistic has a limiting distribution of Gumbel extreme-value type rather than chi-squared.
+ER  - 
+
+TY  - JOUR
+T1  - Traveller: Travel-pattern aware trajectory generation via autoregressive diffusion models
+AU  - Luo, Yuxiao
+AU  - Zhang, Songming
+AU  - Liu, Kang
+AU  - Xu, Yang
+AU  - Yin, Ling
+JO  - Information Fusion
+VL  - 127
+SP  - 103766
+PY  - 2026
+DA  - 2026/03/01/
+SN  - 1566-2535
+DO  - https://doi.org/10.1016/j.inffus.2025.103766
+UR  - https://www.sciencedirect.com/science/article/pii/S1566253525008280
+KW  - Trajectory generation
+KW  - Synthetic data
+KW  - Human mobility simulation
+KW  - Geo AI
+AB  - Trajectory Generation (TG) enables realistic simulation of individual movements for applications such as urban management, transportation planning, epidemic control, and privacy-preserving mobility analysis. However, existing TG methods, particularly unconditional diffusion models, struggle with spatiotemporal fidelity as they often overlook some travel patterns that are critical in an individual’s mobility behavior, such as recurrent location visits, movement scope, and temporal regularities. In this work, we propose the Autoregressive Diffusion Model for Travel-Pattern Aware Trajectory Generation (Traveller), a novel approach that integrates autoregressive travel-pattern modeling (AR-TempPlan) with diffusion-based trajectory generation (TravCond-Diff) to produce realistic and context-aware movement patterns. By leveraging the spatial anchor and temporal modes of visiting different locations, we derive an individual’s particular travel pattern as spatiotemporal constraints for guided trajectory generation. Building on this, AR-TempPlan generates a mask location sequence as the temporal modes, planning location transitions over time, while TravCond-Diff leverages this planning signal and home location, the spatial anchor, to guide spatial generation through a discrete diffusion process. Experiments on real-world datasets demonstrate that Traveller with the dual guidance mechanism enables the production of high-fidelity and individual trajectories that effectively capture complex human mobility behaviors while preserving privacy. The code and data are available at https://github.com/YuxiaoLuo0013/Traveller.
+ER  - 
+
+TY  - JOUR
+T1  - Gradient-bounded dynamic programming for submodular and concave extensible value functions with probabilistic performance guarantees
+AU  - Lebedev, Denis
+AU  - Goulart, Paul
+AU  - Margellos, Kostas
+JO  - Automatica
+VL  - 135
+SP  - 109897
+PY  - 2022
+DA  - 2022/01/01/
+SN  - 0005-1098
+DO  - https://doi.org/10.1016/j.automatica.2021.109897
+UR  - https://www.sciencedirect.com/science/article/pii/S0005109821004209
+KW  - Dual dynamic programming
+KW  - Function approximation
+KW  - Real-time operations in transportation
+AB  - We consider stochastic dynamic programming problems with high-dimensional, discrete state-spaces and finite, discrete-time horizons that prohibit direct computation of the value function from a given Bellman equation for all states and time steps due to the “curse of dimensionality”. For the case where the value function of the dynamic program is concave extensible and submodular in its state-space, we present a new algorithm that computes deterministic upper and stochastic lower bounds of the value function in the realm of dual dynamic programming. We show that the proposed algorithm terminates after a finite number of iterations. Furthermore, we derive probabilistic guarantees on the value accumulated under the associated policy for a single realisation of the dynamic program and for the expectation of this value. Finally, we demonstrate the efficacy of our approach on a high-dimensional numerical example from delivery slot pricing in attended home delivery.
+ER  - 
+
+TY  - JOUR
+T1  - The semi-discrete diffusion convection equation with decay
+AU  - Lizama, Carlos
+AU  - Warma, Mahamadi
+JO  - Applied Mathematics Letters
+VL  - 151
+SP  - 108979
+PY  - 2024
+DA  - 2024/05/01/
+SN  - 0893-9659
+DO  - https://doi.org/10.1016/j.aml.2023.108979
+UR  - https://www.sciencedirect.com/science/article/pii/S0893965923004111
+KW  - Semi-discrete equations
+KW  - Uniformly continuous one-parameter semigroups
+KW  - Fundamental solutions
+KW  - Stability
+KW  - Regularity
+AB  - In this paper we find the fundamental solution of the semi-discrete diffusion convection equation with decay, and we show that under a certain combination of the parameters of the equation said fundamental solution constitutes a uniformly continuous semigroup of operators in the Lebesgue spaces ℓp(Z),1≤p≤∞.
+ER  - 
+
+TY  - JOUR
+T1  - Nonhomogeneous mixing reduces disease prevalence
+AU  - Gao, Daozhou
+AU  - Li, Xin
+JO  - Mathematical Biosciences
+VL  - 388
+SP  - 109521
+PY  - 2025
+DA  - 2025/10/01/
+SN  - 0025-5564
+DO  - https://doi.org/10.1016/j.mbs.2025.109521
+UR  - https://www.sciencedirect.com/science/article/pii/S0025556425001476
+KW  - Nonhomogeneous mixing
+KW  - Disease prevalence
+KW  - Dispersal strategy
+KW  - Endemic equilibrium
+KW  - Lagrangian movement
+KW  - Nonlocal dispersal
+AB  - Human movement and spatial heterogeneity shape the spatial distribution of infections. Factors such as physical condition, availability of medical resources, socioeconomic status, and exit-entry screening can lead to variations in movement rate and pattern (or called habitat connectivity in discrete diffusion and dispersal kernel in continuous diffusion) among people with different health states. While the effects of movement rate on disease spread have been extensively studied, the role of movement pattern remains less understood. In this paper, for a susceptible–infected–susceptible (SIS) patch model incorporating either Eulerian, Lagrangian, or hybrid Lagrangian–Eulerian movement, as well as an SIS nonlocal dispersal model, we derive an upper bound on the global disease prevalence that is independent of movement. In a homogeneous environment, the nonhomogeneous mixing of susceptible and infected individuals always reduces disease prevalence. The prevalence attains its maximum when the susceptible and infected populations adopt the same distribution strategy. Numerical simulations further illustrate some new phenomena arising from different movement patterns. These results deepen our understanding on the impact of human movement on disease spread and pathogen evolution, thereby improving control measures to reduce disease burden.
+ER  - 
+
+TY  - JOUR
+T1  - From Markovian to Non-Markovian: Advancing ion channel rate process theory
+AU  - Ben-Abu, Yuval
+JO  - Biophysical Chemistry
+VL  - 325
+SP  - 107484
+PY  - 2025
+DA  - 2025/10/01/
+SN  - 0301-4622
+DO  - https://doi.org/10.1016/j.bpc.2025.107484
+UR  - https://www.sciencedirect.com/science/article/pii/S0301462225000961
+KW  - Continuity
+KW  - Continuous state time (occupation time)
+KW  - Convolution
+KW  - Distribution
+KW  - Ergodicity
+KW  - Full (complete) probability formula indicator function
+KW  - Hitting time
+KW  - Ion channel
+KW  - Laplace transform
+KW  - Non-Markovian random process
+KW  - Probability
+KW  - Random process
+KW  - Random variables
+KW  - Recursion
+KW  - Regeneration moment
+KW  - Renewal equations and theorems
+KW  - States
+KW  - Switch probabilities
+KW  - Tauberian theorems
+KW  - Transfer (switch) probabilities
+KW  - Transition from one state to another
+KW  - Volterra linear integral equations
+AB  - Ion channels are essential membrane proteins that control ionic flow and cellular electrical activity. While traditional Markovian models have provided insights into channel gating, they fail to capture the memory-dependent dynamics of real ion channel behavior. This manuscript presents a novel semi non-Markovian framework for understanding ion channel gating processes. Using continuous time and discrete state space models for two and three-state systems, we derive Volterra convolution-type integral equations governing channel dynamics. Through Laplace transform analysis, we reveal asymptotic behaviors and previously hidden asymmetries between opening and closing rates. Our approach successfully predicts asymmetrical gating kinetics, characterizes infinite-state processes, and elucidates dynamic state creation—capabilities beyond conventional Markovian models. This breakthrough moves from phenomenological descriptions toward understanding the fundamental physics of ion channel gating, with significant implications for drug discovery and therapeutic development targeting ion channel dysfunction. This work establishes a new paradigm in ion channel research, providing the mathematical framework needed to unlock the full complexity of these critical cellular processes.
+ER  - 
+
+TY  - JOUR
+T1  - Occluded human pose estimation based on part-aware discrete diffusion priors
+AU  - Xiao, Hongyu
+AU  - He, Hui
+AU  - Xie, Yifan
+AU  - Zheng, Yi
+JO  - Knowledge-Based Systems
+VL  - 315
+SP  - 113272
+PY  - 2025
+DA  - 2025/04/22/
+SN  - 0950-7051
+DO  - https://doi.org/10.1016/j.knosys.2025.113272
+UR  - https://www.sciencedirect.com/science/article/pii/S0950705125003193
+KW  - Human pose estimation
+KW  - Human pose prior
+KW  - Hierarchical human pose prior
+KW  - Conditional discrete diffusion model
+KW  - Multimodal conditional
+KW  - VQ-VAE
+AB  - In this work, we focus on reconstructing human poses from RGB images, with particular attention given to the ambiguity issues caused by complex scenes such as occlusions. The main challenges we face are twofold: how to reconstruct a complete pose based on limited visible cues and how to handle the uncertainty of occluded parts. To address these issues, our primary approach is to leverage human prior knowledge to ensure the physical plausibility of the reconstructed pose and simulate occluded scenarios through the forward process of the diffusion model, followed by recovering the occluded parts through the reverse process. Specifically, we first train hierarchical encoders, codebooks, and decoders to learn rich pose prior knowledge and then incorporate these priors into a discrete diffusion model with multimodal guidance. We train the network to gradually predict clean discrete pose tokens that are consistent with prior knowledge and ultimately decode them into complete body poses. Extensive experimental results on the COCO and 3DMPB datasets demonstrate that our method achieves state-of-the-art performance compared with previous approaches. The code will be publicly available.
+ER  - 
+
+TY  - JOUR
+T1  - Deep learning-enhanced Koopman operator linearization with LQR control for satellite attitude regulation
+AU  - Zhou, Zixuan
+AU  - Chen, Yadong
+AU  - Cheng, Peng
+AU  - Cheng, Huan
+JO  - Advances in Space Research
+VL  - 76
+IS  - 4
+SP  - 2445
+EP  - 2471
+PY  - 2025
+DA  - 2025/08/15/
+SN  - 0273-1177
+DO  - https://doi.org/10.1016/j.asr.2025.06.005
+UR  - https://www.sciencedirect.com/science/article/pii/S0273117725006015
+KW  - Deep Koopman operator
+KW  - Linear quadratic controller
+KW  - Satellite attitude control
+KW  - Data-driven control
+KW  - Robust control
+AB  - In this paper, a satellite attitude linearization and LQR control strategy, based on the Deep Koopman operator, is presented to address the reliance on linearization assumptions found in traditional attitude control methods when complex nonlinear dynamics are encountered. By introducing the powerful nonlinear modeling capability of deep neural networks, the complex characteristics of the satellite attitude dynamics system are accurately described, and a high-dimensional linearized model can be obtained without relying on an accurate mathematical model, which can only be trained using historical data. This method not only overcomes the traditional Koopman algorithm’s dependence on known physical models or differential equations but also demonstrates better real-time adaptability and generalization ability. Specifically, the Eulerian method is first applied to discretize the satellite attitude-rotation dynamics equations and construct a nonlinear discrete state-space model. Then, the state upscaling is realized based on a deep autoencoder, and the high-dimensional linear dynamic system parameters are designed to capture the behavioral characteristics of the nonlinear system. To restore the physical significance of the high-dimensional state vectors, a decoder is further developed for dimensionality reduction processing, which recovers the low-dimensional state vectors. In addition, we define a comprehensive loss function including autoencoder loss, prediction loss, metric loss, and controllability loss to optimize the learning process of the whole framework. Experimental results show that the proposed LQR controller based on the Deep Koopman operator outperforms other nonlinear control methods (e.g., NMPC and iLQR) in terms of control accuracy and energy loss. Especially for the presence of Gaussian random disturbances, the controller is still able to maintain small tracking errors and low energy consumption, proving its robustness and adaptability. Therefore, this study provides a new theoretical foundation and technical framework for future satellite attitude control, especially in missions requiring fast response and high accuracy, showing significant advantages. Lastly, simulations and comparisons are given to demonstrate the effectiveness and excellent tracking performance of the proposed control scheme.
+ER  - 
+
+TY  - JOUR
+T1  - Dynamics analysis of a discrete diffusion predator–prey model with prey refuge
+AU  - Du, Xiongxiong
+AU  - Han, Xiaoling
+JO  - Journal of Computational and Applied Mathematics
+VL  - 470
+SP  - 116706
+PY  - 2025
+DA  - 2025/12/15/
+SN  - 0377-0427
+DO  - https://doi.org/10.1016/j.cam.2025.116706
+UR  - https://www.sciencedirect.com/science/article/pii/S0377042725002201
+KW  - Discrete system
+KW  - Predator–prey system
+KW  - Bifurcation
+KW  - Diffusion
+KW  - Turing pattern
+AB  - This paper investigates a discrete diffusion predator–prey model with periodic boundary conditions. Firstly, we analyze the existence conditions of the model’s equilibrium points, their local and global stability, and verify the uniform boundedness of its solutions. Subsequently, we establish the criteria for the occurrence of flip bifurcation and Neimark–Sacker bifurcation near the equilibrium points of the model. Additionally, we delve into chaos control theory and uncover the conditions for Turing instability in the discrete diffusion model under the effect of overall self-diffusion. Finally, through numerical simulations, we examine how temporal factors, diffusion coefficients, and the natural growth rate of prey influence the dynamic behavior of the system.
+ER  - 
+
+TY  - JOUR
+T1  - Interpretable remaining useful life prediction for lithium-ion batteries via a physics-informed deep stacked observer network
+AU  - Ge, Yang
+AU  - Ma, Jiaxin
+AU  - Zhang, Fusheng
+JO  - Electrochimica Acta
+VL  - 573
+SP  - 149454
+PY  - 2026
+DA  - 2026/10/10/
+SN  - 0013-4686
+DO  - https://doi.org/10.1016/j.electacta.2026.149454
+UR  - https://www.sciencedirect.com/science/article/pii/S0013468626013435
+KW  - Lithium-ion battery
+KW  - Remaining useful life prediction
+KW  - Deep state observer
+KW  - Interpretable model
+AB  - Accurate prediction of the remaining useful life (RUL) of lithium-ion batteries is critical yet challenging due to complex nonlinear degradation, while existing data-driven methods often lack interpretability and fail to capture underlying physical dynamics. To address this, we propose a Deep Stacked State Observer Network (DSONN) that innovatively integrates an extended state observer with deep neural networks for physics-informed RUL prediction. Its novelty lies in three aspects: (1) embedding discretized ESO neurons with state-space dynamics into the network architecture for physically interpretable joint learning; (2) designing a serial deep stacking structure that hierarchically abstracts degradation features from short-term fluctuations to long-term trends via progressive state estimation; and (3) introducing a mechanism-inspired nonlinear correction term using the fal function to explicitly capture complex phenomena such as capacity plunge. Using charging-phase and relaxation-phase voltage from two public datasets, DSONN achieves 39.6% and 4.4% RMSE reduction over the EKIDM baseline on Datasets 1 and 2 respectively, with ablation studies confirming the contributions of each innovation. This work presents a modeling paradigm that balances accuracy with interpretability for battery RUL prediction.
+ER  - 
+
+TY  - JOUR
+T1  - A convex approach for Markov chain estimation from aggregate data via inverse optimal transport
+AU  - Mascherpa, Michele
+AU  - Ringh, Axel
+AU  - Taghvaei, Amirhossein
+AU  - Karlsson, Johan
+JO  - European Journal of Control
+SP  - 101592
+PY  - 2026
+DA  - 2026/07/24/
+SN  - 0947-3580
+DO  - https://doi.org/10.1016/j.ejcon.2026.101592
+UR  - https://www.sciencedirect.com/science/article/pii/S0947358026001457
+KW  - Markov chain estimation
+KW  - Inverse optimal transport
+KW  - Schrödinger bridge problem
+KW  - Convex optimization
+KW  - Entropic proximal method
+AB  - We address the problem of identifying the dynamical law governing the evolution of a population of indistinguishable particles, when only aggregate distributions at successive times are observed. Assuming a Markovian evolution on a discrete state space, the task reduces to estimating the underlying transition probability matrix from distributional data. We formulate this inverse problem within the framework of entropic optimal transport, as a joint optimization over the transition matrix and the transport plans connecting successive distributions. This formulation results in a convex optimization problem, and we propose an efficient iterative algorithm based on the entropic proximal method. We illustrate the accuracy and convergence of the method in two numerical setups, considering estimation from independent snapshots and estimation from a time series of aggregate observations, respectively.
+ER  - 
+
+TY  - JOUR
+T1  - Fisher-KPP waves and the minimal speed on hexagonal lattice
+AU  - Fang, Jian
+AU  - Li, Yifei
+AU  - Lou, Yijun
+AU  - Wang, Jian
+JO  - Journal of Differential Equations
+VL  - 467
+SP  - 114263
+PY  - 2026
+DA  - 2026/06/25/
+SN  - 0022-0396
+DO  - https://doi.org/10.1016/j.jde.2026.114263
+UR  - https://www.sciencedirect.com/science/article/pii/S0022039626001701
+KW  - Hexagonal lattice
+KW  - Fisher-KPP equation
+KW  - Traveling waves
+KW  - Minimal wave speed
+KW  - Existence and uniqueness
+AB  - The hexagonal structure is ubiquitous in nature. The propagation phenomena occurring in media with a hexagonal structure remain to be explored. One way of exploring this question is to formulate lattice dynamical systems and analyze the propagation dynamics. In this paper, we propose a lattice differential equation model featuring a discrete diffusion operator with the hexagonal structure, and a monostable nonlinear term known as the Fisher-KPP mechanism in modeling population growth. A rigorous analysis is conducted on the traveling waves, thoroughly establishing the existence and uniqueness (up to translation) of the traveling waves. Moreover, the periodicity and monotonicity of the minimal wave speed concerning an angle are demonstrated, which is different from the existing results of the minimal wave speed in R2 and Z2. Numerical results validate theoretical analysis and further suggest that the minimal wave speed is also the spreading speed of solutions with compactly supported initial values.
+ER  - 
+
+TY  - JOUR
+T1  - Reinforcement Learning-Driven Multimodal Medical Foundation Model for Unified Understanding, Reasoning and Generation
+AU  - Chen, W.
+AU  - Xing, L.
+JO  - International Journal of Radiation Oncology*Biology*Physics
+VL  - 126
+IS  - 1, Supplement 
+SP  - e194
+PY  - 2026
+DA  - 2026/09/01/
+T2  - ASTRO 2026: 68th Annual Meeting
+SN  - 0360-3016
+DO  - https://doi.org/10.1016/j.ijrobp.2026.06.1081
+UR  - https://www.sciencedirect.com/science/article/pii/S0360301626019231
+AB  - Purpose/Objective(s)
+To develop and validate a unified multimodal medical foundation model that combines visual understanding, cross-modal generation (image-text translation), and interpretable reasoning with visual grounding, and to quantify the gains enabled by multi-objective reinforcement learning (RL).
+Materials/Methods
+A discrete-diffusion Multimodal Large Language Model (dMLLM) was developed that represents both medical images and text as sequences of discrete tokens and generates outputs by parallel denoising. The model was pretrained on large-scale multimodal corpora covering understanding tasks (e.g., VQA/diagnosis) and generation tasks (e.g., radiology report generation and text-to-image synthesis). Unified optimization was performed using RL with a composite reward: (1) a cycle-consistency reward enforcing bidirectional coarse-grained alignment via image-to-report-to-image and report-to-image-to-report reconstruction; and (2) a multimodal inpainting reward enforcing fine-grained alignment by randomly masking 15–30% of image or text tokens and rewarding reconstruction conditioned on the complementary modality. For interpretability, a medical reasoning dataset was constructed by augmenting curated multimodal examples with chain-of-thought rationales and spatial annotations. Evaluation spanned report generation and report-to-image generation using standard quantitative metrics and expert review of reasoning and grounding quality.
+Results
+The proposed model improved report generation over a representative baseline from BLEU-1 0.256 to 0.416 (+0.160; +62.5%) and ROUGE-L 0.244 to 0.366 (+0.122; +50.0%) on IU X-Ray dataset, as shown in Table 1 of Supporting Document. For text-to-image synthesis, FID decreased from 1.66 to 1.594 (−0.066; 4.0% reduction). Grounded chain-of-thought produced spatially anchored explanations suitable for quantitative assessment and clinician review.
+Conclusion
+This work indicates the potential for a single RL-optimized medical foundation model to deliver high-performing and interpretable multimodal AI. Performance gains were observed across both recognition (report generation) and generative (text-to-image) tasks through RL-based cross-modal alignment, while visual grounding enabled transparent, spatially verifiable reasoning.
+ER  - 
+
+TY  - JOUR
+T1  - Economic dispatch of a single micro gas turbine under CHP operation with uncertain demands
+AU  - Sharf, Miel
+AU  - Romm, Iliya
+AU  - Palman, Michael
+AU  - Zelazo, Daniel
+AU  - Cukurel, Beni
+JO  - Applied Energy
+VL  - 309
+SP  - 118391
+PY  - 2022
+DA  - 2022/03/01/
+SN  - 0306-2619
+DO  - https://doi.org/10.1016/j.apenergy.2021.118391
+UR  - https://www.sciencedirect.com/science/article/pii/S0306261921016287
+KW  - Micro gas turbines
+KW  - Combined Heat and Power (CHP)
+KW  - Economic dispatch
+KW  - Microgrids
+KW  - Uncertain demand
+KW  - Robust optimization
+AB  - This work considers the economic dispatch problem for a single micro gas turbine, governed by a discrete state–space model, under combined heat and power (CHP) operation and coupled with a utility. If the exact power and heat demands are given, existing algorithms can be used to give a quick optimal solution to the economic dispatch problem. However, in practice, the power and heat demands cannot be known deterministically, but are rather predicted, resulting in an estimate and a bound on the estimation error. We consider the case in which the power and heat demands are unknown, and present a robust optimization-based approach for scheduling the turbine’s heat and power generation, in which the demand is assumed to be inside an uncertainty set. We consider two different choices of the uncertainty set relying on the ℓ∞- and the ℓ1-norms, each with different advantages, and consider the associated robust economic dispatch problems. We recast these as robust shortest-path problems on appropriately defined graphs. For the first choice, we provide an exact linear-time algorithm for the solution of the robust shortest-path problem, and for the second, we provide an exact quadratic-time algorithm and an approximate linear-time algorithm. The efficiency and usefulness of the algorithms are demonstrated using a detailed case study that employs real data on energy demand profiles and electricity tariffs.
+ER  - 
+
+TY  - JOUR
+T1  - Optimal discharge of patients from intensive care via a data-driven policy learning framework
+AU  - Lejarza, Fernando
+AU  - Calvert, Jacob
+AU  - Attwood, Misty M.
+AU  - Evans, Daniel
+AU  - Mao, Qingqing
+JO  - Operations Research for Health Care
+VL  - 38
+SP  - 100400
+PY  - 2023
+DA  - 2023/09/01/
+SN  - 2211-6923
+DO  - https://doi.org/10.1016/j.orhc.2023.100400
+UR  - https://www.sciencedirect.com/science/article/pii/S2211692323000231
+KW  - Decision support systems
+KW  - Healthcare
+KW  - Intensive care unit
+KW  - Markov decision process
+KW  - Machine learning
+AB  - Clinical decision support tools rooted in machine learning and optimization can provide significant value to healthcare providers through better management of intensive care units. In particular, it is important that intensive care unit patient discharge decisions account for the nuanced trade-off between decreasing the length of stay and the risk of readmission or death after discharge of a patient. This work introduces a comprehensive framework (i.e., not geared towards any particular disease or condition) for capturing this trade-off and to recommend optimal discharge timing decisions given the electronic health records of a patient. A data-driven approach is used to derive a parsimonious, discrete state space representation to represent the physiological condition of a given patient. Based on this model and a given cost function, an infinite-horizon discounted Markov decision process is formulated and solved numerically to compute an optimal discharge policy, whose performance is assessed using off-policy evaluation strategies. Extensive numerical experiments are performed to validate the proposed framework using real-life intensive care unit patient data.
+ER  - 
+
+TY  - JOUR
+T1  - YSZ thermal barrier topcoat with LZ lamellae prepared from core-shell YSZ@LZ feedstock: local inhibition of intersplat-gap healing during isothermal exposure
+AU  - Feng, Yukun
+AU  - Dong, Hui
+AU  - Chen, Lin
+AU  - Chen, Biao
+AU  - Wang, Lishuang
+JO  - Ceramics International
+PY  - 2026
+DA  - 2026/10/15/
+SN  - 0272-8842
+DO  - https://doi.org/10.1016/j.ceramint.2026.10.196
+UR  - https://www.sciencedirect.com/science/article/pii/S0272884226052041
+KW  - Thermal barrier coatings
+KW  - Anti-sintering topcoat
+KW  - Discrete diffusion barrier
+KW  - Ultrahigh-temperature
+AB  - To address the insufficient sintering resistance of TBC topcoats for high-efficiency gas turbines, a discrete diffusion barrier was proposed. A novel anti-sintering (NAS) topcoat was prepared from core-shell YSZ@LZ powder (YSZ core partly covered by LZ shell), with discrete LZ lamellae as sintering diffusion barriers. Microstructural evolution, sintering behavior, and cracking were analyzed after exposure at 1400 °C. The results showed that spherical YSZ@LZ core-shell powder could be successfully produced by dual-feed atmospheric plasma spraying. The NAS coating deposited from YSZ@LZ powder consisted of a YSZ matrix with uniformly dispersed LZ lamellae. Free-standing coatings were then exposed isothermally at 1400 °C for up to 50 h to track the local evolution of intersplat gaps. After 50 h of isothermal exposure at 1400 °C, the measured intersplat-gap area reduction was 12.26% at YSZ/YSZ interfaces and 8.89% at YSZ/LZ heterogeneous interfaces; thus, gap closure at the YSZ/LZ interface was lower by 3.37 percentage points, corresponding to a 27.5% relative decrease. This result indicates local inhibition of intersplat-gap healing at heterogeneous interfaces. The measured hardness, elastic modulus, and indentation fracture toughness after thermal exposure were comparable between the NAS and YSZ coatings.
+ER  - 
+
+TY  - JOUR
+T1  - Mamba-driven one-stage infrared small target detector with residual learning attention and auxiliary boxes loss
+AU  - Xiao, Bin
+AU  - Hu, Yue
+JO  - Infrared Physics & Technology
+VL  - 157
+SP  - 106716
+PY  - 2026
+DA  - 2026/08/01/
+SN  - 1350-4495
+DO  - https://doi.org/10.1016/j.infrared.2026.106716
+UR  - https://www.sciencedirect.com/science/article/pii/S1350449526003518
+KW  - Deep learning
+KW  - Mamba
+KW  - Target detection
+KW  - State space models
+AB  - Infrared small target detection finds extensive use in maritime rescue, disaster surveillance, and aerospace. However, the small target size and susceptibility to complex background interference render detection challenging. Moreover, when employing bounding‐box regression, deep networks may obscure target details, and intersection over union (IoU) metric excessively penalizes minor localization deviations. To address these issues, we propose novel mamba-driven one-stage infrared small target detector with residual learning attention and auxiliary boxes loss, namely MDONet. We introduce the discrete state space model Mamba into the infrared small target detection domain to model long‐range spatial dependencies in images, thus enhancing the network’s contextual understanding of small targets. Specifically, to improve target discrimination under complex background interference, we design a multi-directional grouped scanning feature extraction module. Through multi‐angle scanning and residual channel constraints, this module achieves long-range dependency modeling and augments the network’s image comprehension. Additionally, we develop a local residual learning Mamba attention module to prevent feature loss. By employing local residual connections to bypass low-frequency redundancy and leveraging Mamba to capture global spatial dependencies, this module strengthens feature extraction. To mitigate the excessive sensitivity of small target bounding‐box regression to minor localization errors, we introduce a minimum point distance IoU loss augmented with auxiliary bounding boxes. This loss enhances stability and precision of bounding box regression by widening the search range via a relaxation factor and by minimizing the Euclidean distance between the box’s diagonal corners. Evaluation on public datasets shows that MDONet exceeds other state-of-the-art methods.
+ER  - 
+
+TY  - JOUR
+T1  - On the general conditions of existence for linear MMSE filters: Wiener and Kalman
+AU  - Chaumette, Eric
+AU  - Vilà-Valls, Jordi
+AU  - Vincent, François
+JO  - Signal Processing
+VL  - 184
+SP  - 108052
+PY  - 2021
+DA  - 2021/07/01/
+SN  - 0165-1684
+DO  - https://doi.org/10.1016/j.sigpro.2021.108052
+UR  - https://www.sciencedirect.com/science/article/pii/S0165168421000918
+KW  - Estimation theory
+KW  - State estimation
+KW  - Wiener filters
+KW  - Kalman filters
+KW  - Conditions of existence
+AB  - State estimation is a fundamental task in a plethora of applications. Two important classes of linear minimum mean square error (MMSE) estimators are Wiener filters (WFs) and Kalman filters (KFs), the latter being the recursive form of the former for linear discrete state-space (LDSS) dynamic models. The minimum set of uncorrelation conditions regarding states and measurements which allows to formulate a general KF form has been recently introduced in the literature, but for both WFs and KFs a standard key assumption is that the measurement noise covariance is invertible. In this contribution we provide i) an alternative derivation of the WF in the case of a non-invertible measurement covariance matrix, and ii) the proof that under the minimum set of uncorrelation conditions lately released, the KF can always be formulated irrespective of the measurement covariance matrix rank. Notice that these results also apply for Kalman predictors and smoothers, linearly constrained WFs and minimum variance distortionless response (MVDR) filters, therefore being a remarkable result of broad interest.
+ER  - 
+
+TY  - JOUR
+T1  - Generalizing HMMs to Continuous Time for Fast Kinetics: Hidden Markov Jump Processes
+AU  - Kilic, Zeliha
+AU  - Sgouralis, Ioannis
+AU  - Pressé, Steve
+JO  - Biophysical Journal
+VL  - 120
+IS  - 3
+SP  - 409
+EP  - 423
+PY  - 2021
+DA  - 2021/02/02/
+SN  - 0006-3495
+DO  - https://doi.org/10.1016/j.bpj.2020.12.022
+UR  - https://www.sciencedirect.com/science/article/pii/S0006349521000060
+AB  - The hidden Markov model (HMM) is a framework for time series analysis widely applied to single-molecule experiments. Although initially developed for applications outside the natural sciences, the HMM has traditionally been used to interpret signals generated by physical systems, such as single molecules, evolving in a discrete state space observed at discrete time levels dictated by the data acquisition rate. Within the HMM framework, transitions between states are modeled as occurring at the end of each data acquisition period and are described using transition probabilities. Yet, whereas measurements are often performed at discrete time levels in the natural sciences, physical systems evolve in continuous time according to transition rates. It then follows that the modeling assumptions underlying the HMM are justified if the transition rates of a physical process from state to state are small as compared to the data acquisition rate. In other words, HMMs apply to slow kinetics. The problem is, because the transition rates are unknown in principle, it is unclear, a priori, whether the HMM applies to a particular system. For this reason, we must generalize HMMs for physical systems, such as single molecules, because these switch between discrete states in “continuous time”. We do so by exploiting recent mathematical tools developed in the context of inferring Markov jump processes and propose the hidden Markov jump process. We explicitly show in what limit the hidden Markov jump process reduces to the HMM. Resolving the discrete time discrepancy of the HMM has clear implications: we no longer need to assume that processes, such as molecular events, must occur on timescales slower than data acquisition and can learn transition rates even if these are on the same timescale or otherwise exceed data acquisition rates.
+ER  - 
+
+TY  - JOUR
+T1  - Explicit machine learning-based model predictive control of nonlinear processes via multi-parametric programming
+AU  - Wang, Wenlong
+AU  - Wang, Yujia
+AU  - Tian, Yuhe
+AU  - Wu, Zhe
+JO  - Computers & Chemical Engineering
+VL  - 186
+SP  - 108689
+PY  - 2024
+DA  - 2024/07/01/
+SN  - 0098-1354
+DO  - https://doi.org/10.1016/j.compchemeng.2024.108689
+UR  - https://www.sciencedirect.com/science/article/pii/S0098135424001078
+KW  - Machine learning
+KW  - Explicit model predictive control
+KW  - Multi-parametric programming
+KW  - Nonlinear processes
+KW  - Chemical process control
+AB  - Machine learning-based model predictive control (ML-MPC) has been developed to control nonlinear processes with unknown first-principles models. While ML models can capture nonlinear dynamics of complex systems, the complexity of ML models leads to increased computation time for real-time implementation of ML-MPC. To address this issue, in this work, we propose an explicit ML-MPC framework for nonlinear processes using multi-parametric programming. Specifically, a self-adaptive approximation algorithm is first developed to obtain a piecewise linear affine function that approximates the behaviors of ML models. Then, multi-parametric quadratic programming (mpQP) problems are formulated to generate the solution map for states in discretized state–space. Furthermore, to accelerate the implementation of explicit ML-MPC, a neighbor-first search algorithm is developed. Finally, an example of a chemical reactor is used to demonstrate the effectiveness of the explicit ML-MPC.
+ER  - 
+
+TY  - JOUR
+T1  - Deep generative models in biological sequence and structure analysis and design
+AU  - Palizban, Fahimeh
+AU  - Sarbishegi, Mohammadmahdi
+AU  - Qu, Huiqi
+AU  - Saeidian, Amir Hossein
+AU  - Mehrmohamadi, Mahya
+AU  - Glessner, Joseph
+AU  - Hakonarson, Hakon
+JO  - Biotechnology Advances
+VL  - 93
+SP  - 109039
+PY  - 2026
+DA  - 2026/12/01/
+SN  - 0734-9750
+DO  - https://doi.org/10.1016/j.biotechadv.2026.109039
+UR  - https://www.sciencedirect.com/science/article/pii/S0734975026002454
+KW  - Deep generative models
+KW  - Biological sequence analysis
+KW  - Foundation models
+KW  - De novo design
+KW  - Diffusion models
+KW  - Generative biology
+AB  - Deep generative models have transformed biological sequence modeling from predictive analysis toward increasingly controllable design. Early biological applications of Variational Autoencoders (VAEs) and Generative Adversarial Networks (GANs) established latent representation learning and sequence synthesis, while recent advances in transformer-based language models, discrete diffusion, flow-matching, and multimodal generative frameworks have substantially expanded the scope of biological design. This review examines generative models for DNA, RNA, and protein sequence design, emphasizing how different model classes represent biological constraints, operate over discrete and continuous spaces, and integrate sequence, structure, and function. We compare VAEs, GANs, autoregressive and masked language models, diffusion models, and flow-based approaches across genomics, transcriptomics, and proteomics, with particular attention to controllability, long-range dependency modeling, structural grounding, generalization, and experimental utility. We further examine evaluation strategies, out-of-distribution generalization, and closed-loop design–build–test–learn workflows that connect in silico generation with empirical validation. We distinguish fundamental modality-dependent constraints including sequence discreteness, context length, structural coupling, and physical or thermodynamic requirements from architecture-dependent advantages that reflect the current state of the field. Current studies suggest that long-context models are particularly useful for genome-scale representation and sequence modeling, whereas structure-aware diffusion, flow-based, and inverse-folding approaches provide better frameworks for geometry-constrained RNA and protein design. This perspective provides a critical framework for understanding the present capabilities, limitations, and convergence of generative approaches toward reliable and experimentally grounded biological design.
+ER  - 
+
+TY  - JOUR
+T1  - Semantic substructure guided multiple objective molecular generation with discrete diffusion probabilistic model
+AU  - Chen, Shugao
+AU  - Song, Bosheng
+AU  - Chen, Ruizhe
+AU  - Liu, Lin
+AU  - Zhou, Guifei
+AU  - Yuan, Sisi
+JO  - Neurocomputing
+VL  - 652
+SP  - 131086
+PY  - 2025
+DA  - 2025/11/01/
+SN  - 0925-2312
+DO  - https://doi.org/10.1016/j.neucom.2025.131086
+UR  - https://www.sciencedirect.com/science/article/pii/S0925231225017588
+KW  - Artificial intelligence aided drug design
+KW  - Diffusion models
+KW  - Large language models
+KW  - Multiple objective molecular generation
+AB  - Deep learning methods have paved the highway for drug discovery in past few years, it is still a big challenge that designed molecules satisfy multiple objective constraints. Traditional generative adversarial networks suffer severe mode collapse problems and Transformer based large language models require relative large amount of data to train or fine-tune. Denoising diffusion probabilistic models have achieved huge success in image generation fields, yet it remains an open challenge to explore diffusion based language models in drug discovery. Herein, we bridge the molecule prior distribution with the desired bioactive molecular distribution and propose SGDiff, Substructure Guided Diffusion model, which can iteratively inject the sequence-based conditional information into the denoising process to guide the generation process without additional reinforcement learning fine-tuning process. We conduct sufficient discussion about the Transformer based language models and diffusion based language models. SGDiff can achieve the highest conditional success rate in multiple objective generation tasks and can maintain high diversity from conditional guidance. Besides, SGDiff has a great interpretation during sampling. Several explorations have been conducted to detail understanding the mechanism of the guidance paradigm, which can be better used for further multiple objective constraints molecular generation.
+ER  - 
+
+TY  - JOUR
+T1  - Real-time harmonic monitoring of power systems with capacitor-coupled voltage transformers
+AU  - Yang, Ming
+AU  - Lin, Shuoyan
+AU  - Zou, Binyang
+AU  - Sima, Wenxia
+AU  - Sun, Jinhao
+AU  - Yuan, Tao
+AU  - Sun, Potao
+JO  - Renewable Energy System and Equipment
+VL  - 1
+IS  - 2
+SP  - 81
+EP  - 89
+PY  - 2025
+DA  - 2025/10/01/
+SN  - 2950-208X
+DO  - https://doi.org/10.1016/j.rese.2025.07.002
+UR  - https://www.sciencedirect.com/science/article/pii/S2950208X2500016X
+KW  - CCVT
+KW  - Compensation method
+KW  - Discrete state-space equation
+KW  - Harmonics
+KW  - Voltage transfer characteristics determination
+AB  - In power systems of 35 kV and above, harmonic measurements are not easy to implement due to the uneven frequency responses of widely used capacitor-coupled voltage transformers (CCVTs). In this paper, a compensation method derived from a model representing the voltage transfer characteristics of CCVTs is proposed to monitor harmonics in power systems with existing CCVTs. Low-voltage harmonic and frequency-sweep tests are designed to determine the employed parameters in the compensation method. Several designed harmonic tests are conducted on a 35 kV CCVT to verify the proposed compensation and parameter determination methods. The results of the experiments show that the proposed methods have the potential of saving large investments in harmonic measurement.
+ER  - 
+
+TY  - JOUR
+T1  - Energy management of space probe based on fuzzy-model predictive control strategy
+AU  - Jiang, Yuan
+AU  - Lei, Zhan
+AU  - Zhu, Liying
+AU  - Liu, Shuo
+AU  - Ma, Suliang
+JO  - Advances in Space Research
+VL  - 75
+IS  - 8
+SP  - 6104
+EP  - 6117
+PY  - 2025
+DA  - 2025/04/15/
+SN  - 0273-1177
+DO  - https://doi.org/10.1016/j.asr.2025.02.018
+UR  - https://www.sciencedirect.com/science/article/pii/S0273117725001371
+KW  - Space probe
+KW  - Energy management
+KW  - Electric propulsion
+KW  - Battery
+KW  - FMPC
+AB  - Effective control of the electric propulsion and the charge–discharge current of the battery is crucial in energy management for space probes. A two-level energy management strategy based on a Fuzzy-Model Predictive Control (FMPC) algorithm is proposed in present work. First, in the upper-level, decision layer, the operating level of the electric propulsion is preliminarily determined. Fuzzy rules are employed to assess state of health (SOH) of the battery, guiding the charge–discharge modes and modifying the operating level of electric propulsion. Second, in the lower-level, control layer, a discretized state-space model of the battery is established. Using quadratic programming, the battery current is controlled to ensure a stable energy supply to both the electric propulsion and the other loads. Simulation results indicate that by applying the FMPC strategy, the over-charge or over-discharge time is reduced by 23 %, and the battery capacity degradation is decreased by 12.5 %, and the battery life is extended by 13 %. The battery current also shows good tracking performance, with a maximum transient deviation rate of only 4 %. Finally, hardware-in-the-loop tests are conducted. The experimental results demonstrate that, the electric propulsion operates at a lower power level in the later stages compared to the early stages of the experiment due to a lower state of charge (SOC). The battery current tracking deviation rate is maintained around 5 %. The power distribution and tracking performance of the power system of the space probe are satisfactory, validating the feasibility and effectiveness of the FMPC strategy.
+ER  - 
+
+TY  - JOUR
+T1  - AGV visual relocalization strategy integrating laser-optimized 3D Gaussian Splatting model and image retrieval
+AU  - Wang, Xin
+AU  - Cai, Yu
+AU  - Yin, Yizhen
+AU  - Wei, Xiaolong
+AU  - He, Weifeng
+JO  - Measurement
+VL  - 286
+SP  - 122334
+PY  - 2026
+DA  - 2026/09/15/
+SN  - 0263-2241
+DO  - https://doi.org/10.1016/j.measurement.2026.122334
+UR  - https://www.sciencedirect.com/science/article/pii/S0263224126020439
+KW  - Visual relocalization
+KW  - 3D Gaussian Splatting
+KW  - LiDAR point cloud fusion
+KW  - Pose estimation
+KW  - Image retrieval
+AB  - Automated Guided Vehicle (AGV) are widely used in the aviation industry. To address their insufficient visual relocalization accuracy, weak robustness, and high data dependence, this paper proposes a high-precision visual relocalization framework integrating laser-optimized 3D Gaussian Splatting (3DGS) and image retrieval. Firstly, a PEM (Prototype-based Efficient MaskFormer)＋SegRefiner combined segmentation model is constructed, which optimizes PEM-generated coarse masks via discrete diffusion “denoising-correction” iteration for image segmentation (mIoU = 0.972, mAP = 0.984), providing high-quality data for 3D reconstruction. Secondly, the 3DGS model is improved by registering and fusing laser point clouds with Structure from Motion (SfM) sparse point clouds, and introducing the 3σ principle to constrain Gaussian distribution, solving the poor geometric consistency of traditional 3DGS (unknown view rendering PSNR = 28.6751, superior to original 3DGS and Mip-splatting). Finally, a two-stage pose estimation method is designed: coarse localization narrows the pose range via low-resolution rendered image matching; fine localization optimizes the search with a Differential Evolution-Simplex hybrid algorithm. Experiments show that the pose estimation accuracy of the proposed method is superior to that of methods such as PixLoc and NeRF-Loc. This framework forms a “segmentation-modeling-localization” technical closed-loop, which not only meets the operational accuracy requirements of AGV in the aerospace field but also expands the application scenarios of 3DGS in the field of industrial automation.
+ER  - 
+
+TY  - JOUR
+T1  - Revisiting State Estimation for Linear Systems with State and/or Filter Equality Constraints*
+AU  - Chaumette, Eric
+AU  - Vilà-Valls, Jordi
+AU  - Vincent, François
+JO  - IFAC-PapersOnLine
+VL  - 56
+IS  - 2
+SP  - 8857
+EP  - 8868
+PY  - 2023
+DA  - 2023/01/01/
+T2  - 22nd IFAC World Congress
+SN  - 2405-8963
+DO  - https://doi.org/10.1016/j.ifacol.2023.10.085
+UR  - https://www.sciencedirect.com/science/article/pii/S2405896323004287
+KW  - State estimation
+KW  - Wiener filter
+KW  - Kalman filter
+KW  - constraints
+KW  - uncertain systems
+AB  - This article revisits optimal state estimation, in the mean squared error matrix sense, for linear systems with state and/or filter subject to linear equality constraints (LECs). First, it is shown that the conventional Wiener filter (WF) form incorporates any LECs on the state, thus yielding a filter subject to the same LECs. Conversely, an optimal linear filter subject to LECs (or linear equality gain constraints) in general does not exist. Therefore, adding LECs on the WF or WF gain matrix either leaves unchanged or degrades the constrained WF performance w.r.t. the unconstrained WF. Since the Kalman filter (KF) and Kalman predictor (KP) are recursive WF forms for linear discrete state-space (LDSS) systems, the same results hold for both estimators, which is in contradiction with several existing results in the literature. Actually, even if these existing results are mathematically correct, however, they have been derived for unsuitable assumed LDSS models where the state is surprisingly not compliant with the assumed LECs. Indeed, it is shown that for suitable assumed state models, both standard KF and KP forms satisfy the assumed LECs, making any additional projection step superfluous.
+ER  - 
+
+TY  - JOUR
+T1  - Near-optimal energy management for plug-in hybrid fuel cell and battery propulsion using deep reinforcement learning
+AU  - Wu, Peng
+AU  - Partridge, Julius
+AU  - Anderlini, Enrico
+AU  - Liu, Yuanchang
+AU  - Bucknall, Richard
+JO  - International Journal of Hydrogen Energy
+VL  - 46
+IS  - 80
+SP  - 40022
+EP  - 40040
+PY  - 2021
+DA  - 2021/11/18/
+SN  - 0360-3199
+DO  - https://doi.org/10.1016/j.ijhydene.2021.09.196
+UR  - https://www.sciencedirect.com/science/article/pii/S0360319921037745
+KW  - Hybrid fuel cell and battery propulsion
+KW  - Coastal ferry
+KW  - Continuous monitoring
+KW  - Deep reinforcement learning
+KW  - Energy management system
+AB  - Plug-in hybrid fuel cell and battery propulsion systems appear promising for decarbonising transportation applications such as road vehicles and coastal ships. However, it is challenging to develop optimal or near-optimal energy management for these systems without exact knowledge of future load profiles. Although efforts have been made to develop strategies in a stochastic environment with discrete state space using Q-learning and Double Q-learning, such tabular reinforcement learning agents’ effectiveness is limited due to the state space resolution. This article aims to develop an improved energy management system using deep reinforcement learning to achieve enhanced cost-saving by extending discrete state parameters to be continuous. The improved energy management system is based upon the Double Deep Q-Network. Real-world collected stochastic load profiles are applied to train the Double Deep Q-Network for a coastal ferry. The results suggest that the Double Deep Q-Network acquired energy management strategy has achieved a further 5.5% cost reduction with a 93.8% decrease in training time, compared to that produced by the Double Q-learning agent in discrete state space without function approximations. In addition, this article also proposes an adaptive deep reinforcement learning energy management scheme for practical hybrid-electric propulsion systems operating in changing environments.
+ER  - 
+
+TY  - JOUR
+T1  - A scaled derivative-based DMDc method for modelling multiple-input multiple-output mechanical systems
+AU  - Ouyang, Qinshan
+AU  - Dong, Longlei
+AU  - Liu, Jian
+AU  - Zhou, Jiaming
+JO  - Applied Mathematical Modelling
+VL  - 140
+SP  - 115866
+PY  - 2025
+DA  - 2025/04/01/
+SN  - 0307-904X
+DO  - https://doi.org/10.1016/j.apm.2024.115866
+UR  - https://www.sciencedirect.com/science/article/pii/S0307904X2400619X
+KW  - Data-driven modelling
+KW  - Dynamic mode decomposition
+KW  - Structural dynamics
+KW  - MIMO systems
+KW  - Modal parameter identification
+AB  - Dynamic mode decomposition with control (DMDc) is a powerful data-driven method for modelling dynamical systems with inputs and outputs. However, the inability to identify oscillations and the high sensitivity to noise limit the application of standard DMDc in structural dynamics. To address this challenge, this paper proposes a novel method called scaled derivative-based DMDc (sd-DMDc) to construct a discrete state-space model for mechanical systems using noisy data. This method requires only the displacement and excitation data, computes the scaled derivatives of displacement to extend the system states, and integrates the extended forward-backward strategy. Two crucial parameters are defined and optimized by minimizing the response error. The sd-DMDc algorithm is first verified through numerical simulations of a multiple-input multiple-output (MIMO) cantilever plate. The results indicate that sd-DMDc exhibits superior modelling accuracy across various noise levels and measurement points compared to the delay-DMDc method. It has also been proved that sd-DMDc can accurately identify dynamical systems from partial observations. Subsequently, vibration experiments are conducted on a MIMO cantilever plate. The sd-DMDc method is further verified using experimental data, and the conclusions align with those drawn from simulation studies. The sd-DMDc algorithm demonstrates great modelling accuracy, surpassing that of delay-DMDc, especially for partial observations. In addition, the model given by sd-DMDc can extract the modal parameters of the plate, which are consistent with the modal test results.
+ER  - 
+
+TY  - JOUR
+T1  - Continuum and thermodynamic limits for a simple random-exchange model
+AU  - Düring, Bertram
+AU  - Georgiou, Nicos
+AU  - Merino-Aceituno, Sara
+AU  - Scalas, Enrico
+JO  - Stochastic Processes and their Applications
+VL  - 149
+SP  - 248
+EP  - 277
+PY  - 2022
+DA  - 2022/07/01/
+SN  - 0304-4149
+DO  - https://doi.org/10.1016/j.spa.2022.03.015
+UR  - https://www.sciencedirect.com/science/article/pii/S0304414922000783
+KW  - Wealth distribution
+KW  - Mean-field limits
+KW  - Functional limits
+KW  - Markov chains
+KW  - Kinetic equations
+KW  - Partitions of integers
+AB  - We discuss various limits of a simple random exchange model that can be used for the distribution of wealth. We start from a discrete state space — discrete time version of this model and, under suitable scaling, we show its functional convergence to a continuous space — discrete time model. Then, we show a thermodynamic limit of the empirical distribution to the solution of a kinetic equation of Boltzmann type. We solve this equation and we show that the solutions coincide with the appropriate limits of the invariant measure for the Markov chain. In this way we complete Boltzmann’s program of deriving kinetic equations from random dynamics for this simple model. Three families of invariant measures for the mean field limit are discovered and we show that only two of those families can be obtained as limits of the discrete system while the third is extraneous.
+ER  - 
+
+TY  - JOUR
+T1  - An endogenous gridpoint method for distributional dynamics
+AU  - Bayer, Christian
+AU  - Luetticke, Ralph
+AU  - Weiss, Maximilian
+AU  - Winkelmann, Yannik
+JO  - Journal of Monetary Economics
+VL  - 158
+SP  - 103895
+PY  - 2026
+DA  - 2026/03/01/
+SN  - 0304-3932
+DO  - https://doi.org/10.1016/j.jmoneco.2026.103895
+UR  - https://www.sciencedirect.com/science/article/pii/S0304393226000103
+KW  - Numerical methods
+KW  - Distributions
+KW  - Heterogeneous agent models
+KW  - Linearization
+AB  - Modeling continuous choices in heterogeneous agent models as “lotteries” over a discretized state space is standard practice (Young, 2010), but renders the distributional dynamics linear in optimal policies. We present a novel, simple method that captures nonlinearities and solves the distributional dynamics with interpolation instead of integration using the idea of an endogenous grid. Our approach solves for a stationary equilibrium as quickly as the lottery method for a given precision, outperforms it for linear dynamics, and accommodates nonlinear dynamics and aggregate risk. We demonstrate its efficacy by studying a model with aggregate investment risk with a third-order perturbation solution.
+ER  - 
+
+TY  - JOUR
+T1  - Optimal charging for lithium-ion batteries to avoid lithium plating based on ultrasound-assisted diagnosis and model predictive control
+AU  - Li, Xiaoyu
+AU  - Chen, Le
+AU  - Hua, Wen
+AU  - Yang, Xiaoguang
+AU  - Tian, Yong
+AU  - Tian, Jindong
+AU  - Xiong, Rui
+JO  - Applied Energy
+VL  - 367
+SP  - 123396
+PY  - 2024
+DA  - 2024/08/01/
+SN  - 0306-2619
+DO  - https://doi.org/10.1016/j.apenergy.2024.123396
+UR  - https://www.sciencedirect.com/science/article/pii/S0306261924007797
+KW  - lithium-ion battery
+KW  - Charging method
+KW  - Battery electrochemical model
+KW  - Model predictive control
+KW  - Ultrasonic nondestructive testing
+AB  - Lithium plating in lithium-ion batteries for electric vehicles, occurring due to low-temperature or high-rate charging, is a significant factor impacting safety and service life. To address this issue, a novel adaptive charging approach is proposed, combining ultrasound-assisted diagnosis and model predictive control (MPC). In the method, a discrete state-space electrochemical model is used to describe the dynamic characteristics of the battery, and a model predictive controller (MPC) is utilized to optimize the charging current to avoid lithium plating. Considering that factors such as battery performance degradation and variable working temperature affect the battery model's judgment of lithium plating, an ultrasound-assisted diagnosis method is used to determine the critical point of lithium plating. The effectiveness of the method is validated through low-temperature charging and cycle aging experiments. The results indicate that without complex model parameter calibration in different temperatures, the new charging method not only has a higher charging speed than constant current charging, but also can effectively suppress the occurrence of lithium plating on the negative electrode of the battery. The method is expected to be applied in electrochemical energy storage systems to enhance safety and service life.
+ER  - 
+
+TY  - JOUR
+T1  - Constrained model predictive control of an industrial high-rate thickener
+AU  - Oulhiq, Ridouane
+AU  - Benjelloun, Khalid
+AU  - Kali, Yassine
+AU  - Saad, Maarouf
+AU  - Griguer, Hafid
+JO  - Journal of Process Control
+VL  - 133
+SP  - 103147
+PY  - 2024
+DA  - 2024/01/01/
+SN  - 0959-1524
+DO  - https://doi.org/10.1016/j.jprocont.2023.103147
+UR  - https://www.sciencedirect.com/science/article/pii/S0959152423002354
+KW  - Model predictive control
+KW  - Mining industry
+KW  - Industrial thickener
+KW  - Process constraints
+KW  - Historical data
+AB  - High-rate thickeners are used in the mining industry to improve water recovery from slurries and increase their solids ratio. High-rate thickeners operate under strict constraints and several disturbances. To control this process, a constrained model predictive control (MPC) is developed in this paper. For process identification, a historical data-driven methodology is used and a vector autoregressive with exogenous variables (VARX) model structure is considered. The model takes underflow slurry density as both a state variable and the process output, along with turbidity, bed level, rake torque, and cone pressure as additional state variables. It takes feed slurry and flocculant flow rates as manipulated inputs and considers inlet slurry density, slurry circulation flow rate, and underflow slurry flow rate as disturbances. The VARX model structural parameters (orders and delays) and coefficients are estimated using a bilevel optimization method. From the model obtained, a discrete state-space representation is derived. This latter is augmented to obtain a standard formulation without delays. The MPC is then formulated considering the process constraints. To evaluate the control performance, simulations are conducted and a baseline comparison is established using proportional integral (PI) control. Simulation results demonstrate that the proposed control method outperforms the baseline method by providing reduced settling times (−32%), minimized peak errors (−20%), and constraints handling ability. Accordingly, the proposed MPC is implemented in an industrial environment and compared to existing manual control based on an object linking and embedding (OLE) for process control (OPC) architecture. Finally, the industrial results show that the proposed control method effectively stabilizes the underflow slurry density and handles process constraints, resulting in a minimized average error (−90%) and a reduced standard deviation (−50%) compared to existing manual control.
+ER  - 
+
+TY  - JOUR
+T1  - Probabilistic indoor tracking of Bluetooth Low-Energy beacons
+AU  - Daniş, F. Serhan
+AU  - Ersoy, Cem
+AU  - Cemgil, A. Taylan
+JO  - Performance Evaluation
+VL  - 162
+SP  - 102374
+PY  - 2023
+DA  - 2023/11/01/
+SN  - 0166-5316
+DO  - https://doi.org/10.1016/j.peva.2023.102374
+UR  - https://www.sciencedirect.com/science/article/pii/S0166531623000445
+KW  - Belief propagation
+KW  - Bluetooth low-energy
+KW  - Exact inference
+KW  - Forward algorithm
+KW  - Hidden Markov model
+KW  - Indoor positioning
+AB  - We construct a practical and real-time probabilistic framework for fine target tracking. In our scenario, a Bluetooth Low-Energy (BLE) device navigating in the environment publishes BLE packets that are captured by stationary BLE sensors. The aim is to accurately estimate the live position of the BLE device emitting these packets. The framework is built upon a hidden Markov model (HMM), the components of which are determined with a combination of heuristic and data-driven approaches. In the data-driven part, we rely on the fingerprints formed priorly by extracting received signal strength indicators (RSSI) from the packets. These data are then transformed into probabilistic radio-frequency maps that are used for measuring the likelihood between an RSSI data and a position. The heuristic part involves the movement of the tracked object. Having no access to any inertial information of the object, this movement is modeled with Gaussian densities with variable model parameters that are to be determined heuristically. The practicality of the framework comes from the associated small parameter set used to discretize the components of the HMM. By tuning these parameters, such as the grid size of the area, the mask size and the covariance of the Gaussian; a probabilistic filtering becomes tractable for discrete state spaces. The filtering is then performed by the forward algorithm given the instantaneous sequential RSSI measurements. The performance of the system is evaluated by taking the mean squared errors of the most probable positions at each time step to their corresponding ground-truth positions. We report the statistics of the error distributions and see that we achieve promising results. The approach is also finally evaluated by its runtime and memory usage.
+ER  - 
+
+TY  - JOUR
+T1  - Hybrid automaton-based disturbance-aware predictive control with receding horizon optimization for three-phase full-bridge inverters
+AU  - Chen, Zhengxi
+AU  - Xun, Shen
+JO  - Control Engineering Practice
+VL  - 121
+SP  - 104984
+PY  - 2022
+DA  - 2022/04/01/
+SN  - 0967-0661
+DO  - https://doi.org/10.1016/j.conengprac.2021.104984
+UR  - https://www.sciencedirect.com/science/article/pii/S0967066121002598
+KW  - DC–AC inverter
+KW  - Discrete non-linear control
+KW  - Disturbance estimation
+KW  - Model predictive control
+KW  - Hybrid dynamic system
+KW  - Hybrid automaton model
+KW  - PWM
+KW  - Receding horizon optimization
+KW  - RLS algorithm
+AB  - A data-driven disturbance-aware predictive control policy is proposed for DC–AC power inverters based on receding horizon optimization approach. First a discrete event-driven hybrid automaton model has been constructed for the nonlinear inverter system dynamics. A control problem of infinite discrete state-space transition sequence optimization is formulated. A receding-horizon-optimization-based hybrid controller is designed to solve the discrete optimization problem piece-wisely on-line. Accordingly, a disturbance-aware adaptive control is proposed, the external disturbance is sampled and estimated by an on-line Recursive Least Square (RLS) algorithm. It is elaborated that the conventional PWM control solution is a subset of solutions of the proposed control strategy and the code-transition between them is provided. By adding extra PWM constraints to the proposed control strategy, an Optimal PWM Control Mode (OPCM) is introduced as example. The essence of OPCM is still a data-driven optimal solution based on MPC following pre-designated PWM constraints which is a modified sub-mode of ODCM and greatly reduces computational requirement. The proposed controller can freely operate under the original Optimal Discrete Control Mode (ODCM) and the OPCM. Numerical simulation results have verified that the proposed discrete control strategy has realized disturbance-aware adaptive control of DC–AC inversion against load-shift, and ODCM has better control performance than OPCM. In addition, the proposed modeling and control frame has potential to support other forms of control modes.
+ER  - 
+
+TY  - JOUR
+T1  - An extension of the hybrid transport diffusion Monte Carlo in thermal radiative transfer: The difference formulation and the global optimal reference field
+AU  - Yan, Kai
+AU  - Yao, Chengbao
+JO  - Journal of Computational Physics
+VL  - 531
+SP  - 113916
+PY  - 2025
+DA  - 2025/06/15/
+SN  - 0021-9991
+DO  - https://doi.org/10.1016/j.jcp.2025.113916
+UR  - https://www.sciencedirect.com/science/article/pii/S0021999125001998
+AB  - In this paper we explore Discrete Diffusion Monte Carlo (DDMC) and Implicit Monte Carlo (IMC) in thermal radiative transfer in the difference formulation. The difference formulation is a source manipulation variance reduction technique, which is advantageous when the problem contains regions that are near equilibrium. Traditionally, the numerical instability will occur in regions of the problem with sharp spatial gradients in the IMC or DDMC simulation in the difference formulation. We find the selection of reference fields is very important to the numerical results. After analysis, we find that the smaller the energy emitted by the sources in each time step, the smaller the statistical noise of the calculation results. In the difference formulation, when the reference field is selected differently, the total energy due to the sources during each time step is also different. Thus, we propose the concept of the global optimal reference field in which the energy emitted by the sources is minimized in each time step. Although it is difficult to find the global optimal reference field directly, we introduce a scheme to select a relatively good reference field. Our method employs a hybrid transport diffusion method to solve the transport equation in the difference formulation. The IMC equations and the DDMC equations are derived from the transformed equations. In addition, we propose a method to deal with the interface between optically thick and optically thin regions in the difference formulation. Numerical tests show that our method is accurate and can significantly reduce the statistical noise, even in regions of the problem with sharp spatial gradients.
+ER  - 
+
+TY  - JOUR
+T1  - Diffusion-aware voltage source: An equivalent circuit network to resolve lithium concentration gradients in active particles
+AU  - Zhuo, Mingzhao
+AU  - Kirkaldy, Niall
+AU  - Maull, Tom
+AU  - Engstrom, Timothy
+AU  - Offer, Gregory
+AU  - Marinescu, Monica
+JO  - Applied Energy
+VL  - 339
+SP  - 121004
+PY  - 2023
+DA  - 2023/06/01/
+SN  - 0306-2619
+DO  - https://doi.org/10.1016/j.apenergy.2023.121004
+UR  - https://www.sciencedirect.com/science/article/pii/S0306261923003689
+KW  - Diffusion-aware voltage source
+KW  - Equivalent circuit models
+KW  - Single particle model
+KW  - Lithium concentration gradient
+KW  - Solid diffusion
+AB  - Traditional equivalent circuit models (ECMs) have difficulties in estimating battery internal states due to the lack of relevant physics, such as the lithium diffusion in active particles. Here we configure a circuit network to describe the lithium diffusion and define it as a new high-level circuit element called diffusion-aware voltage source. The circuit representation is proven equivalent to the discretized diffusion equation. The new voltage source gives the electrode potential as a function of the surface concentration and thus automatically incorporates the diffusion overpotential. We show that an ECM with the proposed diffusion-aware voltage sources (called “shell ECM”) can reproduce the single particle model simulation results, making it a trustworthy easy-to-implement substitute. Furthermore, the simplest shell ECM consisting of a single diffusion-aware voltage source and a resistor is validated against experimental constant-current discharges at various rates. The diffusion-aware voltage source can be used to measure diffusivity by fitting the diffusion resistance against experimental data. The viability of the shell ECM for onboard usage is confirmed by implementation into a battery management system of WAE Technologies. By tracking the internal concentration states, the shell ECM demonstrates robustness to dynamic applied-current profiles.
+ER  - 
+
+TY  - JOUR
+T1  - A matrix-analytic method for the steady state analysis of a Markovian queueing system with scrap items
+AU  - Jeganathan, K.
+AU  - Koffer, V. Anzen
+AU  - Sugapriya, C.
+AU  - Nagarajan, D.
+JO  - Decision Analytics Journal
+VL  - 7
+SP  - 100244
+PY  - 2023
+DA  - 2023/06/01/
+SN  - 2772-6622
+DO  - https://doi.org/10.1016/j.dajour.2023.100244
+UR  - https://www.sciencedirect.com/science/article/pii/S277266222300084X
+KW  - Stochastic queueing system
+KW  - Procurement
+KW  - Waiting hall
+KW  - Infinite orbit
+KW  - Bernoulli trial
+KW  - Steady state
+KW  - Markov chain
+AB  - This paper studies a mathematical analysis of scrap item-based single server stochastic queueing, which consists of storage space for the scrap items collected from the customers. The primary customers arrive in the finite waiting hall to sell scrap or recyclable products. The server collects the customer’s scrap items and stores them in the storage space. If the waiting hall is full whenever the primary customers arrive, they can join an infinite orbit or permanently leave the system under the Bernoulli trial. Whenever the orbital customers find at least one free space in the waiting hall, they can enter it. The server begins vacation once the storage reaches its maximum capacity or no more customers exist in the waiting hall. The server switches to regular mode whenever at least one free space exists in the storage, and one customer is in the waiting hall. Otherwise, he is not working in vacation mode. Customers in the waiting hall may lose their patience after waiting for a long time and may either enter orbit or leave the system permanently. Whenever the storage level (scrap item level) reaches a certain limit, the server places the procurement order for sending the items to the recycling unit or re-manufacturer. The system’s steady-state probability vector and stability condition have been derived by truncating the orbit at a point. Various system performances, such as expected total cost, profit cost, and waiting time for customers in the waiting hall, are defined, and a numerical study is carried out to analyze the performance of the proposed model. The numerical findings indicate that disabling working in vacation mode increases waiting time and total cost while working in vacation mode results in minimized waiting time and total cost.
+ER  - 
+
+TY  - JOUR
+T1  - Interacting T-S fuzzy semantic model estimation for maneuvering target tracking
+AU  - Li, Liang-Qun
+AU  - Zhan, Xi-yang
+AU  - Xie, Wei-Xin
+AU  - Liu, Zong-Xiang
+JO  - Neurocomputing
+VL  - 421
+SP  - 84
+EP  - 96
+PY  - 2021
+DA  - 2021/01/15/
+SN  - 0925-2312
+DO  - https://doi.org/10.1016/j.neucom.2020.08.067
+UR  - https://www.sciencedirect.com/science/article/pii/S0925231220313539
+KW  - T-S fuzzy semantic model
+KW  - Discrete state-space system
+KW  - Least squares method
+KW  - Fuzzy clustering
+AB  - This paper proposes an interacting Takagi–Sugeno(T-S) fuzzy semantic model estimator (ITS-FSM) for maneuvering target tracking, and constructs a framework for a generic interacting T-S fuzzy semantic model to incorporate semantic information concerning the target. To adaptively calculate the transition probability matrix of the models, a probabilistic switching model based on semantic fuzzy sets is derived by using the degree of intersection between fuzzy sets, which enables switching from one semantic fuzzy set to another. We also propose an efficient kernel maximum entropy fuzzy clustering method to identify the premise parameters of the model. This enables the proposed algorithm to recursively estimate the premise parameters in case of a limited number of samples. Moreover, a modified extended forgetting factor recursive least squares (MEFRLS) estimator is used to identify the parameters of the T-S fuzzy semantic model. The results of experiments on three simulation datasets show that the proposed ITS-FSM algorithm is efficient, and is excellent at handling non-Gaussian noise.
+ER  - 
+
+TY  - JOUR
+T1  - Towards modeling pedestrian-group agency, life-cycle and walking behavior
+AU  - Albeaik, Saleh
+AU  - Alrished, Mohamad
+AU  - Alsallum, Faisal
+JO  - Physica A: Statistical Mechanics and its Applications
+VL  - 701
+SP  - 132025
+PY  - 2026
+DA  - 2026/11/01/
+SN  - 0378-4371
+DO  - https://doi.org/10.1016/j.physa.2026.132025
+UR  - https://www.sciencedirect.com/science/article/pii/S0378437126007612
+KW  - Multi-agent systems
+KW  - Emergent behavior
+KW  - Crowd dynamics
+KW  - Pedestrian behavior
+KW  - Pedestrian groups
+AB  - This article investigates the pedestrian group as an emergent agent. The article explores empirical data and provides preliminary evidence to support the formulation of pedestrian-group walking-behavior as a hybrid-system; with focus on emergent agency state space, formation state space, and other recurring patterns of walking behavior. In this analysis, pedestrian trajectories extracted from surveillance videos are used along with previously published manually annotated pedestrian group memberships. We conducted additional manual expert evaluation of observed groups, produced new manual annotations for relevant events pertaining to group behavior, and extracted metrics relevant to group formation. Mixed qualitative and quantitative analysis is used to develop a hypothesis for discrete state spaces for the group modeled as a hybrid system. Eventually, with more evidence to justify the proposed model, the model could help capture detailed and structured expectations around group behavior throughout its life-cycle; from pedestrian walking independently to the emergence of a collective intention where group members tend to maintain bounded distance between each other. The presented analysis suggests that disturbances to this bounded distance often occur in association with changes in either their agency or their formation states. We summarized the observed group behavior along with the sequences of state transitions into abstract patterns, which can aid in the development of more detailed group agents in simulation and in the design of engineering systems to interact with such groups.
+ER  - 
+
+TY  - JOUR
+T1  - Human-like route planning for automatic collision avoidance using generative adversarial imitation learning
+AU  - Higaki, Takefumi
+AU  - Hashimoto, Hirotada
+JO  - Applied Ocean Research
+VL  - 138
+SP  - 103620
+PY  - 2023
+DA  - 2023/09/01/
+SN  - 0141-1187
+DO  - https://doi.org/10.1016/j.apor.2023.103620
+UR  - https://www.sciencedirect.com/science/article/pii/S014111872300161X
+KW  - Collision avoidance
+KW  - Route planning
+KW  - Generative adversarial imitation learning
+KW  - Convolutional neural network
+KW  - COLREGs
+KW  - Imitation of human expert
+AB  - Automatic collision avoidance systems are expected to eliminate maritime accidents caused by human error. Recent studies have shown that ships can prevent collisions in complex situations by using deep reinforcement learning (DRL). However, rewards must be designed to implement DRL, which can be challenging for ambiguous tasks, such as following the Convention on the International Regulations for Preventing Collisions at Sea (COLREGs). While some studies have used inverse reinforcement learning (IRL) to derive an appropriate reward for limited problems with small, discrete state spaces, this study introduced generative adversarial imitation learning (GAIL) and proposed a route planning algorithm that addresses the above limitations. We applied DRL to generate sample collision avoidance trajectories and demonstrate that the imitative route planner based on GAIL can reproduce these trajectories. Also, expert trajectories were collected in simulation experiments involving a well-experienced captain, and we attempted to generate collision avoidance routes that mimic human expert performance. By applying a convolutional neural network and other techniques to improve the planner's imitation capability, we established a sophisticated route planner that is consistent with captain's risk assessments and tolerant of noise.
+ER  - 
+
+TY  - JOUR
+T1  - Metastability from the large deviations point of view: A Γ-expansion of the level two large deviations rate functional of non-reversible finite-state Markov chains
+AU  - Landim, C.
+JO  - Stochastic Processes and their Applications
+VL  - 165
+SP  - 275
+EP  - 315
+PY  - 2023
+DA  - 2023/11/01/
+SN  - 0304-4149
+DO  - https://doi.org/10.1016/j.spa.2023.09.001
+UR  - https://www.sciencedirect.com/science/article/pii/S0304414923001795
+KW  - Metastability
+KW  - Large deviations
+KW  - Continuous-time Markov processes on discrete state spaces
+AB  - Consider a sequence of continuous-time Markov chains (Xt(n):t≥0) evolving on a fixed finite state space V. Let In be the level two large deviations rate functional for Xt(n), as t→∞. Under a hypothesis on the jump rates, we prove that In can be written as In=I(0)+∑1≤p≤q(1/θn(p))I(p) for some rate functionals I(p). The weights θn(p) correspond to the time-scales at which the sequence of Markov chains Xt(n) exhibit a metastable behavior, and the zero level sets of the rate functionals I(p) identify the metastable states.
+ER  - 
+
+TY  - JOUR
+T1  - Coupling of adjoint-based Markov/CCMT predictive analytics with data assimilation for real-time risk scenario forecasting of industrial digital process control systems
+AU  - Chenyu, Jiang
+AU  - Jun, Yang
+AU  - Ke, Xue
+AU  - Zhanyu, He
+AU  - Ming, Yang
+JO  - Process Safety and Environmental Protection
+VL  - 171
+SP  - 951
+EP  - 974
+PY  - 2023
+DA  - 2023/03/01/
+SN  - 0957-5820
+DO  - https://doi.org/10.1016/j.psep.2023.01.077
+UR  - https://www.sciencedirect.com/science/article/pii/S0957582023000897
+KW  - Dynamic reliability and risk analysis
+KW  - Data assimilation
+KW  - Particle filter
+KW  - Markov/CCMT
+KW  - Digital process control systems
+AB  - Risk early detection and controls are critical to avoid unforeseen accidents or incidents across safety-critical industries especially in a digitalization context. Using the sequential Monte Carlo particle filter method, an adjoint-based Markov/Cell-to-Cell Mapping Technique (Markov/CCMT) predictive analytics coupling with data assimilation is proposed in the paper for dynamic risk and reliability scenario modeling of industrial digital process control systems. The particle filter-based data assimilation method is developed with a sequential importance sampling with resampling scheme for extended system state estimation and dynamic reshaping of system state-space model. Then the Markov/CCMT predictive analytics models are dynamically constructed using an equal-weight quadrature scheme for approximating the probabilistic cell-to-cell mapping relations that reflect the possible system state transitions on the discretized state-space model in real time. The adjoint-based Markov/CCMT modeling for risk scenario forecasting is demonstrated on a digital U-shaped Tube Steam Generator (UTSG) water level control system in nuclear power plants. The demonstration results show that super real-time and consistent predictions can be obtained within the adjoint-based Markov/CCMT predictive analytics framework. Multi-step time-series forecasting towards the identification of system-level degradation states and risk-significant scenarios evolution can also be envisioned when a blended state merging and pruning strategy is adopted in deep model search. The proposed Markov/CCMT predictive analytics is able to deliver proactive insights to intelligent operation and maintenance of complex safety-critical engineering systems.
+ER  - 
+
+TY  - JOUR
+T1  - Adaptive model predictive control of sodium-cooled fast reactor core based on ARX modeling and Kalman filtering
+AU  - Jin, Jinrong
+AU  - Wu, Shifa
+AU  - Nuerlan, Areai
+AU  - Liu, Yizhe
+AU  - Wan, Jiashuang
+JO  - Annals of Nuclear Energy
+VL  - 232
+SP  - 112215
+PY  - 2026
+DA  - 2026/07/01/
+SN  - 0306-4549
+DO  - https://doi.org/10.1016/j.anucene.2026.112215
+UR  - https://www.sciencedirect.com/science/article/pii/S0306454926001039
+KW  - Adaptive Model Predictive Control
+KW  - Sodium-cooled fast reactors
+KW  - ARX Model
+KW  - Kalman Filtering
+KW  - Nuclear Reactor Control
+AB  - This study proposes an Adaptive Model Predictive Control (AMPC) strategy for sodium‑cooled fast reactor (SFR) cores to address nonlinear dynamics and model uncertainties inherent in advanced nuclear systems. A nonlinear core model incorporating thermal‑hydraulic and neutron kinetics behaviors is developed in MATLAB/Simulink, and a reduced 15th‑order linear state‑space model is derived through linearization and order reduction for control design. Within the AMPC framework, system identification is achieved using autoregressive with ARX modeling, with recursive parameter updates provided by a Kalman filter. The updated ARX model is converted into a discrete state‑space representation, serving as the internal prediction model for MPC optimization. Comparative simulations under small‑ and large‑scale step load decrease transients demonstrate that, while both AMPC and conventional MPC achieve effective power control, AMPC exhibits faster response and improved adaptability to significant parameter variations, albeit with minor overshoot. These results confirm the potential of ARX‑Kalman‑based AMPC to enhance robustness, flexibility, and operational safety in SFR systems, offering a promising pathway for advanced nuclear reactor control.
+ER  - 
+
+TY  - JOUR
+T1  - SDDCA: State-driven discrete diffusion model with cohesive attention embedding for change detection of remote sensing image
+AU  - Yu, Chunyan
+AU  - Yang, Jike
+AU  - Wang, Yulei
+JO  - Expert Systems with Applications
+VL  - 331
+SP  - 133161
+PY  - 2026
+DA  - 2026/12/15/
+SN  - 0957-4174
+DO  - https://doi.org/10.1016/j.eswa.2026.133161
+UR  - https://www.sciencedirect.com/science/article/pii/S0957417426020701
+KW  - Change detection
+KW  - Discrete diffusion model
+KW  - Attention mechanism
+KW  - Remote sensing image
+AB  - Change detection (CD) is a critical interpretive application in remote sensing (RS) that aims to investigate variations in land cover from bi-temporal RS images, and serves in the fields of environmental monitoring and urban planning. Current CNN-based CD methods struggle to capture global features, leading to insufficient detail detection in change regions. While the long-range dependencies of Transformer-based and Mamba-based models aid in detail expression, they still have shortcomings in effectively detecting false changes. Alternatively, with the iterative generation and multi-step reasoning processes, diffusion-model-based CD methods exhibit strength by progressively refining discrepancies between bi-temporal RS images. In this paper, we propose a novel discrete diffusion-based CD paradigm and establish a state-driven discrete diffusion model with cohesive attention embedding (SDDCA) for change region generation. Due to the inherent characteristics of the CD task, we particularly define the two discrete states denoted as changed and unchanged to reflect the variations in the transition matrices within the SDDCA model. Notably, existing diffusion-model-based CD methods count on the addition and estimation of Gaussian noise to realize the diffusion process, which involves enormous diffusion iteration steps and model parameters. By contrast, with the presented binary diffusion pattern, the proposed model facilitates the generation of high-quality change masks and offers greater efficiency than traditional diffusion-model-based CD methods. Furthermore, we present the cohesive attention embedding (CAE) module that seamlessly integrates discrepancy features into the discrete diffusion process through a hybrid cross-attention mechanism. Additionally, the presented multi-domain discrepancy (MDD) module and the pyramid hierarchical fusion (PHF) module acquire and concatenate frequency information with spatial features for the CAE module. Comprehensive experiments on three publicly accessible CD datasets demonstrate that the proposed SDDCA outperforms other state-of-the-art (SOTA) methods, and achieves an F1-score of 91.24%, 92.96%, and 87.20% on LEVIR-CD, WHU-CD, and GZ-CD, respectively.
+ER  - 
+
+TY  - JOUR
+T1  - Generation and a priori evaluation of different hybrid mesh interfaces for flow simulations
+AU  - Lazaris, Petros
+AU  - Kallinderis, Yannis
+AU  - Antonellis, Panagiotis
+JO  - Computers & Fluids
+VL  - 317
+SP  - 107191
+PY  - 2026
+DA  - 2026/08/30/
+SN  - 0045-7930
+DO  - https://doi.org/10.1016/j.compfluid.2026.107191
+UR  - https://www.sciencedirect.com/science/article/pii/S0045793026002331
+KW  - Flow field simulations
+KW  - Mesh generation
+KW  - Hybrid meshes
+KW  - Mesh interfaces
+KW  - Numerical error
+AB  - Hybrid meshes for computational flow simulations are of importance due to the complexity of both the geometry and the flow fields and the need for automation. Meshes can consist of a mix of hexahedra, prisms, and tetrahedra, with pyramids serving as transitional elements between hexahedra or prisms and tetrahedra. The local regions where elements of different types meet constitute the mesh interfaces. These are a significant source of error in flow simulations. A large number of different interface configurations are typically encountered, which have distinct characteristics in terms of the local accuracy of spatial discretizations. In the present work, optimal construction of a spectrum of interfaces is performed based on a priori error analysis. The examined interface configurations are typically encountered in hybrid meshes used for boundary layer flow simulations. Numerical error estimators are derived directly from the truncation error corresponding to the discretization of first-order spatial derivatives. The error estimators are independent of the mesh size and primarily characterize the shape and topology of the interface configurations. Techniques for optimal placement of interface vertices are proposed, resulting in significant error reduction. The optimal vertex placement can be applied either during mesh generation or subsequently as an adaptation strategy. Appropriate equations are formulated to estimate the optimal location of the vertices. Comparison of the error is made between different types of interfaces with both vertex-centered and cell-centered finite volume discretizations.
+ER  - 
+
+TY  - JOUR
+T1  - Deep reinforcement learning-based optimal bidding strategy for real-time multi-participant electricity market with short-term load
+AU  - Liu, Chuwei
+AU  - Rao, Xuan
+AU  - Zhao, Bo
+AU  - Liu, Derong
+AU  - Wei, Qinglai
+AU  - Wang, Yonghua
+JO  - Electric Power Systems Research
+VL  - 233
+SP  - 110404
+PY  - 2024
+DA  - 2024/08/01/
+SN  - 0378-7796
+DO  - https://doi.org/10.1016/j.epsr.2024.110404
+UR  - https://www.sciencedirect.com/science/article/pii/S037877962400292X
+KW  - Deep reinforcement learning
+KW  - Proximal policy optimization algorithm
+KW  - Bi-level optimization
+KW  - Electricity market bidding strategy
+KW  - Nash equilibrium
+AB  - This paper aims to address the bidding strategy optimization in the real-time multi-participant electricity market with short-term load dynamics. In order to avoid the sub-optimal solution and the dependence on the complete information in traditional mathematical programming methods, an electricity market bidding strategy optimization algorithm based on deep reinforcement learning (DRL) is developed. While conventional reinforcement learning algorithms (e.g., Q-learning and deep Q-learning) are only capable of handling simple problems in discrete state spaces, the proximal policy optimization (PPO) algorithm is implemented in the bidding strategy optimization since it can optimize the bidding strategy in the continuous action and state spaces. In order to substantiate the aforementioned perspective, this paper conducts a two-part experimental study. First, experiments which consider the fixed demand load of market participants show that the developed method can reach the Nash equilibrium just like the bi-level optimization, and higher profits can be achieved by adjusting hyperparameters. Then, complex experiments which consider the time-varying demand load verify the DRL-based electricity market bidding strategy performs better than bi-level optimization-based methods and increases the profits of generators.
+ER  - 
+
+TY  - JOUR
+T1  - Model predictive control for automatic operation of space nuclear reactors: Design, simulation, and performance evaluation
+AU  - Fu, Jianghan
+AU  - Jin, Zhao
+AU  - Dai, Zhiwen
+AU  - Su, G.H.
+AU  - Wang, Chenglong
+AU  - Tian, Wenxi
+AU  - Qiu, Suizheng
+JO  - Annals of Nuclear Energy
+VL  - 199
+SP  - 110321
+PY  - 2024
+DA  - 2024/05/01/
+SN  - 0306-4549
+DO  - https://doi.org/10.1016/j.anucene.2023.110321
+UR  - https://www.sciencedirect.com/science/article/pii/S0306454923006400
+KW  - Space nuclear reactor
+KW  - High-fidelity nonlinear model
+KW  - Automatic control system
+KW  - Model predictive controller
+AB  - Space nuclear reactors possess the inherent benefits of independence from solar energy and the capability to withstand intricate external circumstances. Distinguishing themselves from terrestrial reactors, space nuclear reactors function within the realm of outer space, operating autonomously throughout their entire operational cycles. Consequently, the establishment of a dependable automatic control system assumes utmost significance. In this paper, a high-fidelity nonlinear space thermionic nuclear reactor model is established, encompassing neutron physics, thermal–hydraulic, and thermoelectric conversion system models. An automatic control system with a model predictive controller (MPC) is designed based on the system. A simplified state-space model is established based on system identification as the internal model for the MPC controller, demonstrating good agreement with the dynamic response of the nonlinear system model. The deployment of the MPC controller for system control simulations exhibits excellent control performance under various operating conditions. In the case of a nuclear power step response, the MPC controller achieves an overshoot of 0.07 % and a settling time of 0.65 s. For an electric power step response, the MPC controller yields an overshoot of 0.28 % and a settling time of 36.6 s. These control performances are significantly better than those achieved by the PID controller. In power tracking control, the MPC controller demonstrates virtually error-free tracking performance. When external reactivity disturbances are introduced, the MPC controller outperforms the PID controller in swiftly compensating for the disturbances, maintaining the system's operating state at the desired level.
+ER  - 
+
+TY  - JOUR
+T1  - A novel approach to model nance drying considering its shrinkage
+AU  - Estévez-Sánchez, K.H.
+AU  - Antonio-Alejandro, K.
+AU  - López-Méndez, E.M.
+AU  - García-Alvarado, M.A.
+AU  - Cortés-Zavaleta, O.
+AU  - Ochoa-Velasco, C.E.
+AU  - Ruiz-López, I.I.
+JO  - Food and Bioproducts Processing
+VL  - 146
+SP  - 26
+EP  - 37
+PY  - 2024
+DA  - 2024/08/01/
+SN  - 0960-3085
+DO  - https://doi.org/10.1016/j.fbp.2024.05.001
+UR  - https://www.sciencedirect.com/science/article/pii/S0960308524000774
+KW  - 
+KW  - Dehydration, Fickian Diffusion
+KW  - Inverse Problem
+AB  - Air drying is a viable preservation method to boost the accessibility of nance, a seasonal drupe with very short shelf life; however, information about nance drying is scarce, especially from a mass transfer (MT) standpoint. Besides, the lack of simple models considering the stone fraction (radius of inner stone/radius of nance) and the mesocarp shrinkage in drupes has caused most investigations rely on sphere and cube geometries, contributing to the unreliable estimation of MT properties. This study developed a discrete state-space (SS) formulation with analytical solution to describe nance drying which, unlike a variable separation (VS) solution, can consider a variable stone fraction, caused by outer boundary moving while flesh-pit interface remains still. Nance fruits were air dried (60, 70 and 80 °C) to obtain their moisture kinetics and shrinking behavior. Drying data were used to estimate water diffusivity (D) under rigid (VS and SS solutions) and shrinkable (SS and numerical solution) mesocarp assumptions. Nances lost about 60% of their initial volume at the end of drying, while stone fraction increased from 0.44 to 0.62. D values ranged from 5.3 to 6.7 (×10–10) m2/s with SS approach and variable stone fraction. The major source of error in D was not the formulation (SS or VS) when a rigid mesocarp was considered, but the values assigned to the nance radius (length for diffusion) and stone fraction, an initial or average value along process. SS diffusivities did not differ to those estimated with the full numerical solution under variable stone fraction (p>0.05), while VS parameters were overestimated by 44–46 % as a minimum. SS formulation can be applied to hollow cylinders and other geometries with 2D or 3D MT, while able to include non-isotropic shrinkage and evolving external conditions, a problem normally reserved to pure numerical implementations, offering substantial advantages over VS equations.
+ER  - 
+
+TY  - JOUR
+T1  - Fuzzy discrete fractional calculus and fuzzy fractional discrete equations
+AU  - Hoa, Ngo Van
+AU  - Phu, Nguyen Dinh
+JO  - Fuzzy Sets and Systems
+VL  - 492
+SP  - 109073
+PY  - 2024
+DA  - 2024/09/15/
+SN  - 0165-0114
+DO  - https://doi.org/10.1016/j.fss.2024.109073
+UR  - https://www.sciencedirect.com/science/article/pii/S0165011424002197
+KW  - Fuzzy discrete fractional calculus
+KW  - Fuzzy difference equations
+KW  - Fuzzy fractional difference equations
+AB  - This paper aims to highlight certain limitations in the study of fuzzy fractional discrete equations (FFDEs) based on the generalized Hukuhara difference (gH-difference) in the previous papers. In general, the equivalence between FFDEs and the associated fuzzy discrete fractional sum equations (FDFSEs) is not achieved, requiring the introduction of an appropriate hypothesis to establish this equivalence. Furthermore, this paper introduces the fundamental theory of fuzzy fractional discrete calculus through granular arithmetic operations between fuzzy intervals to address restrictions in the formerly mentioned approaches involving the generalized Hukuhara difference. These operations are constructed based on the concept of the horizontal membership function (HMF) utilized in multidimensional fuzzy arithmetic (MFA). Additionally, the paper proposes the application of fractional discrete calculus to two types of time-discretization diffusion equations with non-zero right-hand sides. Finally, several numerical examples are provided to validate the main results.
+ER  - 
+
+TY  - JOUR
+T1  - Coordinated configuration of hybrid energy storage for electricity-hydrogen integrated energy system
+AU  - Liu, Nian
+AU  - Zhang, Kangrui
+AU  - Zhang, Kuan
+JO  - Journal of Energy Storage
+VL  - 95
+SP  - 112590
+PY  - 2024
+DA  - 2024/08/01/
+SN  - 2352-152X
+DO  - https://doi.org/10.1016/j.est.2024.112590
+UR  - https://www.sciencedirect.com/science/article/pii/S2352152X24021765
+KW  - Integrated energy system
+KW  - Electricity‑hydrogen coordinated configuration
+KW  - Hybrid energy storage
+KW  - Long-term energy storage
+KW  - Renewable energy
+AB  - This paper proposes an optimal coordinated configuration method of hybrid electricity and hydrogen storage for the electricity‑hydrogen integrated energy system (EH-ES) to promote the renewable energy source (RES) utilization and reduce the deployment cost. To simulate the practical operation of EH-ES, an energy hub framework with a discrete state space system matrix is designed to characterize the internal interconnection topology and quantify the steady-state production, storage, conversion and utilization processes of electricity and hydrogen energy carriers within EH-ES. A chronological operation simulation based electricity and hydrogen storage configuration model over a year-round time horizon is formulated to collaboratively optimize the capacity of the electrolyzer, fuel cell, battery energy storage (BES) and hydrogen storage tank. In this model, the power and capacity complementarity of BES and generalized hydrogen storage is fully exploited to compensate for power and energy imbalances, and additional capacity configuration of BES is considered to mitigate the drastic electrolytic power fluctuation. Besides, a typical source-load scenario reduction method based on K-means and ordered clustering is developed to avoid a large number of operation variables due to year-round hourly simulation. Comparative studies demonstrate that the proposed methodology can achieve the RES consumption rate of 98.873 % while the equipment investment cost can be reduced by 10.034 %.
+ER  - 
+
+TY  - JOUR
+T1  - Optimizing Loop Diuretic Treatment for Mortality Reduction in Patients With Acute Dyspnea Using a Practical Offline Reinforcement Learning Pipeline for Health Care: Retrospective Single-Center Simulation Study
+AU  - Lee, Jung Min
+AU  - Tang, Shengpu
+AU  - Sjoding, Michael
+AU  - Wiens, Jenna
+JO  - JMIR Medical Informatics
+VL  - 13
+PY  - 2025
+DA  - 2025/01/01/
+SN  - 2291-9694
+DO  - https://doi.org/10.2196/69145
+UR  - https://www.sciencedirect.com/science/article/pii/S2291969425002327
+KW  - reinforcement learning
+KW  - artificial intelligence
+KW  - loop diuretic
+KW  - treatment recommendation
+KW  - treatment selection
+KW  - clinical decision support
+KW  - dynamic treatment regime
+AB  - Background
+Offline reinforcement learning (RL) has been increasingly applied to clinical decision-making problems. However, due to the lack of a standardized pipeline, prior work often relied on strategies that may lead to overfitted policies and inaccurate evaluations.
+Objective
+In this work, we present a practical pipeline—Pipeline for Learning Robust Policies in Reinforcement Learning (PROP-RL)—designed to improve robustness and minimize disruption to clinical workflow. We demonstrate its efficacy in the context of learning treatment policies for administering loop diuretics in hospitalized patients.
+Methods
+Our cohort included adult inpatients admitted to the emergency department at Michigan Medicine between 2015 and 2019 who required supplemental oxygen. We modeled the management of loop diuretics as an offline RL problem using a discrete state space based on features extracted from electronic health records, a binary action space corresponding to the daily use of loop diuretics, and a reward function based on in-hospital mortality. The policy was trained on data from 2015 to 2018 and evaluated on a held-out set of hospitalizations from 2019, in terms of estimated reduction in mortality compared to clinician behavior.
+Results
+The final study cohort included 36,570 hospitalizations. The learned treatment policy was based on 60 states: the policy deferred to clinicians in 36 states, recommended the majority action in 22 states, and diverged significantly from clinician behavior in 2 of the states. Among the cases where the policy meaningfully diverged from the behavior policy, the learned policy was estimated to significantly reduce the mortality rate from 3.8% to 2.2% by 1.6% (95% CI 0.4‐2.7; P=.006).
+Conclusions
+We applied our pipeline to the clinical problem of loop diuretic treatment, highlighting the importance of robust state representation and thoughtful policy selection and evaluation. Our work reveals areas of potential improvement in current clinical care for loop diuretics and serves as a blueprint for using offline RL for sequential treatment selection in clinical settings.
+ER  - 
+
+TY  - JOUR
+T1  - On the frequency and damping of resonances in electrical networks: a discrete state-space approach using bounce Diagrams⁎⁎This work was supported by the ERA-Net Smart Energy Systems’ focus initiative Digital Transformation for the Energy Transition, with support from the European Union’s Horizon 2020 programme (grant agreement No 883973), under the project RESili8. We express our gratitude to Catalin Gavriluta for its valuable feedback, which enhanced the quality of this manuscript.
+AU  - Cifelli, Diego
+AU  - Anta, Adolfo
+JO  - IFAC-PapersOnLine
+VL  - 58
+IS  - 13
+SP  - 674
+EP  - 679
+PY  - 2024
+DA  - 2024/01/01/
+T2  - 12th IFAC Symposium on Control of Power and Energy Systems - CPES 2024
+SN  - 2405-8963
+DO  - https://doi.org/10.1016/j.ifacol.2024.07.559
+UR  - https://www.sciencedirect.com/science/article/pii/S240589632400658X
+KW  - Resonances
+KW  - transmission lines
+KW  - eigenvalue analysis
+KW  - load placement
+KW  - fault location
+AB  - The paper presents a novel method to compute resonances in a power system network using a discrete state-space approach based on bounce diagrams. The approach models the distributed parameter line as a lattice diagram, considering the refection/transmission of traveling waves. This model is then represented as a discrete-time linear time-invariant system, enabling the computation of resonances in the network. Two applications are demonstrated: fault location and load placement to improve damping in black start scenario. The method is particularly useful to understand and control resonances in electric grids. Theoretical analysis and numerical examples illustrate the behavior of resonances as resistive loads are connected along the transmission line, providing insights for fault location and load allocation strategies.
+ER  - 
+
+TY  - JOUR
+T1  - Generative AI for material design: A mechanics perspective from burgers to matter
+AU  - Tac, Vahidullah
+AU  - Kuhl, Ellen
+JO  - Computer Methods in Applied Mechanics and Engineering
+VL  - 461
+SP  - 119171
+PY  - 2026
+DA  - 2026/11/01/
+SN  - 0045-7825
+DO  - https://doi.org/10.1016/j.cma.2026.119171
+UR  - https://www.sciencedirect.com/science/article/pii/S0045782526004445
+KW  - Generative artificial intelligence
+KW  - Diffusion models
+KW  - Discrete diffusion
+KW  - Continuous diffusion
+KW  - Machine learning
+AB  - Generative artificial intelligence offers a new paradigm to design matter in high-dimensional spaces. However, its underlying mechanisms remain difficult to interpret and limit adoption in computational mechanics. This gap is striking because its core tools – diffusion, stochastic differential equations, and inverse problems – are fundamental to the mechanics of materials. Here we show that diffusion-based generative AI and computational mechanics are rooted in the same principles. We illustrate this connection using a three-ingredient burger as a minimal benchmark for material design in a low-dimensional space, where both forward and reverse diffusion admit analytical solutions: Markov chains with Bayesian inversion in the discrete case and the Ornstein–Uhlenbeck process with score-based reversal in the continuous case. In both cases, forward diffusion adds noise to degrade structure, while reverse diffusion recovers structure from noise. We extend this framework to a high-dimensional design space with 146 ingredients and 8.9×1043 possible configurations, where analytical solutions become intractable. We therefore learn the discrete and continuous reverse processes using neural network models that infer inverse dynamics from data. We train the models on only 2260 recipes and generate one million samples that capture the statistical structure of the data, including ingredient prevalence and quantitative composition. We further generate five new burgers and validate them in a blinded restaurant-based sensory study with n = 101 participants, where three of the AI-designed burgers outperform the classical BigMac in overall liking, flavor, and texture. These results establish diffusion-based generative modeling as a physically grounded approach to design in high-dimensional spaces. They position generative AI as a natural extension of computational mechanics, with applications from burgers to matter, and establish a path towards data-driven, physics-informed generative design. Our source code, data, and examples are available at https://github.com/LivingMatterLab/AI4Food.
+ER  - 
+
+TY  - JOUR
+T1  - An improved Bayesian regularization approach with Cholesky decomposition and γ-adaptive control for multi-source/continuous impact load identification
+AU  - Lin, Huagang
+AU  - Feng, Hui
+AU  - Wang, Jiabo
+AU  - Wang, Dangxiong
+AU  - Yan, Yunju
+JO  - Thin-Walled Structures
+VL  - 219
+SP  - 114241
+PY  - 2026
+DA  - 2026/02/01/
+SN  - 0263-8231
+DO  - https://doi.org/10.1016/j.tws.2025.114241
+UR  - https://www.sciencedirect.com/science/article/pii/S0263823125013291
+KW  - Panel vibration
+KW  - Load identification
+KW  - Ill-posedness problem
+KW  - Bayesian regularization
+KW  - Multi-source/continuous impact load
+AB  - Accurate load identification is the key process for health detection and invisible internal damages of aerospace composite structure. Aiming at the ill-posedness of time-dependent inverse problem, an improved Bayesian regularization approach with Cholesky decomposition and γ-adaptive control for multi-source/continuous load identification is proposed. Firstly, the dynamic governing equations of panel structure under the non-classical boundaries with multiple source inputs are established, where the mode functions of Galerkin approach are set up through admissible functions constructed by employing Gram–Schmidt process. Then, the discrete state-space model with multiple measurement sensors is established, the obtained response data is processed by wavelet threshold and an improved Bayesian regularization approach is developed to solve the ill-posedness problem in the aspects of multi-source/continuous impact load identification. A few numerical examples considering regularization parameters, boundary condition and multi-source/continuous load types are discussed to demonstrate the accuracy and efficiency of the present method. The experiments including bolted stiffened panels test and bombardment test are presented to carry out the load identification. The peak error of bolted stiffened panels does not exceed 9.71 %, and the maximum peak error of bombardment test does not exceed 11.8 % and minimum error only 0.2 %, demonstrating the effectiveness of this approach in multi-source/continuous impact load identification.
+ER  - 
+
+TY  - JOUR
+T1  - Dynamic load altering attack detection in cyber physical power system based on improved Kalman/H∞ co-filtering
+AU  - Li, Jian
+AU  - Wang, Yunfeng
+AU  - Ren, He
+AU  - Su, Qingyu
+JO  - ISA Transactions
+VL  - 167
+SP  - 1241
+EP  - 1251
+PY  - 2025
+DA  - 2025/12/01/
+SN  - 0019-0578
+DO  - https://doi.org/10.1016/j.isatra.2025.09.035
+UR  - https://www.sciencedirect.com/science/article/pii/S0019057825005403
+KW  - Attack detection
+KW  - Cyber physical power system
+KW  - Dynamic load altering attack
+KW  - Improved Kalman/ co-filtering
+KW  - State estimation
+AB  - This paper proposes an attack detection scheme for closed-loop Dynamic Load Altering Attacks (DLAA) in Cyber Physical Power Systems (CPPSs). It aims to improve the accuracy of state estimation and attack detection in CPPSs in the presence of D-LAA and noise disturbances. First, a discrete-time CPPSs model subject to D-LAA and unknown-statistics noise is constructed to capture the system dynamics under the influence of cyberattacks and disturbances. Second, a state estimation method based on an improved Kalman/H∞ co-filter is proposed, in which the multi-fading factor adaptive Kalman filter (MFAKF) is used to handle Gaussian noise with unknown-statistics, and the H∞ filter is used to enhance robustness against non-Gaussian disturbances. Finally, a detection algorithm based on cosine similarity matching is designed to identify anomalies by calculating the angular deviation between the estimated and measured states. Simulation results show that for the state ω1 in the IEEE 3-machine 6-bus system, the proposed MFAKF-HF reduces the RMSE by 75% relative to MFAKF and 62% relative to H∞ filtering, demonstrating the improved accuracy and robustness of the proposed estimation and detection scheme under both attack and noise conditions.
+ER  - 
+
+TY  - JOUR
+T1  - SPFlow: A flow-based symmetry-preserving generative model for crystalline materials
+AU  - Sun, Tao
+AU  - Yuan, Jianmei
+JO  - Materials Today Physics
+VL  - 62
+SP  - 102063
+PY  - 2026
+DA  - 2026/03/01/
+SN  - 2542-5293
+DO  - https://doi.org/10.1016/j.mtphys.2026.102063
+UR  - https://www.sciencedirect.com/science/article/pii/S2542529326000544
+KW  - Continuous normalizing flow
+KW  - Discrete flow matching
+KW  - Crystal structure generation
+KW  - Classifier-free guidance
+AB  - Efficient discovery of novel crystalline materials is key to advancing technologies in energy, electronics, and catalysis. Current deep learning-based crystal generation models mostly fail to explicitly incorporate symmetry constraints, resulting in generated crystal lacking symmetry. To this end, we propose SPFlow, a flow-based crystal generation framework, which explicitly models crystal symmetry by representing the crystal structure as asymmetric units in the unit cell and the symmetry transformation of their internal atoms. SPFlow utilizes conditional and discrete flow matching to construct a joint equivariant flow model that can simultaneously handle both continuous and discrete features. This model strictly follows crystal symmetry constraints during the generation process, enabling efficient generation of valid and symmetrical crystals. Experiments show that SPFlow generates diverse, symmetric, and synthesizable crystals while significantly outperforming baselines in inference speed. Furthermore, in conditional generation targeting formation energy, the model exhibits diverse generation capability and generalization potential, validating its practical value for inverse design of crystals.
+ER  - 
+
+TY  - JOUR
+T1  - Analytic discrete state-space model of LLC resonant converter
+AU  - Rezaii, Elias Yousefi
+AU  - Carvalho, Adriano
+JO  - e-Prime - Advances in Electrical Engineering, Electronics and Energy
+VL  - 9
+SP  - 100625
+PY  - 2024
+DA  - 2024/09/01/
+SN  - 2772-6711
+DO  - https://doi.org/10.1016/j.prime.2024.100625
+UR  - https://www.sciencedirect.com/science/article/pii/S2772671124002055
+KW  - Resonant
+KW  - LLC
+KW  - Discrete
+KW  - State-space model
+KW  - Exact discretization
+KW  - Sampled-data model
+KW  - Small-signal
+KW  - Audio-susceptibility
+KW  - Control-to-output
+AB  - The LLC resonant converter has widely been used for having high-frequency soft-switching capability which could lead to high power density power electronic solutions, and higher power conversion efficiency at lower costs. However, the presence of excessive non-linearity resulting from power conversion through the resonant tank has led to a lack of accurate and reliable large-signal and small-signal models which limits the performance optimization. This paper presents a theoretical analysis of the LLC converter using the sampled-data modeling approach to accurately convert the continuous-time-variant state equations to discrete-time-invariant state equations and solve them using switching time-segmented boundary conditions to obtain the discrete large-signal model. The small-signal model is obtained by perturbation and linearization of the steady-state model in the vicinity of the cyclic equilibrium states of the converter. Theoretical analysis results are validated by simulating a 650W LLC converter in Matlab Simulink. Based on the provided results, the proposed steady-state and small-signal models can accurately predict the dynamic behavior of the LLC converter in different operational conditions.
+ER  - 
+
+TY  - JOUR
+T1  - Optimal filtering for state space model with time-integral measurements
+AU  - Qian, Nijia
+AU  - Chang, Guobin
+JO  - Measurement
+VL  - 176
+SP  - 109209
+PY  - 2021
+DA  - 2021/05/01/
+SN  - 0263-2241
+DO  - https://doi.org/10.1016/j.measurement.2021.109209
+UR  - https://www.sciencedirect.com/science/article/pii/S0263224121002268
+KW  - State space model
+KW  - Time integral measurement
+KW  - Time difference measurement
+KW  - Filtering
+KW  - Colored noise
+KW  - Cross correlated noise
+AB  - Filtering for state space model with time-integral measurement is studied. In this model, the measurement is an integral function, rather than an algebraic function, of the state vector. To be more specific, in the problem studied, the measurement is the between-epoch integral of a linear combination of the state vector. This is a new measurement type which arises in several navigation applications with velocity as part of the state vector and with between-epoch displacement as the measurement of the state space model. A rigorous discrete state space model is constructed from first principles to correctly represent the problem to be solved. Compared to this rigorous model, the model used in conventional method is inferior due to the following: a) the covariance of the measurement noise is wrongly determined; b) the between-epoch correlation in the measurement noise is ignored; and c) the cross correlation between the process noise and the measurement noises is ignored. Optimal filtering algorithm is designed according to the rigorous model. A simulation study is conducted to validate the superior performance of the proposed method to the conventional method.
+ER  - 
+
+TY  - JOUR
+T1  - Discrete random walk of C60 on quasi-tetragonal fullerene monolayers
+AU  - Vaezi, Mehran
+JO  - Micro and Nanostructures
+VL  - 209
+SP  - 208401
+PY  - 2026
+DA  - 2026/01/01/
+SN  - 2773-0123
+DO  - https://doi.org/10.1016/j.micrna.2025.208401
+UR  - https://www.sciencedirect.com/science/article/pii/S2773012325003309
+KW  - Fullerene network
+KW  - Quasi-tetragonal-phase fullerene
+KW  - C60
+KW  - Discrete diffusion
+AB  - Understanding the random walks of molecules on the surface is essential for bridging the gap between idealized models and real material systems. In this study, random walk movement of C60 fullerene molecule is investigated on a quasi-tetragonal-phase fullerene (qTPC60) monolayer using molecular dynamics simulations. The qTPC60 substrate provides periodic adsorption sites, where C60 exhibits thermally activated random walks on these tetrahedral sites. Potential energy analysis reveals energy barrier of 0.4 eV for lateral transitions (up, down, left, right) of C60 on the surface. According to Transition state theory, difference of free energies between two adjacent sites is 0.0017 eV, which shows the similar tendency of molecules to each neighboring adsorption site. This theory predicts the rate constant of transitions as 0.23ns−1, which leads to mean dwell time of 4.35 ns the molecule experiences on an adsorption site. At temperatures between 450 and 550 K, the C60 molecule undergoes a two-dimensional discrete random walk, with step-lengths of 8.4 Å. In agreement with random walk theory, the probability of finding C60 at a given position follows a gaussian distribution function, with standard deviations of σx=11.56Å and σy=9.53Å, in x- and y-axis directions. The mean square displacement shows a linear relation with time which confirms the normal diffusion regime, with diffusion coefficients of 8.92 and 13.76 Å2/ns in x- and y-axis directions at 500 K. The findings reveal that C60 exhibits random walk dynamics on qTPC60, establishing this system as an ideal model for studying molecular transport in nanostructured materials.
+ER  - 
+
+TY  - JOUR
+T1  - Vertical pullout of a plate-like intruder from a granular medium: From system-wide response to avalanching around the intruder
+AU  - Krengel, Dominik
+AU  - Chen, Jian
+AU  - Nomura, Shun
+AU  - Ota, Shunsuke
+AU  - Takahashi, Hidenori
+JO  - Powder Technology
+VL  - 476
+SP  - 122440
+PY  - 2026
+DA  - 2026/06/01/
+SN  - 0032-5910
+DO  - https://doi.org/10.1016/j.powtec.2026.122440
+UR  - https://www.sciencedirect.com/science/article/pii/S0032591026003293
+KW  - Intruder pullout
+KW  - Stress-strain behaviour
+KW  - Micromechanics
+KW  - Shape evolution
+KW  - Discrete-element simulation
+AB  - Intruder mechanics in a granular aggregate is a common subject in engineering and geotechnical applications. However, most studies are limited to spherical intruders or small displacement regimes up to the point of failure. In this work we investigate the vertical pullout of a plate-like intruder buried within a granular aggregate well past the point of failure. We observe a separation of the intruder mechanics into an initial friction controlled regime and a later geometry controlled regime. The transition between the regimes is marked by the emergence of the same friction-independent effective shape of the intruder and a convergence of the resistance force onto the same curve in the post failure regime, independent of the magnitude of friction. Further, during the transition a natural hopper flow develops between the intruder and the aggregate in which material is transported into the void below the intruder by discrete flow events.
+ER  - 
+
+TY  - JOUR
+T1  - Stabilization for a class of delay systems via Z-type control
+AU  - Qian, Ying
+JO  - ISA Transactions
+VL  - 135
+SP  - 138
+EP  - 149
+PY  - 2023
+DA  - 2023/04/01/
+SN  - 0019-0578
+DO  - https://doi.org/10.1016/j.isatra.2022.09.017
+UR  - https://www.sciencedirect.com/science/article/pii/S0019057822004761
+KW  - Stabilization
+KW  - Time-delay model
+KW  - Non-linear activation function
+KW  - Z-type control
+KW  - Discretization
+AB  - This paper investigates the Z-type control method to stabilize species populations and make them converge to desired values in a two-species predator–prey model with time delay in the prey species’ growth rate. Direct controllers that assume both species’ growth rates can be altered through human intervention and indirect controllers that assume only one species’ growth can be changed at will are constructed. The Z-type method of construction is theoretically justified, and the potential for certain non-linear activation functions to speed up the control process is highlighted. A general procedure for discretizing state-space systems using the Euler forward formula is described. The discrete versions of the directly and indirectly controlled systems are provided. All Z-type controllers constructed are validated through numerical simulations.
+ER  - 
+
+TY  - JOUR
+T1  - Approximate filtering via discrete dual processes
+AU  - Kon Kam King, Guillaume
+AU  - Pandolfi, Andrea
+AU  - Piretto, Marco
+AU  - Ruggiero, Matteo
+JO  - Stochastic Processes and their Applications
+VL  - 168
+SP  - 104268
+PY  - 2024
+DA  - 2024/02/01/
+SN  - 0304-4149
+DO  - https://doi.org/10.1016/j.spa.2023.104268
+UR  - https://www.sciencedirect.com/science/article/pii/S0304414923002405
+KW  - Bayesian inference
+KW  - Diffusion
+KW  - Duality
+KW  - Hidden Markov models
+KW  - Particle filtering
+KW  - Smoothing
+AB  - We consider the task of filtering a dynamic parameter evolving as a diffusion process, given data collected at discrete times from a likelihood which is conjugate to the reversible law of the diffusion, when a generic dual process on a discrete state space is available. Recently, it was shown that duality with respect to a death-like process implies that the filtering distributions are finite mixtures, making exact filtering and smoothing feasible through recursive algorithms with polynomial complexity in the number of observations. Here we provide general results for the case where the dual is a regular jump continuous-time Markov chain on a discrete state space, which typically leads to filtering distribution given by countable mixtures indexed by the dual process state space. We investigate the performance of several approximation strategies on two hidden Markov models driven by Cox–Ingersoll–Ross and Wright–Fisher diffusions, which admit duals of birth-and-death type, and compare them with the available exact strategies based on death-type duals and with bootstrap particle filtering on the diffusion state space as a general benchmark.
+ER  - 
+
+TY  - JOUR
+T1  - Stability prediction method of time-varying real-time hybrid testing system on vehicle-bridge coupled system
+AU  - Liu, Hao
+AU  - Tang, Zhenyun
+AU  - Enokida, Ryuta
+JO  - Mechanical Systems and Signal Processing
+VL  - 216
+SP  - 111463
+PY  - 2024
+DA  - 2024/07/01/
+SN  - 0888-3270
+DO  - https://doi.org/10.1016/j.ymssp.2024.111463
+UR  - https://www.sciencedirect.com/science/article/pii/S0888327024003613
+KW  - Real-time hybrid testing
+KW  - Vehicle–bridge coupled system
+KW  - Time-varying system
+KW  - Stability
+KW  - Accuracy
+AB  - In recent years, real-time hybrid testing (RTHT) has been applied for the dynamic testing of high-speed trains running on bridges. A guarantee of stability for the RTHT system is essential to achieve a safe and reliable result. However, the inherent time-varying characteristics of the vehicle-bridge coupled system pose challenges to RTHT stability prediction. This study aims to develop a stability prediction method specifically tailored for time-varying RTHT system. Firstly, the vehicle-bridge coupled RTHT was modelled using a discrete state–space representation with a comprehensive consideration of the time-varying vehicle-bridge interaction and the dynamics of the shaking table. Subsequently, a time-varying stability criterion was derived from the periodic time-varying state matrix, forming the basis for a relative stability prediction method. The validity of the proposed method was confirmed through simulations and experiments employing a single-axle interaction within the vehicle-bridge coupled RTHT system. The coupled system consisted of a quarter-car model and simply supported beams were used as an example to evaluate the stability and accuracy of the time-varying RTHT. The results showed that the stability increased with increasing vehicle speed. Reducing the pure time delay of the shaking table improved both stability and accuracy. Increasing the effective frequency of the shaking table improved the accuracy but may reduce the stability of the RTHT.
+ER  - 
+
+TY  - JOUR
+T1  - Risk-sensitive semi-Markov decision problems with discounted cost and general utilities
+AU  - Bhabak, Arnab
+AU  - Saha, Subhamay
+JO  - Statistics & Probability Letters
+VL  - 184
+SP  - 109408
+PY  - 2022
+DA  - 2022/05/01/
+SN  - 0167-7152
+DO  - https://doi.org/10.1016/j.spl.2022.109408
+UR  - https://www.sciencedirect.com/science/article/pii/S0167715222000281
+KW  - Semi-Markov processes
+KW  - Risk-sensitive control
+KW  - General utilities
+KW  - State augmentation
+KW  - Optimal policies
+AB  - In this article we consider risk-sensitive control of semi-Markov processes with a discrete state space. We consider general utility functions and discounted cost in the optimization criteria. We consider random finite horizon and infinite horizon problems. Using a state augmentation technique we characterize the value functions and also prescribe optimal controls.
+ER  - 
+
+TY  - JOUR
+T1  - Traveling waves in delayed lattice systems: Effects of case report delays and pathogen detection
+AU  - Wu, Xin
+AU  - Ding, Zeyu
+AU  - Yuan, Rong
+AU  - Chen, Fangyuan
+JO  - Mathematics and Computers in Simulation
+VL  - 238
+SP  - 516
+EP  - 535
+PY  - 2025
+DA  - 2025/12/01/
+SN  - 0378-4754
+DO  - https://doi.org/10.1016/j.matcom.2025.06.024
+UR  - https://www.sciencedirect.com/science/article/pii/S0378475425002551
+KW  - Traveling waves
+KW  - Diffusive SIR epidemic model
+KW  - Lattice dynamical system
+KW  - Report delay
+KW  - Lyapunov–LaSalle theorem
+AB  - This paper presents a delayed lattice dynamical system derived from a diffusive disease model, where the delay arises from case reporting lags and the time required for pathogen detection. The system accounts for discrete diffusion, reflecting the real-world scenario where cases are reported by discrete monitoring points, such as sentinel hospitals. By applying Schauder’s fixed point theorem, the Lyapunov–LaSalle theorem, and Lebesgue’s dominated convergence theorem, the existence of super-critical and critical traveling waves is established. Additionally, the non-existence of such waves is demonstrated using the bilateral Laplace transform. The paper concludes with a discussion and numerical simulation on how spatial movement patterns among infected individuals and time delays affect the determination of critical velocity, emphasizing the significance of these factors in disease spread dynamics.
+ER  - 
+
+TY  - JOUR
+T1  - Lipschitz-regularized super-resolution via learnable fractional diffusion blocks
+AU  - Laghrib, Amine
+JO  - Communications in Nonlinear Science and Numerical Simulation
+VL  - 163
+SP  - 110761
+PY  - 2026
+DA  - 2026/11/01/
+SN  - 1007-5704
+DO  - https://doi.org/10.1016/j.cnsns.2026.110761
+UR  - https://www.sciencedirect.com/science/article/pii/S1007570426011147
+KW  - Adversarial learning
+KW  - Deep learning
+KW  - PDEs
+KW  - Optimization
+AB  - We propose a super-resolution (SR) framework that embeds a learnable fractional p(x, t)-diffusion equation as a differentiable regularization block inside a convolutional neural network. The spatially varying exponent p(x, t) adapts the diffusion locally: p ≈ 1 at edges activates total-variation-like smoothing that preserves discontinuities, while p ≈ 2 in homogeneous regions applies stronger noise suppression. We prove that each discretized diffusion step is a strict contraction in ℓ2, providing an explicit Lipschitz bound for the full network and, consequently, a certified worst-case reconstruction guarantee under bounded input perturbations. The model is trained via an adversarial min–max objective that jointly optimizes clean-image fidelity and robustness against ℓ∞-bounded attacks. Experiments on five standard benchmarks (Set5, Set14, BSD100, Urban100, Manga109) under clean, impulse-noise, and adversarial conditions show that the proposed method improves PSNR over state-of-the-art SR networks while maintaining competitive performance on clean data.
+ER  - 
+
+TY  - JOUR
+T1  - Learning continuous potentials from smFRET
+AU  - Bryan, J. Shepard
+AU  - Pressé, Steve
+JO  - Biophysical Journal
+VL  - 122
+IS  - 2
+SP  - 433
+EP  - 441
+PY  - 2023
+DA  - 2023/01/17/
+SN  - 0006-3495
+DO  - https://doi.org/10.1016/j.bpj.2022.11.2947
+UR  - https://www.sciencedirect.com/science/article/pii/S0006349522038863
+AB  - Potential energy landscapes are useful models in describing events such as protein folding and binding. While single-molecule fluorescence resonance energy transfer (smFRET) experiments encode information on continuous potentials for the system probed, including rarely visited barriers between putative potential minima, this information is rarely decoded from the data. This is because existing analysis methods often model smFRET output assuming, from the onset, that the system probed evolves in a discretized state space to be analyzed within a hidden Markov model (HMM) paradigm. By contrast, here, we infer continuous potentials from smFRET data without discretely approximating the state space. We do so by operating within a Bayesian nonparametric paradigm by placing priors on the family of all possible potential curves. As our inference accounts for a number of required experimental features raising computational cost (such as incorporating discrete photon shot noise), the framework leverages a structured-kernel-interpolation Gaussian process prior to help curtail computational cost. We show that our structured-kernel-interpolation priors for potential energy reconstruction from smFRET analysis accurately infers the potential energy landscape from a smFRET binding experiment. We then illustrate advantages of structured-kernel-interpolation priors for potential energy reconstruction from smFRET over standard HMM approaches by providing information, such as barrier heights and friction coefficients, that is otherwise inaccessible to HMMs.
+ER  - 

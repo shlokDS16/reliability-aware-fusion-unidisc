@@ -1,0 +1,23 @@
+TY  - JOUR
+T1  - Reinforcement Learning-Driven Multimodal Medical Foundation Model for Unified Understanding, Reasoning and Generation
+AU  - Chen, W.
+AU  - Xing, L.
+JO  - International Journal of Radiation Oncology*Biology*Physics
+VL  - 126
+IS  - 1, Supplement 
+SP  - e194
+PY  - 2026
+DA  - 2026/09/01/
+T2  - ASTRO 2026: 68th Annual Meeting
+SN  - 0360-3016
+DO  - https://doi.org/10.1016/j.ijrobp.2026.06.1081
+UR  - https://www.sciencedirect.com/science/article/pii/S0360301626019231
+AB  - Purpose/Objective(s)
+To develop and validate a unified multimodal medical foundation model that combines visual understanding, cross-modal generation (image-text translation), and interpretable reasoning with visual grounding, and to quantify the gains enabled by multi-objective reinforcement learning (RL).
+Materials/Methods
+A discrete-diffusion Multimodal Large Language Model (dMLLM) was developed that represents both medical images and text as sequences of discrete tokens and generates outputs by parallel denoising. The model was pretrained on large-scale multimodal corpora covering understanding tasks (e.g., VQA/diagnosis) and generation tasks (e.g., radiology report generation and text-to-image synthesis). Unified optimization was performed using RL with a composite reward: (1) a cycle-consistency reward enforcing bidirectional coarse-grained alignment via image-to-report-to-image and report-to-image-to-report reconstruction; and (2) a multimodal inpainting reward enforcing fine-grained alignment by randomly masking 15–30% of image or text tokens and rewarding reconstruction conditioned on the complementary modality. For interpretability, a medical reasoning dataset was constructed by augmenting curated multimodal examples with chain-of-thought rationales and spatial annotations. Evaluation spanned report generation and report-to-image generation using standard quantitative metrics and expert review of reasoning and grounding quality.
+Results
+The proposed model improved report generation over a representative baseline from BLEU-1 0.256 to 0.416 (+0.160; +62.5%) and ROUGE-L 0.244 to 0.366 (+0.122; +50.0%) on IU X-Ray dataset, as shown in Table 1 of Supporting Document. For text-to-image synthesis, FID decreased from 1.66 to 1.594 (−0.066; 4.0% reduction). Grounded chain-of-thought produced spatially anchored explanations suitable for quantitative assessment and clinician review.
+Conclusion
+This work indicates the potential for a single RL-optimized medical foundation model to deliver high-performing and interpretable multimodal AI. Performance gains were observed across both recognition (report generation) and generative (text-to-image) tasks through RL-based cross-modal alignment, while visual grounding enabled transparent, spatially verifiable reasoning.
+ER  - 
