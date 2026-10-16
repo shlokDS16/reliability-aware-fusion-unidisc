@@ -1,7 +1,37 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 4 (2026-10-16 early; newest, overrides older blocks). Start here.**
+- **HANDOFF 5 (2026-10-16 ~00:15 IST; newest, overrides older blocks; session in progress).**
+  Date correction: Scopus ran 2026-10-15 ~22:20 IST (file times), not 10-16; the `-20261016` file names
+  stay (hashed). Search date for all subscription databases = 2026-10-15.
+  **Web of Science DONE:** Q1 599, Q2 376, Q3 105, Q4 1,012, Q5 543, union #6 2,267 exported (3 RIS,
+  Full Record, user approved); `search-raw/web-of-science/wos-queries-20261015.md` (strings, hashes).
+  **IEEE Xplore:** the sheet's 6-term limit was wrong (78 and 93 field terms accepted); 5 merged
+  queries I1 1,203 / I2 101 / I3 245 / I4 41 / I5 12 (`search-raw/ieee-xplore/ieee-queries-20261015.md`,
+  generator `ieee_queries_20261015.py`). CSV cap 1,000 -> I1 split by year: 2021-24 (230) and 2025
+  (506) on disk; 2026, I2-I5 still to download (user downloads by hand from `ieee-download-links.html`,
+  because Chrome stopped saving automated downloads). User approved IEEE downloads.
+  **ACM DL:** queries Q1-Q5 built (per-concept Title/Abstract/Keyword groups, `search-raw/acm-dl/
+  acm_queries_20261015.py`, hashes checked), NOT run: loading the long doSearch URL made the Claude in
+  Chrome safety check block every call for ~20 min (fixed by restarting the extension). Retry with the
+  advanced-search form or shorter queries. SpringerLink, ScienceDirect: not started.
+  **Ingest:** `tools/ingest_subscription.py` (rerun: `python tools/ingest_subscription.py`), report
+  `corpus/subscription-ingest-report-2026-10-15.md`: Scopus+WoS+IEEE slice -> 3,895 unique, 170 queued
+  (`screening/v2/subscription-queue.jsonl`); 1,222 new string failures still need the D0029-style
+  rescue pass; front-matter volumes excluded.
+  **Title resolution (D0029-2) NOT complete:** 1,161/2,107 classified, 946 lookup-incomplete (S2/arXiv
+  rate limits, OpenAlex quota until ~05:30 IST); queue empty because untested
+  (`corpus/title-resolution-report-2026-10-16.md`). The previous session (Resume DLM Discovery
+  EXP-003) edited `tools/resolve_title_only.py` at 23:50 to look up only reference-marker records plus a
+  random check of 60 others, unrecorded, and left `nohup python tools/resolve_title_only.py run`
+  (PID 37132) running; its outputs will overwrite the lit-scout outputs. Decide between the two designs
+  from its random-check result, then record a decision.
+  **Criteria v1.1** drafted (`screening/criteria-v1.1.md`, 14 rules, new X0, D0032 row proposed;
+  recommends option b: 19 both-excluded records get a pre-declared full-text check). Red-team audit
+  running -> `review/audits/2026-10-16-redteam-criteria-v1.1.md`; D0032 not yet recorded.
+  Note: the `dlm-expert` agent type is not registered in sessions started outside this worktree; run
+  it as general-purpose with `.claude/agents/dlm-expert.md`.
+- **HANDOFF 4 (2026-10-16 early; overrides older blocks).**
   Read memory `dlm-tool-access-requests` and the KB `research/expert/dlm-expert-kb.md` (+ three
   `web-digest-*.md`). New core agent `dlm-expert` (tools/build_agents.py) is the default worker;
   auditors unchanged; max 3 agents at once (was breached twice; keep to it).
