@@ -1,6 +1,35 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 7 (2026-10-16 ~13:45 IST; newest, overrides older blocks).** Work happens in THIS worktree
+  (exp-003-334706); the driving session runs in worktree crash-a57ec7, whose Edit/Write tools are blocked
+  here by a hook, so files here are written by Bash/python (user approved).
+  **User to-do:** `research/USER-ACTIONS-2026-10-16.md` (IEEE I3-I5; ScienceDirect 23 runs on
+  `search-raw/sciencedirect/sd-download-links.html`; OpenReview 387 papers via `tools/fetch_openreview.py`
+  with the user's own credentials in env vars - first test failed 'Invalid username or password', user is
+  re-setting them in single quotes; 1,421 Springer records without abstracts (Springer Meta API key
+  suggested); 9 near-miss arXiv matches; 102 e-gateway papers; routes+download of the 130 re-check/C8
+  records; 15 percent human validation sample of T1 before seeing any screener row; HANDOFF 4 items).
+  **Done today (after HANDOFF 6):** SpringerLink exported (5 CSVs, user downloads) and ingested (6,854 unique,
+  177 queued); ScienceDirect: 8-connector limit, no wildcards, automatic plurals verified, 23 re-packed runs,
+  automation blocked by bot protection (stopped); rescue pass 3 (687; 7 unclear) and dual TA batch-sub-02
+  (4 pass) -> 1,004 TA passes. Adjudication route F (claude-fable-5-1) written as line 1 of
+  analysis/screening/c-run-log.jsonl. Open-access full texts: 328 PDFs (fetch-log.jsonl); text via PyMuPDF
+  (markitdown glued words; `tools/pdf_to_text.py`); OpenReview needs login (387 unmapped).
+  **Full-text screening T1 (criteria v1.6, D0032), in progress:** harness `tools/ft_dispatch.py`
+  (isolated folders), `tools/ft_isolation_check.py` (14 tests), `tools/ft_postbatch.py`; batches of 10 in
+  `research/review/fulltext/t1-batches-part1.json` (t1b001-031) and `-part2.json` (t1b032-034); results in
+  `analysis/screening/ft-t1/<batch>/` and `batch-log.jsonl`. Pilot: analysis/screening/ft-pilot01.
+  Status at handoff: t1b001-t1b016 complete (149/160 agree; 23 ids to adjudication), t1b017 A done / B
+  running, t1b018 A running. Per batch: Screener A = sonnet, B = opus, prompt = 'brief is section E of
+  criteria-v1.6-screener.md in the dispatch folder; no /tmp; one-line reply'; after both: postbatch;
+  a failed isolation check or API failure -> log 'discarded'/'failed' in batch-log and rerun in a fresh
+  folder. Helper in the driving session's scratchpad: ft-dispatch/next.sh (build/postbatch) and
+  agent-map.txt (batch -> agent ids). Cost about 0.4 percent of the weekly limit per batch (37 percent at
+  t1b018); pause at 55 percent. **After all batches:** return non-accepted quotes once to their screener,
+  then adjudicator C (Fable) on disagreements + 'adjudicate' rows (log every C session in c-run-log.jsonl),
+  then the re-check sample/C8 records and OpenReview/e-gateway papers as further T1 batches, K test
+  (criteria-v1.6.md s5), human validation.
 - **HANDOFF 6 (2026-10-16 ~08:30 IST; newest, overrides older blocks).** Session resumed after the 04:48
   crash in this worktree (exp-003-334706); HANDOFF 5 was stale (v1.1 audit, criteria v1.2/v1.3, ACM DL,
   IEEE I1-2026 + I2 had all been done before the crash). **User-facing to-do list:
