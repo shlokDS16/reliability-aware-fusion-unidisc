@@ -1,6 +1,6 @@
 {
  "date": "2026-10-15",
- "run_utc": "20261015T183243Z",
+ "run_utc": "20261016T010551Z",
  "script": "tools/ingest_subscription.py",
  "command": "python tools/ingest_subscription.py",
  "decision": "D0031 (subscription databases); D0027/D0028 queue rule",
@@ -8,16 +8,17 @@
   "records.jsonl": 1453,
   "v2 rescue queue": 4421,
   "v2 screening batches": 1953,
-  "v2 other (not queued)": 12954
+  "v2 other (not queued)": 12954,
+  "title-resolved queue": 7
  },
- "title_resolved_queue_present": false,
+ "title_resolved_queue_present": true,
  "rules": {
   "title_jaccard": 0.85,
   "year_gap_refused_above": 3,
   "within_db_merge_reasons": {
-   "doi": 2115,
+   "doi": 2799,
    "scopus_eid": 194,
-   "t": 300,
+   "t": 304,
    "pv": 27,
    "sq": 6,
    "a": 3,
@@ -332,9 +333,9 @@
     "dup_across_db": 191,
     "dup_existing": 20,
     "new_unique": 56,
-    "new_pass_strings": 7,
-    "new_fail_strings": 49,
-    "queued": 7,
+    "new_pass_strings": 6,
+    "new_fail_strings": 50,
+    "queued": 6,
     "new_abstract_missing": 0,
     "new_also_matches_title_only_snowball_fragment": 0,
     "dup_existing_gains_abstract_and_passes": 0,
@@ -385,8 +386,163 @@
    }
   },
   {
+   "db": "ieee",
+   "database": "IEEE Xplore",
+   "folder": "ieee-xplore",
+   "file": "ieee-I1-2025-20261015.csv",
+   "path": "research/sources/search-raw/ieee-xplore/ieee-I1-2025-20261015.csv",
+   "sha256": "d417c2c4149c60be4278a4b392d919854553d63152569675bd8fd4d2064e7dbc",
+   "bytes": 1241797,
+   "mtime_utc": "20261015T183859Z",
+   "query": "I1",
+   "status": "parsed",
+   "rows": 506,
+   "label": "S1':B + S1':C (NOT dropped): diffusion AND (C + B word lists)",
+   "query_text": "(\"Document Title\":diffusion OR \"Abstract\":diffusion OR \"Author Keywords\":diffusion) AND ((\"Document Title\":\"language model\" OR \"Abstract\":\"language model\" OR \"Author Keywords\":\"language model\") OR (\"Document Title\":\"language models\" OR \"Abstract\":\"language models\" OR \"Author Keywords\":\"language models\") OR (\"Document Title\":llm* OR \"Abstract\":llm* OR \"Author Keywords\":llm*) OR (\"Document Title\":\"text generation\" OR \"Abstract\":\"text generation\" OR \"Author Keywords\":\"text generation\") OR (\"Document Title\":\"language generation\" OR \"Abstract\":\"language generation\" OR \"Author Keywords\":\"language generation\") OR (\"Document Title\":\"sequence-to-sequence\" OR \"Abstract\":\"sequence-to-sequence\" OR \"Author Keywords\":\"sequence-to-sequence\") OR (\"Document Title\":seq2seq OR \"Abstract\":seq2seq OR \"Author Keywords\":seq2seq) OR (\"Document Title\":\"discrete sequence\" OR \"Abstract\":\"discrete sequence\" OR \"Author Keywords\":\"discrete sequence\") OR (\"Document Title\":\"discrete sequences\" OR \"Abstract\":\"discrete sequences\" OR \"Author Keywords\":\"discrete sequences\") OR (\"Document Title\":\"speculative decoding\" OR \"Abstract\":\"speculative decoding\" OR \"Author Keywords\":\"speculative decoding\") OR (\"Document Title\":\"categorical data\" OR \"Abstract\":\"categorical data\" OR \"Author Keywords\":\"categorical data\") OR (\"Document Title\":\"discrete data\" OR \"Abstract\":\"discrete data\" OR \"Author Keywords\":\"discrete data\") OR (\"Document Title\":paraphras* OR \"Abstract\":paraphras* OR \"Author Keywords\":paraphras*) OR (\"Document Title\":\"textual diffusion\" OR \"Abstract\":\"textual diffusion\" OR \"Author Keywords\":\"textual diffusion\") OR (\"Document Title\":\"text modeling\" OR \"Abstract\":\"text modeling\" OR \"Author Keywords\":\"text modeling\") OR (\"Document Title\":\"named entity\" OR \"Abstract\":\"named entity\" OR \"Author Keywords\":\"named entity\") OR (\"Document Title\":sentiment OR \"Abstract\":sentiment OR \"Author Keywords\":sentiment) OR (\"Document Title\":summarization OR \"Abstract\":summarization OR \"Author Keywords\":summarization) OR (\"Document Title\":dialog* OR \"Abstract\":dialog* OR \"Author Keywords\":dialog*) OR (\"Document Title\":\"machine translation\" OR \"Abstract\":\"machine translation\" OR \"Author Keywords\":\"machine translation\") OR (\"Document Title\":\"text style\" OR \"Abstract\":\"text style\" OR \"Author Keywords\":\"text style\") OR (\"Document Title\":commonsense OR \"Abstract\":commonsense OR \"Author Keywords\":commonsense) OR (\"Document Title\":\"topic model\" OR \"Abstract\":\"topic model\" OR \"Author Keywords\":\"topic model\") OR (\"Document Title\":\"topic models\" OR \"Abstract\":\"topic models\" OR \"Author Keywords\":\"topic models\") OR (\"Document Title\":\"triple extraction\" OR \"Abstract\":\"triple extraction\" OR \"Author Keywords\":\"triple extraction\") OR (\"Document Title\":\"information extraction\" OR \"Abstract\":\"information extraction\" OR \"Author Keywords\":\"information extraction\"))",
+   "access": "VIT institutional access, CSV export",
+   "expected_rows": 1203,
+   "expected_scope": "query",
+   "rows_match_expected": false,
+   "counts": {
+    "rows": 506,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 0,
+    "dup_within_db": 0,
+    "dup_across_db": 210,
+    "dup_existing": 26,
+    "new_unique": 270,
+    "new_pass_strings": 1,
+    "new_fail_strings": 269,
+    "queued": 1,
+    "new_abstract_missing": 0,
+    "new_also_matches_title_only_snowball_fragment": 0,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "v2 screening batches": 3,
+    "v2 rescue queue": 3,
+    "v2 other (not queued)": 20
+   }
+  },
+  {
+   "db": "ieee",
+   "database": "IEEE Xplore",
+   "folder": "ieee-xplore",
+   "file": "ieee-I1-2026-20261015.csv",
+   "path": "research/sources/search-raw/ieee-xplore/ieee-I1-2026-20261015.csv",
+   "sha256": "1263a64caf2d39919819d990d270ca4ea167c1028af3c154f5b495c494d0f65e",
+   "bytes": 1203749,
+   "mtime_utc": "20261015T184122Z",
+   "query": "I1",
+   "status": "parsed",
+   "rows": 463,
+   "label": "S1':B + S1':C (NOT dropped): diffusion AND (C + B word lists)",
+   "query_text": "(\"Document Title\":diffusion OR \"Abstract\":diffusion OR \"Author Keywords\":diffusion) AND ((\"Document Title\":\"language model\" OR \"Abstract\":\"language model\" OR \"Author Keywords\":\"language model\") OR (\"Document Title\":\"language models\" OR \"Abstract\":\"language models\" OR \"Author Keywords\":\"language models\") OR (\"Document Title\":llm* OR \"Abstract\":llm* OR \"Author Keywords\":llm*) OR (\"Document Title\":\"text generation\" OR \"Abstract\":\"text generation\" OR \"Author Keywords\":\"text generation\") OR (\"Document Title\":\"language generation\" OR \"Abstract\":\"language generation\" OR \"Author Keywords\":\"language generation\") OR (\"Document Title\":\"sequence-to-sequence\" OR \"Abstract\":\"sequence-to-sequence\" OR \"Author Keywords\":\"sequence-to-sequence\") OR (\"Document Title\":seq2seq OR \"Abstract\":seq2seq OR \"Author Keywords\":seq2seq) OR (\"Document Title\":\"discrete sequence\" OR \"Abstract\":\"discrete sequence\" OR \"Author Keywords\":\"discrete sequence\") OR (\"Document Title\":\"discrete sequences\" OR \"Abstract\":\"discrete sequences\" OR \"Author Keywords\":\"discrete sequences\") OR (\"Document Title\":\"speculative decoding\" OR \"Abstract\":\"speculative decoding\" OR \"Author Keywords\":\"speculative decoding\") OR (\"Document Title\":\"categorical data\" OR \"Abstract\":\"categorical data\" OR \"Author Keywords\":\"categorical data\") OR (\"Document Title\":\"discrete data\" OR \"Abstract\":\"discrete data\" OR \"Author Keywords\":\"discrete data\") OR (\"Document Title\":paraphras* OR \"Abstract\":paraphras* OR \"Author Keywords\":paraphras*) OR (\"Document Title\":\"textual diffusion\" OR \"Abstract\":\"textual diffusion\" OR \"Author Keywords\":\"textual diffusion\") OR (\"Document Title\":\"text modeling\" OR \"Abstract\":\"text modeling\" OR \"Author Keywords\":\"text modeling\") OR (\"Document Title\":\"named entity\" OR \"Abstract\":\"named entity\" OR \"Author Keywords\":\"named entity\") OR (\"Document Title\":sentiment OR \"Abstract\":sentiment OR \"Author Keywords\":sentiment) OR (\"Document Title\":summarization OR \"Abstract\":summarization OR \"Author Keywords\":summarization) OR (\"Document Title\":dialog* OR \"Abstract\":dialog* OR \"Author Keywords\":dialog*) OR (\"Document Title\":\"machine translation\" OR \"Abstract\":\"machine translation\" OR \"Author Keywords\":\"machine translation\") OR (\"Document Title\":\"text style\" OR \"Abstract\":\"text style\" OR \"Author Keywords\":\"text style\") OR (\"Document Title\":commonsense OR \"Abstract\":commonsense OR \"Author Keywords\":commonsense) OR (\"Document Title\":\"topic model\" OR \"Abstract\":\"topic model\" OR \"Author Keywords\":\"topic model\") OR (\"Document Title\":\"topic models\" OR \"Abstract\":\"topic models\" OR \"Author Keywords\":\"topic models\") OR (\"Document Title\":\"triple extraction\" OR \"Abstract\":\"triple extraction\" OR \"Author Keywords\":\"triple extraction\") OR (\"Document Title\":\"information extraction\" OR \"Abstract\":\"information extraction\" OR \"Author Keywords\":\"information extraction\"))",
+   "access": "VIT institutional access, CSV export",
+   "expected_rows": 1203,
+   "expected_scope": "query",
+   "rows_match_expected": false,
+   "counts": {
+    "rows": 463,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 0,
+    "dup_within_db": 0,
+    "dup_across_db": 156,
+    "dup_existing": 50,
+    "new_unique": 257,
+    "new_pass_strings": 3,
+    "new_fail_strings": 254,
+    "queued": 3,
+    "new_abstract_missing": 0,
+    "new_also_matches_title_only_snowball_fragment": 3,
+    "dup_existing_gains_abstract_and_passes": 3,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "records.jsonl": 5,
+    "v2 screening batches": 14,
+    "v2 rescue queue": 25,
+    "v2 other (not queued)": 6
+   }
+  },
+  {
+   "db": "ieee",
+   "database": "IEEE Xplore",
+   "folder": "ieee-xplore",
+   "file": "ieee-I2-20261015.csv",
+   "path": "research/sources/search-raw/ieee-xplore/ieee-I2-20261015.csv",
+   "sha256": "7dc6c8469cdaaae3a16b053f8a9617a398f37145d57562d23064f79179322fc3",
+   "bytes": 227303,
+   "mtime_utc": "20261015T184154Z",
+   "query": "I2",
+   "status": "parsed",
+   "rows": 101,
+   "label": "S1':A1 (all names)",
+   "query_text": "((\"Document Title\":\"diffusion language model\" OR \"Abstract\":\"diffusion language model\" OR \"Author Keywords\":\"diffusion language model\") OR (\"Document Title\":\"diffusion language models\" OR \"Abstract\":\"diffusion language models\" OR \"Author Keywords\":\"diffusion language models\") OR (\"Document Title\":\"language diffusion model\" OR \"Abstract\":\"language diffusion model\" OR \"Author Keywords\":\"language diffusion model\") OR (\"Document Title\":\"language diffusion models\" OR \"Abstract\":\"language diffusion models\" OR \"Author Keywords\":\"language diffusion models\") OR (\"Document Title\":\"diffusion llm\" OR \"Abstract\":\"diffusion llm\" OR \"Author Keywords\":\"diffusion llm\") OR (\"Document Title\":\"diffusion llms\" OR \"Abstract\":\"diffusion llms\" OR \"Author Keywords\":\"diffusion llms\") OR (\"Document Title\":\"diffusion lm\" OR \"Abstract\":\"diffusion lm\" OR \"Author Keywords\":\"diffusion lm\") OR (\"Document Title\":\"diffusion lms\" OR \"Abstract\":\"diffusion lms\" OR \"Author Keywords\":\"diffusion lms\") OR (\"Document Title\":dllm OR \"Abstract\":dllm OR \"Author Keywords\":dllm) OR (\"Document Title\":dllms OR \"Abstract\":dllms OR \"Author Keywords\":dllms) OR (\"Document Title\":\"diffusion-based language model\" OR \"Abstract\":\"diffusion-based language model\" OR \"Author Keywords\":\"diffusion-based language model\") OR (\"Document Title\":\"diffusion-based language models\" OR \"Abstract\":\"diffusion-based language models\" OR \"Author Keywords\":\"diffusion-based language models\") OR (\"Document Title\":\"diffusion-based llm\" OR \"Abstract\":\"diffusion-based llm\" OR \"Author Keywords\":\"diffusion-based llm\") OR (\"Document Title\":\"diffusion-based llms\" OR \"Abstract\":\"diffusion-based llms\" OR \"Author Keywords\":\"diffusion-based llms\") OR (\"Document Title\":\"diffusion large language model\" OR \"Abstract\":\"diffusion large language model\" OR \"Author Keywords\":\"diffusion large language model\") OR (\"Document Title\":\"diffusion large language models\" OR \"Abstract\":\"diffusion large language models\" OR \"Author Keywords\":\"diffusion large language models\") OR (\"Document Title\":\"diffusion-based large language model\" OR \"Abstract\":\"diffusion-based large language model\" OR \"Author Keywords\":\"diffusion-based large language model\") OR (\"Document Title\":\"diffusion-based large language models\" OR \"Abstract\":\"diffusion-based large language models\" OR \"Author Keywords\":\"diffusion-based large language models\") OR (\"Document Title\":\"text diffusion\" OR \"Abstract\":\"text diffusion\" OR \"Author Keywords\":\"text diffusion\") OR (\"Document Title\":\"block diffusion\" OR \"Abstract\":\"block diffusion\" OR \"Author Keywords\":\"block diffusion\") OR (\"Document Title\":\"absorbing diffusion\" OR \"Abstract\":\"absorbing diffusion\" OR \"Author Keywords\":\"absorbing diffusion\") OR (\"Document Title\":\"diffusion mllm\" OR \"Abstract\":\"diffusion mllm\" OR \"Author Keywords\":\"diffusion mllm\") OR (\"Document Title\":\"diffusion mllms\" OR \"Abstract\":\"diffusion mllms\" OR \"Author Keywords\":\"diffusion mllms\") OR (\"Document Title\":\"diffusion vlm\" OR \"Abstract\":\"diffusion vlm\" OR \"Author Keywords\":\"diffusion vlm\") OR (\"Document Title\":\"diffusion vlms\" OR \"Abstract\":\"diffusion vlms\" OR \"Author Keywords\":\"diffusion vlms\") OR (\"Document Title\":\"diffusion vision-language model\" OR \"Abstract\":\"diffusion vision-language model\" OR \"Author Keywords\":\"diffusion vision-language model\") OR (\"Document Title\":\"diffusion vision-language models\" OR \"Abstract\":\"diffusion vision-language models\" OR \"Author Keywords\":\"diffusion vision-language models\") OR (\"Document Title\":dmllm OR \"Abstract\":dmllm OR \"Author Keywords\":dmllm) OR (\"Document Title\":dmllms OR \"Abstract\":dmllms OR \"Author Keywords\":dmllms) OR (\"Document Title\":dvlm OR \"Abstract\":dvlm OR \"Author Keywords\":dvlm) OR (\"Document Title\":dvlms OR \"Abstract\":dvlms OR \"Author Keywords\":dvlms))",
+   "access": "VIT institutional access, CSV export",
+   "expected_rows": 101,
+   "expected_scope": "query",
+   "rows_match_expected": true,
+   "counts": {
+    "rows": 101,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 0,
+    "dup_within_db": 20,
+    "dup_across_db": 79,
+    "dup_existing": 1,
+    "new_unique": 1,
+    "new_pass_strings": 0,
+    "new_fail_strings": 1,
+    "queued": 0,
+    "new_abstract_missing": 0,
+    "new_also_matches_title_only_snowball_fragment": 0,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "v2 screening batches": 1
+   }
+  },
+  {
    "db": "acm",
-   "status": "skipped: no export in acm-dl/"
+   "database": "ACM Digital Library",
+   "folder": "acm-dl",
+   "file": "acm-dl-results-20261015.jsonl",
+   "path": "research/sources/search-raw/acm-dl/acm-dl-results-20261015.jsonl",
+   "sha256": "398274ae752643ff40b52574f799698fab4903462be35c51cfd5afce66ccc862",
+   "bytes": 217436,
+   "mtime_utc": "20261015T190129Z",
+   "query": "unspecified",
+   "status": "parsed",
+   "rows": 329,
+   "label": null,
+   "query_text": null,
+   "access": "ACM DL open search (Basic Edition), results pages read in the tab (JSONL; snippet abstracts refetched by DOI), or BibTeX/RIS export",
+   "expected_rows": null,
+   "expected_scope": null,
+   "rows_match_expected": null,
+   "counts": {
+    "rows": 329,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 9,
+    "dup_within_db": 0,
+    "dup_across_db": 214,
+    "dup_existing": 44,
+    "new_unique": 62,
+    "new_pass_strings": 1,
+    "new_fail_strings": 61,
+    "queued": 1,
+    "new_abstract_missing": 0,
+    "new_also_matches_title_only_snowball_fragment": 0,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "records.jsonl": 3,
+    "v2 screening batches": 9,
+    "v2 rescue queue": 32
+   }
   },
   {
    "db": "springer",
@@ -570,9 +726,9 @@
    "dup_across_db": 191,
    "dup_existing": 20,
    "new_unique": 56,
-   "new_pass_strings": 7,
-   "new_fail_strings": 49,
-   "queued": 7,
+   "new_pass_strings": 6,
+   "new_fail_strings": 50,
+   "queued": 6,
    "new_abstract_missing": 0,
    "new_also_matches_title_only_snowball_fragment": 0,
    "dup_existing_gains_abstract_and_passes": 0,
@@ -602,6 +758,97 @@
    "dup_existing_by_target": {
     "v2 rescue queue": 4,
     "v2 other (not queued)": 5
+   }
+  },
+  "ieee:I1:ieee-I1-2025-20261015.csv": {
+   "rows": 506,
+   "expected_rows": 1203,
+   "rows_match_expected": false,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 0,
+   "dup_within_db": 0,
+   "dup_across_db": 210,
+   "dup_existing": 26,
+   "new_unique": 270,
+   "new_pass_strings": 1,
+   "new_fail_strings": 269,
+   "queued": 1,
+   "new_abstract_missing": 0,
+   "new_also_matches_title_only_snowball_fragment": 0,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "v2 screening batches": 3,
+    "v2 rescue queue": 3,
+    "v2 other (not queued)": 20
+   }
+  },
+  "ieee:I1:ieee-I1-2026-20261015.csv": {
+   "rows": 463,
+   "expected_rows": 1203,
+   "rows_match_expected": false,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 0,
+   "dup_within_db": 0,
+   "dup_across_db": 156,
+   "dup_existing": 50,
+   "new_unique": 257,
+   "new_pass_strings": 3,
+   "new_fail_strings": 254,
+   "queued": 3,
+   "new_abstract_missing": 0,
+   "new_also_matches_title_only_snowball_fragment": 3,
+   "dup_existing_gains_abstract_and_passes": 3,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "records.jsonl": 5,
+    "v2 screening batches": 14,
+    "v2 rescue queue": 25,
+    "v2 other (not queued)": 6
+   }
+  },
+  "ieee:I2:ieee-I2-20261015.csv": {
+   "rows": 101,
+   "expected_rows": 101,
+   "rows_match_expected": true,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 0,
+   "dup_within_db": 20,
+   "dup_across_db": 79,
+   "dup_existing": 1,
+   "new_unique": 1,
+   "new_pass_strings": 0,
+   "new_fail_strings": 1,
+   "queued": 0,
+   "new_abstract_missing": 0,
+   "new_also_matches_title_only_snowball_fragment": 0,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "v2 screening batches": 1
+   }
+  },
+  "acm:unspecified:acm-dl-results-20261015.jsonl": {
+   "rows": 329,
+   "expected_rows": null,
+   "rows_match_expected": null,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 9,
+   "dup_within_db": 0,
+   "dup_across_db": 214,
+   "dup_existing": 44,
+   "new_unique": 62,
+   "new_pass_strings": 1,
+   "new_fail_strings": 61,
+   "queued": 1,
+   "new_abstract_missing": 0,
+   "new_also_matches_title_only_snowball_fragment": 0,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "records.jsonl": 3,
+    "v2 screening batches": 9,
+    "v2 rescue queue": 32
    }
   }
  },
@@ -637,9 +884,9 @@
    "dup_across_db": 1902,
    "dup_existing": 88,
    "new_unique": 277,
-   "new_pass_strings": 13,
-   "new_fail_strings": 264,
-   "queued": 13,
+   "new_pass_strings": 12,
+   "new_fail_strings": 265,
+   "queued": 12,
    "new_abstract_missing": 0,
    "new_also_matches_title_only_snowball_fragment": 0,
    "dup_existing_gains_abstract_and_passes": 1,
@@ -653,75 +900,99 @@
    }
   },
   "ieee": {
-   "rows": 230,
+   "rows": 1300,
    "proceedings_front_matter": 0,
    "dup_within_file": 1,
-   "dup_within_db": 0,
-   "dup_across_db": 115,
-   "dup_existing": 9,
-   "new_unique": 105,
-   "new_pass_strings": 0,
-   "new_fail_strings": 105,
-   "queued": 0,
+   "dup_within_db": 20,
+   "dup_across_db": 560,
+   "dup_existing": 86,
+   "new_unique": 633,
+   "new_pass_strings": 4,
+   "new_fail_strings": 629,
+   "queued": 4,
    "new_abstract_missing": 0,
-   "new_also_matches_title_only_snowball_fragment": 2,
+   "new_also_matches_title_only_snowball_fragment": 5,
+   "dup_existing_gains_abstract_and_passes": 3,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "files": 4,
+   "dup_existing_by_target": {
+    "records.jsonl": 5,
+    "v2 screening batches": 18,
+    "v2 rescue queue": 32,
+    "v2 other (not queued)": 31
+   }
+  },
+  "acm": {
+   "rows": 329,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 9,
+   "dup_within_db": 0,
+   "dup_across_db": 214,
+   "dup_existing": 44,
+   "new_unique": 62,
+   "new_pass_strings": 1,
+   "new_fail_strings": 61,
+   "queued": 1,
+   "new_abstract_missing": 0,
+   "new_also_matches_title_only_snowball_fragment": 0,
    "dup_existing_gains_abstract_and_passes": 0,
    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
    "files": 1,
    "dup_existing_by_target": {
-    "v2 rescue queue": 4,
-    "v2 other (not queued)": 5
+    "records.jsonl": 3,
+    "v2 screening batches": 9,
+    "v2 rescue queue": 32
    }
   }
  },
  "totals": {
-  "rows": 6543,
+  "rows": 7942,
   "proceedings_front_matter": 302,
-  "dup_within_file": 7,
-  "dup_within_db": 574,
-  "dup_across_db": 2017,
-  "dup_existing": 2251,
-  "new_unique": 1392,
-  "new_pass_strings": 170,
-  "new_fail_strings": 1222,
-  "queued": 170,
+  "dup_within_file": 16,
+  "dup_within_db": 594,
+  "dup_across_db": 2676,
+  "dup_existing": 2372,
+  "new_unique": 1982,
+  "new_pass_strings": 174,
+  "new_fail_strings": 1808,
+  "queued": 174,
   "new_abstract_missing": 5,
-  "new_also_matches_title_only_snowball_fragment": 9,
-  "dup_existing_gains_abstract_and_passes": 75,
+  "new_also_matches_title_only_snowball_fragment": 12,
+  "dup_existing_gains_abstract_and_passes": 78,
   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 1,
   "dup_existing_by_target": {
-   "records.jsonl": 250,
-   "v2 screening batches": 619,
-   "v2 rescue queue": 1353,
-   "v2 other (not queued)": 29
+   "records.jsonl": 258,
+   "v2 screening batches": 646,
+   "v2 rescue queue": 1413,
+   "v2 other (not queued)": 55
   }
  },
- "unique_records": 3895,
- "unique_records_excluding_proceedings": 3643,
- "duplicates_of_existing_unique_records": 2251,
+ "unique_records": 4606,
+ "unique_records_excluding_proceedings": 4354,
+ "duplicates_of_existing_unique_records": 2372,
  "duplicate_match_kinds_unique_records": {
-  "doi": 1702,
-  "title-exact": 529,
+  "doi": 1805,
+  "title-exact": 545,
   "title-letters-digits": 7,
-  "title-jaccard": 9,
-  "abstract": 4
+  "title-jaccard": 10,
+  "abstract": 5
  },
- "new_unique_records": 1392,
- "new_pass_strings_queued": 170,
- "new_fail_strings": 1222,
+ "new_unique_records": 1982,
+ "new_pass_strings_queued": 174,
+ "new_fail_strings": 1808,
  "queued_by_tier": {
-  "T1": 86,
+  "T1": 90,
   "T2": 6,
   "T3": 70,
   "T4": 8
  },
  "queued_reason": {
-  "database record; passes S1''/S2''": 167,
+  "database record; passes S1''/S2''": 171,
   "database record; matches original S1/S2 (released, D0028)": 3
  },
  "queued_abstract_missing": 0,
- "new_failing_that_match_original_S1_or_S2_only_with_author_keywords": 17,
- "new_failing_that_match_original_S1_or_S2_only_with_author_or_index_keywords": 22,
+ "new_failing_that_match_original_S1_or_S2_only_with_author_keywords": 24,
+ "new_failing_that_match_original_S1_or_S2_only_with_author_or_index_keywords": 29,
  "title_matches_refused_for_year_gap": 1,
  "title_matches_refused_for_year_gap_examples": [
   {
@@ -744,45 +1015,54 @@
    ]
   }
  ],
- "new_matches_title_only_snowball_fragment": 9,
- "dup_gains_abstract_and_passes": 75,
+ "new_matches_title_only_snowball_fragment": 12,
+ "dup_gains_abstract_and_passes": 78,
  "dup_target_auto_excluded_but_passes_S1pp_S2pp": 1,
  "proceedings_front_matter_records": 252,
  "proceedings_front_matter_records_whose_volume_abstract_matches_strings": 89,
- "abstract_fetch": {},
+ "abstract_fetch": {
+  "crossref_calls": 62,
+  "semantic-scholar_calls": 47,
+  "found": 56,
+  "not_found": 6,
+  "transient_failures": 1
+ },
  "warnings": [
-  "ieee I1: parsed 230 rows, expected 1203 (query)"
+  "ieee I1: parsed 1199 rows, expected 1203 (query)",
+  "ieee I1: parsed 1199 rows, expected 1203 (query)",
+  "ieee I1: parsed 1199 rows, expected 1203 (query)"
  ],
  "prisma": {
-  "records_identified_subscription_databases": 6543,
+  "records_identified_subscription_databases": 7942,
   "by_database": {
    "scopus": 4046,
    "wos": 2267,
-   "ieee": 230
+   "ieee": 1300,
+   "acm": 329
   },
   "removed_before_screening": {
    "proceedings_front_matter_not_documents": 302,
-   "duplicates_within_file": 7,
-   "duplicates_within_database": 574,
-   "duplicates_across_databases": 2017,
-   "duplicates_of_records_already_in_corpus": 2251,
+   "duplicates_within_file": 16,
+   "duplicates_within_database": 594,
+   "duplicates_across_databases": 2676,
+   "duplicates_of_records_already_in_corpus": 2372,
    "duplicates_of_records_already_in_corpus_by_target": {
-    "records.jsonl": 250,
-    "v2 screening batches": 619,
-    "v2 rescue queue": 1353,
-    "v2 other (not queued)": 29
+    "records.jsonl": 258,
+    "v2 screening batches": 646,
+    "v2 rescue queue": 1413,
+    "v2 other (not queued)": 55
    }
   },
-  "new_unique_records": 1392,
-  "excluded_by_automation_string_filter_S1pp_S2pp": 1222,
-  "passed_to_screening_subscription_queue": 170,
+  "new_unique_records": 1982,
+  "excluded_by_automation_string_filter_S1pp_S2pp": 1808,
+  "passed_to_screening_subscription_queue": 174,
   "note": "counts are attributed to the first file in which a record appears (database order scopus, wos, ieee, acm, springer, sciencedirect; then file name)"
  },
  "outputs": {
   "records": "research/review/corpus/subscription-records-2026-10-15.jsonl",
   "queue": "research/review/screening/v2/subscription-queue.jsonl",
-  "queue_delta": null,
-  "queue_delta_rows": 0
+  "queue_delta": "subscription-queue-delta-20261016T010551Z.jsonl",
+  "queue_delta_rows": 5
  },
- "search_log_rows_appended": 0
+ "search_log_rows_appended": 4
 }

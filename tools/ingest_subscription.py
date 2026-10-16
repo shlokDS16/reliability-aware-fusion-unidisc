@@ -340,8 +340,7 @@ def parse_acm_jsonl(path):
         e = json.loads(line)
         y = re.search(r"(19|20)\d\d", e.get("date") or "")
         out.append(rawrec(title=e.get("title", ""), abstract=e.get("abstract", ""), authors="; ".join(e.get("authors") or []),
-                          year=y.group(0) if y else "", venue=e.get("venue", ""), doi=e.get("doi", ""), doc_type=e.get("type", ""),
-                          source_ids={"acm_query": e.get("query"), "acm_rank": e.get("rank")}))
+                          year=y.group(0) if y else "", venue=e.get("venue", ""), doi=e.get("doi", ""), doc_type=e.get("type", "")))   # source_ids stay empty: they are dedup identifiers
     return out
 
 

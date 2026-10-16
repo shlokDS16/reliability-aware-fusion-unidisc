@@ -1,0 +1,31 @@
+ta_recheck_oc_v14.py: N = 797 candidates (frozen frame sha256 a9180fe4bdb7956b8d8e6c4340559c94ac4f877cbc6376d1dad99995bb32d79a), n = 100 sampled, reversal if K >= 1; tolerable loss L = 13
+
+P(K >= k | F), hypergeometric, for k = 1, 2, 3
+F	k>=1	k>=2	k>=3
+0	0.000	0.000	0.000
+1	0.125	0.000	0.000
+2	0.235	0.016	0.000
+4	0.416	0.079	0.007
+8	0.660	0.265	0.067
+10	0.740	0.363	0.119
+12	0.802	0.456	0.182
+13	0.827	0.500	0.216
+14	0.849	0.541	0.252
+16	0.885	0.617	0.325
+24	0.962	0.826	0.598
+32	0.988	0.927	0.789
+48	0.999	0.989	0.955
+
+K	F_hat = K*N/n	exact one-sided 95% upper bound for F
+0	0.0	22
+1	8.0	35
+2	15.9	47
+3	23.9	58
+
+F = 0, full-text false inclusions at hypothetical per-record rate r: P(K >= k), K ~ Binomial(n, r)
+r	k>=1	k>=2	k>=3
+0.0	0.000	0.000	0.000
+0.0025	0.221	0.026	0.002
+0.005	0.394	0.090	0.014
+0.01	0.634	0.264	0.079
+0.02	0.867	0.597	0.323
