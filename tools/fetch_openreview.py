@@ -31,7 +31,7 @@ def load_dotenv():
     f = ROOT / ".env"
     if not f.exists():
         return
-    for line in f.read_text(encoding="utf8-sig").splitlines():
+    for line in f.read_text(encoding="utf-8-sig").splitlines():
         k, sep, v = line.strip().partition("=")
         if sep and k.strip() in ("OPENREVIEW_USERNAME", "OPENREVIEW_PASSWORD") and not os.environ.get(k.strip()):
             os.environ[k.strip()] = v.strip().strip("'\"")
