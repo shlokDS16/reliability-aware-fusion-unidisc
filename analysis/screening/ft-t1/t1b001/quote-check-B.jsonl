@@ -1,0 +1,35 @@
+{"id": "M09605", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9 step 1 (LLM agent writes text actions autoregressively)", "loc": "p.2, §1 Introduction", "status": "found"}
+{"id": "M09605", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R6 fails (diffusion output is a latent, not text)", "loc": "p.6, §4.2", "status": "found"}
+{"id": "M06963", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R7 (output is logical query / entity token sequence, not text)", "loc": "p.2, §1 Introduction", "status": "found"}
+{"id": "M06963", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "not D5 (small model trained from scratch on KG data)", "loc": "p.6, §5.1", "status": "found"}
+{"id": "M06963", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9 step 3 (condition is entity set, not text)", "loc": "p.6, §5.1", "status": "found"}
+{"id": "M10526", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2", "loc": "p.3, §2 Related Work", "status": "found"}
+{"id": "M10526", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R6", "loc": "p.7, §5.2", "status": "found"}
+{"id": "M10526", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R6", "loc": "p.7, §5.2", "status": "found"}
+{"id": "M11180", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2 (masking over a range of rates)", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M11180", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2 (more than one denoising pass)", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M11180", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R6", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M12233", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2 (random corruption level)", "loc": "p.2, §3", "status": "found"}
+{"id": "M12233", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2 (multi-step sampling)", "loc": "p.4, §5.1", "status": "found"}
+{"id": "M12233", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R6", "loc": "p.4, Table 1", "status": "found"}
+{"id": "M11389", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M11389", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R6 (K&K answers are word labels)", "loc": "p.6, §5", "status": "found"}
+{"id": "M11389", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "D5", "loc": "p.19, App. D", "status": "found"}
+{"id": "M11389", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "D5", "loc": "p.20, App. D", "status": "found"}
+{"id": "M11389", "screener": "FB-claude-opus-5-5", "i": 4, "cond": "R14(a)", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M08076", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2/D5", "loc": "p.3, §1", "status": "found"}
+{"id": "M08076", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2 (multi-step)", "loc": "p.31, App. C.2", "status": "found"}
+{"id": "M08076", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R14(a)", "loc": "p.9, Table 1", "status": "found"}
+{"id": "M08076", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R6", "loc": "p.10, Table 3", "status": "found"}
+{"id": "M10706", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "X0 (closed-form sampler, no trained denoiser)", "loc": "p.4, §2.1", "status": "found"}
+{"id": "M10706", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "X0 (experiments train an AR transformer, not a diffusion objective)", "loc": "p.23, App. D.1", "status": "found"}
+{"id": "M10706", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "X0", "loc": "p.23, App. D.1", "status": "found"}
+{"id": "M11031", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2", "loc": "p.3, §2.1", "status": "found"}
+{"id": "M11031", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D5", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M11031", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "D5", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M11031", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R14(a) and R6 (chain-of-thought text)", "loc": "p.2, §1", "status": "found"}
+{"id": "M11031", "screener": "FB-claude-opus-5-5", "i": 4, "cond": "R6 (text-game actions)", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M07806", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2", "loc": "p.15, App. D.2", "status": "found"}
+{"id": "M07806", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D5", "loc": "p.16, App. D.3", "status": "found"}
+{"id": "M07806", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R6 and R14(a)", "loc": "p.16, App. D.3", "status": "found"}
+{"id": "M07806", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R14(b)", "loc": "p.16, App. D.3", "status": "found"}
