@@ -46,3 +46,16 @@ records are attributed to ScienceDirect, not to a run.
 | ScienceDirect_citations_1792141273095.ris | 9 | cc902e7c8a97bd8db324e9f967031f01347af157aa04e3af49953b7754743125 |
 | ScienceDirect_citations_1792141292717.ris | 1 | cd2434d256a9be494806943cd682e7bb0bdbe42fd8826710ca2a4a32ca0d98fa |
 | ScienceDirect_citations_1792141358643.ris | 2 | b3b70b8715b3643f7dd23f51baf335a0b2c61deb3e6f73683e50c5405bd1a715 |
+
+## Removed from the working tree 2026-10-16 (user's instruction; still in git history, commit d7c7676)
+
+- ScienceDirect_citations_1792140439189.ris: 25-record first-page export, redone at 100 per page by the user
+- ScienceDirect_citations_1792140456756.ris: 25-record first-page export, redone at 100 per page by the user
+- ScienceDirect_citations_1792140485149.ris: 25-record first-page export, redone at 100 per page by the user
+- ScienceDirect_citations_1792140501642.ris: 25-record first-page export, redone at 100 per page by the user
+- ScienceDirect_citations_1792140517375.ris: 25-record first-page export, redone at 100 per page by the user
+- ScienceDirect_citations_1792140835921.ris: byte-identical duplicate of ScienceDirect_citations_1792140421402.ris
+- ScienceDirect_citations_1792140916695.ris: byte-identical duplicate of ScienceDirect_citations_1792140469226.ris
+- ScienceDirect_citations_1792140973482.ris: byte-identical duplicate of ScienceDirect_citations_1792140944287.ris
+- ScienceDirect_citations_1792141132501.ris: byte-identical duplicate of ScienceDirect_citations_1792140787524.ris
+- ScienceDirect_citations_1792141273095.ris: byte-identical duplicate of ScienceDirect_citations_1792141253230.ris
