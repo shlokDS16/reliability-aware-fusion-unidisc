@@ -1,0 +1,37 @@
+{"id": "M10504", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "R1 (primary: survey with own experiments)", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M10504", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0 (D2 not met: block drafter described without corruption-level training or denoising-step statement)", "loc": "p.3, §2.1", "status": "found"}
+{"id": "M10504", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0 (taxonomy definition of the evaluated drafters)", "loc": "p.2, §1", "status": "found"}
+{"id": "M10504", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "X0 (own trained drafter has the same one-pass block design)", "loc": "p.14, §4.3", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1", "loc": "p.10, §4.3.3", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b1", "loc": "p.10, Table 4", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b2 (D2: pretrained generative diffusion model trained by the paper as the pixel decoder)", "loc": "p.5, §3.1", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b2", "loc": "p.5, §3.1", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b2", "loc": "p.5, §3.2.1", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 (i) shared backbone trained for generation and understanding", "loc": "p.8, §4.2", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "b3 (sides: one backbone computes both outputs)", "loc": "p.5, §3.1", "status": "found"}
+{"id": "M06272", "screener": "FC-claude-fable-5-1", "i": 7, "cond": "b3", "loc": "p.6, §4.1", "status": "found"}
+{"id": "M09329", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 (D2 not met: one forward pass over the full block)", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M09329", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0 (drafter trained and used in one pass; no varied masking rate stated)", "loc": "p.3, §2", "status": "found"}
+{"id": "M09329", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0", "loc": "p.9, §7", "status": "found"}
+{"id": "M18384", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 (described method is extractive sentence ranking; no diffusion component)", "loc": "p.3, §PROPOSED SYSTEM", "status": "found"}
+{"id": "M18384", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0", "loc": "p.3, §PROPOSED SYSTEM", "status": "found"}
+{"id": "M18384", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0 (results section empty; claimed diffusion model never described)", "loc": "p.4, §RESULTS AND DISCUSSION", "status": "found"}
+{"id": "M13786", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 (D2(i) not met: no corruption at a range of levels is applied)", "loc": "p.1, §Diffusion-based Hallucination Detection", "status": "found"}
+{"id": "M13786", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0 (denoiser described as analogous to reverse diffusion; output is an embedding, R6 fails)", "loc": "p.2, §Consensus Reconstruction", "status": "found"}
+{"id": "M13786", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R6 (input and output are embeddings)", "loc": "p.1, §Consensus Reconstruction", "status": "found"}
+{"id": "M09496", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 (D2 not met: one-step masked block prediction)", "loc": "p.3, §2.2", "status": "found"}
+{"id": "M09496", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0", "loc": "p.3, §2.2", "status": "found"}
+{"id": "M09496", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0 (released drafters; training masking schedule not stated anywhere in the file)", "loc": "p.24, §H", "status": "found"}
+{"id": "M05242", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (holds: Gaussian-noise diffusion over embeddings, 2000 sampling steps)", "loc": "p.5, §III.D", "status": "found"}
+{"id": "M05242", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X1 (R9 step 1: diffusion output is a soft prompt outside D4; text written autoregressively by a frozen LLM)", "loc": "p.2, §I", "status": "found"}
+{"id": "M05242", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R6 fails (embedding is not decoded to text)", "loc": "p.5, §III.E", "status": "found"}
+{"id": "M05242", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "X1 (autoregressive text generation by the LLM)", "loc": "p.7, §IV.E", "status": "found"}
+{"id": "M09594", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (i) masking rate varies across training examples", "loc": "p.6, §3.4", "status": "found"}
+{"id": "M09594", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (i)", "loc": "p.7, §3.4", "status": "found"}
+{"id": "M09594", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 (ii) second denoising pass re-masks and re-predicts the block", "loc": "p.6, §3.3", "status": "found"}
+{"id": "M09594", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R5 (drafter trained with a masked denoising objective over varied masking)", "loc": "p.6, §3.4", "status": "not_found"}
+{"id": "M09594", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R6 (text drafts on language and code tasks)", "loc": "p.7, §4.1", "status": "found"}
+{"id": "M09594", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R6", "loc": "p.6, §3.3", "status": "found"}
+{"id": "M15138", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 (no diffusion component trained or run)", "loc": "p.9, §VI", "status": "found"}
+{"id": "M15138", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0", "loc": "p.5, §IV", "status": "found"}
+{"id": "M15138", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0 (experiments use linear operators and a frozen random encoder; nothing denoises)", "loc": "p.5, §IV.B", "status": "not_found"}
