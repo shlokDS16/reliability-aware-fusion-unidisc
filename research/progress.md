@@ -27,6 +27,12 @@
   Not yet adjudicated: M12594 (t1b035), M12741 (t1b036), M12775 + M12776 (t1b038) -> next C group
   c-t1-09; no quote returns pending for t1b035-038. Prompt lesson: name the exact folder path and say
   "no /dev/null"; never let a screener search the dispatch root.
+  **Update ~18:00 IST (user: continue to 65 percent).** C group c-t1-09 done (M12594 include; M12741,
+  M12775, M12776 X0). t1b039 (6 OpenReview PDFs, part5) screened: 6/6 agree, M12894 adjudicate -> next C
+  group. Quote returns for t1b035 (M12752) and t1b039 (M12873) accepted. OpenReview download is
+  rate-limited (~25/hour; 42 converted + 2 waiting); next batch t1b040 when about 10 are waiting
+  (convert, then tools/ft-session/orbatch.py <repo> <root> <n0> 40 6 202610166, next.sh build). Weekly 55
+  percent at 18:00; user's pause point now 65 percent.
 - **HANDOFF 8 (2026-10-16 ~15:45 IST; newest; HANDOFF 7 below still applies except the status).**
   Full-text T1: t1b001-t1b024 COMPLETE (agreement 220/240; 39 ids to adjudication; all counted sessions
   isolated; one discarded for mkdir /tmp, one rerun after a network drop). NEXT: t1b025-t1b031 (part 1) and
