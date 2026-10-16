@@ -44,6 +44,13 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    report as 'reports not retrieved' (not recommended at this size). 9 near-miss arXiv matches in
    arxiv-map/near-miss.jsonl also need a yes/no from you (most are clearly the same paper).
 
+5c. **1,421 SpringerLink records have no abstract** (Crossref and Semantic Scholar had none for their DOIs), so
+   they cannot go through the title/abstract rescue pass yet (list: screening/v2/rescue-subscription/
+   pending-no-abstract.txt). Options: (a) a free Springer Nature Meta API key (dev.springernature.com; you
+   register and put the key in an environment variable yourself) - Claude then fetches the abstracts
+   officially; (b) Semantic Scholar retry after its rate limit resets; (c) screen them on title only and
+   report it. Recommended: (a).
+
 ## Carried over from HANDOFF 4 (still open)
 6. Human screening sample (218 records) + 120 disagreements (RAISE validation).
 7. Professor's name, school, e-mail; ORCIDs.
