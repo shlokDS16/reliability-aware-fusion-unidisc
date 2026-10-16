@@ -1,6 +1,26 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 9 (2026-10-16 ~17:00 IST; newest; HANDOFF 8/7 still apply except the status).** Screening
+  session c850154c (this worktree) drives T1; the orchestrator (crash-a57ec7) runs the OpenReview download.
+  **Done:** T1 t1b025-t1b034 screened and filed (all isolation checks pass after one discard: t1b026 A read
+  a mistyped outside path -> discarded, rerun; t1b031 B stopped at launch, over the 3-agent limit). A
+  duplicate driver (session 9c1bcaee, worktree paper-1-3ff9e1) briefly logged false 'failed' rows and
+  reran t1b025/026; its 3 screeners were killed before rows; correction + 'discarded' rows in batch-log.
+  Quote returns: t1b025-034 returned once to their screeners (all accepted except M09594 -> C);
+  t1b001-024 not returnable (screeners belong to the orchestrator; it judged resuming too costly) ->
+  logged quote_return_not_possible, 13 quote-only records to C. Adjudicator C (Fable, route F) on all 66
+  queued records (c-queue-1/2.jsonl; groups c-t1-01..08, every session logged in c-run-log.jsonl, all
+  isolation pass, C quotes returned once and accepted). **T1 b001-b034 model result: 332 records,
+  include 228, exclude 104** (analysis/screening/ft-t1/t1-summary-b001-b034.json; before human
+  validation and author review). ScienceDirect: rescue-sub-04 (293; 2 unclear) + dual TA batch-sub-03
+  (4/4 agree; 2 pass: U06894, U07166) -> TA passes 1,006; those 2 need full-text routes.
+  OpenReview: 26 PDFs so far (orchestrator download at ~25/hour), converted; batches t1b035-t1b037
+  (t1-batches-part3.json) in progress. Tools: tools/ft_cpost.py (C session post-check and log);
+  next.sh paths now point at session c850154c. **NEXT:** finish t1b035-037; screen later OpenReview
+  arrivals as t1b038+ (convert only ids with fetch-log status ok); agreement statistics (criteria-v1.6
+  s5.3) over A/B before reconciliation; human validation sample before the author sees any row; routes
+  for U06894/U07166; re-check sample / C8 records; e-gateway papers.
 - **HANDOFF 8 (2026-10-16 ~15:45 IST; newest; HANDOFF 7 below still applies except the status).**
   Full-text T1: t1b001-t1b024 COMPLETE (agreement 220/240; 39 ids to adjudication; all counted sessions
   isolated; one discarded for mkdir /tmp, one rerun after a network drop). NEXT: t1b025-t1b031 (part 1) and

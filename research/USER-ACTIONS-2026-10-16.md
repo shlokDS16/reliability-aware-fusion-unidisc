@@ -9,9 +9,9 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    tab and saves the metadata as one JSONL file (needs your yes for that one file save).
    Also: I1 files hold 1,199 rows against 1,203 hits (230 + 506 + 463); 4 rows short in the 2026 slice,
    probably count drift between search and export. Claude will note it in the log unless you want a re-export.
-2. **SpringerLink**: queries ready in `research/review/corpus/subscription-search-sheet.md` (S1'/S2' runs,
+2. ~~**SpringerLink**~~ (done: exported and ingested 2026-10-16): queries ready in `research/review/corpus/subscription-search-sheet.md` (S1'/S2' runs,
    title-only run A + full-text sample run B). Counts first, then your yes per CSV download.
-3. **ScienceDirect**: same; split runs because of the Boolean-operator limit per field. RIS export,
+3. ~~**ScienceDirect**~~ (done: 12 files ingested; rescue + dual title/abstract screening finished 2026-10-16 17:00): same; split runs because of the Boolean-operator limit per field. RIS export,
    your yes per download.
 
 ## Decisions / approvals
@@ -34,7 +34,7 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    chat - put it in an environment variable yourself). D0033's check sample of 60 must complete before the
    design is decided; its 7+ queued records join dual screening after that.
 
-5b. **387 OpenReview papers need a decision (about 39 percent of the full-text set).** OpenReview now puts every
+5b. ~~**387 OpenReview papers need a decision~~ (resolved: option (b), your credentials in .env; download running at ~25/hour, 26 so far) (about 39 percent of the full-text set).** OpenReview now puts every
    automated request (site and API) behind a browser challenge, and these 387 have no arXiv version
    (research/review/fulltext/arxiv-map/unmapped.jsonl). Claude will not try to get past the challenge.
    Options: (a) you sign in to OpenReview in Chrome and download them yourself from a links page Claude
@@ -55,3 +55,14 @@ Do these together in one sitting. Claude keeps this list current; items are stru
 6. Human screening sample (218 records) + 120 disagreements (RAISE validation).
 7. Professor's name, school, e-mail; ORCIDs.
 8. OSF registration (retrospective) of the protocol; protocol freeze.
+
+## Status 2026-10-16 ~17:00 IST (screening session)
+9. **Full-text T1 model screening, batches 1-34, is complete**: 332 records, 228 include and 104 exclude,
+   66 of them settled by adjudicator C (Fable). This is before your part. Per protocol s4 and criteria
+   v1.6 s5, you screen the **human validation sample of T1 blind (without seeing any A, B or C row) before
+   you look at any screener output**; Claude can prepare the sample sheet (records and full texts only)
+   when you are ready.
+10. Two new title/abstract passes from ScienceDirect (U06894, U07166) need full-text routes; Claude will
+   look for open-access copies; if they are subscription-only they join the e-gateway list (item 5).
+11. OpenReview: nothing needed from you while the download runs; Claude screens the PDFs in batches as
+   they arrive.
