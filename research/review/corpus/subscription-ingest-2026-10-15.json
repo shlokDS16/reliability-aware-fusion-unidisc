@@ -1,6 +1,6 @@
 {
  "date": "2026-10-15",
- "run_utc": "20261016T010551Z",
+ "run_utc": "20261016T044626Z",
  "script": "tools/ingest_subscription.py",
  "command": "python tools/ingest_subscription.py",
  "decision": "D0031 (subscription databases); D0027/D0028 queue rule",
@@ -16,13 +16,15 @@
   "title_jaccard": 0.85,
   "year_gap_refused_above": 3,
   "within_db_merge_reasons": {
-   "doi": 2799,
+   "doi": 3151,
    "scopus_eid": 194,
-   "t": 304,
+   "t": 317,
    "pv": 27,
    "sq": 6,
    "a": 3,
-   "jaccard": 3
+   "refused-year-gap:t": 1,
+   "refused-year-gap:sq": 1,
+   "jaccard": 4
   }
  },
  "files": [
@@ -546,7 +548,203 @@
   },
   {
    "db": "springer",
-   "status": "skipped: no export in springerlink/"
+   "database": "SpringerLink",
+   "folder": "springerlink",
+   "file": "springerlink-runA-title-union-20261016.csv",
+   "path": "research/sources/search-raw/springerlink/springerlink-runA-title-union-20261016.csv",
+   "sha256": "a2866d4a7f71d75551e3cf10a11232e4a89f27441f41e439d5aec4a4e68040a6",
+   "bytes": 31449,
+   "mtime_utc": "20261016T040754Z",
+   "query": "union",
+   "status": "parsed",
+   "rows": 106,
+   "label": null,
+   "query_text": null,
+   "access": "CSV export without abstracts (abstracts fetched by DOI)",
+   "expected_rows": null,
+   "expected_scope": null,
+   "rows_match_expected": null,
+   "counts": {
+    "rows": 106,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 0,
+    "dup_within_db": 0,
+    "dup_across_db": 64,
+    "dup_existing": 20,
+    "new_unique": 22,
+    "new_pass_strings": 3,
+    "new_fail_strings": 19,
+    "queued": 3,
+    "new_abstract_missing": 16,
+    "new_also_matches_title_only_snowball_fragment": 0,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 1
+   },
+   "dup_existing_by_target": {
+    "records.jsonl": 3,
+    "v2 screening batches": 10,
+    "v2 rescue queue": 5,
+    "v2 other (not queued)": 2
+   }
+  },
+  {
+   "db": "springer",
+   "database": "SpringerLink",
+   "folder": "springerlink",
+   "file": "springerlink-runB-kw-S1-20261016.csv",
+   "path": "research/sources/search-raw/springerlink/springerlink-runB-kw-S1-20261016.csv",
+   "sha256": "89702203cbed74bd9ab1e29e07017aead68a65b65d929734115f462f51e270ac",
+   "bytes": 224564,
+   "mtime_utc": "20261016T044412Z",
+   "query": "S1",
+   "status": "parsed",
+   "rows": 757,
+   "label": null,
+   "query_text": null,
+   "access": "CSV export without abstracts (abstracts fetched by DOI)",
+   "expected_rows": null,
+   "expected_scope": null,
+   "rows_match_expected": null,
+   "counts": {
+    "rows": 757,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 2,
+    "dup_within_db": 8,
+    "dup_across_db": 56,
+    "dup_existing": 29,
+    "new_unique": 662,
+    "new_pass_strings": 0,
+    "new_fail_strings": 662,
+    "queued": 0,
+    "new_abstract_missing": 463,
+    "new_also_matches_title_only_snowball_fragment": 9,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "v2 screening batches": 1,
+    "v2 rescue queue": 4,
+    "v2 other (not queued)": 24
+   }
+  },
+  {
+   "db": "springer",
+   "database": "SpringerLink",
+   "folder": "springerlink",
+   "file": "springerlink-runB-kw-S2-top1000-20261016.csv",
+   "path": "research/sources/search-raw/springerlink/springerlink-runB-kw-S2-top1000-20261016.csv",
+   "sha256": "ab95c7a1d442551354142b1e752a148a03992654f3b54bcedc37df3d7b3153d7",
+   "bytes": 290696,
+   "mtime_utc": "20261016T044507Z",
+   "query": "S2-top1000",
+   "status": "parsed",
+   "rows": 1000,
+   "label": null,
+   "query_text": null,
+   "access": "CSV export without abstracts (abstracts fetched by DOI)",
+   "expected_rows": null,
+   "expected_scope": null,
+   "rows_match_expected": null,
+   "counts": {
+    "rows": 1000,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 7,
+    "dup_within_db": 39,
+    "dup_across_db": 90,
+    "dup_existing": 47,
+    "new_unique": 817,
+    "new_pass_strings": 0,
+    "new_fail_strings": 817,
+    "queued": 0,
+    "new_abstract_missing": 551,
+    "new_also_matches_title_only_snowball_fragment": 7,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "v2 rescue queue": 3,
+    "v2 other (not queued)": 44
+   }
+  },
+  {
+   "db": "springer",
+   "database": "SpringerLink",
+   "folder": "springerlink",
+   "file": "springerlink-runB-kw-S6-20261016.csv",
+   "path": "research/sources/search-raw/springerlink/springerlink-runB-kw-S6-20261016.csv",
+   "sha256": "c6ccf8c4be7a49a121dc18bfe1bd521748caf0a52360f08e05c5968e8402b953",
+   "bytes": 198726,
+   "mtime_utc": "20261016T044432Z",
+   "query": "unspecified",
+   "status": "parsed",
+   "rows": 659,
+   "label": null,
+   "query_text": null,
+   "access": "CSV export without abstracts (abstracts fetched by DOI)",
+   "expected_rows": null,
+   "expected_scope": null,
+   "rows_match_expected": null,
+   "counts": {
+    "rows": 659,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 4,
+    "dup_within_db": 35,
+    "dup_across_db": 38,
+    "dup_existing": 32,
+    "new_unique": 550,
+    "new_pass_strings": 0,
+    "new_fail_strings": 550,
+    "queued": 0,
+    "new_abstract_missing": 347,
+    "new_also_matches_title_only_snowball_fragment": 2,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "records.jsonl": 1,
+    "v2 screening batches": 1,
+    "v2 rescue queue": 5,
+    "v2 other (not queued)": 25
+   }
+  },
+  {
+   "db": "springer",
+   "database": "SpringerLink",
+   "folder": "springerlink",
+   "file": "springerlink-runB-kw-S7-20261016.csv",
+   "path": "research/sources/search-raw/springerlink/springerlink-runB-kw-S7-20261016.csv",
+   "sha256": "9be39a988ab87e6b86c560e8cf99b8d601ca48447ca92eedf665e4960ff64a6c",
+   "bytes": 29710,
+   "mtime_utc": "20261016T044448Z",
+   "query": "unspecified",
+   "status": "parsed",
+   "rows": 92,
+   "label": null,
+   "query_text": null,
+   "access": "CSV export without abstracts (abstracts fetched by DOI)",
+   "expected_rows": null,
+   "expected_scope": null,
+   "rows_match_expected": null,
+   "counts": {
+    "rows": 92,
+    "proceedings_front_matter": 0,
+    "dup_within_file": 0,
+    "dup_within_db": 18,
+    "dup_across_db": 5,
+    "dup_existing": 9,
+    "new_unique": 60,
+    "new_pass_strings": 0,
+    "new_fail_strings": 60,
+    "queued": 0,
+    "new_abstract_missing": 47,
+    "new_also_matches_title_only_snowball_fragment": 1,
+    "dup_existing_gains_abstract_and_passes": 0,
+    "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0
+   },
+   "dup_existing_by_target": {
+    "v2 rescue queue": 2,
+    "v2 other (not queued)": 7
+   }
   },
   {
    "db": "sciencedirect",
@@ -850,6 +1048,121 @@
     "v2 screening batches": 9,
     "v2 rescue queue": 32
    }
+  },
+  "springer:union:springerlink-runA-title-union-20261016.csv": {
+   "rows": 106,
+   "expected_rows": null,
+   "rows_match_expected": null,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 0,
+   "dup_within_db": 0,
+   "dup_across_db": 64,
+   "dup_existing": 20,
+   "new_unique": 22,
+   "new_pass_strings": 3,
+   "new_fail_strings": 19,
+   "queued": 3,
+   "new_abstract_missing": 16,
+   "new_also_matches_title_only_snowball_fragment": 0,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 1,
+   "dup_existing_by_target": {
+    "records.jsonl": 3,
+    "v2 screening batches": 10,
+    "v2 rescue queue": 5,
+    "v2 other (not queued)": 2
+   }
+  },
+  "springer:S1:springerlink-runB-kw-S1-20261016.csv": {
+   "rows": 757,
+   "expected_rows": null,
+   "rows_match_expected": null,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 2,
+   "dup_within_db": 8,
+   "dup_across_db": 56,
+   "dup_existing": 29,
+   "new_unique": 662,
+   "new_pass_strings": 0,
+   "new_fail_strings": 662,
+   "queued": 0,
+   "new_abstract_missing": 463,
+   "new_also_matches_title_only_snowball_fragment": 9,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "v2 screening batches": 1,
+    "v2 rescue queue": 4,
+    "v2 other (not queued)": 24
+   }
+  },
+  "springer:S2-top1000:springerlink-runB-kw-S2-top1000-20261016.csv": {
+   "rows": 1000,
+   "expected_rows": null,
+   "rows_match_expected": null,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 7,
+   "dup_within_db": 39,
+   "dup_across_db": 90,
+   "dup_existing": 47,
+   "new_unique": 817,
+   "new_pass_strings": 0,
+   "new_fail_strings": 817,
+   "queued": 0,
+   "new_abstract_missing": 551,
+   "new_also_matches_title_only_snowball_fragment": 7,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "v2 rescue queue": 3,
+    "v2 other (not queued)": 44
+   }
+  },
+  "springer:unspecified:springerlink-runB-kw-S6-20261016.csv": {
+   "rows": 659,
+   "expected_rows": null,
+   "rows_match_expected": null,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 4,
+   "dup_within_db": 35,
+   "dup_across_db": 38,
+   "dup_existing": 32,
+   "new_unique": 550,
+   "new_pass_strings": 0,
+   "new_fail_strings": 550,
+   "queued": 0,
+   "new_abstract_missing": 347,
+   "new_also_matches_title_only_snowball_fragment": 2,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "records.jsonl": 1,
+    "v2 screening batches": 1,
+    "v2 rescue queue": 5,
+    "v2 other (not queued)": 25
+   }
+  },
+  "springer:unspecified:springerlink-runB-kw-S7-20261016.csv": {
+   "rows": 92,
+   "expected_rows": null,
+   "rows_match_expected": null,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 0,
+   "dup_within_db": 18,
+   "dup_across_db": 5,
+   "dup_existing": 9,
+   "new_unique": 60,
+   "new_pass_strings": 0,
+   "new_fail_strings": 60,
+   "queued": 0,
+   "new_abstract_missing": 47,
+   "new_also_matches_title_only_snowball_fragment": 1,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 0,
+   "dup_existing_by_target": {
+    "v2 rescue queue": 2,
+    "v2 other (not queued)": 7
+   }
   }
  },
  "per_db": {
@@ -943,54 +1256,77 @@
     "v2 screening batches": 9,
     "v2 rescue queue": 32
    }
+  },
+  "springer": {
+   "rows": 2614,
+   "proceedings_front_matter": 0,
+   "dup_within_file": 13,
+   "dup_within_db": 100,
+   "dup_across_db": 253,
+   "dup_existing": 137,
+   "new_unique": 2111,
+   "new_pass_strings": 3,
+   "new_fail_strings": 2108,
+   "queued": 3,
+   "new_abstract_missing": 1424,
+   "new_also_matches_title_only_snowball_fragment": 19,
+   "dup_existing_gains_abstract_and_passes": 0,
+   "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 1,
+   "files": 5,
+   "dup_existing_by_target": {
+    "records.jsonl": 4,
+    "v2 screening batches": 12,
+    "v2 rescue queue": 19,
+    "v2 other (not queued)": 102
+   }
   }
  },
  "totals": {
-  "rows": 7942,
+  "rows": 10556,
   "proceedings_front_matter": 302,
-  "dup_within_file": 16,
-  "dup_within_db": 594,
-  "dup_across_db": 2676,
-  "dup_existing": 2372,
-  "new_unique": 1982,
-  "new_pass_strings": 174,
-  "new_fail_strings": 1808,
-  "queued": 174,
-  "new_abstract_missing": 5,
-  "new_also_matches_title_only_snowball_fragment": 12,
+  "dup_within_file": 29,
+  "dup_within_db": 694,
+  "dup_across_db": 2929,
+  "dup_existing": 2509,
+  "new_unique": 4093,
+  "new_pass_strings": 177,
+  "new_fail_strings": 3916,
+  "queued": 177,
+  "new_abstract_missing": 1429,
+  "new_also_matches_title_only_snowball_fragment": 31,
   "dup_existing_gains_abstract_and_passes": 78,
-  "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 1,
+  "dup_existing_target_auto_excluded_but_passes_S1pp_S2pp": 2,
   "dup_existing_by_target": {
-   "records.jsonl": 258,
-   "v2 screening batches": 646,
-   "v2 rescue queue": 1413,
-   "v2 other (not queued)": 55
+   "records.jsonl": 262,
+   "v2 screening batches": 658,
+   "v2 rescue queue": 1432,
+   "v2 other (not queued)": 157
   }
  },
- "unique_records": 4606,
- "unique_records_excluding_proceedings": 4354,
- "duplicates_of_existing_unique_records": 2372,
+ "unique_records": 6854,
+ "unique_records_excluding_proceedings": 6602,
+ "duplicates_of_existing_unique_records": 2509,
  "duplicate_match_kinds_unique_records": {
-  "doi": 1805,
-  "title-exact": 545,
-  "title-letters-digits": 7,
-  "title-jaccard": 10,
+  "doi": 1880,
+  "title-exact": 605,
+  "title-letters-digits": 8,
+  "title-jaccard": 11,
   "abstract": 5
  },
- "new_unique_records": 1982,
- "new_pass_strings_queued": 174,
- "new_fail_strings": 1808,
+ "new_unique_records": 4093,
+ "new_pass_strings_queued": 177,
+ "new_fail_strings": 3916,
  "queued_by_tier": {
   "T1": 90,
   "T2": 6,
-  "T3": 70,
+  "T3": 73,
   "T4": 8
  },
  "queued_reason": {
-  "database record; passes S1''/S2''": 171,
+  "database record; passes S1''/S2''": 174,
   "database record; matches original S1/S2 (released, D0028)": 3
  },
- "queued_abstract_missing": 0,
+ "queued_abstract_missing": 3,
  "new_failing_that_match_original_S1_or_S2_only_with_author_keywords": 24,
  "new_failing_that_match_original_S1_or_S2_only_with_author_or_index_keywords": 29,
  "title_matches_refused_for_year_gap": 1,
@@ -1015,17 +1351,18 @@
    ]
   }
  ],
- "new_matches_title_only_snowball_fragment": 12,
+ "new_matches_title_only_snowball_fragment": 31,
  "dup_gains_abstract_and_passes": 78,
- "dup_target_auto_excluded_but_passes_S1pp_S2pp": 1,
+ "dup_target_auto_excluded_but_passes_S1pp_S2pp": 2,
  "proceedings_front_matter_records": 252,
  "proceedings_front_matter_records_whose_volume_abstract_matches_strings": 89,
  "abstract_fetch": {
-  "crossref_calls": 62,
-  "semantic-scholar_calls": 47,
-  "found": 56,
-  "not_found": 6,
-  "transient_failures": 1
+  "crossref_calls": 2112,
+  "semantic-scholar_calls": 1777,
+  "not_found": 1424,
+  "found": 688,
+  "transient_failures": 18,
+  "cache_hits": 61
  },
  "warnings": [
   "ieee I1: parsed 1199 rows, expected 1203 (query)",
@@ -1033,36 +1370,37 @@
   "ieee I1: parsed 1199 rows, expected 1203 (query)"
  ],
  "prisma": {
-  "records_identified_subscription_databases": 7942,
+  "records_identified_subscription_databases": 10556,
   "by_database": {
    "scopus": 4046,
    "wos": 2267,
    "ieee": 1300,
-   "acm": 329
+   "acm": 329,
+   "springer": 2614
   },
   "removed_before_screening": {
    "proceedings_front_matter_not_documents": 302,
-   "duplicates_within_file": 16,
-   "duplicates_within_database": 594,
-   "duplicates_across_databases": 2676,
-   "duplicates_of_records_already_in_corpus": 2372,
+   "duplicates_within_file": 29,
+   "duplicates_within_database": 694,
+   "duplicates_across_databases": 2929,
+   "duplicates_of_records_already_in_corpus": 2509,
    "duplicates_of_records_already_in_corpus_by_target": {
-    "records.jsonl": 258,
-    "v2 screening batches": 646,
-    "v2 rescue queue": 1413,
-    "v2 other (not queued)": 55
+    "records.jsonl": 262,
+    "v2 screening batches": 658,
+    "v2 rescue queue": 1432,
+    "v2 other (not queued)": 157
    }
   },
-  "new_unique_records": 1982,
-  "excluded_by_automation_string_filter_S1pp_S2pp": 1808,
-  "passed_to_screening_subscription_queue": 174,
+  "new_unique_records": 4093,
+  "excluded_by_automation_string_filter_S1pp_S2pp": 3916,
+  "passed_to_screening_subscription_queue": 177,
   "note": "counts are attributed to the first file in which a record appears (database order scopus, wos, ieee, acm, springer, sciencedirect; then file name)"
  },
  "outputs": {
   "records": "research/review/corpus/subscription-records-2026-10-15.jsonl",
   "queue": "research/review/screening/v2/subscription-queue.jsonl",
-  "queue_delta": "subscription-queue-delta-20261016T010551Z.jsonl",
-  "queue_delta_rows": 5
+  "queue_delta": "subscription-queue-delta-20261016T044626Z.jsonl",
+  "queue_delta_rows": 3
  },
- "search_log_rows_appended": 4
+ "search_log_rows_appended": 5
 }
