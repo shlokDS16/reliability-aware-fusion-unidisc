@@ -286,3 +286,75 @@ question, quality assessment). The full landscape is in `survey-landscape.md`.
   V2, 100 of the 2,107 snowball records excluded in D0026 on the title alone (seed 20261021); `screening/validation-autoexcl-2026-10-15.jsonl` (id, title, abstract, set). One screener screens them
   under the criteria of this protocol; the number of in-scope records lost is estimated with an interval. **Reversal:** if the estimate for the lost in-scope records exceeds about 2% of the in-scope records
   (D0027), the filter is relaxed and the excluded records are released to screening. Dual screening of the records that pass (D0026 item 5) follows, T1 and T2 first; it has not started.
+- 2026-10-16 (D0032; full-text screening criteria v1.6: research/review/screening/criteria-v1.6-screener.md
+  normative, criteria-v1.6.md audit copy; v1.1-v1.5 superseded after red-team audits of 2026-10-16).
+  Written after the title/abstract decisions had been recorded and seen, before any full text was
+  screened and before the freeze rule was applied. I1-I4 are unchanged; the following codes and
+  readings govern full-text screening, each justified from the protocol text, D0020 or census
+  codebook v1.2.
+  (1) Code X0: no diffusion component in the paper's own method. One code per excluded record, first
+  applicable in the order X8, X3, X5, X4, X0, X1, X2, X7 (census B-8). X1 and X2 are decided in this
+  order: X1 for a model with autoregressive text whose diffusion component generates actions,
+  molecules or other outputs outside the I1(b) list (D0020), also when text conditions that
+  component; otherwise X2 if the paper states that text conditions the non-text diffusion component
+  by any path; otherwise X1. Reports not retrieved (X6) are reported before eligibility.
+  (2) Diffusion component: trained to reverse a corruption applied over a range of corruption levels,
+  or along a discrete or continuous flow-matching path, and generating in more than one step or by a
+  sampler distilled from such a component.
+  (3) I1(a): the diffusion component produces text, read by content: natural-language words or
+  sentences, or source code; chemical and biological sequences, game and puzzle states, formulas and
+  equations without words, identifiers, actions and other non-language content are not text whatever
+  tokens carry them; naming never decides. Following census B-7 ("except as tasks of a model that is
+  eligible on other grounds"), a paper that trains further, fine-tunes, re-samples or compares a
+  text-pretrained diffusion model (weights it loads, or weights it pretrains to generate
+  natural-language text or code) is eligible even when its outputs in the paper are only non-language strings; such records
+  are reported separately. A published recipe trained from random initialisation only on non-language
+  content is not such a model; masked-diffusion puzzle or reasoning papers of that kind are therefore
+  excluded unless they report a text result. The exception does not extend to actions, trajectories
+  or outputs in another modality; 3D human pose, motion and other 3D geometry are decided by the "3D"
+  reading in (4), whatever encoding carries them.
+  (4) I1(b): D0020 verbatim, decided from statements in the screened file only. A trained parameter
+  counts on the understanding side only if the understanding output is computed with it; a frozen
+  understanding model with trained query tokens, connector, generation-only adapters or decoder is a
+  pipeline. "3D" is read literally (3D geometry, including 3D human pose and motion), with exclusions
+  taking precedence: D0020's (robot actions, molecules), census B-4(ii)'s (trajectories and other
+  non-perceptual outputs), and those added by these criteria (waypoints, joint or end-effector
+  commands, outputs generated as robot or vehicle commands, proteins, cell profiles, graphs, tables,
+  time series, 2D keypoints and trajectories); a human motion is an action only if the paper's main
+  results evaluate it by robot execution. Whether pose and motion count is open item O1 for the
+  authors, and each such record also carries the code it would get if not.
+  (5) I3: the language of the main body decides.
+  (6) Decisions are include, exclude or adjudicate. Screener A is claude-sonnet-5-5 and screener B
+  claude-opus-5-5 (Claude Code harness model list, 2026-10-16), with no fallback models. Adjudication
+  route, fixed before the first full-text row of Screener A or B is written. Route F: adjudicator C is
+  claude-fable-5-1, used only if both hold: (1) the user has approved in writing any usage-credit spend
+  that claude-fable-5-1 draws on the user's plan, or has confirmed that it draws none; (2) a test
+  session of claude-fable-5-1, started from the Claude Code harness with that model id, runs.
+  Otherwise Route H: there is no model adjudicator; every disagreement between A and B and every
+  "adjudicate" row goes straight to the human author, who is not told why a record is in the queue,
+  and every count that would use C's rulings is computed from the A/B agreement rows plus the human
+  author's decisions. The user decides (1); the orchestrator runs (2) and writes the route, the
+  outcome of (1) and (2) and the date as the first line of analysis/screening/c-run-log.jsonl before
+  the first full-text row of A or B. The route is not changed after that line, except that if
+  claude-fable-5-1 later cannot be run, the rest of C's queue goes to the human author, logged in the
+  same file. No other model is ever C. Every adjudicator session is logged and reported; each human
+  adjudication session logs an attestation of blindness and the files opened. In every tranche of
+  the full-text set the human validation records are screened before the human author sees any
+  screener or adjudicator row of that tranche. Screener and
+  adjudicator sessions run in uniquely named dispatch folders, under session rules that waive the
+  user-level and project routines, with an isolation check after each session. Evidence quotes are
+  contiguous passages of 6 to 40 words verified by script. A human screens a random 15 percent (at
+  least 100) of the full-text set, and a screener below kappa 0.70 against the human triggers revision
+  and rerun (s4 step 3), and then resolves the final set (s4 step 4).
+  (7) Title/abstract decisions are not re-opened. A declared, scripted query selected 797 of 5,282
+  title/abstract exclusions in classes where these readings are more inclusive; this is above the
+  cap of 150 first stated in criteria v1.2 (ta_recheck_select.py CAP = 150), which was written
+  together with the script that counted the candidates. A frozen random sample of 100 (seed
+  20261016) is screened at full text, blind to its sample status, and reported in its own PRISMA
+  box. If at least 1 sampled record is included, all 797 are screened. Tolerable loss 13 records (2
+  percent of about 650 in-scope records that pass the automation filter, D0027 and D0029); trigger
+  probability 0.42, 0.66, 0.83, 0.89 at 4, 8, 13, 16 true flips; at zero sampled inclusions the exact
+  one-sided 95 percent upper bound for the frame is 22 records. A supplementary regex query on
+  text-DLM terms (class C8) selects 32 further exclusions outside the frame, all screened at full
+  text; 14 records of the frame meet the same query outside the sample and are screened only if the
+  reversal fires. Queues screened later at title/abstract get their own frame and the same design.
