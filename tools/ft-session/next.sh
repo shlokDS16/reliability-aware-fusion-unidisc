@@ -1,7 +1,7 @@
 #!/bin/bash
 # usage: next.sh postbatch <batch> <agentA> <agentB>   |   next.sh build <batch>
-S="C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-crash-a57ec7/0780a165-dc5e-4e5c-868c-8e8077ea6ce5/scratchpad/ft-dispatch"
-P="/c/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-crash-a57ec7/0780a165-dc5e-4e5c-868c-8e8077ea6ce5/subagents"
+S="C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/c850154c-9b85-49b2-9b76-d75be8648cf9/scratchpad/ft-dispatch"
+P="/c/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/c850154c-9b85-49b2-9b76-d75be8648cf9/subagents"
 cd "/c/Users/Shlok/Downloads/Multi-Modality Language model/.claude/worktrees/resume-dlm-discovery-exp-003-334706" || exit 1
 if [ "$1" = postbatch ]; then
   python -I tools/ft_postbatch.py "$2" "$S" "$P" "$3" "$4" | python -I -c "import json,sys; d=json.load(sys.stdin); print(d['batch'], 'iso', d['isolation_A'], d['isolation_B'], 'agree', d['agree'], '/', d['n'], 'dis', d['disagree'], 'adj', d['adjudicate'], 'qbad', d.get('quotes_not_accepted_A'), d.get('quotes_not_accepted_B'), 'miss', d['missing_A'], d['missing_B'])"
