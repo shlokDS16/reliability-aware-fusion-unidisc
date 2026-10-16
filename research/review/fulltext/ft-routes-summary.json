@@ -1,0 +1,105 @@
+{
+ "n_records": 1000,
+ "by_route_type": {
+  "arxiv": 235,
+  "no_full_text": 97,
+  "duplicate": 27,
+  "e-gateway": 102,
+  "oa_url": 91,
+  "openreview": 403,
+  "acl": 45
+ },
+ "by_origin": {
+  "a": {
+   "arxiv": 225,
+   "no_full_text": 94,
+   "duplicate": 27,
+   "e-gateway": 76,
+   "oa_url": 84,
+   "openreview": 403,
+   "acl": 45
+  },
+  "b": {
+   "e-gateway": 26,
+   "arxiv": 10,
+   "oa_url": 7,
+   "no_full_text": 3
+  }
+ },
+ "n_by_origin": {
+  "a": 954,
+  "b": 46
+ },
+ "e_gateway_by_publisher": {
+  "IEEE": 51,
+  "Elsevier": 20,
+  "Springer Nature": 20,
+  "ACM": 4,
+  "unknown": 2,
+  "Apress": 1,
+  "SPIE": 1,
+  "The Hong Kong University of Science and Technology Library": 1,
+  "DOAJ (DOAJ: Directory of Open Access Journals)": 1,
+  "Knowledge E DMCC": 1
+ },
+ "e_gateway_by_origin": {
+  "a": 76,
+  "b": 26
+ },
+ "no_identifier_records": {
+  "total": 130,
+  "resolved_to_a_route": 6,
+  "duplicates": 27,
+  "unresolvable": 97,
+  "fragments_total": 97,
+  "fragments_by_route_type": {
+   "no_full_text": 74,
+   "duplicate": 22,
+   "oa_url": 1
+  },
+  "non_fragments_by_route_type": {
+   "no_full_text": 23,
+   "oa_url": 5,
+   "duplicate": 5
+  },
+  "duplicates_of_records_jsonl": 25,
+  "duplicates_of_set_record": 2,
+  "unresolvable_with_near_miss": 32
+ },
+ "oa_status_counts": {
+  "diamond": 16,
+  "gold": 25,
+  "hybrid": 21,
+  "green": 26,
+  "bronze": 3
+ },
+ "doi_records_with_low_title_agreement": [
+  {
+   "id": "M12583",
+   "doi": "10.1007/978-1-4842-9994-4",
+   "title": "Applied Generative AI for Beginners: Practical Knowledge on Diffusion Models, Ch",
+   "agreement": "doi-exact; openalex title jaccard=0.36"
+  }
+ ],
+ "near_miss_candidates": 31,
+ "arxiv_id_title_mismatches": [
+  {
+   "id": "M03150",
+   "arxiv": "2405.19335",
+   "jaccard": 0.8,
+   "record_title": "X-VILA: Cross-Modality Alignment for Large Language Models",
+   "arxiv_title": "X-VILA: Cross-Modality Alignment for Large Language Model"
+  }
+ ],
+ "same_arxiv_id_under_multiple_ids_in_set": {},
+ "api_calls": {
+  "cache_hit": 498,
+  "http_api.datacite.org": 87
+ },
+ "preprint_search_source": {
+  "arxiv-api": 1,
+  "datacite": 408
+ },
+ "openalex_spent_usd": 0.0,
+ "threshold": 0.85
+}

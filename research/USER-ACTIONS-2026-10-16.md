@@ -17,19 +17,15 @@ Do these together in one sitting. Claude keeps this list current; items are stru
 ## Decisions / approvals
 4. Commits: Claude committed the crash-surviving untracked files in the exp-003 worktree (f9041a9,
    local only, not pushed). Say if you want a different commit policy.
-5. **Full-text downloads (need your yes).** Records passing title/abstract so far: 1,000 (954 from the
-   free-source update + 46 from the subscription databases), plus the 100-record re-check sample, the 32
-   C8 records and up to 7 title-resolved records; the 797 re-check frame only if the sample triggers it.
-   By route (of the 1,000): OpenReview 403, arXiv 225, ACL Anthology 45 (open access, about 673 PDFs,
-   roughly 1-2 GB); DOI only 197 (mostly need the e-gateway in your Chrome); Semantic Scholar id only 23
-   and no identifier 107 (Claude looks these up first). Proposed: approve the open-access batch as one
-   download job (Claude logs every file and hash), then do the DOI-only ones together through the e-gateway.
-
-6a. **Adjudicator for full-text screening (criteria v1.5, route F or H):** C = claude-fable-5-1 only if
-   you approve any usage spend it needs (or confirm there is none); otherwise route H: every full-text
-   disagreement and 'adjudicate' row goes straight to you (no model fallback; Haiku is excluded because it
-   made many of the title/abstract exclusions being re-checked). Route H adds those rows to your
-   workload on top of the 15 percent validation sample. Decide before the first full-text row.
+5. **Full-text downloads (need your yes).** Route table for the 1,000 title/abstract passes:
+   `research/review/fulltext/ft-routes.jsonl` (metadata only, nothing downloaded).
+   - Batch 1, open access: 774 URLs (OpenReview 403, arXiv 235, ACL 45, other OA 91; 3 of the OA ones are
+     'bronze' = free to read, no licence stated). Roughly 1-2 GB. One logged download job, every file hashed.
+   - Batch 2, e-gateway in your Chrome: 102 (IEEE 51, Elsevier 20, Springer Nature 20, ACM 4, 7 others).
+     About 8 IEEE ones are CVPR/ICCV/WACV papers that are often free at CVF; Claude checks those first.
+   - No download: 27 duplicates of known records; 97 without a findable full text (10 blog/product posts,
+     6 sentence fragments, 81 reference fragments with no title match). 32 of them have a near-miss
+     candidate (e.g. truncated or renamed titles); a 5-minute human check could rescue most.
 
 ## Carried over from HANDOFF 4 (still open)
 6. Human screening sample (218 records) + 120 disagreements (RAISE validation).
