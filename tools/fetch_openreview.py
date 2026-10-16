@@ -37,6 +37,18 @@ def load_dotenv():
             os.environ[k.strip()] = v.strip().strip("'\"")
 
 
+def wait_until_reset(e):
+    """Sleep until the resetTime OpenReview reports in a RateLimitError (plus 30 s); 60 min if it cannot be read."""
+    import re as _re
+    m = _re.search(r"resetTime'?:\s*'([^']+)'", repr(e))
+    secs = 3600
+    if m:
+        reset = dt.datetime.fromisoformat(m.group(1).replace("Z", "+00:00"))
+        secs = max(60, (reset - dt.datetime.now(dt.timezone.utc)).total_seconds() + 30)
+    print(f"  rate limit: sleeping {secs / 60:.0f} min", flush=True)
+    time.sleep(secs)
+
+
 def main():
     load_dotenv()
     if not (os.environ.get("OPENREVIEW_USERNAME") and os.environ.get("OPENREVIEW_PASSWORD")):
@@ -67,6 +79,15 @@ def main():
                     break
                 err, body = f"{api}: not a PDF", None
             except Exception as e:
+                if "RateLimitError" in repr(e) or "Too many requests" in repr(e):
+                    wait_until_reset(e)          # OpenReview allows about 26 PDF requests per hour per account
+                    try:
+                        body = (c2 if api == "v2" else c1).get_pdf(note)
+                        if body and body[:4] == b"%PDF":
+                            rec["api"] = api
+                            break
+                    except Exception as e2:
+                        e = e2
                 err, body = f"{api}: {repr(e)[:160]}", None
             time.sleep(3)
         if body:
@@ -82,7 +103,7 @@ def main():
         print(f"{k}/{len(todo)} {rid} {rec['status']} {rec.get('api', '')} {err if not body else ''}", flush=True)
         if fails >= 5:
             sys.exit(f"Stopped after 5 failures in a row; last error: {err}. Tell Claude this message.")
-        time.sleep(3)
+        time.sleep(140)   # pace at about 25 per hour (OpenReview limit 26 per hour)
     print(f"done: {n_ok} ok of {len(todo)}")
 
 
