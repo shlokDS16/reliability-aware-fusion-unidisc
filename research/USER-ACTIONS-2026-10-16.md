@@ -34,6 +34,16 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    chat - put it in an environment variable yourself). D0033's check sample of 60 must complete before the
    design is decided; its 7+ queued records join dual screening after that.
 
+5b. **387 OpenReview papers need a decision (about 39 percent of the full-text set).** OpenReview now puts every
+   automated request (site and API) behind a browser challenge, and these 387 have no arXiv version
+   (research/review/fulltext/arxiv-map/unmapped.jsonl). Claude will not try to get past the challenge.
+   Options: (a) you sign in to OpenReview in Chrome and download them yourself from a links page Claude
+   builds (about 2-3 hours by hand); (b) you run a small script Claude writes that uses the official
+   openreview-py client with YOUR account, credentials set by you in environment variables (Claude never
+   sees them) - works only if authenticated API calls are not challenged; (c) ask the authors / skip and
+   report as 'reports not retrieved' (not recommended at this size). 9 near-miss arXiv matches in
+   arxiv-map/near-miss.jsonl also need a yes/no from you (most are clearly the same paper).
+
 ## Carried over from HANDOFF 4 (still open)
 6. Human screening sample (218 records) + 120 disagreements (RAISE validation).
 7. Professor's name, school, e-mail; ORCIDs.
