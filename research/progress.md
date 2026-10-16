@@ -1,6 +1,26 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 6 (2026-10-16 ~08:30 IST; newest, overrides older blocks).** Session resumed after the 04:48
+  crash in this worktree (exp-003-334706); HANDOFF 5 was stale (v1.1 audit, criteria v1.2/v1.3, ACM DL,
+  IEEE I1-2026 + I2 had all been done before the crash). **User-facing to-do list:
+  `research/USER-ACTIONS-2026-10-16.md`** (IEEE I3-I5 'file limit exceeded'; SpringerLink; ScienceDirect;
+  adjudicator route F/H; full-text download batches; title resolution API limits; HANDOFF 4 items).
+  **Done this session:** D0032 = full-text criteria v1.6 adopted (red-team audits v1.3-v1.6 in
+  `review/audits/`; protocol s10 amendment); D0033 = title-resolution design rule (check sample must be
+  complete). Ingest now reads ACM in-page JSONL (`tools/ingest_subscription.py`): Scopus + WoS + IEEE
+  (I1, I2) + ACM -> 4,606 unique, 174 queued, 1,808 string failures. Rescue pass (Haiku, D0029 design,
+  `screening/v2/rescue-subscription/`): 10 include + 62 unclear. Dual screening (A Sonnet, B Opus) of 246
+  (`screening/v2/dual-subscription/`): kappa 0.930 [0.861, 0.985]; D0030 -> 46 pass. Total title/abstract
+  passes 1,000. Full-text access routes (`review/fulltext/ft-routes.jsonl`): 774 open access, 102
+  e-gateway, 27 duplicates, 97 no full text (32 near-miss candidates for a human check).
+  **Blocked:** title-resolution rerun stalled at 100/393 slow lookups (API limits), stopped; rerun
+  `python tools/resolve_title_only.py run --s2-patient=90` after 05:30 IST or with an S2 key.
+  **Next:** with the user: IEEE I3-I5, SpringerLink, ScienceDirect (then rerun ingest, rescue, dual screen
+  the delta); adjudicator route; download batch 1 (open access) then batch 2 (e-gateway); then full-text
+  screening per criteria v1.6 (dispatch rules in criteria-v1.6-screener.md: isolated folders, session
+  rules, c-run-log.jsonl first line = route). Writes into this worktree from the crash-a57ec7 session are
+  blocked for Edit/Write tools by a worktree hook; the user approved writing here (done via Bash).
 - **HANDOFF 5 (2026-10-16 ~00:15 IST; newest, overrides older blocks; session in progress).**
   Date correction: Scopus ran 2026-10-15 ~22:20 IST (file times), not 10-16; the `-20261016` file names
   stay (hashed). Search date for all subscription databases = 2026-10-15.

@@ -27,6 +27,13 @@ Do these together in one sitting. Claude keeps this list current; items are stru
      6 sentence fragments, 81 reference fragments with no title match). 32 of them have a near-miss
      candidate (e.g. truncated or renamed titles); a 5-minute human check could rescue most.
 
+6b. **Title resolution (D0033) is blocked by API limits.** The rerun stalled at 100 of 393 slow lookups
+   (OpenAlex free budget used up, arXiv API 429, Semantic Scholar's shared pool); stopped 08:25, resumable
+   from cache. Either (a) rerun after the OpenAlex reset (05:30 IST tomorrow), or (b) request a free
+   Semantic Scholar API key (semanticscholar.org/product/api, you apply; Claude never handles the key in
+   chat - put it in an environment variable yourself). D0033's check sample of 60 must complete before the
+   design is decided; its 7+ queued records join dual screening after that.
+
 ## Carried over from HANDOFF 4 (still open)
 6. Human screening sample (218 records) + 120 disagreements (RAISE validation).
 7. Professor's name, school, e-mail; ORCIDs.
