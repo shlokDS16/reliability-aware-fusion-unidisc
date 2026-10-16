@@ -21,6 +21,12 @@
   arrivals as t1b038+ (convert only ids with fetch-log status ok); agreement statistics (criteria-v1.6
   s5.3) over A/B before reconciliation; human validation sample before the author sees any row; routes
   for U06894/U07166; re-check sample / C8 records; e-gateway papers.
+  **Update ~17:45 IST, PAUSED at 55 percent weekly (user's pause rule).** OpenReview batches t1b035-t1b038
+  (36 PDFs; part3/part4 plans) screened and filed, isolation pass (t1b036 B discarded once for a Bash
+  redirect to /dev/null, rerun; t1b038 A stopped at launch, prompt pointed at the parent dir, rerun).
+  Not yet adjudicated: M12594 (t1b035), M12741 (t1b036), M12775 + M12776 (t1b038) -> next C group
+  c-t1-09; no quote returns pending for t1b035-038. Prompt lesson: name the exact folder path and say
+  "no /dev/null"; never let a screener search the dispatch root.
 - **HANDOFF 8 (2026-10-16 ~15:45 IST; newest; HANDOFF 7 below still applies except the status).**
   Full-text T1: t1b001-t1b024 COMPLETE (agreement 220/240; 39 ids to adjudication; all counted sessions
   isolated; one discarded for mkdir /tmp, one rerun after a network drop). NEXT: t1b025-t1b031 (part 1) and
