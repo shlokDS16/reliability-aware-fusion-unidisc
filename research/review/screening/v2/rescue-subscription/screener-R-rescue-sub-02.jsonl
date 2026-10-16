@@ -1,0 +1,898 @@
+{"id": "U04231", "decision": "exclude", "code": "X1", "reason": "Latent diffusion on WSI image features; LLMs only give embeddings, no diffusion text", "screener": "R-claude-haiku"}
+{"id": "U01300", "decision": "exclude", "code": "X0", "reason": "Ruelle algebra flow equivalence of Markov shifts; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04091", "decision": "exclude", "code": "X2", "reason": "Personalized text-to-image diffusion; text is conditioning only", "screener": "R-claude-haiku"}
+{"id": "U00518", "decision": "exclude", "code": "X0", "reason": "Multistate Markov models for MCI transitions; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04357", "decision": "exclude", "code": "X1", "reason": "MLLM plus image generator pipeline for 3D texture editing; no diffusion text output", "screener": "R-claude-haiku"}
+{"id": "U03791", "decision": "exclude", "code": "X0", "reason": "LLM embeddings for cell-cell communication; molecular diffusion is not a diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02089", "decision": "exclude", "code": "X1", "reason": "Identity-controlled video diffusion; non-text output, no unified understanding", "screener": "R-claude-haiku"}
+{"id": "U02069", "decision": "unclear", "code": "", "reason": "Visual text rendering in text-to-image diffusion; unclear whether rendered text counts", "screener": "R-claude-haiku"}
+{"id": "U03922", "decision": "exclude", "code": "X2", "reason": "LLM writes counterfactual captions; diffusion makes images; text is conditioning only", "screener": "R-claude-haiku"}
+{"id": "U03463", "decision": "exclude", "code": "X0", "reason": "Partial-decorrelation NLMS adaptive filtering; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02423", "decision": "exclude", "code": "X0", "reason": "Social media information diffusion study; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02668", "decision": "exclude", "code": "X0", "reason": "Participatory budgeting history in Italy; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01348", "decision": "exclude", "code": "X1", "reason": "Diffusion-based image steganography via style transfer; image output only", "screener": "R-claude-haiku"}
+{"id": "U03187", "decision": "unclear", "code": "", "reason": "Abstract missing; cannot decide from title alone", "screener": "R-claude-haiku"}
+{"id": "U02544", "decision": "exclude", "code": "X2", "reason": "DreamFusion speech-to-3D mixed reality; text-conditioned 3D output, no text generation", "screener": "R-claude-haiku"}
+{"id": "U03742", "decision": "exclude", "code": "X0", "reason": "WENO shock-capturing numerical schemes; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03810", "decision": "exclude", "code": "X2", "reason": "CLIP concept frequency and retrieval-augmented learning; diffusion only text-conditioned images", "screener": "R-claude-haiku"}
+{"id": "U03459", "decision": "exclude", "code": "X0", "reason": "Censored regression over incremental networks; diffusion here is adaptation, not a model", "screener": "R-claude-haiku"}
+{"id": "U03701", "decision": "exclude", "code": "X0", "reason": "Tripartite evolutionary game on subsidies; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01452", "decision": "unclear", "code": "", "reason": "Diffusion handwritten-text image editing; rendered text output, unclear per criteria", "screener": "R-claude-haiku"}
+{"id": "U04226", "decision": "exclude", "code": "X1", "reason": "Diffusion ControlNet image reconstruction after LLM semantic compression; image output only", "screener": "R-claude-haiku"}
+{"id": "U04264", "decision": "exclude", "code": "X1", "reason": "Diffusion synthesizes 3D VQA training images for an MLLM; not a unified model", "screener": "R-claude-haiku"}
+{"id": "U02951", "decision": "exclude", "code": "X1", "reason": "Quantization of image diffusion transformers; image output only", "screener": "R-claude-haiku"}
+{"id": "U04285", "decision": "exclude", "code": "X1", "reason": "Training-free diffusion experts for RF signals inside an LLM agent; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02648", "decision": "exclude", "code": "X0", "reason": "COVID stock market event study; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04535", "decision": "exclude", "code": "X1", "reason": "Workshop study using text-to-image and ChatGPT for climate futures; image output only", "screener": "R-claude-haiku"}
+{"id": "U01535", "decision": "exclude", "code": "X0", "reason": "Agent-based audience digital twin; diffusion is social diffusion, not a diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01236", "decision": "exclude", "code": "X0", "reason": "Numerical methods for quasi-stationary distributions; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02041", "decision": "exclude", "code": "X2", "reason": "LLaVA prompts Stable Diffusion ControlNet street imagery; text conditioning only", "screener": "R-claude-haiku"}
+{"id": "U01646", "decision": "exclude", "code": "X0", "reason": "Democratic transposition of citizens assemblies in Latin America; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04266", "decision": "exclude", "code": "X0", "reason": "LLM-GAN dermatology augmentation; diffusion only as baseline, no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01909", "decision": "exclude", "code": "X3", "reason": "Systematic review of generative AI; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04018", "decision": "exclude", "code": "X2", "reason": "Story visualization with latent diffusion and ControlNet; text conditioning, image output", "screener": "R-claude-haiku"}
+{"id": "U03948", "decision": "exclude", "code": "X2", "reason": "Diffusion augmentation for UAV detection; image output, text prompts as conditioning", "screener": "R-claude-haiku"}
+{"id": "U04516", "decision": "exclude", "code": "X0", "reason": "Diffusion of innovations theory for fake news sharing; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01068", "decision": "exclude", "code": "X0", "reason": "Lithium-ion charging with MPC and ultrasound diagnosis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03942", "decision": "exclude", "code": "X2", "reason": "Latent diffusion music stem insertion; audio output, text instructions as conditioning", "screener": "R-claude-haiku"}
+{"id": "U03982", "decision": "exclude", "code": "X1", "reason": "Robot action-sequence diffusion policy; non-text action output, no unified text", "screener": "R-claude-haiku"}
+{"id": "U01458", "decision": "exclude", "code": "X3", "reason": "Survey of text-to-video synthesis; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03506", "decision": "exclude", "code": "X0", "reason": "Conversational tutoring for entrepreneurship simulation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04110", "decision": "exclude", "code": "X2", "reason": "Uncertainty for text-to-image diffusion; image output, prompt conditioning only", "screener": "R-claude-haiku"}
+{"id": "U04434", "decision": "exclude", "code": "X3", "reason": "Book-length AI algorithms tutorial; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03641", "decision": "exclude", "code": "X0", "reason": "Reddit content moderation natural experiment; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01294", "decision": "exclude", "code": "X0", "reason": "Branching process scaling limits; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03462", "decision": "exclude", "code": "X0", "reason": "Diffusion LMS distributed estimation; diffusion is adaptive network, not a model", "screener": "R-claude-haiku"}
+{"id": "U02433", "decision": "exclude", "code": "X0", "reason": "Social media early adopters and COVID vaccine adoption; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03954", "decision": "exclude", "code": "X2", "reason": "Controlled text-to-image diffusion for domain adaptation; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U01364", "decision": "exclude", "code": "X0", "reason": "Buddhist economics reframing of ESG; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01883", "decision": "exclude", "code": "X0", "reason": "COVID vaccine tweet resharing regression; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01295", "decision": "exclude", "code": "X0", "reason": "Contraction analysis of model-based RL; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03529", "decision": "exclude", "code": "X0", "reason": "Climate change research topic evolution via citation networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02876", "decision": "exclude", "code": "X0", "reason": "Synthetic network flow data for intrusion detection; no diffusion model evident in abstract", "screener": "R-claude-haiku"}
+{"id": "U03128", "decision": "exclude", "code": "X0", "reason": "Reputation premium and AI-style writing in publications; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03947", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion sketch synthesis from text prompts; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U03886", "decision": "exclude", "code": "X0", "reason": "Retracted NLP cancer recommender abstract; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04478", "decision": "exclude", "code": "X1", "reason": "Diffusion robot trajectory sampler for manipulation skills; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04517", "decision": "exclude", "code": "X1", "reason": "Motion-conditioned diffusion for lacquerware images and 3D rendering; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04417", "decision": "unclear", "code": "", "reason": "Diffusion over CLIP-space proxy semantics for few-shot action recognition; text output unclear", "screener": "R-claude-haiku"}
+{"id": "U03883", "decision": "exclude", "code": "X2", "reason": "Text-to-3D via image diffusion; text conditioning, 3D output", "screener": "R-claude-haiku"}
+{"id": "U04185", "decision": "exclude", "code": "X1", "reason": "Saliency analysis of fMRI visual brain decoding with diffusion models; image output only", "screener": "R-claude-haiku"}
+{"id": "U03011", "decision": "exclude", "code": "X0", "reason": "AI-assisted publications and North-South research disparities; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00886", "decision": "exclude", "code": "X0", "reason": "Large deviations for diffusion and jump processes; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04086", "decision": "exclude", "code": "X1", "reason": "Adversarial attacks on AI models; diffusion only for image perturbation and purification", "screener": "R-claude-haiku"}
+{"id": "U02873", "decision": "exclude", "code": "X3", "reason": "Survey of LLMs in mechanics and manufacturing; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04036", "decision": "exclude", "code": "X2", "reason": "Diffusion preference alignment for text-to-image; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U01303", "decision": "exclude", "code": "X2", "reason": "Multi-condition Chinese landscape painting diffusion; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U04132", "decision": "exclude", "code": "X2", "reason": "Preference alignment for text-to-image diffusion; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U04324", "decision": "exclude", "code": "X0", "reason": "Vision-language face forgery detection; no diffusion generation component", "screener": "R-claude-haiku"}
+{"id": "U03471", "decision": "exclude", "code": "X0", "reason": "Decentralized online estimation with random delays; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01992", "decision": "unclear", "code": "", "reason": "Kinetic typography video diffusion with text prompts; rendered letters, unclear per criteria", "screener": "R-claude-haiku"}
+{"id": "U04351", "decision": "exclude", "code": "X2", "reason": "Concept-informed diffusion for dataset distillation; image output, LLM concepts as conditioning", "screener": "R-claude-haiku"}
+{"id": "U02136", "decision": "exclude", "code": "X0", "reason": "Interdisciplinary innovation detection; diffusion is knowledge diffusion, not a model", "screener": "R-claude-haiku"}
+{"id": "U04476", "decision": "unclear", "code": "", "reason": "LLM semantic bridge with diffusion multimodal reconstruction; unified or pipeline unclear", "screener": "R-claude-haiku"}
+{"id": "U03926", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion medical image factorization; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U02003", "decision": "exclude", "code": "X0", "reason": "Swedish city planning expositions history; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03934", "decision": "unclear", "code": "", "reason": "LLM-planned typographic attack with TextDiffuser pipeline; rendered text, not unified", "screener": "R-claude-haiku"}
+{"id": "U01857", "decision": "exclude", "code": "X0", "reason": "Sentiment analysis of X posts on TaTME surgery; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02167", "decision": "exclude", "code": "X0", "reason": "Common ground and theory of mind in children with autism; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04548", "decision": "exclude", "code": "X0", "reason": "Voter model opinion dynamics; diffusion is social, no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03508", "decision": "exclude", "code": "X0", "reason": "Systematic review of interlocking directorates in family firms; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03670", "decision": "exclude", "code": "X0", "reason": "Topic dissemination SIR model on social networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01952", "decision": "exclude", "code": "X0", "reason": "Retrieval-augmented multimodal MT with mBART; no diffusion component stated", "screener": "R-claude-haiku"}
+{"id": "U03248", "decision": "exclude", "code": "X0", "reason": "Book chapter on language network anatomy and DTI; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03556", "decision": "exclude", "code": "X0", "reason": "Social network graph from texts with time series; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04176", "decision": "exclude", "code": "X2", "reason": "Comparing text-to-image models for divergent visual attributes; image output, prompt conditioning", "screener": "R-claude-haiku"}
+{"id": "U03103", "decision": "exclude", "code": "X3", "reason": "Literature review of DevOps and GenAI; secondary study", "screener": "R-claude-haiku"}
+{"id": "U01843", "decision": "unclear", "code": "", "reason": "Screen-content super-resolution with diffusion text synthesis and LLM refinement; visual text, pipeline", "screener": "R-claude-haiku"}
+{"id": "U03905", "decision": "exclude", "code": "X3", "reason": "Book-length tutorial on building text-to-image diffusion models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02351", "decision": "exclude", "code": "X0", "reason": "Overview of data integration in Alzheimer's neuroscience; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04008", "decision": "exclude", "code": "X2", "reason": "Debiasing attribute binding in text-to-image diffusion; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U01759", "decision": "exclude", "code": "X0", "reason": "Adolescent sexuality education cascade in Ghana; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03325", "decision": "exclude", "code": "X2", "reason": "Long motion diffusion with LLM transitions; text-conditioned non-text motion output", "screener": "R-claude-haiku"}
+{"id": "U02090", "decision": "exclude", "code": "X0", "reason": "Econometric idea diffusion via connectivity; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01930", "decision": "exclude", "code": "X0", "reason": "Collective bargaining in post-memoranda Greece; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04215", "decision": "exclude", "code": "X0", "reason": "Practical prompt engineering book for LLMs; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01550", "decision": "exclude", "code": "X0", "reason": "Health system productive forces and technology elements; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00278", "decision": "exclude", "code": "X0", "reason": "Excess-lithium-free LLZO solid electrolyte synthesis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04127", "decision": "exclude", "code": "X0", "reason": "Blockchain federated deepfake detection for forensics; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U01642", "decision": "exclude", "code": "X2", "reason": "Diffusion transformer speech synthesis from text, video and audio; speech output", "screener": "R-claude-haiku"}
+{"id": "U04542", "decision": "exclude", "code": "X2", "reason": "Pipeline with text-to-motion diffusion driving 3DGS avatars; text conditioning, not unified", "screener": "R-claude-haiku"}
+{"id": "U04402", "decision": "exclude", "code": "X2", "reason": "Diffusion Transformer text-to-music with lyric and timbre conditioning; audio output", "screener": "R-claude-haiku"}
+{"id": "U02051", "decision": "exclude", "code": "X3", "reason": "Historical overview chapter of generative AI; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03920", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion with LLM prompt diversification; image output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U03704", "decision": "exclude", "code": "X0", "reason": "Multistate analysis of cardiogenic shock devices; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01033", "decision": "exclude", "code": "X0", "reason": "Metastable Markov chain large deviations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03094", "decision": "exclude", "code": "X3", "reason": "Survey of watermarking for DNNs, GANs and diffusion models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04190", "decision": "unclear", "code": "", "reason": "Frozen Stable Diffusion U-Net with text-instruction task routing; vision outputs only", "screener": "R-claude-haiku"}
+{"id": "U00657", "decision": "exclude", "code": "X0", "reason": "Commutative closure of shuffle languages; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01344", "decision": "exclude", "code": "X0", "reason": "Chan Buddhist poetry text visualization with topic modeling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03837", "decision": "exclude", "code": "X2", "reason": "LLM story prompts drive diffusion visuals in VR pipeline; image output", "screener": "R-claude-haiku"}
+{"id": "U03963", "decision": "exclude", "code": "X2", "reason": "LLaVA prompts drive Stable Diffusion multi-mask inpainting; image output", "screener": "R-claude-haiku"}
+{"id": "U01332", "decision": "exclude", "code": "X0", "reason": "AI-generated social bots on Weibo; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03686", "decision": "exclude", "code": "X0", "reason": "COVID-19 information seeking survey; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02703", "decision": "exclude", "code": "X0", "reason": "Book on science and technology in colonial India; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01563", "decision": "unclear", "code": "", "reason": "Digital human lip sync: multimodal LLM story plots and spatio-temporal video diffusion", "screener": "R-claude-haiku"}
+{"id": "U03175", "decision": "exclude", "code": "X0", "reason": "Spatio-temporal knowledge graph of water diversion risks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03970", "decision": "exclude", "code": "X1", "reason": "LLM recommender with CatVTON diffusion try-on; image output, pipeline", "screener": "R-claude-haiku"}
+{"id": "U04589", "decision": "exclude", "code": "X0", "reason": "Gender disparities in a computer science course survey; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02959", "decision": "exclude", "code": "X0", "reason": "AI adoption and novelty across scientific fields; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02904", "decision": "exclude", "code": "X1", "reason": "LLM latency prediction with conditional diffusion tabular augmentation; no diffusion text", "screener": "R-claude-haiku"}
+{"id": "U04188", "decision": "exclude", "code": "X0", "reason": "Mixture-of-experts action transformer for robot control; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03858", "decision": "exclude", "code": "X2", "reason": "LLM prompt refinement for latent diffusion image generation; image output", "screener": "R-claude-haiku"}
+{"id": "U03542", "decision": "exclude", "code": "X0", "reason": "Opinion control influencer archetypes in social networks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04073", "decision": "exclude", "code": "X1", "reason": "Conversational LLM with diffusion virtual try-on pipeline; image output", "screener": "R-claude-haiku"}
+{"id": "U00956", "decision": "exclude", "code": "X0", "reason": "Likelihood ratio test for Markov chain mixtures; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02920", "decision": "exclude", "code": "X3", "reason": "Chinese review of GAN research and applications; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03897", "decision": "exclude", "code": "X1", "reason": "Diffusion recommender over sentiment-weighted interaction graphs; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01650", "decision": "exclude", "code": "X0", "reason": "Graph-based trend detection on social media; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02937", "decision": "exclude", "code": "X3", "reason": "Conceptual synthesis on synthetic knowledge in GenAI systems; secondary", "screener": "R-claude-haiku"}
+{"id": "U03914", "decision": "unclear", "code": "", "reason": "LLM-generated SVG code refined by image diffusion guidance; pipeline, code output unclear", "screener": "R-claude-haiku"}
+{"id": "U01674", "decision": "exclude", "code": "X0", "reason": "Digital Islamophobia network analysis across European platforms; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01135", "decision": "exclude", "code": "X0", "reason": "Random exchange model and kinetic limits; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03479", "decision": "exclude", "code": "X1", "reason": "Diffusion 6D pose estimation inside LLM/VLM manipulation pipeline; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04109", "decision": "exclude", "code": "X1", "reason": "MLLM motion instructions with diffusion robot action policy; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04584", "decision": "exclude", "code": "X0", "reason": "Workshop proposal on open challenges in online social networks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03435", "decision": "exclude", "code": "X0", "reason": "Time-variant step size LMS algorithm; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04164", "decision": "exclude", "code": "X1", "reason": "VLM instructions with action diffusion for robot grasping; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01536", "decision": "exclude", "code": "X0", "reason": "Data privacy challenges of blockchain energy systems; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03439", "decision": "exclude", "code": "X0", "reason": "Multitask diffusion LMS adaptive estimation; diffusion is network adaptation", "screener": "R-claude-haiku"}
+{"id": "U02769", "decision": "exclude", "code": "X0", "reason": "Polya urn model of Twitter sentiment; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04229", "decision": "exclude", "code": "X2", "reason": "Training-free LLM-directed text-to-video diffusion for multi-object scenes; video output", "screener": "R-claude-haiku"}
+{"id": "U04165", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion hateful illusions conditioned on hate messages; image output", "screener": "R-claude-haiku"}
+{"id": "U03898", "decision": "exclude", "code": "X2", "reason": "LLM coordinates plus diffusion blending for object placement; image output", "screener": "R-claude-haiku"}
+{"id": "U03796", "decision": "exclude", "code": "X2", "reason": "Serving system for Stable Diffusion text-to-image inference; image output", "screener": "R-claude-haiku"}
+{"id": "U03497", "decision": "exclude", "code": "X0", "reason": "GenAI exposure and employment across Europe; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04242", "decision": "exclude", "code": "X1", "reason": "Guided diffusion for image super-resolution with VLM cues; image output", "screener": "R-claude-haiku"}
+{"id": "U01067", "decision": "exclude", "code": "X0", "reason": "Model predictive control of bidirectional DC converter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01105", "decision": "exclude", "code": "X0", "reason": "Deep reinforcement learning electricity bidding; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00538", "decision": "exclude", "code": "X1", "reason": "Masked-attention spatio-temporal control for video diffusion; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02965", "decision": "exclude", "code": "X0", "reason": "LLM multi-agent propagation simulation for misinformation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03839", "decision": "exclude", "code": "X1", "reason": "One-step diffusion for FF-to-FFPE histopathology image translation; image output", "screener": "R-claude-haiku"}
+{"id": "U02421", "decision": "exclude", "code": "X0", "reason": "Bursty event detection on Twitter with topic modeling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03845", "decision": "exclude", "code": "X2", "reason": "Diffusion-generated images for VQA data augmentation; image output", "screener": "R-claude-haiku"}
+{"id": "U04411", "decision": "exclude", "code": "X1", "reason": "CLIP-guided diffusion for CT metal artifact reduction; image output", "screener": "R-claude-haiku"}
+{"id": "U03675", "decision": "exclude", "code": "X0", "reason": "Parliamentary elections and social emotions survey; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01567", "decision": "exclude", "code": "X0", "reason": "AI-era geography literature paradigms via topic modeling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04488", "decision": "exclude", "code": "X1", "reason": "Piecewise approximation hardware; diffusion model is a benchmark workload, non-text", "screener": "R-claude-haiku"}
+{"id": "U04314", "decision": "exclude", "code": "X0", "reason": "Attribution explainability for medical VLM reports; no diffusion generation", "screener": "R-claude-haiku"}
+{"id": "U00647", "decision": "exclude", "code": "X0", "reason": "Evidence-based parenting book; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04447", "decision": "exclude", "code": "X2", "reason": "VLM-generated descriptions guide inpainting diffusion for 360 scenes; text conditioning", "screener": "R-claude-haiku"}
+{"id": "U04141", "decision": "unclear", "code": "", "reason": "Diffusion backgrounds plus MLLM layout and visual text stylization; pipeline, unclear", "screener": "R-claude-haiku"}
+{"id": "U03816", "decision": "exclude", "code": "X1", "reason": "Diffusion shadow removal with segmentation and super-resolution; image output", "screener": "R-claude-haiku"}
+{"id": "U02281", "decision": "exclude", "code": "X0", "reason": "Evangelical support for Trump case study; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03939", "decision": "exclude", "code": "X2", "reason": "Diffusion text-to-music with T5 and CLAP conditioning; audio output", "screener": "R-claude-haiku"}
+{"id": "U02322", "decision": "exclude", "code": "X0", "reason": "Video title sentiment and views on Bilibili; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04219", "decision": "exclude", "code": "X1", "reason": "Grid-splicing video diffusion with LLM degradation recognition; video output", "screener": "R-claude-haiku"}
+{"id": "U04260", "decision": "unclear", "code": "", "reason": "VLM representations condition a diffusion motion generator; two-stage, 3D motion output", "screener": "R-claude-haiku"}
+{"id": "U04153", "decision": "exclude", "code": "X2", "reason": "Text-to-3D scene generation via diffusion priors and LLM layout; text conditioning", "screener": "R-claude-haiku"}
+{"id": "U04238", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion dermatology images conditioned on synthetic clinical notes; image output", "screener": "R-claude-haiku"}
+{"id": "U01628", "decision": "exclude", "code": "X0", "reason": "Japan community psychology decolonial analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03782", "decision": "exclude", "code": "X3", "reason": "Survey of LLM-integrated text-to-image diffusion models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03795", "decision": "exclude", "code": "X2", "reason": "Latent diffusion text-to-audio with LLM-enriched captions; audio output", "screener": "R-claude-haiku"}
+{"id": "U03289", "decision": "exclude", "code": "X3", "reason": "Conceptual essay on generative AI and remix; secondary, no method", "screener": "R-claude-haiku"}
+{"id": "U00944", "decision": "exclude", "code": "X0", "reason": "Gamma-expansion of reversible Markov chain large deviations; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03646", "decision": "exclude", "code": "X0", "reason": "AI chatbot adoption in academia survey; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03819", "decision": "exclude", "code": "X2", "reason": "VLM suggests sound text; diffusion generates audio from text; audio output", "screener": "R-claude-haiku"}
+{"id": "U01966", "decision": "unclear", "code": "", "reason": "Retouching text-rendering errors in text-to-image outputs; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U03919", "decision": "exclude", "code": "X1", "reason": "Latent diffusion over ESM-2 embeddings for peptide generation; non-text protein output", "screener": "R-claude-haiku"}
+{"id": "U01274", "decision": "exclude", "code": "X0", "reason": "Scaled derivative DMDc for mechanical systems; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00317", "decision": "exclude", "code": "X0", "reason": "Historical archaeology textbook; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04172", "decision": "exclude", "code": "X1", "reason": "CLIP clustering then conditional diffusion for balanced face images; image output", "screener": "R-claude-haiku"}
+{"id": "U02338", "decision": "exclude", "code": "X0", "reason": "Belt and Road discourse on Indonesian Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03951", "decision": "exclude", "code": "X2", "reason": "Diffusion synthesizes music embeddings steered by text or image; audio retrieval target", "screener": "R-claude-haiku"}
+{"id": "U04350", "decision": "exclude", "code": "X7", "reason": "Content tool combining LLM and diffusion APIs; workflow application, no model-level finding", "screener": "R-claude-haiku"}
+{"id": "U01347", "decision": "exclude", "code": "X0", "reason": "Data science job roles from postings; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04462", "decision": "include", "code": "", "reason": "Unified VLM-diffusion model forecasts language-conditioned optical flow; extends to video generation", "screener": "R-claude-haiku"}
+{"id": "U02740", "decision": "exclude", "code": "X0", "reason": "Arab Spring causes and driving forces; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01462", "decision": "exclude", "code": "X0", "reason": "Tweet virality prediction from network and content features; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04182", "decision": "exclude", "code": "X1", "reason": "LLM-guided cell arrangement with diffusion pathology image synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U03053", "decision": "exclude", "code": "X0", "reason": "GenAI in education management via diffusion of innovations theory; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03661", "decision": "exclude", "code": "X0", "reason": "Emotional dimensions and cryptocurrency risk; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03633", "decision": "exclude", "code": "X0", "reason": "Emotions during Capitol storming on Parler; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04400", "decision": "exclude", "code": "X2", "reason": "LLM layout and attention-masked diffusion for compositional text-to-image; image output", "screener": "R-claude-haiku"}
+{"id": "U04340", "decision": "exclude", "code": "X1", "reason": "Diffusion for 3D human interaction mesh reconstruction from video; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03911", "decision": "exclude", "code": "X2", "reason": "LLM-generated prompts for aligning text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U03575", "decision": "exclude", "code": "X2", "reason": "Diffusion sign motion generation from gloss text; motion output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U01290", "decision": "exclude", "code": "X0", "reason": "Kalman filter core temperature estimation for Li-ion cells; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02887", "decision": "exclude", "code": "X3", "reason": "Systematic review of pedestrian trajectory and intention prediction; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02670", "decision": "exclude", "code": "X0", "reason": "News topic virality prediction with deep learning; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03846", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion synthetic training images for zero-shot classification; image output", "screener": "R-claude-haiku"}
+{"id": "U03691", "decision": "exclude", "code": "X0", "reason": "Unconfirmed information and epidemic spreading in multilayer networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01143", "decision": "exclude", "code": "X0", "reason": "Scaled-derivative DMDc participation matrices for vibration control; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03253", "decision": "exclude", "code": "X3", "reason": "Critical essay on limits of generative AI music; no method, secondary", "screener": "R-claude-haiku"}
+{"id": "U04045", "decision": "exclude", "code": "X2", "reason": "LLM script analysis and layout-controlled diffusion for stage scenes; text conditioning", "screener": "R-claude-haiku"}
+{"id": "U02882", "decision": "exclude", "code": "X1", "reason": "AI virtual actor IP framework citing Stable Diffusion and Sora; business study, non-text", "screener": "R-claude-haiku"}
+{"id": "U03048", "decision": "exclude", "code": "X3", "reason": "Review of generative AI in clinical healthcare; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03118", "decision": "exclude", "code": "X3", "reason": "Systematic review and meta-analysis of AI prostate cancer tools; no diffusion focus", "screener": "R-claude-haiku"}
+{"id": "U03430", "decision": "exclude", "code": "X0", "reason": "Arctangent maximum correntropy distributed estimation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03770", "decision": "exclude", "code": "X3", "reason": "Japanese radiology 2025 review; secondary study, no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02813", "decision": "exclude", "code": "X3", "reason": "Review of multimodal brain network analysis; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03583", "decision": "exclude", "code": "X0", "reason": "Investor sentiment transmission via wavelet and transfer entropy; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03857", "decision": "exclude", "code": "X0", "reason": "Single-cell foundation model for cell-cell communication; molecular diffusion is not a model", "screener": "R-claude-haiku"}
+{"id": "U04218", "decision": "exclude", "code": "X1", "reason": "Graph diffusion for zero-trust micro-segmentation; non-text graph output", "screener": "R-claude-haiku"}
+{"id": "U03521", "decision": "exclude", "code": "X0", "reason": "Game-theoretic digital representatives in collective decisions; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04268", "decision": "exclude", "code": "X1", "reason": "Privacy-preserving emotion recognition with latent diffusion feature space; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03444", "decision": "exclude", "code": "X0", "reason": "Distributed clustering for secure multitask estimation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02651", "decision": "exclude", "code": "X0", "reason": "Incomplete multiview clustering with graph regularization; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04367", "decision": "exclude", "code": "X0", "reason": "Position-aided image transmission with foundation-model view generator; diffusion not stated", "screener": "R-claude-haiku"}
+{"id": "U01036", "decision": "exclude", "code": "X0", "reason": "Reliable uncertainty of tests and surveys via subtests; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03551", "decision": "exclude", "code": "X0", "reason": "Law of iterated logarithm for a two-station queueing network; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02075", "decision": "exclude", "code": "X0", "reason": "Rap and traditional music in Mallorca; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01583", "decision": "exclude", "code": "X0", "reason": "Jump-diffusion financial risk model with FinBERT sentiment; no generative diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03703", "decision": "exclude", "code": "X3", "reason": "Critical review of social media for disaster management; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03618", "decision": "exclude", "code": "X0", "reason": "Foucauldian reflections on the female body; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03476", "decision": "exclude", "code": "X0", "reason": "Fuzzy technology trajectories via topic modeling and patents; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04001", "decision": "exclude", "code": "X2", "reason": "Preference optimization of Stable Diffusion in perceptual space; image output, text prompts", "screener": "R-claude-haiku"}
+{"id": "U02982", "decision": "exclude", "code": "X1", "reason": "LLM agents plan layouts, then diffusion renders architectural layouts; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03798", "decision": "exclude", "code": "X2", "reason": "LLM-controlled self-correcting text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U04058", "decision": "exclude", "code": "X2", "reason": "LLM prompt tuning for text-to-image diffusion; image output, LLM text only", "screener": "R-claude-haiku"}
+{"id": "U03457", "decision": "exclude", "code": "X0", "reason": "Adaptive-threshold distributed estimation in sensor networks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00607", "decision": "exclude", "code": "X1", "reason": "DiffWave waveform diffusion for audio synthesis; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02222", "decision": "exclude", "code": "X1", "reason": "Equivariant diffusion for 3D point cloud generation; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01163", "decision": "exclude", "code": "X0", "reason": "Probabilistic counterexample guidance for safe reinforcement learning; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01148", "decision": "exclude", "code": "X0", "reason": "Predictive sliding-mode control for irrigation canals; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03799", "decision": "exclude", "code": "X2", "reason": "Diffusion text-to-image with frozen PhoBERT for Vietnamese; image output", "screener": "R-claude-haiku"}
+{"id": "U03012", "decision": "exclude", "code": "X3", "reason": "Position discussion on AI and sustainable electricity; secondary, no method", "screener": "R-claude-haiku"}
+{"id": "U01080", "decision": "exclude", "code": "X0", "reason": "Discrete reaction-diffusion predator-prey forced waves; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04432", "decision": "exclude", "code": "X1", "reason": "MLLM motion planning guiding a pretrained video generator; video output", "screener": "R-claude-haiku"}
+{"id": "U03372", "decision": "exclude", "code": "X0", "reason": "Habermasian analysis of LLM moral status; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04099", "decision": "exclude", "code": "X2", "reason": "Blob-grounded text-to-video diffusion with text conditioning; video output", "screener": "R-claude-haiku"}
+{"id": "U04533", "decision": "exclude", "code": "X0", "reason": "Opinion diffusion stabilization on graphs; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04198", "decision": "exclude", "code": "X1", "reason": "Self-supervised diffusion features for encrypted traffic classification; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02055", "decision": "exclude", "code": "X7", "reason": "Cross-media storytelling system using existing LLM and Stable Diffusion; application study", "screener": "R-claude-haiku"}
+{"id": "U03823", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion counterfactual image-text pairs probing VLM biases; image output", "screener": "R-claude-haiku"}
+{"id": "U03935", "decision": "unclear", "code": "", "reason": "Diffusion manga generator with MLLM identity adapter; unified integration unclear", "screener": "R-claude-haiku"}
+{"id": "U03561", "decision": "exclude", "code": "X0", "reason": "Social network analysis of a diabetes online community; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02053", "decision": "exclude", "code": "X0", "reason": "Weighted correlated influence metric for Twitter users; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02696", "decision": "exclude", "code": "X0", "reason": "Essay on a Fernando Távora archive exhibition; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03408", "decision": "exclude", "code": "X3", "reason": "Discussion paper on generative AI for maritime; secondary, no method", "screener": "R-claude-haiku"}
+{"id": "U04412", "decision": "exclude", "code": "X1", "reason": "Training-free camouflaged object detection with diffusion-generated prototypes; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04531", "decision": "exclude", "code": "X0", "reason": "Graph neural network opinion leader identification; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U00904", "decision": "exclude", "code": "X0", "reason": "New metric for compact hulls in shift flow; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04293", "decision": "exclude", "code": "X2", "reason": "Text-guided diffusion editing for Gaussian Splatting avatars; 3D output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U01757", "decision": "exclude", "code": "X0", "reason": "TCM syndrome types and CT/MRI features in liver cancer; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04526", "decision": "exclude", "code": "X0", "reason": "Majority-based preference diffusion on social networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01281", "decision": "exclude", "code": "X0", "reason": "Hydraulic drive dynamics with PWM return flow controller; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04031", "decision": "exclude", "code": "X2", "reason": "LLM-rewritten prompts for LoRA diffusion biometric image generation; image output", "screener": "R-claude-haiku"}
+{"id": "U02789", "decision": "exclude", "code": "X0", "reason": "Graph ODE recurrent network for traffic flow forecasting; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02524", "decision": "exclude", "code": "X1", "reason": "Generative diffusion for channel information maps in SAGIN; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01363", "decision": "unclear", "code": "", "reason": "Diffusion generation of style-controlled rendered text images; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U04451", "decision": "exclude", "code": "X2", "reason": "Training-free multi-LoRA composition for text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U03432", "decision": "exclude", "code": "X0", "reason": "Multitask diffusion bias-compensated LMS in noisy networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04527", "decision": "exclude", "code": "X0", "reason": "Agent-based COVID vaccine opinion diffusion model; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01870", "decision": "exclude", "code": "X0", "reason": "Media topic modelling of participatory budgeting in Korea; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03959", "decision": "exclude", "code": "X1", "reason": "Restructured DDPM for vehicle trajectory generation from VLM maps; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01973", "decision": "exclude", "code": "X0", "reason": "Media sentiment trade index for US-China-Korea relations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03475", "decision": "exclude", "code": "X0", "reason": "Unified LLM for financial data generation and fraud prediction; diffusion only as baseline", "screener": "R-claude-haiku"}
+{"id": "U04115", "decision": "exclude", "code": "X2", "reason": "Latent diffusion chest X-ray synthesis from EHR text prompts; image output", "screener": "R-claude-haiku"}
+{"id": "U03140", "decision": "exclude", "code": "X0", "reason": "NIH funding trends for AI in radiology; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01329", "decision": "exclude", "code": "X0", "reason": "Public discourse on electric vehicles in Vietnam; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03941", "decision": "exclude", "code": "X1", "reason": "Graph diffusion for wireless micro-segmentation; non-text graph output", "screener": "R-claude-haiku"}
+{"id": "U04406", "decision": "unclear", "code": "", "reason": "Vision-language model with diffusion defect image generation; unified system unclear", "screener": "R-claude-haiku"}
+{"id": "U02657", "decision": "exclude", "code": "X0", "reason": "Augmented multilingual COVID Twitter dataset; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03274", "decision": "exclude", "code": "X0", "reason": "Replication package for generative AI adoption study; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04154", "decision": "exclude", "code": "X3", "reason": "Review of 3D reconstruction with neural rendering and diffusion for driving; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03968", "decision": "exclude", "code": "X1", "reason": "Diffusion background-music generation from video shots; audio output, visual conditioning", "screener": "R-claude-haiku"}
+{"id": "U01161", "decision": "exclude", "code": "X0", "reason": "Traveling waves in a discrete diffusive epidemic model; no diffusion generative model", "screener": "R-claude-haiku"}
+{"id": "U01394", "decision": "exclude", "code": "X0", "reason": "Chilean women poets and science diffusion in newspapers; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00923", "decision": "exclude", "code": "X0", "reason": "Greedy genetic algorithm for on-orbit servicing planning; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04523", "decision": "exclude", "code": "X0", "reason": "Opinion diffusion on society graphs with approval ballots; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03952", "decision": "exclude", "code": "X2", "reason": "Text-to-image diffusion with VLM semantics explains classifiers; image output", "screener": "R-claude-haiku"}
+{"id": "U02681", "decision": "exclude", "code": "X0", "reason": "Public opinion on COVID-19 in a forum via topic modeling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01423", "decision": "exclude", "code": "X0", "reason": "UAV object detection network with feature diffusion fusion; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03487", "decision": "exclude", "code": "X0", "reason": "Language model generates chloride records for ML prediction; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03987", "decision": "exclude", "code": "X1", "reason": "Interpretability of diffusion model features via sparse autoencoders; non-text features", "screener": "R-claude-haiku"}
+{"id": "U00921", "decision": "exclude", "code": "X0", "reason": "Joint dynamic models for recurrent competing risks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03142", "decision": "exclude", "code": "X0", "reason": "LLM-enabled resource allocation for federated split learning; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04576", "decision": "exclude", "code": "X0", "reason": "Endogenous and exogenous opinion dynamics experimental design; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03454", "decision": "exclude", "code": "X0", "reason": "Privacy-preserving distributed projection LMS; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04223", "decision": "exclude", "code": "X2", "reason": "LLM-structured prompts and diffusion attention control for temporal audio; audio output", "screener": "R-claude-haiku"}
+{"id": "U01549", "decision": "exclude", "code": "X1", "reason": "EEG-conditioned image and multi-view diffusion for 3D mesh; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04303", "decision": "exclude", "code": "X1", "reason": "Single-image diffusion with positional encoding control; image output", "screener": "R-claude-haiku"}
+{"id": "U01885", "decision": "exclude", "code": "X0", "reason": "Intermediaries in social science and business collaboration; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04573", "decision": "exclude", "code": "X0", "reason": "Dissertation on AI and group decision dynamics; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03794", "decision": "exclude", "code": "X1", "reason": "Diffusion with ControlNet glove images for hand-detection augmentation; image output", "screener": "R-claude-haiku"}
+{"id": "U03320", "decision": "exclude", "code": "X3", "reason": "Meta-review of online-to-offline scholarship; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03809", "decision": "exclude", "code": "X1", "reason": "Text-free diffusion using visual context; image output, no text input or output", "screener": "R-claude-haiku"}
+{"id": "U01531", "decision": "exclude", "code": "X0", "reason": "Edge computing patent topic modeling and diffusion growth forecasting; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03465", "decision": "exclude", "code": "X0", "reason": "Adaptive filter for cyclostationary signals; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04436", "decision": "exclude", "code": "X2", "reason": "LLM descriptions drive diffusion-based 3D fashion generation; 3D output, text input", "screener": "R-claude-haiku"}
+{"id": "U03689", "decision": "exclude", "code": "X0", "reason": "Community fact-checks and moral outrage in replies on X; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04177", "decision": "exclude", "code": "X0", "reason": "3D articulated object segmentation with LLM URDF synthesis; no diffusion component stated", "screener": "R-claude-haiku"}
+{"id": "U02772", "decision": "exclude", "code": "X0", "reason": "Ethnography of fascist activists in Italy; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03291", "decision": "exclude", "code": "X0", "reason": "LLM-guided limb-level emotion text-to-motion; no diffusion component stated", "screener": "R-claude-haiku"}
+{"id": "U02981", "decision": "exclude", "code": "X1", "reason": "Hardware accelerator for LLM and diffusion workloads; non-text diffusion output", "screener": "R-claude-haiku"}
+{"id": "U03851", "decision": "exclude", "code": "X1", "reason": "DDPM and DALL-E 2 retinal fundus image synthesis comparison; image output", "screener": "R-claude-haiku"}
+{"id": "U03870", "decision": "exclude", "code": "X2", "reason": "Benchmark of text-to-image diffusion reasoning and social bias; image output", "screener": "R-claude-haiku"}
+{"id": "U01679", "decision": "exclude", "code": "X0", "reason": "Fake news detection with emotion-stance features and GNN; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02509", "decision": "exclude", "code": "X0", "reason": "Prior-knowledge fusion network for liver cancer prediction; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03423", "decision": "exclude", "code": "X0", "reason": "Diffusion FxLMS adaptive filter for sinusoidal input; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01502", "decision": "exclude", "code": "X7", "reason": "Pipeline of existing text-to-image, video and audio models for poetry education; application", "screener": "R-claude-haiku"}
+{"id": "U01369", "decision": "exclude", "code": "X0", "reason": "LLM information extraction from liver MRI reports; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01969", "decision": "exclude", "code": "X0", "reason": "Use of okay in Swiss interviews; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02700", "decision": "exclude", "code": "X0", "reason": "Diffusionism in IR norm research; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03122", "decision": "exclude", "code": "X3", "reason": "Scoping review of synthetic data in healthcare; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03031", "decision": "exclude", "code": "X0", "reason": "Prompt engineering in healthcare overview; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03636", "decision": "exclude", "code": "X0", "reason": "Followers and followees in innovation adoption on Twitter; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02134", "decision": "exclude", "code": "X3", "reason": "Textbook on cost-efficient AI for healthcare; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03587", "decision": "exclude", "code": "X0", "reason": "Sentiment polarisation of Swedish immigration discourse; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03683", "decision": "exclude", "code": "X0", "reason": "Digital emotion contagion around health rumor refutation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04210", "decision": "exclude", "code": "X2", "reason": "Latent diffusion anomaly detection conditioned on VLM captions; image output", "screener": "R-claude-haiku"}
+{"id": "U03835", "decision": "exclude", "code": "X0", "reason": "Protein language models for ligand-receptor prediction; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01581", "decision": "exclude", "code": "X0", "reason": "Energy app user ratings using expectation and diffusion theories; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02687", "decision": "exclude", "code": "X0", "reason": "Socio-enabling factors for AI adoption in manufacturing; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04379", "decision": "exclude", "code": "X7", "reason": "Multi-agent LLM system using existing diffusion generators for packaging design; application", "screener": "R-claude-haiku"}
+{"id": "U03576", "decision": "exclude", "code": "X1", "reason": "Velocity-aware diffusion policy for humanoid grasping; robot action output", "screener": "R-claude-haiku"}
+{"id": "U02146", "decision": "exclude", "code": "X1", "reason": "Hierarchical autoregressive robot policy with diffusion decoder; action output", "screener": "R-claude-haiku"}
+{"id": "U03433", "decision": "exclude", "code": "X0", "reason": "Multitask LMS over wireless links; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04030", "decision": "exclude", "code": "X1", "reason": "Diffusion-based 6D pose estimation with LLM embeddings; pose output", "screener": "R-claude-haiku"}
+{"id": "U04317", "decision": "exclude", "code": "X2", "reason": "Concept erasure for text-to-image diffusion with retrieved descriptors; image output", "screener": "R-claude-haiku"}
+{"id": "U02583", "decision": "exclude", "code": "X0", "reason": "Chatbot adoption topics from Reddit conversations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04470", "decision": "exclude", "code": "X1", "reason": "Diffusion satellite image synthesis from polygon semantics; image output", "screener": "R-claude-haiku"}
+{"id": "U02563", "decision": "exclude", "code": "X0", "reason": "Copula and SDE growth model for forest stands; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U00461", "decision": "exclude", "code": "X0", "reason": "Pregnancy identification from fingertip pulse signals; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04311", "decision": "exclude", "code": "X1", "reason": "Retrieval and fusion of diffusion models for image generation; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03567", "decision": "exclude", "code": "X0", "reason": "Abstractive summarization of document collections with GPT; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04393", "decision": "exclude", "code": "X3", "reason": "Textbook on deep learning with R; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04171", "decision": "exclude", "code": "X1", "reason": "Multimodal knowledge graph completion with diffusion denoising; non-text, no generation", "screener": "R-claude-haiku"}
+{"id": "U04213", "decision": "exclude", "code": "X1", "reason": "Diffusion refines SAM segmentation masks with CLIP text features; mask output", "screener": "R-claude-haiku"}
+{"id": "U02342", "decision": "exclude", "code": "X0", "reason": "Interactive approach in Italian EIP AGRI operational groups; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04204", "decision": "exclude", "code": "X2", "reason": "Text-driven diffusion light field synthesis with LLM guidance; image output", "screener": "R-claude-haiku"}
+{"id": "U04290", "decision": "exclude", "code": "X2", "reason": "Prompt-guided diffusion inpainting of license plates; image output", "screener": "R-claude-haiku"}
+{"id": "U04114", "decision": "exclude", "code": "X1", "reason": "Zero-shot out-of-context detection with BLIP-2 and Stable Diffusion inpainting; image pipeline", "screener": "R-claude-haiku"}
+{"id": "U03541", "decision": "exclude", "code": "X0", "reason": "COVID-19 datasets on open government data sites; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02033", "decision": "exclude", "code": "X0", "reason": "Brain connectivity anatomy commentary; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03097", "decision": "exclude", "code": "X3", "reason": "Survey of automatic prompt engineering for LLMs; secondary study", "screener": "R-claude-haiku"}
+{"id": "U00324", "decision": "exclude", "code": "X3", "reason": "Survey of vision-language-action models for embodied intelligence; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03938", "decision": "unclear", "code": "", "reason": "Region-aware VLM guiding diffusion image editing; unified integration unclear", "screener": "R-claude-haiku"}
+{"id": "U04343", "decision": "exclude", "code": "X1", "reason": "Agent pipeline of MLLM and inpainting diffusion for image editing; image output", "screener": "R-claude-haiku"}
+{"id": "U04370", "decision": "exclude", "code": "X1", "reason": "Diffusion traversability maps and trajectories for robot navigation; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02820", "decision": "exclude", "code": "X3", "reason": "Survey of privacy and security for edge generative AI; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03499", "decision": "exclude", "code": "X4", "reason": "Journal issue table of contents; not a research article", "screener": "R-claude-haiku"}
+{"id": "U01993", "decision": "exclude", "code": "X0", "reason": "Media metaphors for swarm technology; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02461", "decision": "exclude", "code": "X0", "reason": "Spanish theatre and spectatorship; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03829", "decision": "unclear", "code": "", "reason": "LLM text plus diffusion images for illustrated instructions; combined output, unclear", "screener": "R-claude-haiku"}
+{"id": "U04060", "decision": "exclude", "code": "X1", "reason": "Diffusion-based data synthesis for structural infringement detection; image output", "screener": "R-claude-haiku"}
+{"id": "U03871", "decision": "exclude", "code": "X2", "reason": "GPT-planned Blender scripts guiding Stable Diffusion text-to-video; video output", "screener": "R-claude-haiku"}
+{"id": "U01806", "decision": "exclude", "code": "X0", "reason": "Social media and collaborative learning network analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02541", "decision": "exclude", "code": "X0", "reason": "Occupational science inclusion reflections; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01166", "decision": "exclude", "code": "X0", "reason": "Reversionary annuity premium with Markov model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04346", "decision": "exclude", "code": "X3", "reason": "Tutorial primer on diffusion and flow models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03692", "decision": "exclude", "code": "X0", "reason": "Participatory mapping booklets in Latin America; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04560", "decision": "exclude", "code": "X0", "reason": "Multiagent public opinion propagation model; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04561", "decision": "exclude", "code": "X2", "reason": "Learnable relation prompts for text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U01093", "decision": "exclude", "code": "X0", "reason": "Peskun ordering for lifted MCMC samplers; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01177", "decision": "exclude", "code": "X0", "reason": "Heuristic MPC for wind turbine tower vibration; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01302", "decision": "exclude", "code": "X1", "reason": "Over-the-air federated learning framework for diffusion image models; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03387", "decision": "exclude", "code": "X3", "reason": "Review of generative AI in forensic psychiatry; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03805", "decision": "exclude", "code": "X1", "reason": "Compositional label-conditioned diffusion for unseen images; non-text conditioning", "screener": "R-claude-haiku"}
+{"id": "U04174", "decision": "exclude", "code": "X1", "reason": "BLIP-2 descriptions and Stable Diffusion reconstruction from fMRI; image output", "screener": "R-claude-haiku"}
+{"id": "U04012", "decision": "exclude", "code": "X1", "reason": "VLM-generated jailbreak prompts paired with diffusion-generated images; image output", "screener": "R-claude-haiku"}
+{"id": "U04062", "decision": "exclude", "code": "X2", "reason": "Diffusion text-to-audio trained on LLM-enriched captions; audio output", "screener": "R-claude-haiku"}
+{"id": "U01689", "decision": "unclear", "code": "", "reason": "Cascaded diffusion for handwritten Chinese text-line images; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U04227", "decision": "exclude", "code": "X1", "reason": "Diffusion traffic synthesis as augmentation for 5G intrusion detection; non-text output", "screener": "R-claude-haiku"}
+{"id": "U00912", "decision": "exclude", "code": "X0", "reason": "Discrete flower pollination for vehicle routing; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04396", "decision": "exclude", "code": "X2", "reason": "Text-guided diffusion blind face restoration with language descriptions; image output", "screener": "R-claude-haiku"}
+{"id": "U03504", "decision": "exclude", "code": "X0", "reason": "OECD legitimation strategies in water governance text analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02684", "decision": "exclude", "code": "X0", "reason": "Structural topic model of English caselaw history; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02797", "decision": "exclude", "code": "X0", "reason": "Neural machine translation from questions to SPARQL; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01425", "decision": "exclude", "code": "X3", "reason": "Practical book on building generative AI models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U01178", "decision": "exclude", "code": "X0", "reason": "Discrete flower pollination for IoT service composition; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03709", "decision": "exclude", "code": "X3", "reason": "Review of feature fusion media popularity prediction; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03481", "decision": "exclude", "code": "X0", "reason": "LLM emotional consistency in social media continuations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04358", "decision": "exclude", "code": "X1", "reason": "Diffusion-based visual imagination for vision-language navigation; image output", "screener": "R-claude-haiku"}
+{"id": "U02609", "decision": "exclude", "code": "X0", "reason": "Topic evolution in Technological Forecasting and Social Change journal; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03711", "decision": "exclude", "code": "X0", "reason": "Social media sustainability communication by firms; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04043", "decision": "exclude", "code": "X7", "reason": "AutoML framework orchestrating existing diffusion and LLM models; system application", "screener": "R-claude-haiku"}
+{"id": "U01040", "decision": "exclude", "code": "X0", "reason": "Groupage cargo routing with tariffs as integer programming; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04398", "decision": "exclude", "code": "X2", "reason": "Training-free prompt-modulated diffusion for remote sensing synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U04291", "decision": "unclear", "code": "", "reason": "Diffusion-generated handwritten Urdu images feeding NAT-BART recognition; generation role unclear", "screener": "R-claude-haiku"}
+{"id": "U02034", "decision": "exclude", "code": "X0", "reason": "Audience behavior agent model for cognitive warfare; diffusion is percolation dynamics", "screener": "R-claude-haiku"}
+{"id": "U04429", "decision": "exclude", "code": "X0", "reason": "CLIP-based synthetic image detection; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U03873", "decision": "exclude", "code": "X2", "reason": "LLM-proposed captions and Stable Diffusion image bias detection; image output", "screener": "R-claude-haiku"}
+{"id": "U03540", "decision": "exclude", "code": "X1", "reason": "Generative pretrained diffusion for time series forecasting; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01213", "decision": "exclude", "code": "X0", "reason": "Hierarchical multicommodity communication network optimization; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04347", "decision": "exclude", "code": "X7", "reason": "RAG and diffusion pipeline for fashion design assistance; application study", "screener": "R-claude-haiku"}
+{"id": "U01659", "decision": "exclude", "code": "X1", "reason": "Cloud-deterministic diffusion for remote sensing cloud removal; image output", "screener": "R-claude-haiku"}
+{"id": "U03612", "decision": "exclude", "code": "X3", "reason": "Systematic literature review of Twitter information diffusion; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02200", "decision": "exclude", "code": "X0", "reason": "Endocrine and exocrine pancreas blood flow review; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04049", "decision": "exclude", "code": "X2", "reason": "LLM prompts and image-to-image diffusion for infographics; image output", "screener": "R-claude-haiku"}
+{"id": "U01276", "decision": "exclude", "code": "X0", "reason": "Discrete direct and indirect adaptive control for UAV fault tolerance; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02264", "decision": "exclude", "code": "X0", "reason": "Content factors in COVID misinformation diffusion on Twitter; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U00974", "decision": "exclude", "code": "X0", "reason": "Constrained MPC of greenhouse vapour pressure deficit; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02492", "decision": "exclude", "code": "X0", "reason": "Conceptual model linking social innovation and SDGs; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04100", "decision": "exclude", "code": "X3", "reason": "Overview of generative AI art instruments and methods; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03536", "decision": "exclude", "code": "X0", "reason": "GenAI exposure by demographic groups in the US; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00615", "decision": "exclude", "code": "X0", "reason": "Literary analysis of B. S. Johnson's novel; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02606", "decision": "exclude", "code": "X0", "reason": "Corrigendum on fractional sideways heat problem; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01073", "decision": "exclude", "code": "X0", "reason": "Stability prediction for real-time hybrid testing; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02669", "decision": "exclude", "code": "X0", "reason": "Information diffusion in signed networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03340", "decision": "exclude", "code": "X0", "reason": "LLMs for COVID fake tweet generation and detection; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02500", "decision": "exclude", "code": "X0", "reason": "Spatio-temporal sequence-to-sequence traffic prediction; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03687", "decision": "exclude", "code": "X0", "reason": "WeChat post attraction and likes analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01675", "decision": "exclude", "code": "X0", "reason": "Distributed ledger technology text corpus and BERT model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04301", "decision": "exclude", "code": "X2", "reason": "LoRA-tuned Stable Diffusion for NEV styling with composite semantics; image output", "screener": "R-claude-haiku"}
+{"id": "U01687", "decision": "unclear", "code": "", "reason": "Conditional diffusion generation of handwritten ancient Yi script; visual script, unclear", "screener": "R-claude-haiku"}
+{"id": "U01694", "decision": "exclude", "code": "X0", "reason": "Theology and second-order cybernetics essay; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04334", "decision": "exclude", "code": "X0", "reason": "Benchmark of large models for Qiaopi text recognition; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03735", "decision": "exclude", "code": "X0", "reason": "Viral marketing in otome game posts; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02808", "decision": "exclude", "code": "X0", "reason": "Commentary on AI-generated papers and plagiarism; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04236", "decision": "exclude", "code": "X1", "reason": "Diffusion-based content-aware poster layout generation; non-text layout output", "screener": "R-claude-haiku"}
+{"id": "U00737", "decision": "exclude", "code": "X0", "reason": "BWT-based random de Bruijn sequence construction; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03929", "decision": "exclude", "code": "X3", "reason": "Textbook on deep learning with Python; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03539", "decision": "exclude", "code": "X0", "reason": "Opinion leader ranking with semantic kernels; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04253", "decision": "exclude", "code": "X1", "reason": "Diffusion model calibrates visual embeddings for HOI detection; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03600", "decision": "exclude", "code": "X0", "reason": "Public sentiment on distancing, masks and vaccines from Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03841", "decision": "exclude", "code": "X2", "reason": "LLM-guided text-to-image diffusion for railway intrusion images; image output", "screener": "R-claude-haiku"}
+{"id": "U03913", "decision": "exclude", "code": "X2", "reason": "LLM hidden states condition a video latent diffusion model; video output", "screener": "R-claude-haiku"}
+{"id": "U04380", "decision": "exclude", "code": "X3", "reason": "Survey of generative and explainable AI in healthcare; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04069", "decision": "exclude", "code": "X0", "reason": "Low-light enhancement with VLM priors and Transformer fusion; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03812", "decision": "exclude", "code": "X2", "reason": "ChatGPT descriptions drive Stable Diffusion character images and animation; image output", "screener": "R-claude-haiku"}
+{"id": "U00917", "decision": "exclude", "code": "X0", "reason": "Optical fiber seepage test for tunnel model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03768", "decision": "exclude", "code": "X0", "reason": "Review of leachate liner models for engineered landfills; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03923", "decision": "exclude", "code": "X2", "reason": "LLM guidance inside text-to-video diffusion denoising; video output", "screener": "R-claude-haiku"}
+{"id": "U04487", "decision": "exclude", "code": "X1", "reason": "Video diffusion transformer fine-tuned for vision tasks; no text modality", "screener": "R-claude-haiku"}
+{"id": "U04256", "decision": "exclude", "code": "X1", "reason": "Image-conditioned diffusion path planning for drone swarms; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03525", "decision": "exclude", "code": "X1", "reason": "Referring expression counting with diffusion U-Net backbone; count output", "screener": "R-claude-haiku"}
+{"id": "U03071", "decision": "exclude", "code": "X0", "reason": "LLM-augmented fine-grained text-to-motion with hyperbolic encoding; no diffusion stated", "screener": "R-claude-haiku"}
+{"id": "U02276", "decision": "exclude", "code": "X0", "reason": "Deliberation over Mexico City urban project; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01629", "decision": "exclude", "code": "X0", "reason": "Advertising measurement narratives in MIXX awards; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04348", "decision": "exclude", "code": "X1", "reason": "Physics-constrained diffusion tactile synthesis for in-hand pose; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03450", "decision": "exclude", "code": "X0", "reason": "Distributed estimation with adaptive cluster learning; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03478", "decision": "exclude", "code": "X0", "reason": "LLM integration in Jordanian accounting practice; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01046", "decision": "exclude", "code": "X0", "reason": "Discrete diffusive vector-borne epidemic traveling waves; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02561", "decision": "exclude", "code": "X0", "reason": "SCT public opinion diffusion model for Weibo; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03700", "decision": "exclude", "code": "X0", "reason": "Household energy transition in Ethiopia; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04500", "decision": "exclude", "code": "X1", "reason": "Visual-textual cross-modal tactile signal generation; non-text tactile output", "screener": "R-claude-haiku"}
+{"id": "U04427", "decision": "unclear", "code": "", "reason": "Systematic review plus proposed TTS framework with flow decoder; speech output, unclear", "screener": "R-claude-haiku"}
+{"id": "U01657", "decision": "exclude", "code": "X0", "reason": "Sentiment of built environment professionals on GenAI; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02631", "decision": "exclude", "code": "X3", "reason": "Survey of OpenAI and ChatGPT applications; secondary study", "screener": "R-claude-haiku"}
+{"id": "U01815", "decision": "exclude", "code": "X2", "reason": "Diffusion steganography guided by conditional text prompts; image output", "screener": "R-claude-haiku"}
+{"id": "U04392", "decision": "exclude", "code": "X1", "reason": "Diffusion inpainting of sensitive image regions before VQA; no diffusion text output", "screener": "R-claude-haiku"}
+{"id": "U04389", "decision": "exclude", "code": "X2", "reason": "Text-guided diffusion synthesizes visual features for image-text retrieval; retrieval output", "screener": "R-claude-haiku"}
+{"id": "U02385", "decision": "exclude", "code": "X0", "reason": "Noninterference norm practice in UN and ASEAN; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01671", "decision": "exclude", "code": "X0", "reason": "Generative AI skill requirements in job postings; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02286", "decision": "exclude", "code": "X0", "reason": "Climate policy diffusion in Turkey; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01614", "decision": "exclude", "code": "X0", "reason": "Few-shot graph label propagation for vaccine hesitancy; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03455", "decision": "exclude", "code": "X0", "reason": "Diffusion adaptive estimation with asymmetric error costs; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U00823", "decision": "exclude", "code": "X0", "reason": "Multistate semi-Markov modeling in clinical trials; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02822", "decision": "exclude", "code": "X0", "reason": "LLM chatbot comparison for diabetes patients; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03626", "decision": "exclude", "code": "X0", "reason": "Emotions and rumor diffusion on Twitter; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03634", "decision": "exclude", "code": "X0", "reason": "Onion-layered collective subjectivity analysis on Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02968", "decision": "exclude", "code": "X1", "reason": "Residual delta encoding for patching LLMs and diffusion image models; non-text", "screener": "R-claude-haiku"}
+{"id": "U04025", "decision": "exclude", "code": "X2", "reason": "LLM-generated progressive prompts for regional DiT image generation; image output", "screener": "R-claude-haiku"}
+{"id": "U02926", "decision": "exclude", "code": "X3", "reason": "Systematic review of conversational AI and employee experience; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04582", "decision": "exclude", "code": "X0", "reason": "Agent-based opinion networks with strategic unfriending; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03080", "decision": "exclude", "code": "X0", "reason": "LLM-based weak signal detection in water network publications; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03872", "decision": "exclude", "code": "X2", "reason": "Plug-and-play multilingual and audio encoders aligned to diffusion text-to-image; image output", "screener": "R-claude-haiku"}
+{"id": "U04356", "decision": "exclude", "code": "X2", "reason": "Training-free latent diffusion makeup customization with text and color conditioning; image output", "screener": "R-claude-haiku"}
+{"id": "U02203", "decision": "exclude", "code": "X0", "reason": "African leadership in the diaspora review; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00096", "decision": "exclude", "code": "X0", "reason": "GMM estimation for periodic GARCH models; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03036", "decision": "exclude", "code": "X3", "reason": "Chapter on explainable and generative AI for cyber security; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04051", "decision": "exclude", "code": "X2", "reason": "Training-free multi-concept diffusion with MLLM layout priors; image output", "screener": "R-claude-haiku"}
+{"id": "U02004", "decision": "exclude", "code": "X0", "reason": "Rhizomatic religious belonging in the digital age; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01900", "decision": "exclude", "code": "X2", "reason": "Text-to-sign-language video via latent diffusion; video output, text conditioning", "screener": "R-claude-haiku"}
+{"id": "U01091", "decision": "exclude", "code": "X0", "reason": "Entire solutions for discrete bistable reaction-diffusion equation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03557", "decision": "exclude", "code": "X0", "reason": "Levenberg-Marquardt neural computing for nanofluid flow; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03778", "decision": "exclude", "code": "X0", "reason": "Spectral method for soil moisture and solute transport; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02639", "decision": "exclude", "code": "X0", "reason": "Box office forecasting with improved Bass models; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04306", "decision": "exclude", "code": "X2", "reason": "LLM-planned trajectories refine cross-attention in text-to-video diffusion; video output", "screener": "R-claude-haiku"}
+{"id": "U04075", "decision": "exclude", "code": "X2", "reason": "Multimodal diffusion transformer for text and layout to image; image output", "screener": "R-claude-haiku"}
+{"id": "U04083", "decision": "exclude", "code": "X3", "reason": "Survey of generative recommender systems; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03885", "decision": "exclude", "code": "X0", "reason": "Residual U-Net and transformer for spine CT segmentation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03582", "decision": "exclude", "code": "X0", "reason": "Domain sentiment dictionaries for dengue text analytics; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03368", "decision": "exclude", "code": "X1", "reason": "Transformer diffusion model for atomistic fracture dynamics; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03084", "decision": "exclude", "code": "X2", "reason": "LLM-informed prompts and fine-tuned Stable Diffusion for facade design; image output", "screener": "R-claude-haiku"}
+{"id": "U01467", "decision": "exclude", "code": "X0", "reason": "Cross-cultural exhibition design of ceramics museums; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04052", "decision": "exclude", "code": "X1", "reason": "Language-guided object-centric diffusion policy for manipulation; trajectory output", "screener": "R-claude-haiku"}
+{"id": "U04249", "decision": "exclude", "code": "X2", "reason": "Bridge diffusion with text embeddings for pathology image synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U03445", "decision": "exclude", "code": "X0", "reason": "Secure distributed multitask estimation under attacks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04006", "decision": "exclude", "code": "X2", "reason": "Text-to-layout diffusion transformer for scene layouts; non-text layout output", "screener": "R-claude-haiku"}
+{"id": "U03346", "decision": "exclude", "code": "X0", "reason": "Historical review of cerebral language localization; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03494", "decision": "exclude", "code": "X0", "reason": "Topic-integrated main path analysis of a citation network; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04235", "decision": "exclude", "code": "X1", "reason": "Uncertainty-guided diffusion super-resolution with MLLM quality prior; image output", "screener": "R-claude-haiku"}
+{"id": "U03527", "decision": "exclude", "code": "X0", "reason": "Interest-aware heterogeneous cascade prediction on social networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01678", "decision": "exclude", "code": "X0", "reason": "Policy content reproduction across government tiers in China; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03964", "decision": "unclear", "code": "", "reason": "Diffusion models as zero-shot text-vision retrievers; unified understanding unclear", "screener": "R-claude-haiku"}
+{"id": "U02214", "decision": "exclude", "code": "X0", "reason": "Reversible data hiding in encrypted images; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01456", "decision": "exclude", "code": "X0", "reason": "Generative steganography with Gaussian latent embedding; diffusion not stated", "screener": "R-claude-haiku"}
+{"id": "U04189", "decision": "exclude", "code": "X2", "reason": "Cultural representativeness benchmark for text-to-image diffusion systems; image output", "screener": "R-claude-haiku"}
+{"id": "U03449", "decision": "exclude", "code": "X0", "reason": "Adaptive distributed estimation under probability Byzantine attacks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03822", "decision": "unclear", "code": "", "reason": "MLLM-guided instruction image editing with diffusion; unified integration unclear", "screener": "R-claude-haiku"}
+{"id": "U03842", "decision": "exclude", "code": "X1", "reason": "Diffusion driving-video generation with separate VLM narrations; video output", "screener": "R-claude-haiku"}
+{"id": "U04145", "decision": "exclude", "code": "X2", "reason": "Segmentation and depth guided image generation with text prompts; image output", "screener": "R-claude-haiku"}
+{"id": "U02701", "decision": "exclude", "code": "X0", "reason": "Robotics patent topic modeling and technology diffusion; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04494", "decision": "exclude", "code": "X2", "reason": "VLM-interpreted animal concepts drive diffusion image synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U04330", "decision": "include", "code": "", "reason": "Federated diffusion framework generating medical images and radiology text; unified vision-language", "screener": "R-claude-haiku"}
+{"id": "U01311", "decision": "exclude", "code": "X0", "reason": "AI talent demand in China from job postings; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03953", "decision": "exclude", "code": "X7", "reason": "Gemini story generation with Stable Diffusion comic strips for autism; application", "screener": "R-claude-haiku"}
+{"id": "U03572", "decision": "exclude", "code": "X0", "reason": "Engagement-driven tweet generation with econometric and Bayesian models; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03517", "decision": "exclude", "code": "X0", "reason": "Agent AI for free energy and phase-field simulation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03932", "decision": "exclude", "code": "X2", "reason": "LLM prompt adaptation for text-to-video diffusion models; video output", "screener": "R-claude-haiku"}
+{"id": "U04211", "decision": "exclude", "code": "X1", "reason": "Training-free diffusion arbitrary style transfer; image output", "screener": "R-claude-haiku"}
+{"id": "U02344", "decision": "exclude", "code": "X0", "reason": "Linguistic analysis of COVID misinformation on Twitter; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02441", "decision": "exclude", "code": "X7", "reason": "Language-driven architectural design workflows using Stable Diffusion and DALL-E 2; application", "screener": "R-claude-haiku"}
+{"id": "U03669", "decision": "exclude", "code": "X0", "reason": "Public perceptions of hydrogen adoption in the UK; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01355", "decision": "exclude", "code": "X3", "reason": "Beginner's book on generative AI including diffusion models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02379", "decision": "exclude", "code": "X0", "reason": "Twitter activity of European management researchers; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03838", "decision": "exclude", "code": "X3", "reason": "PyTorch book covering generative and other deep learning models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02862", "decision": "exclude", "code": "X0", "reason": "LLM agents simulating narrative spread on networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02686", "decision": "exclude", "code": "X0", "reason": "StockTwits sentiment and asset price prediction; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01578", "decision": "exclude", "code": "X1", "reason": "Diffusion-based 3D facial motion generation from dyadic audio; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01862", "decision": "exclude", "code": "X3", "reason": "Book on generative AI and deep learning applications; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03677", "decision": "exclude", "code": "X0", "reason": "Elite Twitter interactions during Cyprus peace talks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03727", "decision": "exclude", "code": "X0", "reason": "Graph neural network for protein fitness prediction; no diffusion stated", "screener": "R-claude-haiku"}
+{"id": "U02501", "decision": "exclude", "code": "X0", "reason": "Information diffusion trends and emotions for anime works on Twitter; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03679", "decision": "exclude", "code": "X0", "reason": "Pre-service teachers, reflexivity and bias in classrooms; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01406", "decision": "exclude", "code": "X0", "reason": "Source retrieval for time-fractional diffusion equation; no diffusion generative model", "screener": "R-claude-haiku"}
+{"id": "U03960", "decision": "exclude", "code": "X2", "reason": "Diffusion text-to-image pipeline for Korean seniors with LLM prompt assistant; image output", "screener": "R-claude-haiku"}
+{"id": "U02408", "decision": "exclude", "code": "X0", "reason": "Environmental norm diffusion and specialized environmental courts; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01260", "decision": "exclude", "code": "X0", "reason": "Analytical model for structured light turbulence; diffusion is power transfer, no model", "screener": "R-claude-haiku"}
+{"id": "U02612", "decision": "exclude", "code": "X0", "reason": "Hierarchical Louvain community detection on Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01305", "decision": "exclude", "code": "X0", "reason": "Crack segmentation with Perona-Malik anisotropic diffusion branch; no generative model", "screener": "R-claude-haiku"}
+{"id": "U02080", "decision": "exclude", "code": "X0", "reason": "Interdisciplinary review of inner speech; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04020", "decision": "exclude", "code": "X1", "reason": "Latent diffusion adversarial purification for visual encoders; image output", "screener": "R-claude-haiku"}
+{"id": "U04468", "decision": "exclude", "code": "X0", "reason": "Mamba and attention speech enhancement; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U04287", "decision": "exclude", "code": "X1", "reason": "Cross-modal prompting anomaly maps with diffusion refinement; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03538", "decision": "exclude", "code": "X0", "reason": "Latent-process modeling of garden-pathing; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04405", "decision": "exclude", "code": "X0", "reason": "Quality assessment of AI-generated images with VLM; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U02505", "decision": "exclude", "code": "X0", "reason": "Chinese journal dissemination on Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02913", "decision": "exclude", "code": "X0", "reason": "Generative AI and social loafing in teams; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04319", "decision": "exclude", "code": "X1", "reason": "EEG-conditioned cascaded diffusion image reconstruction; image output", "screener": "R-claude-haiku"}
+{"id": "U04568", "decision": "exclude", "code": "X3", "reason": "Review of generative animation with GAN and diffusion models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03751", "decision": "exclude", "code": "X0", "reason": "Evolutionary game topic propagation model; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01829", "decision": "exclude", "code": "X1", "reason": "Hate speech classifier using diffusion attention attribution maps; non-text output", "screener": "R-claude-haiku"}
+{"id": "U01921", "decision": "exclude", "code": "X0", "reason": "AI-IoT rural artisanal entrepreneurship; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02271", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion with LoRA and BLIP captions for manufacturing data augmentation; image output", "screener": "R-claude-haiku"}
+{"id": "U02898", "decision": "exclude", "code": "X1", "reason": "Diffusion-based multi-agent RL for vehicular perception; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02880", "decision": "exclude", "code": "X0", "reason": "AI-likeness of scholarly writing and citations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02806", "decision": "exclude", "code": "X0", "reason": "Diffusion of AI methods in scientific research; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02315", "decision": "exclude", "code": "X0", "reason": "Reddit news headline interactions and publication dynamics; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04059", "decision": "exclude", "code": "X2", "reason": "LLM prompt rewriting for Stable Diffusion and DALL-E 3 image generation; image output", "screener": "R-claude-haiku"}
+{"id": "U04147", "decision": "exclude", "code": "X1", "reason": "Diffusion-based video generation for VFX from static images; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04208", "decision": "exclude", "code": "X2", "reason": "Critical analysis of LLM text encoders for diffusion image generation; prompt conditioning", "screener": "R-claude-haiku"}
+{"id": "U03977", "decision": "exclude", "code": "X2", "reason": "Diffusion text-guided inpainting for person re-ID data expansion; image output", "screener": "R-claude-haiku"}
+{"id": "U03724", "decision": "exclude", "code": "X0", "reason": "Interlaboratory comparison of CFA-CRDS isotope systems; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04460", "decision": "exclude", "code": "X7", "reason": "LLM and RAG pipeline with Stable Diffusion and AnimateDiff for Peking opera animation; application", "screener": "R-claude-haiku"}
+{"id": "U03850", "decision": "exclude", "code": "X2", "reason": "Contrastive text-to-image prior for unCLIP diffusion decoders; image output", "screener": "R-claude-haiku"}
+{"id": "U01358", "decision": "unclear", "code": "", "reason": "Diffusion-based recovery of missing modalities for emotion recognition; generation role unclear", "screener": "R-claude-haiku"}
+{"id": "U01585", "decision": "exclude", "code": "X0", "reason": "Smoothing B-spline vector graphics in DiffVG pipeline; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04407", "decision": "exclude", "code": "X0", "reason": "Unsupervised multimodal fake news clustering with MLLM verification; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03930", "decision": "exclude", "code": "X2", "reason": "Diffusion-based text-prompted augmentation for hub casting OCR; image output", "screener": "R-claude-haiku"}
+{"id": "U03730", "decision": "exclude", "code": "X3", "reason": "Editorial introduction to AIGC special issue; secondary study", "screener": "R-claude-haiku"}
+{"id": "U00901", "decision": "exclude", "code": "X0", "reason": "Discrete flower pollination for stacking crane scheduling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01096", "decision": "exclude", "code": "X0", "reason": "Traveling waves in delayed lattice epidemic systems; no diffusion generative model", "screener": "R-claude-haiku"}
+{"id": "U03448", "decision": "exclude", "code": "X0", "reason": "Joint distributed estimation with Beta prior channel gains; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03656", "decision": "exclude", "code": "X1", "reason": "Stable Diffusion generated ceramic forms with GRU-Attention Kansei mapping; image output", "screener": "R-claude-haiku"}
+{"id": "U03655", "decision": "exclude", "code": "X0", "reason": "RAG analysis of expert market opinions on YouTube; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04592", "decision": "exclude", "code": "X0", "reason": "Virality of fake news in governance events; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01962", "decision": "exclude", "code": "X3", "reason": "Review and methodology overview of multimodal image generation for human motion; survey-like", "screener": "R-claude-haiku"}
+{"id": "U02371", "decision": "exclude", "code": "X0", "reason": "Atomic-level interfacial diffusion in MAX phases; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01420", "decision": "exclude", "code": "X7", "reason": "Generative design workflow with Stable Diffusion and LoRA for anime IP products; application", "screener": "R-claude-haiku"}
+{"id": "U01781", "decision": "exclude", "code": "X0", "reason": "Sixteenth-century art and architecture in Velez Blanco and Murcia; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04486", "decision": "exclude", "code": "X3", "reason": "Survey of multi-weather image and video restoration; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04144", "decision": "exclude", "code": "X0", "reason": "Weibo public art perception with fine-tuned language model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02352", "decision": "exclude", "code": "X0", "reason": "Collaborative capacity in public transport research partnership; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02751", "decision": "exclude", "code": "X0", "reason": "Non-financial disclosure and information asymmetry; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03688", "decision": "exclude", "code": "X0", "reason": "AI use in Russian media via diffusion of innovation theory; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02565", "decision": "exclude", "code": "X0", "reason": "Stroke process metrics at a community stroke center; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01938", "decision": "exclude", "code": "X0", "reason": "Weibo posts on cervical cancer prevention and public engagement; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04329", "decision": "exclude", "code": "X2", "reason": "LLM prompt generation for Stable Diffusion poetry-to-image; image output", "screener": "R-claude-haiku"}
+{"id": "U01211", "decision": "exclude", "code": "X0", "reason": "Machine learning on flow cytometry for leukemia diagnosis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04273", "decision": "exclude", "code": "X2", "reason": "LLM-decomposed prompts for training-free complex scene diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U02971", "decision": "exclude", "code": "X1", "reason": "Diffusion-based motion detailing of character animation from blocking poses; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02718", "decision": "exclude", "code": "X0", "reason": "Accounting information and cross-asset return predictability; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03783", "decision": "exclude", "code": "X7", "reason": "LLM-empowered Stable Diffusion and ControlNet app for teaching materials; application", "screener": "R-claude-haiku"}
+{"id": "U03843", "decision": "exclude", "code": "X2", "reason": "Language-guided diffusion priors for single-view NeRF synthesis; 3D output", "screener": "R-claude-haiku"}
+{"id": "U03828", "decision": "exclude", "code": "X2", "reason": "Efficient text-to-image diffusion transformer variant of Imagen; image output", "screener": "R-claude-haiku"}
+{"id": "U04446", "decision": "exclude", "code": "X2", "reason": "LLM script generation and LoRA-tuned AnimateDiff for cybersecurity animation; video output", "screener": "R-claude-haiku"}
+{"id": "U04133", "decision": "exclude", "code": "X2", "reason": "LLM layout guidance for training-free text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U03978", "decision": "exclude", "code": "X2", "reason": "LLM layout guidance and semantic attention for text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U02755", "decision": "exclude", "code": "X4", "reason": "Erratum listing missing competing-interest statements; not a research article", "screener": "R-claude-haiku"}
+{"id": "U01575", "decision": "exclude", "code": "X0", "reason": "Medellin urban transformation chapter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03695", "decision": "exclude", "code": "X0", "reason": "Turing patterns in reaction-diffusion with higher-order interactions; no generative diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02016", "decision": "exclude", "code": "X0", "reason": "Review of perforated fin heat transfer; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02722", "decision": "exclude", "code": "X0", "reason": "Topic analysis of EIST journal articles; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03985", "decision": "exclude", "code": "X1", "reason": "Repurposed Stable Diffusion for visual in-context learning; non-text outputs", "screener": "R-claude-haiku"}
+{"id": "U04089", "decision": "exclude", "code": "X0", "reason": "Detection of diffusion-generated videos with text-guided enrichment; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U04269", "decision": "unclear", "code": "", "reason": "MLLM agent corrects scene text in text-to-image diffusion outputs; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U00914", "decision": "exclude", "code": "X0", "reason": "BLE beacon tracking via hidden Markov model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01205", "decision": "exclude", "code": "X0", "reason": "Frequency regulation capability of renewable plants with response delays; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02027", "decision": "exclude", "code": "X0", "reason": "Multi-task citation aspect and sentiment classification; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03825", "decision": "exclude", "code": "X3", "reason": "Position perspective on generative AI agents in autonomous machines; secondary", "screener": "R-claude-haiku"}
+{"id": "U03863", "decision": "exclude", "code": "X7", "reason": "Pipeline combining text-to-image and Stable Diffusion for stereoscopic VR video; application", "screener": "R-claude-haiku"}
+{"id": "U00291", "decision": "exclude", "code": "X0", "reason": "Book on the history of mathematical symbols; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01911", "decision": "exclude", "code": "X0", "reason": "YOLO11 camera network for aerial target tracking with GAN augmentation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04483", "decision": "exclude", "code": "X1", "reason": "Diffusion-based anomaly image synthesis guided by retrieved references; image output", "screener": "R-claude-haiku"}
+{"id": "U03994", "decision": "exclude", "code": "X2", "reason": "Fine-tuned Stable Diffusion Turbo with Bangla text encoder; image output", "screener": "R-claude-haiku"}
+{"id": "U04594", "decision": "exclude", "code": "X0", "reason": "Dual-stream language model features for graph neural networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03693", "decision": "exclude", "code": "X0", "reason": "Social movement archivists and coalition building; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00895", "decision": "exclude", "code": "X0", "reason": "Discrete flower pollination for patient admission scheduling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03544", "decision": "exclude", "code": "X0", "reason": "Zero Waste discourse on Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02540", "decision": "exclude", "code": "X0", "reason": "Morphological analysis of war film subgenres; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01514", "decision": "exclude", "code": "X3", "reason": "Review of generative autoencoder frameworks including diffusion-based autoencoders; secondary", "screener": "R-claude-haiku"}
+{"id": "U03830", "decision": "exclude", "code": "X2", "reason": "LLM-produced layouts refocus attention in text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U03979", "decision": "exclude", "code": "X7", "reason": "LLM and diffusion pipeline for automated advertising campaigns; system application", "screener": "R-claude-haiku"}
+{"id": "U04041", "decision": "exclude", "code": "X1", "reason": "Language model unit tests with diffusion-synthesized images for visual programs; non-text", "screener": "R-claude-haiku"}
+{"id": "U00952", "decision": "exclude", "code": "X0", "reason": "Cellular automaton scrambling of QR codes; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04382", "decision": "exclude", "code": "X1", "reason": "Diffusion-style robot skill policy with LLM instruction parsing; action output", "screener": "R-claude-haiku"}
+{"id": "U03840", "decision": "exclude", "code": "X2", "reason": "LLM-processed story prompts for long-form text-to-video generation; video output", "screener": "R-claude-haiku"}
+{"id": "U02925", "decision": "exclude", "code": "X0", "reason": "Multilingual fact-check claims and misinformation spread; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03078", "decision": "exclude", "code": "X1", "reason": "Generative diffusion case study for blockchain network optimization; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04034", "decision": "exclude", "code": "X2", "reason": "LLM and diffusion data augmentation for image classification; image output", "screener": "R-claude-haiku"}
+{"id": "U03925", "decision": "exclude", "code": "X1", "reason": "Diffusion-generated targeted adversarial images for VLMs; image output", "screener": "R-claude-haiku"}
+{"id": "U00712", "decision": "exclude", "code": "X0", "reason": "Wh-in-situ syntax in Tatyshly Udmurt; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02165", "decision": "exclude", "code": "X0", "reason": "Bias diffusion in tweets with T5 rewriting and concept networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02788", "decision": "exclude", "code": "X0", "reason": "Anomaly detection in Italian civil justice records; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02125", "decision": "exclude", "code": "X0", "reason": "LSTM stock forecasting advisor; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02692", "decision": "exclude", "code": "X0", "reason": "Geographical imagination in U.S. eugenics history; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02589", "decision": "exclude", "code": "X0", "reason": "Topic modeling of climate change news and social media; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03456", "decision": "exclude", "code": "X0", "reason": "Skewness of LMS adaptive weights; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03666", "decision": "exclude", "code": "X0", "reason": "Deep learning from weakly dependent data; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02193", "decision": "exclude", "code": "X0", "reason": "3D FCN MR brain tissue segmentation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00348", "decision": "exclude", "code": "X0", "reason": "Sequence order in nonlinguistic visual categorization experiment; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02877", "decision": "exclude", "code": "X0", "reason": "Agent simulation of AI-assisted plagiarism; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01963", "decision": "exclude", "code": "X0", "reason": "Goal-oriented semantic communication with NeRF for metaverse; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02412", "decision": "exclude", "code": "X3", "reason": "Hands-on workshop introducing LLMs and diffusion models; tutorial", "screener": "R-claude-haiku"}
+{"id": "U04078", "decision": "exclude", "code": "X3", "reason": "Survey of detection methods for AI-generated images; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02148", "decision": "exclude", "code": "X0", "reason": "Bibliometric trends in gender and politics journals; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04120", "decision": "exclude", "code": "X1", "reason": "Diffusion-based game frame generation with numerical and spatial modules; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02773", "decision": "exclude", "code": "X0", "reason": "Bayesian trigram analysis of tweet retweets in Colombia; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04050", "decision": "exclude", "code": "X3", "reason": "Survey of detection methods for AI-generated text, image and audio; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04331", "decision": "exclude", "code": "X7", "reason": "Multi-agent LLM and DreamBooth Stable Diffusion pipeline for architectural generation; application", "screener": "R-claude-haiku"}
+{"id": "U01230", "decision": "exclude", "code": "X0", "reason": "Hybrid electricity-hydrogen storage configuration; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04425", "decision": "exclude", "code": "X2", "reason": "Clinical text and class-conditioned latent diffusion for prostate MRI; image output", "screener": "R-claude-haiku"}
+{"id": "U01362", "decision": "exclude", "code": "X0", "reason": "Bass model game console demand forecasting; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01627", "decision": "unclear", "code": "", "reason": "Tri-conditional diffusion rewrite for scene text translation; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U00205", "decision": "exclude", "code": "X0", "reason": "Distributed adaptive graph filtering with Andrews sine estimator; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01194", "decision": "exclude", "code": "X0", "reason": "Discrete diffusion predator-prey forced waves; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02242", "decision": "exclude", "code": "X0", "reason": "Social bots and public opinion dynamics; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03186", "decision": "exclude", "code": "X0", "reason": "Innovation diffusion of an AI assistant proof-of-concept in manufacturing; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03698", "decision": "exclude", "code": "X0", "reason": "Kinetic opinion dynamics model with Twitter data; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03997", "decision": "exclude", "code": "X1", "reason": "Diffusion policy for AI agent migration in vehicular networks; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04140", "decision": "exclude", "code": "X3", "reason": "Textbook chapter on deep learning and generative AI; secondary", "screener": "R-claude-haiku"}
+{"id": "U01719", "decision": "exclude", "code": "X1", "reason": "Diffusion-boosted groupwise registration for myocardial T1 mapping; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02591", "decision": "exclude", "code": "X0", "reason": "Asian sacred landscapes volume; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03125", "decision": "exclude", "code": "X0", "reason": "ChatGPT adoption from South Korean internet usage logs; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03910", "decision": "exclude", "code": "X2", "reason": "LLM-guided multi-subject consistent diffusion for story visualization; image output", "screener": "R-claude-haiku"}
+{"id": "U04056", "decision": "exclude", "code": "X0", "reason": "LLM-guided vector glyph generation for oracle bone script; no diffusion stated", "screener": "R-claude-haiku"}
+{"id": "U04079", "decision": "exclude", "code": "X1", "reason": "Brownian bridge diffusion attribute disentanglement for CLIP prompt learning; classification output", "screener": "R-claude-haiku"}
+{"id": "U00369", "decision": "exclude", "code": "X0", "reason": "MXene-LDH heterostructure for CO2 capture; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03581", "decision": "exclude", "code": "X0", "reason": "Bit-level reversible transformer with BDIA integration; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02510", "decision": "exclude", "code": "X0", "reason": "Discrimination and crime sociolegal analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01541", "decision": "exclude", "code": "X2", "reason": "Benchmark of Stable Diffusion sentiment coherence with captioning; image output", "screener": "R-claude-haiku"}
+{"id": "U04142", "decision": "exclude", "code": "X1", "reason": "Diffusion planner for traffic trajectories with LLM and VLM assets; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03949", "decision": "exclude", "code": "X1", "reason": "Conditional diffusion for mobile traffic prediction; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03549", "decision": "exclude", "code": "X0", "reason": "LDA and sentiment of EV organizational social media posts; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03051", "decision": "exclude", "code": "X0", "reason": "Text-mining of renewable energy drivers and barriers; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03363", "decision": "exclude", "code": "X0", "reason": "White matter connectivity in post-stroke aphasia; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03844", "decision": "unclear", "code": "", "reason": "Latent diffusion stylized letter typography with discriminator; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U01301", "decision": "exclude", "code": "X0", "reason": "Interacting T-S fuzzy model for target tracking; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02799", "decision": "exclude", "code": "X0", "reason": "Indirect speech act comprehension in frontotemporal dementia; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02301", "decision": "exclude", "code": "X0", "reason": "Continuous versus discrete gait analysis in horses; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04344", "decision": "exclude", "code": "X2", "reason": "Text-conditioned diffusion point-based image editing; image output", "screener": "R-claude-haiku"}
+{"id": "U02928", "decision": "exclude", "code": "X1", "reason": "Diffusion encoder inside multimodal LLM depression detection; classification output", "screener": "R-claude-haiku"}
+{"id": "U02257", "decision": "exclude", "code": "X0", "reason": "Nurse-patient intimacy in oncology via phenomenology and feminism; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04318", "decision": "exclude", "code": "X2", "reason": "Diffusion music accompaniment with text-conditioned captions; audio output", "screener": "R-claude-haiku"}
+{"id": "U04288", "decision": "exclude", "code": "X2", "reason": "Conditional latent diffusion with text and image prompts for driving domain adaptation; image output", "screener": "R-claude-haiku"}
+{"id": "U04467", "decision": "exclude", "code": "X0", "reason": "Information cocoon emotion dynamics simulation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02915", "decision": "exclude", "code": "X0", "reason": "Neuroevolution of multimodal physics models; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03458", "decision": "exclude", "code": "X0", "reason": "Frequency-domain distributed multitask learning; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04454", "decision": "exclude", "code": "X7", "reason": "LLM and text-to-image diffusion workflow for interior design; application", "screener": "R-claude-haiku"}
+{"id": "U03042", "decision": "exclude", "code": "X0", "reason": "Incivility spread across immigration issue publics on X; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03787", "decision": "exclude", "code": "X3", "reason": "Bibliometric analysis of diffusion model research; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03493", "decision": "exclude", "code": "X3", "reason": "Survey of language-conditioned robot manipulation; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04169", "decision": "exclude", "code": "X1", "reason": "Diffusion-based visual predictor for zero-shot robot navigation; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04068", "decision": "exclude", "code": "X0", "reason": "Synthetic data pipeline for industrial spill detection; generative method not stated as diffusion", "screener": "R-claude-haiku"}
+{"id": "U03304", "decision": "exclude", "code": "X0", "reason": "ChatGPT adoption and integrity among students; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03648", "decision": "exclude", "code": "X0", "reason": "Social media attention and news viewership; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03434", "decision": "exclude", "code": "X0", "reason": "Continual learning with distributed optimization; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00915", "decision": "exclude", "code": "X0", "reason": "Continuous state spectral modeling for sound synthesis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00985", "decision": "exclude", "code": "X0", "reason": "Forced waves in discrete diffusion predator-prey system; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03784", "decision": "exclude", "code": "X2", "reason": "Human-guided LLM prompts for stable diffusion text-to-image synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U04532", "decision": "exclude", "code": "X3", "reason": "Review of EEG and fMRI decoding to text and images; secondary study", "screener": "R-claude-haiku"}
+{"id": "U01528", "decision": "exclude", "code": "X2", "reason": "DiT humanoid robot visual design with text and sketch conditioning; image output", "screener": "R-claude-haiku"}
+{"id": "U01266", "decision": "exclude", "code": "X0", "reason": "Field-weakening control for PMSM drives; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03477", "decision": "exclude", "code": "X0", "reason": "Student LLM use in an undergraduate programming course; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04220", "decision": "exclude", "code": "X0", "reason": "LLM-enhanced IoT anomaly detection with graph subgraph extraction; no generative diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02084", "decision": "exclude", "code": "X0", "reason": "NEV adoption peer effects with sentiment analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04137", "decision": "exclude", "code": "X2", "reason": "Text-conditioned diffusion model for adding objects via inpainting inversion; image output", "screener": "R-claude-haiku"}
+{"id": "U01263", "decision": "exclude", "code": "X0", "reason": "BLE indoor tracking with hidden Markov model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04156", "decision": "exclude", "code": "X2", "reason": "Block-based diffusion generates counterfactual image-text pairs for VLM training; image output", "screener": "R-claude-haiku"}
+{"id": "U00580", "decision": "exclude", "code": "X0", "reason": "Cointegration and root functions in time series; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02388", "decision": "exclude", "code": "X7", "reason": "Integrated assistant combining LLaMA 2, BART, DistilBERT and Stable Diffusion; application", "screener": "R-claude-haiku"}
+{"id": "U04474", "decision": "exclude", "code": "X0", "reason": "Developer framework adoption with PLS-SEM; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01285", "decision": "exclude", "code": "X0", "reason": "Lattice Cattaneo-Vernotte heat diffusion solutions; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03364", "decision": "exclude", "code": "X0", "reason": "Auditory cortex in bilateral polymicrogyria case study; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02711", "decision": "exclude", "code": "X0", "reason": "SDG communication by social economy organizations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00038", "decision": "exclude", "code": "X1", "reason": "Diffusion model for molecular sequence generation; non-text molecular output", "screener": "R-claude-haiku"}
+{"id": "U03490", "decision": "exclude", "code": "X0", "reason": "Bibliometric LDA analysis of p-adic literature; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02212", "decision": "exclude", "code": "X0", "reason": "Eternal and national values in Azerbaijan; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01217", "decision": "exclude", "code": "X0", "reason": "Least-squares moving discontinuous Galerkin method; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03500", "decision": "exclude", "code": "X0", "reason": "Women's March movement on Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03681", "decision": "exclude", "code": "X1", "reason": "Diffusion model converts face images to spectrograms for speech emotion recognition; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04466", "decision": "exclude", "code": "X0", "reason": "Text-guided GAN image editing with CLIP and DINO discriminator; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04121", "decision": "exclude", "code": "X1", "reason": "SDS-guided NeRF 3D pose generation with emotional text tuning; non-text 3D output", "screener": "R-claude-haiku"}
+{"id": "U00160", "decision": "exclude", "code": "X1", "reason": "Diffusion noise augmentation for sequential recommendation; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03273", "decision": "unclear", "code": "", "reason": "Health-IT editorial with missing abstract; not decidable", "screener": "R-claude-haiku"}
+{"id": "U03640", "decision": "exclude", "code": "X0", "reason": "EMR and eHealth Twitter sentiment analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01835", "decision": "exclude", "code": "X3", "reason": "Introductory book on generative AI; secondary study", "screener": "R-claude-haiku"}
+{"id": "U01109", "decision": "exclude", "code": "X0", "reason": "Generative adversarial imitation learning for ship collision avoidance; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04232", "decision": "exclude", "code": "X2", "reason": "VLM-guided constrained diffusion reconstructs past RGB scenes from thermal traces; image output", "screener": "R-claude-haiku"}
+{"id": "U00790", "decision": "exclude", "code": "X0", "reason": "Phase-type competing risks models; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04148", "decision": "exclude", "code": "X1", "reason": "Diffusion and state-space 3D scene completion for shuttle incident reporting; non-text 3D output", "screener": "R-claude-haiku"}
+{"id": "U04088", "decision": "exclude", "code": "X2", "reason": "Retrieval-augmented text-to-motion diffusion; motion output with text conditioning", "screener": "R-claude-haiku"}
+{"id": "U03807", "decision": "exclude", "code": "X3", "reason": "Book on generative AI foundations in Python; secondary study", "screener": "R-claude-haiku"}
+{"id": "U04528", "decision": "exclude", "code": "X1", "reason": "Diffusion silent speech reconstruction with text-guided pseudo targets; speech output", "screener": "R-claude-haiku"}
+{"id": "U03690", "decision": "exclude", "code": "X0", "reason": "Opinion homophily in social media networks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04254", "decision": "exclude", "code": "X1", "reason": "Vision-language guided diffusion for single-domain object detection; non-text output", "screener": "R-claude-haiku"}
+{"id": "U02253", "decision": "exclude", "code": "X0", "reason": "Review of social media role in COVID-19; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04339", "decision": "exclude", "code": "X1", "reason": "Flow-matching diffusion audio generation from humming; audio output", "screener": "R-claude-haiku"}
+{"id": "U04194", "decision": "exclude", "code": "X2", "reason": "LLM prompts with LoRA-tuned SDXL for railway anomaly image synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U01949", "decision": "exclude", "code": "X1", "reason": "Video generation model fine-tuned for object movement image editing; image output", "screener": "R-claude-haiku"}
+{"id": "U01261", "decision": "exclude", "code": "X0", "reason": "Hybrid transport diffusion Monte Carlo for radiative transfer; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02550", "decision": "exclude", "code": "X0", "reason": "Book on Chinese and Western poetics translation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04017", "decision": "exclude", "code": "X2", "reason": "ControlNet diffusion with LLM text prompts for synthetic driving image realism; image output", "screener": "R-claude-haiku"}
+{"id": "U02866", "decision": "exclude", "code": "X3", "reason": "Systematic review of generative AI in urban planning; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03765", "decision": "exclude", "code": "X2", "reason": "LLM-prompted text-to-image diffusion for fairness data synthesis; image output", "screener": "R-claude-haiku"}
+{"id": "U02532", "decision": "exclude", "code": "X0", "reason": "Implementation science and mental health policy in Latin America; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03966", "decision": "exclude", "code": "X3", "reason": "Survey of LLM-based misinformation detection; secondary study", "screener": "R-claude-haiku"}
+{"id": "U03079", "decision": "exclude", "code": "X0", "reason": "Statistical properties of rooted-tree prime encoding; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03035", "decision": "exclude", "code": "X0", "reason": "LLMs as political actors and cultural bias; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03141", "decision": "exclude", "code": "X0", "reason": "RAG question answering on grain-boundary diffusion literature; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02370", "decision": "exclude", "code": "X0", "reason": "Business aspects topic overlap and investor underreaction; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03091", "decision": "exclude", "code": "X0", "reason": "Content-guided influence maximization with LLM retrieval; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04103", "decision": "exclude", "code": "X2", "reason": "RAG-grounded text-to-image generation for air conditioner design; image output", "screener": "R-claude-haiku"}
+{"id": "U01432", "decision": "exclude", "code": "X0", "reason": "Transformer social network representation system; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04404", "decision": "exclude", "code": "X0", "reason": "Local stroke augmentation for handwritten text recognition; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03511", "decision": "exclude", "code": "X0", "reason": "Bibliometric and LDA analysis of hydrogen storage research; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04175", "decision": "exclude", "code": "X1", "reason": "Diffusion model generates improved road images with LVLM proposals; image output", "screener": "R-claude-haiku"}
+{"id": "U03726", "decision": "exclude", "code": "X0", "reason": "Emoji use in disaster communication on X; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02781", "decision": "exclude", "code": "X0", "reason": "Topic clustering of tweets via label propagation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03292", "decision": "exclude", "code": "X3", "reason": "Data mining textbook covering generative models; secondary study", "screener": "R-claude-haiku"}
+{"id": "U02196", "decision": "exclude", "code": "X1", "reason": "Diffusion speech synthesizer for speech-to-speech translation; speech output", "screener": "R-claude-haiku"}
+{"id": "U03584", "decision": "exclude", "code": "X0", "reason": "Entropy metrics for aspect-level online discourse with LLM agents; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04578", "decision": "exclude", "code": "X0", "reason": "OASIS 2023 workshop call on online social network challenges; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01702", "decision": "exclude", "code": "X0", "reason": "Hybrid digital conflict in Afghanistan-Pakistan; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01092", "decision": "exclude", "code": "X0", "reason": "Impedance-based stability modeling of grid-connected systems; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04173", "decision": "exclude", "code": "X2", "reason": "Dataset and framework for personalized diffusion LoRAs with text prompts; image output", "screener": "R-claude-haiku"}
+{"id": "U03136", "decision": "exclude", "code": "X0", "reason": "Essay on AI adoption and the diffusion divide; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03817", "decision": "exclude", "code": "X1", "reason": "Diffusion image restoration with IR-SDE and degradation-aware CLIP; image output", "screener": "R-claude-haiku"}
+{"id": "U04055", "decision": "exclude", "code": "X2", "reason": "Diffusion panorama generation with text and visual prompts for 3D room meshes", "screener": "R-claude-haiku"}
+{"id": "U03749", "decision": "exclude", "code": "X0", "reason": "Enhanced dissipation for Taylor-Couette flow; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03702", "decision": "exclude", "code": "X0", "reason": "Context-aware fake news detection with BERT and CNN; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04080", "decision": "exclude", "code": "X0", "reason": "MLLM evaluation of text-image alignment; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U01472", "decision": "exclude", "code": "X0", "reason": "Prototype clustering network for named entity recognition; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04302", "decision": "exclude", "code": "X2", "reason": "Latent diffusion motion stylization with text style conditions; motion output", "screener": "R-claude-haiku"}
+{"id": "U04245", "decision": "exclude", "code": "X2", "reason": "Text-driven diffusion generates transferable adversarial images; image output", "screener": "R-claude-haiku"}
+{"id": "U02040", "decision": "exclude", "code": "X0", "reason": "Adolescent well-being school project; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01387", "decision": "exclude", "code": "X0", "reason": "Semi-supervised graph learning for entertainment news anomalies; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04377", "decision": "exclude", "code": "X2", "reason": "Human-annotated dataset of artifacts in AI-generated text-to-video; video output", "screener": "R-claude-haiku"}
+{"id": "U02542", "decision": "exclude", "code": "X0", "reason": "EEG-based text generation with BiLSTM; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02401", "decision": "exclude", "code": "X0", "reason": "GenAI and technology adoption constructs in global marketing; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03937", "decision": "exclude", "code": "X1", "reason": "Graph diffusion for service recommendation with LLM semantics; non-text graph output", "screener": "R-claude-haiku"}
+{"id": "U03806", "decision": "exclude", "code": "X2", "reason": "Systems characterization of text-to-image and text-to-video diffusion models; image and video output", "screener": "R-claude-haiku"}
+{"id": "U03384", "decision": "exclude", "code": "X3", "reason": "Introductory chapter on foundations of generative AI; secondary", "screener": "R-claude-haiku"}
+{"id": "U04289", "decision": "exclude", "code": "X7", "reason": "LVLM bias benchmark using Stable Diffusion XL generated images; dataset application", "screener": "R-claude-haiku"}
+{"id": "U03995", "decision": "exclude", "code": "X0", "reason": "Explainable deepfake detection with VLM; no diffusion model proposed", "screener": "R-claude-haiku"}
+{"id": "U03510", "decision": "exclude", "code": "X0", "reason": "Coarsening fluid limit for zero-range processes; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04090", "decision": "exclude", "code": "X0", "reason": "Vision-language classification of image degradations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04586", "decision": "exclude", "code": "X0", "reason": "Fine-tuned multimodal LLM scorer for text-to-image evaluation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04093", "decision": "exclude", "code": "X1", "reason": "Diffusion synthetic patient trajectories for offline RL in sepsis treatment; non-text", "screener": "R-claude-haiku"}
+{"id": "U01532", "decision": "exclude", "code": "X0", "reason": "Social media effects on multi-generational product diffusion; no diffusion generative model", "screener": "R-claude-haiku"}
+{"id": "U03781", "decision": "exclude", "code": "X3", "reason": "Systematic review of boundary objects in health innovation; secondary", "screener": "R-claude-haiku"}
+{"id": "U03785", "decision": "exclude", "code": "X2", "reason": "Latent diffusion text-to-audio with text encoder analysis; audio output", "screener": "R-claude-haiku"}
+{"id": "U00991", "decision": "exclude", "code": "X0", "reason": "Dual dynamic programming with submodular value functions; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02221", "decision": "unclear", "code": "", "reason": "Glyph-conditioned Stable Diffusion for visual text generation; visual text, unclear", "screener": "R-claude-haiku"}
+{"id": "U04048", "decision": "exclude", "code": "X2", "reason": "Florence-2 VQA and LoRA Stable Diffusion for endoscopy image generation; image output", "screener": "R-claude-haiku"}
+{"id": "U01793", "decision": "exclude", "code": "X2", "reason": "Text-generation guided diffusion deraining with depth conditions; image output", "screener": "R-claude-haiku"}
+{"id": "U02667", "decision": "exclude", "code": "X0", "reason": "Corporate disclosures and blockchain adoption stage; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02188", "decision": "exclude", "code": "X0", "reason": "Domain-specific language for PDE code generation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03984", "decision": "exclude", "code": "X2", "reason": "LLM-parsed prompts and LoRA diffusion virtual try-on; image output", "screener": "R-claude-haiku"}
+{"id": "U01291", "decision": "exclude", "code": "X0", "reason": "Control strategies for mine ventilation networks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03818", "decision": "exclude", "code": "X0", "reason": "Numerical study of coupled reaction-diffusion model; no generative diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03341", "decision": "exclude", "code": "X3", "reason": "Essay on generative AI, creativity and law; secondary", "screener": "R-claude-haiku"}
+{"id": "U04105", "decision": "exclude", "code": "X1", "reason": "Sparse autoencoder analysis of vision and diffusion model features; image output", "screener": "R-claude-haiku"}
+{"id": "U02425", "decision": "exclude", "code": "X3", "reason": "Review of AI-driven comic generation; secondary", "screener": "R-claude-haiku"}
+{"id": "U03946", "decision": "exclude", "code": "X2", "reason": "Diffusion fashion image editing with textual descriptions and texture injection; image output", "screener": "R-claude-haiku"}
+{"id": "U01680", "decision": "exclude", "code": "X3", "reason": "Review of parallel images technology for visual perception; secondary", "screener": "R-claude-haiku"}
+{"id": "U04461", "decision": "exclude", "code": "X2", "reason": "Training-free diffusion rare concept composition with LLM prompt scheduling; image output", "screener": "R-claude-haiku"}
+{"id": "U04181", "decision": "exclude", "code": "X2", "reason": "Instruction-based image editing with MLLM features; image output, text instructions", "screener": "R-claude-haiku"}
+{"id": "U03569", "decision": "exclude", "code": "X2", "reason": "Stable Diffusion generates images from text for NLG evaluation; image output", "screener": "R-claude-haiku"}
+{"id": "U00994", "decision": "exclude", "code": "X0", "reason": "Covert communication and task offloading for multi-UAV networks; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01673", "decision": "exclude", "code": "X0", "reason": "Fake news spreading analysis with topic modeling and bipartite graphs; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01686", "decision": "exclude", "code": "X0", "reason": "Wind power forecasting with physical diffusion equations; no diffusion generative model", "screener": "R-claude-haiku"}
+{"id": "U03708", "decision": "exclude", "code": "X0", "reason": "Influencer detection on Facebook via amplification factors; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04332", "decision": "exclude", "code": "X1", "reason": "Diffusion-based hand-object interaction image object swapping; image output", "screener": "R-claude-haiku"}
+{"id": "U02600", "decision": "exclude", "code": "X0", "reason": "Evolutionary economics review and cultural evolution; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01125", "decision": "exclude", "code": "X0", "reason": "Quasi-stationarity criteria for Markov processes; no diffusion generative model", "screener": "R-claude-haiku"}
+{"id": "U03359", "decision": "exclude", "code": "X3", "reason": "Overview of generative AI in urban spaces; secondary", "screener": "R-claude-haiku"}
+{"id": "U00136", "decision": "exclude", "code": "X1", "reason": "Autoregressive discrete diffusion for trajectory generation; non-text output", "screener": "R-claude-haiku"}
+{"id": "U03713", "decision": "exclude", "code": "X0", "reason": "RbgA ribosome 50S maturation study; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01006", "decision": "exclude", "code": "X0", "reason": "Deep Koopman linearization for satellite attitude control; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00460", "decision": "exclude", "code": "X1", "reason": "Diffusion talking head video generation from audio and portrait; video output", "screener": "R-claude-haiku"}
+{"id": "U02263", "decision": "exclude", "code": "X0", "reason": "Perturbation-assisted sample synthesis for uncertainty quantification; generative model not stated as diffusion", "screener": "R-claude-haiku"}
+{"id": "U04178", "decision": "unclear", "code": "", "reason": "LoRA-tuned LLM sign language translation with LatentSync diffusion lip-sync; combined outputs unclear", "screener": "R-claude-haiku"}
+{"id": "U04122", "decision": "exclude", "code": "X2", "reason": "Multi-class textual inversion for text-to-image diffusion personalization and classification; image output", "screener": "R-claude-haiku"}
+{"id": "U04128", "decision": "exclude", "code": "X0", "reason": "Manim-based automatic video generation for math explanations; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U02962", "decision": "exclude", "code": "X0", "reason": "ChatGPT adoption and digital entrepreneurial intention survey; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01794", "decision": "exclude", "code": "X0", "reason": "Gemini public discourse sentiment and LDA analysis; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03645", "decision": "exclude", "code": "X0", "reason": "Twitter crisis communication during the Mars recall; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04046", "decision": "exclude", "code": "X1", "reason": "Vision-language planner guides video diffusion for physically plausible generation; video output", "screener": "R-claude-haiku"}
+{"id": "U00949", "decision": "exclude", "code": "X0", "reason": "Sampled-data AGC dispatch with delay intervals; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03741", "decision": "exclude", "code": "X0", "reason": "Emotions in microblogs and sharing with personality moderators; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01340", "decision": "exclude", "code": "X0", "reason": "Cross-modal contrastive sentiment fusion network; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03815", "decision": "exclude", "code": "X2", "reason": "Text-to-image generation from medical text for health literacy; image output", "screener": "R-claude-haiku"}
+{"id": "U04308", "decision": "exclude", "code": "X2", "reason": "Diffusion text-to-spatial-audio generation with text conditioning; audio output", "screener": "R-claude-haiku"}
+{"id": "U03969", "decision": "exclude", "code": "X2", "reason": "LLM and diffusion layout-to-image augmentation for Taiwanese street scenes; image output", "screener": "R-claude-haiku"}
+{"id": "U03635", "decision": "exclude", "code": "X0", "reason": "Emotion-based influence maximization in attributed networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03653", "decision": "exclude", "code": "X0", "reason": "Huawei corporate communication on social networks in Africa; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01151", "decision": "exclude", "code": "X0", "reason": "MPC control of buck bidirectional converter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01872", "decision": "exclude", "code": "X2", "reason": "Diffusion-based steganography with controllable prompts; image output", "screener": "R-claude-haiku"}
+{"id": "U03308", "decision": "exclude", "code": "X0", "reason": "ChatGPT in lexicography article generation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U00884", "decision": "exclude", "code": "X0", "reason": "Nanofluid natural convection with ANN and FEM; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01001", "decision": "exclude", "code": "X0", "reason": "Predictive interference management for URLLC; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03537", "decision": "exclude", "code": "X0", "reason": "Offensive content and emotion in BLM Twitter discourse; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02754", "decision": "exclude", "code": "X0", "reason": "Social media analytics framework; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02724", "decision": "exclude", "code": "X0", "reason": "Literature and journalism relation essay; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03801", "decision": "exclude", "code": "X3", "reason": "Practical book on Stable Diffusion with Python; secondary tutorial", "screener": "R-claude-haiku"}
+{"id": "U04441", "decision": "exclude", "code": "X2", "reason": "Bidirectional preference optimization for safe text-to-image diffusion; image output", "screener": "R-claude-haiku"}
+{"id": "U00832", "decision": "exclude", "code": "X0", "reason": "Diffusion LMS-based distributed detection in sensor networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03855", "decision": "exclude", "code": "X2", "reason": "Textual inversion of text-to-image models for few-shot anomaly detection; image-based classification", "screener": "R-claude-haiku"}
+{"id": "U04077", "decision": "exclude", "code": "X1", "reason": "Diffusion pansharpening with VLM-derived routing; non-text image output", "screener": "R-claude-haiku"}
+{"id": "U02230", "decision": "exclude", "code": "X3", "reason": "Survey of cross-modal visual and auditory content generation; secondary", "screener": "R-claude-haiku"}
+{"id": "U03065", "decision": "unclear", "code": "", "reason": "Essay with missing abstract; not decidable", "screener": "R-claude-haiku"}
+{"id": "U01185", "decision": "exclude", "code": "X0", "reason": "Fractional-order controllers for satellite attitude with metaheuristics; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02478", "decision": "unclear", "code": "", "reason": "Theoretical closed-loop training dynamics of generative models; diffusion role unclear", "screener": "R-claude-haiku"}
+{"id": "U01430", "decision": "exclude", "code": "X0", "reason": "US China strategic technologies policy coalitions; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01630", "decision": "unclear", "code": "", "reason": "Generative text-image augmentation for grounded multimodal NER; diffusion role and output unclear", "screener": "R-claude-haiku"}
+{"id": "U04571", "decision": "exclude", "code": "X0", "reason": "Financial public opinion SIR-type communication model; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04187", "decision": "exclude", "code": "X1", "reason": "Diffusion-generated concept annotations for domain generalization; classification output", "screener": "R-claude-haiku"}
+{"id": "U02721", "decision": "exclude", "code": "X0", "reason": "Lymphoma MRI features in cats; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01501", "decision": "exclude", "code": "X7", "reason": "Architectural design studio workshop using Midjourney; education application", "screener": "R-claude-haiku"}
+{"id": "U01039", "decision": "exclude", "code": "X0", "reason": "BPS quivers and q-Painleve equations; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04514", "decision": "exclude", "code": "X0", "reason": "Group-based information diffusion prediction on cascades; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03429", "decision": "exclude", "code": "X0", "reason": "Adaptive combination strategy for diffusion LMS networks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04471", "decision": "exclude", "code": "X7", "reason": "Consumer electronics GenAI case studies with LLM, text-to-video and diffusion tools; application", "screener": "R-claude-haiku"}
+{"id": "U00925", "decision": "exclude", "code": "X0", "reason": "Discrete flower pollination for crane scheduling; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04450", "decision": "exclude", "code": "X1", "reason": "Mamba-based VLA with flow matching action generation; robot action output", "screener": "R-claude-haiku"}
+{"id": "U01124", "decision": "exclude", "code": "X0", "reason": "Flow characteristics of two-dimensional rotary valve; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02576", "decision": "exclude", "code": "X0", "reason": "Antenarrative field for economic degrowth knowledge; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02845", "decision": "exclude", "code": "X3", "reason": "Integrative review of AI literacy research; secondary", "screener": "R-claude-haiku"}
+{"id": "U03070", "decision": "exclude", "code": "X0", "reason": "Feasibility of GenAI for knowledge management in a regulator; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02328", "decision": "exclude", "code": "X2", "reason": "Word-conditioned transformer diffusion for 3D sign motion; motion output", "screener": "R-claude-haiku"}
+{"id": "U02453", "decision": "exclude", "code": "X0", "reason": "Evaluation of literary translation; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04442", "decision": "exclude", "code": "X1", "reason": "Controllable diffusion video editing for counterfactual video QA data; video output", "screener": "R-claude-haiku"}
+{"id": "U03864", "decision": "exclude", "code": "X0", "reason": "Distributed Forward-Forward algorithm for large models; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03624", "decision": "exclude", "code": "X0", "reason": "Zero-inflated kernel quantile centile charts; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03466", "decision": "exclude", "code": "X0", "reason": "Distributed diffusion LMS with cross-verification against attacks; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03588", "decision": "exclude", "code": "X0", "reason": "Sparse graph modeling for microblog sentiment; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01683", "decision": "exclude", "code": "X0", "reason": "Prognostic model for pancreatic cancer with imaging and markers; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04271", "decision": "exclude", "code": "X2", "reason": "ControlNet and VLM prompts for diffusion segmentation data augmentation; image output", "screener": "R-claude-haiku"}
+{"id": "U01623", "decision": "unclear", "code": "", "reason": "Text-to-3D urban modeling framework; generative technique unspecified", "screener": "R-claude-haiku"}
+{"id": "U03662", "decision": "exclude", "code": "X1", "reason": "RISC-V operator library benchmarked with Stable Diffusion inference; systems workload", "screener": "R-claude-haiku"}
+{"id": "U03284", "decision": "exclude", "code": "X0", "reason": "GPT-4 differential diagnosis in neuroradiology; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02923", "decision": "exclude", "code": "X3", "reason": "Review of generative AI for nanomaterial discovery; secondary", "screener": "R-claude-haiku"}
+{"id": "U03933", "decision": "exclude", "code": "X7", "reason": "Pipeline combining NLLB, TTS and Stable Diffusion for multilingual educational video; application", "screener": "R-claude-haiku"}
+{"id": "U03663", "decision": "exclude", "code": "X0", "reason": "Chilean conditional cash transfer programmes compared; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04022", "decision": "exclude", "code": "X1", "reason": "Diffusion instance transformation for object detection augmentation; image output", "screener": "R-claude-haiku"}
+{"id": "U04496", "decision": "exclude", "code": "X1", "reason": "Distilled vision encoder with diffusion policy head for robot manipulation; action output", "screener": "R-claude-haiku"}
+{"id": "U03685", "decision": "exclude", "code": "X0", "reason": "WeChat official account pushes and user behaviour prediction; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U02870", "decision": "exclude", "code": "X0", "reason": "Human milk diet and brain maturation in preterm infants; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01183", "decision": "exclude", "code": "X0", "reason": "Exact discrete Lagrangian mechanics for nonholonomic systems; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U03811", "decision": "exclude", "code": "X2", "reason": "LLM scene graphs condition text-to-video diffusion; video output", "screener": "R-claude-haiku"}
+{"id": "U04029", "decision": "exclude", "code": "X1", "reason": "Conditional diffusion radio map estimation for wireless networks; non-text output", "screener": "R-claude-haiku"}
+{"id": "U04233", "decision": "exclude", "code": "X1", "reason": "Diffusion super-resolution with MLLM priors; image output", "screener": "R-claude-haiku"}
+{"id": "U01042", "decision": "exclude", "code": "X0", "reason": "Diffusion-based disease contagion model in crowds; no generative diffusion model", "screener": "R-claude-haiku"}
+{"id": "U04294", "decision": "exclude", "code": "X1", "reason": "Attention diffusion for open-vocabulary robotic grasping; grasp output", "screener": "R-claude-haiku"}
+{"id": "U04557", "decision": "exclude", "code": "X3", "reason": "Survey of defenses against AI-generated visual media; secondary", "screener": "R-claude-haiku"}
+{"id": "U03716", "decision": "exclude", "code": "X0", "reason": "Global integration of Gulf markets; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01849", "decision": "exclude", "code": "X0", "reason": "Shapley pruning for image-to-text generation; no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U00569", "decision": "exclude", "code": "X0", "reason": "Constrained MPC for industrial thickener; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04014", "decision": "unclear", "code": "", "reason": "Diffusion images and LLM text for e-health data generation; unified integration unclear", "screener": "R-claude-haiku"}
+{"id": "U02715", "decision": "exclude", "code": "X0", "reason": "Opinion mining classification on Twitter; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U01116", "decision": "exclude", "code": "X0", "reason": "Hybrid automaton predictive control for inverters; no diffusion component", "screener": "R-claude-haiku"}
+{"id": "U04186", "decision": "exclude", "code": "X0", "reason": "StyleGAN latent editing for face aging; GAN-based, no diffusion model", "screener": "R-claude-haiku"}
+{"id": "U01699", "decision": "exclude", "code": "X0", "reason": "Profile-indexed retrieval for spoken language understanding; no generative diffusion model", "screener": "R-claude-haiku"}
+{"id": "U03876", "decision": "exclude", "code": "X1", "reason": "Diffusion-based 3D asset generation for simulated robot learning; non-text assets", "screener": "R-claude-haiku"}
