@@ -1,6 +1,6 @@
 """Check that every evidence quote in full-text screening rows occurs in the screened full text.
 
-Criteria v1.5 (screener copy, brief): each row carries "evidence": [{"cond", "quote", "loc"}]. A quote is
+Criteria v1.6 (screener copy, brief): each row carries "evidence": [{"cond", "quote", "loc"}]. A quote is
 ONE CONTIGUOUS passage of at least 6 and at most 40 words copied from the full-text file of that record. It
 must occur there verbatim, up to:
   - Unicode compatibility forms (NFKC: ligatures such as "fi", full-width characters, the ellipsis character),
@@ -10,7 +10,9 @@ must occur there verbatim, up to:
   - markdown emphasis and link markup left by PDF-to-markdown conversion (*, _, `, [, ]); since v1.5 also
     the target of a markdown link ("[LLaDA](https://...)" reads as "LLaDA"),
   - HTML tags (since v1.5): a <sup> element holding only a footnote marker (digits, commas, *, daggers, at most
-    6 characters) is removed with its content; every other tag is removed and its content kept.
+    6 characters) is removed with its content; every other tag is removed and its content kept. Since v1.6 only
+    known HTML tag names with well-formed attributes count as tags, so inline maths such as "<q and not r>" is
+    kept as text on both sides.
 Case is kept (verbatim means verbatim). Citations, page headers and footers inside a passage are part of the
 file: a quote either copies them as they appear or is split into two entries.
 
@@ -20,7 +22,9 @@ Checks (a quote is accepted if at least one occurrence passes all of them):
     ellipsis that is not found as a contiguous passage gets status "elided".
   - Whole words (v1.4): a letter, digit or hyphen joined to either end of the match rejects that occurrence.
   - Negation before (v1.4, widened in v1.5): an occurrence is rejected with status "negation_before" if any of
-    the 6 words before it, in the same sentence, is a negation word (NEG_BEFORE below, any word ending in
+    the 6 words before it, in the same sentence, is a negation word. Sentences end at ".", ";", "!" or "?"
+    followed by a space; since v1.6 not at a colon and not at the period of an abbreviation (e.g., i.e., et al.,
+    Fig., Eq., cf., vs., etc., a single initial), and "e.g." or "Show-o" count as one word (NEG_BEFORE below, any word ending in
     n't, or "w/o"). The screener must extend the quote back to include that word.
   - Negation after (v1.5): an occurrence is rejected with status "negation_after" if any of the 3 words after
     it, in the same sentence, is a strong negation word (NEG_AFTER below). The screener extends the quote.
@@ -60,9 +64,15 @@ _TRANS = str.maketrans({
 _ELLIPSIS = re.compile(r"\.\.\.|…")
 _LINK_TARGET = re.compile(r"\]\([^)\s]*\)")
 _SUP_MARK = re.compile(r"<sup>\s*[0-9,*†‡\s]{1,6}\s*</sup>", re.IGNORECASE)
-_TAG = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(\s[^<>]*)?/?>")
-_SENT_END = re.compile(r"[.;:!?](\s|$)")
-_WORD = re.compile(r"w/o|[A-Za-z']+")
+_HTML_TAGS = ("a|abbr|b|big|blockquote|br|caption|center|cite|code|col|colgroup|dd|del|div|dl|dt|em|figcaption|"
+              "figure|font|h[1-6]|hr|i|img|ins|kbd|li|mark|ol|p|pre|q|s|samp|small|span|strike|strong|sub|sup|"
+              "table|tbody|td|tfoot|th|thead|tr|tt|u|ul|var")
+_ATTR = r"\s+[A-Za-z_:][-A-Za-z0-9_:.]*\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s\"'=<>`]+)"
+_TAG = re.compile(r"</?(?:" + _HTML_TAGS + r")(?:" + _ATTR + r")*\s*/?>", re.IGNORECASE)
+_SENT_END = re.compile(r"[.;!?](\s|$)")
+_ABBREV = re.compile(r"(?:\b(?:e\.g|i\.e|et al|al|figs?|eqs?|cf|vs|etc|resp|approx|sec|tab|no|ref|refs)|"
+                     r"(?<![A-Za-z])[A-Za-z])$", re.IGNORECASE)
+_WORD = re.compile(r"w/o|[A-Za-z](?:[A-Za-z'\-]|\.(?=[A-Za-z]))*")
 
 
 def normalise(s):
@@ -90,9 +100,19 @@ def _words(s):
     return [w.lower().replace("'", "") if not w.lower().endswith("n't") else "n't" for w in _WORD.findall(s)]
 
 
+def _sentence_ends(t):
+    """Sentence-end matches in t, skipping the period of an abbreviation or a single initial."""
+    out = []
+    for m in _SENT_END.finditer(t):
+        if t[m.start()] == "." and _ABBREV.search(t[:m.start()]):
+            continue
+        out.append(m)
+    return out
+
+
 def _negated_before(prefix):
     clause = prefix[-300:]
-    ends = list(_SENT_END.finditer(clause))
+    ends = _sentence_ends(clause)
     if ends:
         clause = clause[ends[-1].end():]
     for w in _words(clause)[-WINDOW_BEFORE:]:
@@ -103,9 +123,9 @@ def _negated_before(prefix):
 
 def _negated_after(suffix):
     clause = suffix[:200]
-    m = _SENT_END.search(clause)
-    if m:
-        clause = clause[:m.start()]
+    ends = _sentence_ends(clause)
+    if ends:
+        clause = clause[:ends[0].start()]
     return any(w in NEG_AFTER for w in _words(clause)[:WINDOW_AFTER])
 
 
@@ -201,6 +221,12 @@ def self_test():
             "The baseline lacks shared weights between the vision and text towers entirely. "
             "Our variant w/o shared weights between towers is weaker on every benchmark. "
             "Both towers of the model share weights in neither stage of training.")
+    # Probes of the v1.5 red-team audit (y4): abbreviations and colons between negation and quote; inline maths.
+    abbr = ("We do not, e.g. as Show-o does, share weights between the understanding and generation modules. "
+            "The model does not, following Chen et al. 2024, share weights between the two towers of the system. "
+            "The branches do not have this property: shared weights across the understanding and generation paths. "
+            "Under the condition <p and not q> the decoder shares weights with the encoder in each layer. "
+            "We report <span class=\"hl\">joint training of both branches</span> in all of our experiments.")
     md = ("We fine-tune [LLaDA](https://github.com/ML-GSAI/LLaDA) on SMILES strings from the ZINC "
           "database.<sup>2</sup> The model<sup>*</sup> generates valid molecules in most trials. "
           "Energy is E = mc<sup>2</sup> in this toy example.")
@@ -241,6 +267,13 @@ def self_test():
         ("We fine-tune LLaDA on SMILES strings from the ZINC database.", md, "found"),    # link target dropped
         ("The model generates valid molecules in most trials.", md, "found"),             # footnote marker dropped
         ("Energy is E = mc2 in this toy example.", md, "not_found"),                      # sup content typed in
+        # v1.6 cases (audit of v1.5, y4)
+        ("share weights between the understanding and generation modules", abbr, "negation_before"),  # e.g.
+        ("share weights between the two towers of the system", abbr, "negation_before"),  # et al.
+        ("shared weights across the understanding and generation paths", abbr, "negation_before"),  # colon
+        ("the decoder shares weights with the encoder in each layer", abbr, "negation_before"),  # maths span kept
+        ("Under the condition <p and not q> the decoder shares weights", abbr, "found"),  # span quoted verbatim
+        ("We report joint training of both branches in all", abbr, "found"),              # real tag still removed
     ]
     fails = 0
     for q, t, want in cases:
