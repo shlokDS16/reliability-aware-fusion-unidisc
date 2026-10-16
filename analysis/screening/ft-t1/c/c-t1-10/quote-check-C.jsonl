@@ -1,0 +1,51 @@
+{"id": "M13951", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (RoBERTa text component: trained for understanding, no varying masking rate stated)", "loc": "p.3, §1", "status": "found"}
+{"id": "M13951", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (RoBERTa text component)", "loc": "p.3, §2", "status": "found"}
+{"id": "M13951", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 (image diffusion components)", "loc": "p.6, §4.1", "status": "found"}
+{"id": "M13951", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R9 step 2 (text conditions the diffusion component)", "loc": "p.16, Appendix D", "status": "found"}
+{"id": "M13893", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "R13 (diffusion component used non-generatively)", "loc": "p.4, §3, Figure 3 caption", "status": "found"}
+{"id": "M13893", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R13 (no final generation by the DiT)", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M13893", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b3 (understanding model and DiT frozen; only adapters and decoder LoRA trained)", "loc": "p.6, §3.3", "status": "found"}
+{"id": "M13893", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R9 step 2 (text prompt conditions the DiT)", "loc": "p.4, §3, Figure 3 caption", "status": "found"}
+{"id": "M12983", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (drafter generates in one pass; no multi-step or distilled sampler and no training at varying masking rates stated)", "loc": "p.3, §2.2", "status": "found"}
+{"id": "M12983", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (drafter treated as deterministic point mass)", "loc": "p.6, §5", "status": "found"}
+{"id": "M12983", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R4 (target model is autoregressive)", "loc": "p.1, §1", "status": "found"}
+{"id": "M15097", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D5 (pretrained diffusion language models loaded as targets)", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M15097", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M15097", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2", "loc": "p.1, §1", "status": "found"}
+{"id": "M15097", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R6 (text completion is the output)", "loc": "p.4, §3.3", "status": "found"}
+{"id": "M15097", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R14(b) (results table compares four diffusion generators on the same task and data)", "loc": "p.5, Table 2", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1 (text from 3D motion input)", "loc": "p.8, Table 2", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b2 (flow-matching denoising of motion)", "loc": "p.5, §3.3", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D4 (3D human motion)", "loc": "p.4, §3.1", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b3 sides (understanding parameters)", "loc": "p.4, §3.2", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 (ii) joint training variant of the paper's own method", "loc": "p.8, §4.4, Table 4 IDs 5 and 7", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 (ii) joint variant reported", "loc": "p.9, §4.4", "status": "found"}
+{"id": "M15992", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "b3 (main model freezes understanding parameters)", "loc": "p.9, §4.4", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D5 (loads a block-diffusion VLM converted from a text-generating VLM)", "loc": "p.3, §3.1", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D5", "loc": "p.3, §2.3", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 (masked denoising at sampled mask ratios, iterative denoising)", "loc": "p.5, §3.3", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "D2", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R14(a) (fine-tunes the diffusion VLM as a generator)", "loc": "p.6, §4.1", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R14(b) (autoregressive control on the same task and data)", "loc": "p.7, §4.1, Tables 1 and 2", "status": "found"}
+{"id": "M16055", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "R7 / nonlang_only (outputs are IDs and coordinate tokens, not language)", "loc": "p.4, §3.2", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1 (weights used produce text from images)", "loc": "p.1, §1", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b1 (weights used)", "loc": "p.5, §3.3", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b1 (text legend generated in the paper's own setup)", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b2 (image generated by flow matching with an Euler solver)", "loc": "p.5, §3.4", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 (i) shared attention in a mixture of transformers; sides", "loc": "p.5, §3.3", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 (ii) both parameter sets updated in one optimisation", "loc": "p.5, §3.3", "status": "found"}
+{"id": "M16154", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "b3 (ii)", "loc": "p.4, Figure 2 caption", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1 (text from image input)", "loc": "p.8, Table 1", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b2 (diffusion MLP generates image tokens)", "loc": "p.6, §3.3.1", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b2 (multi-step denoising)", "loc": "p.10, §4.6", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b3 (LLM frozen; trained image-token PLoRA on all image tokens, hence active in understanding)", "loc": "p.7, §3.3.2", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 (frozen LLM statement)", "loc": "p.6, §3.3.2", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 (ii) one optimisation over understanding and generation tasks", "loc": "p.7, §3.3.3", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "b3 (ii)", "loc": "p.7, §3.3.3", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 7, "cond": "b3 (ii) trained parameters are on the understanding side)", "loc": "p.10, §4.5, Figure 3 (C)", "status": "found"}
+{"id": "M16269", "screener": "FC-claude-fable-5-1", "i": 8, "cond": "b3 (only LoRA trained in both stages)", "loc": "p.8, §4.2", "status": "found"}
+{"id": "M16653", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (MDLM trained by the paper with position-dependent masking schedule)", "loc": "p.4, §5", "status": "found"}
+{"id": "M16653", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R6/R8 (natural-language dataset result of the paper's own diffusion models)", "loc": "p.2, §2, Figure 3", "status": "found"}
+{"id": "M16653", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R13(b) (internals of text diffusion models LLaDA and Dream)", "loc": "p.3, §4, Table 1", "status": "found"}
+{"id": "M16653", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R13(b) (likelihoods of text diffusion models)", "loc": "p.7, Appendix B", "status": "found"}
+{"id": "M16653", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R14(c) (unmasking schedule varied)", "loc": "p.16, Appendix M", "status": "found"}
