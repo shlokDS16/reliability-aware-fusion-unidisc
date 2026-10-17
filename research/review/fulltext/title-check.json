@@ -1,6 +1,6 @@
 {
  "checked": 885,
- "flagged": 5,
+ "flagged": 4,
  "flagged_not_verified": 0,
  "rule": "first 40 normalised title chars or >= 80% of 4+ letter words in the first 6,000 chars; files > 1,000,000 chars always flagged",
  "flags": [
@@ -39,15 +39,6 @@
    "title_found_later": false,
    "flag": "title not on page 1",
    "verified": "2026-10-17 orchestrator read page 1: the Zenodo DOI resolves to the AsAManThinks technical report 'Number-Theoretic Scheduling: Golden-Ratio and Digital-Root Bases ...' by the record's subject and source; title differs from the record, same work as far as the file shows; flagged for the screener's note, not a wrong file."
-  },
-  {
-   "id": "M17477",
-   "title": "Reliability of perfusion measured by non-contrast magnetic resonance imaging (arterial spin labeling) in patients with ischemic stroke: a systematic review and meta-analysis",
-   "chars": 6316850,
-   "page1_word_fraction": 0.06,
-   "title_found_later": true,
-   "flag": "very large file",
-   "verified": "2026-10-17 orchestrator: the DOI's open-access PDF is the whole congress supplement (Arq Neuropsiquiatr 82(10) Suppl 3, 6.3 million characters); the record is one abstract listed at journal page 400. Correct DOI, but the abstract's pages must be cut out of the supplement before it can be dispatched to screeners."
   }
  ]
 }
