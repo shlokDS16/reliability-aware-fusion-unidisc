@@ -111,6 +111,13 @@ for who, D in (("A", A), ("B", B)):
                                 "exclude_codes": dict(Counter(D[i]["code"] for i in ids
                                                               if D[i]["decision"] == "exclude"))}
 res["sent_to_C"] = sum(a != b or "adjudicate" in (a, b) for a, b in three)
+cq = [json.loads(l) for p in sorted(FT.glob("c-queue-*.jsonl")) for l in open(p, encoding="utf-8") if l.strip()]
+dis = {i for i in ids if A[i]["decision"] != B[i]["decision"] or "adjudicate" in (A[i]["decision"], B[i]["decision"])}
+cqi = {r["id"] for r in cq}
+res["C_queue"] = {"rows": len(cq), "unique": len(cqi), "disagreement_or_adjudicate": len(dis & cqi),
+                  "disagreement_or_adjudicate_not_queued": sorted(dis - cqi),
+                  "queued_for_quote_check_only": len(cqi - dis),
+                  "quote_only_reasons": dict(Counter(w for r in cq if r["id"] not in dis for w in r.get("why", [])))}
 
 jx = [i for i in ids if A[i]["decision"] == "exclude" and B[i]["decision"] == "exclude"]
 cp = [(A[i]["code"], B[i]["code"]) for i in jx]
@@ -150,6 +157,7 @@ print(f"pass/exclude raw {p['raw_agreement']} kappa {p['kappa']} {p['kappa_ci95'
 print(f"three-way    raw {i3['raw_agreement']} kappa {i3['kappa']} {i3['kappa_ci95']} AC1 {i3['ac1']}")
 print("include/not  ", {k: res['include_vs_not'][k] for k in ('raw_agreement', 'kappa', 'kappa_ci95', 'ac1')})
 print("table", i3["table_A_by_B"])
+print("C queue", res["C_queue"])
 print("adjudicate rate", {w: res["per_screener"][w]["adjudicate_rate"] for w in "AB"}, "sent to C", res["sent_to_C"])
 print("joint exclusions", {k: v for k, v in res["codes_on_joint_exclusions"].items() if k != "table_A_by_B"})
 print("joint inclusions i1", res["joint_inclusions"]["i1"]["same"], "/", res["joint_inclusions"]["n"],

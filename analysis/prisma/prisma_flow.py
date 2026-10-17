@@ -96,7 +96,13 @@ ieee_md = (ROOT / "research/sources/search-raw/ieee-xplore/ieee-queries-20261015
 ieee_hits = {m.group(1): int(m.group(2).replace(",", "")) for m in re.finditer(r"^(I\d) \(.*?\): hits ([\d,]+);", ieee_md, re.M)}
 RS = jg(REV / "screening/v2/rescue-subscription/screener-R-rescue-sub-*.jsonl")
 rescued_q = jl(REV / "screening/v2/rescue-subscription/rescued-queue.jsonl")
-no_abs = [l for l in open(REV / "screening/v2/rescue-subscription/pending-no-abstract.txt", encoding="utf-8") if l.strip()]
+no_abs_list = {l.strip() for l in open(REV / "screening/v2/rescue-subscription/pending-no-abstract.txt", encoding="utf-8") if l.strip()}
+subrec = {r["id"]: r for r in jl(REV / "corpus/subscription-records-2026-10-15.jsonl")}
+sub_fail = {i for i, r in subrec.items() if r["status"].startswith("new, fails")}
+rs_ids = {r["id"] for r in RS}
+no_abs = sub_fail - rs_ids                      # string failures not yet rescue-screened
+assert no_abs <= no_abs_list and all(subrec[i]["abstract_missing"] for i in no_abs)
+rs_pos = {r["id"] for r in RS if r["decision"] != "exclude"}
 DSa = {d["id"]: d["decision"] for d in jg(REV / "screening/v2/dual-subscription/screener-A-batch-sub-*.jsonl")}
 DSb = {d["id"]: d["decision"] for d in jg(REV / "screening/v2/dual-subscription/screener-B-batch-sub-*.jsonl")}
 assert set(DSa) == set(DSb)
@@ -107,7 +113,11 @@ F["subscription"] = {"identified_by_database": pr["by_database"], "identified": 
                      "automation_excluded_S1pp_S2pp": pr["excluded_by_automation_string_filter_S1pp_S2pp"],
                      "queue_string_pass": pr["passed_to_screening_subscription_queue"],
                      "rescue_screened_single_haiku": len(RS), "rescue_decisions": dict(collections.Counter(r["decision"] for r in RS)),
-                     "rescued_queue": len(rescued_q), "automation_excluded_without_abstract_pending": len(no_abs),
+                     "rescue_positives": len(rs_pos), "rescued_queue_file": len(rescued_q),
+                     "automation_excluded_without_abstract_pending": len(no_abs),
+                     "pending_list_stale_entries_since_rescued": len(no_abs_list - no_abs),
+                     "dual_screened_from_queue": len(set(DSa) & {r["id"] for r in jl(REV / "screening/v2/subscription-queue.jsonl")}),
+                     "dual_screened_from_rescue": len(set(DSa) & rs_pos),
                      "ta_screened_dual": len(DSa), "ta_pass_D0030": len(passed_sub),
                      "ieee_hits_by_query": ieee_hits, "ieee_not_exported": {k: ieee_hits[k] for k in ("I3", "I4", "I5") if k in ieee_hits},
                      "warnings": sorted(set(si.get("warnings", [])))}
@@ -173,12 +183,14 @@ F["open"] = [
     f"Open-access fetch failures: {sum(v for k, v in status.items() if k.startswith('open_access_fetch_failed'))} "
     "oa_url records not retrieved and not screened; need a retry or the e-gateway.",
     f"{grp.get('ta-pass-unrouted', 0)} subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",
-    f"Subscription reconciliation: rescue screened {len(RS)} + without abstract {len(no_abs)} = {len(RS) + len(no_abs)} "
-    f"against {pr['excluded_by_automation_string_filter_S1pp_S2pp']} string failures; dual-screened {len(DSa)} against "
-    f"queue {pr['passed_to_screening_subscription_queue']} + rescued {len(rescued_q)} + title-resolved "
-    f"{len(tq)} ({len(tq & set(DSa))} of the title-resolved ids are in the dual batches).",
-    f"IEEE I3-I5 not exported ({sum(F['subscription']['ieee_not_exported'].values())} hits); 1,421-record "
-    "Springer no-abstract set not screened; title-only lookups incomplete (D0033).",
+    f"Subscription: string failures {len(sub_fail)} = rescue-screened {len(rs_ids & sub_fail)} + without abstract "
+    f"{len(no_abs)} (pending-no-abstract.txt lists {len(no_abs_list)}; {len(no_abs_list - no_abs)} of them later gained an "
+    f"abstract and were rescue-screened). Dual-screened {len(DSa)} = queue {len(set(DSa) & {r['id'] for r in jl(REV / 'screening/v2/subscription-queue.jsonl')})} "
+    f"+ rescue positives {len(set(DSa) & rs_pos)} (rescued-queue.jsonl holds {len(rescued_q)}; the other "
+    f"{len(rs_pos - {r['id'] for r in rescued_q})} entered the dual batches directly). The {len(tq)} title-resolved "
+    f"queue records are not dual-screened ({len(tq & set(DSa))} in the dual batches).",
+    f"IEEE I3-I5 not exported ({sum(F['subscription']['ieee_not_exported'].values())} hits); the "
+    "Springer no-abstract set not screened (count in the subscription section); title-only lookups incomplete (D0033).",
 ]
 
 (HERE / "prisma-flow.json").write_text(json.dumps(F, indent=1) + "\n", encoding="utf-8")

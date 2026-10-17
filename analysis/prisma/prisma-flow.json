@@ -76,8 +76,12 @@
    "unclear": 71,
    "include": 10
   },
-  "rescued_queue": 74,
-  "automation_excluded_without_abstract_pending": 1421,
+  "rescue_positives": 81,
+  "rescued_queue_file": 74,
+  "automation_excluded_without_abstract_pending": 1413,
+  "pending_list_stale_entries_since_rescued": 8,
+  "dual_screened_from_queue": 179,
+  "dual_screened_from_rescue": 81,
   "ta_screened_dual": 260,
   "ta_pass_D0030": 52,
   "ieee_hits_by_query": {
@@ -160,7 +164,7 @@
   "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 703, 'U': 12}). Their full-text route (census reading vs criteria v1.6 full-text screening) is not in the PRISMA files; to be confirmed.",
   "Open-access fetch failures: 55 oa_url records not retrieved and not screened; need a retry or the e-gateway.",
   "6 subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",
-  "Subscription reconciliation: rescue screened 2788 + without abstract 1421 = 4209 against 4201 string failures; dual-screened 260 against queue 179 + rescued 74 + title-resolved 7 (0 of the title-resolved ids are in the dual batches).",
-  "IEEE I3-I5 not exported (298 hits); 1,421-record Springer no-abstract set not screened; title-only lookups incomplete (D0033)."
+  "Subscription: string failures 4201 = rescue-screened 2788 + without abstract 1413 (pending-no-abstract.txt lists 1421; 8 of them later gained an abstract and were rescue-screened). Dual-screened 260 = queue 179 + rescue positives 81 (rescued-queue.jsonl holds 74; the other 7 entered the dual batches directly). The 7 title-resolved queue records are not dual-screened (0 in the dual batches).",
+  "IEEE I3-I5 not exported (298 hits); the Springer no-abstract set not screened (count in the subscription section); title-only lookups incomplete (D0033)."
  ]
 }

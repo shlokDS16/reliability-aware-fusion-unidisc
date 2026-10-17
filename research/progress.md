@@ -18,8 +18,14 @@
   e-gateway 17; unflagged user list `research/review/fulltext/egateway-list.csv` (119). (4)
   `analysis/prisma/prisma_flow.py` -> `prisma-flow.md/json`. **Gaps it found (USER-ACTIONS item 16):** 348
   free-source rescue positives never dual-screened nor routed (D0029 vs D0030 wording); 1,243 seed-corpus TA
-  passes in no full-text tranche; 55 OA fetch failures; subscription reconciliation off by 8 (2,788 + 1,421
-  vs 4,201) and the 7 title-resolved queue records not dual-screened. **NEXT (after the reset, with the
+  passes in no full-text tranche; 55 OA fetch failures; the 7 title-resolved queue records not dual-screened.
+  **Quality pass (user via orchestrator: quality over budget):** the 16 C records without an A/B
+  disagreement are quote-check cases (13 return not possible, 2 not accepted after return, 1 truncated;
+  now computed in agreement-ft-t1.json C_queue); `check_agreement_ft_t1.py` recomputes the kappas with
+  scikit-learn and AC1/p_pos/p_neg from cell formulas: 9/9 match. Subscription counts reconcile exactly:
+  4,201 failures = 2,788 rescue-screened + 1,413 SpringerLink without abstract (pending-no-abstract.txt is
+  stale by 8); dual 260 = queue 179 + 81 rescue positives. Still to do: statistician/gate-auditor audit
+  of the agreement and PRISMA files (needs an agent: wait for >= 8 GB free RAM or after the reset). **NEXT (after the reset, with the
   user's yes):** user screens the validation sheet first; decisions on item 16; downloads of the 138 extra
   records (121 OA + 17 e-gateway) and the 102 e-gateway; screen them as T1 batches; K test; Springer abstracts;
   RQ extraction; section 05.

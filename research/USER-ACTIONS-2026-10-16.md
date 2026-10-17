@@ -95,3 +95,6 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    tranche (the census read 176 of them). Do they get full-text screening under criteria v1.6? Recommended: yes,
    as a further tranche.
    (c) 55 open-access links failed (29 errors, 26 not PDFs); Claude retries or moves them to the e-gateway list.
+17. Correction to item 5c (2026-10-17): 1,413 SpringerLink records still lack an abstract, not 1,421; 8 on that
+   list later gained one and were already rescue-screened (analysis/prisma/prisma-flow.md). Options unchanged.
+   Item 16 is otherwise unchanged; the "off by 8" point is resolved.
