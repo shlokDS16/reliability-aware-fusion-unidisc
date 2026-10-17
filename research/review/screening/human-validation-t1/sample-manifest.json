@@ -1,0 +1,12 @@
+{
+ "tranche": "T1",
+ "frame_note": "T1 records with a screened full text on 2026-10-17 (t1b001-t1b076). T1 records screened later (re-check sample, C8, e-gateway, ScienceDirect passes) get their own 15 percent draw with the same seed over their sorted ids, so the frozen draw here is never redrawn (deviation from a single draw over the fixed T1 set, criteria v1.6 A s4 item 6; to be logged as a decision).",
+ "frame_n": 715,
+ "frame_sha256": "1d29e55364b40c8e157b87404e5fb317bd6677212ed8125141ee43dd22371403",
+ "seed": 20261016,
+ "rule": "random.Random(seed).sample(sorted frame ids, max(100, ceil(0.15 N)))",
+ "k": 108,
+ "sample_sha256": "ca62a8e86d83a6fb6861409c1f23b05821aa5e7804bd8136b8d685422c1392b1",
+ "missing_pdf": [],
+ "missing_title": []
+}
