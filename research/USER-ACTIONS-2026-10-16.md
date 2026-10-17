@@ -66,3 +66,12 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    look for open-access copies; if they are subscription-only they join the e-gateway list (item 5).
 11. OpenReview: nothing needed from you while the download runs; Claude screens the PDFs in batches as
    they arrive.
+
+## Status 2026-10-17 ~12:00 IST (screening session)
+12. **Full-text T1 model screening is complete for everything downloaded: 709 records, 558 include and 151
+   exclude** (99 settled by adjudicator C). Item 9 stands: the blind human validation sample of T1 comes
+   before you look at any screener row; say when, and Claude prepares the sample sheet (records and full
+   texts only).
+13. OpenReview: 4 papers failed to download (M13187, M15046, M15574, M18918) and about 6 more have no
+   log entry yet; the orchestrating session is following up. These are the only open-access records not
+   yet screened.

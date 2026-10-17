@@ -1,0 +1,39 @@
+{
+ "scope": "T1 full-text model screening, batches t1b001-t1b075",
+ "status": "model screening complete (A, B, C route F); before the human validation sample and the human author review (protocol s4); not final",
+ "n": 709,
+ "decision": {
+  "include": 558,
+  "exclude": 151
+ },
+ "by_part": {
+  "OpenReview (t1b035-t1b075)": {
+   "include": 330,
+   "exclude": 47
+  },
+  "open access + remaps (t1b001-t1b034)": {
+   "include": 228,
+   "exclude": 104
+  }
+ },
+ "exclude_codes": {
+  "X1": 57,
+  "X0": 49,
+  "X2": 38,
+  "X3": 3,
+  "X7": 1,
+  "X4": 3
+ },
+ "include_i1": {
+  "a": 508,
+  "ab": 15,
+  "b": 35
+ },
+ "include_nonlang_only": 10,
+ "adjudicated_by_C": 99,
+ "C_decision": {
+  "exclude": 53,
+  "include": 46
+ },
+ "files": "t1-decisions-all.jsonl; c-queue-1..7.jsonl; c/c-t1-01..14; analysis/screening/c-run-log.jsonl; batch-log.jsonl"
+}
