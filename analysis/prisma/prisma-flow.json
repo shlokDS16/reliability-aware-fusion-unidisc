@@ -1,0 +1,166 @@
+{
+ "seed": {
+  "identified_arxiv_S1": 1286,
+  "identified_arxiv_S2": 190,
+  "identified_awesome_dlms": 572,
+  "duplicates_merged": 450,
+  "records_after_dedup": 1453,
+  "ta_screened_dual_v1": 1453,
+  "ta_both_exclude": 210,
+  "ta_pass_either": 1243,
+  "ta_pass_both": 1123
+ },
+ "free": {
+  "identified_databases_by_source": {
+   "openalex": 1081,
+   "semantic-scholar-bulk": 10572,
+   "arxiv-protocol-rerun": 6105,
+   "acl-anthology": 355,
+   "openreview": 3357
+  },
+  "identified_databases": 21470,
+  "identified_citation_searching_by_source": {
+   "snowball-backward": 19423,
+   "snowball-forward": 25998
+  },
+  "identified_citation_searching": 45421,
+  "duplicates_within_source": 39132,
+  "duplicates_against_seed_corpus": 5519,
+  "extra_duplicate_key_merges": 280,
+  "new_records_after_dedup": 19328,
+  "new_snowball_only": 13076,
+  "automation_excluded_D0026": 12952,
+  "automation_excluded_D0027": 4534,
+  "queue_final_D0027": 1842,
+  "released_D0028": 111,
+  "ta_screened_dual": 1953,
+  "ta_pass_D0030": 954,
+  "ta_both_exclude": 999,
+  "rescue_screened_single_haiku": 4421,
+  "rescue_decisions": {
+   "exclude": 4073,
+   "unclear": 323,
+   "include": 25
+  },
+  "rescue_positives": 348,
+  "title_only_snowball_population": 2107,
+  "title_only_duplicates": 105,
+  "title_only_resolved": 830,
+  "title_only_unresolvable": 832,
+  "title_only_lookup_incomplete": 340,
+  "title_only_queued": 7
+ },
+ "subscription": {
+  "identified_by_database": {
+   "scopus": 4046,
+   "wos": 2267,
+   "ieee": 1300,
+   "acm": 329,
+   "springer": 2614,
+   "sciencedirect": 613
+  },
+  "identified": 11169,
+  "removed_before_screening": {
+   "proceedings_front_matter_not_documents": 302,
+   "duplicates_within_file": 30,
+   "duplicates_within_database": 707,
+   "duplicates_across_databases": 3212,
+   "duplicates_of_records_already_in_corpus": 2538
+  },
+  "new_unique_records": 4380,
+  "automation_excluded_S1pp_S2pp": 4201,
+  "queue_string_pass": 179,
+  "rescue_screened_single_haiku": 2788,
+  "rescue_decisions": {
+   "exclude": 2707,
+   "unclear": 71,
+   "include": 10
+  },
+  "rescued_queue": 74,
+  "automation_excluded_without_abstract_pending": 1421,
+  "ta_screened_dual": 260,
+  "ta_pass_D0030": 52,
+  "ieee_hits_by_query": {
+   "I1": 1203,
+   "I2": 101,
+   "I3": 245,
+   "I4": 41,
+   "I5": 12
+  },
+  "ieee_not_exported": {
+   "I3": 245,
+   "I4": 41,
+   "I5": 12
+  },
+  "warnings": [
+   "ieee I1: parsed 1199 rows, expected 1203 (query)"
+  ]
+ },
+ "title_abstract_total": {
+  "ta_pass_free_sources": 954,
+  "ta_pass_subscription": 52,
+  "ta_pass_total": 1006,
+  "routed_in_ft_routes": 1000,
+  "routed_later_ft_routes_extra": 6
+ },
+ "recheck": {
+  "frame": 797,
+  "sample": 100,
+  "c8_outside_frame": 32,
+  "to_full_text": 132,
+  "full_text_screened": 0,
+  "K": "pending (needs these records screened at full text)"
+ },
+ "full_text_T1": {
+  "reports_sought": 1111,
+  "status_ft_routes": {
+   "screened": 715,
+   "no_full_text_found": 97,
+   "duplicate_of_known_record_not_sought": 27,
+   "pending_e_gateway": 102,
+   "open_access_fetch_failed_not_pdf": 26,
+   "open_access_fetch_failed_error": 29,
+   "not_retrieved_openreview_note_missing_X6": 4
+  },
+  "extra_routes_not_yet_retrieved": {
+   "arxiv": 70,
+   "oa_url": 28,
+   "e-gateway": 17,
+   "openreview": 21,
+   "acl": 2
+  },
+  "screened": 715,
+  "screened_check": 715,
+  "include": 564,
+  "exclude": 151,
+  "exclude_codes": {
+   "X1": 57,
+   "X0": 49,
+   "X2": 38,
+   "X3": 3,
+   "X7": 1,
+   "X4": 3
+  },
+  "include_i1": {
+   "a": 513,
+   "ab": 15,
+   "b": 36
+  },
+  "include_nonlang_only": 10,
+  "adjudicated_by_C": 99,
+  "agreement_pass_exclude_kappa": 0.853,
+  "agreement_pass_exclude_kappa_ci95": [
+   0.7992,
+   0.9033
+  ],
+  "status": "model screening complete (A, B, C route F); before the human validation sample and the human author review (protocol s4); not final"
+ },
+ "open": [
+  "Free-source rescue pass: 348 positives (include or unclear) of 4421 were neither dual-screened nor routed to full text (0 in the dual batches, 0 in ft-routes); D0029 sends them to the dual queue, D0030 says they pass to full text. Needs a decision before T1 is closed.",
+  "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 703, 'U': 12}). Their full-text route (census reading vs criteria v1.6 full-text screening) is not in the PRISMA files; to be confirmed.",
+  "Open-access fetch failures: 55 oa_url records not retrieved and not screened; need a retry or the e-gateway.",
+  "6 subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",
+  "Subscription reconciliation: rescue screened 2788 + without abstract 1421 = 4209 against 4201 string failures; dual-screened 260 against queue 179 + rescued 74 + title-resolved 7 (0 of the title-resolved ids are in the dual batches).",
+  "IEEE I3-I5 not exported (298 hits); 1,421-record Springer no-abstract set not screened; title-only lookups incomplete (D0033)."
+ ]
+}
