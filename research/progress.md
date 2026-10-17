@@ -1,17 +1,17 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 11 (2026-10-17 ~12:00 IST; newest).** **T1 full-text model screening COMPLETE:** batches
-  t1b001-t1b075, 709 records (332 open-access/remap + 377 OpenReview), every A/B disagreement, adjudicate
+- **HANDOFF 11 (2026-10-17 ~12:40 IST; newest).** **T1 full-text model screening COMPLETE:** batches
+  t1b001-t1b076, 715 records (332 open-access/remap + 383 OpenReview), every A/B disagreement, adjudicate
   row and unreturnable/failed quote ruled by C (99 records, groups c-t1-01..14, all isolation pass, all
-  logged in analysis/screening/c-run-log.jsonl). Model result: **include 558, exclude 151** (X1 57, X0 49,
-  X2 38, X3 3, X4 3, X7 1); I1(a) 508, I1(b) 35, both 15; nonlang_only 10
+  logged in analysis/screening/c-run-log.jsonl). Model result: **include 564, exclude 151** (X1 57, X0 49,
+  X2 38, X3 3, X4 3, X7 1); I1(a) 513, I1(b) 36, both 15; nonlang_only 10
   (analysis/screening/ft-t1/t1-summary-all.json, t1-decisions-all.jsonl). Before the human validation
-  sample and author review (protocol s4): NOT final. OpenReview: 387 logged, 377 PDFs in, 4 papers only
-  errored (M13187, M15046, M15574, M18918) and about 6 of the 387 have no log line yet (orchestrator).
-  **NEXT:** A/B agreement statistics before reconciliation (criteria-v1.6 s5.3: kappa with bootstrap CI,
-  p_pos/p_neg, prevalence/bias, adjudicate rate per screener, code agreement on joint exclusions);
-  human validation sample of T1 (user, blind); the 4+6 missing OpenReview papers; routes for U06894 and
+  sample and author review (protocol s4): NOT final. OpenReview download complete (383 of 387); 4 notes
+  not found on the API (M13187, M15046, M15574, M18918) recorded as X6 reports not retrieved
+  (t1-not-retrieved.jsonl). **NEXT:** A/B agreement statistics before reconciliation (criteria-v1.6
+  s5.3: kappa with bootstrap CI, p_pos/p_neg, prevalence/bias, adjudicate rate per screener, code
+  agreement on joint exclusions); human validation sample of T1 (user, blind); routes for U06894 and
   U07166 (SD TA passes); re-check sample / C8 records; e-gateway papers (102).
 - **HANDOFF 10 (2026-10-17 ~09:40 IST; newest; HANDOFF 9 still applies except the status).** User:
   continue to completion (weekly limit resets Mon 19 Oct ~22:30 IST). Laptop crashed twice on 17 Oct

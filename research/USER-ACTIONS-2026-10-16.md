@@ -68,10 +68,9 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    they arrive.
 
 ## Status 2026-10-17 ~12:00 IST (screening session)
-12. **Full-text T1 model screening is complete for everything downloaded: 709 records, 558 include and 151
+12. **Full-text T1 model screening is complete for everything downloaded: 715 records, 564 include and 151
    exclude** (99 settled by adjudicator C). Item 9 stands: the blind human validation sample of T1 comes
    before you look at any screener row; say when, and Claude prepares the sample sheet (records and full
    texts only).
-13. OpenReview: 4 papers failed to download (M13187, M15046, M15574, M18918) and about 6 more have no
-   log entry yet; the orchestrating session is following up. These are the only open-access records not
-   yet screened.
+13. OpenReview download complete: 4 notes no longer exist on OpenReview (M13187, M15046, M15574, M18918),
+   recorded as X6 reports not retrieved. If you can find copies elsewhere, they can still be screened.
