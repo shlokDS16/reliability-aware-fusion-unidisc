@@ -1,7 +1,23 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 12 (2026-10-17 ~15:00 IST; newest; HANDOFF 11 still applies except the status).** Low-token
+- **HANDOFF 13 (2026-10-17 ~16:30 IST; newest; HANDOFF 12 still applies except the status).** User:
+  will fill the T1 validation sheet later (not done: sheet unchanged); approved open-access downloads for
+  the extra records and a retry of failed OA links, **no OpenReview, no e-gateway**. Done: `tools/fetch_fulltext.py`
+  gained `--routes/--types`; 81 of 100 extra OA records fetched (arXiv 70, OA 28, ACL 2 attempted); new
+  `tools/fetch_oa_retry.py` (OpenAlex other OA locations + landing-page citation_pdf_url; bot walls and
+  bot-check pages are not answered) recovered 7 of 74 failures; 88 PDFs converted (`python -P -E
+  tools/pdf_to_text.py`, all ok, max glued 0.0034); sha256 of each text's PDF = fetch-log sha256; new
+  `tools/ft_title_check.py` over all 803 texts: 5 flags, all read and recorded in
+  `research/review/fulltext/title-check-verified.json` (4 renamed titles, correct papers; **M17477 is a
+  6.3-million-character congress supplement: cut its abstract (journal p. 400) before dispatch**). PRISMA
+  script now reads retrieval status: extra records 84 retrieved, 16 OA pending, 21 OpenReview, 17 e-gateway; 67 OA
+  without a PDF in all. **Open:** OpenAlex free daily budget used up (HTTP 429, resets 05:30 IST); the
+  retry tool now caches OpenAlex answers and stops cleanly; rerun `python tools/fetch_oa_retry.py` after the
+  reset to regenerate `oa-retry-unresolved.csv` and `oa-retry-summary.json` with the final labels (both left
+  uncommitted until then; the run-2 version labels Elsevier linkinghub script pages as bot checks). RAM was ~1 GB
+  free during this work: no agents.
+- **HANDOFF 12 (2026-10-17 ~15:00 IST; HANDOFF 11 still applies except the status).** Low-token
   session (weekly 90 percent; reset Mon 19 Oct ~22:30 IST; no agents: free RAM 4.5 GB < 8 GB rule).
   **Done, committed:** (1) `analysis/screening/agreement_ft_t1.py` -> `agreement-ft-t1.json` (A vs B, 715,
   before adjudication): pass/exclude kappa 0.853 [0.799, 0.903], AC1 0.947, p_pos 0.977, p_neg 0.876;

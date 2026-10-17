@@ -98,3 +98,12 @@ Do these together in one sitting. Claude keeps this list current; items are stru
 17. Correction to item 5c (2026-10-17): 1,413 SpringerLink records still lack an abstract, not 1,421; 8 on that
    list later gained one and were already rescue-screened (analysis/prisma/prisma-flow.md). Options unchanged.
    Item 16 is otherwise unchanged; the "off by 8" point is resolved.
+18. **Open-access downloads done (2026-10-17, your yes):** 81 of the 100 non-OpenReview open-access records for
+   the new T1 records, plus 7 of the failed links recovered by the retry: 88 new PDFs, hashed in
+   `research/review/fulltext/fetch-log.jsonl`, converted to text, each checked against its record title
+   (`tools/ft_title_check.py`). 67 records still have no PDF: 30 behind HTTP 403 bot walls (ACM, ScienceDirect,
+   SSRN, ResearchGate, Wiley), most of the rest behind bot-check pages (Elsevier, Springer, Nature, MDPI, IEEE)
+   or dead links. Claude does not answer bot checks; these need your Chrome or the e-gateway. The list
+   (`research/review/fulltext/oa-retry-unresolved.csv`) is regenerated after the OpenAlex free budget resets
+   (05:30 IST); it is not final until then. Still waiting for your yes: 21 OpenReview PDFs (your credential
+   script) and 17 + 102 e-gateway records.

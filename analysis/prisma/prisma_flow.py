@@ -125,9 +125,11 @@ F["subscription"] = {"identified_by_database": pr["by_database"], "identified": 
 # ---------------------------------------------------------------- title/abstract total, re-check, full text T1
 ft = {r["id"]: r for r in jl(REV / "fulltext/ft-routes.jsonl")}
 extra = {r["id"]: r for r in jl(SCR / "ft-routes-extra.jsonl")}
-fetch = {}
+fetch, got = {}, set()                 # last fetch status; ids with a PDF and its converted text
 for r in jl(REV / "fulltext/fetch-log.jsonl"):
     fetch[r["id"]] = r["status"]
+    if r["status"] == "ok" and (ROOT / f"research/sources/md/fulltext-pymupdf/{r['id']}.txt").exists():
+        got.add(r["id"])
 t1 = {r["id"]: r for r in jl(SCR / "ft-t1/t1-decisions-all.jsonl")}
 nr = {r["id"] for r in jl(SCR / "ft-t1/t1-not-retrieved.jsonl")}
 ta_pass = v2_pass | set(passed_sub)
@@ -145,8 +147,12 @@ for i, r in ft.items():
         status["no_full_text_found"] += 1
     elif rt == "e-gateway":
         status["pending_e_gateway"] += 1
+    elif i in got:
+        status["retrieved_not_yet_screened"] += 1
     else:
         status[f"open_access_fetch_failed_{fetch.get(i, 'not_fetched')}"] += 1
+extra_status = collections.Counter(("retrieved_not_yet_screened" if i in got else f"pending_{r['route_type']}")
+                                   for i, r in extra.items() if i not in t1)
 s = jload(SCR / "ft-t1/t1-summary-all.json")
 ag = jload(SCR / "agreement-ft-t1.json")
 grp = collections.Counter(r["group"] for r in extra.values())
@@ -161,7 +167,7 @@ F["recheck"] = {"frame": jload(SCR / "ta-recheck-sample-v1.3-frozen.json")["fram
                 "K": "pending (needs these records screened at full text)"}
 F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_record_not_sought"] + len(extra),
                      "status_ft_routes": dict(status),
-                     "extra_routes_not_yet_retrieved": dict(collections.Counter(r["route_type"] for r in extra.values())),
+                     "status_ft_routes_extra": dict(extra_status),
                      "screened": len(t1), "screened_check": s["n"], "include": s["decision"]["include"],
                      "exclude": s["decision"]["exclude"], "exclude_codes": s["exclude_codes"],
                      "include_i1": s["include_i1"], "include_nonlang_only": s["include_nonlang_only"],
@@ -180,8 +186,9 @@ F["open"] = [
     f"Seed corpus: {len(v1_either)} of {len(v1)} records passed title/abstract (either screener; {len(v1_both)} both); "
     f"{sum(1 for s_ in v1_either if s_ in t1)} are in T1 (T1 ids by prefix: {dict(t1_prefix)}). Their full-text route "
     "(census reading vs criteria v1.6 full-text screening) is not in the PRISMA files; to be confirmed.",
-    f"Open-access fetch failures: {sum(v for k, v in status.items() if k.startswith('open_access_fetch_failed'))} "
-    "oa_url records not retrieved and not screened; need a retry or the e-gateway.",
+    f"Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): "
+    f"{sum(v for k, v in status.items() if k.startswith('open_access_fetch_failed')) + extra_status.get('pending_oa_url', 0)} "
+    "(bot walls, bot-check landing pages, dead links); need the user's Chrome or the e-gateway.",
     f"{grp.get('ta-pass-unrouted', 0)} subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",
     f"Subscription: string failures {len(sub_fail)} = rescue-screened {len(rs_ids & sub_fail)} + without abstract "
     f"{len(no_abs)} (pending-no-abstract.txt lists {len(no_abs_list)}; {len(no_abs_list - no_abs)} of them later gained an "

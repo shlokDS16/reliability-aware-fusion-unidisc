@@ -7,7 +7,11 @@ At most 4 connections in total and one request per host at a time, with a per-ho
 (arxiv.org 3 s, others 1 s). Resumable: ids with an 'ok' row in the log are skipped.
 A response that is not a PDF (landing page) is logged 'not_pdf' and not kept.
 
-    python tools/fetch_fulltext.py [--limit N]
+    python tools/fetch_fulltext.py [--limit N] [--routes FILE] [--types arxiv,acl,oa_url]
+
+--routes: another route table with the same fields (default ft-routes.jsonl); --types: route types to fetch
+(default openreview,arxiv,acl,oa_url). Added 2026-10-17 for analysis/screening/ft-routes-extra.jsonl
+(user approved the open-access downloads except OpenReview).
 """
 import collections, datetime as dt, hashlib, json, sys, threading, time, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -55,8 +59,10 @@ def main():
     done = set()
     if LOG.exists():
         done = {json.loads(l)["id"] for l in LOG.read_text(encoding="utf8").splitlines() if l.strip() and json.loads(l).get("status") == "ok"}
-    rows = [json.loads(l) for l in ROUTES.read_text(encoding="utf8").splitlines() if l.strip()]
-    todo = [r for r in rows if r["route_type"] in ("openreview", "arxiv", "acl", "oa_url") and r.get("url") and r["id"] not in done]
+    routes = Path(sys.argv[sys.argv.index("--routes") + 1]) if "--routes" in sys.argv else ROUTES
+    types = sys.argv[sys.argv.index("--types") + 1].split(",") if "--types" in sys.argv else ["openreview", "arxiv", "acl", "oa_url"]
+    rows = [json.loads(l) for l in routes.read_text(encoding="utf8").splitlines() if l.strip()]
+    todo = [r for r in rows if r["route_type"] in types and r.get("url") and r["id"] not in done]
     todo = todo[:limit] if limit else todo
     print(f"{len(todo)} to fetch ({len(done)} already ok)", flush=True)
     stats = collections.Counter()
