@@ -1,7 +1,29 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 11 (2026-10-17 ~12:40 IST; newest).** **T1 full-text model screening COMPLETE:** batches
+- **HANDOFF 12 (2026-10-17 ~15:00 IST; newest; HANDOFF 11 still applies except the status).** Low-token
+  session (weekly 90 percent; reset Mon 19 Oct ~22:30 IST; no agents: free RAM 4.5 GB < 8 GB rule).
+  **Done, committed:** (1) `analysis/screening/agreement_ft_t1.py` -> `agreement-ft-t1.json` (A vs B, 715,
+  before adjudication): pass/exclude kappa 0.853 [0.799, 0.903], AC1 0.947, p_pos 0.977, p_neg 0.876;
+  three-way kappa 0.812 [0.764, 0.856]; adjudicate rate A 0.101, B 0.056; 83 records sent by
+  disagreement/adjudicate (C ruled 99; the other 16 presumably quote returns, not checked); joint exclusions 98/99 same code; per-rule
+  citation agreement in the JSON. Not yet audited by statistician/gate-auditor. (2) Human validation sample
+  T1: `analysis/screening/human_validation_t1.py`, 108 of 715 (seed 20261016, max(100, ceil 15%)), blind sheet +
+  INSTRUCTIONS + manifest (sample sha256) in `research/review/screening/human-validation-t1/`. Frame = 715
+  screened records; T1 records screened later get their own 15 percent draw (same seed) -> **log as a
+  decision (deviation from one draw over the fixed T1 set)**. (3) Routes (metadata only, one OpenAlex
+  call): `analysis/screening/ft_routes_extra.py` -> `ft-routes-extra.jsonl` for the re-check sample + C8
+  (**132**, not 130: no overlap between the 100 and the 32) and **6** unrouted subscription TA passes (U04633,
+  U04643, U04645, U06471 from sub-02 as well as U06894, U07166): arXiv 70, OA 28, OpenReview 21, ACL 2,
+  e-gateway 17; unflagged user list `research/review/fulltext/egateway-list.csv` (119). (4)
+  `analysis/prisma/prisma_flow.py` -> `prisma-flow.md/json`. **Gaps it found (USER-ACTIONS item 16):** 348
+  free-source rescue positives never dual-screened nor routed (D0029 vs D0030 wording); 1,243 seed-corpus TA
+  passes in no full-text tranche; 55 OA fetch failures; subscription reconciliation off by 8 (2,788 + 1,421
+  vs 4,201) and the 7 title-resolved queue records not dual-screened. **NEXT (after the reset, with the
+  user's yes):** user screens the validation sheet first; decisions on item 16; downloads of the 138 extra
+  records (121 OA + 17 e-gateway) and the 102 e-gateway; screen them as T1 batches; K test; Springer abstracts;
+  RQ extraction; section 05.
+- **HANDOFF 11 (2026-10-17 ~12:40 IST).** **T1 full-text model screening COMPLETE:** batches
   t1b001-t1b076, 715 records (332 open-access/remap + 383 OpenReview), every A/B disagreement, adjudicate
   row and unreturnable/failed quote ruled by C (99 records, groups c-t1-01..14, all isolation pass, all
   logged in analysis/screening/c-run-log.jsonl). Model result: **include 564, exclude 151** (X1 57, X0 49,

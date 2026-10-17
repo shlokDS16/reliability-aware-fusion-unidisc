@@ -74,3 +74,24 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    texts only).
 13. OpenReview download complete: 4 notes no longer exist on OpenReview (M13187, M15046, M15574, M18918),
    recorded as X6 reports not retrieved. If you can find copies elsewhere, they can still be screened.
+
+## Status 2026-10-17 ~15:00 IST (follow-up session; low-token work until the Mon 19 Oct reset)
+14. **Human validation sample of T1 is ready (do this BEFORE you look at any T1 screener row).**
+   Read `research/review/screening/human-validation-t1/INSTRUCTIONS.md` (one page), then fill
+   `human-validation-t1-sheet.xlsx` in the same folder: 108 papers (15 percent of the 715, seed 20261016),
+   include/exclude, one code, one quote each; about 6-10 hours, can be split. Save as
+   `human-validation-t1-DONE.xlsx` and tell Claude. Until then do not open `analysis/screening/` or the other
+   files the instructions list.
+15. **E-gateway list updated** (in your Chrome, VIT access, when you choose): `research/review/fulltext/egateway-list.csv`,
+   119 records (IEEE, Elsevier, Springer Nature, ACM and a few others), one row each with DOI link and an
+   empty `downloaded` column. Your yes per download as before. Also 121 further open-access PDFs (arXiv,
+   OpenReview, ACL, publisher OA links) for new T1 records are ready to fetch on your yes (no login except
+   the OpenReview ones, which use your credential script as before).
+16. **Decisions needed (Claude found these while counting the PRISMA flow, `analysis/prisma/prisma-flow.md`):**
+   (a) 348 records the rescue screener passed (25 include, 323 unclear) in the free-source rescue pass never
+   went to dual screening or full text; D0029 says dual queue, D0030 says straight to full text. Recommended:
+   dual title/abstract screening first (as was done for the subscription rescue), after the reset.
+   (b) The 1,243 seed-corpus records that passed title/abstract in the first round are not in any full-text
+   tranche (the census read 176 of them). Do they get full-text screening under criteria v1.6? Recommended: yes,
+   as a further tranche.
+   (c) 55 open-access links failed (29 errors, 26 not PDFs); Claude retries or moves them to the e-gateway list.
