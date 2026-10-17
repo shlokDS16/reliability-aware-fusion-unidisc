@@ -1,6 +1,28 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 15 (2026-10-17 night, planned shutdown; newest).** RESUME POINT for T1 part 19
+  (research/review/fulltext/t1-batches-part19.json, t1b077-t1b093, 170 records; plan by the
+  post-screening session, 824ab95; re-check/C8/unrouted records mixed in UNFLAGGED - keep them unflagged
+  to A, B and C). Last fully filed batch: **t1b076**. **t1b077: A done and filed** (FA-t1b077.jsonl, 10
+  rows, isolation pass, quotes all accepted; A said U03826 adjudicate on D1); **B to rerun** (logged failed,
+  planned shutdown; build a fresh B folder: python -I tools/ft_dispatch.py --role B --batch t1b077 --ids
+  tools/ft-session/t1b077.ids --root <new scratchpad>/ft-dispatch). Postbatch for t1b077 needs both
+  transcripts in ONE dir: copy A's transcript
+  C:/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/c850154c-9b85-49b2-9b76-d75be8648cf9/subagents/agent-a283ac2b42c5f27c5.jsonl
+  into the new session's subagents dir, and copy A's folder
+  .../c850154c-9b85-49b2-9b76-d75be8648cf9/scratchpad/ft-dispatch/A-t1b077-9c28a9b4-6ce5-45b1-b42b-1f9c51632e4f
+  into the new dispatch root (or pass the old root as S). t1b078 folders were built in the old scratchpad
+  (unused): rebuild in the new one. Remaining: t1b078-t1b093 (16 batches), then C (route F, Fable) on
+  every disagreement/adjudicate/failed-quote row in t1b077-t1b093, then refresh
+  t1-decisions-all.jsonl / t1-summary-all.json (script as in 3f113e6) and a HANDOFF line so the
+  orchestrator can compute K from the 100 sample ids. Procedure: tools/ft-session/next.sh (EDIT S and P
+  at its top to the new session's scratchpad and subagents dir), qret.sh for quote returns, ft_cpost.py
+  for C sessions, wait_ram.ps1 <GB> <min>. Screener prompts: file tools only (Read/Grep/Glob/Write/Edit),
+  first a Glob of the folder, copy paths from it, no Bash/PowerShell. **Limits (user):** at most 2 agents
+  at once; launch only with >= 5 GB free RAM; stop new agent work at 97 percent weekly usage (was 91
+  percent at 19:00 IST 17 Oct); no GPU; no browser. Do not start a batch that cannot finish before 97
+  percent.
 - **HANDOFF 14 (2026-10-17 ~19:00 IST; newest; HANDOFF 13 still applies except the status).** User: yes to the
   21 OpenReview PDFs and the 119 e-gateway records; human validation not done by record, user states the sample is
   correct -> **D0034** (deviation: A-B agreement only; user may now see T1 rows); continue to 97 percent weekly.
