@@ -10,6 +10,7 @@ reads OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD from the environment, which th
     set OPENREVIEW_PASSWORD=...
     python tools/fetch_openreview.py --limit 3     # test first
     python tools/fetch_openreview.py               # then all (resumable)
+    python tools/fetch_openreview.py --routes analysis/screening/ft-routes-extra.jsonl   # another route table
 
 Targets: research/review/fulltext/arxiv-map/unmapped.jsonl rows whose failed route is openreview; the note id
 comes from the route URL in research/review/fulltext/ft-routes.jsonl. Tries API v2 (api2.openreview.net),
@@ -55,9 +56,14 @@ def main():
         sys.exit("Set OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD in this shell first (see the docstring).")
     import openreview  # openreview-py
     limit = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else None
-    routes = {json.loads(l)["id"]: json.loads(l) for l in open(ROOT / "research/review/fulltext/ft-routes.jsonl", encoding="utf8")}
-    unm = [json.loads(l) for l in open(ROOT / "research/review/fulltext/arxiv-map/unmapped.jsonl", encoding="utf8")]
-    ids = [u["id"] for u in unm if routes.get(u["id"], {}).get("route_type") == "openreview"]
+    if "--routes" in sys.argv:   # another route table (2026-10-17: analysis/screening/ft-routes-extra.jsonl, user's yes)
+        table = Path(sys.argv[sys.argv.index("--routes") + 1])
+        routes = {json.loads(l)["id"]: json.loads(l) for l in open(table, encoding="utf8") if l.strip()}
+        ids = [i for i, r in routes.items() if r.get("route_type") == "openreview"]
+    else:
+        routes = {json.loads(l)["id"]: json.loads(l) for l in open(ROOT / "research/review/fulltext/ft-routes.jsonl", encoding="utf8")}
+        unm = [json.loads(l) for l in open(ROOT / "research/review/fulltext/arxiv-map/unmapped.jsonl", encoding="utf8")]
+        ids = [u["id"] for u in unm if routes.get(u["id"], {}).get("route_type") == "openreview"]
     ok = {json.loads(l)["id"] for l in LOG.read_text(encoding="utf8").splitlines() if l.strip() and json.loads(l).get("status") == "ok"} if LOG.exists() else set()
     todo = [i for i in ids if i not in ok][:limit] if limit else [i for i in ids if i not in ok]
     print(f"{len(ids)} OpenReview records without another route; {len(todo)} to fetch now")
