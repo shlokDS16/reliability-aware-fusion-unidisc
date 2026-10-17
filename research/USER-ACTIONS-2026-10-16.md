@@ -107,3 +107,13 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    (`research/review/fulltext/oa-retry-unresolved.csv`) is regenerated after the OpenAlex free budget resets
    (05:30 IST); it is not final until then. Still waiting for your yes: 21 OpenReview PDFs (your credential
    script) and 17 + 102 e-gateway records.
+19. **Downloads with your yes (2026-10-17 evening):** 21 of 21 OpenReview PDFs (your credential script) and 61 of the
+   119 e-gateway records (all IEEE, via your Chrome with VIT access); all converted and title-checked. **58 need you
+   by hand** (`research/review/fulltext/egateway-manual.csv`, reason per row): ScienceDirect 24 (Cloudflare check in
+   the automated tab; Claude does not answer it), Springer 22 (chapters are not in VIT's subscription; journal PDFs
+   started returning HTML/503 after a burst of 22 requests and the VIT access line then vanished from the page:
+   **please open one Springer article yourself to check that VIT access still works**; Claude stopped all automated
+   access), ACM 4 (Chrome saved no file from dl.acm.org), 8 others not attempted. Save each as
+   `Downloads/<id>.pdf` and tell Claude to import.
+20. **Human validation T1:** recorded as you asked (D0034): you checked the sample and judged it correct; no
+   per-record rows, so the paper reports A-B agreement only and states the deviation. You may now look at T1 rows.

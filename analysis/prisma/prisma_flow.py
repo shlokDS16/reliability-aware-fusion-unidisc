@@ -141,14 +141,14 @@ for i, r in ft.items():
         status["screened"] += 1
     elif i in nr:
         status["not_retrieved_openreview_note_missing_X6"] += 1
+    elif i in got:
+        status["retrieved_not_yet_screened"] += 1
     elif rt == "duplicate":
         status["duplicate_of_known_record_not_sought"] += 1
     elif rt == "no_full_text":
         status["no_full_text_found"] += 1
     elif rt == "e-gateway":
         status["pending_e_gateway"] += 1
-    elif i in got:
-        status["retrieved_not_yet_screened"] += 1
     else:
         status[f"open_access_fetch_failed_{fetch.get(i, 'not_fetched')}"] += 1
 extra_status = collections.Counter(("retrieved_not_yet_screened" if i in got else f"pending_{r['route_type']}")

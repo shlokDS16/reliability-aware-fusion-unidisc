@@ -9,6 +9,8 @@ saves each publisher PDF as <id>.pdf in the user's Downloads folder; this script
                                               then moves Downloads/<id>.pdf (ids of the list only, must start with
                                               %PDF) to research/sources/pdfs/fulltext/<id>.pdf and appends a
                                               fetch-log.jsonl row (route 'e-gateway-chrome', sha256)
+  python tools/egateway_import.py remaining -> research/review/fulltext/egateway-manual.csv: list records still
+                                              without a PDF, with what the browser showed for that publisher
 Nothing is downloaded by this script.
 """
 import csv
@@ -128,5 +130,38 @@ def do_import():
     print(f"imported {n}")
 
 
+# What Claude in Chrome observed per site on 2026-10-17 (user's Chrome, VIT access); the reason column of the list.
+SEEN = {
+    "https://link.springer.com": "Springer: chapters show no VIT access (purchase page); journal PDFs returned HTML or "
+                                 "HTTP 503 after a burst of requests and the VIT access line then disappeared; "
+                                 "automated access stopped; download by hand",
+    "https://dl.acm.org": "ACM: PDF fetched in the page but Chrome saved no file (downloads from dl.acm.org seem "
+                          "blocked in this Chrome); download by hand",
+    "elsevier": "ScienceDirect: Cloudflare 'Just a moment' check in the automated tab, not answered; download by hand",
+    None: "not attempted in the browser (publisher page only); download by hand",
+}
+
+
+def remaining():
+    plan_rows = {p["id"]: p for p in json.loads(PLAN.read_text(encoding="utf-8"))}
+    have = {json.loads(l)["id"] for l in LOG.read_text(encoding="utf8").splitlines()
+            if l.strip() and json.loads(l).get("status") == "ok"}
+    out = []
+    for r in csv.DictReader(open(LIST, encoding="utf-8-sig")):
+        if r["id"] in have:
+            continue
+        site = plan_rows[r["id"]]["site"]
+        key = "elsevier" if (r["doi"] or "").startswith("10.1016/") else site
+        out.append({"id": r["id"], "title": r["title"], "doi": r["doi"], "publisher": r["publisher"],
+                    "url": r["url"], "reason": SEEN.get(key, SEEN[None]),
+                    "save_as": f"Downloads/{r['id']}.pdf (then tell Claude: tools/egateway_import.py import)"})
+    with open(FT / "egateway-manual.csv", "w", newline="", encoding="utf-8-sig") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(out[0]) if out else ["id"]); w.writeheader(); w.writerows(out)
+    by = {}
+    for o in out:
+        by[o["reason"][:20]] = by.get(o["reason"][:20], 0) + 1
+    print(json.dumps({"remaining": len(out), "by_reason": by}))
+
+
 if __name__ == "__main__":
-    {"plan": plan, "import": do_import}[sys.argv[1]]()
+    {"plan": plan, "import": do_import, "remaining": remaining}[sys.argv[1]]()

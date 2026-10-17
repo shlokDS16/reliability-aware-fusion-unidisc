@@ -1,7 +1,19 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 13 (2026-10-17 ~16:30 IST; newest; HANDOFF 12 still applies except the status).** User:
+- **HANDOFF 14 (2026-10-17 ~19:00 IST; newest; HANDOFF 13 still applies except the status).** User: yes to the
+  21 OpenReview PDFs and the 119 e-gateway records; human validation not done by record, user states the sample is
+  correct -> **D0034** (deviation: A-B agreement only; user may now see T1 rows); continue to 97 percent weekly.
+  Done: `tools/fetch_openreview.py --routes` (21/21); `tools/egateway_import.py` (plan / import / remaining;
+  Chrome saves one tar per page, built in the page, because Chrome blocks a second automatic download):
+  IEEE 61/61 (in-page fetch of /stampPDF/getPDF.jsp, ~20 s per PDF in a background window); Springer stopped
+  (chapters not subscribed; journal PDFs HTML/503 after a 22-request burst and the VIT access line vanished:
+  user asked to check); ScienceDirect Cloudflare check (not answered); ACM downloads not saved by Chrome. 82 new
+  PDFs converted, all ok; title check over 885 texts: no new flags. Manual list for the user:
+  `research/review/fulltext/egateway-manual.csv` (58). **Next:** after 05:30 IST rerun `tools/fetch_oa_retry.py`;
+  import any PDFs the user saves; cut M17477's abstract; then full-text screening of the newly retrieved T1
+  records (re-check/C8 + passes) as T1 batches (agents: needs >= 8 GB free RAM, 2 at most), K test.
+- **HANDOFF 13 (2026-10-17 ~16:30 IST; HANDOFF 12 still applies except the status).** User:
   will fill the T1 validation sheet later (not done: sheet unchanged); approved open-access downloads for
   the extra records and a retry of failed OA links, **no OpenReview, no e-gateway**. Done: `tools/fetch_fulltext.py`
   gained `--routes/--types`; 81 of 100 extra OA records fetched (arXiv 70, OA 28, ACL 2 attempted); new
