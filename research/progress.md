@@ -1,6 +1,16 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 10 (2026-10-17 ~09:40 IST; newest; HANDOFF 9 still applies except the status).** User:
+  continue to completion (weekly limit resets Mon 19 Oct ~22:30 IST). Laptop crashed twice on 17 Oct
+  (04:10, 08:46; bugcheck 0x7E): now at most 2 agents at once, launch only with >= 8 GB free RAM
+  (tools/ft-session/wait_ram.ps1), no GPU, no Chrome. T1 OpenReview batches t1b035-t1b068 screened and
+  filed (part3-part11 plans; t1b061 = 3 records); adjudicator groups c-t1-09..12 done (c-t1-12 failed in
+  the crash, rerun). Still to adjudicate: M18010, M18037 (t1b068) -> with the last OpenReview group.
+  Screeners now use only Read/Grep/Glob/Write/Edit and copy paths from a first Glob (Bash /dev/null and
+  mistyped paths caused 5 discards). OpenReview download (orchestrator): ~333 of 387 logged; next batch
+  t1b069 when 10 PDFs wait (tools/ft-session/wait_pdfs.py 10 387 120; convert with
+  python -P -E tools/pdf_to_text.py; tools/ft-session/orbatch.py <repo> <root> <n0> 69 12 202610172).
 - **HANDOFF 9 (2026-10-16 ~17:00 IST; newest; HANDOFF 8/7 still apply except the status).** Screening
   session c850154c (this worktree) drives T1; the orchestrator (crash-a57ec7) runs the OpenReview download.
   **Done:** T1 t1b025-t1b034 screened and filed (all isolation checks pass after one discard: t1b026 A read
