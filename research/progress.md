@@ -1,7 +1,26 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 15 (2026-10-17 night, planned shutdown; newest).** RESUME POINT for T1 part 19
+- **HANDOFF 16 (2026-10-18 ~13:00 IST; newest; HANDOFF 15 still applies except the status).** Stopped
+  new agent work at **97 percent weekly** (user limit; resets Mon 19 Oct ~22:30 IST). Session 9d5203d7
+  (entered this worktree via EnterWorktree; its transcripts are under the 334706 projects dir
+  .../9d5203d7-a6be-4a10-8e9d-83c85c9e81ca/subagents; dispatch root is its scratchpad
+  C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-fcff62/9d5203d7-a6be-4a10-8e9d-83c85c9e81ca/scratchpad/ft-dispatch,
+  which holds the t1b083-t1b093 .ids copies). **Filed: t1b077-t1b082** (60 records; all isolation pass;
+  6 quotes returned once, all accepted on re-check; agreement 9, 10, 10, 10, 8, 9 of 10). **C queue part 8**
+  (analysis/screening/ft-t1/c-queue-8.jsonl, 8 records): **c-t1-15 done** (M03416 include; M07919, R0927,
+  M13335 exclude; isolation pass, quotes ok; c-run-log.jsonl). **c-t1-16 NOT run** (R1202, U03826, U04280,
+  U06471; folder C-c-t1-16-caffdc0e-... built in the scratchpad above, unused: launch it as is, Fable,
+  prompt as for c-t1-15 in tools/ft-session/agent-map.txt history). t1-decisions-all.jsonl /
+  t1-summary-all.json NOT refreshed (needs c-t1-16; script ready: scratchpad refresh_t1.py, logic of
+  3f113e6 plus a part-19 label). Harness: ft_postbatch.py has --root-A (tested identical on t1b076);
+  next.sh S/P point to session 9d5203d7 (a new session must set its own and rebuild folders; t1b083 not
+  built). Two agents stopped at 04:30 on a session-replacement message (later withdrawn) are logged failed.
+  Queue builder for C (adds quote_after_return ids): scratchpad cqueue.py. **Next after the reset:**
+  c-t1-16, t1b083-t1b093 (B then A, 2 agents, >= 5 GB RAM; Paper 5's launcher holds RAM near 3-5 GB),
+  C on their queue, refresh summaries. User: e-gateway checklist built
+  (research/review/fulltext/egateway-manual-checklist.xlsx, tools/egateway_sheet.py), USER-ACTIONS item 21.
+- **HANDOFF 15 (2026-10-17 night, planned shutdown).** RESUME POINT for T1 part 19
   (research/review/fulltext/t1-batches-part19.json, t1b077-t1b093, 170 records; plan by the
   post-screening session, 824ab95; re-check/C8/unrouted records mixed in UNFLAGGED - keep them unflagged
   to A, B and C). Last fully filed batch: **t1b076**. **t1b077: A done and filed** (FA-t1b077.jsonl, 10

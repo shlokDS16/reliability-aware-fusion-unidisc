@@ -117,3 +117,11 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    `Downloads/<id>.pdf` and tell Claude to import.
 20. **Human validation T1:** recorded as you asked (D0034): you checked the sample and judged it correct; no
    per-record rows, so the paper reports A-B agreement only and states the deviation. You may now look at T1 rows.
+
+## Status 2026-10-18 ~13:00 IST (screening session; paused at 97 percent weekly until the Mon 19 Oct reset)
+21. **Item 19 made easier:** the 58 hand downloads are now a readable checklist,
+   `research/review/fulltext/egateway-manual-checklist.xlsx` (sheet "Start here": 9 steps; sheet "Papers": one row per
+   paper, grouped by publisher, clickable link, file name to save as, Status drop-down, Note; sheet "Progress": counts).
+   Check VIT access on one Springer article first. Save PDFs as `Downloads/<id>.pdf`, then say "import the e-gateway PDFs".
+22. Full-text screening of the 170 newly retrieved records (part 19): 60 screened (t1b077-t1b082), 4 of 8 adjudications
+   done; the rest (t1b083-t1b093 and 4 adjudications) continues after the weekly reset. Nothing needed from you for it.
