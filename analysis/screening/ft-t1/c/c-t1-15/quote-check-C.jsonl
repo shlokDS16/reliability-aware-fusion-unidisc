@@ -1,0 +1,23 @@
+{"id": "M03416", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (Gaussian noise on text hidden states at sampled timesteps)", "loc": "p.3, §3.1", "status": "found"}
+{"id": "M03416", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (multi-step denoising)", "loc": "p.5, §4.2", "status": "found"}
+{"id": "M03416", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R13 applies (final model does not generate)", "loc": "p.4, §3.2", "status": "found"}
+{"id": "M03416", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R13(a) own method trains the diffusion component on text", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M03416", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R13(a) text data", "loc": "p.5, §4", "status": "found"}
+{"id": "M03416", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R13(b) results on the text diffusion component's internals and robustness", "loc": "p.7, §5.5", "status": "found"}
+{"id": "M07919", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D3 (contribution is an evaluation; evaluated diffusion-model watermarking is own method)", "loc": "p.2, §1", "status": "found"}
+{"id": "M07919", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (analysed diffusion models generate the images)", "loc": "p.7, §4.2", "status": "found"}
+{"id": "M07919", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R6 fails / R10 b3 fails (text comes from a separate VLM, not one jointly trained model)", "loc": "p.2, §1", "status": "found"}
+{"id": "M07919", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R10 b3 fails (diffusion model and VLM are separate systems)", "loc": "p.7, §4.2", "status": "found"}
+{"id": "M07919", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R9 step 2 (text prompts condition the diffusion component)", "loc": "p.7, §4.2", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (trained along a discrete flow-matching path)", "loc": "p.4, §3.2", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 (multi-step sampling)", "loc": "p.4, §3.2", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R12 (diffusion output is an environment action, never text)", "loc": "p.10, §5.2", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R12 (action executed in the environment)", "loc": "p.5, §4.1", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R12 (paper frames the Jericho output as action generation)", "loc": "p.9, §5", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R9 step 2 (textual observation conditions the generator)", "loc": "p.27, Appendix E.2", "status": "found"}
+{"id": "R0927", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "R9 step 2 (text encoder output enters the rate network)", "loc": "p.27, Appendix E.2 Architecture", "status": "found"}
+{"id": "M13335", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 fails (own 'diffusion model' is an EBM plus VAE; no denoiser trained over corruption levels)", "loc": "p.4, §IV-B", "status": "found"}
+{"id": "M13335", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 fails (EBM built from attribute classifiers, not a noise-level denoiser)", "loc": "p.5, §IV-B", "status": "found"}
+{"id": "M13335", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 fails (ODE sampler driven by the EBM, no flow-matching or denoising training stated)", "loc": "p.5, §IV-B", "status": "found"}
+{"id": "M13335", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "D2 fails (only noise step is a single perturbation and selection)", "loc": "p.5, §IV-B", "status": "found"}
+{"id": "M13335", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R6 context (text output exists but no diffusion component produces it)", "loc": "p.5, §IV-B", "status": "found"}
