@@ -1,6 +1,8 @@
 """After both screeners of a full-text batch finish: collect rows, check isolation and quotes, log agreement.
 
-    python tools/ft_postbatch.py <batch> <dispatch root> <subagent transcript dir> <agentA id> <agentB id>
+    python tools/ft_postbatch.py <batch> <dispatch root> <subagent transcript dir> <agentA id> <agentB id> [--root-A <dir>]
+
+--root-A: dispatch root of role A when A ran in an earlier session (its transcript names that folder).
 
 Copies F{A,B}-<batch>.jsonl into analysis/screening/ft-t1/<batch>/, runs tools/ft_isolation_check.py on
 both transcripts and analysis/screening/quote_check.py on both row files, and appends one line to
@@ -17,7 +19,8 @@ OUT.mkdir(parents=True, exist_ok=True)
 res = {"batch": batch}
 rows = {}
 for role, agent in (("A", aid), ("B", bid)):
-    d = next(Path(droot).glob(f"{role}-{batch}-*"))
+    r = sys.argv[sys.argv.index("--root-A") + 1] if role == "A" and "--root-A" in sys.argv else droot
+    d = next(Path(r).glob(f"{role}-{batch}-*"))
     ids = json.loads((d / "dispatch.json").read_text(encoding="utf8"))["ids"]
     f = d / f"F{role}-{batch}.jsonl"
     rr = [json.loads(l) for l in f.read_text(encoding="utf8").splitlines() if l.strip()] if f.exists() else []
