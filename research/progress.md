@@ -12,11 +12,11 @@
   M13335 exclude; isolation pass, quotes ok; c-run-log.jsonl). **c-t1-16 NOT run** (R1202, U03826, U04280,
   U06471; folder C-c-t1-16-caffdc0e-... built in the scratchpad above, unused: launch it as is, Fable,
   prompt as for c-t1-15 in tools/ft-session/agent-map.txt history). t1-decisions-all.jsonl /
-  t1-summary-all.json NOT refreshed (needs c-t1-16; script ready: scratchpad refresh_t1.py, logic of
+  t1-summary-all.json NOT refreshed (needs c-t1-16; script ready: tools/ft-session/refresh_t1.py, logic of
   3f113e6 plus a part-19 label). Harness: ft_postbatch.py has --root-A (tested identical on t1b076);
   next.sh S/P point to session 9d5203d7 (a new session must set its own and rebuild folders; t1b083 not
   built). Two agents stopped at 04:30 on a session-replacement message (later withdrawn) are logged failed.
-  Queue builder for C (adds quote_after_return ids): scratchpad cqueue.py. **Next after the reset:**
+  Queue builder for C (adds quote_after_return ids): tools/ft-session/cqueue.py. **Next after the reset:**
   c-t1-16, t1b083-t1b093 (B then A, 2 agents, >= 5 GB RAM; Paper 5's launcher holds RAM near 3-5 GB),
   C on their queue, refresh summaries. User: e-gateway checklist built
   (research/review/fulltext/egateway-manual-checklist.xlsx, tools/egateway_sheet.py), USER-ACTIONS item 21.
