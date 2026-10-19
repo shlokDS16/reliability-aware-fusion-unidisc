@@ -42,7 +42,7 @@ for i in ids:
     files[i] = sha(b)
 out = f"F{a.role}-{a.batch}.jsonl"
 disp = {"role": a.role, "model": MODEL[a.role], "batch": a.batch, "ids": ids, "output_file": out,
-        "ft": "pymupdf-1.27.2.3 text of the open-access PDF, page markers '=== page N ===' (research/review/fulltext/fetch-log.jsonl)",
+        "ft": "pymupdf-1.27.2.3 text of the PDF, page markers '=== page N ===' (retrieval route per id: research/review/fulltext/fetch-log.jsonl; analysis/screening/ft-t1/t1-provenance.jsonl)",
         "possible_duplicates": json.load(open(a.dups, encoding="utf8")) if a.dups else {}}
 if a.role == "C":
     rows = [json.loads(l) for l in open(a.rows, encoding="utf8") if l.strip()]
