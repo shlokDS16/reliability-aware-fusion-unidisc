@@ -132,5 +132,8 @@ Do these together in one sitting. Claude keeps this list current; items are stru
 24. **Decision needed: the re-check test came out positive (K = 4).** 4 of the 100 randomly sampled title/abstract
    exclusions were included at full text. The frozen rule (criteria v1.6 s5.2) then says: **screen all 797 re-check
    candidates at full text.** That needs their PDFs: Claude will build the route table (metadata only) and ask your
-   yes for the open-access downloads, as before; subscription ones join the e-gateway list. Reply "yes, start the 797
-   tranche" (or tell Claude otherwise).
+   yes for the open-access downloads, as before; subscription ones join the e-gateway list. Route table built (metadata only, `analysis/screening/ft-routes-recheck797-summary.json`): 82 of the 797 are already
+   screened (the sample), 18 more already routed; **697 new: 577 open access** (arXiv 380, publisher OA 125, OpenReview 58,
+   ACL 14; roughly 1-1.5 GB) **and 118 e-gateway** (IEEE 68, others 50), 2 with no identifier. Reply "yes, start the 797
+   tranche" for the open-access downloads (logged, hashed, title-checked as before); the e-gateway ones go to a new
+   checklist like item 21.
