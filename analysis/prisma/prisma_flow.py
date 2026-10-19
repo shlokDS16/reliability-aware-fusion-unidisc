@@ -1,5 +1,6 @@
-"""PRISMA 2020 flow counts for Paper 1, every number read from files (status 2026-10-17, before the human
-validation sample, the e-gateway papers and the re-check K test).
+"""PRISMA 2020 flow counts for Paper 1, every number read from files (status 2026-10-20: T1 incl. part 19
+screened, re-check K from analysis/screening/ta-recheck-k.json; before the manual e-gateway papers and the
+797-candidate re-check tranche).
 
 Strands: (1) seed corpus 2026-10-13/14 (arXiv S1/S2 + Awesome-DLMs; screening/records.jsonl); (2) free-source
 search update 2026-10-15 (D0026-D0030); (3) six subscription databases (D0031; tools/ingest_subscription.py
@@ -133,7 +134,7 @@ for r in jl(REV / "fulltext/fetch-log.jsonl"):
 t1 = {r["id"]: r for r in jl(SCR / "ft-t1/t1-decisions-all.jsonl")}
 nr = {r["id"] for r in jl(SCR / "ft-t1/t1-not-retrieved.jsonl")}
 ta_pass = v2_pass | set(passed_sub)
-assert set(ft) <= ta_pass and set(t1) <= set(ft)
+assert set(ft) <= ta_pass and set(t1) <= set(ft) | set(extra)   # part 19 (t1b077-t1b093) screened ft-routes-extra records too
 status = collections.Counter()
 for i, r in ft.items():
     rt = r["route_type"]
@@ -164,7 +165,8 @@ F["recheck"] = {"frame": jload(SCR / "ta-recheck-sample-v1.3-frozen.json")["fram
                 "c8_outside_frame": len(jl(SCR / "ta-recheck-c8-candidates-v1.4.jsonl")),
                 "to_full_text": grp.get("recheck-sample", 0) + grp.get("c8", 0) + grp.get("recheck-sample+c8", 0),
                 "full_text_screened": sum(1 for i, r in extra.items() if r["group"] != "ta-pass-unrouted" and i in t1),
-                "K": "pending (needs these records screened at full text)"}
+                "K": (lambda k: {"K": k["K"], "counts": k["counts"], "included": k["included"]} if k else "pending")(
+                    jload(SCR / "ta-recheck-k.json") if (SCR / "ta-recheck-k.json").exists() else None)}
 F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_record_not_sought"] + len(extra),
                      "status_ft_routes": dict(status),
                      "status_ft_routes_extra": dict(extra_status),
