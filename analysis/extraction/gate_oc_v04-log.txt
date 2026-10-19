@@ -1,0 +1,83 @@
+python 3.14.3, numpy 2.4.2, scipy 1.17.1; SEED 20263000; bootstrap B 500; LB90 = 5th percentile
+
+Quantities, levels and rules (pass iff LB90 >= line; G5: count >= c(n)):
+  G1 accept EA   ratio  size ('pois', 60)   good 0.95  bad 0.85  block K   rule LB90 >= 0.85
+  G1 accept EB   ratio  size ('pois', 60)   good 0.95  bad 0.85  block K   rule LB90 >= 0.85
+  G3 raw S       ratio  size ('fixed', 16)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw D       ratio  size ('fixed', 13)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw F       ratio  size ('fixed', 6)   good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw QA-sub  ratio  size ('fixed', 22)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw CT      ratio  size ('fixed', 6)   good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw H-attr  ratio  size ('pois', 9)    good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 K-attr      ratio  size ('nb', 18)     good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G3 QA kappa    kappa  size 8              good 0.70  bad 0.40  block LQ  rule LB90 >= 0.45
+  G4 F1_H        f1     size ('pois', 4)    good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G4 F1_G        f1     size ('nb', 3)      good 0.75  bad 0.60  block K   rule LB90 >= 0.60
+  G4 F1_K        f1     size ('nb', 8)      good 0.75  bad 0.60  block K   rule LB90 >= 0.60
+  G4 M-val       ratio  size ('nb', 15)     good 0.95  bad 0.85  block K   rule LB90 >= 0.86
+  G4 M-class     onG    size None           good 0.85  bad 0.65  block K   rule LB90 >= 0.65
+  G4 M-anchorG   onG    size None           good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G4 M-sign      onK    size None           good 0.97  bad 0.90  block K   rule LB90 >= 0.91
+  G4 M-pool      onK    size None           good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G5 anchors     count  size None           good 0.85  bad 0.60  block K   rule count >= c(n) (P(pass | 0.60) <= 0.05)
+
+== A. Design n = 60 (3 x 20), ICC 0.10, OMEGA 0, 2000 replicates; G5 c(n) = 43 ==
+  ALL GOOD: joint P(pass) = 0.866 (MC s.e. 0.008)
+  marginal P(pass | good): G1 accept EA 1.000; G1 accept EB 1.000; G3 raw S 1.000; G3 raw D 1.000; G3 raw F 1.000; G3 raw QA-sub 1.000; G3 raw CT 1.000; G3 raw H-attr 1.000; G3 K-attr 1.000; G3 QA kappa 1.000; G4 F1_H 1.000; G4 F1_G 0.983; G4 F1_K 0.999; G4 M-val 0.999; G4 M-class 0.994; G4 M-anchorG 0.930; G4 M-sign 0.960; G4 M-pool 0.992; G5 anchors 0.999
+  ONE QUANTITY BAD (others good):           joint P(pass)   P(that criterion passes)
+    G1 accept EA                                0.055           0.065
+    G1 accept EB                                0.076           0.086
+    G3 raw S                                    0.059           0.070
+    G3 raw D                                    0.051           0.059
+    G3 raw F                                    0.066           0.073
+    G3 raw QA-sub                               0.059           0.066
+    G3 raw CT                                   0.061           0.070
+    G3 raw H-attr                               0.057           0.067
+    G3 K-attr                                   0.030           0.033
+    G3 QA kappa                                 0.009           0.011
+    G4 F1_H                                     0.056           0.065
+    G4 F1_G                                     0.044           0.051
+    G4 F1_K                                     0.056           0.065
+    G4 M-val                                    0.032           0.036
+    G4 M-class                                  0.058           0.068
+    G4 M-anchorG                                0.044           0.049
+    G4 M-sign                                   0.040           0.044
+    G4 M-pool                                   0.040           0.045
+    G5 anchors                                  0.036           0.041
+  ALL BAD: joint P(pass) = 0.000
+  max over single bad quantities = 0.076 (G1 accept EB)
+
+== B. P(pass | all good) over ICC (common to every metric) and n (1000 replicates; OMEGA 0) ==
+   ICC   n=60      n=72      n=90      n=105     n=120     
+  0.05   0.930    0.973    0.989    0.993    1.000    
+  0.10   0.852    0.923    0.976    0.983    0.991    
+  0.15   0.779    0.849    0.938    0.962    0.982    
+  0.20   0.660    0.783    0.881    0.918    0.954    
+  0.25   0.566    0.667    0.834    0.885    0.914    
+  0.30   0.486    0.616    0.754    0.814    0.867    
+  0.40   0.298    0.438    0.585    0.709    0.769    
+  smallest n in the grid with P(pass | all good) >= 0.85 (the B1 lookup):
+    ICC 0.05: 60
+    ICC 0.10: 60
+    ICC 0.15: 90
+    ICC 0.20: 90
+    ICC 0.25: 105
+    ICC 0.30: 120
+    ICC 0.40: none <= 120
+
+== C. Largest P(pass | one bad) over the 9 weakest quantities (1000 replicates) ==
+  n  60, ICC 0.30: 0.042 (G4 M-sign)
+  n  90, ICC 0.10: 0.074 (G4 M-class)
+  n  90, ICC 0.30: 0.055 (G4 M-sign)
+  n 120, ICC 0.30: 0.056 (G4 M-sign)
+
+== D. Split design (m8): L/Q/H criteria on the first 30 records, K criteria and G5 on 60 (1000 replicates) ==
+  ICC 0.10: P(pass | all good) 0.826; largest P(pass | one L/Q quantity bad) 0.080 (G3 raw CT)
+  ICC 0.20: P(pass | all good) 0.579; largest P(pass | one L/Q quantity bad) 0.056 (G3 raw CT)
+  ICC 0.30: P(pass | all good) 0.354; largest P(pass | one L/Q quantity bad) 0.034 (G3 raw CT)
+
+== E. Sensitivity at n = 60, ICC 0.10 (1000 replicates; P(pass | all good)) ==
+  OMEGA 0.5 (correlated record effects)                      good 0.917
+  unit counts more skewed (NB shape 0.7)                     good 0.777
+
+elapsed 1350 s

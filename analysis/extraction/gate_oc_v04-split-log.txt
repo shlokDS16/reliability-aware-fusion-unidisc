@@ -1,0 +1,32 @@
+python 3.14.3, numpy 2.4.2, scipy 1.17.1; SEED 20263000; bootstrap B 500; LB90 = 5th percentile
+
+Quantities, levels and rules (pass iff LB90 >= line; G5: count >= c(n)):
+  G1 accept EA   ratio  size ('pois', 60)   good 0.95  bad 0.85  block K   rule LB90 >= 0.85
+  G1 accept EB   ratio  size ('pois', 60)   good 0.95  bad 0.85  block K   rule LB90 >= 0.85
+  G3 raw S       ratio  size ('fixed', 16)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw D       ratio  size ('fixed', 13)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw F       ratio  size ('fixed', 6)   good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw QA-sub  ratio  size ('fixed', 22)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw CT      ratio  size ('fixed', 6)   good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw H-attr  ratio  size ('pois', 9)    good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 K-attr      ratio  size ('nb', 18)     good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G3 QA kappa    kappa  size 8              good 0.70  bad 0.40  block LQ  rule LB90 >= 0.45
+  G4 F1_H        f1     size ('pois', 4)    good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G4 F1_G        f1     size ('nb', 3)      good 0.75  bad 0.60  block K   rule LB90 >= 0.60
+  G4 F1_K        f1     size ('nb', 8)      good 0.75  bad 0.60  block K   rule LB90 >= 0.60
+  G4 M-val       ratio  size ('nb', 15)     good 0.95  bad 0.85  block K   rule LB90 >= 0.86
+  G4 M-class     onG    size None           good 0.85  bad 0.65  block K   rule LB90 >= 0.65
+  G4 M-anchorG   onG    size None           good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G4 M-sign      onK    size None           good 0.97  bad 0.90  block K   rule LB90 >= 0.91
+  G4 M-pool      onK    size None           good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G5 anchors     count  size None           good 0.85  bad 0.60  block K   rule count >= c(n) (P(pass | 0.60) <= 0.05)
+
+== Split designs (m8): L/Q/H criteria on 30 records, K criteria and G5 on n (1000 replicates) ==
+  K on 60, L/Q on 30, ICC 0.10: P(pass | all good) 0.817; largest P(pass | one of 8 quantities bad) 0.072 (G3 raw F)
+  K on 60, L/Q on 30, ICC 0.20: P(pass | all good) 0.569; largest P(pass | one of 8 quantities bad) 0.056 (G3 raw F)
+  K on 60, L/Q on 30, ICC 0.30: P(pass | all good) 0.350; largest P(pass | one of 8 quantities bad) 0.047 (G4 M-sign)
+  K on 90, L/Q on 30, ICC 0.10: P(pass | all good) 0.936; largest P(pass | one of 8 quantities bad) 0.082 (G3 raw F)
+  K on 90, L/Q on 30, ICC 0.20: P(pass | all good) 0.755; largest P(pass | one of 8 quantities bad) 0.067 (G3 raw CT)
+  K on 90, L/Q on 30, ICC 0.30: P(pass | all good) 0.484; largest P(pass | one of 8 quantities bad) 0.058 (G3 raw H-attr)
+
+elapsed 431 s

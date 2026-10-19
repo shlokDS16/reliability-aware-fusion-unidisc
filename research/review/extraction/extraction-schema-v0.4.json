@@ -1,0 +1,2711 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "dlm-review/extraction-schema-v0.4.json",
+ "title": "Paper 1 extraction record, form v0.4 (draft, not frozen)",
+ "description": "One JSON object per included study, one line in the session output file. Field ids match the field table in EXTRACTION-PLAN-v0.4.md section 4. 'blocks' (copied from dispatch.json) says which blocks the session fills: L (study, design, census, claim types), Q (claim list, main comparison, quality appraisal), H (headline-number units), K (comparison groups and contrast units; only on records of the RQ sample). Blocks not listed are written as null (objects) or [] (arrays). Fields marked x-filled-by 'script' or 'metadata' are null in extractor output and filled afterwards. 'evidence' holds prose quotes only and is read unchanged by analysis/screening/quote_check.py (it reads 'id' and 'evidence[].quote'); table cells go in 'cell_evidence', which only tools/ex_validate.py checks. v0.3: tables are described once in 'table_evidence' (header, leaf-column map, row groups, caption) and cell entries point to a table; K units carry condition_printed instead of a free column string; rq_class is derived from factor_type by script (EXTRACTION-PLAN-v0.3 s4.11). v0.4: anchor_rule gains 'full-configuration' (U3); examples in descriptions are synthetic.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "id",
+  "form_version",
+  "extractor",
+  "ft",
+  "blocks",
+  "meta",
+  "study",
+  "design",
+  "census",
+  "claims",
+  "qa",
+  "units_h",
+  "groups",
+  "units_k",
+  "evidence",
+  "table_evidence",
+  "cell_evidence",
+  "searched",
+  "doubt",
+  "notes"
+ ],
+ "properties": {
+  "id": {
+   "type": "string",
+   "description": "M01 record id exactly as in dispatch.json."
+  },
+  "form_version": {
+   "const": "0.4",
+   "description": "M10."
+  },
+  "extractor": {
+   "type": "string",
+   "pattern": "^(EA|EB|ER|EC|EQ)-[a-z0-9-]+$",
+   "description": "M09 role and model id, e.g. EA-claude-opus-5-5. EC records are written by the adjudicator; EQ is the public-version QA session (plan s7.4)."
+  },
+  "ft": {
+   "type": "string",
+   "description": "M04 full-text version string from dispatch.json."
+  },
+  "blocks": {
+   "type": "array",
+   "minItems": 1,
+   "uniqueItems": true,
+   "items": {
+    "enum": [
+     "L",
+     "Q",
+     "H",
+     "K"
+    ]
+   },
+   "description": "R06 blocks this session fills, copied from dispatch.json."
+  },
+  "meta": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "x-filled-by": "metadata",
+   "additionalProperties": false,
+   "description": "M02, M03, M05-M08, M11-M16; null in extractor output.",
+   "properties": {
+    "bibliographic": {
+     "type": "object",
+     "description": "M02 title, authors, arXiv id, DOI, OpenReview id, from the corpus record."
+    },
+    "first_version_date": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "M03 YYYY-MM-DD, tools/ex_metadata.py (plan s11)."
+    },
+    "first_version_source": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "M03 source: arXiv v1, OpenReview cdate, Crossref issued, publisher."
+    },
+    "venue_resolved": {
+     "enum": [
+      "journal",
+      "conference",
+      "workshop",
+      "preprint",
+      "under-review",
+      "unknown",
+      null
+     ],
+     "description": "M05 / QA10."
+    },
+    "venue_name": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "i1": {
+     "enum": [
+      "a",
+      "b",
+      "ab",
+      null
+     ],
+     "description": "M06 from full-text screening."
+    },
+    "nonlang_only": {
+     "type": [
+      "boolean",
+      "null"
+     ],
+     "description": "M07."
+    },
+    "tranche": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "M08."
+    },
+    "affiliations": {
+     "type": [
+      "array",
+      "null"
+     ],
+     "items": {
+      "type": "string"
+     },
+     "description": "M11 institutions from OpenAlex or the public version, not from an anonymous file."
+    },
+    "anonymous_version": {
+     "type": [
+      "boolean",
+      "null"
+     ],
+     "description": "M12 regex rule of plan s7.4 on the screened file."
+    },
+    "public_version": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "M13 id and date of the latest public de-anonymised version, or null."
+    },
+    "stratum": {
+     "enum": [
+      "C1",
+      "C2",
+      "R-anon-long",
+      "R-anon-short",
+      "R-named-long",
+      "R-named-short",
+      "NL",
+      null
+     ],
+     "description": "M14 sampling stratum (plan s2.4)."
+    },
+    "in_unit_sample": {
+     "type": [
+      "boolean",
+      "null"
+     ],
+     "description": "M14b true if the record has block K."
+    },
+    "weight": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "description": "M15 sampling weight N_h / n_h (1 for certainty strata)."
+    },
+    "family_id": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "M16 link between records reporting the same model or work (script plus adjudicator)."
+    }
+   }
+  },
+  "study": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "description": "Block L (and S14 from block Q). Null only if 'L' is not in blocks.",
+   "required": [
+    "study_type",
+    "modality",
+    "text_generator",
+    "state_space",
+    "task_families",
+    "task_other",
+    "primary_task_family",
+    "focal_model",
+    "models",
+    "base_checkpoints",
+    "training",
+    "main_sampler",
+    "venue_line_text",
+    "credited_component",
+    "main_comparison",
+    "limitations",
+    "synergy_benchmark",
+    "inventory",
+    "focal_config"
+   ],
+   "properties": {
+    "study_type": {
+     "enum": [
+      "method",
+      "theory",
+      "analysis",
+      "benchmark",
+      "system"
+     ],
+     "description": "S01."
+    },
+    "modality": {
+     "enum": [
+      "text",
+      "text+image",
+      "text+other"
+     ],
+     "description": "S02."
+    },
+    "text_generator": {
+     "enum": [
+      "diffusion",
+      "autoregressive",
+      "both",
+      "none"
+     ],
+     "description": "S03."
+    },
+    "state_space": {
+     "type": "array",
+     "minItems": 1,
+     "uniqueItems": true,
+     "items": {
+      "enum": [
+       "discrete-absorbing",
+       "discrete-uniform",
+       "discrete-flow",
+       "continuous-embedding",
+       "continuous-latent",
+       "hybrid",
+       "not_stated"
+      ]
+     },
+     "description": "S04 of the focal model; several only for analysis or benchmark studies."
+    },
+    "task_families": {
+     "type": "array",
+     "uniqueItems": true,
+     "description": "S05 every family with any reported result of the focal model.",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "family",
+       "generated_sample"
+      ],
+      "properties": {
+       "family": {
+        "$ref": "#/$defs/task_family"
+       },
+       "generated_sample": {
+        "type": "boolean",
+        "description": "true if at least one result in this family is a generated-sample metric (brief, metric_kind)"
+       }
+      }
+     }
+    },
+    "task_other": {
+     "type": "string",
+     "description": "S05 tasks put in 'other'; '' if none."
+    },
+    "primary_task_family": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/task_family"
+      },
+      {
+       "const": "NA"
+      }
+     ],
+     "description": "S06 family of the F1 task; NA when F1 is NA."
+    },
+    "focal_model": {
+     "type": "string",
+     "description": "S17 focal model by U2 (plan s5.3): the first own model or method the abstract names (training-free methods: on the base model of the first own arm of the main-results table); analysis and benchmark studies: the diffusion model that is an arm of most main-text results tables and figures."
+    },
+    "models": {
+     "type": "array",
+     "description": "S07 the paper's own models (analysis and benchmark: every evaluated diffusion model).",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "name",
+       "params_printed",
+       "params_b"
+      ],
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "params_printed": {
+        "type": "string"
+       },
+       "params_b": {
+        "type": [
+         "number",
+         "null"
+        ],
+        "description": "unit conversion of params_printed to billions; allowed (brief G2)"
+       }
+      }
+     }
+    },
+    "base_checkpoints": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "S08."
+    },
+    "training": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "training_free",
+      "stages",
+      "data_named",
+      "tokens_printed",
+      "compute_printed"
+     ],
+     "description": "S09.",
+     "properties": {
+      "training_free": {
+       "enum": [
+        "yes",
+        "no",
+        "not_stated"
+       ]
+      },
+      "stages": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "enum": [
+         "pretraining",
+         "continued-pretraining",
+         "adaptation-from-ar",
+         "sft",
+         "rl",
+         "distillation",
+         "other"
+        ]
+       }
+      },
+      "data_named": {
+       "type": "string"
+      },
+      "tokens_printed": {
+       "type": "string"
+      },
+      "compute_printed": {
+       "type": "string"
+      }
+     }
+    },
+    "main_sampler": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "description",
+      "steps_printed",
+      "nfe_printed",
+      "gen_length_printed",
+      "tokens_per_step_printed"
+     ],
+     "description": "S10 for the F1 setting.",
+     "properties": {
+      "description": {
+       "type": "string"
+      },
+      "steps_printed": {
+       "type": "string"
+      },
+      "nfe_printed": {
+       "type": "string"
+      },
+      "gen_length_printed": {
+       "type": "string"
+      },
+      "tokens_per_step_printed": {
+       "type": "string"
+      }
+     }
+    },
+    "venue_line_text": {
+     "type": "string",
+     "description": "S12 venue statement printed in the file, or 'none'."
+    },
+    "credited_component": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "text",
+      "type"
+     ],
+     "description": "S13.",
+     "properties": {
+      "text": {
+       "type": "string",
+       "description": "first listed contribution in a few words, or 'NA'"
+      },
+      "type": {
+       "enum": [
+        "model-or-architecture",
+        "objective-or-loss",
+        "training-recipe",
+        "sampler-or-decoding",
+        "caching-or-system",
+        "guidance-or-constraint",
+        "theory",
+        "benchmark-or-dataset",
+        "analysis-only",
+        "other"
+       ]
+      }
+     }
+    },
+    "main_comparison": {
+     "description": "S14 (block Q): table and row pair of the main comparison (plan s5.6), or 'NA'. null if Q is not in blocks.",
+     "anyOf": [
+      {
+       "const": "NA"
+      },
+      {
+       "type": "null"
+      },
+      {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "where",
+        "page",
+        "own_row",
+        "baseline_row",
+        "basis",
+        "row_group"
+       ],
+       "properties": {
+        "where": {
+         "type": "string",
+         "pattern": "^(Table|Figure) [A-Z]?[0-9]+[a-z]?$"
+        },
+        "page": {
+         "type": "integer",
+         "minimum": 1
+        },
+        "own_row": {
+         "type": "string"
+        },
+        "baseline_row": {
+         "type": "string"
+        },
+        "basis": {
+         "enum": [
+          "F1-table",
+          "first-main-results-table"
+         ],
+         "description": "s5.6: the F1 unit's table, or the first main-results table when the F1 number is abstract-only without a trace"
+        },
+        "row_group": {
+         "type": "string",
+         "description": "row group of the two rows, '' if none"
+        }
+       }
+      }
+     ]
+    },
+    "limitations": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "categories"
+     ],
+     "description": "S15 limitations the paper states.",
+     "properties": {
+      "categories": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "enum": [
+         "compute-or-speed",
+         "scale",
+         "quality-gap",
+         "length-or-fixed-length",
+         "evaluation-scope",
+         "data",
+         "assumptions",
+         "safety-or-misuse",
+         "other",
+         "none"
+        ]
+       }
+      }
+     }
+    },
+    "synergy_benchmark": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "present",
+      "name"
+     ],
+     "description": "S16 the paper builds or uses a benchmark presented as measuring understanding-generation synergy.",
+     "properties": {
+      "present": {
+       "$ref": "#/$defs/yn"
+      },
+      "name": {
+       "type": "string"
+      }
+     }
+    },
+    "inventory": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5"
+     ],
+     "description": "I1-I5 presence flags (plan s4.5): I1 diffusion vs autoregressive comparison in a table; I2 training-choice ablation; I3 inference-setting sweep or on/off contrast; I4 task or modality removal, or shared vs decoupled; I5 with/without comparison of the credited component.",
+     "properties": {
+      "I1": {
+       "$ref": "#/$defs/yn"
+      },
+      "I2": {
+       "$ref": "#/$defs/yn"
+      },
+      "I3": {
+       "$ref": "#/$defs/yn"
+      },
+      "I4": {
+       "$ref": "#/$defs/yn"
+      },
+      "I5": {
+       "$ref": "#/$defs/yn"
+      }
+     }
+    },
+    "focal_config": {
+     "type": "string",
+     "description": "U2e: the focal configuration's arm label as printed in the main-results table, with its where (synthetic example: 'Table 2: Ours-L (k=4)')"
+    }
+   }
+  },
+  "design": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "description": "Block L design space C1-C5 of the focal model and its F1 sampler.",
+   "required": [
+    "c1_channel",
+    "c2_reveal",
+    "c2_multimodal",
+    "c3_predictor",
+    "c3_self_conditioning",
+    "c3_head_layout",
+    "c4_position",
+    "c4_joint_draw",
+    "c4_multimodal_schedule",
+    "c5_revision",
+    "memory",
+    "objective",
+    "other_detail",
+    "provenance",
+    "inherited_from"
+   ],
+   "properties": {
+    "c1_channel": {
+     "type": "array",
+     "minItems": 1,
+     "description": "D01.",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "modality",
+       "channel"
+      ],
+      "properties": {
+       "modality": {
+        "enum": [
+         "text",
+         "image",
+         "video",
+         "audio",
+         "3d",
+         "other"
+        ]
+       },
+       "channel": {
+        "enum": [
+         "erasure",
+         "symmetric",
+         "erasure-symmetric-mixture",
+         "gaussian-embedding",
+         "gaussian-simplex-or-logit",
+         "gaussian-latent",
+         "flow-discrete",
+         "flow-continuous",
+         "autoregressive",
+         "other",
+         "not_stated"
+        ]
+       }
+      }
+     }
+    },
+    "c2_reveal": {
+     "enum": [
+      "independent-shared-level",
+      "block",
+      "any-order",
+      "prefix",
+      "gaussian-shared-level",
+      "gaussian-mixed-conditioning",
+      "other",
+      "not_stated"
+     ],
+     "description": "D02."
+    },
+    "c2_multimodal": {
+     "enum": [
+      "shared-level",
+      "clean-input-noised-output",
+      "modality-dropout",
+      "independent-per-modality",
+      "capped-noise",
+      "other",
+      "not_stated",
+      "NA"
+     ],
+     "description": "D03."
+    },
+    "c3_predictor": {
+     "enum": [
+      "clean-marginals",
+      "concrete-score-or-ratio",
+      "x0-embedding-regression",
+      "posterior-mean-embedding",
+      "noise-or-velocity",
+      "probability-denoiser",
+      "other",
+      "not_stated"
+     ],
+     "description": "D04."
+    },
+    "c3_self_conditioning": {
+     "enum": [
+      "yes",
+      "no",
+      "not_stated"
+     ],
+     "description": "D05."
+    },
+    "c3_head_layout": {
+     "enum": [
+      "single-modality",
+      "shared-vocabulary-head",
+      "separate-heads",
+      "text-head-plus-continuous-head",
+      "other",
+      "not_stated"
+     ],
+     "description": "D06."
+    },
+    "c4_position": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "rule",
+      "blockwise"
+     ],
+     "description": "D07.",
+     "properties": {
+      "rule": {
+       "enum": [
+        "left-to-right",
+        "random",
+        "confidence-ranked",
+        "threshold-adaptive",
+        "fixed-order",
+        "learned-planner",
+        "all-positions",
+        "other",
+        "not_stated"
+       ]
+      },
+      "blockwise": {
+       "enum": [
+        "yes",
+        "no",
+        "not_stated"
+       ]
+      }
+     }
+    },
+    "c4_joint_draw": {
+     "enum": [
+      "independent",
+      "ar-head",
+      "copula",
+      "energy-or-verifier",
+      "speculative-verification",
+      "other",
+      "not_stated"
+     ],
+     "description": "D08."
+    },
+    "c4_multimodal_schedule": {
+     "enum": [
+      "joint",
+      "sequential",
+      "alternating",
+      "other",
+      "not_stated",
+      "NA"
+     ],
+     "description": "D09."
+    },
+    "c5_revision": {
+     "type": "array",
+     "minItems": 1,
+     "uniqueItems": true,
+     "items": {
+      "enum": [
+       "none",
+       "explicit-remasking-or-editing",
+       "corrector",
+       "implicit-channel",
+       "output-level",
+       "other",
+       "not_stated"
+      ]
+     },
+     "description": "D10."
+    },
+    "memory": {
+     "type": "array",
+     "minItems": 1,
+     "uniqueItems": true,
+     "items": {
+      "enum": [
+       "none",
+       "self-conditioning",
+       "exact-cache",
+       "approximate-cache",
+       "planner-state",
+       "other",
+       "not_stated"
+      ]
+     },
+     "description": "D11."
+    },
+    "objective": {
+     "enum": [
+      "elbo-ce",
+      "weighted-ce",
+      "score-entropy",
+      "mse-x0",
+      "mse-eps-or-velocity",
+      "flow-matching",
+      "other",
+      "not_stated",
+      "NA"
+     ],
+     "description": "D15 training objective (loss and weighting) of the focal model; NA when the paper trains nothing and does not describe the loaded model's objective."
+    },
+    "other_detail": {
+     "type": "string",
+     "description": "D14 text for every 'other'; '' if none."
+    },
+    "provenance": {
+     "type": "object",
+     "additionalProperties": false,
+     "description": "D16 per design field: contributed (the paper introduces or changes this choice), inherited (taken unchanged from a named checkpoint the paper loads), not_stated, NA.",
+     "required": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10",
+      "D11",
+      "D15"
+     ],
+     "properties": {
+      "D01": {
+       "$ref": "#/$defs/prov"
+      },
+      "D02": {
+       "$ref": "#/$defs/prov"
+      },
+      "D03": {
+       "$ref": "#/$defs/prov"
+      },
+      "D04": {
+       "$ref": "#/$defs/prov"
+      },
+      "D05": {
+       "$ref": "#/$defs/prov"
+      },
+      "D06": {
+       "$ref": "#/$defs/prov"
+      },
+      "D07": {
+       "$ref": "#/$defs/prov"
+      },
+      "D08": {
+       "$ref": "#/$defs/prov"
+      },
+      "D09": {
+       "$ref": "#/$defs/prov"
+      },
+      "D10": {
+       "$ref": "#/$defs/prov"
+      },
+      "D11": {
+       "$ref": "#/$defs/prov"
+      },
+      "D15": {
+       "$ref": "#/$defs/prov"
+      }
+     }
+    },
+    "inherited_from": {
+     "type": "string",
+     "description": "D16 checkpoint name for 'inherited' entries; '' if none."
+    },
+    "levers": {
+     "type": [
+      "array",
+      "null"
+     ],
+     "x-filled-by": "script",
+     "items": {
+      "enum": [
+       "L1",
+       "L2",
+       "L3",
+       "L4",
+       "L5",
+       "L6",
+       "L7",
+       "L8",
+       "L9",
+       "L10",
+       "V",
+       "L13",
+       "L14"
+      ]
+     },
+     "description": "D12 derived from D01-D11, D15, F2 and S09 by the mapping in plan s4.3; V = the merged value row (framework-v2 item 3)."
+    }
+   }
+  },
+  "census": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "required": [
+    "F1_status",
+    "F1_unit",
+    "F2_codes",
+    "F2_detail",
+    "F3",
+    "F4",
+    "F5",
+    "F6"
+   ],
+   "description": "Block L census F1-F6 (codebook v1.2 consolidated in the brief).",
+   "properties": {
+    "F1_status": {
+     "enum": [
+      "number",
+      "figure-only",
+      "unreadable",
+      "QL",
+      "NA"
+     ]
+    },
+    "F1_unit": {
+     "type": "string",
+     "pattern": "^(H[0-9]{2,3}|NA)$",
+     "description": "H unit with is_F1 true, or NA."
+    },
+    "F2_codes": {
+     "type": "string",
+     "pattern": "^(U|NS|NA|[ATPSCGM](\\+[ATPSCGM])*(\\+NS)?)$"
+    },
+    "F2_detail": {
+     "type": "string"
+    },
+    "F3": {
+     "enum": [
+      "yes",
+      "no",
+      "NA"
+     ]
+    },
+    "F4": {
+     "enum": [
+      "yes",
+      "partial",
+      "no",
+      "NA"
+     ]
+    },
+    "F5": {
+     "enum": [
+      "stated",
+      "not stated",
+      "co-varied",
+      "NA"
+     ]
+    },
+    "F6": {
+     "enum": [
+      "stated",
+      "not stated",
+      "co-varied",
+      "NA"
+     ]
+    }
+   }
+  },
+  "claims": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "required": [
+    "CT",
+    "list"
+   ],
+   "properties": {
+    "CT": {
+     "type": [
+      "object",
+      "null"
+     ],
+     "additionalProperties": false,
+     "required": [
+      "CT1",
+      "CT2",
+      "CT3",
+      "CT4",
+      "CT5",
+      "CT6"
+     ],
+     "description": "Block L claim types asserted in the abstract.",
+     "properties": {
+      "CT1": {
+       "$ref": "#/$defs/yn"
+      },
+      "CT2": {
+       "$ref": "#/$defs/yn"
+      },
+      "CT3": {
+       "$ref": "#/$defs/yn"
+      },
+      "CT4": {
+       "$ref": "#/$defs/yn"
+      },
+      "CT5": {
+       "$ref": "#/$defs/yn"
+      },
+      "CT6": {
+       "$ref": "#/$defs/yn"
+      }
+     }
+    },
+    "list": {
+     "type": [
+      "array",
+      "null"
+     ],
+     "description": "Block Q checkable claims (CL) with their status for QA8.",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "claim_id",
+       "source",
+       "types",
+       "has_number",
+       "status",
+       "h_units",
+       "trace"
+      ],
+      "properties": {
+       "claim_id": {
+        "type": "string",
+        "pattern": "^CL[0-9]+$"
+       },
+       "source": {
+        "enum": [
+         "abstract",
+         "introduction"
+        ]
+       },
+       "types": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+         "enum": [
+          "CT1",
+          "CT2",
+          "CT3",
+          "CT4",
+          "CT5",
+          "CT6",
+          "none"
+         ]
+        }
+       },
+       "has_number": {
+        "type": "boolean"
+       },
+       "status": {
+        "enum": [
+         "match",
+         "direction",
+         "partial",
+         "unsupported",
+         "contradicted",
+         "not-checkable"
+        ]
+       },
+       "h_units": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "pattern": "^H[0-9]{2,3}$"
+        }
+       },
+       "trace": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "pattern": "^(C|E)[0-9]{2,3}$"
+        },
+        "description": "evidence ids of the table cells or results text the status rests on; empty for unsupported and not-checkable"
+       }
+      }
+     }
+    }
+   }
+  },
+  "qa": {
+   "type": [
+    "object",
+    "null"
+   ],
+   "additionalProperties": false,
+   "required": [
+    "QA1",
+    "QA2",
+    "QA3",
+    "QA4",
+    "QA5",
+    "QA6",
+    "QA7",
+    "QA8",
+    "QA9"
+   ],
+   "description": "Block Q. Sub-items take yes, no or unclear; every listed key is required. Scores are filled by script (plan s7).",
+   "properties": {
+    "QA1": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "a",
+        "b",
+        "c",
+        "d"
+       ],
+       "properties": {
+        "a": {
+         "$ref": "#/$defs/ynu"
+        },
+        "b": {
+         "$ref": "#/$defs/ynu"
+        },
+        "c": {
+         "$ref": "#/$defs/ynu"
+        },
+        "d": {
+         "enum": [
+          null,
+          "yes",
+          "no"
+         ],
+         "x-filled-by": "script",
+         "description": "dated link check (plan s7.2)"
+        }
+       }
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA2": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "a",
+        "b",
+        "c"
+       ],
+       "properties": {
+        "a": {
+         "$ref": "#/$defs/ynu"
+        },
+        "b": {
+         "$ref": "#/$defs/ynu"
+        },
+        "c": {
+         "$ref": "#/$defs/ynu"
+        }
+       }
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA3": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "a",
+        "b",
+        "c",
+        "d"
+       ],
+       "properties": {
+        "a": {
+         "$ref": "#/$defs/ynu"
+        },
+        "b": {
+         "$ref": "#/$defs/ynu"
+        },
+        "c": {
+         "enum": [
+          null,
+          "yes",
+          "no"
+         ],
+         "x-filled-by": "script",
+         "description": "from F2"
+        },
+        "d": {
+         "$ref": "#/$defs/ynu"
+        }
+       }
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA4": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "n",
+        "a",
+        "b",
+        "c"
+       ],
+       "properties": {
+        "n": {
+         "$ref": "#/$defs/yn"
+        },
+        "a": {
+         "$ref": "#/$defs/ynun"
+        },
+        "b": {
+         "$ref": "#/$defs/ynun"
+        },
+        "c": {
+         "$ref": "#/$defs/ynu"
+        }
+       },
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "n": {
+            "const": "yes"
+           }
+          },
+          "required": [
+           "n"
+          ]
+         },
+         "then": {
+          "properties": {
+           "a": {
+            "const": null
+           },
+           "b": {
+            "const": null
+           }
+          }
+         }
+        },
+        {
+         "if": {
+          "properties": {
+           "n": {
+            "const": "no"
+           }
+          },
+          "required": [
+           "n"
+          ]
+         },
+         "then": {
+          "properties": {
+           "a": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           },
+           "b": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           }
+          }
+         }
+        }
+       ]
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA5": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "n",
+        "a",
+        "b"
+       ],
+       "properties": {
+        "n": {
+         "$ref": "#/$defs/yn"
+        },
+        "a": {
+         "$ref": "#/$defs/ynun"
+        },
+        "b": {
+         "$ref": "#/$defs/ynu"
+        }
+       },
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "n": {
+            "const": "yes"
+           }
+          },
+          "required": [
+           "n"
+          ]
+         },
+         "then": {
+          "properties": {
+           "a": {
+            "const": null
+           }
+          }
+         }
+        },
+        {
+         "if": {
+          "properties": {
+           "n": {
+            "const": "no"
+           }
+          },
+          "required": [
+           "n"
+          ]
+         },
+         "then": {
+          "properties": {
+           "a": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           }
+          }
+         }
+        }
+       ]
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA6": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "n",
+        "a",
+        "b",
+        "c",
+        "d"
+       ],
+       "properties": {
+        "n": {
+         "$ref": "#/$defs/yn"
+        },
+        "a": {
+         "$ref": "#/$defs/ynun"
+        },
+        "b": {
+         "$ref": "#/$defs/ynun"
+        },
+        "c": {
+         "$ref": "#/$defs/ynun"
+        },
+        "d": {
+         "$ref": "#/$defs/ynun"
+        }
+       },
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "n": {
+            "const": "yes"
+           }
+          },
+          "required": [
+           "n"
+          ]
+         },
+         "then": {
+          "properties": {
+           "a": {
+            "const": null
+           },
+           "b": {
+            "const": null
+           },
+           "c": {
+            "const": null
+           },
+           "d": {
+            "const": null
+           }
+          }
+         }
+        },
+        {
+         "if": {
+          "properties": {
+           "n": {
+            "const": "no"
+           }
+          },
+          "required": [
+           "n"
+          ]
+         },
+         "then": {
+          "properties": {
+           "a": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           },
+           "b": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           },
+           "c": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           },
+           "d": {
+            "enum": [
+             "yes",
+             "no",
+             "unclear"
+            ]
+           }
+          }
+         }
+        }
+       ]
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA7": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "n",
+        "a",
+        "b",
+        "c"
+       ],
+       "properties": {
+        "n": {
+         "enum": [
+          null,
+          "yes",
+          "no"
+         ],
+         "x-filled-by": "script",
+         "description": "yes if S13 type is theory, benchmark-or-dataset or analysis-only"
+        },
+        "a": {
+         "$ref": "#/$defs/ynun"
+        },
+        "b": {
+         "$ref": "#/$defs/ynun"
+        },
+        "c": {
+         "$ref": "#/$defs/ynun"
+        }
+       }
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA8": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "maxProperties": 0
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    },
+    "QA9": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "sub",
+      "score",
+      "loc"
+     ],
+     "properties": {
+      "sub": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "a",
+        "b"
+       ],
+       "properties": {
+        "a": {
+         "$ref": "#/$defs/ynu"
+        },
+        "b": {
+         "$ref": "#/$defs/ynu"
+        }
+       }
+      },
+      "score": {
+       "$ref": "#/$defs/score"
+      },
+      "loc": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "units_h": {
+   "type": "array",
+   "description": "Block H headline-number units (plan s5.2), ids H01, H02 ... in order of appearance.",
+   "items": {
+    "$ref": "#/$defs/h_unit"
+   }
+  },
+  "groups": {
+   "type": "array",
+   "description": "Block K comparison groups (plan s5.3), ids G01 ...",
+   "items": {
+    "$ref": "#/$defs/group"
+   }
+  },
+  "units_k": {
+   "type": "array",
+   "description": "Block K contrast units = group x outcome (plan s5.4), ids K01 ...",
+   "items": {
+    "$ref": "#/$defs/k_unit"
+   }
+  },
+  "evidence": {
+   "type": "array",
+   "description": "R01 prose quotes (6-40 words), checked by quote_check.py unchanged plus ex_validate.py.",
+   "items": {
+    "$ref": "#/$defs/prose"
+   }
+  },
+  "cell_evidence": {
+   "type": "array",
+   "description": "R02 table-cell evidence, checked by ex_validate.py (plan s6.3).",
+   "items": {
+    "$ref": "#/$defs/cell"
+   }
+  },
+  "searched": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   },
+   "propertyNames": {
+    "$ref": "#/$defs/cond"
+   },
+   "description": "R03 one rule: for every negative value of an evidence-coded field (no, not_stated, NS, 'not stated', none, unclear), key = the same id an evidence cond would use, value = sections and tables read."
+  },
+  "doubt": {
+   "type": "array",
+   "uniqueItems": true,
+   "items": {
+    "$ref": "#/$defs/cond"
+   },
+   "description": "R04 field or unit ids answered with doubt."
+  },
+  "notes": {
+   "type": "string",
+   "description": "R05 at most 60 words (EC: no limit)."
+  },
+  "table_evidence": {
+   "type": "array",
+   "description": "R07 tables cited by cell entries (plan s6.3).",
+   "items": {
+    "$ref": "#/$defs/table"
+   }
+  }
+ },
+ "$defs": {
+  "yn": {
+   "enum": [
+    "yes",
+    "no"
+   ]
+  },
+  "ynu": {
+   "enum": [
+    "yes",
+    "no",
+    "unclear"
+   ]
+  },
+  "ynun": {
+   "enum": [
+    "yes",
+    "no",
+    "unclear",
+    null
+   ],
+   "description": "null only when the item's n is yes"
+  },
+  "prov": {
+   "enum": [
+    "contributed",
+    "inherited",
+    "inherited-from-cited-method",
+    "not_stated",
+    "NA"
+   ]
+  },
+  "score": {
+   "description": "filled by script: {low, high} with unclear read as no and as yes",
+   "x-filled-by": "script",
+   "anyOf": [
+    {
+     "type": "null"
+    },
+    {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "low",
+      "high"
+     ],
+     "properties": {
+      "low": {
+       "enum": [
+        0,
+        1,
+        2,
+        "NA"
+       ]
+      },
+      "high": {
+       "enum": [
+        0,
+        1,
+        2,
+        "NA"
+       ]
+      }
+     }
+    }
+   ]
+  },
+  "task_family": {
+   "enum": [
+    "language modelling",
+    "reasoning",
+    "code",
+    "understanding",
+    "text-to-image",
+    "editing",
+    "other"
+   ]
+  },
+  "cond": {
+   "type": "string",
+   "pattern": "^(S[0-9]{2}(\\.[a-z_]+)?|D[0-9]{2}(\\.[a-z_]+)?|F[1-6]d?|CT[1-6]|CL[0-9]+|QA[1-9][a-dn]|I[1-5]|[HGK][0-9]{2,3}(\\.[A-Za-z0-9_]+)?)$"
+  },
+  "prose": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "id",
+    "cond",
+    "quote",
+    "loc"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "pattern": "^E[0-9]{2,3}$"
+    },
+    "cond": {
+     "$ref": "#/$defs/cond"
+    },
+    "quote": {
+     "type": "string",
+     "minLength": 1,
+     "description": "one contiguous passage of 6-40 words copied from fulltext/<id>.txt; at least 3 words containing a letter"
+    },
+    "loc": {
+     "type": "string",
+     "description": "'p.<page>, §<section>' or 'p.<page>, abstract'"
+    }
+   }
+  },
+  "cell": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "id",
+    "cond",
+    "table",
+    "page",
+    "row_label",
+    "row_group",
+    "first_col",
+    "cells",
+    "occurrence"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "pattern": "^C[0-9]{2,3}$"
+    },
+    "cond": {
+     "$ref": "#/$defs/cond"
+    },
+    "page": {
+     "type": "integer",
+     "minimum": 1,
+     "description": "page of the row, from the '=== page N ===' marker"
+    },
+    "row_label": {
+     "type": "string",
+     "minLength": 1,
+     "description": "every token of the row label as printed, over all its lines, up to the first cell (U11)"
+    },
+    "first_col": {
+     "type": "integer",
+     "minimum": 1,
+     "description": "1-based index of the first element of 'cells' in the row's cell sequence; every cited row needs an entry with first_col 1"
+    },
+    "cells": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string"
+     },
+     "description": "one element per table cell from first_col on, each exactly as printed (a cell may hold several tokens, e.g. 'Hybrid scan'); '|' separators are not cells; '' marks a blank cell; label tokens plus cell tokens at most 40 per entry"
+    },
+    "occurrence": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1,
+     "description": "needed only when label plus cells match more than once inside the row-group segment (1-based)"
+    },
+    "table": {
+     "type": "string",
+     "pattern": "^T[0-9]{2,3}$"
+    },
+    "row_group": {
+     "type": "string",
+     "description": "the row group of this row as printed (one of the table's row_groups), '' if the table has none"
+    }
+   }
+  },
+  "variance": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "kind",
+    "value_printed",
+    "n_runs"
+   ],
+   "properties": {
+    "kind": {
+     "enum": [
+      "none",
+      "sd",
+      "se",
+      "ci",
+      "range",
+      "plusminus-undefined",
+      "test",
+      "other"
+     ]
+    },
+    "value_printed": {
+     "type": "string"
+    },
+    "n_runs": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1
+    }
+   }
+  },
+  "setting": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "steps_printed",
+    "nfe_printed",
+    "tokens_per_step_printed",
+    "gen_length_printed",
+    "sampler_printed",
+    "value_rule_printed",
+    "guidance_printed"
+   ],
+   "properties": {
+    "steps_printed": {
+     "type": "string"
+    },
+    "nfe_printed": {
+     "type": "string"
+    },
+    "tokens_per_step_printed": {
+     "type": "string"
+    },
+    "gen_length_printed": {
+     "type": "string"
+    },
+    "sampler_printed": {
+     "type": "string"
+    },
+    "value_rule_printed": {
+     "type": "string"
+    },
+    "guidance_printed": {
+     "type": "string"
+    }
+   }
+  },
+  "h_unit": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "unit_id",
+    "is_F1",
+    "origin",
+    "value_type",
+    "arm_role",
+    "reference_printed",
+    "model_printed",
+    "metric_printed",
+    "metric_kind",
+    "higher_is_better",
+    "benchmark_printed",
+    "split",
+    "task_family",
+    "value_printed",
+    "value_unit",
+    "scale",
+    "setting",
+    "variance",
+    "evidence_ref",
+    "value_occurrence",
+    "column_printed",
+    "col",
+    "trace",
+    "trace_col",
+    "loc"
+   ],
+   "properties": {
+    "unit_id": {
+     "type": "string",
+     "pattern": "^H[0-9]{2,3}$"
+    },
+    "is_F1": {
+     "type": "boolean"
+    },
+    "origin": {
+     "enum": [
+      "abstract",
+      "F1-table",
+      "F1-figure",
+      "F1-text"
+     ],
+     "description": "H03 generator: abstract outcome number, or the F1 number when the F1 rule falls past the abstract"
+    },
+    "value_type": {
+     "enum": [
+      "level",
+      "difference",
+      "ratio",
+      "other"
+     ],
+     "description": "H20 level = a value of one arm; difference = a gap between arms (points, percent); ratio = a factor (x faster, fewer steps by a factor)"
+    },
+    "arm_role": {
+     "enum": [
+      "own",
+      "baseline",
+      "NA"
+     ],
+     "description": "H21 for levels: whose value; NA for difference and ratio"
+    },
+    "reference_printed": {
+     "type": "string",
+     "description": "H22 for difference and ratio: the reference arm as printed, or 'not stated'; '' for levels"
+    },
+    "model_printed": {
+     "type": "string"
+    },
+    "metric_printed": {
+     "type": "string"
+    },
+    "metric_kind": {
+     "enum": [
+      "generated-sample",
+      "likelihood",
+      "speed",
+      "steps",
+      "other"
+     ]
+    },
+    "higher_is_better": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "benchmark_printed": {
+     "type": "string",
+     "description": "as printed, or 'not stated'"
+    },
+    "split": {
+     "type": "string"
+    },
+    "task_family": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/task_family"
+      },
+      {
+       "const": "not_stated"
+      }
+     ]
+    },
+    "value_printed": {
+     "type": "string",
+     "description": "exactly as printed, or 'figure-only' or 'unreadable' for an F1 unit"
+    },
+    "value_num": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "x-filled-by": "script"
+    },
+    "value_unit": {
+     "type": "string"
+    },
+    "scale": {
+     "enum": [
+      "fraction",
+      "percent",
+      "points",
+      "raw",
+      "factor",
+      "other"
+     ]
+    },
+    "setting": {
+     "$ref": "#/$defs/setting"
+    },
+    "variance": {
+     "$ref": "#/$defs/variance"
+    },
+    "evidence_ref": {
+     "type": "string",
+     "pattern": "^(E|C)[0-9]{2,3}$",
+     "description": "prose entry (abstract sentence) or cell entry holding value_printed"
+    },
+    "value_occurrence": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1,
+     "description": "which occurrence of value_printed in a prose quote, when it occurs more than once"
+    },
+    "column_printed": {
+     "type": "string",
+     "description": "column label as printed for a cell value; '' for prose"
+    },
+    "col": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1,
+     "description": "for a cell value: 1-based token index after the row label"
+    },
+    "trace": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "pattern": "^C[0-9]{2,3}$",
+     "description": "for an abstract number: the cell entry where the same number appears in a table, if the extractor found it"
+    },
+    "trace_col": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1
+    },
+    "loc": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "page",
+      "where"
+     ],
+     "properties": {
+      "page": {
+       "type": [
+        "integer",
+        "null"
+       ]
+      },
+      "where": {
+       "type": "string"
+      }
+     }
+    },
+    "metric_id": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "x-filled-by": "script"
+    },
+    "benchmark_id": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "x-filled-by": "script"
+    }
+   }
+  },
+  "arm": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "arm_id",
+    "label_printed",
+    "role",
+    "generator",
+    "level_printed",
+    "params_printed",
+    "train_tokens_printed",
+    "shots_printed",
+    "scoring",
+    "number_source",
+    "steps_printed",
+    "gen_length_printed",
+    "ar_label_source"
+   ],
+   "properties": {
+    "arm_id": {
+     "type": "string",
+     "pattern": "^A[0-9]{1,3}$",
+     "description": "unique within the group"
+    },
+    "label_printed": {
+     "type": "string",
+     "description": "row label (all lines) or column label exactly as printed"
+    },
+    "role": {
+     "enum": [
+      "anchor",
+      "comparison"
+     ]
+    },
+    "generator": {
+     "enum": [
+      "diffusion",
+      "autoregressive",
+      "other",
+      "not_stated"
+     ],
+     "description": "how this arm generates the evaluated output, by the paper's own label (brief K-AR)"
+    },
+    "level_printed": {
+     "type": "string",
+     "description": "the factor value of this arm as printed (synthetic examples: '96', 'w/o planner', 'Base-Q 3B')"
+    },
+    "level_num": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "description": "numeric level in dose_unit when the factor is numeric, else null"
+    },
+    "params_printed": {
+     "type": "string"
+    },
+    "train_tokens_printed": {
+     "type": "string"
+    },
+    "shots_printed": {
+     "type": "string"
+    },
+    "scoring": {
+     "enum": [
+      "generated",
+      "likelihood",
+      "not_stated"
+     ]
+    },
+    "number_source": {
+     "enum": [
+      "run-by-authors",
+      "copied-stated",
+      "not_stated"
+     ],
+     "description": "a citation in the row label alone is not_stated"
+    },
+    "steps_printed": {
+     "type": "string"
+    },
+    "gen_length_printed": {
+     "type": "string"
+    },
+    "ar_label_source": {
+     "enum": [
+      "this-table",
+      "caption-marker",
+      "other-table",
+      "text",
+      "NA"
+     ],
+     "description": "U5: where the paper labels this arm's generator of the scored output autoregressive; NA unless generator is autoregressive"
+    }
+   }
+  },
+  "group": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "group_id",
+    "rq_class",
+    "factor_type",
+    "factor_printed",
+    "dose_unit",
+    "where",
+    "page",
+    "source_kind",
+    "orientation",
+    "second_factor_printed",
+    "anchor_arm",
+    "anchor_rule",
+    "arms",
+    "credited_ablation",
+    "held_fixed",
+    "other_changes",
+    "budget_across_arms",
+    "shape",
+    "evidence_refs"
+   ],
+   "properties": {
+    "group_id": {
+     "type": "string",
+     "pattern": "^G[0-9]{2,3}$"
+    },
+    "rq_class": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "x-filled-by": "script",
+     "description": "derived from factor_type by the map of plan s5.3 U8"
+    },
+    "factor_type": {
+     "enum": [
+      "model-class",
+      "pretraining-recipe",
+      "ar-initialisation",
+      "sft",
+      "rl",
+      "distillation",
+      "objective",
+      "architecture",
+      "steps-or-nfe",
+      "tokens-per-step",
+      "order-rule",
+      "remasking",
+      "cache",
+      "block-or-parallel",
+      "value-rule",
+      "guidance",
+      "gen-length",
+      "task-or-modality-removal",
+      "shared-vs-decoupled",
+      "component-removal",
+      "other"
+     ]
+    },
+    "factor_printed": {
+     "type": "string"
+    },
+    "dose_unit": {
+     "enum": [
+      "steps",
+      "nfe",
+      "tokens-per-step",
+      "threshold",
+      "cache-interval",
+      "block-size",
+      "gen-length",
+      "guidance-scale",
+      "temperature",
+      "other",
+      "NA"
+     ]
+    },
+    "where": {
+     "type": "string",
+     "pattern": "^(Table|Figure) [A-Z]?[0-9]+[a-z]?$"
+    },
+    "page": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "source_kind": {
+     "enum": [
+      "main-table",
+      "appendix-table",
+      "main-figure",
+      "appendix-figure"
+     ]
+    },
+    "orientation": {
+     "enum": [
+      "rows",
+      "columns",
+      "figure"
+     ]
+    },
+    "second_factor_printed": {
+     "type": "string",
+     "description": "U7: the level of the second factor as printed (a row group, a level-1 column part or a legend entry); '' if none"
+    },
+    "anchor_arm": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "pattern": "^A[0-9]{1,3}$",
+     "description": "U3: the anchor; null only for analysis and benchmark groups without a stated default"
+    },
+    "arms": {
+     "type": "array",
+     "minItems": 2,
+     "items": {
+      "$ref": "#/$defs/arm"
+     }
+    },
+    "credited_ablation": {
+     "type": "boolean"
+    },
+    "held_fixed": {
+     "enum": [
+      "stated",
+      "not stated",
+      "co-varied"
+     ]
+    },
+    "other_changes": {
+     "type": "string"
+    },
+    "budget_across_arms": {
+     "enum": [
+      "matched",
+      "reported",
+      "not reported"
+     ]
+    },
+    "shape": {
+     "enum": [
+      "monotone-up",
+      "monotone-down",
+      "peaked",
+      "flat",
+      "unclear",
+      "NA"
+     ],
+     "description": "figure-only group: the trend on the primary metric as a sentence of the text or the caption states it (U10); 'unclear' when no sentence states it; NA for table groups"
+    },
+    "evidence_refs": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "pattern": "^(E|C)[0-9]{2,3}$"
+     },
+     "description": "caption and statements behind held_fixed, other_changes, budget and arm fields"
+    },
+    "anchor_rule": {
+     "enum": [
+      "focal-label",
+      "other-own-model",
+      "stated-default",
+      "value-identity",
+      "full-configuration",
+      "first-own-arm",
+      "none"
+     ],
+     "description": "which clause of U3 gave the anchor ('none' when anchor_arm is null)"
+    },
+    "duplicate": {
+     "type": [
+      "boolean",
+      "null"
+     ],
+     "x-filled-by": "script",
+     "description": "U12: every contrast of the group is a duplicate"
+    }
+   }
+  },
+  "k_value": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "arm_id",
+    "value_printed",
+    "cell",
+    "col",
+    "prose",
+    "value_occurrence",
+    "variance",
+    "column_printed"
+   ],
+   "properties": {
+    "arm_id": {
+     "type": "string",
+     "pattern": "^A[0-9]{1,3}$"
+    },
+    "value_printed": {
+     "type": "string",
+     "description": "as printed, or 'figure-only'"
+    },
+    "value_num": {
+     "type": [
+      "number",
+      "null"
+     ],
+     "x-filled-by": "script"
+    },
+    "cell": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "pattern": "^C[0-9]{2,3}$"
+    },
+    "col": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1
+    },
+    "prose": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "pattern": "^E[0-9]{2,3}$"
+    },
+    "value_occurrence": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 1
+    },
+    "variance": {
+     "$ref": "#/$defs/variance"
+    },
+    "column_printed": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "description": "the leaf of the table's column map the value sits in (null for prose or figure-only values); checked against columns[col]"
+    }
+   }
+  },
+  "k_unit": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "unit_id",
+    "group_id",
+    "benchmark_printed",
+    "metric_printed",
+    "condition_printed",
+    "metric_kind",
+    "higher_is_better",
+    "scale",
+    "split",
+    "task_family",
+    "n_eval_printed",
+    "figure_only",
+    "values"
+   ],
+   "properties": {
+    "unit_id": {
+     "type": "string",
+     "pattern": "^K[0-9]{2,3}$"
+    },
+    "group_id": {
+     "type": "string",
+     "pattern": "^G[0-9]{2,3}$"
+    },
+    "benchmark_printed": {
+     "type": "string"
+    },
+    "metric_printed": {
+     "type": "string"
+    },
+    "metric_kind": {
+     "enum": [
+      "generated-sample",
+      "likelihood",
+      "speed",
+      "steps",
+      "other"
+     ]
+    },
+    "higher_is_better": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "scale": {
+     "enum": [
+      "fraction",
+      "percent",
+      "points",
+      "raw",
+      "factor",
+      "other"
+     ]
+    },
+    "split": {
+     "type": "string"
+    },
+    "task_family": {
+     "$ref": "#/$defs/task_family"
+    },
+    "n_eval_printed": {
+     "type": "string",
+     "description": "number of evaluation items or samples as printed, or 'not_stated'"
+    },
+    "figure_only": {
+     "type": "boolean"
+    },
+    "values": {
+     "type": "array",
+     "minItems": 2,
+     "items": {
+      "$ref": "#/$defs/k_value"
+     }
+    },
+    "matched": {
+     "type": [
+      "boolean",
+      "null"
+     ],
+     "x-filled-by": "script"
+    },
+    "metric_id": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "x-filled-by": "script"
+    },
+    "benchmark_id": {
+     "type": [
+      "string",
+      "null"
+     ],
+     "x-filled-by": "script"
+    },
+    "condition_printed": {
+     "type": "string",
+     "description": "U9: header parts (rows orientation) or row label and row group (columns orientation) that name neither the benchmark, the metric, an arm nor the second factor, joined top-down with ' / '; '' if none"
+    },
+    "duplicate": {
+     "type": [
+      "boolean",
+      "null"
+     ],
+     "x-filled-by": "script",
+     "description": "U12 de-duplication flag"
+    }
+   }
+  },
+  "table": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "id",
+    "where",
+    "page",
+    "orientation",
+    "header",
+    "header_levels",
+    "columns",
+    "column_roles",
+    "row_groups",
+    "row_group_role",
+    "caption"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "pattern": "^T[0-9]{2,3}$"
+    },
+    "where": {
+     "type": "string",
+     "pattern": "^(Table|Figure) [A-Z]?[0-9]+[a-z]?$|^untitled table$"
+    },
+    "page": {
+     "type": "integer",
+     "minimum": 1,
+     "description": "page of the header"
+    },
+    "orientation": {
+     "enum": [
+      "rows",
+      "columns"
+     ],
+     "description": "rows: arms are rows; columns: arms are columns"
+    },
+    "header": {
+     "type": "string",
+     "minLength": 1,
+     "description": "contiguous run of the header tokens exactly as in the file (may span lines; 1-60 tokens)"
+    },
+    "header_levels": {
+     "enum": [
+      1,
+      2
+     ]
+    },
+    "columns": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string",
+      "minLength": 1
+     },
+     "description": "leaf map: every column after the row-label column, left to right, including descriptor columns; a two-level leaf is '<level 1> / <level 2>' with each part as printed (arrows and enclosing parentheses may be dropped)"
+    },
+    "column_roles": {
+     "type": "array",
+     "minItems": 1,
+     "maxItems": 2,
+     "items": {
+      "enum": [
+       "arm",
+       "second-factor",
+       "benchmark",
+       "metric",
+       "condition"
+      ]
+     },
+     "description": "role of header level 1 (and level 2) in the value columns"
+    },
+    "row_groups": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     },
+     "description": "row-group labels in order, each a whole line of the file; [] if none"
+    },
+    "row_group_role": {
+     "enum": [
+      "benchmark",
+      "second-factor",
+      "condition",
+      "none"
+     ]
+    },
+    "caption": {
+     "type": "string",
+     "description": "6-40 words starting with 'Table n' or 'Figure n'; '' only for 'untitled table'"
+    }
+   }
+  }
+ }
+}

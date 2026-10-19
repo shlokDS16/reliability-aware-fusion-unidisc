@@ -1,0 +1,13 @@
+per-record (k tokens): all blocks (78, 135), gate record (176, 310), K-only gate record (120, 230)
+
+m6 certainty second reading of column_unverified units on the 252 K records read once (share 0.10-0.30): 1.5M-9.1M  (same under Option 1 and Option 2; add to MIN, REC, FULL)
+
+Gate size (ICC rule, plan s10.7): gate component and change against n = 60
+  n  60: 10.6M-18.6M   change 0.0M-0.0M
+  n  72: 12.7M-22.3M   change 2.1M-3.7M
+  n  90: 15.8M-27.9M   change 5.3M-9.3M
+  n 105: 18.5M-32.5M   change 7.9M-13.9M
+  n 120: 21.1M-37.2M   change 10.6M-18.6M
+
+m8 split design (30 full gate records + 30 K-only gate records): 8.9M-16.2M   change against n = 60 -1.7M--2.4M
+   split with K criteria on 90 (30 full + 60 K-only): 12.5M-23.1M   change against n = 60 1.9M-4.5M

@@ -1,0 +1,35 @@
+python 3.14.3, numpy 2.4.2, scipy 1.17.1; SEED 20263000; bootstrap B 500; LB90 = 5th percentile
+
+Quantities, levels and rules (pass iff LB90 >= line; G5: count >= c(n)):
+  G1 accept EA   ratio  size ('pois', 60)   good 0.95  bad 0.85  block K   rule LB90 >= 0.85
+  G1 accept EB   ratio  size ('pois', 60)   good 0.95  bad 0.85  block K   rule LB90 >= 0.85
+  G3 raw S       ratio  size ('fixed', 16)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw D       ratio  size ('fixed', 13)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw F       ratio  size ('fixed', 6)   good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw QA-sub  ratio  size ('fixed', 22)  good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw CT      ratio  size ('fixed', 6)   good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 raw H-attr  ratio  size ('pois', 9)    good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G3 K-attr      ratio  size ('nb', 18)     good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G3 QA kappa    kappa  size 8              good 0.70  bad 0.40  block LQ  rule LB90 >= 0.45
+  G4 F1_H        f1     size ('pois', 4)    good 0.85  bad 0.70  block LQ  rule LB90 >= 0.70
+  G4 F1_G        f1     size ('nb', 3)      good 0.75  bad 0.60  block K   rule LB90 >= 0.60
+  G4 F1_K        f1     size ('nb', 8)      good 0.75  bad 0.60  block K   rule LB90 >= 0.60
+  G4 M-val       ratio  size ('nb', 15)     good 0.95  bad 0.85  block K   rule LB90 >= 0.86
+  G4 M-class     onG    size None           good 0.85  bad 0.65  block K   rule LB90 >= 0.65
+  G4 M-anchorG   onG    size None           good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G4 M-sign      onK    size None           good 0.97  bad 0.90  block K   rule LB90 >= 0.91
+  G4 M-pool      onK    size None           good 0.85  bad 0.70  block K   rule LB90 >= 0.71
+  G5 anchors     count  size None           good 0.85  bad 0.60  block K   rule count >= c(n) (P(pass | 0.60) <= 0.05)
+
+== Calibration of lines for the new criteria (n 60, ICC 0.10, 1000 replicates) ==
+  G3 K-attr      line 0.70: P(criterion passes | bad 0.70) = 0.087
+  G3 K-attr      line 0.71: P(criterion passes | bad 0.70) = 0.031
+  G4 M-anchorG   line 0.70: P(criterion passes | bad 0.70) = 0.094
+  G4 M-anchorG   line 0.71: P(criterion passes | bad 0.70) = 0.048
+  G4 M-anchorG   line 0.72: P(criterion passes | bad 0.70) = 0.031
+  G4 M-sign      line 0.90: P(criterion passes | bad 0.90) = 0.100
+  G4 M-sign      line 0.91: P(criterion passes | bad 0.90) = 0.052
+  G4 M-sign      line 0.92: P(criterion passes | bad 0.90) = 0.021
+  G4 M-pool      line 0.70: P(criterion passes | bad 0.70) = 0.086
+  G4 M-pool      line 0.71: P(criterion passes | bad 0.70) = 0.046
+  G4 M-pool      line 0.72: P(criterion passes | bad 0.70) = 0.024

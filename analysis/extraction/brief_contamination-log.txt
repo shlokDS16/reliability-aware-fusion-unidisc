@@ -1,0 +1,58 @@
+includes 608; decisions sha256 962e3171e358a13b
+
+===== v0.3: research/review/extraction/extractor-brief-v0.3.md (text blocks 47911 chars) + research/review/extraction/extraction-schema-v0.3.json (descriptions 9459 chars) =====
+(1) KNOWN strings present: 17
+    'FDM (K=2)'  <- M07474 focal configuration (worked-examples-v0.3 s1)
+    'Dream-v0-Instruct-7B'  <- M13864 focal model and row label (s4)
+    'for AR model, we report its scores only'  <- M08100 caption marker (s5)
+    '891.74'  <- M08100 trace cell (s5)
+    'Suffix / Short'  <- M09530 condition (s3)
+    'Discrete Diff.'  <- M12766 Table 2 cell (s2)
+    'VQAv2 / Acc.'  <- M12766 Table 2 leaf (s2)
+    'LLaDA / Accuracy'  <- M07474 Table 2 leaf (s1)
+    'DiffuseDef'  <- M03416 (E3 example of brief v0.2-v0.3)
+    'w/o diffusion denoising'  <- M03416 row label (E3 example)
+    'AGNews'  <- M03416 caption (E3 example)
+    '61.6'  <- M12766 GenEval percent value (H scale example)
+    '7.56 points'  <- H value_type example of brief v0.3
+    '64 steps'  <- M12766 setup (H setting example)
+    'K = 2 against 4'  <- M07474 Figure 5 series (U7 example)
+    'w/o remasking'  <- schema v0.3 level_printed example
+    'LLaMA-3 8B'  <- schema v0.3 level_printed example
+(2) SCAN: 131 candidate strings; synthetic (no include text) 44; generic (> 5 texts) 69; specific (1-5 texts) 18
+    specific: '891.74' in 1: M08100
+    specific: ': [...], ' in 1: M18861
+    specific: ': {...}, ' in 1: M15236
+    specific: 'C04' in 1: M14023
+    specific: 'Discrete Diff.' in 4: M12766 M13313 M14507 M18656
+    specific: 'Dream-v0-Instruct-7B (rate=1)' in 1: M13864
+    specific: 'K02' in 1: M14035
+    specific: 'LLaMA-3 8B' in 3: M15050 M16878 M17233
+    specific: 'Method TF TB BA' in 1: M03416
+    specific: 'QA1' in 1: M17993
+    specific: 'T01' in 3: M13081 M14693 M18222
+    specific: 'T>1' in 2: M00973 M18369
+    specific: 'beam B' in 4: M00973 M07270 M15770 M15990
+    specific: 'by 7.56 points' in 1: M13195
+    specific: 'for AR model, we report its scores only' in 1: M08100
+    specific: 'not stated' in 1: M14075
+    specific: 'tuned per task' in 1: M18222
+    specific: 'w/o diffusion denoising' in 1: M03416
+    generic: ' / ' (367); ' and ' (608); ' only for ' (151); ' or ' (605); '(ours)' (228); '+3.2' (36); '0.61' (185); '1.0' (577); '256' (519); '3.2' (551); '4.1' (563); '47.7' (68); '57.1' (78); '58.4' (72); '61.6' (69); '61.6%' (6); '7.56' (57); '892' (291); ': [' (131); ': {' (92); 'Arch' (599); 'Average' (525); 'GSM8K' (233); 'HumanEval' (166); 'Table 3' (500); 'Table n' (20); '], ' (470); 'all experiments' (201); 'baselines' (473); 'blocks' (354); 'caption' (122); 'cells' (134); 'column' (296); 'columns' (170); 'comparable' (363); 'competitive' (304); 'cond' (606); 'deterministic' (272); 'doubt' (19); 'efficient' (501); 'evidence' (355); 'extractor' (31); 'fast' (479); 'hard' (499); 'header' (31); 'inherited' (58); 'meta' (157); 'metadata' (47); 'none' (330); 'occurrence' (61); 'orientation' (28); 'other' (599); 'ours' (432); 'page' (608); 'row' (545); 'rows' (367); 'script' (443); 'searched' (13); 'state-of-the-art' (214); 'strong' (528); 'table' (608); 'training-free' (245); 'unclear' (52); 'unless otherwise specified' (59); 'w/o' (135); 'where' (607); 'will be released' (36); 'with 64 steps' (7); '}, ' (382)
+
+===== v0.4: research/review/extraction/extractor-brief-v0.4.md (text blocks 49798 chars) + research/review/extraction/extraction-schema-v0.4.json (descriptions 9679 chars) =====
+(1) KNOWN strings present: 0
+(2) SCAN: 138 candidate strings; synthetic (no include text) 58; generic (> 5 texts) 70; specific (1-5 texts) 10
+    specific: ': [...], ' in 1: M18861
+    specific: ': {...}, ' in 1: M15236
+    specific: 'C04' in 1: M14023
+    specific: 'K02' in 1: M14035
+    specific: 'QA1' in 1: M17993
+    specific: 'T01' in 3: M13081 M14693 M18222
+    specific: 'T>1' in 2: M00973 M18369
+    specific: 'beam B' in 4: M00973 M07270 M15770 M15990
+    specific: 'not stated' in 1: M14075
+    specific: 'tuned per task' in 1: M18222
+    generic: ' / ' (367); ' and ' (608); ' only for ' (151); ' or ' (605); '(ours)' (228); '+1.5' (46); '0.45' (204); '0.463' (19); '1.0' (577); '1.5' (520); '13.47' (6); '13.5' (94); '2.5' (495); '38.2' (103); '4.1' (563); '41.7' (77); '44.9' (70); '45.2' (87); '46.3' (95); '46.3%' (9); ': [' (131); ': {' (92); 'Arch' (599); 'Average' (525); 'Table 3' (500); 'Table n' (20); '], ' (470); 'all experiments' (201); 'baselines' (473); 'blocks' (354); 'caption' (122); 'cells' (134); 'column' (296); 'columns' (170); 'comparable' (363); 'competitive' (304); 'cond' (606); 'deterministic' (272); 'doubt' (19); 'efficient' (501); 'evidence' (355); 'extractor' (31); 'fast' (479); 'hard' (499); 'header' (31); 'inherited' (58); 'meta' (157); 'metadata' (47); 'none' (330); 'occurrence' (61); 'only' (602); 'orientation' (28); 'other' (599); 'ours' (432); 'page' (608); 'row' (545); 'rows' (367); 'script' (443); 'searched' (13); 'state-of-the-art' (214); 'strong' (528); 'table' (608); 'training-free' (245); 'unclear' (52); 'unless otherwise specified' (59); 'w/o' (135); 'where' (607); 'will be released' (36); 'without' (588); '}, ' (382)
+
+SUMMARY: v0.3 known 17, specific 18; v0.4 known 0, specific 10

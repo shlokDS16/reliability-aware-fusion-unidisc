@@ -1,0 +1,43 @@
+python 3.14.3  decisions sha256 962e3171e358a13b8983867a302053b78d98fdc3cf805083fefe4ed88532baaa
+v0.3 rule reproduced: C1 53  NL 12  C2 108  FR 435  (C2 sha256 6766a919f8e11c23, FR c7508ab7876e83d4)
+construct file absent: provisional inputs (SIDE from the red-team's screener-note reading, E1; JOINT candidates by full-text search)
+  SIDE 29 (all in C2): M00285 M02955 M04297 M04350 M04373 M05608 M05642 M05663 M06218 M09321 M10881 M11247 M12175 M13247 M13444 M13674 M14706 M15373 M15652 M15895 M16133 M16251 M16263 M16730 M16813 M18406 M18456 M19099 U04378
+  JOINT candidates in frame R: tier J-a (>= 2 multimodal benchmarks) 0; tier J-b (benchmark + multimodal DLM name) 1; tier J-c (keyword in a table caption) 9; union with confirmed 10
+    M07165: bench [] | mm-DLM [] | caption keywords ['asr']
+    M13735: bench [] | mm-DLM [] | caption keywords ['image']
+    M14023: bench [] | mm-DLM [] | caption keywords ['asr']
+    M15097: bench [] | mm-DLM ['MMaDA'] | caption keywords ['asr']
+    M15613: bench [] | mm-DLM [] | caption keywords ['captioning']
+    M15736: bench [] | mm-DLM [] | caption keywords ['speech']
+    M16249: bench [] | mm-DLM [] | caption keywords ['asr']
+    M17056: bench [] | mm-DLM [] | caption keywords ['multi-modal']
+    M17150: bench [] | mm-DLM [] | caption keywords ['cross-modal']
+    M18118: bench ['MathVista'] | mm-DLM ['LLaDA-V', 'LaViDa'] | caption keywords []
+  SIDE records with a hit: ['M13444', 'M18406']
+  cross-check in C2: records with any multimodal benchmark or DLM name in the body: SIDE 2 of 29; other C2 59 of 79
+
+== Options for 'all multimodal' (counts; K records = C1 + C2 [+ C2b] + frame-R sample 120) ==
+  option                                                  C1   C2 (range)   C2b  frame R (range)   K records (range)   block K, Option 1      all blocks, Option 2
+  (a) C1 only                                              53  0              0  543               173                 6.9M-13.8M             13.5M-23.4M
+  (b) C1 + C2 by the mm rule (v0.3)                        53  108            0  435               281                 11.2M-22.5M            21.9M-37.9M
+  (c) joint-model rule; side-experiment records to frame R  53  80-89          0  454-463           253-262             10.1M-21.0M            19.7M-35.4M
+  (d) joint-model rule; side-experiment records as a labelled C2b census  53  80-89         29  425-434           282-291             11.3M-23.3M            22.0M-39.3M
+  (block K and all-blocks ranges multiply the K-record range by the per-record ranges; under Option 1 the light blocks are on all 608 includes whatever the option, so only block K changes)
+
+== m3: includes with A = B on the decision but A != B on i1 or nonlang_only (6) ==
+  M10840: i1 A='a' B='ab' decisions file='a'
+  M11389: nonlang_only A=True B=False decisions file=True
+  M12859: i1 A='a' B='ab' decisions file='a'
+  M16043: i1 A='ab' B='b' decisions file='ab'
+  M18059: nonlang_only A=False B=True decisions file=False
+  U04330: i1 A='a' B='ab' decisions file='a'
+
+== m4: split text/multimodal records decided by the keyword rule in v0.3 (3); v0.4 routes them to the human check (full text) ==
+  M02955: mm split:multimodal/text; v0.3 class C2
+  M18118: mm split:multimodal/text; v0.3 class FR
+  M18656: mm split:multimodal/text; v0.3 class FR
+
+C1 sha256 91615db39bc8c69600064164d9478da544b76c1a13b7e1d09e9cb99ed8f8a80e
+C2 sha256 6766a919f8e11c23805d1849726119686bb3c0a8cd7076d657b9d2ecb09f5383
+FR sha256 c7508ab7876e83d40a83f97c0f29b06264102e7914b82e3c4ba8558873798e1a
+SIDE sha256 2c768102f0db0ddf80e079d03a41d47117bc222dba95dacf30cd8cc2ce5e8563

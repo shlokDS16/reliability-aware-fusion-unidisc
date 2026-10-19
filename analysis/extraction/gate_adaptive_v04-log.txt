@@ -1,0 +1,23 @@
+python 3.14.3, numpy 2.4.2; SEED 20263950; reps 400; U_N with 200 simulations per grid point; grid ICC [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4] x n [60, 72, 90, 105, 120] from gate_oc_v04-log.txt
+
+== Design B-IP: P(pass | all good) and final n ==
+  true ICC   P(pass)   n=60   n=72   n=90  n=105  n=120   mean n
+  0.05       0.935    0.91  0.09  0.01  0.00  0.00   61.2
+  0.10       0.915    0.40  0.41  0.19  0.01  0.00   70.9
+  0.15       0.912    0.04  0.20  0.65  0.09  0.03   87.4
+  0.20       0.910    0.00  0.03  0.49  0.32  0.16   99.2
+  0.30       0.860    0.00  0.00  0.01  0.07  0.93   118.8
+
+== Design B-IP: P(pass | one quantity bad, others good) ==
+  G4 F1_G        ICC 0.10: P(pass) 0.060; mean n 72.9
+  G4 M-anchorG   ICC 0.10: P(pass) 0.035; mean n 71.6
+  G4 M-sign      ICC 0.10: P(pass) 0.035; mean n 69.1
+  G4 M-class     ICC 0.10: P(pass) 0.050; mean n 70.8
+  G1 accept EB   ICC 0.10: P(pass) 0.062; mean n 70.0
+  G4 F1_G        ICC 0.30: P(pass) 0.050; mean n 118.6
+  G4 M-anchorG   ICC 0.30: P(pass) 0.043; mean n 118.7
+  G4 M-sign      ICC 0.30: P(pass) 0.040; mean n 119.1
+  G4 M-class     ICC 0.30: P(pass) 0.058; mean n 118.8
+  G1 accept EB   ICC 0.30: P(pass) 0.070; mean n 117.9
+
+elapsed 1322 s
