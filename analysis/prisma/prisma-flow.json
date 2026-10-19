@@ -112,7 +112,7 @@
   "sample": 100,
   "c8_outside_frame": 32,
   "to_full_text": 132,
-  "full_text_screened": 113,
+  "full_text_screened": 110,
   "boxes": {
    "recheck-sample": {
     "n": 100,
@@ -142,11 +142,14 @@
    },
    "c8": {
     "n": 32,
-    "screened": 31,
+    "screened": 28,
     "include": 1,
-    "exclude": 30,
+    "exclude": 27,
     "not_yet_screened": [
-     "M14933"
+     "M13184",
+     "M14933",
+     "M15873",
+     "M17195"
     ]
    }
   },
@@ -199,16 +202,17 @@
   },
   "status_ft_routes_extra": {
    "pending_oa_url": 16,
+   "retrieved_not_yet_screened": 3,
    "pending_e-gateway": 7
   },
-  "screened": 885,
-  "screened_check": 885,
+  "screened": 882,
+  "screened_check": 882,
   "include": 608,
-  "exclude": 277,
+  "exclude": 274,
   "exclude_codes": {
-   "X0": 77,
-   "X1": 103,
-   "X2": 86,
+   "X0": 78,
+   "X1": 100,
+   "X2": 85,
    "X3": 6,
    "X7": 1,
    "X4": 4
@@ -220,16 +224,16 @@
   },
   "include_nonlang_only": 12,
   "adjudicated_by_C": 116,
-  "agreement_pass_exclude_kappa": 0.8949,
+  "agreement_pass_exclude_kappa": 0.8939,
   "agreement_pass_exclude_kappa_ci95": [
-   0.8603,
-   0.9272
+   0.8589,
+   0.9268
   ],
   "status": "model screening (A, B, C route F); A-B agreement only (D0034); part 19 complete; before the human author review (protocol s4 step 4); not final"
  },
  "open": [
   "Free-source rescue pass: 348 positives (include or unclear) of 4421 were neither dual-screened nor routed to full text (0 in the dual batches, 0 in ft-routes); D0029 sends them to the dual queue, D0030 says they pass to full text. Needs a decision before T1 is closed.",
-  "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 841, 'R': 17, 'U': 27}). Their full-text route (census reading vs criteria v1.6 full-text screening) is not in the PRISMA files; to be confirmed.",
+  "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 838, 'R': 17, 'U': 27}). Their full-text route (census reading vs criteria v1.6 full-text screening) is not in the PRISMA files; to be confirmed.",
   "Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): 67 (bot walls, bot-check landing pages, dead links); need the user's Chrome or the e-gateway.",
   "6 subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",
   "Subscription: string failures 4201 = rescue-screened 2788 + without abstract 1413 (pending-no-abstract.txt lists 1421; 8 of them later gained an abstract and were rescue-screened). Dual-screened 260 = queue 179 + rescue positives 81 (rescued-queue.jsonl holds 74; the other 7 entered the dual batches directly). The 7 title-resolved queue records are not dual-screened (0 in the dual batches).",

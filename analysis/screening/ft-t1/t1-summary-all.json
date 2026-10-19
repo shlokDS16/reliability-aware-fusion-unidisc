@@ -1,9 +1,14 @@
 {
  "scope": "T1 full-text model screening, batches t1b001-t1b093",
  "status": "model screening (A, B, C route F); A-B agreement only (D0034); part 19 complete; before the human author review (protocol s4 step 4); not final",
- "n": 885,
+ "n": 882,
+ "pending_B_unavailable": [
+  "M13184",
+  "M15873",
+  "M17195"
+ ],
  "decision": {
-  "exclude": 277,
+  "exclude": 274,
   "include": 608
  },
  "by_part": {
@@ -16,14 +21,14 @@
    "exclude": 104
   },
   "part 19: retrieved after T1 (t1b077-t1b093)": {
-   "exclude": 126,
+   "exclude": 123,
    "include": 44
   }
  },
  "exclude_codes": {
-  "X0": 77,
-  "X1": 103,
-  "X2": 86,
+  "X0": 78,
+  "X1": 100,
+  "X2": 85,
   "X3": 6,
   "X7": 1,
   "X4": 4
@@ -40,5 +45,5 @@
   "include": 52
  },
  "not_retrieved_X6": 4,
- "files": "t1-decisions-all.jsonl; t1-not-retrieved.jsonl; c-queue-1..9.jsonl; c/c-t1-01..18; analysis/screening/c-run-log.jsonl; batch-log.jsonl"
+ "files": "t1-decisions-all.jsonl; t1-not-retrieved.jsonl; c-queue-1..10.jsonl; c/c-t1-01..19; analysis/screening/c-run-log.jsonl; batch-log.jsonl"
 }
