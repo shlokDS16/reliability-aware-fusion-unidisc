@@ -1,6 +1,6 @@
 {"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9 step 1: LLM generates text autoregressively", "loc": "p.3, §IV-B", "status": "found"}
 {"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 1: diffusion generates only robot grasp configurations", "loc": "p.4, §IV-D", "status": "found"}
-{"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "D4(1): grasp is robot hand joint command", "loc": "p.3, §III", "status": "negation_before"}
+{"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "D4(1): grasp is robot hand joint command", "loc": "p.3, §III (k = hand joint DoF)", "status": "found"}
 {"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "D4(1): evaluated by robot execution success", "loc": "p.1, Abstract", "status": "found"}
 {"id": "M15767", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9: diffusion output is 3D voxel scenes, not text", "loc": "p.1, Abstract", "status": "found"}
 {"id": "M15767", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 3: unconditional or coarse-scene conditioned, no text condition", "loc": "p.6, Figure 5", "status": "found"}
