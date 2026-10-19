@@ -1,0 +1,528 @@
+{
+ "n_sample": 100,
+ "K": 4,
+ "counts": {
+  "included": 4,
+  "excluded": 78,
+  "not_retrieved": 0,
+  "not_in_T1": 18
+ },
+ "rule": "criteria-v1.6 s5.2: if K >= 1, all 797 frame candidates are screened at full text; else report K = 0 and the one-sided 95% upper bound",
+ "included": [
+  {
+   "id": "M03416",
+   "source": "C",
+   "code": "",
+   "batch": "t1b078"
+  },
+  {
+   "id": "M10984",
+   "source": "A=B",
+   "code": "",
+   "batch": "t1b085"
+  },
+  {
+   "id": "R0963",
+   "source": "A=B",
+   "code": "",
+   "batch": "t1b085"
+  },
+  {
+   "id": "R1202",
+   "source": "C",
+   "code": "",
+   "batch": "t1b082"
+  }
+ ],
+ "excluded": [
+  {
+   "id": "M00170",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b087"
+  },
+  {
+   "id": "M00343",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b079"
+  },
+  {
+   "id": "M00400",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b087"
+  },
+  {
+   "id": "M00654",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b086"
+  },
+  {
+   "id": "M00711",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b077"
+  },
+  {
+   "id": "M01056",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M02273",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b088"
+  },
+  {
+   "id": "M02626",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b092"
+  },
+  {
+   "id": "M02927",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b092"
+  },
+  {
+   "id": "M03043",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b092"
+  },
+  {
+   "id": "M03048",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b091"
+  },
+  {
+   "id": "M03148",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b081"
+  },
+  {
+   "id": "M03189",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b089"
+  },
+  {
+   "id": "M03195",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b084"
+  },
+  {
+   "id": "M03710",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b084"
+  },
+  {
+   "id": "M04207",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M04453",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b083"
+  },
+  {
+   "id": "M04559",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b085"
+  },
+  {
+   "id": "M04678",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b089"
+  },
+  {
+   "id": "M05158",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b092"
+  },
+  {
+   "id": "M05366",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b087"
+  },
+  {
+   "id": "M05447",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b086"
+  },
+  {
+   "id": "M05821",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b077"
+  },
+  {
+   "id": "M05860",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b082"
+  },
+  {
+   "id": "M05921",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b090"
+  },
+  {
+   "id": "M06213",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b088"
+  },
+  {
+   "id": "M06284",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b078"
+  },
+  {
+   "id": "M06380",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b079"
+  },
+  {
+   "id": "M06383",
+   "source": "C",
+   "code": "X2",
+   "batch": "t1b088"
+  },
+  {
+   "id": "M06388",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b083"
+  },
+  {
+   "id": "M07161",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b078"
+  },
+  {
+   "id": "M07309",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b082"
+  },
+  {
+   "id": "M07394",
+   "source": "C",
+   "code": "X2",
+   "batch": "t1b090"
+  },
+  {
+   "id": "M07644",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b079"
+  },
+  {
+   "id": "M07753",
+   "source": "C",
+   "code": "X2",
+   "batch": "t1b092"
+  },
+  {
+   "id": "M07919",
+   "source": "C",
+   "code": "X2",
+   "batch": "t1b081"
+  },
+  {
+   "id": "M08266",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b086"
+  },
+  {
+   "id": "M08337",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b088"
+  },
+  {
+   "id": "M08662",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b091"
+  },
+  {
+   "id": "M08716",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M08878",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b090"
+  },
+  {
+   "id": "M09103",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b084"
+  },
+  {
+   "id": "M09616",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b088"
+  },
+  {
+   "id": "M10089",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b080"
+  },
+  {
+   "id": "M10111",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b081"
+  },
+  {
+   "id": "M10112",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b090"
+  },
+  {
+   "id": "M10488",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M10836",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b083"
+  },
+  {
+   "id": "M12562",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b082"
+  },
+  {
+   "id": "M12786",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b086"
+  },
+  {
+   "id": "M12906",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b080"
+  },
+  {
+   "id": "M12951",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b088"
+  },
+  {
+   "id": "M13368",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b087"
+  },
+  {
+   "id": "M14046",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b086"
+  },
+  {
+   "id": "M14123",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M14144",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b079"
+  },
+  {
+   "id": "M14251",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b091"
+  },
+  {
+   "id": "M14355",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b090"
+  },
+  {
+   "id": "M14860",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b084"
+  },
+  {
+   "id": "M15220",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M15327",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b082"
+  },
+  {
+   "id": "M15550",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b093"
+  },
+  {
+   "id": "M15919",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b092"
+  },
+  {
+   "id": "M16235",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b081"
+  },
+  {
+   "id": "M17219",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b089"
+  },
+  {
+   "id": "M17477",
+   "source": "A=B",
+   "code": "X3",
+   "batch": "t1b085"
+  },
+  {
+   "id": "M18085",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b087"
+  },
+  {
+   "id": "M18424",
+   "source": "A=B",
+   "code": "X3",
+   "batch": "t1b080"
+  },
+  {
+   "id": "M18571",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b086"
+  },
+  {
+   "id": "M18667",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b078"
+  },
+  {
+   "id": "M19147",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b092"
+  },
+  {
+   "id": "R0076",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b077"
+  },
+  {
+   "id": "R0319",
+   "source": "A=B",
+   "code": "X0",
+   "batch": "t1b078"
+  },
+  {
+   "id": "R0927",
+   "source": "C",
+   "code": "X2",
+   "batch": "t1b080"
+  },
+  {
+   "id": "R1217",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b085"
+  },
+  {
+   "id": "R1257",
+   "source": "A=B",
+   "code": "X3",
+   "batch": "t1b078"
+  },
+  {
+   "id": "R1363",
+   "source": "A=B",
+   "code": "X1",
+   "batch": "t1b087"
+  },
+  {
+   "id": "R1364",
+   "source": "A=B",
+   "code": "X2",
+   "batch": "t1b085"
+  }
+ ],
+ "not_retrieved": [],
+ "not_in_T1": [
+  "M12398",
+  "M12684",
+  "M12932",
+  "M13388",
+  "M14105",
+  "M14415",
+  "M14442",
+  "M14992",
+  "M15324",
+  "M16158",
+  "M16605",
+  "M16626",
+  "M17019",
+  "M17070",
+  "M17712",
+  "M17805",
+  "M18665",
+  "M18685"
+ ]
+}
