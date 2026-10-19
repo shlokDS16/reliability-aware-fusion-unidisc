@@ -125,3 +125,12 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    Check VIT access on one Springer article first. Save PDFs as `Downloads/<id>.pdf`, then say "import the e-gateway PDFs".
 22. Full-text screening of the 170 newly retrieved records (part 19): 60 screened (t1b077-t1b082), 4 of 8 adjudications
    done; the rest (t1b083-t1b093 and 4 adjudications) continues after the weekly reset. Nothing needed from you for it.
+
+## Status 2026-10-20 ~01:00 IST (overnight run)
+23. **Full-text screening of T1 is complete: 885 records, 608 include, 277 exclude** (116 settled by adjudicator C;
+   A-B agreement before adjudication kappa 0.895). Nothing needed from you for it.
+24. **Decision needed: the re-check test came out positive (K = 4).** 4 of the 100 randomly sampled title/abstract
+   exclusions were included at full text. The frozen rule (criteria v1.6 s5.2) then says: **screen all 797 re-check
+   candidates at full text.** That needs their PDFs: Claude will build the route table (metadata only) and ask your
+   yes for the open-access downloads, as before; subscription ones join the e-gateway list. Reply "yes, start the 797
+   tranche" (or tell Claude otherwise).

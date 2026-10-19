@@ -1,7 +1,20 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 16 (2026-10-18 ~13:00 IST; newest; HANDOFF 15 still applies except the status).** Stopped
+- **HANDOFF 17 (2026-10-20 ~01:00 IST; newest; overnight run while the user sleeps; HANDOFF 16 superseded
+  for status).** **T1 part 19 COMPLETE** (t1b077-t1b093, 170 records; every batch isolation pass; every
+  unaccepted quote returned once and accepted; C groups c-t1-15..18, all isolation pass). **T1 total: 885
+  records, include 608, exclude 277, C ruled 116** (t1-summary-all.json, t1-decisions-all.jsonl via
+  tools/ft-session/refresh_t1.py). A/B agreement over 885 before adjudication: pass/exclude kappa 0.895
+  [0.860, 0.927] (agreement-ft-t1.json). **Re-check K = 4** (M03416 C, M10984 A=B, R0963 A=B, R1202 C;
+  analysis/screening/ta_recheck_k.py -> ta-recheck-k.json; 18 sampled ids not yet retrieved): criteria v1.6
+  s5.2 -> all 797 frame candidates go to full text (downloads need the user's yes). PRISMA counts refreshed
+  (analysis/prisma/prisma_flow.py now accepts ft-routes-extra ids). Gate-auditor audit of T1 running ->
+  research/review/audits/2026-10-20-gate-T1-fulltext.md. Session 9d5203d7 agent transcripts since 19 Oct
+  22:44 are in the **fcff62** projects dir (next.sh P). Paper 5 session (local_6a268604) stopped its compute
+  for good; light work only. **Next:** act on the audit; extraction pilot (protocol s5-s6) once the form is
+  checked; 797-candidate tranche after the user's yes; items 16a/16b decisions.
+- **HANDOFF 16 (2026-10-18 ~13:00 IST; HANDOFF 15 still applies except the status).** Stopped
   new agent work at **97 percent weekly** (user limit; resets Mon 19 Oct ~22:30 IST). Session 9d5203d7
   (entered this worktree via EnterWorktree; its transcripts are under the 334706 projects dir
   .../9d5203d7-a6be-4a10-8e9d-83c85c9e81ca/subagents; dispatch root is its scratchpad
