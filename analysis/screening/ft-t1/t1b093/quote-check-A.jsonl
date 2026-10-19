@@ -1,0 +1,19 @@
+{"id": "M15550", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "X0 no D2: diffusion means graph random-walk diffusion geometry", "loc": "p.3, §2.1 Related work", "status": "found"}
+{"id": "M15550", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "X0 no D2: diffusion distance from a random-walk operator, no learned denoising", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M10488", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion component with rectified-flow denoising", "loc": "p.2, §1 Introduction", "status": "found"}
+{"id": "M10488", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 output is 3D Gaussians and boxes, not text; no text conditioning stated", "loc": "p.4, Figure 2 caption", "status": "found"}
+{"id": "M12960", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion component trained for text generation", "loc": "p.4, §V Conclusions", "status": "found"}
+{"id": "M12960", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "D2 more than one denoising step", "loc": "p.3, §IV-A2", "status": "found"}
+{"id": "M12960", "screener": "FA-claude-sonnet-5-5", "i": 2, "cond": "R6 decoded output is text", "loc": "p.4, §IV-B3, Table III", "status": "found"}
+{"id": "M15220", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "R9 step 2 text conditions the diffusion component", "loc": "p.1, §I Introduction", "status": "found"}
+{"id": "M15220", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "output is handwritten line images (pixels), not text under D1", "loc": "p.2, §I, contribution 1", "status": "found"}
+{"id": "M08716", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "X0 models studied are autoregressive LLMs, no diffusion component", "loc": "p.2, §1 Introduction", "status": "found"}
+{"id": "M18141", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D5 loads pretrained text diffusion model weights (LLaDA)", "loc": "p.4, §V-A", "status": "found"}
+{"id": "M18141", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "D5 the diffusion LM generates text by iterative denoising", "loc": "p.1, §I Introduction", "status": "found"}
+{"id": "M18141", "screener": "FA-claude-sonnet-5-5", "i": 2, "cond": "R14(a) inference acceleration method for the DLLM decoding loop", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M18141", "screener": "FA-claude-sonnet-5-5", "i": 3, "cond": "R6 text outputs from the DLLM (itineraries, QA answers)", "loc": "p.2, §II", "status": "found"}
+{"id": "M14123", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "X0 'meaning diffusion' is a word-similarity value, not a diffusion model", "loc": "p.2, §4.2", "status": "found"}
+{"id": "M01056", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "X0 numerical PDE method (virtual elements), diffusion means a differential operator", "loc": "p.1, §1 Introduction", "status": "found"}
+{"id": "R1174", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 masked diffusion over audio codec tokens", "loc": "p.2, §3.2", "status": "found"}
+{"id": "R1174", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 text conditions the diffusion component", "loc": "p.2, §3.2 Reverse Process and Training", "status": "found"}
+{"id": "M04207", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "X0 pure mathematics on random walks on hyperbolic groups", "loc": "p.2, §1 Background and Introduction", "status": "found"}
