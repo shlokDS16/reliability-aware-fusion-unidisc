@@ -1,10 +1,10 @@
 {
- "scope": "T1 full-text model screening, batches t1b001-t1b076",
- "status": "model screening complete (A, B, C route F); before the human validation sample and the human author review (protocol s4); not final",
- "n": 715,
+ "scope": "T1 full-text model screening, batches t1b001-t1b082",
+ "status": "model screening (A, B, C route F); A-B agreement only (D0034); part 19 in progress (t1b083-t1b093 not yet screened); not final",
+ "n": 775,
  "decision": {
-  "include": 564,
-  "exclude": 151
+  "include": 581,
+  "exclude": 194
  },
  "by_part": {
   "OpenReview (t1b035-t1b076)": {
@@ -14,27 +14,31 @@
   "open access + remaps (t1b001-t1b034)": {
    "include": 228,
    "exclude": 104
+  },
+  "part 19: retrieved after T1 (t1b077-t1b082)": {
+   "exclude": 43,
+   "include": 17
   }
  },
  "exclude_codes": {
-  "X1": 57,
-  "X0": 49,
-  "X2": 38,
-  "X3": 3,
+  "X0": 56,
+  "X1": 71,
+  "X2": 58,
+  "X3": 5,
   "X7": 1,
   "X4": 3
  },
  "include_i1": {
-  "a": 513,
+  "a": 529,
   "ab": 15,
-  "b": 36
+  "b": 37
  },
- "include_nonlang_only": 10,
- "adjudicated_by_C": 99,
+ "include_nonlang_only": 11,
+ "adjudicated_by_C": 107,
  "C_decision": {
-  "exclude": 53,
-  "include": 46
+  "exclude": 58,
+  "include": 49
  },
  "not_retrieved_X6": 4,
- "files": "t1-decisions-all.jsonl; t1-not-retrieved.jsonl; c-queue-1..7.jsonl; c/c-t1-01..14; analysis/screening/c-run-log.jsonl; batch-log.jsonl"
+ "files": "t1-decisions-all.jsonl; t1-not-retrieved.jsonl; c-queue-1..8.jsonl; c/c-t1-01..16; analysis/screening/c-run-log.jsonl; batch-log.jsonl"
 }
