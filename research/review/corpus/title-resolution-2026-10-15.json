@@ -2,7 +2,7 @@
   "date": "2026-10-15",
   "decision": "D0029 item 2",
   "script": "tools/resolve_title_only.py",
-  "mode": "finish",
+  "mode": "run",
   "population": 2107,
   "population_definition": "snowball_only and auto_excluded and auto_excluded_abstract_missing in corpus/new-records-2026-10-15-v2.jsonl",
   "population_with_identifier": 698,
@@ -33,36 +33,36 @@
       "resolved": 0
     }
   },
-  "resolved": 830,
-  "resolved_with_abstract": 141,
-  "resolved_without_abstract": 689,
+  "resolved": 839,
+  "resolved_with_abstract": 146,
+  "resolved_without_abstract": 693,
   "resolved_by_source": {
     "s2-id": 669,
     "datacite-arxiv": 96,
-    "s2-match": 5,
+    "s2-match": 12,
     "crossref-title": 57,
-    "openalex-title": 3
+    "openalex-title": 5
   },
   "resolved_by_title_agreement": {
     "identifier": 669,
-    "exact": 119,
-    "squashed": 30,
+    "exact": 126,
+    "squashed": 32,
     "jaccard": 12
   },
   "resolved_abstract_source": {
-    "none": 689,
+    "none": 693,
     "datacite-arxiv": 96,
+    "openalex-title": 6,
     "crossref-title": 13,
-    "openalex-title": 3,
-    "s2-match": 3,
+    "s2-match": 5,
     "crossref-doi": 14,
     "datacite-arxiv-title": 11,
     "semantic-scholar-batch": 1
   },
-  "unresolved_lookup_incomplete": 340,
-  "unresolvable": 832,
+  "unresolved_lookup_incomplete": 173,
+  "unresolvable": 990,
   "unresolvable_by_reason": {
-    "no title-agreeing record in Semantic Scholar, OpenAlex or arXiv": 45,
+    "no title-agreeing record in Semantic Scholar, OpenAlex (quota exhausted) or arXiv": 203,
     "no title-agreeing record in DataCite (arXiv) or Crossref; Semantic Scholar/arXiv API not queried (no reference-list marker, see random check)": 585,
     "not a bibliographic title (fewer than 2 or more than 40 words, equations, prose or symbols)": 202
   },
@@ -73,12 +73,21 @@
   "queued_by_rule_hit": {},
   "queued_with_abstract": 0,
   "queued_without_abstract": 0,
-  "resolved_not_matching": 830,
+  "resolved_not_matching": 839,
   "check_sum": {
     "duplicates+resolved+unresolvable+incomplete": 2107,
     "population": 2107
   },
-  "lookup_calls_this_run": {},
+  "lookup_calls_this_run": {
+    "openalex:400": 6,
+    "s2match:404": 103,
+    "openalex:200": 99,
+    "s2match:200": 18,
+    "s2match:None": 45,
+    "arxivti:200": 118,
+    "openalex:429": 1,
+    "arxivti:None": 4
+  },
   "openalex": "free budget exhausted on 2026-10-15 (HTTP 429, X-RateLimit-Remaining 0, reset at midnight UTC) apart from a few early answers (3 resolutions)",
   "notes": [
     "Sources used, in order: Semantic Scholar /paper/batch (698 records with a paperId; 670 answered, none returned an abstract), DataCite REST API restricted to client arxiv.content (arXiv records with abstracts), Crossref query.bibliographic, Semantic Scholar /paper/search/match, arXiv API ti:\"...\", OpenAlex.",
@@ -91,5 +100,5 @@
   "queue_file": "research/review/screening/v2/title-resolved-queue.jsonl",
   "records_file": "research/review/corpus/title-resolution-records-2026-10-15.jsonl",
   "queue_sha256": "57d8c06afe420305885ed7856f9aaef9dc40578dd3014f0399ad819e9dda0b44",
-  "elapsed_seconds": 14
+  "elapsed_seconds": 4313
 }
