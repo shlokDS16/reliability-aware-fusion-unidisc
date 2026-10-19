@@ -9,7 +9,10 @@ for d in sorted(base.glob('t1b0*')):
     for role, st in (('A', A), ('B', B)):
         for l in open(d / f'F{role}-{d.name}.jsonl', encoding='utf-8'):
             if l.strip(): r = json.loads(l); st[r['id']] = r; bo[r['id']] = d.name
-assert set(A) == set(B), sorted(set(A) ^ set(B))
+PEND = {json.loads(l)['id']: json.loads(l) for l in open(base / 't1-pending-B.jsonl', encoding='utf-8') if l.strip()} if (base / 't1-pending-B.jsonl').exists() else {}
+assert set(A) - set(PEND) == set(B), sorted((set(A) - set(PEND)) ^ set(B))   # B-unavailable records wait for the human author
+for i in PEND:
+    A.pop(i, None)
 SUP = {(r['id'], r['group']) for r in map(json.loads, open(base / 'c-superseded.jsonl', encoding='utf-8')) if r} if (base / 'c-superseded.jsonl').exists() else set()
 C = {}
 for f in sorted(base.glob('c/c-t1-*/FC-*.jsonl')):
@@ -32,7 +35,7 @@ def part(b):
     return 'OpenReview (t1b035-t1b076)' if b >= 't1b035' else 'open access + remaps (t1b001-t1b034)'
 s = {'scope': f'T1 full-text model screening, batches t1b001-{last}',
      'status': 'model screening (A, B, C route F); A-B agreement only (D0034); ' + ('part 19 complete' if last == 't1b093' else f'part 19 screened to {last}') + '; before the human author review (protocol s4 step 4); not final',
-     'n': len(rows),
+     'n': len(rows), 'pending_B_unavailable': sorted(PEND),
      'decision': dict(collections.Counter(r['decision'] for r in rows)),
      'by_part': {p: dict(collections.Counter(r['decision'] for r in rows if part(r['batch']) == p)) for p in sorted({part(r['batch']) for r in rows})},
      'exclude_codes': dict(collections.Counter(r['code'] for r in rows if r['decision'] == 'exclude')),

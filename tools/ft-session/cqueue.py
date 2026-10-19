@@ -26,8 +26,11 @@ for l in open(base / "batch-log.jsonl", encoding="utf-8"):
     e = json.loads(l)
     if e.get("event") == "quote_after_return" and e.get("batch") in batches:
         qbad.add(e["id"])
+PEND = {json.loads(l)["id"] for l in open(base / "t1-pending-B.jsonl", encoding="utf-8") if l.strip()} if (base / "t1-pending-B.jsonl").exists() else set()
 out = {}
 for i in A:
+    if i in PEND:   # B unavailable: waits for the human author, not C
+        continue
     w = []
     if A[i]["decision"] != B[i]["decision"]: w.append("disagree")
     if "adjudicate" in (A[i]["decision"], B[i]["decision"]): w.append("adjudicate_row")
