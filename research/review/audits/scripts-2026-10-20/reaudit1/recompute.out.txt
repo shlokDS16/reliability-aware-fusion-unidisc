@@ -1,0 +1,36 @@
+plan batches 93 ids 885 unique 885
+pending ['M13184', 'M15873', 'M17195']
+FA 885 FB 882 pending in B: []
+FC rows total 118 used 116 superseded [('M07919', 'c-t1-15'), ('U04280', 'c-t1-16')] superseded used? []
+dis/adj 100 queued rows 118 unique 116 dis not queued [] queued not ruled [] ruled not queued [] pending queued []
+quote-only reasons {'quote_not_accepted_after_return': 2, 'quote_return_not_possible': 13, 'quote_truncated_after_return': 1}
+decisions recomputed 882 filed 882 ids equal True field diffs [] 0
+pending in decisions? []
+summary mine {"n": 882, "decision": {"exclude": 274, "include": 608}, "by_part": {"OA": {"include": 228, "exclude": 104}, "OR": {"include": 336, "exclude": 47}, "p19": {"exclude": 123, "include": 44}}, "exclude_codes": {"X0": 78, "X1": 100, "X2": 85, "X3": 6, "X7": 1, "X4": 4}, "include_i1": {"a": 555, "ab": 15, "b": 38}, "nonlang": 12, "C": 116, "C_decision": {"exclude": 64, "include": 52}, "C_basis": {"B": 65, "neither": 33, "A": 18}, "nr": 4, "pending": ["M13184", "M15873", "M17195"]}
+summary checks [True, True, True, True, True, True, True, True, True, True]
+A=B secondary ties [('M10840', 'i1', 'a', 'ab'), ('M11389', 'nonlang_only', True, False), ('M12859', 'i1', 'a', 'ab'), ('M16043', 'i1', 'ab', 'b'), ('M17462', 'code', 'X4', 'X1'), ('M17653', 'code', 'X1', 'X2'), ('M18059', 'nonlang_only', False, True), ('M18667', 'code', 'X0', 'X3'), ('U04330', 'i1', 'a', 'ab')]
+with B values: codes {'X0': 77, 'X1': 100, 'X2': 86, 'X3': 7, 'X7': 1, 'X4': 3} i1 {'a': 552, 'ab': 17, 'b': 39} nonlang 12
+pass_vs_exclude 882 0.9592 0.8939 0.9337 (0.8589, 0.9268) (0.8597, 0.927) | filed 882 0.9592 0.8939 0.9337 [0.8589, 0.9268] 2x2 equal True {'both_pos': 635, 'both_neg': 211, 'A_only_pos': 27, 'B_only_pos': 9, 'p_pos': 0.9724, 'p_neg': 0.9214, 'bias_index': 0.0204, 'prevalence_index': 0.4807}
+include_vs_not 882 0.966 0.9238 0.9386 (0.8955, 0.9483) (0.8966, 0.9485) | filed 882 0.966 0.9238 0.9386 [0.8955, 0.9483] 2x2 equal True {'both_pos': 571, 'both_neg': 281, 'A_only_pos': 4, 'B_only_pos': 26, 'p_pos': 0.9744, 'p_neg': 0.9493, 'bias_index': 0.0249, 'prevalence_index': 0.3288}
+three_way 882 0.9274 0.8507 0.9042 (0.8159, 0.884) (0.8167, 0.8828) | filed 882 0.9274 0.8507 0.9042 [0.8159, 0.884] table equal True
+per A {'exclude': 220, 'include': 575, 'adjudicate': 87} 0.0986 {'X0': 44, 'X1': 91, 'X2': 75, 'X3': 5, 'X4': 5} filed eq True
+per B {'exclude': 238, 'include': 597, 'adjudicate': 47} 0.0533 {'X0': 48, 'X1': 99, 'X2': 81, 'X3': 6, 'X4': 4} filed eq True
+C_queue filed {'rows': 118, 'unique': 116, 'disagreement_or_adjudicate': 100, 'disagreement_or_adjudicate_not_queued': [], 'queued_for_quote_check_only': 16, 'quote_only_reasons': {'quote_not_accepted_after_return': 2, 'quote_return_not_possible': 13, 'quote_truncated_after_return': 1}} sent_to_C 100 mine 100
+joint excl 211 208 0.9786 0.983 filed 211 208 0.9786 0.983 table eq True xsub 198 198
+joint incl 571 567 0.9478 0.9925 filed 571 567 0.9478 0.9925
+per-rule mismatches [] rules 17 17
+sample sha 958867658120c323446ee5692ec82702deb4464e0977a6030287ced035b7ac6c
+K 4 ['M03416', 'M10984', 'R0963', 'R1202'] excl 78 not in T1 18 | filed 4 {'included': 4, 'excluded': 78, 'not_retrieved': 0, 'not_in_T1': 18} lists eq True included detail eq True excluded detail eq True
+pending in sample []
+c8 extra 32 c8 file 32 equal True sample extra 100 == sample True
+sample n 100 screened 82 inc 4 exc 78 not decided ['M12398', 'M12684', 'M12932', 'M13388', 'M14105', 'M14415', 'M14442', 'M14992', 'M15324', 'M16158', 'M16605', 'M16626', 'M17019', 'M17070', 'M17712', 'M17805', 'M18665', 'M18685'] pending among []
+c8 n 32 screened 28 inc 1 exc 27 not decided ['M13184', 'M14933', 'M15873', 'M17195'] pending among ['M13184', 'M15873', 'M17195']
+pending groups {'M13184': 'c8', 'M15873': 'c8', 'M17195': 'c8'} pending batch {'M13184': 't1b081', 'M15873': 't1b081', 'M17195': 't1b081'}
+recheck full_text_screened 110 to_full_text 132
+ft-routes status {'screened': 770, 'no_full_text:None': 97, 'duplicate:None': 27, 'e-gateway:None': 51, 'oa_url:not_pdf': 21, 'oa_url:error': 30, 'nr': 4} extra {'pending_oa_url': 16, 'retrieved_not_yet': 3, 'pending_e-gateway': 7} which retrieved_not_yet in extra ['M13184', 'M15873', 'M17195']
+ft-routes dup 27 reports_sought 1111
+PRISMA filed {'reports_sought': 1111, 'screened': 882, 'include': 608, 'exclude': 274, 'exclude_codes': {'X0': 78, 'X1': 100, 'X2': 85, 'X3': 6, 'X7': 1, 'X4': 4}, 'include_i1': {'a': 555, 'ab': 15, 'b': 38}, 'include_nonlang_only': 12, 'adjudicated_by_C': 116, 'agreement_pass_exclude_kappa': 0.8939, 'agreement_pass_exclude_kappa_ci95': [0.8589, 0.9268]} {'screened': 770, 'no_full_text_found': 97, 'duplicate_of_known_record_not_sought': 27, 'pending_e_gateway': 51, 'open_access_fetch_failed_not_pdf': 21, 'open_access_fetch_failed_error': 30, 'not_retrieved_openreview_note_missing_X6': 4} {'pending_oa_url': 16, 'retrieved_not_yet_screened': 3, 'pending_e-gateway': 7}
+PRISMA recheck {'to_full_text': 132, 'full_text_screened': 110} {"recheck-sample": {"n": 100, "screened": 82, "include": 4, "exclude": 78, "not_yet_screened": ["M12398", "M12684", "M12932", "M13388", "M14105", "M14415", "M14442", "M14992", "M15324", "M16158", "M16605", "M16626", "M17019", "M17070", "M17712", "M17805", "M18665", "M18685"]}, "c8": {"n": 32, "screened": 28, "include": 1, "exclude": 27, "not_yet_screened": ["M13184", "M14933", "M15873", "M17195"]}}
+PRISMA K 4 {'included': 4, 'excluded': 78, 'not_retrieved': 0, 'not_in_T1': 18}
+PRISMA mentions pending: [] open mentions M13184: False
+provenance rows 882 ids == decisions True diffs [] routes {'arxiv': 304, 'remap-arxiv': 17, 'e-gateway-chrome': 61, 'oa_retry': 7, 'openreview-api': 401, 'remap-direct_pdf': 13, 'acl': 47, 'oa_url': 32} pending have fetch-ok {'M13184': 'openreview-api', 'M15873': 'openreview-api', 'M17195': 'openreview-api'}
