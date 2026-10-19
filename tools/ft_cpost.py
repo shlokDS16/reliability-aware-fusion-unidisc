@@ -30,11 +30,14 @@ if f.exists():
     qbad = [json.loads(l) for l in (OUT / "quote-check-C.jsonl").read_text(encoding="utf8").splitlines() if l.strip()]
     qbad = sorted({(q["id"], q["i"], q["status"]) for q in qbad if q.get("status") != "found"})
 got = {r["id"] for r in rows}
+mc = json.loads(subprocess.run([sys.executable, "-I", str(ROOT / "tools/ft_model_check.py"), "--transcript", str(Path(tdir) / f"agent-{agent}.jsonl"),
+                                "--role", "C"], capture_output=True, text=True).stdout)   # added 2026-10-20 (gate T1 finding)
 res = {"event": "C-session", "batch": batch, "basename": d.name, "agent": agent, "model": "claude-fable-5-1",
+       "model_ok": mc["pass"], "models_seen": mc["models"],
        "ended": datetime.datetime.now().isoformat(timespec="seconds"), "n": len(ids), "rows": len(rows),
        "missing": sorted(set(ids) - got), "isolation": iso["pass"], "isolation_flags": iso["flags"],
        "quotes_not_accepted": qbad, "decisions": {k: sum(1 for r in rows if r.get("decision") == k) for k in ("include", "exclude")},
-       "outcome": outcome or ("complete" if iso["pass"] and not (set(ids) - got) else "check")}
+       "outcome": outcome or ("complete" if iso["pass"] and mc["pass"] and not (set(ids) - got) else "check")}
 with (ROOT / "analysis/screening/c-run-log.jsonl").open("a", encoding="utf8", newline="\n") as fh:
     fh.write(json.dumps(res, ensure_ascii=False) + "\n")
 print(json.dumps(res, ensure_ascii=False))

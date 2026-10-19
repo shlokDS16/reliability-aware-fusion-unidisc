@@ -31,6 +31,11 @@ for role, agent in (("A", aid), ("B", bid)):
     iso = json.loads(subprocess.run([sys.executable, "-I", str(ROOT / "tools/ft_isolation_check.py"), str(Path(tdir) / f"agent-{agent}.jsonl"), str(d)],
                                     capture_output=True, text=True).stdout)
     res[f"isolation_{role}"] = iso["pass"]
+    mc = json.loads(subprocess.run([sys.executable, "-I", str(ROOT / "tools/ft_model_check.py"), "--transcript", str(Path(tdir) / f"agent-{agent}.jsonl"),
+                                    "--role", role], capture_output=True, text=True).stdout)
+    res[f"model_ok_{role}"] = mc["pass"]           # criteria v1.6 s4 item 1: no fallback model (added 2026-10-20)
+    if not mc["pass"]:
+        res[f"models_{role}"] = mc["models"]
     (OUT / f"isolation-{role}.json").write_text(json.dumps({"basename": d.name, "agent": agent, **iso}), encoding="utf8")
     if f.exists():
         q = subprocess.run([sys.executable, "-I", str(ROOT / "analysis/screening/quote_check.py"), "--rows", str(f), "--texts", str(d / "fulltext"),

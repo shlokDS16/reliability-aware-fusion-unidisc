@@ -10,10 +10,14 @@ for d in sorted(base.glob('t1b0*')):
         for l in open(d / f'F{role}-{d.name}.jsonl', encoding='utf-8'):
             if l.strip(): r = json.loads(l); st[r['id']] = r; bo[r['id']] = d.name
 assert set(A) == set(B), sorted(set(A) ^ set(B))
+SUP = {(r['id'], r['group']) for r in map(json.loads, open(base / 'c-superseded.jsonl', encoding='utf-8')) if r} if (base / 'c-superseded.jsonl').exists() else set()
 C = {}
 for f in sorted(base.glob('c/c-t1-*/FC-*.jsonl')):
     for l in open(f, encoding='utf-8'):
-        if l.strip(): r = json.loads(l); C[r['id']] = r
+        if l.strip():
+            r = json.loads(l)
+            if (r['id'], f.parent.name) not in SUP:   # superseded rulings (c-superseded.jsonl) are not used
+                C[r['id']] = r
 need = [i for i in A if (A[i]['decision'] != B[i]['decision'] or 'adjudicate' in (A[i]['decision'], B[i]['decision'])) and i not in C]
 assert not need, need
 rows = []

@@ -165,6 +165,12 @@ F["recheck"] = {"frame": jload(SCR / "ta-recheck-sample-v1.3-frozen.json")["fram
                 "c8_outside_frame": len(jl(SCR / "ta-recheck-c8-candidates-v1.4.jsonl")),
                 "to_full_text": grp.get("recheck-sample", 0) + grp.get("c8", 0) + grp.get("recheck-sample+c8", 0),
                 "full_text_screened": sum(1 for i, r in extra.items() if r["group"] != "ta-pass-unrouted" and i in t1),
+                # own PRISMA boxes (criteria v1.6 s5.3; gate audit 2026-10-20 finding 7); a record in both groups counts in both
+                "boxes": {g: (lambda ids: {"n": len(ids), "screened": sum(i in t1 for i in ids),
+                                           "include": sum(i in t1 and t1[i]["decision"] == "include" for i in ids),
+                                           "exclude": sum(i in t1 and t1[i]["decision"] == "exclude" for i in ids),
+                                           "not_yet_screened": sorted(i for i in ids if i not in t1)})(
+                              [i for i, r in extra.items() if g in r["group"].split("+")]) for g in ("recheck-sample", "c8")},
                 "K": (lambda k: {"K": k["K"], "counts": k["counts"], "included": k["included"]} if k else "pending")(
                     jload(SCR / "ta-recheck-k.json") if (SCR / "ta-recheck-k.json").exists() else None)}
 F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_record_not_sought"] + len(extra),

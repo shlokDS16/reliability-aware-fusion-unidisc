@@ -10,9 +10,10 @@ from pathlib import Path
 W, S, q, g, lo, hi = sys.argv[1:7]
 W, S = Path(W), Path(S)
 base = W / "analysis/screening/ft-t1"
+SUP = {(r["id"], r["group"]) for r in map(json.loads, open(base / "c-superseded.jsonl", encoding="utf-8")) if r} if (base / "c-superseded.jsonl").exists() else set()
 done = set()
 for f in base.glob("c/c-t1-*/FC-*.jsonl"):
-    done |= {json.loads(l)["id"] for l in open(f, encoding="utf-8") if l.strip()}
+    done |= {json.loads(l)["id"] for l in open(f, encoding="utf-8") if l.strip()} - {i for i, g in SUP if g == f.parent.name}
 A, B, bo = {}, {}, {}
 batches = [f"t1b{n:03d}" for n in range(int(lo), int(hi) + 1)]
 for b in batches:
