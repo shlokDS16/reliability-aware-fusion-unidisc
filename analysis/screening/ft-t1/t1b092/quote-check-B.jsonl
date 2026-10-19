@@ -1,0 +1,21 @@
+{"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9 step 1: LLM generates text autoregressively", "loc": "p.3, §IV-B", "status": "found"}
+{"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 1: diffusion generates only robot grasp configurations", "loc": "p.4, §IV-D", "status": "found"}
+{"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "D4(1): grasp is robot hand joint command", "loc": "p.3, §III", "status": "negation_before"}
+{"id": "M15919", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "D4(1): evaluated by robot execution success", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M15767", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9: diffusion output is 3D voxel scenes, not text", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M15767", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 3: unconditional or coarse-scene conditioned, no text condition", "loc": "p.6, Figure 5", "status": "found"}
+{"id": "M05158", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R12/R9: diffusion decoder generates actions only", "loc": "p.2, §2", "status": "found"}
+{"id": "M15494", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2", "loc": "p.3, §III-B", "status": "found"}
+{"id": "M15494", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R6", "loc": "p.3, §III", "status": "found"}
+{"id": "M14247", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2", "loc": "p.3, §3.1", "status": "found"}
+{"id": "M14247", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2", "loc": "p.2, §2.3", "status": "found"}
+{"id": "M14247", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R6", "loc": "p.1, §1", "status": "found"}
+{"id": "M14247", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R6", "loc": "p.2, §2.3", "status": "found"}
+{"id": "M02927", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R7/R9: output is tabular medical codes, not text", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M02927", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R7/R9: output is tabular medical codes, not text", "loc": "p.3, §2", "status": "found"}
+{"id": "M03043", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9 step 2: text conditions the image diffusion model", "loc": "p.2, §1", "status": "found"}
+{"id": "M03043", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R10 b3 fails: separate I2T model and diffusion model", "loc": "p.3, Fig. 2 caption", "status": "found"}
+{"id": "M02626", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: diffusion in the PDE sense, no generative model", "loc": "p.2, §1", "status": "found"}
+{"id": "M07753", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9 step 2: LLM-written text prompts condition Stable Diffusion image generation", "loc": "p.8, §3.1.3", "status": "found"}
+{"id": "M19147", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R10 b3 fails: separate LLaMA and diffusion models", "loc": "p.4, §IV", "status": "found"}
+{"id": "M19147", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 2: user text prompt conditions image diffusion", "loc": "p.4, §IV", "status": "found"}
