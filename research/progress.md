@@ -1,6 +1,17 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 18 (2026-10-20 ~02:00 IST; newest; supersedes HANDOFF 17's numbers).** **T1 screened so far
+  (INTERIM: T1 not closed until items 16a/16b and rows P1-P4 are decided): 885 records read; 882 decided, include
+  608, exclude 274; 3 awaiting a second screener** (M13184, M15873, M17195: Opus B hits a safety-classifier stop on
+  these biology papers and the harness falls back to claude-opus-5 in 3 of 3 sessions; t1-pending-B.jsonl). C ruled
+  116. A/B agreement n = 882: pass/exclude kappa 0.894 [0.859, 0.927]. **K = 4** (unchanged) -> 797 re-check tranche
+  (route table built, needs the user's yes for downloads). **Gate T1:** audit FAIL (finding 1: t1b081 B fallback
+  model) -> fixed (B split rerun; C c-t1-19; superseded C rulings; tools/ft_model_check.py in postbatch/cpost);
+  re-audit 1: finding 1 closed, minor 15-19 fixed; still FAIL only on items for the human author (findings 2, 4, 5,
+  6, 14 -> research/review/audits/2026-10-20-gate-T1-response.md rows P1-P4). **Extraction:** form v0.1 drafted,
+  red-teamed (3 critical); v0.2 revision running (scope per user decision 2026-10-16: stratified sample + all
+  multimodal). Next: red-team v0.2; evening user list.
 - **HANDOFF 17 (2026-10-20 ~01:00 IST; newest; overnight run while the user sleeps; HANDOFF 16 superseded
   for status).** **T1 part 19 COMPLETE** (t1b077-t1b093, 170 records; every batch isolation pass; every
   unaccepted quote returned once and accepted; C groups c-t1-15..18, all isolation pass). **T1 total: 885

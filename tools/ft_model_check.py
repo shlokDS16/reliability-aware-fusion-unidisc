@@ -41,8 +41,10 @@ checked = missing = 0
 bad = []
 for line in open(amap, encoding="utf-8"):
     p = line.split()
-    if line.startswith("#") or len(p) < 3 or p[1] not in EXP or not re.fullmatch(r"a[0-9a-f]{16}", p[2]):
+    ids = [t for t in p[2:] if re.fullmatch(r"a[0-9a-f]{16}", t)]   # the id may follow a label ("rerun2", "rerun3-nonbio")
+    if line.startswith("#") or len(p) < 3 or p[1] not in EXP or not ids:
         continue
+    p = [p[0], p[1], ids[0]]
     fs = glob.glob(str(HOME / "*" / "*" / "subagents" / f"agent-{p[2]}.jsonl"))
     if not fs:
         missing += 1

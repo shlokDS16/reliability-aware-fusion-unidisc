@@ -40,3 +40,24 @@ n = 885 (to be re-derived after the t1b081 rerun). The manuscript cites the valu
 
 After the t1b081 rerun and its C group: regenerate all derived files, then ask gate-auditor for the re-audit
 (same scripts). Findings 2, 4, 5, 6 stay open until the human author acts on P1-P3 and items 16a/16b.
+
+## Update after re-audit 1 (`2026-10-20-gate-T1-reaudit-1.md`; finding 1 closed)
+
+| # | Finding | Status |
+|---|---|---|
+| 14 | 3 B-unavailable records (M13184, M15873, M17195; classifier stop -> fallback in 3 of 3 B sessions) parked without a decision row | **Needs the human author**: row P4 below. |
+| 15 | PRISMA lumped the 3 with "not yet screened" | **Done**: status `awaiting_second_screener_B_unavailable` (ft-routes-extra 3); C8 box lists them under `awaiting_second_screener` (C8: 32 -> 28 decided, 3 awaiting B, 1 not retrieved). |
+| 16 | `ft_model_check.py` skipped agent-map lines with a label before the id | **Done**: id taken from any token; map sweep now 223 sessions, 3 mismatches = exactly the 3 discarded B sessions. |
+| 17 | Model-check record stale | **Done**: regenerated `model-check-2026-10-20.jsonl`. |
+| 18 | Provenance left out the 3 pending records | **Done**: 885 rows. |
+| 19 | progress.md showed 885/608/277 without "interim" | **Done** in HANDOFF 18. |
+| 20 | c-t1-15/16 ruled on 6 other records with invalid t1b081 rows in view | Info. Those 6 records (incl. K records M03416, R1202) are from other batches; C's dispatch folders held per-record screener rows, so the t1b081 rows were present only for M07919/U04280 and could not enter the other rulings, which rest on each record's own text and rows. They stand. |
+
+**P2 ranges updated** (after the rerun): exclude codes X0 77-78, X2 85-86, X3 6-7, X4 3-4; I1 a 552-555, ab 15-17, b 38-39.
+
+**P4 (finding 14), decision row, options for the human author.** Criteria v1.6 s4 item 1 applied per record: no
+other model may act as B. Route for M13184, M15873, M17195 (A: exclude X1 nontext for all three):
+(a) **recommended**: the human author screens the 3 blind to A's rows (closest to the protocol's fallback when C cannot
+run; about 10 minutes); (b) C (Fable) rules with A's row alone (outside C's role; may hit the same stop); (c) A's
+decision stands as a disclosed deviation. Reporting either way: agreement stays at n = 882; PRISMA shows them as
+awaiting a second screener until resolved.

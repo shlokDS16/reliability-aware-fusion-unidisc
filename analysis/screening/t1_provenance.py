@@ -16,6 +16,8 @@ for line in open(ROOT / "research/review/fulltext/fetch-log.jsonl", encoding="ut
     if r.get("status") == "ok":
         ok[r["id"]] = r
 t1 = [json.loads(l)["id"] for l in open(ROOT / "analysis/screening/ft-t1/t1-decisions-all.jsonl", encoding="utf-8") if l.strip()]
+pend = ROOT / "analysis/screening/ft-t1/t1-pending-B.jsonl"   # read by A, awaiting a second screener (re-audit finding 18)
+t1 += [json.loads(l)["id"] for l in open(pend, encoding="utf-8") if l.strip()] if pend.exists() else []
 rows, c = [], collections.Counter()
 for i in sorted(t1):
     r = ok.get(i)
