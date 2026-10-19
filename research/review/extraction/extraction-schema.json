@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dlm-review/extraction-schema-v0.1.json",
+  "title": "Paper 1 extraction record, form v0.1 (draft, not frozen)",
+  "description": "One JSON object per included study, one line in the session output file. Field ids (M01, S01, D01, F1, CT, CL, QA1, U-fields, K-fields) match the field table in EXTRACTION-PLAN.md section 3. Fields marked x-filled-by 'script' or 'metadata' are left null by the extractor and filled afterwards; the extractor never writes them. The top-level 'evidence' array is read unchanged by analysis/screening/quote_check.py (it reads 'id' and 'evidence[].quote'; 'cond' names the field or unit a quote supports).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "form_version", "extractor", "ft", "study", "design", "census", "claims", "qa", "units", "evidence", "searched", "notes"],
+  "properties": {
+    "id": {"type": "string", "description": "M01 record id exactly as in dispatch.json (e.g. M00285)."},
+    "form_version": {"type": "string", "const": "0.1", "description": "M10 form version; the dispatch states it."},
+    "extractor": {"type": "string", "pattern": "^(EA|EB|ER|EC)-[a-z0-9-]+$", "description": "M09 role and model, e.g. EA-claude-opus-5-5. EA/EB pilot extractors, ER second reader, EC adjudicator; the production extractor writes EA."},
+    "ft": {"type": "string", "description": "M04 full-text version string copied from dispatch.json."},
+    "meta": {
+      "type": ["object", "null"],
+      "x-filled-by": "metadata",
+      "description": "M02, M03, M05, M06, M07, M08: filled by script from the corpus and screening files after the session; null in extractor output.",
+      "additionalProperties": false,
+      "properties": {
+        "bibliographic": {"type": "object", "description": "M02 title, authors, arXiv id, DOI, OpenReview id."},
+        "first_version_date": {"type": ["string", "null"], "description": "M03 YYYY-MM-DD of the first public version."},
+        "venue_resolved": {"enum": ["journal", "conference", "workshop", "preprint", "unknown", null], "description": "M05 / QA10 resolved peer-review status of the published version (protocol s3 'Version rated')."},
+        "venue_name": {"type": ["string", "null"]},
+        "i1": {"enum": ["a", "b", "ab", null], "description": "M06 from full-text screening."},
+        "nonlang_only": {"type": ["boolean", "null"], "description": "M07 from full-text screening."},
+        "tranche": {"type": ["string", "null"], "description": "M08 screening tranche, e.g. T1."}
+      }
+    },
+    "study": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["study_type", "modality", "text_generator", "state_space", "task_families", "primary_task_family", "models", "base_checkpoints", "training", "main_sampler", "affiliations", "venue_line_text", "credited_component", "main_comparison"],
+      "properties": {
+        "study_type": {"enum": ["method", "theory", "analysis", "benchmark", "system"], "description": "S01 one value (protocol s5)."},
+        "modality": {"enum": ["text", "text+image", "text+other"], "description": "S02 protocol s5."},
+        "text_generator": {"enum": ["diffusion", "autoregressive", "both", "none"], "description": "S03 what generates the text in the paper's own model."},
+        "state_space": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["discrete-absorbing", "discrete-uniform", "discrete-flow", "continuous-embedding", "continuous-latent", "hybrid"]}, "description": "S04 protocol s5 categories; more than one only for analysis or benchmark studies of several models."},
+        "task_families": {"type": "array", "minItems": 0, "uniqueItems": true, "items": {"$ref": "#/$defs/task_family"}, "description": "S05 every family with a generated-sample result of the paper's own method; empty for theory with no experiment."},
+        "task_other": {"type": "string", "description": "S05 free text naming the tasks put in 'other'; '' if none."},
+        "primary_task_family": {"anyOf": [{"$ref": "#/$defs/task_family"}, {"const": "NA"}], "description": "S06 family of the F1 headline task; NA when F1 is NA."},
+        "models": {
+          "type": "array",
+          "description": "S07 the paper's own models with sizes as printed.",
+          "items": {"type": "object", "additionalProperties": false, "required": ["name", "params_printed", "params_b"],
+            "properties": {"name": {"type": "string"}, "params_printed": {"type": "string", "description": "as printed, or 'not_stated'"}, "params_b": {"type": ["number", "null"], "description": "billions; null if not stated"}}}
+        },
+        "base_checkpoints": {"type": "array", "items": {"type": "string"}, "description": "S08 named pretrained models the paper loads (e.g. 'LLaDA-8B-Instruct'); empty if trained from scratch or none named."},
+        "training": {
+          "type": "object", "additionalProperties": false,
+          "required": ["training_free", "stages", "data_named", "tokens_printed", "compute_printed"],
+          "description": "S09 training data and compute (protocol s5).",
+          "properties": {
+            "training_free": {"enum": ["yes", "no", "not_stated"]},
+            "stages": {"type": "array", "uniqueItems": true, "items": {"enum": ["pretraining", "continued-pretraining", "adaptation-from-ar", "sft", "rl", "distillation", "other"]}},
+            "data_named": {"type": "string", "description": "datasets named for the paper's own training, '' if none, 'not_stated'"},
+            "tokens_printed": {"type": "string", "description": "training tokens or samples as printed, or 'not_stated'"},
+            "compute_printed": {"type": "string", "description": "GPU-hours, FLOPs or hardware x time as printed, or 'not_stated'"}
+          }
+        },
+        "main_sampler": {
+          "type": "object", "additionalProperties": false,
+          "required": ["description", "steps_printed", "nfe_printed", "gen_length_printed", "tokens_per_step_printed"],
+          "description": "S10 sampler and function evaluations for the F1 setting (protocol s5).",
+          "properties": {
+            "description": {"type": "string"},
+            "steps_printed": {"type": "string"},
+            "nfe_printed": {"type": "string", "description": "as printed, or 'not_stated'; never computed by the extractor"},
+            "gen_length_printed": {"type": "string"},
+            "tokens_per_step_printed": {"type": "string"}
+          }
+        },
+        "affiliations": {"type": "array", "items": {"type": "string"}, "description": "S11 institutions on the title page, as printed (for 'independent groups', protocol s7)."},
+        "venue_line_text": {"type": "string", "description": "S12 / QA10 venue statement printed in the file (e.g. 'Published as a conference paper at ICLR 2022'), or 'none'."},
+        "credited_component": {"type": "string", "description": "S13 first contribution the introduction lists (abstract if no list), short; 'NA' for studies with no method."},
+        "main_comparison": {"type": "string", "description": "S14 unit id of the main comparison (EXTRACTION-PLAN s5.3), or 'NA'."}
+      }
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["c1_channel", "c2_reveal", "c2_multimodal", "c3_predictor", "c3_self_conditioning", "c3_head_layout", "c4_position", "c4_joint_draw", "c4_multimodal_schedule", "c5_revision", "memory", "levers"],
+      "description": "Block D: design-space choices C1-C5 (framework-v1 s1 with framework-v2 corrections).",
+      "properties": {
+        "c1_channel": {"type": "array", "minItems": 1, "description": "D01 one entry per modality the model generates.",
+          "items": {"type": "object", "additionalProperties": false, "required": ["modality", "channel"],
+            "properties": {"modality": {"enum": ["text", "image", "video", "audio", "3d", "other"]},
+              "channel": {"enum": ["erasure", "symmetric", "erasure-symmetric-mixture", "gaussian-embedding", "gaussian-simplex-or-logit", "gaussian-latent", "flow-discrete", "flow-continuous", "autoregressive", "other", "not_stated"]},
+              "other": {"type": "string"}}}},
+        "c2_reveal": {"enum": ["independent-shared-level", "block", "any-order", "prefix", "gaussian-shared-level", "gaussian-mixed-conditioning", "other", "not_stated"], "description": "D02 training reveal law for the text (or only) modality."},
+        "c2_multimodal": {"enum": ["shared-level", "clean-input-noised-output", "modality-dropout", "independent-per-modality", "capped-noise", "other", "not_stated", "NA"], "description": "D03 joint reveal law across modalities; NA for single-modality models."},
+        "c3_predictor": {"enum": ["clean-marginals", "concrete-score-or-ratio", "x0-embedding-regression", "posterior-mean-embedding", "noise-or-velocity", "probability-denoiser", "other", "not_stated"], "description": "D04"},
+        "c3_self_conditioning": {"enum": ["yes", "no", "not_stated"], "description": "D05"},
+        "c3_head_layout": {"enum": ["single-modality", "shared-vocabulary-head", "separate-heads", "text-head-plus-continuous-head", "other", "not_stated"], "description": "D06"},
+        "c4_position": {"type": "object", "additionalProperties": false, "required": ["rule", "blockwise"], "description": "D07 position rule of the F1 sampler.",
+          "properties": {"rule": {"enum": ["left-to-right", "random", "confidence-ranked", "threshold-adaptive", "fixed-order", "learned-planner", "all-positions", "other", "not_stated"]},
+            "blockwise": {"enum": ["yes", "no", "not_stated"]}}},
+        "c4_joint_draw": {"enum": ["independent", "ar-head", "copula", "energy-or-verifier", "speculative-verification", "other", "not_stated"], "description": "D08"},
+        "c4_multimodal_schedule": {"enum": ["joint", "sequential", "alternating", "other", "not_stated", "NA"], "description": "D09"},
+        "c5_revision": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["none", "explicit-remasking-or-editing", "corrector", "implicit-channel", "output-level", "other", "not_stated"]}, "description": "D10"},
+        "memory": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["none", "self-conditioning", "exact-cache", "approximate-cache", "planner-state", "other", "not_stated"]}, "description": "D11"},
+        "levers": {"type": "array", "uniqueItems": true, "items": {"enum": ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "L14"]}, "description": "D12 lever rows the paper's own method uses (framework-v1 s3 order)."},
+        "other_detail": {"type": "string", "description": "D14 free text for every 'other' above; '' if none."},
+        "design_fit": {"enum": ["yes", "partly", null], "x-filled-by": "script", "description": "D13 derived: yes if no D01-D11 value is 'other', else partly."}
+      }
+    },
+    "census": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["F1_status", "F1_unit", "F2_codes", "F2_detail", "F3", "F4", "F5", "F6"],
+      "description": "Block F: census fields F1-F6 under codebook v1.2 (consolidated in the extractor brief).",
+      "properties": {
+        "F1_status": {"enum": ["number", "figure-only", "unreadable", "QL", "NA"], "description": "F1"},
+        "F1_unit": {"type": "string", "description": "F1 unit id of the H unit with is_F1 true, or 'NA' when F1_status is QL or NA."},
+        "F2_codes": {"type": "string", "pattern": "^(U|NS|NA|[ATPSCGM](\\+[ATPSCGM])*(\\+NS)?)$", "description": "F2 letters in the order A T P S C G M joined by '+', optionally ending '+NS'; or exactly U, NS or NA."},
+        "F2_detail": {"type": "string", "description": "F2d temperature value or 'T>1', guidance scale or 'hard', 'oracle@N', beam width, final rounding, position rule, variants; '' if none."},
+        "F3": {"enum": ["yes", "no", "NA"]},
+        "F4": {"enum": ["yes", "partial", "no", "NA"]},
+        "F5": {"enum": ["stated", "not stated", "co-varied", "NA"]},
+        "F6": {"enum": ["stated", "not stated", "co-varied", "NA"]}
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["CT", "list"],
+      "properties": {
+        "CT": {"type": "object", "additionalProperties": false, "required": ["CT1", "CT2", "CT3", "CT4", "CT5", "CT6"],
+          "description": "CT claim types asserted in the abstract (rubric v0.2 step 1 only; descriptive).",
+          "properties": {"CT1": {"$ref": "#/$defs/yn"}, "CT2": {"$ref": "#/$defs/yn"}, "CT3": {"$ref": "#/$defs/yn"}, "CT4": {"$ref": "#/$defs/yn"}, "CT5": {"$ref": "#/$defs/yn"}, "CT6": {"$ref": "#/$defs/yn"}}},
+        "list": {"type": "array", "description": "CL checkable claims (abstract and the introduction's contribution list) with their QA8 status.",
+          "items": {"type": "object", "additionalProperties": false, "required": ["claim_id", "source", "types", "has_number", "status", "units"],
+            "properties": {
+              "claim_id": {"type": "string", "pattern": "^CL[0-9]+$"},
+              "source": {"enum": ["abstract", "introduction"]},
+              "types": {"type": "array", "uniqueItems": true, "items": {"enum": ["CT1", "CT2", "CT3", "CT4", "CT5", "CT6", "none"]}},
+              "has_number": {"type": "boolean"},
+              "status": {"enum": ["match", "direction", "partial", "unsupported", "contradicted"]},
+              "units": {"type": "array", "items": {"type": "string", "pattern": "^U[0-9]+$"}}
+            }}}
+      }
+    },
+    "qa": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["QA1", "QA2", "QA3", "QA4", "QA5", "QA6", "QA7", "QA8", "QA9"],
+      "description": "Block QA: the extractor answers sub-items only; 'score' is computed by script from the rules in EXTRACTION-PLAN s6 and is null in extractor output. QA10 = study.venue_line_text plus meta.venue_resolved.",
+      "properties": {
+        "QA1": {"$ref": "#/$defs/qa_item", "description": "a: repository URL for own code; b: commit, tag, release or archive DOI named; c: release only promised or on request; d: link check (filled by a separate web pass, null here)."},
+        "QA2": {"$ref": "#/$defs/qa_item", "description": "a: weights of every model behind the main result released or public with a named source; b: data for the main result public or released; c: missing part only promised or on request."},
+        "QA3": {"$ref": "#/$defs/qa_item", "description": "a: prompts, templates or few-shot setting stated (or no prompt by design); b: steps or NFE and generation length stated; c: value rule determinable (derived from F2 by script, null here); d: hardware stated."},
+        "QA4": {"$ref": "#/$defs/qa_item", "description": "a: main comparison reports two or more runs, seeds or sample sets; b: main comparison states three or more runs; c: repeated runs reported only for another result."},
+        "QA5": {"$ref": "#/$defs/qa_item", "description": "a: interval, SD or SE with stated meaning, or a defined significance test, for the main comparison; b: such uncertainty only for other results, or an undefined plus-minus for the main comparison."},
+        "QA6": {"$ref": "#/$defs/qa_item", "description": "n: main comparison has no baseline (score NA); a: parameter counts of own model and every baseline stated; b: within a factor of two or stated as matched; c: inference budget stated for every arm; d: training budget stated for every trained arm or stated as matched."},
+        "QA7": {"$ref": "#/$defs/qa_item", "description": "n: no credited component (score NA); a: with-versus-without (or replaced) comparison of the credited component; b: everything else stated or shown fixed; c: ablation only of a different or sub-component."},
+        "QA8": {"$ref": "#/$defs/qa_item", "description": "Computed from claims.list statuses; sub-items not used (empty object)."},
+        "QA9": {"$ref": "#/$defs/qa_item", "description": "a: limitations section or paragraph; b: at least one failure case, negative result or setting where the method is worse."}
+      }
+    },
+    "units": {
+      "type": "array",
+      "description": "Headline numbers (unit_type H) and within-paper contrasts (unit_type K). Unit ids U01, U02, ... in order of appearance.",
+      "items": {"oneOf": [{"$ref": "#/$defs/h_unit"}, {"$ref": "#/$defs/k_unit"}]}
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Every verbatim quote, read by quote_check.py. cond = field id (S04, D07, F2, QA3d, ...), claim id (CL2) or unit id (U07).",
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "searched": {"type": "object", "description": "For every field answered 'no', 'not_stated', 'NS', 'not stated' or 'none' where a quote would otherwise be required: field id -> sections read, e.g. {\"F2\": \"§4, §5, App. B, Table 7\"}.", "additionalProperties": {"type": "string"}},
+    "notes": {"type": "string", "description": "at most 60 words: ambiguities met, rule applied."}
+  },
+  "$defs": {
+    "yn": {"enum": ["yes", "no"]},
+    "task_family": {"enum": ["language modelling", "reasoning", "code", "understanding", "text-to-image", "editing", "other"]},
+    "evidence": {
+      "type": "object", "additionalProperties": false, "required": ["cond", "quote", "loc"],
+      "properties": {
+        "cond": {"type": "string", "pattern": "^(S[0-9]{2}|D[0-9]{2}|F[1-6]d?|CT[1-6]|CL[0-9]+|QA[1-9][a-d]|U[0-9]+)$"},
+        "quote": {"type": "string", "minLength": 1, "description": "one contiguous passage of 6 to 40 words copied character for character from fulltext/<id>.txt"},
+        "loc": {"type": "string", "description": "'p.<pdf page>, §<section>' or 'p.<page>, Table n, row <label>, column <label>'"}
+      }
+    },
+    "qa_item": {
+      "type": "object", "additionalProperties": false, "required": ["sub", "score", "loc"],
+      "properties": {
+        "sub": {"type": "object", "additionalProperties": false,
+          "properties": {"n": {"enum": ["yes", "no", null]}, "a": {"enum": ["yes", "no", null]}, "b": {"enum": ["yes", "no", null]}, "c": {"enum": ["yes", "no", null]}, "d": {"enum": ["yes", "no", null]}}},
+        "score": {"enum": [0, 1, 2, "NA", null], "x-filled-by": "script"},
+        "loc": {"type": "string", "description": "where the evidence is, or '' when every sub-item is no"}
+      }
+    },
+    "variance": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "value_printed", "n_runs"],
+      "properties": {
+        "kind": {"enum": ["none", "sd", "se", "ci", "range", "plusminus-undefined", "test", "other"]},
+        "value_printed": {"type": "string"},
+        "n_runs": {"type": ["integer", "null"], "minimum": 1}
+      }
+    },
+    "loc": {
+      "type": "object", "additionalProperties": false, "required": ["page", "where", "row", "column"],
+      "properties": {
+        "page": {"type": ["integer", "null"], "description": "PDF page from the '=== page N ===' marker"},
+        "where": {"type": "string", "description": "'abstract', 'Table 3', 'Figure 2', '§4.2'"},
+        "row": {"type": "string", "description": "row label as printed, '' for abstract or text"},
+        "column": {"type": "string", "description": "column label as printed, '' for abstract or text"}
+      }
+    },
+    "setting": {
+      "type": "object", "additionalProperties": false,
+      "required": ["steps_printed", "nfe_printed", "tokens_per_step_printed", "gen_length_printed", "sampler_printed", "value_rule_printed", "guidance_printed"],
+      "description": "Sampler and budget of this number, each as printed in the table, caption or the text that governs it, or 'not_stated'.",
+      "properties": {
+        "steps_printed": {"type": "string"}, "nfe_printed": {"type": "string"}, "tokens_per_step_printed": {"type": "string"},
+        "gen_length_printed": {"type": "string"}, "sampler_printed": {"type": "string"}, "value_rule_printed": {"type": "string"}, "guidance_printed": {"type": "string"}
+      }
+    },
+    "h_unit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit_id", "unit_type", "is_F1", "source_kind", "model", "own_method", "metric", "metric_kind", "higher_is_better", "dataset", "split", "task_family", "value_printed", "value_num", "value_unit", "setting", "params_printed", "variance", "loc"],
+      "properties": {
+        "unit_id": {"type": "string", "pattern": "^U[0-9]+$"},
+        "unit_type": {"const": "H"},
+        "is_F1": {"type": "boolean"},
+        "source_kind": {"enum": ["abstract", "main-table", "figure", "text"]},
+        "model": {"type": "string", "description": "row label or model name as printed"},
+        "own_method": {"type": "boolean"},
+        "metric": {"type": "string", "description": "as printed (e.g. 'Acc', 'pass@1', 'Gen PPL', 'FID')"},
+        "metric_kind": {"enum": ["generated-sample", "likelihood", "speed", "other"], "description": "codebook v1.2 B-10"},
+        "higher_is_better": {"type": ["boolean", "null"]},
+        "dataset": {"type": "string"},
+        "split": {"type": "string", "description": "as printed, or 'not_stated'"},
+        "task_family": {"$ref": "#/$defs/task_family"},
+        "value_printed": {"type": "string", "description": "exactly as printed, with unit symbols; must occur inside an evidence quote with cond = unit_id"},
+        "value_num": {"type": ["number", "null"]},
+        "value_unit": {"type": "string", "description": "'%', 'x', 'tokens/s', '' if none"},
+        "setting": {"$ref": "#/$defs/setting"},
+        "params_printed": {"type": "string"},
+        "variance": {"$ref": "#/$defs/variance"},
+        "loc": {"$ref": "#/$defs/loc"}
+      }
+    },
+    "k_unit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit_id", "unit_type", "rq_class", "credited_ablation", "factor", "levels", "values_printed", "values_num", "metric", "metric_kind", "higher_is_better", "dataset", "split", "task_family", "model", "held_fixed", "other_changes", "budget_across_arms", "arm_params_printed", "ar_baseline_source", "setting", "variance", "loc"],
+      "properties": {
+        "unit_id": {"type": "string", "pattern": "^U[0-9]+$"},
+        "unit_type": {"const": "K"},
+        "rq_class": {"enum": ["RQ2-vs-ar", "RQ3-pretraining", "RQ3-adaptation-from-ar", "RQ3-sft", "RQ3-rl", "RQ3-distillation", "RQ3-objective-or-architecture", "RQ4-steps", "RQ4-order", "RQ4-remask", "RQ4-cache", "RQ4-parallel-or-block", "RQ4-value-rule-or-guidance", "RQ4-other-inference", "RQ5-task-removal", "RQ5-shared-vs-decoupled", "RQ5-synergy-benchmark", "credited-other"]},
+        "credited_ablation": {"type": "boolean", "description": "true if this contrast removes or replaces the credited component (S13); used by QA7"},
+        "factor": {"type": "string", "description": "what changes between arms, in a few words"},
+        "levels": {"type": "array", "minItems": 2, "items": {"type": "string"}, "description": "arm labels or factor levels as printed, in table order"},
+        "values_printed": {"type": "array", "minItems": 2, "items": {"type": "string"}, "description": "aligned with levels, exactly as printed"},
+        "values_num": {"type": "array", "minItems": 2, "items": {"type": ["number", "null"]}},
+        "metric": {"type": "string"},
+        "metric_kind": {"enum": ["generated-sample", "likelihood", "speed", "other"]},
+        "higher_is_better": {"type": ["boolean", "null"]},
+        "dataset": {"type": "string"},
+        "split": {"type": "string"},
+        "task_family": {"$ref": "#/$defs/task_family"},
+        "model": {"type": "string", "description": "base model or checkpoint shared by the arms; for RQ2 the diffusion arm"},
+        "held_fixed": {"enum": ["stated", "not stated", "co-varied"], "description": "stated: the text, caption or table states or shows that only the factor changes"},
+        "other_changes": {"type": "string", "description": "anything else the paper states changes between arms; '' if none stated"},
+        "budget_across_arms": {"enum": ["matched", "reported", "not reported"], "description": "inference budget (steps, NFE, time) across arms"},
+        "arm_params_printed": {"type": "array", "items": {"type": "string"}, "description": "parameter count per arm as printed (needed for RQ2), aligned with levels; empty if one model"},
+        "ar_baseline_source": {"enum": ["run-by-authors", "copied-from-citation", "not stated", "NA"]},
+        "setting": {"$ref": "#/$defs/setting"},
+        "variance": {"$ref": "#/$defs/variance"},
+        "loc": {"$ref": "#/$defs/loc"},
+        "matched": {"type": ["boolean", "null"], "x-filled-by": "script", "description": "derived: held_fixed == 'stated' and other_changes == ''"}
+      }
+    }
+  }
+}
