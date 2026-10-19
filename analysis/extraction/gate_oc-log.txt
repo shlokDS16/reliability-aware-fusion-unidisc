@@ -1,0 +1,60 @@
+python 3.14.3, numpy 2.4.2, scipy 1.17.1; SEED 20262000; bootstrap B 500; LB90 = 5th percentile
+
+Quantities, levels and rules (pass iff LB90 >= line; G5: count >= c(n)):
+  G1 accept EA   ratio  size ('pois', 60)   good 0.95  bad 0.85  rule LB90 >= 0.85
+  G1 accept EB   ratio  size ('pois', 60)   good 0.95  bad 0.85  rule LB90 >= 0.85
+  G3 raw S       ratio  size ('fixed', 16)  good 0.85  bad 0.70  rule LB90 >= 0.70
+  G3 raw D       ratio  size ('fixed', 13)  good 0.85  bad 0.70  rule LB90 >= 0.70
+  G3 raw F       ratio  size ('fixed', 6)   good 0.85  bad 0.70  rule LB90 >= 0.70
+  G3 raw QA-sub  ratio  size ('fixed', 22)  good 0.85  bad 0.70  rule LB90 >= 0.70
+  G3 raw CT      ratio  size ('fixed', 6)   good 0.85  bad 0.70  rule LB90 >= 0.70
+  G3 raw H-attr  ratio  size ('pois', 9)    good 0.85  bad 0.70  rule LB90 >= 0.70
+  G3 QA kappa    kappa  size 8              good 0.70  bad 0.40  rule LB90 >= 0.45
+  G4 F1_H        f1     size ('pois', 4)    good 0.85  bad 0.70  rule LB90 >= 0.70
+  G4 F1_G        f1     size ('nb', 3)      good 0.75  bad 0.60  rule LB90 >= 0.60
+  G4 F1_K        f1     size ('nb', 8)      good 0.75  bad 0.60  rule LB90 >= 0.60
+  G4 M-val       ratio  size ('nb', 15)     good 0.95  bad 0.85  rule LB90 >= 0.86
+  G4 M-class     class  size None           good 0.85  bad 0.65  rule LB90 >= 0.65
+  G5 anchors     count  size None           good 0.85  bad 0.60  rule count >= c(n) (P(pass | 0.60) <= 0.05)
+
+== Design n = 60 (3 strata x 20), ICC 0.10, OMEGA 0 (independent record effects across metrics), 2000 replicates; G5 c(n) = 43 ==
+  ALL GOOD: joint P(pass) = 0.974 (MC s.e. 0.004)
+  marginal P(pass | good): G1 accept EA 1.000; G1 accept EB 1.000; G3 raw S 1.000; G3 raw D 1.000; G3 raw F 1.000; G3 raw QA-sub 1.000; G3 raw CT 1.000; G3 raw H-attr 1.000; G3 QA kappa 1.000; G4 F1_H 1.000; G4 F1_G 0.986; G4 F1_K 0.999; G4 M-val 0.998; G4 M-class 0.994; G5 anchors 0.998
+  ONE QUANTITY BAD (others good):           joint P(pass)   P(that criterion passes)
+    G1 accept EA                                0.063           0.066
+    G1 accept EB                                0.071           0.073
+    G3 raw S                                    0.058           0.059
+    G3 raw D                                    0.066           0.067
+    G3 raw F                                    0.066           0.067
+    G3 raw QA-sub                               0.062           0.065
+    G3 raw CT                                   0.065           0.066
+    G3 raw H-attr                               0.061           0.061
+    G3 QA kappa                                 0.009           0.009
+    G4 F1_H                                     0.067           0.067
+    G4 F1_G                                     0.053           0.055
+    G4 F1_K                                     0.058           0.059
+    G4 M-val                                    0.043           0.044
+    G4 M-class                                  0.070           0.073
+    G5 anchors                                  0.042           0.043
+  ALL BAD: joint P(pass) = 0.000
+  max over single bad quantities = 0.071
+
+== Search over n (1000 replicates; ICC 0.10, OMEGA 0) ==
+   n   P(pass|all good)   max_q P(pass|q bad)   c(n)   gate EA+EB records
+   30        0.670               0.074           23      60
+   36        0.808               0.062           27      72
+   45        0.915               0.080           33      90
+   54        0.950               0.059           39      108
+   60        0.973               0.067           43      120
+   72        0.984               0.067           51      144
+  (the search evaluates seven quantities: those with the highest bad-level pass rates in trial runs at n = 45 and 60)
+
+== Sensitivity at n = 60 (1000 replicates; P(pass | all good)) ==
+  baseline ICC 0.10, OMEGA 0                                 good 0.977   F1_G bad 0.045
+  OMEGA 0.5 (correlated record effects)                      good 0.985   F1_G bad 0.060
+  ICC 0.20                                                   good 0.889   F1_G bad 0.055
+  ICC 0.20, OMEGA 0.5                                        good 0.925   F1_G bad 0.054
+  fewer units: groups 2, K 5, H 3, values 10 per record      good 0.928   F1_G bad 0.058
+  unit counts more skewed (NB shape 0.7)                     good 0.949   F1_G bad 0.063
+
+elapsed 661 s

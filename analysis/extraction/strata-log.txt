@@ -1,0 +1,78 @@
+python 3.14.3  decisions sha256 962e3171e358a13b8983867a302053b78d98fdc3cf805083fefe4ed88532baaa
+T1 rows 882, includes 608
+titles found 608 of 608; missing title: []; no abstract: ['M13989', 'M14023', 'M14247']
+
+== mm_final over i1 = a, not nonlang_only includes ==
+   384  mm=text                   source=A=B
+   101  mm=multimodal             source=A=B
+    26  mm=text                   source=C
+    15  mm=other                  source=A=B
+     6  mm=multimodal             source=C
+     6  mm=split:other/text       source=split
+     3  mm=split:multimodal/text  source=split
+     2  mm=other                  source=C
+
+C1 53  NL 12  C2(rule) 108  FR 435  sum 608
+v0.2 title-regex C2 would be 53; cross-tab (old C2 x new C2): both 51, old only ['M13760', 'M16622'], new only 57
+
+Borderline B1 (split text/multimodal, decided by KW) 3: M02955[split:multimodal/text;kw=y], M18118[split:multimodal/text;kw=n], M18656[split:multimodal/text;kw=n]
+Borderline B2 (mm multimodal, no KW hit in title or abstract) 15: ['M00285', 'M05642', 'M05663', 'M07324', 'M09298', 'M09321', 'M10881', 'M12175', 'M13247', 'M14560', 'M14706', 'M14711', 'M16251', 'M16730', 'M18406']
+Borderline B3 (mm text/other, KW hit in title) 2: M13760[text], M15613[other]
+Not borderline, listed for transparency: mm text/other with a KW hit in the abstract only 19: ['M00973', 'M03416', 'M07390', 'M12178', 'M13371', 'M14044', 'M14428', 'M14564', 'M14591', 'M15050', 'M15367', 'M16593', 'M16729', 'M17124', 'M17150', 'M17603', 'M18369', 'M18676', 'M18731']
+Overrides applied 0: []
+T1 pending (B unavailable) 3: ['M13184', 'M15873', 'M17195'] -> classified by the same rule if they become includes
+
+== Records named by the red-team (F-MA5) ==
+  M06241: i1=a mm=multimodal (A=B) kw_title=False kw_abs=True v0.2-regex=- -> C2 | DIFFA: Large Language Diffusion Models Can Listen and Understand
+  M08240: i1=a mm=multimodal (C) kw_title=True kw_abs=True v0.2-regex=- -> C2 | MDM-ASR: Bridging Accuracy and Efficiency in ASR with Diffusion-Based 
+  M09491: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | Decoding Strategies for Diffusion-Based ASR: A Systematic Evaluation o
+  M19267: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | Whisfusion: Parallel ASR Decoding via a Diffusion Transformer
+  M13756: i1=a mm=multimodal (A=B) kw_title=False kw_abs=True v0.2-regex=- -> C2 | Diffusion-Based Connectionist Temporal Classification
+  M04245: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | DiffSLT: Enhancing Diversity in Sign Language Translation via Diffusio
+  M15668: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | KD-RSCC: A Karras Diffusion Framework for Efficient Remote Sensing Cha
+  M10855: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | Diffusion Drafts, AR Verifies: Accelerating Document OCR with Self-Spe
+  M16229: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | MinerU-Diffusion v2: Bridging Autoregressive and Diffusion Decoding fo
+  M09298: i1=a mm=multimodal (A=B) kw_title=False kw_abs=False v0.2-regex=- -> C2 | Prefix-Adaptive Block Diffusion for Efficient Document Recognition
+  M08804: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | ECHO: Efficient Chest X-ray Report Generation with One-step Block Diff
+  M14667: i1=a mm=multimodal (C) kw_title=True kw_abs=True v0.2-regex=- -> C2 | FLUID-Omni: Parallelizing Streaming Omni Generation with Commit-Repair
+  M01397: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C2 | Any-to-Any Generation via Composable Diffusion
+  M16622: i1=a mm=text (A=B) kw_title=False kw_abs=False v0.2-regex=C2 -> FR | Nothing to Revoke: Canvas Allocation, Not Commitment Revision, Governs
+  M13760: i1=a mm=text (A=B) kw_title=True kw_abs=True v0.2-regex=C2 -> FR | Diffusion-based dynamics as a cognitive model of human speech producti
+  M15684: i1=a mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=C2 -> C2 | Knowledge-Centric Multimodal Intelligence: Understanding, Reasoning, a
+  R0963: i1=b mm=multimodal (A=B) kw_title=True kw_abs=True v0.2-regex=- -> C1 | Bernini: Latent Semantic Planning for Video Diffusion
+
+== Duplicate-work candidates 6 (checked by a human before the draw; none applied unless listed) ==
+  M03951 | M16269 | jaccard+ratio | MMAR: Towards Lossless Multi-Modal Auto-Regressive Prob || MMAR: Towards Lossless Multi-Modal Auto-Regressive Prab
+  M07769 | M16343 | jaccard | Mosaic: Unlocking Long-Context Inference for Diffusion  || Mosaic: Unlocking Over 30$\times$ Context Length for Di
+  M09657 | M15091 | jaccard+ratio | Hacking Generative Perplexity: Why Unconditional Text E || Hacking Generative Perplexity: Why Unconditional Text E
+  M14067 | M14568 | jaccard | Dual Distillation of Trajectory and Guidance Knowledge  || Faster Inference for Conditional Masked Diffusion Langu
+  M14370 | M14372 | prefix | Esoteric Language Models || Esoteric Language Models: Bridging Autoregressive and M
+  M16133 | M16134 | jaccard+ratio | Measuring and Reducing the Train--Inference Mismatch in || Measuring and Reducing Train--Inference Mismatch in Dis
+dedup on: removed from frames []; C1 53 C2 108 FR 435
+
+== Frame R strata (median size 72,069 bytes), n = 120, largest remainder ==
+  anon-long    N_h  159  n_h  44  weight 3.614  sha256 9103af4eac1e83a0
+  anon-short   N_h   66  n_h  18  weight 3.667  sha256 cb04c3354cf5a1e8
+  named-long   N_h   58  n_h  16  weight 3.625  sha256 6e610116937fa269
+  named-short  N_h  152  n_h  42  weight 3.619  sha256 471166ebba177c4b
+  records with block K: C1 53 + C2 108 + sample 120 = 281; Kish deff over C1+C2+sample 1.37 (effective n 204)
+  anonymous among includes 287 (C1 27, C2 29, NL 6, FR 225); texts above 133,280 bytes in FR+C2: 52
+  precision over frame R (N = 435), p = 0.5:  n   whole frame   subgroup at 50%   at 30%   at 20%
+                                             90   0.092         0.130            0.169     0.207
+                                            120   0.076         0.108            0.140     0.171
+                                            150   0.065         0.092            0.119     0.146
+
+== Pilot pools ==
+  Stage A: C1 i1=ab 15, C1 i1=b 38, FR benchmark/analysis-title pool 24, FR+C2 above 133,280 bytes 52, FR 435
+  Stage B (gate n 60 = 3 x 20): G-short 272 and G-long 271 from FR+C2 (543, median 72,648 bytes); G-mm from C1 53
+
+== sha256 of newline-joined sorted id lists ==
+  C1    53  91615db39bc8c69600064164d9478da544b76c1a13b7e1d09e9cb99ed8f8a80e
+  C2   108  6766a919f8e11c23805d1849726119686bb3c0a8cd7076d657b9d2ecb09f5383
+  NL    12  0bc9bf7d746ea841be7ea4319b74213602ebab460e3d57aa7deebfe62766b8e4
+  FR   435  c7508ab7876e83d40a83f97c0f29b06264102e7914b82e3c4ba8558873798e1a
+  B1     3  5f914d980f821a209cbc590744dc1cae92e4b0eae56ee11c299ebfe4d734775b
+  B2    15  9593ece905a7563889001652c2ce301b657872cb86fd63168d9fa2daf7764d64
+  B3     2  e01b324208441c08fe17154037bc080b431486eab754b37585e090eca3aa9146
+
+C2 ids: M00285 M00687 M00982 M01397 M01401 M02955 M04245 M04297 M04350 M04373 M04407 M05608 M05642 M05663 M05954 M06218 M06241 M06624 M07267 M07269 M07324 M07671 M07875 M07905 M08240 M08275 M08783 M08804 M08829 M08883 M09246 M09298 M09321 M09403 M09438 M09491 M09915 M10130 M10164 M10305 M10526 M10558 M10559 M10617 M10632 M10719 M10840 M10855 M10881 M11247 M12175 M12210 M12226 M12859 M13247 M13342 M13347 M13444 M13470 M13674 M13756 M13774 M14035 M14090 M14119 M14135 M14365 M14473 M14560 M14631 M14667 M14706 M14711 M15373 M15652 M15668 M15684 M15895 M15898 M16116 M16133 M16229 M16251 M16263 M16730 M16813 M16849 M16874 M17332 M17666 M17788 M18066 M18406 M18456 M18467 M19099 M19106 M19158 M19255 M19267 R1202 U00130 U00134 U00173 U00398 U04250 U04330 U04378
