@@ -1,7 +1,7 @@
 {
- "checked": 1319,
+ "checked": 1332,
  "flagged": 9,
- "flagged_not_verified": 4,
+ "flagged_not_verified": 1,
  "rule": "first 40 normalised title chars or >= 80% of 4+ letter words in the first 6,000 chars; files > 1,000,000 chars always flagged",
  "flags": [
   {
@@ -47,7 +47,7 @@
    "page1_word_fraction": 0.33,
    "title_found_later": true,
    "flag": "title not on page 1",
-   "verified": null
+   "verified": "2026-10-20 orchestrator read page 1: Ukrainian-language review whose Ukrainian title matches the record's English title (language as a strategy of society); correct paper; screen it."
   },
   {
    "id": "M16194",
@@ -56,7 +56,7 @@
    "page1_word_fraction": 0.0,
    "title_found_later": false,
    "flag": "title not on page 1",
-   "verified": null
+   "verified": "2026-10-20 orchestrator: journal PDF from the record's route (Kibernetika 2025/02 art. 8), but the text layer is legacy-encoded Cyrillic (unreadable, no English abstract); HELD, not screened (analysis/screening/ft-r797/held-texts.jsonl)."
   },
   {
    "id": "M16195",
@@ -65,7 +65,7 @@
    "page1_word_fraction": 0.0,
    "title_found_later": false,
    "flag": "title not on page 1",
-   "verified": null
+   "verified": "2026-10-20 orchestrator: as M16194 (Kibernetika 2024/01 art. 8); text unreadable; HELD, not screened."
   },
   {
    "id": "M16633",
@@ -77,13 +77,8 @@
    "verified": "2026-10-17 orchestrator read page 1: the Zenodo DOI resolves to the AsAManThinks technical report 'Number-Theoretic Scheduling: Golden-Ratio and Digital-Root Bases ...' by the record's subject and source; title differs from the record, same work as far as the file shows; flagged for the screener's note, not a wrong file."
   },
   {
-   "id": "M18905",
-   "title": "Tri-Parametric Fractional-Order Controller Design for Integrating Systems With Time Delay",
-   "chars": 118429,
-   "page1_word_fraction": 0.1,
-   "title_found_later": false,
-   "flag": "title not on page 1",
-   "verified": null
+   "id": "M18905.wrong-file",
+   "flag": "no route row"
   }
  ]
 }

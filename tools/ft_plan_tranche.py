@@ -39,6 +39,8 @@ for l in open(FT / "convert-pymupdf-log.jsonl", encoding="utf-8"):
     r = json.loads(l); conv[r["id"]] = r["status"]
 tc = json.loads((FT / "title-check.json").read_text(encoding="utf-8"))
 flagged = {f["id"] for f in tc["flags"] if not f.get("verified")}
+hf = ROOT / f"analysis/screening/ft-{tr}/held-texts.jsonl"     # texts held by the orchestrator (unreadable, wrong file)
+flagged |= {json.loads(l)["id"] for l in open(hf, encoding="utf-8") if l.strip()} if hf.exists() else set()
 ready = sorted(i for i in frame - planned if conv.get(i) == "ok" and (TXT / f"{i}.txt").exists() and i not in flagged)
 held = sorted(i for i in frame - planned if conv.get(i) == "ok" and i in flagged)
 titles = {}
