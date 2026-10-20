@@ -1,0 +1,12 @@
+{"id": "M04239", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "X0 (R4): own method has no diffusion component", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M04239", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "X0 (R4): stated contribution is an empirical crash study", "loc": "p.1, §1 Introduction", "status": "not_found"}
+{"id": "R0308", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: masked discrete diffusion over SELFIES tokens", "loc": "p.10, §4 Methods, DLM", "status": "found"}
+{"id": "R0308", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2(ii): multi-step sampling", "loc": "p.12, §Implementation Details", "status": "found"}
+{"id": "R0308", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R7: generated output is molecules, not text; DLM trained only on SELFIES, so not D5", "loc": "p.1, Abstract", "status": "found"}
+{"id": "R0308", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R9 step 2: text conditions the diffusion component via the guiding predictor", "loc": "p.2, §1 Introduction", "status": "found"}
+{"id": "R0308", "screener": "FB-claude-opus-5-5", "i": 4, "cond": "R9 step 2: pathogen text embeddings enter the predictor", "loc": "p.10, §Molecule-Strain Knowledge Fusion", "status": "found"}
+{"id": "R0308", "screener": "FB-claude-opus-5-5", "i": 5, "cond": "R9 step 2: that predictor guides denoising", "loc": "p.12, §Sampling Strategy", "status": "found"}
+{"id": "R0619", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: diffusion component", "loc": "p.1, Abstract", "status": "found"}
+{"id": "R0619", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2: diffusion backbone of the own method", "loc": "p.2, §1 Introduction", "status": "found"}
+{"id": "R0619", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9: output is video (D4), not text; b1 fails, no text produced from a D4 input", "loc": "p.2, §2.1 Reference Images to Video", "status": "found"}
+{"id": "R0619", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.4, §2.1 Multi-Reference Conditioning", "status": "found"}
