@@ -1,0 +1,126 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) R0171 row_group C01: row_group_not_found ('AR model' is not a whole line after the header on page 1) -> see the brief
+(2) R0171 row_group C02: row_group_not_found ('AR model' is not a whole line after the header on page 1) -> see the brief
+(3) R0171 row_group C03: row_group_not_found ('Diffusion models' is not a whole line after the header on page 1) -> see the brief
+(4) R0171 row_group C04: row_group_not_found ('Diffusion models' is not a whole line after the header on page 1) -> see the brief
+(5) R0171 row_group C07: row_group_not_found ('AR model' is not a whole line after the header on page 1) -> see the brief
+(6) R0171 row_group C08: row_group_not_found ('AR model' is not a whole line after the header on page 1) -> see the brief
+(7) R0171 row_group C09: row_group_not_found ('Diffusion models' is not a whole line after the header on page 1) -> see the brief
+(8) R0171 row_group C10: row_group_not_found ('Diffusion-EAGS' is not a whole line after the header on page 1) -> see the brief
+(9) R0171 row_group C11: row_group_not_found ('Diffusion-EAGS' is not a whole line after the header on page 1) -> see the brief
+(10) R0171 row_group C12: row_group_not_found ('w/o EAGS' is not a whole line after the header on page 1) -> see the brief
+(11) R0171 row_group C13: row_group_not_found ('w/o EAGS' is not a whole line after the header on page 1) -> see the brief
+(12) R0171 row_group C14: row_group_not_found ('w/o Gibbs Sampling' is not a whole line after the header on page 1) -> see the brief
+(13) R0171 row_group C15: row_group_not_found ('w/o Gibbs Sampling' is not a whole line after the header on page 1) -> see the brief
+(14) R0171 row_group C16: row_group_not_found ('w/o Pre-trained MLM' is not a whole line after the header on page 1) -> see the brief
+(15) R0171 row_group C17: row_group_not_found ('w/o Pre-trained MLM' is not a whole line after the header on page 1) -> see the brief
+(16) R0171 row_group C18: row_group_not_found ('ParaDetox' is not a whole line after the header on page 1) -> see the brief
+(17) R0171 row_group C19: row_group_not_found ('ParaDetox' is not a whole line after the header on page 1) -> see the brief
+(18) R0171 row_group C20: row_group_not_found ('ParaDetox' is not a whole line after the header on page 1) -> see the brief
+(19) R0171 row_group C21: row_group_not_found ('Deontology' is not a whole line after the header on page 1) -> see the brief
+(20) R0171 row_group C22: row_group_not_found ('Deontology' is not a whole line after the header on page 1) -> see the brief
+(21) R0171 row_group C23: row_group_not_found ('QQP' is not a whole line after the header on page 1) -> see the brief
+(22) R0171 row_group C24: row_group_not_found ('QQP' is not a whole line after the header on page 1) -> see the brief
+(23) R0171 row_group C25: row_group_not_found ('QG' is not a whole line after the header on page 1) -> see the brief
+(24) R0171 row_group C26: row_group_not_found ('QG' is not a whole line after the header on page 1) -> see the brief
+(25) R0171 label_row K14.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(26) R0171 label_row K14.A2: label_row_mismatch (arm 'w/o EAGS', row 'Deont') -> see the brief
+(27) R0171 label_row K15.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(28) R0171 label_row K15.A2: label_row_mismatch (arm 'w/o EAGS', row 'Deont') -> see the brief
+(29) R0171 label_row K16.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(30) R0171 label_row K16.A2: label_row_mismatch (arm 'w/o EAGS', row 'Deont') -> see the brief
+(31) R0171 label_row K17.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(32) R0171 label_row K17.A2: label_row_mismatch (arm 'w/o EAGS', row 'Deont') -> see the brief
+(33) R0171 label_row K18.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(34) R0171 label_row K18.A2: label_row_mismatch (arm 'w/o EAGS', row 'Deont') -> see the brief
+(35) R0171 label_row K19.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(36) R0171 label_row K19.A2: label_row_mismatch (arm 'w/o EAGS', row 'Roc') -> see the brief
+(37) R0171 label_row K20.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(38) R0171 label_row K20.A2: label_row_mismatch (arm 'w/o EAGS', row 'Roc') -> see the brief
+(39) R0171 label_row K21.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(40) R0171 label_row K21.A2: label_row_mismatch (arm 'w/o EAGS', row 'Roc') -> see the brief
+(41) R0171 label_row K22.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(42) R0171 label_row K22.A2: label_row_mismatch (arm 'w/o EAGS', row 'Roc') -> see the brief
+(43) R0171 label_row K23.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(44) R0171 label_row K23.A2: label_row_mismatch (arm 'w/o EAGS', row 'Roc') -> see the brief
+(45) R0171 label_row K24.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(46) R0171 label_row K24.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Deont') -> see the brief
+(47) R0171 label_row K25.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(48) R0171 label_row K25.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Deont') -> see the brief
+(49) R0171 label_row K26.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(50) R0171 label_row K26.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Deont') -> see the brief
+(51) R0171 label_row K27.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(52) R0171 label_row K27.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Deont') -> see the brief
+(53) R0171 label_row K28.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(54) R0171 label_row K28.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Deont') -> see the brief
+(55) R0171 label_row K29.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(56) R0171 label_row K29.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Roc') -> see the brief
+(57) R0171 label_row K30.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(58) R0171 label_row K30.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Roc') -> see the brief
+(59) R0171 label_row K31.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(60) R0171 label_row K31.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Roc') -> see the brief
+(61) R0171 label_row K32.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(62) R0171 label_row K32.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Roc') -> see the brief
+(63) R0171 label_row K33.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(64) R0171 label_row K33.A2: label_row_mismatch (arm 'w/o Gibbs Sampling', row 'Roc') -> see the brief
+(65) R0171 label_row K34.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(66) R0171 label_row K34.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Deont') -> see the brief
+(67) R0171 label_row K35.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(68) R0171 label_row K35.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Deont') -> see the brief
+(69) R0171 label_row K36.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(70) R0171 label_row K36.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Deont') -> see the brief
+(71) R0171 label_row K37.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(72) R0171 label_row K37.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Deont') -> see the brief
+(73) R0171 label_row K38.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Deont') -> see the brief
+(74) R0171 label_row K38.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Deont') -> see the brief
+(75) R0171 label_row K39.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(76) R0171 label_row K39.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Roc') -> see the brief
+(77) R0171 label_row K40.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(78) R0171 label_row K40.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Roc') -> see the brief
+(79) R0171 label_row K41.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(80) R0171 label_row K41.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Roc') -> see the brief
+(81) R0171 label_row K42.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(82) R0171 label_row K42.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Roc') -> see the brief
+(83) R0171 label_row K43.A1: label_row_mismatch (arm 'Diffusion-EAGS', row 'Roc') -> see the brief
+(84) R0171 label_row K43.A2: label_row_mismatch (arm 'w/o Pre-trained MLM', row 'Roc') -> see the brief
+(85) R0588 prose_quote E17: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(86) R0588 benchmark K01.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(87) R0588 benchmark K01.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(88) R0588 benchmark K07.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(89) R0588 benchmark K07.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(90) R0588 benchmark K13.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(91) R0588 benchmark K13.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(92) R0588 benchmark K13.A3: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(93) R0588 benchmark K19.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(94) R0588 benchmark K19.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(95) R0588 benchmark K19.A3: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(96) R0588 benchmark K25.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(97) R0588 benchmark K25.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(98) R0588 benchmark K31.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(99) R0588 benchmark K31.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(100) R0588 benchmark K37.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(101) R0588 benchmark K37.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(102) R0588 benchmark K43.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(103) R0588 benchmark K43.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(104) R0588 benchmark K43.A3: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(105) R0588 benchmark K49.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(106) R0588 benchmark K49.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(107) R0588 benchmark K54.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(108) R0588 benchmark K54.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(109) R0588 benchmark K59.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(110) R0588 benchmark K59.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(111) R0588 benchmark K59.A3: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(112) R0588 benchmark K64.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(113) R0588 benchmark K64.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(114) R0588 benchmark K64.A3: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(115) R0588 benchmark K69.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(116) R0588 benchmark K69.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(117) R0588 benchmark K69.A3: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(118) R0588 benchmark K75.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(119) R0588 benchmark K75.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(120) R0588 benchmark K81.A1: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(121) R0588 benchmark K81.A2: benchmark_column_mismatch ('not stated' against 'Time') -> benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says
+(122) R0588 s06 S06: s06_mismatch (S06 reasoning against not_stated) -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
