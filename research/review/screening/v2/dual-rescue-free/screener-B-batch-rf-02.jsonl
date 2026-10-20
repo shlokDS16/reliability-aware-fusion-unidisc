@@ -1,0 +1,61 @@
+{"id": "M04502", "decision": "exclude", "code": "X1", "reason": "Diffusion used for robot action policies; no diffusion text generation.", "screener": "B-claude-opus"}
+{"id": "M08885", "decision": "exclude", "code": "X1", "reason": "Motion diffusion with action recognition; diffusion produces no text.", "screener": "B-claude-opus"}
+{"id": "M08772", "decision": "exclude", "code": "X2", "reason": "Image-in image-out flow matching; text only rendered as visual input.", "screener": "B-claude-opus"}
+{"id": "M12682", "decision": "exclude", "code": "X0", "reason": "Generic generative AI content system; no diffusion text model studied.", "screener": "B-claude-opus"}
+{"id": "M08400", "decision": "exclude", "code": "X1", "reason": "Diffusion retriever generates item embeddings, not natural-language text.", "screener": "B-claude-opus"}
+{"id": "M04029", "decision": "exclude", "code": "X1", "reason": "Diffusion generates gestures only; no text generation.", "screener": "B-claude-opus"}
+{"id": "M02366", "decision": "exclude", "code": "X2", "reason": "Text-to-motion diffusion; text only conditions motion generation.", "screener": "B-claude-opus"}
+{"id": "M04360", "decision": "include", "code": "", "reason": "Diffusion-based generation in sentence embedding space producing text.", "screener": "B-claude-opus"}
+{"id": "M14048", "decision": "exclude", "code": "X1", "reason": "Diffusion policy for driving trajectories; no diffusion text output.", "screener": "B-claude-opus"}
+{"id": "M07291", "decision": "exclude", "code": "X1", "reason": "Diffusion for tabular data imputation; no text generation.", "screener": "B-claude-opus"}
+{"id": "M13892", "decision": "unclear", "code": "", "reason": "Concept-embedding diffusion feeds QA text generation; diffusion role unclear.", "screener": "B-claude-opus"}
+{"id": "M07409", "decision": "exclude", "code": "X1", "reason": "Latent diffusion generates gestures; captioning is separate model.", "screener": "B-claude-opus"}
+{"id": "M16159", "decision": "exclude", "code": "X1", "reason": "Diffusion for discrete music melody generation only.", "screener": "B-claude-opus"}
+{"id": "M10795", "decision": "include", "code": "", "reason": "Latent diffusion reasoner generates thought tokens for text answers.", "screener": "B-claude-opus"}
+{"id": "M10149", "decision": "include", "code": "", "reason": "Text watermarking scheme targeting autoregressive and diffusion language models.", "screener": "B-claude-opus"}
+{"id": "M07080", "decision": "unclear", "code": "", "reason": "Image likelihood diffusion; claims extension to discrete data, text unclear.", "screener": "B-claude-opus"}
+{"id": "M03640", "decision": "exclude", "code": "X0", "reason": "SDE analysis of autoregressive LLM generation; no diffusion model.", "screener": "B-claude-opus"}
+{"id": "M13338", "decision": "exclude", "code": "X1", "reason": "Diffusion only generates visual features for translation pipeline.", "screener": "B-claude-opus"}
+{"id": "M14584", "decision": "exclude", "code": "X1", "reason": "Diffusion generates synthetic tabular health records; no text.", "screener": "B-claude-opus"}
+{"id": "M02379", "decision": "exclude", "code": "X2", "reason": "Text-to-motion diffusion; text only as conditioning.", "screener": "B-claude-opus"}
+{"id": "M04967", "decision": "unclear", "code": "", "reason": "Single LLM unifying AR text and motion diffusion; motion modality eligibility unclear.", "screener": "B-claude-opus"}
+{"id": "M05804", "decision": "exclude", "code": "X2", "reason": "Prompt inversion for text-to-image diffusion; diffusion generates no text.", "screener": "B-claude-opus"}
+{"id": "M07136", "decision": "exclude", "code": "X1", "reason": "Bayesian flow for CAD sequence generation; not natural-language text.", "screener": "B-claude-opus"}
+{"id": "M06952", "decision": "exclude", "code": "X0", "reason": "SDE model of LLM interaction dynamics; no diffusion model.", "screener": "B-claude-opus"}
+{"id": "M07984", "decision": "include", "code": "", "reason": "Latent diffusion reasoning trajectories decoded to text, trained with RL.", "screener": "B-claude-opus"}
+{"id": "M16951", "decision": "exclude", "code": "X1", "reason": "Discrete flow maps for biomolecule design only.", "screener": "B-claude-opus"}
+{"id": "M05452", "decision": "exclude", "code": "X1", "reason": "Discrete Poisson diffusion for music, images and synthetic data.", "screener": "B-claude-opus"}
+{"id": "M06993", "decision": "include", "code": "", "reason": "Unified diffusion Mamba generating images and extended text sequences.", "screener": "B-claude-opus"}
+{"id": "M06780", "decision": "exclude", "code": "X1", "reason": "Discrete flow over SMILES for molecule generation.", "screener": "B-claude-opus"}
+{"id": "M10860", "decision": "include", "code": "", "reason": "Diffusion backbone drafter for parallel speculative decoding of LLMs.", "screener": "B-claude-opus"}
+{"id": "M03590", "decision": "exclude", "code": "X2", "reason": "Text-driven interactive motion diffusion; text only conditions.", "screener": "B-claude-opus"}
+{"id": "M13116", "decision": "exclude", "code": "X0", "reason": "Compares chatbots with dental residents; no diffusion model studied.", "screener": "B-claude-opus"}
+{"id": "M04388", "decision": "exclude", "code": "X1", "reason": "Memorization in tabular diffusion models; no text generation.", "screener": "B-claude-opus"}
+{"id": "M08954", "decision": "exclude", "code": "X1", "reason": "Causal tabular generator with diffusion for continuous variables.", "screener": "B-claude-opus"}
+{"id": "M14884", "decision": "exclude", "code": "X4", "reason": "Conceptual generative AI framework for engineering design; no results.", "screener": "B-claude-opus"}
+{"id": "M13832", "decision": "exclude", "code": "X1", "reason": "Multi-task diffusion over images and labels; no text generation.", "screener": "B-claude-opus"}
+{"id": "M04401", "decision": "unclear", "code": "", "reason": "Stable diffusion integrated into MLLM for translation; unification unclear.", "screener": "B-claude-opus"}
+{"id": "M02293", "decision": "include", "code": "", "reason": "Diffusion model for structured data including text fields.", "screener": "B-claude-opus"}
+{"id": "M06281", "decision": "unclear", "code": "", "reason": "Unified emotion understanding and diffusion image generation; text output unclear.", "screener": "B-claude-opus"}
+{"id": "M09680", "decision": "unclear", "code": "", "reason": "Theory of continuous categorical diffusion; experiments only text-to-speech.", "screener": "B-claude-opus"}
+{"id": "M09789", "decision": "exclude", "code": "X2", "reason": "Diffusion only synthesizes images from prompts; text by separate MLLM.", "screener": "B-claude-opus"}
+{"id": "M15909", "decision": "exclude", "code": "X2", "reason": "Frozen diffusion renderer conditioned on LLaVA text instructions.", "screener": "B-claude-opus"}
+{"id": "M07580", "decision": "unclear", "code": "", "reason": "Serving any-to-any models; diffusion component not stated.", "screener": "B-claude-opus"}
+{"id": "M19127", "decision": "include", "code": "", "reason": "Discrete-flow trained parallel drafter for video LM speculative decoding.", "screener": "B-claude-opus"}
+{"id": "M08899", "decision": "exclude", "code": "X1", "reason": "VLA robot action modeling; diffusion for actions only.", "screener": "B-claude-opus"}
+{"id": "M09251", "decision": "exclude", "code": "X1", "reason": "Diffusion transformer for 3D sign motion; no text generation.", "screener": "B-claude-opus"}
+{"id": "M04274", "decision": "exclude", "code": "X1", "reason": "Discrete diffusion perturbations for EBMs on tabular and binary images.", "screener": "B-claude-opus"}
+{"id": "M05899", "decision": "include", "code": "", "reason": "Discrete edit flow model for text, code and captioning.", "screener": "B-claude-opus"}
+{"id": "M05846", "decision": "exclude", "code": "X1", "reason": "Diffusion synthesizes future sMRI representations; no text.", "screener": "B-claude-opus"}
+{"id": "M06052", "decision": "exclude", "code": "X2", "reason": "Transition matching evaluated on text-to-image; no text generation.", "screener": "B-claude-opus"}
+{"id": "M08879", "decision": "unclear", "code": "", "reason": "Discrete flow generates symbolic ODE equations; structured-text eligibility unclear.", "screener": "B-claude-opus"}
+{"id": "M18930", "decision": "exclude", "code": "X1", "reason": "Diffusion over aspect boundary coordinates; generates no natural-language text.", "screener": "B-claude-opus"}
+{"id": "M13437", "decision": "exclude", "code": "X0", "reason": "Diffusion masking attention for text classification; no diffusion generative model.", "screener": "B-claude-opus"}
+{"id": "M00932", "decision": "exclude", "code": "X1", "reason": "Continuous-time discrete diffusion evaluated on music and images only.", "screener": "B-claude-opus"}
+{"id": "M02979", "decision": "exclude", "code": "X0", "reason": "LLM dark jargon evaluation; no diffusion model.", "screener": "B-claude-opus"}
+{"id": "M08272", "decision": "exclude", "code": "X1", "reason": "Diffusion behavior cloning policy for actions; text from CVAE.", "screener": "B-claude-opus"}
+{"id": "M06991", "decision": "include", "code": "", "reason": "Multimodal LLM with diffusion head generating speech, unified model.", "screener": "B-claude-opus"}
+{"id": "M17539", "decision": "exclude", "code": "X2", "reason": "Compares GAN and diffusion text-to-image generation.", "screener": "B-claude-opus"}
+{"id": "M04871", "decision": "exclude", "code": "X1", "reason": "CTMC information estimator on synthetic and Ising data; no text.", "screener": "B-claude-opus"}
+{"id": "M07252", "decision": "exclude", "code": "X1", "reason": "Pipeline of separate models; diffusion generates images only.", "screener": "B-claude-opus"}
+{"id": "M04580", "decision": "include", "code": "", "reason": "Diffusion transformers jointly generate motion and text, including motion-to-text.", "screener": "B-claude-opus"}
