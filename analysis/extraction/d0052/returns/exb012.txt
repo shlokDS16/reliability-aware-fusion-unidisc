@@ -1,0 +1,62 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M07124 arm_column K01.A1: arm_column_mismatch (arm 'Time-int.', column 'HellaSwag') -> see the brief
+(2) M07124 arm_column K01.A2: arm_column_mismatch (arm 'Time-free', column 'HellaSwag') -> see the brief
+(3) M07124 arm_column K02.A1: arm_column_mismatch (arm 'Time-int.', column 'ARC_hard') -> see the brief
+(4) M07124 arm_column K02.A2: arm_column_mismatch (arm 'Time-free', column 'ARC_hard') -> see the brief
+(5) M07124 arm_column K03.A1: arm_column_mismatch (arm 'Time-int.', column 'PIQA') -> see the brief
+(6) M07124 arm_column K03.A2: arm_column_mismatch (arm 'Time-free', column 'PIQA') -> see the brief
+(7) M07124 arm_column K04.A1: arm_column_mismatch (arm 'Time-int.', column 'HellaSwag') -> see the brief
+(8) M07124 arm_column K04.A2: arm_column_mismatch (arm 'Time-free', column 'HellaSwag') -> see the brief
+(9) M07124 arm_column K05.A1: arm_column_mismatch (arm 'Time-int.', column 'ARC_hard') -> see the brief
+(10) M07124 arm_column K05.A2: arm_column_mismatch (arm 'Time-free', column 'ARC_hard') -> see the brief
+(11) M07124 arm_column K06.A1: arm_column_mismatch (arm 'Time-int.', column 'PIQA') -> see the brief
+(12) M07124 arm_column K06.A2: arm_column_mismatch (arm 'Time-free', column 'PIQA') -> see the brief
+(13) M07124 arm_column K07.A1: arm_column_mismatch (arm 'Time-int.', column 'HellaSwag') -> see the brief
+(14) M07124 arm_column K07.A2: arm_column_mismatch (arm 'Time-free', column 'HellaSwag') -> see the brief
+(15) M07124 arm_column K08.A1: arm_column_mismatch (arm 'Time-int.', column 'ARC_hard') -> see the brief
+(16) M07124 arm_column K08.A2: arm_column_mismatch (arm 'Time-free', column 'ARC_hard') -> see the brief
+(17) M07124 arm_column K09.A1: arm_column_mismatch (arm 'Time-int.', column 'PIQA') -> see the brief
+(18) M07124 arm_column K09.A2: arm_column_mismatch (arm 'Time-free', column 'PIQA') -> see the brief
+(19) M14267 row_group C01: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(20) M14267 row_group C02: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(21) M14267 row_group C03: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(22) M14267 row_group C04: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(23) M14267 row_group C09: row_group_not_found ('Open Domain Dialogue' is not a whole line after the header on page 7) -> see the brief
+(24) M14267 row_group C10: row_group_not_found ('Open Domain Dialogue' is not a whole line after the header on page 7) -> see the brief
+(25) M14267 row_group C11: row_group_not_found ('Open Domain Dialogue' is not a whole line after the header on page 7) -> see the brief
+(26) M14267 row_group C12: row_group_not_found ('Open Domain Dialogue' is not a whole line after the header on page 7) -> see the brief
+(27) M14267 row_group C13: row_group_not_found ('Text Simplification' is not a whole line after the header on page 7) -> see the brief
+(28) M14267 row_group C14: row_group_not_found ('Text Simplification' is not a whole line after the header on page 7) -> see the brief
+(29) M14267 row_group C15: row_group_not_found ('Text Simplification' is not a whole line after the header on page 7) -> see the brief
+(30) M14267 row_group C16: row_group_not_found ('Text Simplification' is not a whole line after the header on page 7) -> see the brief
+(31) M14267 row_group C17: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(32) M14267 row_group C18: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(33) M14267 row_group C19: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(34) M14267 row_group C20: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(35) M14267 row_group C21: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(36) M14267 row_group C22: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(37) M14267 row_group C23: row_group_not_found ('Question Generation' is not a whole line after the header on page 7) -> see the brief
+(38) M14267 prose_quote E01: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(39) M14267 prose_quote E13: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(40) M14267 prose_quote E15: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(41) M14267 prose_quote E17: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(42) M14267 prose_quote E21: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(43) M14267 prose_quote E23: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(44) M14267 prose_quote E24: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(45) M14267 prose_quote E29: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(46) M14267 prose_quote E37: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(47) M14267 prose_quote E38: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(48) M14267 prose_quote E39: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(49) M14267 prose_quote E40: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(50) M14267 prose_quote E41: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(51) M14267 prose_quote E42: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(52) M14267 prose_quote E43: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(53) M14267 prose_quote E44: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(54) M14267 condition K46.A1: condition_mismatch ('' against 'FMSeq') -> see the brief
+(55) M14267 condition K46.A2: condition_mismatch ('' against 'FMSeq') -> see the brief
+(56) M14267 condition K46.A3: condition_mismatch ('' against 'FMSeq') -> see the brief
+(57) M14267 condition K46.A4: condition_mismatch ('' against 'FMSeq') -> see the brief
+(58) M14267 condition K46.A5: condition_mismatch ('' against 'FMSeq') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
