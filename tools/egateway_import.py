@@ -106,6 +106,12 @@ def unpack_archives(rows):
 
 def do_import():
     rows = {r["id"]: r for r in csv.DictReader(open(LIST, encoding="utf-8-sig"))}
+    manual = {}   # later tranches' hand-download lists (egateway-manual-<tranche>.csv, 2026-10-20): the user saves by hand
+    for f in sorted(FT.glob("egateway-manual-*.csv")):
+        for r in csv.DictReader(open(f, encoding="utf-8-sig")):
+            if r["id"] not in rows:
+                manual[r["id"]] = r
+    rows.update(manual)
     unpack_archives(rows)
     have = {json.loads(l)["id"] for l in LOG.read_text(encoding="utf8").splitlines()
             if l.strip() and json.loads(l).get("status") == "ok"}
@@ -115,8 +121,10 @@ def do_import():
         if not src.exists() or i in have:
             continue
         b = src.read_bytes()
-        rec = {"id": i, "route": "e-gateway-chrome", "url": f"https://doi.org/{r['doi']}" if r["doi"] else r["url"],
-               "note": "user's Chrome with VIT access (Claude in Chrome), saved to Downloads, moved here"}
+        rec = {"id": i, "route": "e-gateway-manual" if i in manual else "e-gateway-chrome",
+               "url": f"https://doi.org/{r['doi']}" if r["doi"] else r["url"],
+               "note": "saved by the user by hand through the VIT e-gateway, moved here" if i in manual else
+                       "user's Chrome with VIT access (Claude in Chrome), saved to Downloads, moved here"}
         if not b.startswith(b"%PDF"):
             rec.update(status="not_pdf", bytes=len(b))
         else:
