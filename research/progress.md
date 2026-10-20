@@ -1,6 +1,24 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 29 (2026-10-21 ~03:55 IST; newest; session 0839c9f4 at 94 percent context, compacting).** **EA extraction
+  DONE for all 80** (exb001-exb033 incl. exb033r; exc001-exc011 incl. exc003r); per-record validator status in
+  analysis/extraction/d0052/batch-log.jsonl and validate-pass{1,2}.jsonl; pass-1 files keep groups some extractors
+  deleted in pass 2 (M12879 G22-G31, R0717 G03/G08, R0188 arms): use them for an RQ4 sensitivity. **EB second reader
+  (Sonnet, role EB, alias A):** ebx001, ebx002, ebx003r filed; RUNNING at 03:55: ebx004 (a1cd3117a9c35494b), ebx005
+  (a62f20c0eba377290); then `after.sh ebx00N`, one return, `after.sh ebx00N 2`. **Next:** EC adjudication (Fable) on the
+  8 ids: `python -I tools/ex_dispatch.py --role EC --batch ecx001 --ids <8 ids> --records-x <EA jsonl> --records-y <EB
+  jsonl> --lookups analysis/extraction/lookups --root <scratchpad ex-dispatch>` (EA/EB records: analysis/extraction/
+  d0052/EA|EB/<batch>/*-pass2.jsonl else pass 1); agreement: analysis/extraction/agreement.py (EA vs EB, stage-a mode);
+  copy EC records to analysis/extraction/d0052/EC/<batch>/ so rq_analysis uses them. **Interim results (before EC; file
+  rq-results.json, script rq_analysis.py):** census replication non-plain-or-unstated 74/76 (update 54/56, seed 20/20);
+  RQ2 AR-comparison studies 35/79, budget matched in all AR groups 0/35, budget not reported 31/35, variance 3/35,
+  copied AR numbers 7/35, direction mixed (15 better vs 14 worse of 32); RQ3 credited ablation 9/33; RQ4 non-monotone
+  step curves 10/19; RQ5 G-mm 20: CT5 claims 3, synergy groups 8; QA8 unsupported-or-contradicted claim 7/74. Then:
+  QA1 dated link check (downloads allowed), Section 5 RQ2-RQ6 + appraisal table S6, abstract/intro/conclusion, gates
+  (gate-auditor, citation-validator, red-team, research-humanizer), page cuts, PDF. Weekly usage 63 percent at 03:55.
+  Limits: D0057 3 agents, >= 4 GB RAM launch; count running agents BEFORE every launch or resume (two over-limit
+  launches were stopped tonight).
 - **HANDOFF 28 (2026-10-20 ~22:30 IST; newest; session 0839c9f4 continues, context 73 percent, will auto-compact).**
   **User decisions this evening (own words, this session):** D0053 launch >= 4.0 GB RAM; D0054 seed stratum (80 =
   60 update positions 1-20 + 20 seed from census eligible, seed-sample.json); D0055 P2 ok + 3 authors (Shlok Goenka,
