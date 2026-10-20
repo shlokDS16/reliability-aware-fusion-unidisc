@@ -1,6 +1,17 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 20 (2026-10-20 ~07:50 IST; newest; HANDOFF 18 (T1) and 19 (instrument) stand).** **Stage A extraction
+  tools built and tested, nothing drawn or extracted:** tools/ex_validate.py (table-aware validator), tools/ex_validate_batch.py
+  (batch driver, pass tags, dispatch checks), tools/ex_dispatch.py (isolated E1/E2/EC folders), analysis/extraction/agreement.py
+  1.0.x (stage-a/gate modes, MJ1 sign coverage, shared sign rules), analysis/extraction/draw_pilot.py (refuses a draw without a
+  decision row), draft lookups v1, we-expected.jsonl (275 units); tests: `python -E -P -m pytest tests/extraction
+  tests/test_ex_validate.py -q -p no:cacheprovider` 173/173 (do not run tests/exp001 and tests/exp003 in one process: 2
+  pre-existing clash failures). Logs: analysis/extraction/stageA-*.txt, ex_validate-test-log.txt. Open tool questions for
+  the human author: G1 (value-level failures reject the cell?), E1 coverage rule, derived-field filling; draw_pilot cannot
+  draw a re-gate G-mm list (C1 has only 53 records). **Waiting on the user:** research/EVENING-2026-10-20.md items 1-11
+  (+ 12 tool questions). Then: Stage A draw (needs the decision rows), T1 re-audit 2, 797 tranche downloads if yes.
+  Weekly usage ~13 percent at 07:50.
 - **HANDOFF 19 (2026-10-20 ~06:40 IST; newest; HANDOFF 18 stands for T1).** **Extraction instrument:** five
   architect/red-team rounds (research/review/extraction/*-v0.1..v0.5, audits 2026-10-20-redteam-extraction-v0.1..v0.5,
   scripts in analysis/extraction/ with logs). v0.5 red-team: 0 critical, 3 major (MJ1 final-sign pipeline undefined and
