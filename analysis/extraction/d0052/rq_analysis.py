@@ -101,6 +101,7 @@ for f in sorted((D / "EC").glob("*/*.jsonl")) if (D / "EC").exists() else []:
             ec_used.append(r["id"])
 done = {h: [i for i in STRATA[h] if i in recs and i not in LEFT_FRAME] for h in STRATA}
 n_h = {h: len(v) for h, v in done.items()}
+IN_FRAME = [recs[i] for h in done for i in done[h]]     # unit totals use in-frame records only (not LEFT_FRAME)
 
 
 # ---------------------------------------------------------------- estimator
@@ -351,7 +352,7 @@ R["RQ2"] = {
 sg = lambda r: [s for gr in ar(r) for s in direction(r, gr, "diffusion", "autoregressive")]
 R["RQ2"]["diffusion_better_majority_of_units"] = est(lambda r: None if not sg(r) else sum(x > 0 for x in sg(r)) > len(sg(r)) / 2)
 R["RQ2"]["diffusion_worse_majority_of_units"] = est(lambda r: None if not sg(r) else sum(x < 0 for x in sg(r)) > len(sg(r)) / 2)
-R["RQ2"]["units_total"] = Counter("better" if x > 0 else "worse" if x < 0 else "tie" for r in recs.values() for x in sg(r))
+R["RQ2"]["units_total"] = Counter("better" if x > 0 else "worse" if x < 0 else "tie" for r in IN_FRAME for x in sg(r))
 tr = lambda r: groups(r, TRAIN)
 R["RQ3"] = {
     "has_training_group": est(lambda r: bool(tr(r))),
@@ -362,7 +363,7 @@ R["RQ3"] = {
 }
 ts = lambda r: [s for gr in tr(r) for s in direction(r, gr)]
 R["RQ3"]["anchor_better_majority"] = est(lambda r: None if not ts(r) else sum(x > 0 for x in ts(r)) > len(ts(r)) / 2)
-R["RQ3"]["units_total"] = Counter("anchor-better" if x > 0 else "anchor-worse" if x < 0 else "tie" for r in recs.values() for x in ts(r))
+R["RQ3"]["units_total"] = Counter("anchor-better" if x > 0 else "anchor-worse" if x < 0 else "tie" for r in IN_FRAME for x in ts(r))
 inf = lambda r: groups(r, INFER)
 R["RQ4"] = {
     "has_inference_group": est(lambda r: bool(inf(r))),
@@ -370,8 +371,15 @@ R["RQ4"] = {
     "budget_reported_any": est(lambda r: None if not inf(r) else any(gr.get("budget_across_arms") in ("matched", "reported") for gr in inf(r))),
     "variance_any": est(lambda r: None if not inf(r) else any(any_var(r, gr) for gr in inf(r))),
 }
-sh = lambda r: [s for gr in groups(r, {"steps-or-nfe", "tokens-per-step"}) for s in monotone(r, gr)]
-R["RQ4"]["dose_shapes_units"] = Counter(s for r in recs.values() for s in sh(r))
+# shapes along increasing compute: a steps/NFE sweep as printed; a tokens-per-step sweep reversed (more tokens per step
+# is fewer network calls), so 'up' always means quality rises with compute
+FLIP = {"up": "down", "down": "up"}
+sh = lambda r: ([s for gr in groups(r, {"steps-or-nfe"}) for s in monotone(r, gr)]
+                + [FLIP.get(s, s) for gr in groups(r, {"tokens-per-step"}) for s in monotone(r, gr)])
+R["RQ4"]["dose_shapes_units"] = Counter(s for r in IN_FRAME for s in sh(r))
+R["RQ4"]["dose_shapes_by_factor"] = {f: Counter((FLIP.get(s, s) if f == "tokens-per-step" else s) for r in IN_FRAME
+                                                for gr in groups(r, {f}) for s in monotone(r, gr))
+                                     for f in ("steps-or-nfe", "tokens-per-step")}
 R["RQ4"]["any_nonmonotone_dose_curve"] = est(lambda r: None if not sh(r) else any(s in ("peaked", "other") for s in sh(r)))
 mmr = {i: recs[i] for i in done.get("G-mm", [])}
 R["RQ5"] = {
