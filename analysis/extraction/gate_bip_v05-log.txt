@@ -1,0 +1,197 @@
+python 3.14.3, numpy 2.4.2; SEED 20265500; reps 1000 per scenario (4 chunks); bound R 1000; simulated gate bootstrap B 500 (production 4000)
+config C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\gate-config-v05.json sha256 fb14fd2906cf8fce136e27199dca70864ea3d2fd7458a483ff8d2426fb7135e8; model sha256 1328a75af9e8f62b4c01d66815b076a514bbc6fe50e43c859343b4818af774ea
+grid C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\bip-grid-v2.json sha256 64628119cb826689c512d30ab9c7d439e8c9f417275045bf94a99b8893c18635; scripts sha256: gate_bip_v05 c8f85b7cfee4b920, gate_rule_v05 8dea739cf98838cd, gate_oc_v05 fcb87e928a4994e3
+gated criteria (18): G1 accept EA, G1 accept EB, G3 raw S, G3 raw D, G3 raw F, G3 raw QA-sub, G3 raw CT, G3 raw H-attr, G3 K-attr, G3 QA kappa, G4 F1_H, G4 F1_G, G4 F1_K, G4 M-val, G4 M-class, G4 M-anchorG, G4 M-pool, G5 anchors; report only: G4 M-sign, D credited_ablation alone
+
+Per rule: P(pass) [MC s.e.]; share of n = 60/72/90/105/120; mean n; expected gate cost (mean n x 176k-310k tokens); P(step 6) for the product rules
+
+[G05] good; ICC 0.05 all (1000 replicates); median largest U80 of the gated count metrics 0.38; median pooled U (V4) 0.06
+  P80: P(pass) 0.975 [0.005]; n 0.02 0.26 0.42 0.18 0.12; mean n 91.0; cost 16.0M-28.2M; P(step 6) 0.02
+  P50: P(pass) 0.920 [0.009]; n 0.61 0.27 0.10 0.02 0.01; mean n 67.4; cost 11.9M-20.9M; P(step 6) 0.00
+  X80: P(pass) 0.993 [0.003]; n 0.00 0.00 0.09 0.17 0.73; mean n 114.4; cost 20.1M-35.5M
+  V4: P(pass) 0.910 [0.009]; n 0.80 0.13 0.07 0.01 0.00; mean n 63.8; cost 11.2M-19.8M
+  median U80 per metric: G1 accept EA 0.06; G1 accept EB 0.06; G3 raw S 0.06; G3 raw D 0.06; G3 raw F 0.08; G3 raw QA-sub 0.06; G3 raw CT 0.08; G3 raw H-attr 0.07; KA:held_fixed 0.18; KA:budget_across_arms 0.18; KA:credited_ablation 0.18; KA:scoring 0.08; G4 F1_H 0.10; G4 F1_G 0.10; G4 F1_K 0.08; G4 M-val 0.08; G4 M-class 0.18; G4 M-anchorG 0.18; G4 M-sign 0.60; G4 M-pool 0.20
+
+[G10] good; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.46; median pooled U (V4) 0.12
+  P80: P(pass) 0.969 [0.005]; n 0.00 0.09 0.42 0.22 0.26; mean n 99.4; cost 17.5M-30.8M; P(step 6) 0.06
+  P50: P(pass) 0.924 [0.008]; n 0.38 0.34 0.20 0.07 0.01; mean n 73.8; cost 13.0M-22.9M; P(step 6) 0.00
+  X80: P(pass) 0.991 [0.003]; n 0.00 0.00 0.02 0.09 0.90; mean n 118.2; cost 20.8M-36.6M
+  V4: P(pass) 0.927 [0.008]; n 0.42 0.29 0.26 0.02 0.00; mean n 72.6; cost 12.8M-22.5M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.22
+
+[G20] good; ICC 0.20 all (1000 replicates); median largest U80 of the gated count metrics 0.58; median pooled U (V4) 0.22
+  P80: P(pass) 0.946 [0.007]; n 0.00 0.00 0.07 0.19 0.73; mean n 114.8; cost 20.2M-35.6M; P(step 6) 0.39
+  P50: P(pass) 0.898 [0.010]; n 0.01 0.16 0.42 0.23 0.17; mean n 95.3; cost 16.8M-29.5M; P(step 6) 0.04
+  X80: P(pass) 0.961 [0.006]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.894 [0.010]; n 0.01 0.09 0.59 0.20 0.11; mean n 94.6; cost 16.6M-29.3M
+  median U80 per metric: G1 accept EA 0.26; G1 accept EB 0.26; G3 raw S 0.24; G3 raw D 0.24; G3 raw F 0.26; G3 raw QA-sub 0.24; G3 raw CT 0.26; G3 raw H-attr 0.24; KA:held_fixed 0.34; KA:budget_across_arms 0.34; KA:credited_ablation 0.34; KA:scoring 0.28; G4 F1_H 0.26; G4 F1_G 0.26; G4 F1_K 0.24; G4 M-val 0.30; G4 M-class 0.36; G4 M-anchorG 0.36; G4 M-sign 0.60; G4 M-pool 0.34
+
+[G30] good; ICC 0.30 all (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.32
+  P80: P(pass) 0.904 [0.009]; n 0.00 0.00 0.00 0.04 0.95; mean n 119.3; cost 21.0M-37.0M; P(step 6) 0.84
+  P50: P(pass) 0.877 [0.010]; n 0.00 0.01 0.15 0.28 0.56; mean n 110.9; cost 19.5M-34.4M; P(step 6) 0.23
+  X80: P(pass) 0.906 [0.009]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.877 [0.010]; n 0.00 0.00 0.12 0.31 0.57; mean n 111.6; cost 19.6M-34.6M
+  median U80 per metric: G1 accept EA 0.40; G1 accept EB 0.40; G3 raw S 0.34; G3 raw D 0.36; G3 raw F 0.36; G3 raw QA-sub 0.34; G3 raw CT 0.36; G3 raw H-attr 0.34; KA:held_fixed 0.46; KA:budget_across_arms 0.46; KA:credited_ablation 0.46; KA:scoring 0.40; G4 F1_H 0.36; G4 F1_G 0.38; G4 F1_K 0.34; G4 M-val 0.46; G4 M-class 0.46; G4 M-anchorG 0.46; G4 M-sign 0.60; G4 M-pool 0.46
+
+[H1] good; red-team H1: M-sign, M-pool 0.5, others 0.10 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.22
+  P80: P(pass) 0.922 [0.008]; n 0.00 0.00 0.03 0.06 0.91; mean n 118.1; cost 20.8M-36.6M; P(step 6) 0.36
+  P50: P(pass) 0.902 [0.009]; n 0.03 0.06 0.14 0.23 0.55; mean n 107.9; cost 19.0M-33.5M; P(step 6) 0.05
+  X80: P(pass) 0.922 [0.008]; n 0.00 0.00 0.00 0.00 1.00; mean n 119.9; cost 21.1M-37.2M
+  V4: P(pass) 0.839 [0.012]; n 0.03 0.11 0.51 0.27 0.09; mean n 94.1; cost 16.6M-29.2M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.23; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.60
+
+[H10] good; red-team H10: M-sign, M-pool 0.6, M-anchorG 0.3, others 0.10 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.28
+  P80: P(pass) 0.884 [0.010]; n 0.00 0.00 0.00 0.01 0.99; mean n 119.7; cost 21.1M-37.1M; P(step 6) 0.81
+  P50: P(pass) 0.876 [0.010]; n 0.00 0.01 0.05 0.09 0.84; mean n 116.4; cost 20.5M-36.1M; P(step 6) 0.37
+  X80: P(pass) 0.885 [0.010]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.833 [0.012]; n 0.01 0.02 0.33 0.30 0.34; mean n 104.2; cost 18.3M-32.3M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.22; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.44; G4 M-sign 0.60; G4 M-pool 0.60
+
+[H2] good; F1_G 0.40, others 0.10 (1000 replicates); median largest U80 of the gated count metrics 0.52; median pooled U (V4) 0.18
+  P80: P(pass) 0.968 [0.006]; n 0.00 0.00 0.17 0.40 0.43; mean n 108.9; cost 19.2M-33.8M; P(step 6) 0.16
+  P50: P(pass) 0.919 [0.009]; n 0.01 0.24 0.56 0.14 0.05; mean n 88.9; cost 15.6M-27.5M; P(step 6) 0.01
+  X80: P(pass) 0.977 [0.005]; n 0.00 0.00 0.00 0.01 0.99; mean n 119.9; cost 21.1M-37.2M
+  V4: P(pass) 0.897 [0.010]; n 0.10 0.24 0.56 0.07 0.03; mean n 84.5; cost 14.9M-26.2M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.14; KA:held_fixed 0.24; KA:budget_across_arms 0.22; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.16; G4 F1_G 0.48; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.24
+
+[H3] good; M-anchorG 0.40, others 0.05 (1000 replicates); median largest U80 of the gated count metrics 0.58; median pooled U (V4) 0.12
+  P80: P(pass) 0.963 [0.006]; n 0.00 0.01 0.12 0.14 0.73; mean n 113.7; cost 20.0M-35.2M; P(step 6) 0.25
+  P50: P(pass) 0.926 [0.008]; n 0.10 0.16 0.28 0.20 0.26; mean n 94.9; cost 16.7M-29.4M; P(step 6) 0.02
+  X80: P(pass) 0.969 [0.005]; n 0.00 0.00 0.01 0.02 0.97; mean n 119.4; cost 21.0M-37.0M
+  V4: P(pass) 0.846 [0.011]; n 0.39 0.32 0.27 0.02 0.00; mean n 73.2; cost 12.9M-22.7M
+  median U80 per metric: G1 accept EA 0.06; G1 accept EB 0.06; G3 raw S 0.06; G3 raw D 0.06; G3 raw F 0.08; G3 raw QA-sub 0.06; G3 raw CT 0.08; G3 raw H-attr 0.08; KA:held_fixed 0.20; KA:budget_across_arms 0.18; KA:credited_ablation 0.18; KA:scoring 0.08; G4 F1_H 0.10; G4 F1_G 0.10; G4 F1_K 0.06; G4 M-val 0.08; G4 M-class 0.18; G4 M-anchorG 0.56; G4 M-sign 0.60; G4 M-pool 0.18
+
+[H6] good; L/Q/H and G1 criteria 0.40, others 0.05 (1000 replicates); median largest U80 of the gated count metrics 0.38; median pooled U (V4) 0.06
+  P80: P(pass) 0.983 [0.004]; n 0.00 0.05 0.60 0.20 0.14; mean n 96.3; cost 16.9M-29.8M; P(step 6) 0.02
+  P50: P(pass) 0.945 [0.007]; n 0.20 0.59 0.18 0.02 0.01; mean n 73.7; cost 13.0M-22.9M; P(step 6) 0.00
+  X80: P(pass) 0.995 [0.002]; n 0.00 0.00 0.10 0.16 0.74; mean n 114.5; cost 20.2M-35.5M
+  V4: P(pass) 0.891 [0.010]; n 0.79 0.12 0.08 0.01 0.00; mean n 64.3; cost 11.3M-19.9M
+  median U80 per metric: G1 accept EA 0.54; G1 accept EB 0.54; G3 raw S 0.46; G3 raw D 0.46; G3 raw F 0.46; G3 raw QA-sub 0.46; G3 raw CT 0.48; G3 raw H-attr 0.46; KA:held_fixed 0.18; KA:budget_across_arms 0.18; KA:credited_ablation 0.18; KA:scoring 0.08; G4 F1_H 0.48; G4 F1_G 0.10; G4 F1_K 0.06; G4 M-val 0.08; G4 M-class 0.18; G4 M-anchorG 0.18; G4 M-sign 0.60; G4 M-pool 0.18
+
+[N07] good; ICC 0.10 all, unit counts NB shape 0.7 (1000 replicates); median largest U80 of the gated count metrics 0.46; median pooled U (V4) 0.12
+  P80: P(pass) 0.956 [0.006]; n 0.00 0.09 0.38 0.25 0.28; mean n 100.5; cost 17.7M-31.2M; P(step 6) 0.07
+  P50: P(pass) 0.884 [0.010]; n 0.38 0.33 0.23 0.05 0.02; mean n 74.0; cost 13.0M-22.9M; P(step 6) 0.00
+  X80: P(pass) 0.989 [0.003]; n 0.00 0.00 0.02 0.07 0.91; mean n 118.4; cost 20.8M-36.7M
+  V4: P(pass) 0.883 [0.010]; n 0.41 0.28 0.24 0.05 0.01; mean n 73.7; cost 13.0M-22.8M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.14; KA:held_fixed 0.24; KA:budget_across_arms 0.23; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.14; G4 M-val 0.16; G4 M-class 0.24; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.24
+
+[HG] good; M-anchorG, M-pool, M-class 0.40, others 0.10 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.26
+  P80: P(pass) 0.887 [0.010]; n 0.00 0.00 0.00 0.04 0.96; mean n 119.3; cost 21.0M-37.0M; P(step 6) 0.85
+  P50: P(pass) 0.883 [0.010]; n 0.00 0.02 0.11 0.17 0.70; mean n 113.1; cost 19.9M-35.1M; P(step 6) 0.38
+  X80: P(pass) 0.890 [0.010]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.819 [0.012]; n 0.01 0.03 0.46 0.32 0.18; mean n 99.5; cost 17.5M-30.8M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.22; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.56; G4 M-anchorG 0.54; G4 M-sign 0.60; G4 M-pool 0.56
+
+[HP] good; M-pool 0.50, others 0.05 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.14
+  P80: P(pass) 0.935 [0.008]; n 0.00 0.00 0.03 0.09 0.88; mean n 117.6; cost 20.7M-36.4M; P(step 6) 0.22
+  P50: P(pass) 0.921 [0.009]; n 0.03 0.08 0.15 0.22 0.52; mean n 106.4; cost 18.7M-33.0M; P(step 6) 0.02
+  X80: P(pass) 0.941 [0.007]; n 0.00 0.00 0.00 0.01 0.99; mean n 119.8; cost 21.1M-37.1M
+  V4: P(pass) 0.824 [0.012]; n 0.23 0.37 0.34 0.04 0.01; mean n 77.4; cost 13.6M-24.0M
+  median U80 per metric: G1 accept EA 0.06; G1 accept EB 0.06; G3 raw S 0.06; G3 raw D 0.06; G3 raw F 0.08; G3 raw QA-sub 0.06; G3 raw CT 0.08; G3 raw H-attr 0.06; KA:held_fixed 0.18; KA:budget_across_arms 0.18; KA:credited_ablation 0.18; KA:scoring 0.08; G4 F1_H 0.10; G4 F1_G 0.10; G4 F1_K 0.08; G4 M-val 0.08; G4 M-class 0.18; G4 M-anchorG 0.18; G4 M-sign 0.60; G4 M-pool 0.60
+
+[B10 G4 F1_G] G4 F1_G bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.56; median pooled U (V4) 0.14
+  P80: P(pass) 0.061 [0.008]; n 0.00 0.02 0.24 0.25 0.49; mean n 108.0; cost 19.0M-33.5M; P(step 6) 0.23
+  P50: P(pass) 0.051 [0.007]; n 0.30 0.29 0.22 0.10 0.09; mean n 79.9; cost 14.1M-24.8M; P(step 6) 0.01
+  X80: P(pass) 0.065 [0.008]; n 0.00 0.00 0.00 0.02 0.98; mean n 119.7; cost 21.1M-37.1M
+  V4: P(pass) 0.061 [0.008]; n 0.36 0.26 0.31 0.05 0.03; mean n 76.1; cost 13.4M-23.6M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.30; KA:budget_across_arms 0.29; KA:credited_ablation 0.28; KA:scoring 0.16; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.14; G4 M-val 0.14; G4 M-class 0.28; G4 M-anchorG 0.28; G4 M-sign 0.60; G4 M-pool 0.30
+
+[B10 G4 M-anchorG] G4 M-anchorG bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.44; median pooled U (V4) 0.12
+  P80: P(pass) 0.040 [0.006]; n 0.00 0.12 0.46 0.26 0.16; mean n 96.3; cost 17.0M-29.9M; P(step 6) 0.03
+  P50: P(pass) 0.040 [0.006]; n 0.40 0.36 0.20 0.03 0.01; mean n 72.1; cost 12.7M-22.4M; P(step 6) 0.00
+  X80: P(pass) 0.043 [0.006]; n 0.00 0.00 0.02 0.09 0.89; mean n 118.1; cost 20.8M-36.6M
+  V4: P(pass) 0.043 [0.006]; n 0.43 0.30 0.23 0.03 0.00; mean n 72.2; cost 12.7M-22.4M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.22; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.16; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.20; G4 M-sign 0.60; G4 M-pool 0.24
+
+[B10 G4 M-pool] G4 M-pool bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.44; median pooled U (V4) 0.12
+  P80: P(pass) 0.043 [0.006]; n 0.01 0.10 0.47 0.23 0.20; mean n 97.4; cost 17.1M-30.2M; P(step 6) 0.05
+  P50: P(pass) 0.051 [0.007]; n 0.36 0.37 0.21 0.04 0.02; mean n 73.8; cost 13.0M-22.9M; P(step 6) 0.00
+  X80: P(pass) 0.036 [0.006]; n 0.00 0.00 0.02 0.08 0.90; mean n 118.3; cost 20.8M-36.7M
+  V4: P(pass) 0.048 [0.007]; n 0.40 0.31 0.26 0.03 0.00; mean n 72.7; cost 12.8M-22.5M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.22; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.16; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.15; G4 M-class 0.24; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.20
+
+[B10 G3 K-attr] G3 K-attr bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.40; median pooled U (V4) 0.12
+  P80: P(pass) 0.017 [0.004]; n 0.00 0.09 0.38 0.27 0.26; mean n 100.3; cost 17.6M-31.1M; P(step 6) 0.07
+  P50: P(pass) 0.019 [0.004]; n 0.35 0.35 0.22 0.06 0.02; mean n 74.8; cost 13.2M-23.2M; P(step 6) 0.00
+  X80: P(pass) 0.015 [0.004]; n 0.00 0.00 0.04 0.12 0.85; mean n 117.2; cost 20.6M-36.3M
+  V4: P(pass) 0.018 [0.004]; n 0.42 0.30 0.25 0.03 0.00; mean n 72.4; cost 12.7M-22.5M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.14; KA:held_fixed 0.20; KA:budget_across_arms 0.20; KA:credited_ablation 0.18; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.24
+
+[B10 G4 M-class] G4 M-class bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.44; median pooled U (V4) 0.12
+  P80: P(pass) 0.061 [0.008]; n 0.00 0.12 0.41 0.21 0.27; mean n 99.0; cost 17.4M-30.7M; P(step 6) 0.06
+  P50: P(pass) 0.058 [0.007]; n 0.41 0.30 0.22 0.05 0.02; mean n 73.8; cost 13.0M-22.9M; P(step 6) 0.00
+  X80: P(pass) 0.069 [0.008]; n 0.00 0.00 0.03 0.10 0.88; mean n 117.7; cost 20.7M-36.5M
+  V4: P(pass) 0.060 [0.008]; n 0.44 0.27 0.26 0.03 0.00; mean n 72.3; cost 12.7M-22.4M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.22; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.16; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.20; G4 M-anchorG 0.22; G4 M-sign 0.60; G4 M-pool 0.24
+
+[B10 G1 accept EB] G1 accept EB bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.44; median pooled U (V4) 0.12
+  P80: P(pass) 0.051 [0.007]; n 0.00 0.09 0.39 0.26 0.26; mean n 100.0; cost 17.6M-31.0M; P(step 6) 0.07
+  P50: P(pass) 0.066 [0.008]; n 0.37 0.34 0.21 0.05 0.02; mean n 74.3; cost 13.1M-23.0M; P(step 6) 0.00
+  X80: P(pass) 0.066 [0.008]; n 0.00 0.00 0.03 0.07 0.90; mean n 118.1; cost 20.8M-36.6M
+  V4: P(pass) 0.069 [0.008]; n 0.43 0.27 0.26 0.03 0.01; mean n 72.8; cost 12.8M-22.6M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.10; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.23; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.22; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.24
+
+[B10 G4 F1_K] G4 F1_K bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.46; median pooled U (V4) 0.12
+  P80: P(pass) 0.060 [0.008]; n 0.00 0.09 0.42 0.22 0.26; mean n 99.5; cost 17.5M-30.8M; P(step 6) 0.06
+  P50: P(pass) 0.052 [0.007]; n 0.39 0.32 0.23 0.05 0.02; mean n 74.0; cost 13.0M-22.9M; P(step 6) 0.00
+  X80: P(pass) 0.065 [0.008]; n 0.00 0.00 0.02 0.08 0.90; mean n 118.2; cost 20.8M-36.7M
+  V4: P(pass) 0.052 [0.007]; n 0.41 0.27 0.27 0.04 0.01; mean n 73.6; cost 13.0M-22.8M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.13; KA:held_fixed 0.24; KA:budget_across_arms 0.22; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.16; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.22; G4 M-sign 0.60; G4 M-pool 0.22
+
+[B10 G4 M-val] G4 M-val bad; ICC 0.10 all (1000 replicates); median largest U80 of the gated count metrics 0.44; median pooled U (V4) 0.12
+  P80: P(pass) 0.026 [0.005]; n 0.00 0.12 0.38 0.25 0.25; mean n 99.3; cost 17.5M-30.8M; P(step 6) 0.08
+  P50: P(pass) 0.030 [0.005]; n 0.38 0.31 0.23 0.06 0.02; mean n 74.6; cost 13.1M-23.1M; P(step 6) 0.00
+  X80: P(pass) 0.025 [0.005]; n 0.00 0.00 0.03 0.08 0.89; mean n 118.0; cost 20.8M-36.6M
+  V4: P(pass) 0.033 [0.006]; n 0.44 0.26 0.27 0.03 0.01; mean n 72.8; cost 12.8M-22.6M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.14; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.12; G4 M-class 0.24; G4 M-anchorG 0.22; G4 M-sign 0.60; G4 M-pool 0.24
+
+[BH1 M-pool] G4 M-pool bad; H1 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.22
+  P80: P(pass) 0.051 [0.007]; n 0.00 0.00 0.01 0.09 0.90; mean n 118.3; cost 20.8M-36.7M; P(step 6) 0.34
+  P50: P(pass) 0.052 [0.007]; n 0.00 0.03 0.15 0.27 0.54; mean n 109.6; cost 19.3M-34.0M; P(step 6) 0.05
+  X80: P(pass) 0.050 [0.007]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.056 [0.007]; n 0.01 0.08 0.56 0.24 0.10; mean n 94.9; cost 16.7M-29.4M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.22; KA:budget_across_arms 0.22; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.16; G4 M-class 0.24; G4 M-anchorG 0.24; G4 M-sign 0.60; G4 M-pool 0.60
+
+[BH10 M-pool] G4 M-pool bad; H10 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.28
+  P80: P(pass) 0.048 [0.007]; n 0.00 0.00 0.00 0.00 1.00; mean n 119.9; cost 21.1M-37.2M; P(step 6) 0.81
+  P50: P(pass) 0.047 [0.007]; n 0.00 0.00 0.02 0.07 0.90; mean n 118.1; cost 20.8M-36.6M; P(step 6) 0.38
+  X80: P(pass) 0.049 [0.007]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.052 [0.007]; n 0.00 0.01 0.35 0.31 0.32; mean n 104.1; cost 18.3M-32.3M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.14; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.22; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.44; G4 M-sign 0.60; G4 M-pool 0.60
+
+[BH10 M-anchorG] G4 M-anchorG bad; H10 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.28
+  P80: P(pass) 0.037 [0.006]; n 0.00 0.00 0.00 0.01 0.99; mean n 119.8; cost 21.1M-37.1M; P(step 6) 0.81
+  P50: P(pass) 0.038 [0.006]; n 0.00 0.01 0.04 0.11 0.84; mean n 116.5; cost 20.5M-36.1M; P(step 6) 0.36
+  X80: P(pass) 0.035 [0.006]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.041 [0.006]; n 0.00 0.02 0.36 0.31 0.30; mean n 103.3; cost 18.2M-32.0M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.24; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.40; G4 M-sign 0.60; G4 M-pool 0.60
+
+[B30 F1_G] G4 F1_G bad; ICC 0.30 all (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.32
+  P80: P(pass) 0.059 [0.007]; n 0.00 0.00 0.00 0.02 0.98; mean n 119.7; cost 21.1M-37.1M; P(step 6) 0.88
+  P50: P(pass) 0.058 [0.007]; n 0.00 0.01 0.15 0.26 0.58; mean n 111.2; cost 19.6M-34.5M; P(step 6) 0.28
+  X80: P(pass) 0.059 [0.007]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.058 [0.007]; n 0.00 0.00 0.12 0.27 0.61; mean n 112.3; cost 19.8M-34.8M
+  median U80 per metric: G1 accept EA 0.40; G1 accept EB 0.40; G3 raw S 0.36; G3 raw D 0.36; G3 raw F 0.36; G3 raw QA-sub 0.34; G3 raw CT 0.36; G3 raw H-attr 0.36; KA:held_fixed 0.50; KA:budget_across_arms 0.50; KA:credited_ablation 0.51; KA:scoring 0.42; G4 F1_H 0.36; G4 F1_G 0.36; G4 F1_K 0.35; G4 M-val 0.46; G4 M-class 0.50; G4 M-anchorG 0.50; G4 M-sign 0.60; G4 M-pool 0.50
+
+[B30 M-anchorG] G4 M-anchorG bad; ICC 0.30 all (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.32
+  P80: P(pass) 0.044 [0.006]; n 0.00 0.00 0.00 0.03 0.97; mean n 119.5; cost 21.0M-37.0M; P(step 6) 0.79
+  P50: P(pass) 0.042 [0.006]; n 0.00 0.00 0.14 0.31 0.55; mean n 111.1; cost 19.6M-34.4M; P(step 6) 0.20
+  X80: P(pass) 0.047 [0.007]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.042 [0.006]; n 0.00 0.00 0.12 0.33 0.55; mean n 111.4; cost 19.6M-34.5M
+  median U80 per metric: G1 accept EA 0.40; G1 accept EB 0.40; G3 raw S 0.34; G3 raw D 0.34; G3 raw F 0.36; G3 raw QA-sub 0.34; G3 raw CT 0.36; G3 raw H-attr 0.36; KA:held_fixed 0.46; KA:budget_across_arms 0.46; KA:credited_ablation 0.46; KA:scoring 0.40; G4 F1_H 0.36; G4 F1_G 0.38; G4 F1_K 0.36; G4 M-val 0.48; G4 M-class 0.46; G4 M-anchorG 0.41; G4 M-sign 0.60; G4 M-pool 0.46
+
+[B30 G1 EB] G1 accept EB bad; ICC 0.30 all (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.32
+  P80: P(pass) 0.074 [0.008]; n 0.00 0.00 0.00 0.03 0.97; mean n 119.5; cost 21.0M-37.1M; P(step 6) 0.85
+  P50: P(pass) 0.069 [0.008]; n 0.00 0.01 0.13 0.32 0.55; mean n 111.0; cost 19.5M-34.4M; P(step 6) 0.20
+  X80: P(pass) 0.075 [0.008]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.070 [0.008]; n 0.00 0.00 0.11 0.30 0.58; mean n 112.1; cost 19.7M-34.7M
+  median U80 per metric: G1 accept EA 0.40; G1 accept EB 0.34; G3 raw S 0.34; G3 raw D 0.36; G3 raw F 0.36; G3 raw QA-sub 0.34; G3 raw CT 0.36; G3 raw H-attr 0.36; KA:held_fixed 0.46; KA:budget_across_arms 0.46; KA:credited_ablation 0.44; KA:scoring 0.40; G4 F1_H 0.36; G4 F1_G 0.38; G4 F1_K 0.36; G4 M-val 0.46; G4 M-class 0.46; G4 M-anchorG 0.46; G4 M-sign 0.60; G4 M-pool 0.46
+
+[BHP M-pool] G4 M-pool bad; M-pool 0.50, others 0.05 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.14
+  P80: P(pass) 0.053 [0.007]; n 0.00 0.00 0.02 0.11 0.87; mean n 117.7; cost 20.7M-36.5M; P(step 6) 0.21
+  P50: P(pass) 0.058 [0.007]; n 0.01 0.05 0.16 0.32 0.47; mean n 107.9; cost 19.0M-33.5M; P(step 6) 0.02
+  X80: P(pass) 0.053 [0.007]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.059 [0.007]; n 0.24 0.35 0.38 0.03 0.01; mean n 77.2; cost 13.6M-23.9M
+  median U80 per metric: G1 accept EA 0.06; G1 accept EB 0.06; G3 raw S 0.06; G3 raw D 0.06; G3 raw F 0.08; G3 raw QA-sub 0.06; G3 raw CT 0.08; G3 raw H-attr 0.06; KA:held_fixed 0.20; KA:budget_across_arms 0.18; KA:credited_ablation 0.18; KA:scoring 0.08; G4 F1_H 0.10; G4 F1_G 0.10; G4 F1_K 0.06; G4 M-val 0.08; G4 M-class 0.18; G4 M-anchorG 0.18; G4 M-sign 0.60; G4 M-pool 0.60
+
+written C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\gate_bip_v05-results.json; elapsed 2374 s

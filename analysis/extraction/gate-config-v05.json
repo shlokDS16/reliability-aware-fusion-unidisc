@@ -1,0 +1,59 @@
+{
+ "version": "gate-config-v05",
+ "note": "Declared inputs of the extraction gate, form v0.5 (EXTRACTION-PLAN-v0.5 s10.7-s10.8; red-team audit 4 MA1, MA3, MA4). Read by gate_oc_v05.py, gate_bip_v05.py, gate_rule_v05.py and (when built) agreement.py. Unit counts and ICC values are E0 assumptions until Stage A replaces the unit counts (B1: a copy of this file with new 'size' and 'units' values, never an edit of a script). The B2 gate row records the sha256 of this file and of the grid file.",
+ "design": {
+  "n_grid": [60, 72, 90, 105, 120],
+  "n_cap": 120,
+  "n_cap_rule": "MA4: n_cap is 120 unless the B2 row, signed before phase 1, sets the largest grid n whose upper gate cost fits the approved budget; it never changes after phase 1 starts",
+  "strata": 3,
+  "per_stratum_list": 40,
+  "per_stratum_phase1": 20,
+  "target": 0.85,
+  "rule": "product",
+  "rule_text": "n = smallest grid n <= n_cap with prod_c P_c(theta_c, n) >= target, P_c from the grid file (linear interpolation in theta, theta clipped to the grid range); theta_c = max of the per-metric bounds listed in icc_from (grid minimum when the list is empty); if none, n = n_cap and the step-6 statement is written"
+ },
+ "bound": {
+  "kind": "neyman-per-metric",
+  "conf": 0.80,
+  "R": 1000,
+  "theta_grid": [0.02, 0.04, 0.06, 0.08, 0.10, 0.12, 0.14, 0.16, 0.18, 0.20, 0.22, 0.24, 0.26, 0.28, 0.30, 0.32, 0.34, 0.36, 0.38, 0.40, 0.42, 0.44, 0.46, 0.48, 0.50, 0.52, 0.54, 0.56, 0.58, 0.60],
+  "search": "bisection over the theta grid (gate_rule_v05.neyman_upper); metrics in icc_metrics order, one numpy Generator for the whole phase-1 computation",
+  "min_records": 5,
+  "undefined_estimate": "theta grid maximum",
+  "seed_stage_a": 20264900,
+  "seed_phase1": 20264901,
+  "seed_regate_phase1": 20264902
+ },
+ "bootstrap": {"B": 4000, "seed": 20261800, "lb_quantile": 0.05},
+ "cost": {"gate_record_ktokens": [176, 310], "source": "analysis/extraction/cost_options_v04-log.txt line 1 (gate record)"},
+ "units": {
+  "nb_shape": 1.5,
+  "sign_extra_per_group": 0.6,
+  "arms_extra_per_group": 1.2,
+  "note": "M-sign units = (matched group, metric key) pairs: c = max(matched groups, 1) when the record has matched K units, d = min(matched K units, c + Poisson(sign_extra_per_group * c)). K-attr scoring units = matched arms: 2 per matched group + Poisson(arms_extra_per_group per matched group). E0."
+ },
+ "kattr_fields": ["held_fixed", "budget_across_arms", "credited_ablation", "scoring"],
+ "criteria": {
+  "G1 accept EA":  {"kind": "ratio", "size": ["pois", 60], "good": 0.95, "bad": 0.85, "line": 0.85, "block": "K", "icc_from": ["G1 accept EA"]},
+  "G1 accept EB":  {"kind": "ratio", "size": ["pois", 60], "good": 0.95, "bad": 0.85, "line": 0.85, "block": "K", "icc_from": ["G1 accept EB"]},
+  "G3 raw S":      {"kind": "ratio", "size": ["fixed", 16], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G3 raw S"]},
+  "G3 raw D":      {"kind": "ratio", "size": ["fixed", 13], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G3 raw D"]},
+  "G3 raw F":      {"kind": "ratio", "size": ["fixed", 6], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G3 raw F"]},
+  "G3 raw QA-sub": {"kind": "ratio", "size": ["fixed", 22], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G3 raw QA-sub"]},
+  "G3 raw CT":     {"kind": "ratio", "size": ["fixed", 6], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G3 raw CT"]},
+  "G3 raw H-attr": {"kind": "ratio", "size": ["pois", 9], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G3 raw H-attr"]},
+  "G3 K-attr":     {"kind": "kattr", "size": null, "good": 0.85, "bad": 0.70, "line": 0.71, "block": "K", "icc_from": ["G3 K-attr:held_fixed", "G3 K-attr:budget_across_arms", "G3 K-attr:credited_ablation", "G3 K-attr:scoring"]},
+  "G3 QA kappa":   {"kind": "kappa", "size": 8, "good": 0.70, "bad": 0.40, "line": 0.45, "block": "LQ", "icc_from": ["G3 raw S", "G3 raw D", "G3 raw F", "G3 raw QA-sub", "G3 raw CT", "G3 raw H-attr", "G4 F1_H"]},
+  "G4 F1_H":       {"kind": "f1", "size": ["pois", 4], "good": 0.85, "bad": 0.70, "line": 0.70, "block": "LQ", "icc_from": ["G4 F1_H"]},
+  "G4 F1_G":       {"kind": "f1", "size": ["nb", 3], "good": 0.75, "bad": 0.60, "line": 0.60, "block": "K", "icc_from": ["G4 F1_G"]},
+  "G4 F1_K":       {"kind": "f1", "size": ["nb", 8], "good": 0.75, "bad": 0.60, "line": 0.60, "block": "K", "icc_from": ["G4 F1_K"]},
+  "G4 M-val":      {"kind": "ratio", "size": ["nb", 15], "good": 0.95, "bad": 0.85, "line": 0.86, "block": "K", "icc_from": ["G4 M-val"]},
+  "G4 M-class":    {"kind": "onG", "size": null, "good": 0.85, "bad": 0.65, "line": 0.65, "block": "K", "icc_from": ["G4 M-class"]},
+  "G4 M-anchorG":  {"kind": "onG", "size": null, "good": 0.85, "bad": 0.70, "line": 0.71, "block": "K", "icc_from": ["G4 M-anchorG"]},
+  "G4 M-sign":     {"kind": "onS", "size": null, "good": 0.97, "bad": 0.90, "line": 0.92, "block": "K", "icc_from": ["G4 M-sign"], "report_only": true, "why_report_only": "plan v0.5 s10.3: sign is set by script cross-check and EC; its ICC is not identifiable from 60 records (gate_rule_v05-log.txt)"},
+  "G4 M-pool":     {"kind": "onG", "size": null, "good": 0.85, "bad": 0.70, "line": 0.71, "block": "K", "icc_from": ["G4 M-pool"]},
+  "G5 anchors":    {"kind": "count", "size": null, "good": 0.85, "bad": 0.60, "line": null, "block": "K", "icc_from": []},
+  "D credited_ablation alone": {"kind": "field", "of": "G3 K-attr", "field": "credited_ablation", "good": 0.85, "bad": 0.70, "line": 0.71, "block": "K", "icc_from": ["G3 K-attr:credited_ablation"], "report_only": true}
+ },
+ "count_metrics_v04_pooled_rule": ["G4 F1_G", "G4 F1_K", "G4 M-val", "G3 K-attr", "G4 M-class", "G4 M-anchorG", "G4 M-sign", "G4 M-pool"]
+}

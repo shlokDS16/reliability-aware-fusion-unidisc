@@ -1,0 +1,41 @@
+python 3.14.3, numpy 2.4.2, scipy 1.17.1; SEED 20265000; bootstrap B 500 per simulated gate (production 4000)
+config C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\gate-config-v05.json sha256 fb14fd2906cf8fce136e27199dca70864ea3d2fd7458a483ff8d2426fb7135e8; model sha256 1328a75af9e8f62b4c01d66815b076a514bbc6fe50e43c859343b4818af774ea; script sha256 fcb87e928a4994e3c75af0d83ce5c421bc5434ceaedb094574982108f8ab00a7
+criteria (pass iff LB90 >= line; G5: count >= c(n)):
+  G1 accept EA               ratio  size ['pois', 60]   good 0.95 bad 0.85 LB90 >= 0.85
+  G1 accept EB               ratio  size ['pois', 60]   good 0.95 bad 0.85 LB90 >= 0.85
+  G3 raw S                   ratio  size ['fixed', 16]  good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw D                   ratio  size ['fixed', 13]  good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw F                   ratio  size ['fixed', 6]   good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw QA-sub              ratio  size ['fixed', 22]  good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw CT                  ratio  size ['fixed', 6]   good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw H-attr              ratio  size ['pois', 9]    good 0.85 bad 0.70 LB90 >= 0.70
+  G3 K-attr                  kattr  size None           good 0.85 bad 0.70 LB90 >= 0.71
+  G3 QA kappa                kappa  size 8              good 0.70 bad 0.40 LB90 >= 0.45
+  G4 F1_H                    f1     size ['pois', 4]    good 0.85 bad 0.70 LB90 >= 0.70
+  G4 F1_G                    f1     size ['nb', 3]      good 0.75 bad 0.60 LB90 >= 0.60
+  G4 F1_K                    f1     size ['nb', 8]      good 0.75 bad 0.60 LB90 >= 0.60
+  G4 M-val                   ratio  size ['nb', 15]     good 0.95 bad 0.85 LB90 >= 0.86
+  G4 M-class                 onG    size None           good 0.85 bad 0.65 LB90 >= 0.65
+  G4 M-anchorG               onG    size None           good 0.85 bad 0.70 LB90 >= 0.71
+  G4 M-sign                  onS    size None           good 0.97 bad 0.90 LB90 >= 0.92  (report only)
+  G4 M-pool                  onG    size None           good 0.85 bad 0.70 LB90 >= 0.71
+  G5 anchors                 count  size None           good 0.85 bad 0.60 count >= c(n)
+  D credited_ablation alone  field  size None           good 0.85 bad 0.70 LB90 >= 0.71  (report only)
+units: {"nb_shape": 1.5, "sign_extra_per_group": 0.6, "arms_extra_per_group": 1.2}
+
+== Calibration: P(criterion passes | its bad level, others good), 2000 simulated gates each ==
+Rule (unchanged from v0.4): the line is the smallest candidate >= the bad level with P <= 0.05 at n 60, ICC 0.10.
+  G4 M-sign                  n  60 ICC 0.10: line 0.90: 0.099  line 0.91: 0.056  line 0.92: 0.030  line 0.93: 0.015  line 0.94: 0.005
+  G4 M-sign                  n 120 ICC 0.30: line 0.90: 0.097  line 0.91: 0.048  line 0.92: 0.021  line 0.93: 0.007  line 0.94: 0.001
+  G4 M-sign                  n 120 ICC 0.50: line 0.90: 0.124  line 0.91: 0.072  line 0.92: 0.041  line 0.93: 0.021  line 0.94: 0.008
+  G4 M-pool                  n  60 ICC 0.10: line 0.70: 0.069  line 0.71: 0.049  line 0.72: 0.029  line 0.73: 0.017
+  G4 M-pool                  n 120 ICC 0.30: line 0.70: 0.079  line 0.71: 0.054  line 0.72: 0.031  line 0.73: 0.015
+  G4 M-pool                  n 120 ICC 0.50: line 0.70: 0.066  line 0.71: 0.050  line 0.72: 0.038  line 0.73: 0.022
+  G3 K-attr                  n  60 ICC 0.10: line 0.70: 0.070  line 0.71: 0.029  line 0.72: 0.013  line 0.73: 0.004
+  G3 K-attr                  n 120 ICC 0.30: line 0.70: 0.063  line 0.71: 0.024  line 0.72: 0.009  line 0.73: 0.002
+  G3 K-attr                  n 120 ICC 0.50: line 0.70: 0.071  line 0.71: 0.035  line 0.72: 0.015  line 0.73: 0.005
+  D credited_ablation alone  n  60 ICC 0.10: line 0.70: 0.067  line 0.71: 0.045  line 0.72: 0.030  line 0.73: 0.021
+  D credited_ablation alone  n 120 ICC 0.30: line 0.70: 0.074  line 0.71: 0.047  line 0.72: 0.031  line 0.73: 0.021
+  D credited_ablation alone  n 120 ICC 0.50: line 0.70: 0.071  line 0.71: 0.048  line 0.72: 0.033  line 0.73: 0.021
+
+elapsed 40 s

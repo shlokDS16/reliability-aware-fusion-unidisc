@@ -1,0 +1,58 @@
+python 3.14.3, numpy 2.4.2, scipy 1.17.1; SEED 20265000; bootstrap B 500 per simulated gate (production 4000)
+config C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\gate-config-v05.json sha256 fb14fd2906cf8fce136e27199dca70864ea3d2fd7458a483ff8d2426fb7135e8; model sha256 1328a75af9e8f62b4c01d66815b076a514bbc6fe50e43c859343b4818af774ea; script sha256 fcb87e928a4994e3c75af0d83ce5c421bc5434ceaedb094574982108f8ab00a7
+criteria (pass iff LB90 >= line; G5: count >= c(n)):
+  G1 accept EA               ratio  size ['pois', 60]   good 0.95 bad 0.85 LB90 >= 0.85
+  G1 accept EB               ratio  size ['pois', 60]   good 0.95 bad 0.85 LB90 >= 0.85
+  G3 raw S                   ratio  size ['fixed', 16]  good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw D                   ratio  size ['fixed', 13]  good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw F                   ratio  size ['fixed', 6]   good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw QA-sub              ratio  size ['fixed', 22]  good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw CT                  ratio  size ['fixed', 6]   good 0.85 bad 0.70 LB90 >= 0.70
+  G3 raw H-attr              ratio  size ['pois', 9]    good 0.85 bad 0.70 LB90 >= 0.70
+  G3 K-attr                  kattr  size None           good 0.85 bad 0.70 LB90 >= 0.71
+  G3 QA kappa                kappa  size 8              good 0.70 bad 0.40 LB90 >= 0.45
+  G4 F1_H                    f1     size ['pois', 4]    good 0.85 bad 0.70 LB90 >= 0.70
+  G4 F1_G                    f1     size ['nb', 3]      good 0.75 bad 0.60 LB90 >= 0.60
+  G4 F1_K                    f1     size ['nb', 8]      good 0.75 bad 0.60 LB90 >= 0.60
+  G4 M-val                   ratio  size ['nb', 15]     good 0.95 bad 0.85 LB90 >= 0.86
+  G4 M-class                 onG    size None           good 0.85 bad 0.65 LB90 >= 0.65
+  G4 M-anchorG               onG    size None           good 0.85 bad 0.70 LB90 >= 0.71
+  G4 M-sign                  onS    size None           good 0.97 bad 0.90 LB90 >= 0.92  (report only)
+  G4 M-pool                  onG    size None           good 0.85 bad 0.70 LB90 >= 0.71
+  G5 anchors                 count  size None           good 0.85 bad 0.60 count >= c(n)
+  D credited_ablation alone  field  size None           good 0.85 bad 0.70 LB90 >= 0.71  (report only)
+units: {"nb_shape": 1.5, "sign_extra_per_group": 0.6, "arms_extra_per_group": 1.2}
+
+== A. Fixed n = 60 (3 x 20), ICC 0.10, OMEGA 0, 2000 simulated gates per scenario; G5 c(60) = 43 ==
+  scenario                                         P(gate passes)  P(that criterion passes)  P(D credited alone passes)
+  every quantity good                              0.854                                     0.938
+    MC s.e. 0.008; marginals: G1 accept EA 1.000; G1 accept EB 1.000; G3 raw S 1.000; G3 raw D 1.000; G3 raw F 1.000; G3 raw QA-sub 1.000; G3 raw CT 1.000; G3 raw H-attr 1.000; G3 K-attr 1.000; G3 QA kappa 1.000; G4 F1_H 1.000; G4 F1_G 0.985; G4 F1_K 1.000; G4 M-val 0.996; G4 M-class 0.993; G4 M-anchorG 0.934; G4 M-sign 0.801; G4 M-pool 0.936; G5 anchors 0.998; D credited_ablation alone 0.938
+    joint P(pass) if 'D credited_ablation alone' were a 20th gated criterion: 0.799
+  G1 accept EA bad                                 0.060           0.071                     0.936
+  G1 accept EB bad                                 0.066           0.075                     0.926
+  G3 raw S bad                                     0.054           0.067                     0.934
+  G3 raw D bad                                     0.054           0.062                     0.941
+  G3 raw F bad                                     0.057           0.068                     0.934
+  G3 raw QA-sub bad                                0.056           0.067                     0.934
+  G3 raw CT bad                                    0.057           0.068                     0.935
+  G3 raw H-attr bad                                0.054           0.065                     0.941
+  G3 K-attr bad                                    0.024           0.029                     0.048
+  G3 QA kappa bad                                  0.009           0.011                     0.939
+  G4 F1_H bad                                      0.046           0.053                     0.931
+  G4 F1_G bad                                      0.042           0.052                     0.867
+  G4 F1_K bad                                      0.047           0.054                     0.935
+  G4 M-val bad                                     0.025           0.029                     0.939
+  G4 M-class bad                                   0.048           0.054                     0.931
+  G4 M-anchorG bad                                 0.045           0.048                     0.933
+  G4 M-pool bad                                    0.038           0.045                     0.932
+  G5 anchors bad                                   0.027           0.030                     0.941
+  K-attr field held_fixed bad (others good)        0.845                                     0.936
+  K-attr field budget_across_arms bad (others good) 0.852                                     0.927
+  K-attr field credited_ablation bad (others good) 0.846                                     0.050
+  K-attr field scoring bad (others good)           0.856                                     0.935
+  every quantity bad                               0.000                                     0.054
+  max over single bad gated quantities = 0.066 (G1 accept EB)
+  sensitivity, OMEGA 0.5 (correlated record effects): P(pass | all good) 0.926 (1000)
+  sensitivity, unit counts more skewed (NB shape 0.7): P(pass | all good) 0.785 (1000)
+
+elapsed 243 s

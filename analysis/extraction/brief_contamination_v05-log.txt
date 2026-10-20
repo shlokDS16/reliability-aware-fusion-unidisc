@@ -1,0 +1,91 @@
+includes 608; decisions sha256 962e3171e358a13b; script sha256 a9f43b3851a0fc1e
+
+===== v0.4: research/review/extraction/extractor-brief-v0.4.md + research/review/extraction/extraction-schema-v0.4.json (session text 59478 chars; brief sha256 49a41ddfd1eadade, schema sha256 caa6765f3549eb7c) =====
+(1) KNOWN strings present: 0
+(2) SPANS and numbers: 141 candidates; synthetic 58; generic 73; specific 10
+    specific [allowlisted: JSON punctuation of the output format]: ': [...], ' in 1: M18861
+    specific [allowlisted: JSON punctuation of the output format]: ': {...}, ' in 1: M15236
+    specific [allowlisted: instrument id (pattern)]: 'C04' in 1: M14023
+    specific [allowlisted: instrument id (pattern)]: 'K02' in 1: M14035
+    specific [allowlisted: instrument id (pattern)]: 'QA1' in 1: M17993
+    specific [allowlisted: instrument id (pattern)]: 'T01' in 3: M13081 M14693 M18222
+    specific [allowlisted: codebook notation for more than one step]: 'T>1' in 2: M00973 M18369
+    specific [allowlisted: codebook term (search width)]: 'beam B' in 4: M00973 M07270 M15770 M15990
+    specific [allowlisted: codebook value]: 'not stated' in 1: M14075
+    specific [allowlisted: codebook value of the setting-provenance field]: 'tuned per task' in 1: M18222
+(3) 5-GRAMS: 9112 distinct session 5-grams; in any include 22; generic (> 5 texts) 0; specific (1-5 texts) 22
+    specific [allowlisted: function words only]: 'do not apply to the' in 2: M08126 M17985
+    specific [allowlisted: function words only]: 'does not say whether the' in 1: M19261
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'forward passes or function evaluations' in 1: M17935
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'how many positions are committed' in 1: M13665
+    specific [allowlisted: function words only]: 'if at least one of' in 2: M15672 M19307
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'if it equals the reference' in 1: M18118
+    specific [allowlisted: function words only]: 'if the text does not' in 1: M15050
+    specific [allowlisted: function words only]: 'in the setting of the' in 1: M05954
+    specific [allowlisted: function words only]: 'in this family is a' in 1: M18656
+    specific [allowlisted: function words only]: 'inputs and outputs of the' in 3: M09463 M09810 M13730
+    specific [allowlisted: function words only]: 'is the one of the' in 1: M19106
+    specific [allowlisted: function words only]: 'model stands in for the' in 1: M15091
+    specific [allowlisted: function words only]: 'only one of the two' in 2: M11750 M15673
+    specific [NOT ALLOWLISTED]: 'table 3 ablation of the' in 1: M15033
+    specific [allowlisted: function words only]: 'that differ only in the' in 4: M13331 M14035 M15184 M17004
+    specific [allowlisted: function words only]: 'that differs from it in' in 1: M17965
+    specific [allowlisted: function words only]: 'the first row of the' in 1: M12468
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'the token distribution of the' in 1: M19267
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'tokens per step on the' in 1: M07270
+    specific [allowlisted: function words only]: 'whether or not it is' in 2: M13440 M16707
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'which masked positions are committed' in 2: M09438 M14014
+    specific [allowlisted: function words only]: 'within a factor of two' in 1: M18364
+(4) NUMBER RUN 38.2 41.7 44.9: synthetic (0 include texts)
+(4) NUMBER RUN 38.2 41.7 44.9: synthetic (0 include texts)
+(4) NUMBER RUN 1.5 2.5: generic (98 include texts)
+(4) NUMBER RUN 0.463 46.3: synthetic (0 include texts)
+(4) NUMBER RUN 13.47 13.5: synthetic (0 include texts)
+(4) NUMBER RUN 0.45 45.2: synthetic (0 include texts)
+  v0.4: KNOWN 0; non-allowlisted specific hits 1
+
+===== v0.5: research/review/extraction/extractor-brief-v0.5.md + research/review/extraction/extraction-schema-v0.5.json (session text 64734 chars; brief sha256 d390f9664ca63d33, schema sha256 b021c041c26cf548) =====
+(1) KNOWN strings present: 0
+(2) SPANS and numbers: 152 candidates; synthetic 63; generic 79; specific 10
+    specific [allowlisted: JSON punctuation of the output format]: ': [...], ' in 1: M18861
+    specific [allowlisted: JSON punctuation of the output format]: ': {...}, ' in 1: M15236
+    specific [allowlisted: instrument id (pattern)]: 'C04' in 1: M14023
+    specific [allowlisted: instrument id (pattern)]: 'K02' in 1: M14035
+    specific [allowlisted: instrument id (pattern)]: 'QA1' in 1: M17993
+    specific [allowlisted: instrument id (pattern)]: 'T01' in 3: M13081 M14693 M18222
+    specific [allowlisted: codebook notation for more than one step]: 'T>1' in 2: M00973 M18369
+    specific [allowlisted: codebook term (search width)]: 'beam B' in 4: M00973 M07270 M15770 M15990
+    specific [allowlisted: codebook value]: 'not stated' in 1: M14075
+    specific [allowlisted: codebook value of the setting-provenance field]: 'tuned per task' in 1: M18222
+(3) 5-GRAMS: 9946 distinct session 5-grams; in any include 23; generic (> 5 texts) 1; specific (1-5 texts) 22
+    specific [allowlisted: function words only]: 'do not apply to the' in 2: M08126 M17985
+    specific [allowlisted: function words only]: 'does not say whether the' in 1: M19261
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'forward passes or function evaluations' in 1: M17935
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'how many positions are committed' in 1: M13665
+    specific [allowlisted: function words only]: 'if at least one of' in 2: M15672 M19307
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'if it equals the reference' in 1: M18118
+    specific [allowlisted: function words only]: 'if the text does not' in 1: M15050
+    specific [allowlisted: function words only]: 'in the setting of the' in 1: M05954
+    specific [allowlisted: function words only]: 'in this family is a' in 1: M18656
+    specific [allowlisted: function words only]: 'inputs and outputs of the' in 3: M09463 M09810 M13730
+    specific [allowlisted: function words only]: 'is the one of the' in 1: M19106
+    specific [allowlisted: function words only]: 'model stands in for the' in 1: M15091
+    specific [allowlisted: function words only]: 'of every arm in this' in 1: M14075
+    specific [allowlisted: function words only]: 'only one of the two' in 2: M11750 M15673
+    specific [allowlisted: function words only]: 'that differ only in the' in 4: M13331 M14035 M15184 M17004
+    specific [allowlisted: function words only]: 'that differs from it in' in 1: M17965
+    specific [allowlisted: function words only]: 'the first row of the' in 1: M12468
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'the token distribution of the' in 1: M19267
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'tokens per step on the' in 1: M07270
+    specific [allowlisted: function words only]: 'whether or not it is' in 2: M13440 M16707
+    specific [allowlisted: the instrument's own codebook wording (rule text, no paper-specific content)]: 'which masked positions are committed' in 2: M09438 M14014
+    specific [allowlisted: function words only]: 'within a factor of two' in 1: M18364
+(4) NUMBER RUN 38.2 41.7 44.9: synthetic (0 include texts)
+(4) NUMBER RUN 38.2 41.7 44.9: synthetic (0 include texts)
+(4) NUMBER RUN 1.5 2.5: generic (98 include texts)
+(4) NUMBER RUN 0.463 46.3: synthetic (0 include texts)
+(4) NUMBER RUN 13.47 13.5: synthetic (0 include texts)
+(4) NUMBER RUN 0.45 45.2: synthetic (0 include texts)
+  v0.5: KNOWN 0; non-allowlisted specific hits 0
+
+SUMMARY: v0.4 failures 1; v0.5 failures 0

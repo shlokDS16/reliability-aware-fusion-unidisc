@@ -1,0 +1,21 @@
+python 3.14.3, numpy 2.4.2; SEED 20265900
+self-test 1 (bisection returns the last true index; -1 when none): ok
+self-test 2 (product rule, interpolation, clipping, n_cap and step-6 flag on a hand grid): ok
+self-test 3 (bisection vs full scan, 24 data sets, R 1,000): equal in 0.79; differences [-0.02, 0.0, 0.02]
+
+Coverage of the per-metric Neyman bound, 60 phase-1 records, R 1,000, 200 replicates per cell (coverage = P(true ICC <= U)):
+  metric (good level, units)                  true ICC   estimate median   U median [10%, 90%]   coverage
+  M-sign (0.97, sign decisions)                0.10       0.00              0.60 [0.28, 0.60]     1.00
+  M-sign (0.97, sign decisions)                0.30       0.22              0.60 [0.48, 0.60]     0.98
+  M-sign (0.97, sign decisions)                0.50       0.45              0.60 [0.60, 0.60]     0.97
+  M-anchorG / M-pool (0.85, matched groups)    0.10       0.09              0.24 [0.12, 0.48]     0.99
+  M-anchorG / M-pool (0.85, matched groups)    0.30       0.29              0.46 [0.24, 0.60]     0.81
+  M-anchorG / M-pool (0.85, matched groups)    0.50       0.49              0.60 [0.40, 0.60]     0.83
+  F1_G (0.75, Jaccard 0.60, union groups)      0.10       0.10              0.16 [0.06, 0.26]     0.77
+  F1_G (0.75, Jaccard 0.60, union groups)      0.30       0.29              0.38 [0.24, 0.50]     0.79
+  F1_G (0.75, Jaccard 0.60, union groups)      0.50       0.50              0.58 [0.46, 0.60]     0.81
+  M-val (0.95, NB 15 units)                    0.10       0.08              0.14 [0.08, 0.26]     0.81
+  M-val (0.95, NB 15 units)                    0.30       0.26              0.46 [0.28, 0.60]     0.87
+  M-val (0.95, NB 15 units)                    0.50       0.46              0.60 [0.52, 0.60]     0.93
+
+elapsed 49 s
