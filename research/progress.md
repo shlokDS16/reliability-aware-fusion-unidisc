@@ -1,6 +1,23 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 24 (2026-10-20 ~14:15 IST; newest; HANDOFF 23 and 22 describe the setup).** User approved all
+  recommendations at 12:40 -> **D0044-D0050** (N1 abstract lookup for the 217; N2 downloads for D0036 passes; N3
+  D0041 note; N4 paper versions for 20 web-only seed records; N5 validation frame; item 12; Stage A S1-S24).
+  **R797:** part 1 (b001-b013) and part 2 b014-b026 filed; b027 B done, **A for r797b027 not yet run** (folder built:
+  A-r797b027-072b4342-...; B agent a4a1d40a193a8a0db); then `tr.sh r797 postbatch r797b027 <A> a4a1d40a193a8a0db`.
+  Remaining part 2: b028-b057 (plan research/review/fulltext/r797-batches-part2.json). C groups: c-r797-01 (2 incl
+  M00589, M02061; 2 excl) and c-r797-02 (5 excl) filed; queued for C: M09970 (b026), M10697 done; next
+  `FT_TRANCHE=r797 python -I tools/ft-session/cqueue.py <worktree> <S> 3 03 1 57`. Held texts:
+  analysis/screening/ft-r797/held-texts.jsonl (M16194, M16195 unreadable; M18905 wrong file -> e-gateway; M19102
+  wrong file, rows superseded, correct HTML text fetched, listed in rescreen.jsonl for the next plan part). Quote
+  returns: send one at a time (2-agent limit). OpenReview downloads (58) running in background (r797-fetch2.log,
+  ~25/hour); after it: pdf_to_text, ft_title_check, plan part 3 (`ft_plan_tranche.py r797 3 58 20261029`).
+  **D0044 abstract lookup:** tools/lookup_abstracts.py ready; OpenAlex 429 until ~05:30 IST: run `python -I
+  tools/lookup_abstracts.py run` after that. **Codex** is back (debate 2026-10-20-paper1-novelty, rounds 1-2; Codex
+  thread id in its log.jsonl; continue with tools/debate.py). **NotebookLM** not signed in (user step,
+  research/SCHEDULE-2026-10-20.md). **RAM:** other sessions keep free RAM near 4-5 GB; launch only at >= 5 GB
+  (wait_ram.ps1). Weekly usage 21 percent at 13:50. Context of session d7bb06 ~67 percent.
 - **HANDOFF 23 (2026-10-20 ~09:10 IST; PAUSE at the user's request: laptop offline from 09:30 for a presentation;
   resume when the user says "continue"; HANDOFF 22 below still describes the setup).** **R797 full text:** batches
   r797b001-r797b009 screened by A and B (all isolation and model checks pass, incl. bio batches b007/b008: no B
