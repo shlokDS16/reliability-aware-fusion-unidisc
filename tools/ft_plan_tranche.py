@@ -41,6 +41,14 @@ tc = json.loads((FT / "title-check.json").read_text(encoding="utf-8"))
 flagged = {f["id"] for f in tc["flags"] if not f.get("verified")}
 hf = ROOT / f"analysis/screening/ft-{tr}/held-texts.jsonl"     # texts held by the orchestrator (unreadable, wrong file)
 flagged |= {json.loads(l)["id"] for l in open(hf, encoding="utf-8") if l.strip()} if hf.exists() else set()
+rf = ROOT / f"analysis/screening/ft-{tr}/rescreen.jsonl"       # held records whose correct text arrived: plan them again
+rescreen = {json.loads(l)["id"] for l in open(rf, encoding="utf-8") if l.strip()} if rf.exists() else set()
+done_rescreen = set()
+for p_ in FT.glob(f"{tr}-batches-part*.json"):
+    done_rescreen |= set(json.loads(p_.read_text(encoding="utf-8")).get("rescreened", []))
+rescreen -= done_rescreen
+flagged -= rescreen
+planned -= rescreen
 ready = sorted(i for i in frame - planned if conv.get(i) == "ok" and (TXT / f"{i}.txt").exists() and i not in flagged)
 held = sorted(i for i in frame - planned if conv.get(i) == "ok" and i in flagged)
 titles = {}
@@ -53,7 +61,7 @@ norm_ids, bio_ids = [i for i in ready if i not in bio], [i for i in ready if i i
 chunks = [norm_ids[k:k + size] for k in range(0, len(norm_ids), size)] + [bio_ids[k:k + bsize] for k in range(0, len(bio_ids), bsize)]
 random.Random(seed + 1).shuffle(chunks)
 batches = {f"{tr}b{first + k:03d}": c for k, c in enumerate(chunks)}
-plan = {"tranche": tr.upper(), "part": part, "seed": seed, "size": size, "bio_size": bsize, "n": len(ready),
+plan = {"tranche": tr.upper(), "part": part, "rescreened": sorted(rescreen & set(ready)), "seed": seed, "size": size, "bio_size": bsize, "n": len(ready),
         "bio_batches": sorted(b for b, c in batches.items() if c and c[0] in bio),
         "held_title_check": held, "batches": batches}
 out.write_text(json.dumps(plan, indent=1) + "\n", encoding="utf-8")
