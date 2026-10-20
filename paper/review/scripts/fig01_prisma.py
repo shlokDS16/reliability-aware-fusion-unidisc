@@ -1,17 +1,12 @@
-"""Figure 1: PRISMA 2020 flow diagram, every number read from files.
-
-Reads  research/review/corpus/search-log.jsonl, corpus/awesome-dlms@194aa6bd.jsonl,
-       screening/dedup-report.json, screening/records.jsonl, screening/screener-A|B/batch-*.jsonl,
-       screening/human-sample.csv, census/census-order.csv, census/census-random-final.jsonl (the last
-       through censuscounts.py, which reproduces analysis/census/summary-random.log and asserts it).
-Writes paper/review/figures/fig01-prisma.pdf, preview/fig01-prisma.png and fig01-prisma.log (numbers read).
-Stages that have not been run are drawn dashed and labelled "not yet run"; the only count on a dashed box
-is the size of the pool not yet sampled, which is pool minus sample (both read from files).
+"""Figure 1: PRISMA 2020 flow diagram, every number read from analysis/prisma/prisma-flow.json (itself written by
+analysis/prisma/prisma_flow.py from the search, screening and full-text files) and analysis/rq1/rq1-counts.json.
+Version 2 (2026-10-20, session 0839c9f4): three identification strands (seed corpus, free-source update,
+subscription databases), title/abstract screening per strand, full-text tranche T1, the re-check tranche R797 frozen
+by D0051, and the sets identified but not screened (dashed). Arithmetic between boxes is asserted, not typed.
 
     python paper/review/scripts/fig01_prisma.py
+Writes paper/review/figures/fig01-prisma.pdf, preview/fig01-prisma.png and fig01-prisma.log (every number drawn).
 """
-import csv
-import glob
 import json
 import sys
 from pathlib import Path
@@ -20,224 +15,265 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle
 
-import censuscounts
-from figstyle import C, FIGDIR, REV, TEXTWIDTH_IN, save, setup
+from figstyle import C, FIGDIR, ROOT, TEXTWIDTH_IN, save, setup
 
 setup()
-
-# ------------------------------------------------------------------ numbers from files
-search = {}
-for line in open(REV / "corpus" / "search-log.jsonl", encoding="utf8"):
-    d = json.loads(line)
-    assert d["hits_reported"] == d["records_retrieved"]
-    search[d["string"]] = d["records_retrieved"]
-awesome = sum(1 for l in open(REV / "corpus" / "awesome-dlms@194aa6bd.jsonl", encoding="utf8") if l.strip())
-identified = awesome + search["S1"] + search["S2"]
-dedup = json.load(open(REV / "screening" / "dedup-report.json", encoding="utf8"))
-recs = [json.loads(l) for l in open(REV / "screening" / "records.jsonl", encoding="utf8")]
-assert len(recs) == dedup["records"]
-assert identified - dedup["records"] == dedup["duplicates_merged"], "identified - records != duplicates merged"
+F = json.load(open(ROOT / "analysis/prisma/prisma-flow.json", encoding="utf-8"))
+RQ1 = json.load(open(ROOT / "analysis/rq1/rq1-counts.json", encoding="utf-8"))
+sd, fr, sb, ft, rc, r7, ns = (F[k] for k in ("seed", "free", "subscription", "full_text_T1", "recheck",
+                                              "full_text_R797", "not_screened_D0051"))
 
 
-def decisions(folder):
-    out = {}
-    for p in sorted(glob.glob(str(REV / "screening" / folder / "batch-*.jsonl"))):
-        for l in open(p, encoding="utf8"):
-            d = json.loads(l)
-            out[d["sid"]] = d["decision"]
-    return out
+def f(x):
+    return f"{x:,}"
 
 
-A, B = decisions("screener-A"), decisions("screener-B")
-assert set(A) == set(B) == {r["sid"] for r in recs}
-pa = {s: A[s] != "exclude" for s in A}
-pb = {s: B[s] != "exclude" for s in B}
-both_ex = sum(1 for s in A if not pa[s] and not pb[s])
-a_only = sum(1 for s in A if pa[s] and not pb[s])
-b_only = sum(1 for s in A if pb[s] and not pa[s])
-both_pass = sum(1 for s in A if pa[s] and pb[s])
-split = a_only + b_only
-assert both_ex + split + both_pass == len(recs)
-with_id = {r["sid"] for r in recs if r.get("arxiv")}
-pool_ids = {s for s in A if pa[s] and pb[s] and s in with_id}
-order = list(csv.DictReader(open(REV / "census" / "census-order.csv", encoding="utf-8-sig")))
-assert {o["sid"] for o in order} == pool_ids, "census-order.csv is not the both-pass records with an arXiv ID"
-pool = len(pool_ids)
-no_id = both_pass - pool
+n = {}
+# ---------------------------------------------------------------- seed corpus
+n["seed_id"] = sd["identified_arxiv_S1"] + sd["identified_arxiv_S2"] + sd["identified_awesome_dlms"]
+assert n["seed_id"] - sd["duplicates_merged"] == sd["records_after_dedup"] == sd["ta_screened_dual_v1"]
+assert sd["ta_screened_dual_v1"] - sd["ta_both_exclude"] == sd["ta_pass_either"]
+n["s1243"] = ns["seed_tranche_S1243_D0037"]["frame"]
+n["seed_pass_not_in_frame"] = sd["ta_pass_either"] - n["s1243"]          # duplicate of an update record (R0484)
+assert n["seed_pass_not_in_frame"] >= 0
+# ---------------------------------------------------------------- free-source update
+n["upd_db"], n["upd_cit"] = fr["identified_databases"], fr["identified_citation_searching"]
+n["upd_id"] = n["upd_db"] + n["upd_cit"]
+ms = json.load(open(ROOT / "research/review/corpus/search-v2-merge-stats-2026-10-15.json", encoding="utf-8"))
+new_per_source = sum(v["new"] for v in ms["sources"].values())
+n["upd_across"] = new_per_source - fr["new_records_after_dedup"] - fr["extra_duplicate_key_merges"]
+n["upd_dup"] = (fr["duplicates_within_source"] + fr["duplicates_against_seed_corpus"] + n["upd_across"]
+                + fr["extra_duplicate_key_merges"])
+assert n["upd_id"] - n["upd_dup"] == fr["new_records_after_dedup"]
+n["upd_auto"] = fr["automation_excluded_D0026"] + fr["automation_excluded_D0027"]
+assert fr["new_records_after_dedup"] - n["upd_auto"] == fr["queue_final_D0027"]
+assert fr["queue_final_D0027"] + fr["released_D0028"] == fr["ta_screened_dual"]
+assert fr["ta_screened_dual"] - fr["ta_both_exclude"] == fr["ta_pass_D0030"]
+rf = ns["free_source_rescue_positives_D0036"]
+assert fr["rescue_decisions"]["exclude"] + fr["rescue_positives"] == fr["rescue_screened_single_haiku"]
+assert rf["positives"] == fr["rescue_positives"]
+# ---------------------------------------------------------------- subscription databases
+rb = sb["removed_before_screening"]
+n["sub_dup"] = sum(v for k, v in rb.items() if k.startswith("duplicates"))
+n["sub_front"] = rb["proceedings_front_matter_not_documents"]
+assert sb["identified"] - n["sub_dup"] - n["sub_front"] == sb["new_unique_records"]
+assert sb["new_unique_records"] - sb["automation_excluded_S1pp_S2pp"] == sb["queue_string_pass"]
+assert sb["rescue_screened_single_haiku"] + sb["automation_excluded_without_abstract_pending"] == sb["automation_excluded_S1pp_S2pp"]
+assert sb["dual_screened_from_queue"] + sb["dual_screened_from_rescue"] == sb["ta_screened_dual"]
+n["sub_ta_excl"] = sb["ta_screened_dual"] - sb["ta_pass_D0030"]
+# ---------------------------------------------------------------- full text T1
+st = ft["status_ft_routes"]
+sx = ft["status_ft_routes_extra"]
+n["t1_not_retrieved"] = (st["no_full_text_found"] + st["pending_e_gateway"] + st["open_access_fetch_failed_not_pdf"]
+                         + st["open_access_fetch_failed_error"] + st["not_retrieved_openreview_note_missing_X6"]
+                         + sx.get("pending_oa_url", 0) + sx.get("pending_e-gateway", 0))
+n["t1_awaitB"] = st.get("awaiting_second_screener_B_unavailable", 0) + sx.get("awaiting_second_screener_B_unavailable", 0)
+n["t1_assessed"] = ft["screened"] + n["t1_awaitB"]
+assert ft["reports_sought"] == n["t1_assessed"] + n["t1_not_retrieved"]
+assert ft["screened"] == ft["include"] + ft["exclude"] == sum(ft["exclude_codes"].values()) + ft["include"]
+n["t1_fromTA"] = F["title_abstract_total"]["ta_pass_total"]
+assert n["t1_fromTA"] == fr["ta_pass_D0030"] + sb["ta_pass_D0030"]
+# ---------------------------------------------------------------- re-check tranche R797
+n["r7_assessed"] = r7["screened_decided"] + len(r7["awaiting_second_screener_B_unavailable"]) + len(r7["awaiting_C"])
+assert r7["frame"] == n["r7_assessed"] + r7["identified_not_screened_D0051"]
+assert r7["screened_decided"] == r7["include"] + r7["exclude"] == sum(r7["exclude_codes"].values()) + r7["include"]
+n["included"] = ft["include"] + r7["include"]
+assert n["included"] == RQ1["n"]
+n["not_screened_total"] = n["s1243"] + r7["identified_not_screened_D0051"] + rf["positives"]
 
-fin, sen, extra = censuscounts.load()          # asserted against analysis/census/summary-random.log
-assert fin["ranks"] == 176
-n_remaining = pool - fin["ranks"]
-no_text_ranks = sorted(int(r) for r, d in extra["rows"].items() if d.get("exclusion_code") == "NO_TEXT")
-assert len(no_text_ranks) == fin["no_text"]
-judged = fin["ranks"] - fin["no_text"]
-excl = fin["excluded"]
-n_excl = sum(excl.values())
-assert judged - n_excl == fin["eligible"]
-assert fin["n_v"] + fin["n_noF2"] == fin["eligible"]
-assert fin["n_m"] + fin["n_ql"] == fin["n_v"]
-human_rows = sum(1 for _ in csv.DictReader(open(REV / "screening" / "human-sample.csv", encoding="utf-8-sig")))
-
-n = dict(awesome=awesome, S1=search["S1"], S2=search["S2"], identified=identified,
-         duplicates=dedup["duplicates_merged"], screened=len(recs), both_exclude=both_ex, split=split,
-         a_pass_b_excl=a_only, a_excl_b_pass=b_only, both_pass=both_pass, no_arxiv_id=no_id, pool=pool,
-         sampled=fin["ranks"], not_yet_sampled=n_remaining, no_full_text=fin["no_text"],
-         no_text_ranks=no_text_ranks, judged=judged, excluded_full_text=n_excl, excluded_codes=excl,
-         eligible=fin["eligible"], value_rule_coded=fin["n_v"], with_metric=fin["n_m"],
-         samples_only=fin["n_ql"], no_F2_code=fin["n_noF2"], human_sample_rows=human_rows)
 FIGDIR.mkdir(exist_ok=True)
 (FIGDIR / "fig01-prisma.log").write_text("\n".join(f"{k} = {v}" for k, v in n.items()) + "\n", encoding="utf8")
 
-# ------------------------------------------------------------------ drawing (units are points of the final figure)
+
+def codes(d):
+    return ", ".join(f"{k} {v}" for k, v in sorted(d.items()))
+
+
+# ---------------------------------------------------------------- drawing (points)
 W = TEXTWIDTH_IN * 72
-LH, FS = 8.6, 7.0
-XM, XR = 150.0, 317.0                            # main and right column centres
-WM, WR = 150.0, 150.0
-STRIP = 16.0
-BOLD, NORM = "bold", "normal"
+LH, FS = 7.6, 6.3
+B, N_ = "bold", "normal"
+STRIP = 13.0
+COLS = [STRIP + 2, STRIP + 2 + (W - STRIP - 2) / 3, STRIP + 2 + 2 * (W - STRIP - 2) / 3]
+CW = (W - STRIP - 2) / 3 - 4                  # column width
+GX = 20                                       # offset of the side boxes from the column's left edge
+GW = CW - GX                                  # side-box width
+VX = 9                                        # x of the column's vertical flow line from its left edge
 
 
-def hbox(lines):
-    return len(lines) * LH + 7
+def hb(lines):
+    return len(lines) * LH + 5
 
 
-def draw_box(ax, xc, yc, w, lines, kind="solid"):
-    h = hbox(lines)
-    kw = dict(boxstyle="square,pad=0", linewidth=0.7, edgecolor=C["black"], facecolor="white", zorder=2)
-    if kind == "excl":
-        kw["facecolor"] = C["lightgrey"]
-    if kind == "dashed":
-        kw.update(linestyle=(0, (3, 2)), edgecolor="#404040")
-    ax.add_patch(FancyBboxPatch((xc - w / 2, yc - h / 2), w, h, **kw))
-    y0 = yc - (len(lines) - 1) * LH / 2
-    for i, (txt, wt) in enumerate(lines):
-        dashed = kind == "dashed"
-        ax.text(xc, y0 + i * LH, txt, ha="center", va="center", fontsize=FS, fontweight=wt,
-                color="#404040" if dashed else C["black"],
-                zorder=3)
+class Canvas:
+    def __init__(self):
+        self.items = []
+
+    def box(self, x, y, w, lines, kind="main"):
+        self.items.append(("box", x, y, w, lines, kind))
+        return y + hb(lines)
+
+    def line(self, p, q, dashed=False, arrow=False):
+        self.items.append(("line", p, q, dashed, arrow))
 
 
-rows_main = [
-    [("Records identified", BOLD), (f"n = {n['identified']}", NORM)],
-    [("Records screened", BOLD), ("title and abstract, two screeners", NORM), (f"n = {n['screened']}", NORM)],
-    [("Passed by both screeners", BOLD), ("include or unclear", NORM), (f"n = {n['both_pass']}", NORM)],
-    [("Census pool", BOLD), ("passed by both, with an arXiv ID", NORM), (f"n = {n['pool']}", NORM),
-     (f"({n['no_arxiv_id']} passed without an arXiv ID)", NORM)],
-    [("Sampled in random order", BOLD), (f"ranks 1 to {n['sampled']}", NORM), (f"n = {n['sampled']}", NORM)],
-    [("Full text available, eligibility judged", BOLD), (f"n = {n['judged']}", NORM)],
-    [("Eligible", BOLD), (f"n = {n['eligible']}", NORM)],
-    [("Value-rule code assigned", BOLD), (f"n = {n['value_rule_coded']}", NORM),
-     (f"{n['with_metric']} with a generated-sample metric", NORM), (f"{n['samples_only']} with samples only", NORM)],
-]
-# right-hand boxes per gap g (gap g lies between main row g-1 and main row g, 0-based rows)
-G = {
-    1: [("excl", [("Duplicates merged", BOLD), (f"n = {n['duplicates']}", NORM), ("arXiv ID, then normalised title", NORM)], "main")],
-    2: [("excl", [("Excluded by both screeners", BOLD), (f"n = {n['both_exclude']}", NORM)], "main"),
-        ("excl", [("Split decision, held out", BOLD), (f"n = {n['split']}", NORM),
-                  (f"A passes, B excludes: {n['a_pass_b_excl']}; reverse: {n['a_excl_b_pass']}", NORM)], "main")],
-    3: [("dashed", [("Human validation", BOLD), (f"random {n['human_sample_rows']} and the {n['split']} splits", NORM),
-                    ("not yet run", BOLD)], "none")],
-    4: [("dashed", [("Rest of the pool", BOLD), (f"n = {n['not_yet_sampled']}", NORM), ("full-text screening not yet run", BOLD)], "main")],
-    5: [("excl", [("No full text", BOLD), (f"n = {n['no_full_text']}", NORM),
-                  ("ranks " + ", ".join(map(str, n["no_text_ranks"])), NORM)], "main")],
-    6: [("excl", [("Excluded at full text", BOLD), (f"n = {n['excluded_full_text']}", NORM),
-                  (", ".join(f"{k}: {v}" for k, v in n["excluded_codes"].items()), NORM)], "main")],
-    7: [("excl", [("No value-rule code", BOLD), (f"n = {n['no_F2_code']}", NORM), ("no generated-sample metric", NORM)], "main")],
-}
-src = [
-    ([("Awesome-DLMs list", BOLD), (f"n = {n['awesome']}", NORM)], "solid"),
-    ([("arXiv string S1", BOLD), (f"n = {n['S1']}", NORM)], "solid"),
-    ([("arXiv string S2", BOLD), (f"n = {n['S2']}", NORM)], "solid"),
-    ([("Other databases", BOLD), ("and snowballing", NORM), ("not yet run", BOLD)], "dashed"),
-]
-SX = [66, 158, 250, 342]
+cv = Canvas()
+GAP = 4
+SIDE = 3
 
-HH = [hbox(r) for r in rows_main]
-src_h = max(hbox(s[0]) for s in src)
-y_src = 6 + src_h / 2
-y_bus = y_src + src_h / 2 + 9
-stack_h = {g: sum(hbox(b[1]) for b in bl) + 6 * (len(bl) - 1) for g, bl in G.items()}
-gap_of = {i: 19.0 for i in range(1, len(rows_main))}
-for _ in range(50):                               # push rows apart until neighbouring right stacks clear each other
-    ys = [y_bus + 22 + HH[0] / 2]
-    for i in range(1, len(rows_main)):
-        ys.append(ys[-1] + HH[i - 1] / 2 + gap_of[i] + HH[i] / 2)
-    mid = {g: ys[g - 1] + HH[g - 1] / 2 + gap_of[g] / 2 for g in G}
-    ok = True
-    gs = sorted(G)
-    for a, b in zip(gs, gs[1:]):
-        need = (stack_h[a] + stack_h[b]) / 2 + 5
-        if mid[b] - mid[a] < need:
-            gap_of[b] += need - (mid[b] - mid[a]) + 0.1
-            ok = False
-    if ok:
-        break
-assert ok
-H = ys[-1] + HH[-1] / 2 + 8
+
+def column(ci, y, steps):
+    """steps: list of ('main'|'dashed', lines) and ('side', lines) entries; side boxes hang off the flow line."""
+    x0 = COLS[ci]
+    prev_bottom = None
+    for kind, lines in steps:
+        if kind == "side":
+            yc = y + SIDE
+            cv.box(x0 + GX, yc, GW, lines, "side")
+            cv.line((x0 + VX, yc + hb(lines) / 2), (x0 + GX, yc + hb(lines) / 2), arrow=True)
+            y = yc + hb(lines) + SIDE
+        else:
+            if prev_bottom is not None:
+                y += GAP
+                cv.line((x0 + VX, prev_bottom), (x0 + VX, y), dashed=(kind == "dashed"), arrow=True)
+            bottom = cv.box(x0, y, CW, lines, kind)
+            prev_bottom, y = bottom, bottom
+    return y, prev_bottom
+
+
+y0 = 4.0
+head = [[("Seed corpus", B), ("2026-10-13 and 10-14", N_)],
+        [("Search update", B), ("2026-10-15", N_)],
+        [("Subscription databases", B), ("2026-10-15 and 10-16", N_)]]
+for ci, h in enumerate(head):
+    cv.box(COLS[ci], y0, CW, h, "head")
+yI = y0 + hb(head[0]) + 4
+
+seed = [("main", [("Records identified", B), (f"n = {f(n['seed_id'])}", N_),
+                  (f"arXiv S1 {f(sd['identified_arxiv_S1'])}, S2 {f(sd['identified_arxiv_S2'])}", N_),
+                  (f"Awesome-DLMs list {f(sd['identified_awesome_dlms'])}", N_)]),
+        ("side", [("Duplicates removed", B), (f"n = {f(sd['duplicates_merged'])}", N_)]),
+        ("main", [("Title/abstract screened", B), ("two screeners, criteria v1", N_),
+                  (f"n = {f(sd['ta_screened_dual_v1'])}", N_)]),
+        ("side", [("Excluded by both", B), (f"n = {f(sd['ta_both_exclude'])}", N_)]),
+        ("main", [("Passed by either screener", B), (f"n = {f(sd['ta_pass_either'])}", N_)]),
+        ("side", [("Duplicate of an", B), ("update record", B), (f"n = {f(n['seed_pass_not_in_frame'])}", N_)]),
+        ("dashed", [("Not assessed at full text", B), ("(screening frozen, D0051)", N_),
+                    (f"n = {f(n['s1243'])}", N_)])]
+upd = [("main", [("Records identified", B), (f"n = {f(n['upd_id'])}", N_),
+                 (f"5 databases {f(n['upd_db'])}", N_), (f"citation searching {f(n['upd_cit'])}", N_)]),
+       ("side", [("Duplicates removed", B), (f"n = {f(n['upd_dup'])}", N_), (f"of seed records {f(fr['duplicates_against_seed_corpus'])}", N_)]),
+       ("main", [("New records", B), (f"n = {f(fr['new_records_after_dedup'])}", N_)]),
+       ("side", [("Removed by string filter", B), (f"n = {f(n['upd_auto'])}", N_),
+                 (f"{f(fr['released_D0028'])} released back", N_)]),
+       ("main", [("Title/abstract screened", B), ("two screeners", N_), (f"n = {f(fr['ta_screened_dual'])}", N_)]),
+       ("side", [("Excluded by both", B), (f"n = {f(fr['ta_both_exclude'])}", N_)]),
+       ("main", [("Passed to full text", B), (f"n = {f(fr['ta_pass_D0030'])}", N_)])]
+sub = [("main", [("Records identified", B), (f"n = {f(sb['identified'])}", N_), ("Scopus, WoS, IEEE Xplore,", N_),
+                 ("ACM DL, Springer, ScienceDirect", N_)]),
+       ("side", [("Removed before screening", B), (f"duplicates {f(n['sub_dup'])}", N_), (f"front matter {f(n['sub_front'])}", N_)]),
+       ("main", [("New records", B), (f"n = {f(sb['new_unique_records'])}", N_)]),
+       ("side", [("Failed string filter", B), (f"n = {f(sb['automation_excluded_S1pp_S2pp'])}", N_),
+                 (f"rescue-screened {f(sb['rescue_screened_single_haiku'])}", N_),
+                 (f"{f(sb['rescue_positives'])} back to screening;", N_),
+                 (f"{f(sb['automation_excluded_without_abstract_pending'])} without abstract", N_)]),
+       ("main", [("Title/abstract screened", B), ("two screeners", N_), (f"n = {f(sb['ta_screened_dual'])}", N_)]),
+       ("side", [("Excluded by both", B), (f"n = {f(n['sub_ta_excl'])}", N_)]),
+       ("main", [("Passed to full text", B), (f"n = {f(sb['ta_pass_D0030'])}", N_)])]
+ends = [column(i, yI, s) for i, s in enumerate((seed, upd, sub))]
+yS_end = max(e[0] for e in ends)
+
+# side note in the update column: single-screener rescue of filtered records (not screened further)
+yR = ends[1][0] + 6
+cv.box(COLS[1] + GX, yR, GW, [("Rescue screen of filtered", B), (f"records: {f(fr['rescue_screened_single_haiku'])}", N_),
+                               (f"{f(rf['positives'])} positives; {f(rf['dual_ta_screened'])} dual-", N_),
+                               (f"screened, {f(rf['dual_ta_pass'])} passed", N_), ("not assessed (D0051)", B)], "dashed")
+yRb = yR + hb([1, 2, 3, 4, 5])
+
+# ---------------------------------------------------------------- full text: T1 over the update and subscription columns
+xL = COLS[1]
+WW = COLS[2] + CW - COLS[1]
+yT = max(yS_end, yRb) + 10
+for ci in (1, 2):
+    cv.line((COLS[ci] + VX, ends[ci][1]), (COLS[ci] + VX, yT - 2), arrow=False)
+cv.line((COLS[1] + VX, yT - 2), (COLS[2] + VX, yT - 2))
+cv.line((xL + VX + 30, yT - 2), (xL + VX + 30, yT), arrow=True)
+t1 = [("main", [("Full-text tranche T1: reports sought", B),
+                (f"n = {f(ft['reports_sought'])} ({f(n['t1_fromTA'])} title/abstract passes and re-check samples)", N_)]),
+      ("side", [("Not retrieved", B), (f"n = {f(n['t1_not_retrieved'])}: no full text {st['no_full_text_found']}, e-gateway "
+                                       f"{st['pending_e_gateway'] + sx.get('pending_e-gateway', 0)}, open access failed "
+                                       f"{st['open_access_fetch_failed_not_pdf'] + st['open_access_fetch_failed_error'] + sx.get('pending_oa_url', 0)},", N_),
+                (f"OpenReview note missing (X6) {st['not_retrieved_openreview_note_missing_X6']}", N_)]),
+      ("main", [("Reports assessed (two screeners, adjudicator)", B), (f"n = {f(n['t1_assessed'])}", N_)]),
+      ("side", [("Excluded", B), (f"n = {f(ft['exclude'])}: {codes(ft['exclude_codes'])}", N_),
+                (f"Awaiting second screener (human author): {n['t1_awaitB']}", N_)]),
+      ("main", [("Included from T1", B), (f"n = {f(ft['include'])}", N_)])]
+GX_save, GW_save, CW_save = GX, GW, CW
+GX, GW, CW = 34, WW - 34, WW
+COLS_save = COLS[:]
+COLS = [None, xL, None]
+yT_end, t1_bottom = column(1, yT, t1)
+
+# R797 in the seed column, beside T1
+COLS = COLS_save
+GX, GW, CW = GX_save, GW_save, CW_save
+r7s = [("main", [("Re-check of title/abstract", B), ("exclusions: K = " + str(rc["K"]["K"]) + " of " + str(sum(rc["K"]["counts"].values()) - rc["K"]["counts"]["not_in_T1"]), N_),
+                 (f"triggered: {f(rc['frame'])} candidates,", N_), (f"tranche R797 n = {f(r7['frame'])}", N_)]),
+       ("side", [("Not assessed", B), ("(frozen, D0051)", N_), (f"n = {f(r7['identified_not_screened_D0051'])}", N_)]),
+       ("main", [("Reports assessed", B), (f"n = {f(n['r7_assessed'])}", N_)]),
+       ("side", [("Excluded", B), (f"n = {f(r7['exclude'])}", N_),
+                 (f"awaiting second", N_), (f"screener: {len(r7['awaiting_second_screener_B_unavailable'])}", N_)]),
+       ("main", [("Included from R797", B), (f"n = {f(r7['include'])}", N_)])]
+yR7_end, r7_bottom = column(0, yT, r7s)
+
+# ---------------------------------------------------------------- included
+yInc = max(yT_end, yR7_end) + 10
+inc = [("Studies included in the review", B), (f"n = {f(n['included'])} (T1 {f(ft['include'])} + R797 {f(r7['include'])})", N_),
+       (f"extraction and appraisal on a stratified random sample of 81 (D0051, D0052)", N_)]
+cv.line((COLS[0] + VX, r7_bottom), (COLS[0] + VX, yInc - 3))
+cv.line((xL + VX, t1_bottom), (xL + VX, yInc - 3))
+cv.line((COLS[0] + VX, yInc - 3), (xL + VX, yInc - 3))
+cv.line((COLS[0] + VX + 60, yInc - 3), (COLS[0] + VX + 60, yInc), arrow=True)
+yEnd = cv.box(COLS[0], yInc, W - COLS[0] - 4, inc, "main")
+H = yEnd + 4
+
 fig, ax = plt.subplots(figsize=(TEXTWIDTH_IN, H / 72))
 fig.subplots_adjust(0, 0, 1, 1)
 ax.set_xlim(0, W)
 ax.set_ylim(H, 0)
 ax.axis("off")
-
-ARR = dict(arrowstyle="-|>", mutation_scale=6, lw=0.7, color=C["black"], shrinkA=0, shrinkB=0)
-ARR_D = dict(arrowstyle="-|>", mutation_scale=6, lw=0.7, color="#404040", linestyle=(0, (3, 2)), shrinkA=0, shrinkB=0)
-
-
-def arrow(p, q, dashed=False):
-    ax.annotate("", xy=q, xytext=p, arrowprops=ARR_D if dashed else ARR, zorder=1)
-
-
-for xc, (ln, kind) in zip(SX, src):
-    draw_box(ax, xc, y_src, 84, ln, kind)
-for xc in SX[:3]:
-    ax.plot([xc, xc], [y_src + src_h / 2, y_bus], color=C["black"], lw=0.7, zorder=1)
-ax.plot([SX[0], SX[2]], [y_bus, y_bus], color=C["black"], lw=0.7, zorder=1)
-ax.plot([SX[3], SX[3]], [y_src + src_h / 2, y_bus], color="#404040", lw=0.7, ls=(0, (3, 2)), zorder=1)
-ax.plot([SX[2], SX[3]], [y_bus, y_bus], color="#404040", lw=0.7, ls=(0, (3, 2)), zorder=1)
-
-for i, ln in enumerate(rows_main):
-    draw_box(ax, XM, ys[i], WM, ln, "solid")
-arrow((XM, y_bus), (XM, ys[0] - HH[0] / 2))
-for i in range(1, len(rows_main)):
-    arrow((XM, ys[i - 1] + HH[i - 1] / 2), (XM, ys[i] - HH[i] / 2))
-
-BUS_X = XM + WM / 2 + 12
-centres_of = {}
-for g, bl in G.items():
-    ym = mid[g]
-    heights = [hbox(b[1]) for b in bl]
-    top = ym - stack_h[g] / 2
-    centres = []
-    for h in heights:
-        centres.append(top + h / 2)
-        top += h + 6
-    centres_of[g] = (centres, heights)
-    for (kind, ln, how), yc in zip(bl, centres):
-        draw_box(ax, XR, yc, WR, ln, kind)
-        if how == "main":
-            if len(bl) == 1:
-                arrow((XM, yc), (XR - WR / 2, yc), dashed=(kind == "dashed"))
-            else:
-                arrow((BUS_X, yc), (XR - WR / 2, yc))
-    if len(bl) > 1:
-        ax.plot([XM, BUS_X], [ym, ym], color=C["black"], lw=0.7, zorder=1)
-        ax.plot([BUS_X, BUS_X], [centres[0], centres[-1]], color=C["black"], lw=0.7, zorder=1)
-
-# split decision -> human validation (dashed, within the right column)
-c2, h2 = centres_of[2]
-c3, h3 = centres_of[3]
-arrow((XR, c2[1] + h2[1] / 2), (XR, c3[0] - h3[0] / 2), dashed=True)
+for it in cv.items:
+    if it[0] == "box":
+        _, x, y, w, lines, kind = it
+        h = hb(lines)
+        kw = dict(boxstyle="square,pad=0", linewidth=0.6, edgecolor=C["black"], facecolor="white", zorder=2)
+        if kind == "side":
+            kw["facecolor"] = C["lightgrey"]
+        if kind == "head":
+            kw.update(facecolor=C["sky"], alpha=0.35, linewidth=0)
+        if kind == "dashed":
+            kw.update(linestyle=(0, (3, 2)), edgecolor="#404040")
+        ax.add_patch(FancyBboxPatch((x, y), w, h, **kw))
+        for i, (txt, wt) in enumerate(lines):
+            ax.text(x + w / 2, y + 2.5 + LH / 2 + i * LH, txt, ha="center", va="center", fontsize=FS, fontweight=wt,
+                    color="#404040" if kind == "dashed" else C["black"], zorder=3)
+    else:
+        _, p, q, dashed, arrow = it
+        if arrow:
+            ax.annotate("", xy=q, xytext=p, zorder=1,
+                        arrowprops=dict(arrowstyle="-|>", mutation_scale=5, lw=0.6, shrinkA=0, shrinkB=0,
+                                        color="#404040" if dashed else C["black"],
+                                        linestyle=(0, (3, 2)) if dashed else "-"))
+        else:
+            ax.plot([p[0], q[0]], [p[1], q[1]], color=C["black"], lw=0.6, zorder=1)
 
 
-def band(r0, r1, label, colour):
-    top = 0 if r0 == 0 else ys[r0] - HH[r0] / 2 - gap_of[r0] / 2
-    bot = H if r1 == len(rows_main) - 1 else ys[r1] + HH[r1] / 2 + gap_of[r1 + 1] / 2
-    ax.add_patch(Rectangle((0, top + 1), STRIP - 3, bot - top - 2, facecolor=colour, edgecolor="none", zorder=0, alpha=0.45))
-    ax.text((STRIP - 3) / 2, (top + bot) / 2, label, rotation=90, ha="center", va="center", fontsize=FS, fontweight=BOLD)
+def band(top, bot, label, colour):
+    ax.add_patch(Rectangle((0, top), STRIP - 3, bot - top, facecolor=colour, edgecolor="none", zorder=0, alpha=0.45))
+    ax.text((STRIP - 3) / 2, (top + bot) / 2, label, rotation=90, ha="center", va="center", fontsize=FS, fontweight=B)
 
 
-band(0, 0, "Identification", C["sky"])
-band(1, 3, "Screening", C["green"])
-band(4, 7, "Full-text check, random sample", C["orange"])
+band(yI, yI + 50, "Identification", C["sky"])
+band(yI + 52, yS_end, "Screening", C["green"])
+band(yT, yEnd, "Full text and included", C["orange"])
 save(fig, "fig01-prisma")
