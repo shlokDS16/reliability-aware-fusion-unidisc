@@ -25,7 +25,10 @@ EXPL = {
     "benchmark_column_mismatch": "benchmark_printed must equal the column-map part you gave the role benchmark (and metric_printed the part with the role metric); where one header joins benchmark and metric, map them as the brief says",
     "cells_mismatch": "the row label was found but the cells you gave differ from the printed row; re-read the row in the text file",
     "map_not_in_header": "the column map names parts that are not in the printed header; use the header text as printed",
-    "where_mismatch": "the unit's 'where' and its cell's table differ; make them name the same table",
+    "caption_length": "the caption quote is too short for the brief's caption rule; quote more of the printed caption",
+    "s14_row_not_found": "give the row label exactly as it starts the printed row on that page, or fix the page",
+    "metric_column_mismatch": "metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says",
+    "where_mismatch":"the unit's 'where' and its cell's table differ; make them name the same table",
 }
 lines = [f"The validator did not accept some entries of your output file. Per the brief, they are returned to you once. "
          f"Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result "
