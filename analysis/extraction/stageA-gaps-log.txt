@@ -1,0 +1,184 @@
+Stage A extraction tools: engineering gaps closed (form v0.5)
+date: 2026-10-20
+agent: python-expert (subagent); brief: close the engineering gaps of stageA-integration-log.txt section 4
+scope rules kept: no download, no web, no git commit, no subagent, no real extraction, no real draw (draw_pilot's
+self-test draws only on a synthetic data tree in a temporary folder), the real dispatch log
+research/review/extraction/dispatch-log.jsonl never written (absent before and after; the ex_dispatch self-test
+checks it), tests/exp001 and tests/exp003 never run in the same process.
+Spec read: research/CONTRACT.md; EXTRACTION-PLAN-v0.5 s5.4, s10.2-s10.3, s11, s14; v0.4 s11-s11.1; v0.3 s5 (U8, U12),
+s9-s10; v0.2 s6.4-s6.6, s9; extractor-brief-v0.5 E1, KA1; extraction-schema-v0.5 (blocks, study, claims, qa,
+searched); the three logs named in the brief.
+
+FILES (sha256 after this run)
+  changed  tools/ex_validate.py                      683f12c7d03ed3479c9b8289f53a17a3ae0ba8e5ddd5d6ea6ac8b7ef6a87bea4  (1.0.0 -> 1.1.0)
+  changed  analysis/extraction/agreement.py          65d6ef143de851bb4872ac1048d45ee15726411b7b9d7c2d3a2f786d919cffb4  (1.0.1 -> 1.0.2)
+  changed  tools/ex_dispatch.py                      40b9b171dd6dcd2a81a5048d6cf76b2569b91cd69d63189e89fa97cb80854588  (1.0.0 -> 1.0.1)
+  changed  analysis/extraction/draw_pilot.py         420c33f4a3e4fa3c7d8914a9efe3add219c01fcb811bd41ac6df06c205630e29  (1.0.0 -> 1.0.1)
+  new      tools/ex_validate_batch.py                08f09c47527227164749e9025e99c3cc9dac5cbcbe953e68eb22c62d6807c360
+  new      analysis/extraction/lookups/benchmark-ids-v1.csv  b3ab1f7d62b2a710c0d5fd6d098fcf605cfc8660dfbec2cabbfe971a39573dc8
+  new      analysis/extraction/lookups/metric-ids-v1.csv     53e1e87946345235ca08e0b3379255b6eeddde63175033e6acec17e1fec88253
+  new      analysis/extraction/lookups/README.md             a34b1aeb1b8d2a9d046428cbd757e4d7a63c55b85b6b0b4793d0f05fdf2acae9
+  new      tests/extraction/test_stagea_gaps.py              ba36c435c5935de200e4410cfd9e00d112bd445171a2058711c43e68930ec6f4
+  new      analysis/extraction/stageA-gaps-log.txt (this file)
+  unchanged: all existing tests and fixtures, validator-tests.jsonl, we-expected.jsonl, quote_check.py, the brief,
+  the schema, gate config and grid.
+
+G1 BATCH DRIVER tools/ex_validate_batch.py (closes "batch driver", "second-pass marking", "blocks against
+dispatch.json")
+  python -I tools/ex_validate_batch.py --session <dispatch folder> [--session ...] --lookups <dir> --out <report>
+      [--pass 1|2] [--append] [--first-pass <report>] [--output-file <jsonl>]      |  --self-test
+  - Reads dispatch.json of each EA/EB session folder (EC refused: its output is not a first-pass record file),
+    refuses a schema copy whose sha256 differs from dispatch.json, a missing dispatched text, unsafe ids.
+  - Splits the output file (dispatch.json output_file, <EA|EB>-<batch>.jsonl) into records at "\n"; a line that is
+    not a JSON object, an id not dispatched to that session, a second record with one id, and a dispatched id with
+    no record are findings (check "session", severity fail) and are not validated (no text is opened for an
+    undispatched id).
+  - Validates each record in process with ex_validate.validate_record against fulltext/<id>.txt of that folder and
+    the shared direction list (KA1(b) + <lookups>/metric-ids-v1.csv); writes ex_validate's finding lines and summary
+    line (same fields; the summary gains metric_lookup_sha256; record_sha256 = sha256 of the record's line bytes).
+  - Block checks (plan v0.2 s6.4 "blocks present match dispatch.json"), check "blocks": the record's blocks equal
+    dispatch.json's blocks for that id (blocks_mismatch); no content in an undispatched block
+    (content_outside_blocks; L: design, census, claims.CT, study fields other than main_comparison; Q: qa,
+    claims.list, study.main_comparison; H: units_h; K: groups, units_k; the mapping is read from the brief's block
+    headers and the schema descriptions); study non-null when L was dispatched (schema: "Null only if 'L' is not in
+    blocks") and qa non-null when Q was (block_content_missing); record extractor equals dispatch.json's extractor
+    (check "session", extractor_mismatch). Chosen not to require design or census non-null under L (the schema does
+    not say so).
+  - Pass tag: every line gets "pass" (1, or 2 for the re-run after the one return of plan s9) and "session" (folder
+    basename). agreement.py already ignores lines with pass > 1, so G1 counts first pass only. --pass 1 refuses an
+    (id, extractor) that already has pass-1 lines in the file it appends to; --pass 2 needs a first-pass summary for
+    each validated (id, extractor) (--first-pass, or --out with --append) and refuses a second pass 2 (one return
+    only). Without --append an existing --out is refused. Nothing is written on a refusal. Exit 0 / 1 (any fail) / 2.
+  - Concatenation: several --session flags give one report; --append adds later sessions.
+
+G2 --self-test FLAGS (built-in fixtures, exit 0 if all pass else 1; no real inputs written)
+  tools/ex_validate.py --self-test       32 checks: the v0.2 s6.6 tests T01-T20 and T22 on built-in synthetic text in
+      the v0.3 entry shape (T11 expects column_mismatch, as validator-tests V04 changed it; T21 and the 35 pinned
+      cases need the screened full texts and stay in tests/test_ex_validate.py), the v0.5 sign checks, the shared
+      rules (record_arrows, resolve_sign order), KA1(b) qualifiers, lookup CSV refusals, schema validity of the
+      built-in record. --record/--text are required unless --self-test.
+  tools/ex_dispatch.py --self-test       10 checks in a temporary folder with synthetic texts: folder contents, role
+      and model map, log row to --log, seeded shuffle, refusals write nothing (missing text, unsafe id, duplicate,
+      unsafe batch, session-size rule, bad blocks, manifest), dry run, EC neutral X/Y labels and key only in the log,
+      real dispatch log untouched.
+  analysis/extraction/draw_pilot.py --self-test   10 checks: stage-a, gate (prefix rule, spares), mi4 draw rules,
+      options a-d, frame classification, dry runs write nothing, refusal without a decision row, and a synthetic
+      stage-a + gate sequence in a temporary data tree (only under the pinned Python 3.14.3; otherwise the check is
+      that a real draw is refused).
+  tools/ex_validate_batch.py --self-test 12 checks on synthetic sessions.
+
+G3 ONE SOURCE OF SIGN RULES (closes "sign-rule divergence between tools")
+  The shared section of tools/ex_validate.py (imported by agreement.py by path, as plan v0.4 s11.1 asks: "one
+  module, imported by ex_validate where the two share rules"; ex_validate is stdlib-only, so it imports under
+  agreement's -E -P):
+    metric_norm         = agreement's former norm_bm, verbatim (agreement.norm_bm now calls it; benchmark keys unchanged)
+    load_metric_lookup  = KA1(b) built-in list + metric CSV; refuses: missing header columns, empty printed/id, a
+                          printed cell starting with "#", a direction other than true/false/empty, a KA1(b) name
+                          given another direction, a pass@k name not true, one id with two directions
+    metric_lookup / metric_key  whole key, else KA1 qualifiers (top-1, avg., gen., average, mean), arrows and token
+                          parentheses dropped, pass@<n> -> pass@k; raw key "raw:" + metric_norm (agreement's form,
+                          so the pipeline test's raw:time(sec.) is unchanged)
+    unit_arrows / record_arrows  certain arrows: metric_printed, each value's column_printed, the cited cell's row
+                          label in a columns-oriented group; header arrows: next to the cited leaf of a verified
+                          header. record_arrows computes them from the record alone (verify_order was split out of
+                          check_table; same function in both paths)
+    sign_inputs / resolve_sign  the R3 rule, extended: certain arrow > lookup unless a non-null value or a header
+                          arrow conflicts > EC > unsigned (pending EC without --ec)
+  agreement.py: Lookups reads the metric CSV through load_metric_lookup (one table, also exposed as L.mtable);
+    mkey = metric_key; mdir from metric_directions; sign_rows uses record_arrows of each reader and resolve_sign;
+    rows gain "header_arrow". final_sign keeps its signature (self-test 19 unchanged) with an optional header arrow.
+  Resolutions (behaviour changes, each chosen to make both tools give one unit the same sign):
+    S1 metric_printed arrows count as printed arrows in ex_validate too (agreement already read them); a conflict is
+       arrow_conflict (fail), as for column_printed (KA1(a): an arrow printed with the metric).
+    S2 ex_validate no longer routes a K unit whose sign a single printed arrow settles (plan v0.5 s10.3 routes signs
+       that "rest on an extractor value alone"); before, an unmapped metric with an agreeing arrow was routed while
+       agreement was not.
+    S3 ex_validate no longer routes a null higher_is_better that the lookup direction settles (agreement R3 and its
+       self-test 19: "a null extractor value is not a conflict"); it writes an info line null_resolved_by_lookup.
+       This reverses ex_validate-test-log A21 "null against a lookup value included"; no existing test asserted it.
+    S4 agreement now reads row-label arrows (columns orientation) as printed arrows and header arrows as
+       route-only (ex_validate A20); a header arrow against the lookup direction routes in both tools.
+    S5 agreement's CSV reader no longer accepts yes/no/1/0 (ex_validate never did); the draft lookups use
+       true/false/empty only.
+  Cross-tool test (tests/extraction/test_stagea_gaps.py::test_cross_tool_same_sign, 15 cases): for each synthetic
+    unit (qualifiers, pass@1/pass@10, column, metric_printed, row-label and header arrows, ambiguous arrows,
+    unmapped and null-direction metrics, null values), with the real draft lookup folder: the metric key and the
+    lookup direction are equal in both tools, ex_validate routes iff agreement routes, and agreement's final sign
+    equals the hand-derived expectation. The pre-change agreement fails the qualifier cases: HEAD's agreement.py
+    (git show HEAD:..., loaded from a temporary copy, then deleted) on these lookups gives mkey("Avg. acc") =
+    raw:avg.acc, mkey("Top-1 accuracy") = raw:top-1accuracy, mkey("pass@10") = raw:pass@10, where ex_validate
+    gives accuracy / accuracy / pass@k; by its code it also read no row-label or header arrows.
+
+G4 DRAFT LOOKUPS analysis/extraction/lookups/ (closes "real lookups"; v1 drafts for Stage A, README next to them)
+  metric-ids-v1.csv (printed,id,higher_is_better; 35 rows): every key of the KA1(b) built-in list with the same id
+    and direction (so the built-in list adds nothing when the CSV is used; tested), plus pass@k (true); plus metric
+    names printed in we-expected.jsonl or the plan that are not in KA1(b) with an empty direction: COMET, Score,
+    Overall, Time (sec.), Tokens/Seconds, EOD, HR, LR. Plan v0.5 s5.4 says the lookup's directions are exactly
+    KA1(b), so no other direction was added.
+  benchmark-ids-v1.csv (printed,id; 34 rows): benchmark names printed in we-expected.jsonl or the plan (AGNews,
+    CRUXEval, GPQA, MBPP, MMLU from the plan). Printed variants kept apart (HumanEval / HumanEval+, BigCodeBench /
+    BigCodeBench-Full, CRUXEval / CRUXEval-O, GPQA / GPQA-Diamond, IFEval / IFEval-strict-prompt). Left unmapped by
+    design and listed in the README: Average, corpus, fairness, fairness benchmark, privacy, privacy benchmark.
+  Header comment row: not allowed. Checked: agreement's former reader would take a leading comment as the header
+    and stop with KeyError 'printed'; ex_validate likewise; a comment after the header would have become a metric
+    row. load_metric_lookup now refuses both with a clear error; tests cover it. Provenance is in the README.
+  No web lookup; names only; no value from a drawable paper.
+
+TESTS AND COMMANDS (all run 2026-10-20, Python 3.14.3, Windows)
+  python -E -P -m pytest tests/extraction tests/test_ex_validate.py -q -p no:cacheprovider
+      173 passed (142 before + 31 new in test_stagea_gaps.py); 2 RuntimeWarnings "Mean of empty slice" from
+      icc_check.py at n = 2 (pre-existing, not asserted)
+  python -I tests/test_ex_validate.py                          tests passed: 83/83
+  python -E -P analysis/extraction/agreement.py --self-test    self-tests passed 19/19
+  python -I tools/ex_validate.py --self-test                   self-tests passed 32/32, exit 0
+  python -I tools/ex_dispatch.py --self-test                   self-tests passed 10/10, exit 0
+  python -I analysis/extraction/draw_pilot.py --self-test      self-tests passed 10/10, exit 0
+  python -I tools/ex_validate_batch.py --self-test             self-tests passed 12/12, exit 0
+  python -I analysis/extraction/draw_pilot.py --stage stage-a --option b --dry-run   unchanged counts (C1-ab 15 ... FR 435)
+  python -E -P -m pytest tests/exp003 -q -p no:cacheprovider   23 passed (separate process; untouched area)
+  New tests (31): the four self-test flags exit 0 and a failing self-test exits 1; 15 cross-tool sign cases; group
+    key shared ("Avg. acc" = "Acc." = accuracy) and two directions rejected; record_arrows = check_signs inputs;
+    draft lookup format, both readers accept them, KA1(b) subset, directions only on KA1(b) names; every
+    we-expected metric maps and every benchmark maps or is unmapped by design; four bad CSVs refused by
+    ex_validate (exit 2), load_metric_lookup and agreement; batch report on ex_dispatch-built EA/EB folders read by
+    agreement.Validator (all seen, the rejected entry failed), pass-2 append leaves agreement's first-pass failures
+    unchanged, a second return refused; blocks_mismatch and extractor_mismatch; refused inputs write nothing.
+
+OPEN QUESTIONS (written here, not implemented)
+  Q1 G1 decision: do value-level failures reject the cited entry? Today agreement fails an entry (prose E.., table
+     T.., cell C..) only when a fail line names it (table, cell, row, prose checks). Value-level fails name the unit
+     or unit.arm (value_mismatch, value_outside_cells, value_not_in_quote, column_mismatch, where_mismatch,
+     label_row_mismatch, condition/metric mismatches), sign fails name the unit (arrow_conflict,
+     sign_conflict_in_group), and the new batch fails name a field or the record (blocks_mismatch,
+     content_outside_blocks, block_content_missing, extractor_mismatch, session findings); none of them lowers
+     G1a/G1b. Options: (a) keep (G1 = evidence located; value errors are measured by M-val and the sign by
+     M-sign); (b) a value or sign fail also fails every entry its unit cites; (c) report G1 both ways and gate on
+     one. Also open: whether a record rejected only for blocks or session findings counts as accepted at first
+     pass. Needs a decision row before the gate.
+  Q2 E1 coverage rule (brief v0.5 E1; v0.2 s6.4) is not precise enough to implement: (i) there is no
+     machine-readable list of [Q] fields and their record paths (the marks are in prose, with variants "[Q per
+     category; searched for none]", "[Q if yes ...; searched if no]", "[Q for any letter or U; searched for NS]");
+     (ii) "positive value" is undefined for enum values such as other, NA, numbers and lists; (iii) the brief's
+     negative list (no, not_stated, NS, "not stated", none) omits "unclear", which the schema's searched
+     description includes; (iv) whether NA needs evidence or searched. Needs a field table (field id, record path,
+     positive values, negative values) from method-architect; then it is a short check in ex_validate.
+  Q3 Derived fields (--fill-derived): rules exist in pieces (value_num parser v0.2 s6.4; rq_class from factor_type
+     U8 v0.3; U12 duplicates; metric_id and benchmark_id from the lookups; K15 matched as agreement's pool_flag;
+     M14/M15 from the draw manifest), but under-specified: whether v0.2's QA scores (s7.1), QA3c, QA7n and D12
+     levers (s4.3) still apply to the v0.5 item set; where filled records live (a new file, or the record file
+     agreement reads, and before or after the pass-2 re-run); the unmapped-string queue format; whether a filled
+     value that differs from an extractor-written one is a finding. agreement runs without them (U8 and pool_flag
+     fallbacks); the "stored id differs from lookup" diagnostic stays empty until ids are filled.
+
+STAGE A GAPS NOT CLOSED HERE (outside this brief)
+  - KA1(a) printed-arrow path and EC adjudication on real text (needs Stage A records; synthetic coverage only).
+  - Stage A draw manifest (needs a decisions.jsonl row, the multimodal option and, for c/d, mm-construct.jsonl).
+  - Worked-example anchors outside the listed arms (36 of 267 K rows; a method-architect decision).
+  - Lookup decisions listed in lookups/README.md (Tokens/Seconds, Time (sec.), ARC variants).
+
+CONCERNS
+  - S2-S4 change ex_validate's routing list (fewer routes for arrow-settled and lookup-settled units, more for
+    header arrows against the lookup); the red-team or gate-auditor should confirm these against plan v0.5 s10.3
+    before the B2 row.
+  - tools/ft-session/agent-map.txt and .codex/agents/dlm-expert.toml show in git status; not touched by this run.
+  - Nothing committed.

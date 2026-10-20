@@ -5,6 +5,7 @@ by v0.3 s9 and v0.5 s10.2, s10.8; modelled on tools/ft_dispatch.py).
         [--blocks LQHK | --blocks-json <{id: "LQHK"}>] [--manifest <draw manifest .json>]
         [--records-x <EA.jsonl> --records-y <EB.jsonl> --lookups <dir>]          (role EC)
         [--texts <dir>] [--log <path>] [--dry-run]
+    python -I tools/ex_dispatch.py --self-test     (built-in synthetic fixtures in a temporary folder; exit 0 if all pass)
 
 Roles and models (plan v0.2 s8.1; brief v0.5 header): E1 = EA, claude-opus-5-5 (ft_model_check alias B); E2 = EB,
 claude-sonnet-5-5 (alias A); EC = adjudicator, claude-fable-5-1 (alias C). The schema's extractor pattern takes the
@@ -55,7 +56,7 @@ FORM = "0.5"
 LARGE = 133280
 SEED_XY = 20261700
 SAFE = re.compile(r"^[A-Za-z0-9_-]+$")
-TOOL = "ex_dispatch.py 1.0.0 (extraction form v0.5)"
+TOOL = "ex_dispatch.py 1.0.1 (extraction form v0.5)"
 
 
 class Refused(SystemExit):
@@ -221,12 +222,132 @@ def build(a):
     return d
 
 
+def self_test(verbose=True):
+    """Built-in synthetic texts and records in a temporary folder (the real brief, schema and contract are read,
+    never written; the real dispatch log is never touched). Returns the number of failed checks."""
+    import io  # noqa: PLC0415
+    import tempfile  # noqa: PLC0415
+    from contextlib import redirect_stdout  # noqa: PLC0415
+    results = []
+
+    def check(desc, fn):
+        try:
+            ok = bool(fn())
+        except Exception as exc:  # noqa: BLE001 -- a crashing check is a failed check
+            ok, desc = False, f"{desc} [{type(exc).__name__}: {exc}]"
+        results.append(ok)
+        if verbose:
+            print(f"self-test {len(results):2d} {'ok  ' if ok else 'FAIL'} {desc}")
+
+    log_before = LOG.read_bytes() if LOG.exists() else None
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp = Path(tmp)
+        texts, root, log = tmp / "texts", tmp / "root", tmp / "log.jsonl"
+        texts.mkdir()
+        small = {"S00001": "=== page 1 ===\nA synthetic text.\n", "S00002": "=== page 1 ===\nAnother synthetic text.\n",
+                 "S00003": "=== page 1 ===\nA third synthetic text.\n"}
+        for i, t in small.items():
+            (texts / f"{i}.txt").write_text(t, encoding="utf-8")
+        (texts / "L00001.txt").write_bytes(b"=== page 1 ===\n" + b"x" * (LARGE + 10))
+
+        counter = iter(range(10 ** 6))
+
+        def ids_file(name, ids):
+            p = tmp / f"{name}.txt"
+            p.write_text("\n".join(ids) + "\n", encoding="utf-8")
+            return str(p)
+
+        def run(*args, ids=("S00001", "S00002"), role="E1", batch="st1"):
+            argv = ["--role", role, "--batch", batch, "--ids", ids_file(f"ids-{len(results)}-{next(counter)}", ids), "--root", str(root),
+                    "--texts", str(texts), "--log", str(log)] + list(args)
+            buf = io.StringIO()
+            try:
+                with redirect_stdout(buf):
+                    main(argv)
+            except Refused:
+                return "refused"
+            return buf.getvalue().strip()
+
+        def folder_ok():
+            d = Path(run())
+            disp = json.loads((d / "dispatch.json").read_text(encoding="utf-8"))
+            files = sorted(str(q.relative_to(d)).replace("\\", "/") for q in d.rglob("*") if q.is_file())
+            want = sorted(["CONTRACT.md", "brief.md", SCHEMA.name, "dispatch.json", "fulltext/S00001.txt", "fulltext/S00002.txt"])
+            return (re.fullmatch(r"EA-st1-[0-9a-f-]{36}", d.name) and files == want
+                    and disp["role"] == "EA" and disp["model"] == "claude-opus-5-5" and disp["extractor"] == "EA-claude-opus-5-5"
+                    and disp["output_file"] == "EA-st1.jsonl" and disp["blocks"] == {i: list("LQHK") for i in disp["ids"]}
+                    and (d / "brief.md").read_text(encoding="utf-8") == session_text("EA")
+                    and (d / "fulltext/S00001.txt").read_bytes() == (texts / "S00001.txt").read_bytes()
+                    and sorted(disp["ids"]) == ["S00001", "S00002"])
+        check("E1 folder: only contract, session brief, schema, texts and dispatch.json; EA claude-opus-5-5", folder_ok)
+
+        def log_ok():
+            rows = [json.loads(x) for x in log.read_text(encoding="utf-8").splitlines() if x.strip()]
+            r = rows[-1]
+            return (r["role"] == "EA" and r["model_check_alias"] == "B" and r["n"] == 2
+                    and r["ids_sha256"] == sha("\n".join(sorted(["S00001", "S00002"])).encode()) and "xy" not in r)
+        check("dispatch log row goes to --log (alias B, ids sha256)", log_ok)
+
+        def shuffle_ok():
+            o1 = json.loads((Path(run(batch="sh")) / "dispatch.json").read_text(encoding="utf-8"))["ids"]
+            o2 = json.loads((Path(run(batch="sh")) / "dispatch.json").read_text(encoding="utf-8"))["ids"]
+            exp = ["S00001", "S00002"]
+            random.Random("sh-EA").shuffle(exp)
+            return o1 == o2 == exp
+        check("ids order is the seeded shuffle random.Random('<batch>-<role>')", shuffle_ok)
+        check("E2 maps to EB claude-sonnet-5-5",
+              lambda: json.loads((Path(run(role="E2")) / "dispatch.json").read_text(encoding="utf-8"))["extractor"] == "EB-claude-sonnet-5-5")
+        man = tmp / "manifest.json"
+        man.write_text(json.dumps({"stage": "stage-a", "ids": ["S00001", "S00002"]}), encoding="utf-8")
+        n_before = len(list(root.iterdir()))
+        refusals = {"no full text": dict(ids=("S00001", "S09999")), "unsafe id": dict(ids=("S00001", "../x")),
+                    "duplicate id": dict(ids=("S00001", "S00001")), "unsafe batch": dict(batch="b/1"),
+                    "three K records": dict(ids=("S00001", "S00002", "S00003")),
+                    "large text with another": dict(ids=("L00001", "S00001"))}
+        check("refusals write nothing: " + ", ".join(refusals) + ", bad blocks, id not in the manifest",
+              lambda: all(run(**kw) == "refused" for kw in refusals.values())
+              and run("--blocks", "LQX") == "refused" and run("--manifest", str(man), ids=("S00001", "S00003")) == "refused"
+              and len(list(root.iterdir())) == n_before)
+        check("session-size rule: one large K record alone, three light records under the limit",
+              lambda: run(ids=("L00001",), batch="big") != "refused"
+              and run("--blocks", "LQH", ids=("S00001", "S00002", "S00003"), batch="light") != "refused")
+        check("dry run writes nothing",
+              lambda: "DRY RUN" in run("--dry-run", batch="dry") and not any(p.name.startswith("EA-dry-") for p in root.iterdir()))
+        ex, ey, lk = tmp / "ex.jsonl", tmp / "ey.jsonl", tmp / "lookups"
+        lk.mkdir()
+        for f in ("benchmark-ids-v1.csv", "metric-ids-v1.csv"):
+            (lk / f).write_text("printed,id\n" if f.startswith("bench") else "printed,id,higher_is_better\n", encoding="utf-8")
+        ex.write_text("".join(json.dumps({"id": i, "extractor": "EA-claude-opus-5-5", "k": "x"}) + "\n" for i in small), encoding="utf-8")
+        ey.write_text("".join(json.dumps({"id": i, "extractor": "EB-claude-sonnet-5-5", "k": "y"}) + "\n" for i in small), encoding="utf-8")
+
+        def ec_ok():
+            d = Path(run("--records-x", str(ex), "--records-y", str(ey), "--lookups", str(lk), role="EC", batch="ec"))
+            rng, key = random.Random(SEED_XY), {}
+            for i in sorted(["S00001", "S00002"]):
+                key[i] = rng.random() < 0.5
+            ok = sorted(p.name for p in (d / "lookups").iterdir()) == ["benchmark-ids-v1.csv", "metric-ids-v1.csv"]
+            for i, swap in key.items():
+                rx, ry = [json.loads(x) for x in (d / f"records-{i}.jsonl").read_text(encoding="utf-8").splitlines()]
+                ok = ok and rx["extractor"] == "X" and ry["extractor"] == "Y" and (rx["k"], ry["k"]) == (("y", "x") if swap else ("x", "y"))
+            row = [json.loads(x) for x in log.read_text(encoding="utf-8").splitlines() if x.strip()][-1]
+            folder_text = " ".join(p.read_text(encoding="utf-8") for p in [d / "dispatch.json", *d.glob("records-*.jsonl")])
+            return ok and row["xy"] == {i: ({"X": "EB", "Y": "EA"} if s else {"X": "EA", "Y": "EB"}) for i, s in key.items()} \
+                and "EA-claude-opus-5-5" not in folder_text
+        check("EC folder: neutral X/Y labels from random.Random(20261700), key only in the log", ec_ok)
+        check("EC without records or lookups is refused", lambda: run(role="EC", batch="ec2") == "refused")
+    check("the real dispatch log was not touched", lambda: (LOG.read_bytes() if LOG.exists() else None) == log_before)
+    n_fail = results.count(False)
+    if verbose:
+        print(f"self-tests passed {len(results) - n_fail}/{len(results)}")
+    return n_fail
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Isolated dispatch folder for one extraction session (form v0.5).")
-    ap.add_argument("--role", required=True, choices=sorted(ROLES))
-    ap.add_argument("--batch", required=True)
-    ap.add_argument("--ids", required=True)
-    ap.add_argument("--root", required=True)
+    ap.add_argument("--role", choices=sorted(ROLES))
+    ap.add_argument("--batch")
+    ap.add_argument("--ids")
+    ap.add_argument("--root")
     ap.add_argument("--blocks", default="LQHK")
     ap.add_argument("--blocks-json")
     ap.add_argument("--manifest")
@@ -236,7 +357,13 @@ def main(argv=None):
     ap.add_argument("--texts", default=str(MD))
     ap.add_argument("--log", default=str(LOG))
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--self-test", action="store_true",
+                    help="built-in synthetic fixtures in a temporary folder; exit 0 if all pass, else 1")
     a = ap.parse_args(argv)
+    if a.self_test:
+        return 1 if self_test() else 0
+    if not (a.role and a.batch and a.ids and a.root):
+        ap.error("--role, --batch, --ids and --root are required (or --self-test)")
     build(a)
     return 0
 

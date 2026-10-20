@@ -7,6 +7,7 @@ Run from the worktree root:
   python -I analysis/extraction/draw_pilot.py --stage {stage-a|gate|mi4|regate} --option {a|b|c|d} --dry-run
   python -I analysis/extraction/draw_pilot.py --stage <stage> --option <o> --i-have-the-decision-row D00xx
       [--stage-a-manifest P] [--gate-manifest P] [--mi4-manifest P] [--spares K] [--out P]
+  python -I analysis/extraction/draw_pilot.py --self-test     (built-in synthetic fixtures; exit 0 if all pass)
 
 --dry-run prints counts only (frame sizes, pool sizes, how many would be drawn), draws nothing and writes nothing.
 Without --dry-run the tool refuses to write a draw unless --i-have-the-decision-row names a row that exists in
@@ -53,7 +54,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-TOOL = "draw_pilot.py 1.0.0 (extraction form v0.5)"
+TOOL = "draw_pilot.py 1.0.1 (extraction form v0.5)"
 PY_PINNED = "3.14.3"
 WORKED_EXAMPLES = ["M07474", "M12766", "M09530", "M13864", "M08100"]
 SEED_STAGE_A, SEED_GATE, SEED_REGATE, SEED_MI4 = 20261100, 20261200, 20261300, 20266200
@@ -265,6 +266,176 @@ def draw_mi4(frame_r, exclude, seed=SEED_MI4, n=MI4_N):
 
 
 # =============================================================================================================
+# Self-test (built-in synthetic frames and a synthetic data tree in a temporary folder; no real frame is read and
+# nothing is written outside the temporary folder)
+# =============================================================================================================
+def _st_jw(p, rows):
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+
+def _st_tree(root, n_c1=60, n_a=240):
+    """Synthetic decisions, screener rows, corpus, texts (sparse files for sizes), config copy and ledger."""
+    rng = random.Random(7)
+    root = Path(root)
+    dec, fa, fb, corpus, ids = [], [], [], [], []
+    texts = root / "research/sources/md/fulltext-pymupdf"
+    texts.mkdir(parents=True)
+    for k in range(n_c1):
+        i = "M12766" if k == 0 else f"C{k:05d}"
+        dec.append({"id": i, "decision": "include", "i1": "ab" if k % 2 == 0 else "b", "nonlang_only": False})
+        ids.append(i)
+    for k in range(n_a):
+        i = "M09530" if k == 0 else f"A{k:05d}"
+        mm = "multimodal" if k % 5 == 1 else "text"
+        fa.append({"id": i, "mm": "multimodal" if k == 2 else mm})
+        fb.append({"id": i, "mm": "text" if k == 2 else mm})
+        dec.append({"id": i, "decision": "include", "i1": "a", "nonlang_only": k % 40 == 39})
+        ids.append(i)
+    dec.append({"id": "X00001", "decision": "exclude", "i1": None, "nonlang_only": False})
+    for n, i in enumerate(ids):
+        title = "A benchmark of synthetic decoding" if n % 9 == 0 else "Synthetic diffusion model " + i
+        corpus.append({"nid": i, "title": "Image captioning with a synthetic model" if i == "A00002" else title,
+                       "abstract": "synthetic"})
+        with open(texts / f"{i}.txt", "wb") as f:
+            f.truncate(140000 if n % 13 == 0 else 20000 + rng.randrange(100000))
+    ft1 = root / "analysis/screening/ft-t1"
+    _st_jw(ft1 / "t1-decisions-all.jsonl", dec)
+    _st_jw(ft1 / "t1b001" / "FA-t1b001.jsonl", fa)
+    _st_jw(ft1 / "t1b001" / "FB-t1b001.jsonl", fb)
+    _st_jw(ft1 / "c-superseded.jsonl", [])
+    _st_jw(ft1 / "c" / "c-t1-01" / "FC-c-t1-01.jsonl", [{"id": "A00003", "mm": "multimodal"}])
+    _st_jw(root / "research/review/corpus/new-records-2026-10-15-v2.jsonl", corpus)
+    (root / "analysis/extraction").mkdir(parents=True, exist_ok=True)
+    (root / "analysis/extraction/gate-config-v05.json").write_bytes((HERE / "gate-config-v05.json").read_bytes())
+    _st_jw(root / "research/ledgers/decisions.jsonl", [{"id": "D0099", "decision": "synthetic self-test row"}])
+    return root
+
+
+def self_test(verbose=True):
+    """Returns the number of failed checks (0 = all passed)."""
+    import io  # noqa: PLC0415
+    import tempfile  # noqa: PLC0415
+    from contextlib import redirect_stdout  # noqa: PLC0415
+    results = []
+
+    def check(desc, fn):
+        try:
+            ok = bool(fn())
+        except Exception as exc:  # noqa: BLE001 -- a crashing check is a failed check
+            ok, desc = False, f"{desc} [{type(exc).__name__}: {exc}]"
+        results.append(ok)
+        if verbose:
+            print(f"self-test {len(results):2d} {'ok  ' if ok else 'FAIL'} {desc}")
+
+    def refused(fn):
+        try:
+            fn()
+        except Refused:
+            return True
+        return False
+
+    pools = {"C1-ab": [f"a{i}" for i in range(10)] + ["M12766"], "C1-b": [f"b{i}" for i in range(10)],
+             "C2": [f"c{i}" for i in range(20)], "FR-bench-title": [f"f{i}" for i in range(5)] + ["M09530"],
+             "FRC2-large": [f"c{i}" for i in range(3)] + [f"f{i}" for i in range(4)], "FR": [f"f{i}" for i in range(30)]}
+
+    def stage_a_rule():
+        out = draw_stage_a(pools)
+        rng, taken, exp = random.Random(SEED_STAGE_A), set(WORKED_EXAMPLES), []
+        for name, k in STAGE_A_POOLS:
+            pick = rng.sample(sorted(set(pools[name]) - taken), k)
+            exp += pick
+            taken |= set(pick)
+        ids = [i for i, _ in out]
+        return (ids == exp and len(set(ids)) == 7 and not set(ids) & set(WORKED_EXAMPLES)
+                and [p for _, p in out] == [p for p, k in STAGE_A_POOLS for _ in range(k)] and draw_stage_a(pools) == out)
+    check("stage-a: one seeded generator over the pools in order, no replacement, worked examples excluded", stage_a_rule)
+    check("stage-a: a pool with too few ids is refused",
+          lambda: refused(lambda: draw_stage_a(dict(pools, C2=["c0"]))))
+    strata = {"G-short": [f"s{i:03d}" for i in range(80)], "G-long": [f"l{i:03d}" for i in range(80)],
+              "G-mm": [f"m{i:03d}" for i in range(53)]}
+
+    def gate_rule():
+        lists, sp, seeds = draw_gate(strata, ["s001", "m000"], 40, 5, SEED_GATE)
+        ok = seeds == {s: SEED_GATE + h for h, s in enumerate(GATE_STRATA)}
+        for h, s in enumerate(GATE_STRATA):
+            avail = sorted(set(strata[s]) - {"s001", "m000"})
+            ok = ok and len(sp[s]) == 5 and lists[s] == random.Random(SEED_GATE + h).sample(avail, 40) \
+                and not set(lists[s] + sp[s]) & {"s001", "m000"}
+        return ok and draw_gate(strata, ["s001", "m000"], 40, 0, SEED_GATE)[0] == lists
+    check("gate: ordered lists of 40 per stratum, seeds 20261200 + h, spares leave the list unchanged", gate_rule)
+    check("gate: more than 45 spares, or a stratum too small for list + spares, is refused",
+          lambda: refused(lambda: draw_gate(strata, [], 40, 46, SEED_GATE))
+          and refused(lambda: draw_gate(strata, [], 40, 14, SEED_GATE)))
+    fr = [f"f{i:03d}" for i in range(20)]
+    check("mi4: five ids from frame R minus every excluded id, seed 20266200",
+          lambda: draw_mi4(fr, fr[:14]) == random.Random(SEED_MI4).sample(fr[14:], 5) and refused(lambda: draw_mi4(fr, fr[:16])))
+    base = {"C1": ["c1"], "NL": ["n1"], "C2": ["m1", "m2", "s1"], "FR": ["r1", "r2", "j1"]}
+    construct = {"s1": "side-experiment", "j1": "joint", "m1": "joint"}
+
+    def options():
+        f = {o: option_frames(base, o, construct) for o in "abcd"}
+        return (f["a"]["C2"] == [] and f["b"]["C2"] == base["C2"] and f["c"]["C2"] == ["j1", "m1", "m2"]
+                and f["c"]["FR"] == ["r1", "r2", "s1"] and f["d"]["C2b"] == ["s1"] and f["d"]["FR"] == ["r1", "r2"]
+                and all(x["RC2"] == sorted(base["C2"] + base["FR"]) for x in f.values()))
+    check("options a-d move records between C2, C2b and FR only (P1)", options)
+    recs = {"c1": {"i1": "ab", "nl": False, "mm": "text", "kw": False}, "n1": {"i1": "a", "nl": True, "mm": "text", "kw": False},
+            "m1": {"i1": "a", "nl": False, "mm": "multimodal", "kw": False},
+            "s1": {"i1": "a", "nl": False, "mm": "split:multimodal/text", "kw": True},
+            "s2": {"i1": "a", "nl": False, "mm": "split:multimodal/text", "kw": False},
+            "o1": {"i1": "a", "nl": False, "mm": "text", "kw": False}}
+    check("frames: C1, NL, mm rule (split decided by KW), overrides last, confirmed duplicates dropped",
+          lambda: base_frames(recs, {"o1": "multimodal"}, {"s1"}) == {"C1": ["c1"], "NL": ["n1"], "C2": ["m1", "o1"], "FR": ["s2"]})
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp = Path(tmp)
+        tree = _st_tree(tmp / "data")
+        common = ["--data-root", str(tree), "--ledger", str(tree / "research/ledgers/decisions.jsonl")]
+
+        def cli(*args):
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                code = main(list(args) + common)
+            return code, buf.getvalue()
+
+        def listing(p):
+            return sorted(str(q.relative_to(p)) for q in p.rglob("*") if q.is_file())
+        before = listing(tmp)
+
+        def dry():
+            outs = [cli("--stage", st, "--option", "b", "--dry-run") for st in ("stage-a", "gate", "mi4", "regate")]
+            return all(c == 0 and "DRY RUN" in o and "M12766" not in o for c, o in outs) and listing(tmp) == before
+        check("dry runs print counts only and write nothing", dry)
+        sa = tmp / "sa.json"
+        check("a real draw without an existing decision row is refused and writes nothing",
+              lambda: refused(lambda: cli("--stage", "stage-a", "--option", "b", "--out", str(sa)))
+              and refused(lambda: cli("--stage", "stage-a", "--option", "b", "--out", str(sa), "--i-have-the-decision-row", "D0100"))
+              and not sa.exists())
+        row = ["--i-have-the-decision-row", "D0099"]
+        if platform.python_version() == PY_PINNED:
+            def sequence():
+                cli("--stage", "stage-a", "--option", "b", "--out", str(sa), *row)
+                m = json.loads(sa.read_text(encoding="utf-8"))
+                cli("--stage", "stage-a", "--option", "b", "--out", str(tmp / "sa2.json"), *row)
+                m2 = json.loads((tmp / "sa2.json").read_text(encoding="utf-8"))
+                gt = tmp / "gate.json"
+                cli("--stage", "gate", "--option", "b", "--stage-a-manifest", str(sa), "--spares", "4", "--out", str(gt), *row)
+                g = json.loads(gt.read_text(encoding="utf-8"))
+                gids = [i for s in g["lists"] for i in g["lists"][s] + g["spares"][s]]
+                return (m["ids"][:5] == WORKED_EXAMPLES and len(m["drawn"]) == 7 and m["ids"] == m2["ids"]
+                        and refused(lambda: cli("--stage", "stage-a", "--option", "b", "--out", str(sa), *row))
+                        and len(set(gids)) == 132 and not set(gids) & set(m["ids"]))
+            check("synthetic sequence: stage-a manifest (5 worked examples + 7 drawn, reproducible, no overwrite), "
+                  "gate lists disjoint from Stage A", sequence)
+        else:
+            check(f"a real draw under Python {platform.python_version()} (not {PY_PINNED}) is refused",
+                  lambda: refused(lambda: cli("--stage", "stage-a", "--option", "b", "--out", str(sa), *row)))
+    n_fail = results.count(False)
+    if verbose:
+        print(f"self-tests passed {len(results) - n_fail}/{len(results)}")
+    return n_fail
+
+
+# =============================================================================================================
 # CLI
 # =============================================================================================================
 def read_manifest(p, stage, option, frames_sha):
@@ -298,8 +469,8 @@ def check_decision_row(row, ledger):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Seeded draws of the extraction pilot (plan v0.5 s10.2, s10.7).")
-    ap.add_argument("--stage", required=True, choices=["stage-a", "gate", "mi4", "regate"])
-    ap.add_argument("--option", required=True, choices=["a", "b", "c", "d"],
+    ap.add_argument("--stage", choices=["stage-a", "gate", "mi4", "regate"])
+    ap.add_argument("--option", choices=["a", "b", "c", "d"],
                     help="multimodal construct chosen by the human author (plan v0.4 s2.3)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--i-have-the-decision-row", dest="row")
@@ -310,7 +481,13 @@ def main(argv=None):
     ap.add_argument("--spares", type=int)
     ap.add_argument("--out")
     ap.add_argument("--data-root", default=str(ROOT))
+    ap.add_argument("--self-test", action="store_true",
+                    help="built-in synthetic frames and tree in a temporary folder; exit 0 if all pass, else 1")
     a = ap.parse_args(argv)
+    if a.self_test:
+        return 1 if self_test() else 0
+    if not (a.stage and a.option):
+        ap.error("--stage and --option are required (or --self-test)")
 
     P = paths(a.data_root)
     cfg = json.loads(P["config"].read_text(encoding="utf-8"))

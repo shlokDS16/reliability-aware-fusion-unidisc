@@ -20,7 +20,9 @@ Inputs (a missing or mismatched input stops the run before anything is written):
                 ids are not in it are refused.
   --replacements  gate only: rows {"stratum", "failed", "replacement"} (plan s10.7 step 2); a replacement must be a
                 spare of its stratum and takes the failed id's position.
-  --lookups     benchmark-ids-v1.csv (printed, id) and metric-ids-v1.csv (printed, id, higher_is_better).
+  --lookups     benchmark-ids-v1.csv (printed, id) and metric-ids-v1.csv (printed, id, higher_is_better: true,
+                false or empty). The metric file is read by tools/ex_validate.py's load_metric_lookup (imported by
+                path), so both tools use one direction list: ex_validate's KA1(b) list plus this CSV (I5).
   --validator   ex_validate first-pass report, plan v0.2 s6.5 lines {id, extractor, check, ref, status,
                 severity, detail}: the concatenated --out files of tools/ex_validate.py (one record per call);
                 every (id, extractor) of X and Y must appear at least once (a summary line).
@@ -54,11 +56,16 @@ Spec gaps resolved here (each is also listed in the output under "spec_resolutio
      D16 entries. Strings compared after U11 normalisation; lists of strings as sets; Jaccard for S04, S05,
      S15, D01, D10, D11. NA = null or "NA"; NA-NA pairs are excluded, NA against a value is a disagreement.
   R2 Group arm-label Jaccard = matched arms (U11 equal, then label-core, one-to-one in reading order) / union.
-  R3 Final sign (MJ1 fix as written by the red-team): (1) an arrow printed in metric_printed or a value's
-     column_printed (script-visible KA1(a)) sets the sign; (2) else the lookup direction when the metric is
-     mapped and the direction is non-null, unless an extractor value conflicts with it (a null extractor value is
-     not a conflict); (3) else the unit is routed to EC and takes EC's value (KA1 under EC); (4) else unsigned
-     (excluded from signed pooling). Without --ec, routed units are counted as "pending EC".
+  R3 Final sign (MJ1 fix as written by the red-team): (1) an arrow printed in metric_printed, a value's
+     column_printed or, in a columns-oriented group, a cited cell's row label (script-visible KA1(a)) sets the
+     sign; (2) else the lookup direction when the metric is mapped and the direction is non-null, unless an
+     extractor value conflicts with it (a null extractor value is not a conflict) or an arrow printed next to the
+     leaf in the table header conflicts with it or with an extractor value; (3) else the unit is routed to EC and
+     takes EC's value (KA1 under EC); (4) else unsigned (excluded from signed pooling). Without --ec, routed units
+     are counted as "pending EC".
+  I5 (stageA-gaps-log.txt G3) The metric key (s5.4 key, then KA1 qualifiers dropped, pass@n read as pass@k), the
+     direction list, the printed arrows (record only: EV.record_arrows) and the rule of R3 (EV.resolve_sign) are
+     those of tools/ex_validate.py, imported by path, so both tools give one unit the same sign.
   R4 M-sign reader value for (matched group, metric key): the reader's higher_is_better on that group's units
      with that key; two different values in one reader count as a disagreement.
   R5 K-attr point = mean of the per-field ratios that have applicable pairs; bootstrap uses the same rule.
@@ -89,7 +96,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-TOOL_VERSION = "agreement.py 1.0.1 (extraction form v0.5)"
+TOOL_VERSION = "agreement.py 1.0.2 (extraction form v0.5)"
 SELF_TEST_SEED = 20267000
 BOOT_SEED = 20261800
 
@@ -104,6 +111,7 @@ def _load(name, path):
 GR = _load("gate_rule_v05", HERE / "gate_rule_v05.py")          # bounds, theta, product rule (reference)
 IC = GR.I                                                         # icc_check: icc_anova, upper80_neyman
 QC = _load("quote_check", ROOT / "analysis" / "screening" / "quote_check.py")   # normalise (read-only)
+EV = _load("ex_validate_shared", ROOT / "tools" / "ex_validate.py")            # shared sign rules (stageA-gaps-log G3)
 
 
 class InputError(SystemExit):
@@ -169,14 +177,7 @@ def label_core(key):
 def norm_bm(s):
     """s5.4: quote_check.normalise, lower case, arrows and enclosing parentheses removed, a trailing citation
     with a year removed, all whitespace removed."""
-    if s is None:
-        return ""
-    s = QC.normalise(_strip_tail(_ARROW.sub("", str(s)))).lower()
-    s = _ARROW.sub("", s)
-    s = _strip_tail(s).strip()
-    while len(s) >= 2 and s[0] == "(" and s[-1] == ")" and _balanced(s[1:-1]):
-        s = s[1:-1].strip()
-    return re.sub(r"\s+", "", s)
+    return EV.metric_norm(s)                 # one implementation, shared with tools/ex_validate.py
 
 
 def _balanced(s):
@@ -231,18 +232,18 @@ class Lookups:
         for k, p in self.files.items():
             if not p.exists():
                 fail(f"lookup file missing: {p}")
-        self.bench, self.metric, self.direction = {}, {}, {}
+        self.bench = {}
         with open(self.files["benchmark"], encoding="utf-8", newline="") as f:
-            for row in csv.DictReader(f):
+            rd = csv.DictReader(f)
+            if not {"printed", "id"} <= set(rd.fieldnames or []):
+                fail(f"{self.files['benchmark']}: first line must be printed,id")
+            for row in rd:
                 self.bench[norm_bm(row["printed"])] = row["id"].strip()
-        with open(self.files["metric"], encoding="utf-8", newline="") as f:
-            for row in csv.DictReader(f):
-                mid = row["id"].strip()
-                self.metric[norm_bm(row["printed"])] = mid
-                d0 = parse_dir(row.get("higher_is_better", ""))
-                if mid in self.direction and self.direction[mid] != d0:
-                    fail(f"metric lookup gives two directions for {mid}")
-                self.direction[mid] = d0
+        try:                        # shared direction list: KA1(b) of tools/ex_validate.py plus the metric CSV
+            self.mtable = EV.load_metric_lookup(self.files["metric"])
+        except ValueError as exc:
+            fail(f"metric lookup: {exc}")
+        self.direction = EV.metric_directions(self.mtable)
         self.sha = {k: sha_file(p) for k, p in self.files.items()}
 
     def bkey(self, s):
@@ -250,16 +251,15 @@ class Lookups:
         return self.bench.get(n, "raw:" + n)
 
     def mkey(self, s):
-        n = norm_bm(s)
-        return self.metric.get(n, "raw:" + n)
+        return EV.metric_key(s, self.mtable)
 
     def mdir(self, mkey):
         return None if mkey.startswith("raw:") else self.direction.get(mkey)
 
 
 def parse_dir(s):
-    s = (s or "").strip().lower()
-    return True if s in ("true", "1", "yes") else False if s in ("false", "0", "no") else None
+    """Direction cell of the metric CSV (shared rule: true, false or empty; anything else is an error)."""
+    return EV.parse_direction(s)
 
 
 class Validator:
@@ -564,28 +564,16 @@ def pool_flag(g):
     return bool(ok)
 
 
-def arrow_dir(strings):
-    s = " ".join(x for x in strings if x)
-    up, dn = ("↑" in s or "⬆" in s), ("↓" in s or "⬇" in s)
-    return True if up and not dn else False if dn and not up else None
+def final_sign(vals, L, arrow, ec_given, ec_val, header_arrow=None):
+    """R3, shared with ex_validate (EV.resolve_sign). vals: the extractors' non-absent higher_is_better values;
+    arrow / header_arrow: the certain and the header printed direction (EV.sign_inputs). Returns (final, source,
+    routed)."""
+    return EV.resolve_sign(vals, arrow, header_arrow, L, ec_given, ec_val)
 
 
-def unit_strings(u):
-    return [u.get("metric_printed")] + [v.get("column_printed") for v in u.get("values") or []]
-
-
-def final_sign(vals, L, arrow, ec_given, ec_val):
-    """R3. vals: the extractors' non-absent higher_is_better values. Returns (final, source, routed)."""
-    if arrow is not None:
-        return arrow, "KA1(a) printed arrow", False
-    nonnull = [v for v in vals if v is not None]
-    if L is not None and all(v == L for v in nonnull):
-        return L, "lookup", False
-    if not ec_given:
-        return None, "pending EC", True
-    if ec_val is not None:
-        return ec_val, "EC", True
-    return None, "unsigned", True
+def unit_arrow_sets(arrows, idx):
+    """(certain, header) direction sets of K unit idx of a record (EV.record_arrows output)."""
+    return arrows.get(("K", idx), (set(), set()))
 
 
 def ka1_step(v, arrow, L):
@@ -840,29 +828,33 @@ def sign_rows(rx, ry, gm, km, L, ec):
         return None
 
     rows = []
+    arx, ary = EV.record_arrows(rx), EV.record_arrows(ry)      # printed arrows, exactly as ex_validate sees them
     mx, my = {a: b for a, b, _ in km}, {b for _, b, _ in km}
-    entries = [("pair", ux[a], uy[b]) for a, b in mx.items()] + \
-              [("x", ux[a], None) for a in range(len(ux)) if a not in mx] + \
-              [("y", None, uy[b]) for b in range(len(uy)) if b not in my]
-    for kind, u, w in entries:
+    entries = [("pair", a, b) for a, b in mx.items()] + \
+              [("x", a, None) for a in range(len(ux)) if a not in mx] + \
+              [("y", None, b) for b in range(len(uy)) if b not in my]
+    for kind, a, b in entries:
+        u = ux[a] if a is not None else None
+        w = uy[b] if b is not None else None
         ref = u if u is not None else w
         mk = L.mkey(ref.get("metric_printed"))
         Ld = L.mdir(mk)
-        strings = (unit_strings(u) if u else []) + (unit_strings(w) if w else [])
-        arrow = arrow_dir(strings)
+        sx = unit_arrow_sets(arx, a) if a is not None else (set(), set())
+        sy = unit_arrow_sets(ary, b) if b is not None else (set(), set())
+        arrow, header_arrow = EV.sign_inputs(sx[0] | sy[0], sx[1] | sy[1])
         vals = ([u.get("higher_is_better")] if u else []) + ([w.get("higher_is_better")] if w else [])
         ecv = None
         if ec_given:
             ecv = ec_value(rx, u) if u is not None else None
             if ecv is None and w is not None:
                 ecv = ec_value(ry, w)
-        final, source, routed = final_sign(vals, Ld, arrow, ec_given, ecv)
+        final, source, routed = final_sign(vals, Ld, arrow, ec_given, ecv, header_arrow)
         rows.append({"id": rx["id"], "kind": kind, "x_unit": u.get("unit_id") if u else None,
                      "y_unit": w.get("unit_id") if w else None, "metric_key": mk, "lookup_direction": Ld,
-                     "arrow": arrow, "x_value": u.get("higher_is_better") if u else "absent",
+                     "arrow": arrow, "header_arrow": header_arrow, "x_value": u.get("higher_is_better") if u else "absent",
                      "y_value": w.get("higher_is_better") if w else "absent",
-                     "x_step": ka1_step(u.get("higher_is_better"), arrow_dir(unit_strings(u)), Ld) if u else None,
-                     "y_step": ka1_step(w.get("higher_is_better"), arrow_dir(unit_strings(w)), Ld) if w else None,
+                     "x_step": ka1_step(u.get("higher_is_better"), EV.sign_inputs(*sx)[0], Ld) if u else None,
+                     "y_step": ka1_step(w.get("higher_is_better"), EV.sign_inputs(*sy)[0], Ld) if w else None,
                      "routed_to_EC": routed, "final": final, "source": source})
     return rows
 
@@ -1078,7 +1070,8 @@ SPEC_RESOLUTIONS = ["R1 block items", "R2 arm Jaccard via the arm match", "R3 fi
                     "R6 undefined criterion fails", "R7 G5 identity", "R8 M-val without figure-only pairs",
                     "R9 v0.4 pooled ICC for comparison",
                     "I1 '+'-joined validator refs split into entry ids", "I2 column_unverified read from ex_validate status lines by value ref",
-                    "I3 we-expected.jsonl unit rows folded into partial records", "I4 null worked-example key parts and split are wildcards"]
+                    "I3 we-expected.jsonl unit rows folded into partial records", "I4 null worked-example key parts and split are wildcards",
+                    "I5 metric directions, metric key, printed arrows and final sign shared with tools/ex_validate.py"]
 
 
 def run(a, argv):

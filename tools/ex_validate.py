@@ -7,6 +7,8 @@ Resolutions of ambiguous spec text are listed in analysis/extraction/ex_validate
 
     python -I tools/ex_validate.py --record <extraction .json> --text <fulltext .txt> [--schema <schema>]
         [--metric-lookup <csv>] [--out <report .jsonl>]
+    python -I tools/ex_validate.py --self-test       (built-in synthetic fixtures; exit 0 if all pass, else 1)
+A whole session (many records, the dispatched texts, pass tags, block checks) goes through tools/ex_validate_batch.py.
 
 Output: one JSON line per check {id, extractor, check, ref, status, severity, detail}, then one summary line.
 severity is pass, fail, warn (the unit goes to the second reader), info, or route (EC review list). Exit 0 if
@@ -16,6 +18,15 @@ analysis/screening/quote_check.py is imported read-only by file path (never edit
 quote_check.quote_status unchanged. Standard library only: the record is validated with jsonschema
 (Draft 2020-12) when it imports, else with the built-in validator below, which implements every keyword the
 v0.5 schema uses. The run is deterministic: no randomness, no clock, output in record order.
+
+Shared sign rules (section "sign"): the metric direction list (the KA1(b) list below plus the lookup CSV), the metric
+key, the printed arrows of a unit and the final-sign rule live here and are imported by
+analysis/extraction/agreement.py, so both tools give one unit the same sign (analysis/extraction/stageA-gaps-log.txt
+G3). Changes of 1.1.0 against the A20/A21 resolutions of ex_validate-test-log.txt: an arrow in metric_printed counts
+like one in column_printed; a K unit whose sign a printed arrow settles is not routed; a null higher_is_better that
+the lookup direction settles is not routed (info line null_resolved_by_lookup; agreement R3: null is not a
+conflict); a header arrow against the lookup direction routes like one against higher_is_better; the CSV must use
+true / false / empty and may not change a KA1(b) direction.
 """
 from __future__ import annotations
 
@@ -29,7 +40,7 @@ import re
 import sys
 from pathlib import Path
 
-TOOL_VERSION = "1.0.0"
+TOOL_VERSION = "1.1.0"
 ROOT = Path(__file__).resolve().parents[1]
 QUOTE_CHECK_PATH = ROOT / "analysis" / "screening" / "quote_check.py"
 DEFAULT_SCHEMA = ROOT / "research" / "review" / "extraction" / "extraction-schema-v0.5.json"
@@ -173,10 +184,6 @@ def lenient_equal(a, b):
 
 def leaf_parts(leaf):
     return [p.strip() for p in leaf.split(" / ")]
-
-
-def arrows_in(s):
-    return {"up" if c == "↑" else "down" for c in norm(s) if c in ARROWS}
 
 
 # ------------------------------------------------------------------------------------------------ text model
@@ -411,7 +418,22 @@ def check_table(text, info, rep):
     # order: single-level leaves in header order (fail); two-level bottom and level-1 parts (warning)
     if not info.columns:
         return
+    two = verify_order(info)
+    if info.order == "verified":
+        rep.ok("table", tid, "column_order_verified", "two-level: bottom and level-1 parts" if two else "single-level")
+    elif two:
+        rep.warn("table", tid, "column_order_unverified", "two-level header: order of the leaf parts not confirmed")
+    else:
+        rep.fail("table", tid, "column_order_mismatch", "leaves do not occur in header order")
+
+
+def verify_order(info):
+    """Column order from the record alone (header string and leaves; no text): sets info.order to verified,
+    unverified (two-level) or mismatch (single-level) and, when verified, the header arrows of each leaf.
+    Returns True for a two-level header. check_table and record_arrows both use it."""
     two = info.levels == 2
+    if not info.columns:
+        return two
     for f in FORMS:
         bottom = [needle_forms(leaf_parts(leaf)[-1], header=True)[f] for leaf in info.columns]
         if not two:
@@ -431,14 +453,12 @@ def check_table(text, info, rep):
                 info.order = "verified"
                 break
     if info.order == "verified":
-        rep.ok("table", tid, "column_order_verified", "two-level: bottom and level-1 parts" if two else "single-level")
         _leaf_arrows(info)
     elif two:
         info.order = "unverified"
-        rep.warn("table", tid, "column_order_unverified", "two-level header: order of the leaf parts not confirmed")
     else:
         info.order = "mismatch"
-        rep.fail("table", tid, "column_order_mismatch", "leaves do not occur in header order")
+    return two
 
 
 def _leaf_arrows(info):
@@ -866,24 +886,113 @@ def check_evidence(text, tables, cells, values, prose=(), rep=None):
 
 
 # ------------------------------------------------------------------------------------------------ sign (v0.5 s10.3)
-def load_metric_lookup(path=None):
-    """{normalised metric key: (metric id, higher_is_better or None)}; default = KA1(b)."""
+# Shared sign rules: the one source of metric directions and of the final-sign rule for this tool and for
+# analysis/extraction/agreement.py, which imports this file by path (plan v0.4 s11.1: "one module, imported by
+# ex_validate where the two share rules"). Direction list = the KA1(b) list above plus the lookup CSV
+# (analysis/extraction/lookups/metric-ids-v1.csv); metric key = metric_norm (agreement's s5.4 key); printed arrows
+# = unit_arrows; final sign = resolve_sign (agreement R3, plan v0.5 s10.3).
+_MN_CIT = re.compile(r"\s*[\(\[][^()\[\]]*?(?:19|20)\d{2}[a-z]?[^()\[\]]*[\)\]]\s*$")
+_MN_OURS = re.compile(r"\(\s*ours\s*\)", re.I)
+_ARROW_ANY = re.compile(r"[↑↓⬆⬇]")
+_UP, _DOWN = "↑⬆", "↓⬇"
+
+
+def _mn_strip_tail(s):
+    prev = None
+    while prev != s:
+        prev = s
+        s = _MN_OURS.sub("", s).strip()
+        s = _MN_CIT.sub("", s).strip()
+    return s
+
+
+def _mn_balanced(s):
+    d = 0
+    for ch in s:
+        d += (ch == "(") - (ch == ")")
+        if d < 0:
+            return False
+    return d == 0
+
+
+def metric_norm(s):
+    """Plan v0.4 s5.4 key of a metric or benchmark string (agreement.py's norm_bm): quote_check.normalise, lower
+    case, arrows and enclosing parentheses removed, a trailing citation with a year and "(ours)" removed, all
+    whitespace removed."""
+    if s is None:
+        return ""
+    s = norm(_mn_strip_tail(_ARROW_ANY.sub("", str(s)))).lower()
+    s = _ARROW_ANY.sub("", s)
+    s = _mn_strip_tail(s).strip()
+    while len(s) >= 2 and s[0] == "(" and s[-1] == ")" and _mn_balanced(s[1:-1]):
+        s = s[1:-1].strip()
+    return re.sub(r"\s+", "", s)
+
+
+def parse_direction(s):
+    """higher_is_better cell of the metric CSV: true, false or empty (any case); anything else is an error."""
+    t = (s or "").strip().lower()
+    if t in ("true", "false", ""):
+        return True if t == "true" else False if t == "false" else None
+    raise ValueError(f"higher_is_better must be true, false or empty, not {s!r}")
+
+
+def ka1_table():
+    """The KA1(b) list as {metric key: (metric id, higher_is_better)}."""
     table = {k: (v, True) for k, v in _KA1_TRUE.items()}
     table.update({k: (v, False) for k, v in _KA1_FALSE.items()})
-    if path:
-        with open(path, encoding="utf-8", newline="") as f:
-            for row in csv.DictReader(f):
-                hib = (row.get("higher_is_better") or "").strip().lower()
-                table[string_key(row["printed"])] = (row["id"], True if hib == "true" else False if hib == "false" else None)
     return table
 
 
+def load_metric_lookup(path=None):
+    """{metric key: (metric id, higher_is_better or None)} = the KA1(b) list, then the rows of the metric CSV
+    (columns printed, id, higher_is_better), keyed by metric_norm(printed); a CSV row may give a KA1(b) name another
+    id but not another direction. ValueError when a column is missing, a printed or id cell is empty, a printed
+    cell starts with '#' (no comment rows), a direction is not true/false/empty, a KA1(b) name or a pass@k name
+    gets another direction, or one metric id gets two directions."""
+    table = ka1_table()
+    ka1 = dict(table)
+    if path:
+        with open(path, encoding="utf-8", newline="") as f:
+            rd = csv.DictReader(f)
+            missing = [c for c in ("printed", "id", "higher_is_better") if c not in (rd.fieldnames or [])]
+            if missing:
+                raise ValueError(f"{path}: header lacks {missing} (first line must be printed,id,higher_is_better)")
+            for n, row in enumerate(rd, start=2):
+                printed, mid = (row.get("printed") or "").strip(), (row.get("id") or "").strip()
+                if not printed or not mid:
+                    raise ValueError(f"{path} line {n}: empty printed or id")
+                if printed.startswith("#"):
+                    raise ValueError(f"{path} line {n}: comment rows are not allowed")
+                key, d = metric_norm(printed), parse_direction(row.get("higher_is_better"))
+                if key in ka1 and ka1[key][1] != d:
+                    raise ValueError(f"{path} line {n}: {printed!r} is a KA1(b) name with direction {ka1[key][1]}, not {d}")
+                if _PASS_AT.match(key) and d is not True:
+                    raise ValueError(f"{path} line {n}: pass@k is higher-is-better in KA1(b)")
+                table[key] = (mid, d)
+    dirs = {"pass@k": True}
+    for mid, d in table.values():
+        if mid in dirs and dirs[mid] != d:
+            raise ValueError(f"metric id {mid} has two directions")
+        dirs[mid] = d
+    return table
+
+
+def metric_directions(table):
+    """{metric id: higher_is_better or None} of a lookup table (load_metric_lookup), pass@k included."""
+    out = {"pass@k": True}
+    out.update({mid: d for mid, d in table.values()})
+    return out
+
+
 def metric_lookup(metric, table):
-    key = string_key(metric)
+    """(metric id, direction) or None: the whole key, else the key without KA1 qualifiers (top-1, avg., gen. ...),
+    arrows and enclosing parentheses of single tokens, with pass@<n> or pass@k as one id."""
+    key = metric_norm(metric)
     if key in table:
         return table[key]
-    toks = [_strip_enclosing(t) for t in _ARROW_SPLIT.sub(" ", norm(metric).lower()).split()]
-    toks = [t for t in toks if t and t not in ARROWS and t not in _KA1_QUALIFIERS]
+    toks = [_strip_enclosing(t) for t in _ARROW_ANY.sub(" ", norm(metric).lower()).split()]
+    toks = [t for t in toks if t and t not in _KA1_QUALIFIERS]
     core = "".join(toks)
     if _PASS_AT.match(core):
         return ("pass@k", True)
@@ -892,22 +1001,82 @@ def metric_lookup(metric, table):
 
 def metric_key(metric, table):
     hit = metric_lookup(metric, table)
-    return hit[0] if hit else "raw:" + string_key(metric)
+    return hit[0] if hit else "raw:" + metric_norm(metric)
+
+
+def printed_dirs(s):
+    """Directions of the arrows in one string: a subset of {"up", "down"}."""
+    t = s if isinstance(s, str) else ""
+    return ({"up"} if any(c in t for c in _UP) else set()) | ({"down"} if any(c in t for c in _DOWN) else set())
+
+
+def unit_arrows(u, infos, cells_by_id):
+    """(certain, header) directions printed with one sign unit (KA1(a)). certain: arrows in metric_printed, in each
+    value's column_printed and, when the group (or the table) is columns-oriented, in the row label of each cited
+    cell. header: arrows printed next to the cited leaf in a verified table header (A20: attribution in a
+    linearised header is not certain, so they only route)."""
+    dirs, header_dirs = set(printed_dirs(u.get("metric_printed"))), set()
+    for v in u["values"]:
+        dirs |= printed_dirs(v.get("column_printed"))
+        c = cells_by_id.get(v.get("cell")) if v.get("cell") else None
+        info = infos.get(c.get("table")) if c else None
+        if c and info and (u.get("orientation") or info.entry.get("orientation")) == "columns":
+            dirs |= printed_dirs(c.get("row_label", ""))
+        if info and isinstance(v.get("col"), int):
+            header_dirs |= info.leaf_arrows.get(v["col"] - 1, set())
+    return dirs, header_dirs
+
+
+def _single(dirs):
+    return True if dirs == {"up"} else False if dirs == {"down"} else None
+
+
+def sign_inputs(dirs, header_dirs):
+    """(arrow, header_arrow) as True / False / None: one certain direction, else None; the header direction counts
+    only when no certain arrow is printed at all (both directions printed = ambiguous = no arrow)."""
+    return _single(dirs), (_single(header_dirs) if not dirs else None)
+
+
+def resolve_sign(values, arrow, header_arrow, lookup_dir, ec_given=False, ec_value=None):
+    """Final sign of a K unit (agreement.py R3, plan v0.5 s10.3), shared by both tools. values: the extractors'
+    higher_is_better values (null allowed). Returns (final, source, routed).
+    (1) a certain printed arrow sets the sign; (2) else the lookup direction when it is non-null, no non-null
+    extractor value differs from it (null is not a conflict) and no header arrow differs from it or from an
+    extractor value; (3) else the unit is routed to EC: EC's value, or "pending EC" without an EC file, or
+    "unsigned" when EC gives none."""
+    if arrow is not None:
+        return arrow, "KA1(a) printed arrow", False
+    nonnull = [v for v in values if v is not None]
+    header_conflict = header_arrow is not None and (any(v != header_arrow for v in nonnull)
+                                                    or (lookup_dir is not None and lookup_dir != header_arrow))
+    if not header_conflict and lookup_dir is not None and all(v == lookup_dir for v in nonnull):
+        return lookup_dir, "lookup", False
+    if not ec_given:
+        return None, "pending EC", True
+    if ec_value is not None:
+        return ec_value, "EC", True
+    return None, "unsigned", True
+
+
+def record_arrows(rec):
+    """{(kind, index in units_h or units_k): (certain, header)} from the record alone (no text), exactly as
+    check_signs sees them; agreement.py uses it for the printed-arrow step of the final sign."""
+    infos = {}
+    for t in _lst(rec.get("table_evidence")):
+        if isinstance(t, dict):
+            info = TableInfo(t)
+            verify_order(info)
+            infos[info.id] = info
+    cells_by_id = {c.get("id"): c for c in _lst(rec.get("cell_evidence")) if isinstance(c, dict)}
+    _, signs = record_values(rec)
+    return {(u["kind"], u["index"]): unit_arrows(u, infos, cells_by_id) for u in signs}
 
 
 def check_signs(sign_units, infos, cells_by_id, lookup, rep):
     """sign_units: dicts {ref, kind, group, metric_printed, hib, values: [{column_printed, cell, col}]}."""
     for u in sign_units:
         ref, hib = u["ref"], u.get("hib")
-        dirs, header_dirs = set(), set()
-        for v in u["values"]:
-            dirs |= arrows_in(v.get("column_printed") or "")
-            c = cells_by_id.get(v.get("cell")) if v.get("cell") else None
-            info = infos.get(c.get("table")) if c else None
-            if c and info and (u.get("orientation") or info.entry.get("orientation")) == "columns":
-                dirs |= arrows_in(c.get("row_label", ""))
-            if info and isinstance(v.get("col"), int):
-                header_dirs |= info.leaf_arrows.get(v["col"] - 1, set())
+        dirs, header_dirs = unit_arrows(u, infos, cells_by_id)
         if len(dirs) > 1:
             rep.warn("sign_arrow", ref, "arrow_ambiguous", "both arrows printed with this metric")
         elif dirs:
@@ -915,21 +1084,33 @@ def check_signs(sign_units, infos, cells_by_id, lookup, rep):
             if hib is None:
                 rep.warn("sign_arrow", ref, "direction_null_with_arrow", f"arrow {d} printed, higher_is_better null (KA1 a)")
             elif hib != (d == "up"):
-                rep.fail("sign_arrow", ref, "arrow_conflict", f"column_printed arrow {d} against higher_is_better {hib}")
+                rep.fail("sign_arrow", ref, "arrow_conflict", f"printed arrow {d} against higher_is_better {hib}")
             else:
                 rep.ok("sign_arrow", ref, "pass", f"arrow {d}")
+        header_routed = False
         if len(header_dirs) == 1 and not dirs:
             d = next(iter(header_dirs))
             if hib is not None and hib != (d == "up"):
                 rep.warn("sign_header_arrow", ref, "header_arrow_conflict", f"header arrow {d} next to the leaf against higher_is_better {hib}")
                 rep.emit("sign_route", ref, "header_arrow_conflict", "route", "EC: check the printed direction")
-        if u["kind"] == "K":
-            hit = metric_lookup(u.get("metric_printed", ""), lookup)
-            if hit is None or hit[1] is None:
-                rep.emit("sign_route", ref, "sign_extractor_only", "route",
-                         "metric unmapped" if hit is None else f"lookup {hit[0]} has no direction")
-            elif hib != hit[1]:
-                rep.emit("sign_route", ref, "sign_lookup_conflict", "route", f"higher_is_better {hib}, lookup {hit[0]} {hit[1]}")
+                header_routed = True
+        if u["kind"] != "K":
+            continue
+        hit = metric_lookup(u.get("metric_printed", ""), lookup)
+        ld = hit[1] if hit else None
+        arrow, header_arrow = sign_inputs(dirs, header_dirs)
+        _, source, routed = resolve_sign([hib], arrow, header_arrow, ld)
+        if not routed:
+            if source == "lookup" and hib is None:
+                rep.emit("sign_lookup", ref, "null_resolved_by_lookup", "info", f"lookup {hit[0]} {ld}")
+            continue
+        if header_arrow is not None and not header_routed and ld is not None and ld != header_arrow:
+            rep.emit("sign_route", ref, "header_arrow_conflict", "route", f"header arrow against the lookup direction {ld}")
+        if ld is None:
+            rep.emit("sign_route", ref, "sign_extractor_only", "route",
+                     "metric unmapped" if hit is None else f"lookup {hit[0]} has no direction")
+        elif hib is not None and hib != ld:
+            rep.emit("sign_route", ref, "sign_lookup_conflict", "route", f"higher_is_better {hib}, lookup {hit[0]} {ld}")
     by_key = {}
     for u in sign_units:
         if u["kind"] == "K":
@@ -1084,7 +1265,7 @@ def _lst(x):
 def record_values(rec):
     """Value contexts (VALUE_KEYS) and sign units from H units and K units."""
     values, signs = [], []
-    for u in _lst(rec.get("units_h")):
+    for hi, u in enumerate(_lst(rec.get("units_h"))):
         if not isinstance(u, dict):
             continue
         ref = u.get("unit_id", "?")
@@ -1098,11 +1279,11 @@ def record_values(rec):
                        "benchmark_printed": None if bench in (None, "not stated") else bench,
                        "metric_printed": u.get("metric_printed") or None,
                        "where": (u.get("loc") or {}).get("where")})
-        signs.append({"ref": ref, "kind": "H", "group": ref, "metric_printed": u.get("metric_printed", ""),
+        signs.append({"ref": ref, "kind": "H", "index": hi, "group": ref, "metric_printed": u.get("metric_printed", ""),
                       "hib": u.get("higher_is_better"),
                       "values": [{"column_printed": u.get("column_printed"), "cell": values[-1]["cell"], "col": u.get("col")}]})
     groups = {g.get("group_id"): g for g in _lst(rec.get("groups")) if isinstance(g, dict)}
-    for u in _lst(rec.get("units_k")):
+    for ki, u in enumerate(_lst(rec.get("units_k"))):
         if not isinstance(u, dict):
             continue
         g = groups.get(u.get("group_id"), {})
@@ -1121,7 +1302,7 @@ def record_values(rec):
                            "condition_printed": u.get("condition_printed"),
                            "second_factor_printed": g.get("second_factor_printed"), "where": g.get("where")})
             svals.append({"column_printed": v.get("column_printed"), "cell": v.get("cell"), "col": v.get("col")})
-        signs.append({"ref": u.get("unit_id", "?"), "kind": "K", "group": u.get("group_id"),
+        signs.append({"ref": u.get("unit_id", "?"), "kind": "K", "index": ki, "group": u.get("group_id"),
                       "orientation": g.get("orientation"), "metric_printed": u.get("metric_printed", ""),
                       "hib": u.get("higher_is_better"), "values": svals})
     return values, signs
@@ -1302,14 +1483,281 @@ def _load_record(path):
         raise
 
 
+def report_lines(rep, engine, hashes):
+    """The report of one record: its finding dicts, then the summary dict (CLI and tools/ex_validate_batch.py).
+    hashes: record_sha256, text_sha256, schema_sha256 and metric_lookup_sha256 (None = built-in KA1(b) only)."""
+    sev = {}
+    for x in rep.items:
+        sev[x["severity"]] = sev.get(x["severity"], 0) + 1
+    summary = {"summary": True, "id": rep.rid, "extractor": rep.extractor, "tool_version": TOOL_VERSION,
+               "status": "rejected" if rep.n_fail else "accepted", "checks": len(rep.items),
+               "fail": sev.get("fail", 0), "warn": sev.get("warn", 0), "route": sev.get("route", 0),
+               "schema_engine": engine, "record_sha256": hashes["record_sha256"], "text_sha256": hashes["text_sha256"],
+               "schema_sha256": hashes["schema_sha256"], "quote_check_sha256": _sha256(QUOTE_CHECK_PATH),
+               "metric_lookup_sha256": hashes.get("metric_lookup_sha256")}
+    return list(rep.items) + [summary]
+
+
+# ------------------------------------------------------------------------------------------------ self-test
+# Built-in synthetic fixtures (invented labels and numbers; no paper text): the v0.2 s6.6 tests T01-T20 and T22 in
+# the v0.3 entry shape, the v0.5 sign checks and the shared direction list. The pinned-text cases (the 35 of
+# validator-tests.jsonl, T21) need the screened full texts and stay in tests/test_ex_validate.py.
+_ST_CAPTION = "Table 2: Synthetic ablation of a toy masked diffusion model on a toy benchmark."
+_ST_LINES = ["=== page 2 ===", "Some prose before the table describes the toy setting in a few words.", _ST_CAPTION,
+             "Method", "QA", "QB", "QC", "Full model 71.5 72.0 70.9", "w/o token remasking 60.2 61.8 58.4",
+             "w/o noise schedule 55.1 56.3 50.7", "w/o lr warmup 69.3 69.9 68.5",
+             "The text continues after the table with more prose.", "=== page 3 ===", "A later page of prose."]
+_ST_TABLE = {"id": "T01", "where": "Table 2", "page": 2, "orientation": "rows", "header": "Method QA QB QC",
+             "header_levels": 1, "columns": ["QA", "QB", "QC"], "column_roles": ["metric"], "row_groups": [],
+             "row_group_role": "none", "caption": _ST_CAPTION}
+_ST_PROSE = ["=== page 1 ===", "In our runs the model reaches 45.21 accuracy on the test set after tuning.",
+             "The gain is 7.56 points on split A and 7.56 points on split B of the benchmark.",
+             "0.61 0.98 0.72 0.54 0.82 0.19", " ".join(f"word{i}" for i in range(41)) + "."]
+_SIGN_LINES = ["=== page 1 ===", "Abstract. We study a synthetic masked diffusion model on two toy benchmarks in this note.",
+               "Table 1: Synthetic results of two decoding variants on the toy benchmark.",
+               "Variant", "Acc. ↑", "FID ↓", "Cohesion", "Base", "61.2", "12.5", "0.30", "Ours", "64.8", "10.1", "0.35",
+               "The text continues after the table with more prose."]
+
+
+def _st_cell(cid, label, cells, first_col=1, occurrence=None, page=2, table="T01"):
+    return {"id": cid, "cond": "K01", "table": table, "page": page, "row_label": label, "row_group": "",
+            "first_col": first_col, "cells": cells, "occurrence": occurrence}
+
+
+def _st_val(ref, cid, col, value, column, **kw):
+    d = {"ref": ref, "kind": kw.pop("kind", "H"), "group": kw.pop("group", ref), "cell": cid, "col": col,
+         "value_printed": value, "column_printed": column}
+    d.update(kw)
+    return d
+
+
+def _st_run(lines, tables, cells, values, prose=()):
+    rep, _, _ = check_evidence(Text(lines), tables, cells, values, prose)
+    return rep.items
+
+
+def _st_find(items, check, ref=None):
+    return [x["status"] for x in items if x["check"] == check and (ref is None or x["ref"] == ref)]
+
+
+def _st_ok(items):
+    return not any(x["severity"] == "fail" for x in items)
+
+
+def _st_kunit(uid, col, metric, column, hib, vals=("61.2", "64.8")):
+    def v(arm, val, cid):
+        return {"arm_id": arm, "value_printed": val, "value_num": None, "cell": cid, "col": col, "prose": None,
+                "value_occurrence": None, "variance": {"kind": "none", "value_printed": "", "n_runs": None},
+                "column_printed": column}
+    return {"unit_id": uid, "group_id": "G01", "benchmark_printed": "toy", "metric_printed": metric,
+            "condition_printed": "", "metric_kind": "generated-sample", "higher_is_better": hib, "scale": "raw",
+            "split": "test", "task_family": "other", "n_eval_printed": "not_stated", "figure_only": False,
+            "values": [v("A1", vals[0], "C01"), v("A2", vals[1], "C02")],
+            "matched": None, "metric_id": None, "benchmark_id": None, "duplicate": None}
+
+
+def _st_arm(aid, label, role):
+    return {"arm_id": aid, "label_printed": label, "role": role, "generator": "diffusion", "level_printed": label,
+            "level_num": None, "params_printed": "", "train_tokens_printed": "", "shots_printed": "",
+            "scoring": "generated", "number_source": "run-by-authors", "steps_printed": "", "gen_length_printed": "",
+            "ar_label_source": "NA"}
+
+
+def _st_sign_record(units, columns=("Acc. ↑", "FID ↓", "Cohesion")):
+    return {
+        "id": "S00001", "form_version": "0.5", "extractor": "EA-test-model", "ft": "pymupdf-v1", "blocks": ["K"],
+        "meta": None, "study": None, "design": None, "census": None, "claims": None, "qa": None, "units_h": [],
+        "groups": [{"group_id": "G01", "rq_class": None, "factor_type": "order-rule", "factor_printed": "decoding variant",
+                    "dose_unit": "NA", "where": "Table 1", "page": 1, "source_kind": "main-table", "orientation": "rows",
+                    "second_factor_printed": "", "anchor_arm": "A2", "anchor_rule": "focal-label",
+                    "arms": [_st_arm("A1", "Base", "comparison"), _st_arm("A2", "Ours", "anchor")],
+                    "credited_ablation": True, "held_fixed": "not stated", "other_changes": "",
+                    "budget_across_arms": "not reported", "shape": "NA", "evidence_refs": ["C01"], "duplicate": None}],
+        "units_k": units, "evidence": [],
+        "table_evidence": [{"id": "T01", "where": "Table 1", "page": 1, "orientation": "rows",
+                            "header": "Variant Acc. ↑ FID ↓ Cohesion", "header_levels": 1, "columns": list(columns),
+                            "column_roles": ["metric"], "row_groups": [], "row_group_role": "none",
+                            "caption": "Table 1: Synthetic results of two decoding variants on the toy benchmark."}],
+        "cell_evidence": [{"id": "C01", "cond": "K01", "table": "T01", "page": 1, "row_label": "Base", "row_group": "",
+                           "first_col": 1, "cells": ["61.2", "12.5", "0.30"], "occurrence": None},
+                          {"id": "C02", "cond": "K01", "table": "T01", "page": 1, "row_label": "Ours", "row_group": "",
+                           "first_col": 1, "cells": ["64.8", "10.1", "0.35"], "occurrence": None}],
+        "searched": {}, "doubt": [], "notes": ""}
+
+
+def _st_csv_refused(text):
+    import tempfile  # noqa: PLC0415
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "metric-ids-v1.csv"
+        p.write_text(text, encoding="utf-8")
+        try:
+            load_metric_lookup(p)
+        except ValueError:
+            return True
+    return False
+
+
+def self_test(verbose=True):
+    """Built-in fixtures; returns the number of failed checks (0 = all passed)."""
+    import io  # noqa: PLC0415
+    from contextlib import redirect_stdout  # noqa: PLC0415
+    schema = json.loads(DEFAULT_SCHEMA.read_text(encoding="utf-8"))
+    L, T = _ST_LINES, [_ST_TABLE]
+    WNS = _st_cell("C01", "w/o noise schedule", ["55.1", "56.3", "50.7"])
+    FUL = _st_cell("C02", "Full model", ["71.5", "72.0", "70.9"])
+    results = []
+
+    def check(desc, fn):
+        try:
+            ok = bool(fn())
+        except Exception as exc:  # noqa: BLE001 -- a crashing check is a failed check
+            ok, desc = False, f"{desc} [{type(exc).__name__}: {exc}]"
+        results.append(ok)
+        if verbose:
+            print(f"self-test {len(results):2d} {'ok  ' if ok else 'FAIL'} {desc}")
+
+    def sign(units, columns=("Acc. ↑", "FID ↓", "Cohesion")):
+        return validate_record(_st_sign_record(units, columns), Text(_SIGN_LINES), schema)[0].items
+
+    def prose(eid, quote, loc="p.1, §4.2", cond="H01"):
+        return {"id": eid, "cond": cond, "quote": quote, "loc": loc}
+
+    def prose_items(entries, lines=_ST_PROSE):
+        rep = Report()
+        check_prose(Text(lines), entries, rep)
+        return rep.items
+
+    rows_vals = [_st_val("K01.A1", "C02", 1, "71.5", "QA", kind="K", group="G01", arm_label="Full model", orientation="rows"),
+                 _st_val("K01.A2", "C01", 1, "55.1", "QA", kind="K", group="G01", arm_label="w/o noise schedule", orientation="rows")]
+    check("T01 correct row passes", lambda: _st_find(_st_run(L, T, [WNS], []), "row") == ["pass"])
+    check("T02 wrong label gives cells_mismatch",
+          lambda: _st_find(_st_run(L, T, [dict(WNS, row_label="w/o token remasking")], []), "row") == ["cells_mismatch"])
+    check("T03 label not at a row start gives row_not_found",
+          lambda: _st_find(_st_run(L, T, [dict(WNS, row_label="noise schedule")], []), "row") == ["row_not_found"])
+    check("T04 a table row as prose: negation_before; the 11-token passage from the first w/o row is found",
+          lambda: _st_find(prose_items([prose("E01", "w/o noise schedule 55.1 56.3 50.7", "p.2, §5"),
+                                        prose("E02", "w/o token remasking 60.2 61.8 58.4 w/o noise schedule 55.1 56.3 50.7",
+                                              "p.2, §5")], L), "prose_quote") == ["negation_before", "found"])
+    check("T05 value position: pass, value_mismatch, value_outside_cells",
+          lambda: [_st_find(_st_run(L, T, [WNS], [_st_val("H01", "C01", c, "56.3", "QB")]), "value")[0] for c in (2, 3, 4)]
+          == ["pass", "value_mismatch", "value_outside_cells"])
+    check("T06 rows group passes with both columns verified",
+          lambda: (lambda it: _st_ok(it) and _st_find(it, "column") == ["column_verified"] * 2)(_st_run(L, T, [FUL, WNS], rows_vals)))
+    check("T07 arm cites another arm's row: label_row_mismatch",
+          lambda: _st_find(_st_run(L, T, [WNS], [dict(rows_vals[0], cell="C01", value_printed="55.1")]), "label_row") == ["label_row_mismatch"])
+    check("T08 wrong page gives row_not_found",
+          lambda: _st_find(_st_run(L, T, [dict(WNS, page=3)], []), "row") == ["row_not_found"])
+    check("T09 continuation entry (first_col 2) passes",
+          lambda: (lambda it: _st_ok(it) and _st_find(it, "value") == ["pass"])(
+              _st_run(L, T, [WNS, _st_cell("C03", "w/o noise schedule", ["56.3", "50.7"], first_col=2)],
+                      [_st_val("H01", "C03", 2, "56.3", "QB")])))
+    check("T10 header not printed: header_not_found",
+          lambda: "header_not_found" in _st_find(_st_run(L, [dict(_ST_TABLE, header="Method QA QB QX")], [WNS], []), "table"))
+    check("T11 (v0.3 shape) column_printed other than the map leaf: column_mismatch",
+          lambda: _st_find(_st_run(L, T, [FUL, WNS], [dict(v, column_printed="QZ") for v in rows_vals]), "column")
+          == ["column_mismatch"] * 2)
+    check("T12 caption cut to four words: caption_length",
+          lambda: "caption_length" in _st_find(_st_run(L, [dict(_ST_TABLE, caption="Table 2: Synthetic ablation")], [WNS], []), "table"))
+    check("T13 two values of one group on one (cell, col): cell_reused",
+          lambda: "cell_reused" in _st_find(_st_run(L, T, [WNS], [dict(rows_vals[1]), dict(rows_vals[1], ref="K02.A2")]), "reuse"))
+    wide = (["=== page 1 ===", "Table 5: Synthetic seven-column ablation table used for the cell-kind test.",
+             "Model", "A", "B", "C", "D", "E", "F", "G", "Ours", "1.0", "2.0", "3.0", "4.0", "5.0", "6.0", "7.0"]
+            + [x for i in range(1, 7) for x in [f"w/o c{i}"] + [f"{i}.{k}" for k in range(1, 8)]])
+    wide_t = {"id": "T01", "where": "Table 5", "page": 1, "orientation": "rows", "header_levels": 1,
+              "header": "Model A B C D E F G", "columns": list("ABCDEFG"), "column_roles": ["metric"], "row_groups": [],
+              "row_group_role": "none", "caption": "Table 5: Synthetic seven-column ablation table used for the cell-kind test."}
+    check("T14 wide row as a cell passes; as prose it gives negation_before",
+          lambda: _st_ok(_st_run(wide, [wide_t], [_st_cell("C01", "w/o c5", [f"5.{k}" for k in range(1, 8)], page=1)],
+                                 [_st_val("H01", "C01", 3, "5.3", "C")]))
+          and _st_find(prose_items([prose("E01", "w/o c5 5.1 5.2 5.3 5.4 5.5 5.6 5.7", "p.1, §4")], wide), "prose_quote") == ["negation_before"])
+    twice = ["=== page 1 ===", "Table 9: Synthetic table with the identical row printed twice on one page.",
+             "Model", "A", "B", "Ours", "1.0", "2.0", "Ours", "1.0", "2.0"]
+    twice_t = {"id": "T01", "where": "Table 9", "page": 1, "orientation": "rows", "header_levels": 1, "header": "Model A B",
+               "columns": ["A", "B"], "column_roles": ["metric"], "row_groups": [], "row_group_role": "none",
+               "caption": "Table 9: Synthetic table with the identical row printed twice on one page."}
+    check("T15 identical row twice: ambiguous_row; occurrence 2 passes",
+          lambda: _st_find(_st_run(twice, [twice_t], [_st_cell("C01", "Ours", ["1.0", "2.0"], page=1)], []), "row") == ["ambiguous_row"]
+          and _st_find(_st_run(twice, [twice_t], [_st_cell("C01", "Ours", ["1.0", "2.0"], occurrence=2, page=1)], []), "row") == ["pass"])
+    check("T16 prose of 41 words: too_long",
+          lambda: _st_find(prose_items([prose("E01", " ".join(f"word{i}" for i in range(41)))]), "prose_length") == ["too_long"])
+    check("T17 numbers-only prose: numeric_only",
+          lambda: _st_find(prose_items([prose("E01", "0.61 0.98 0.72 0.54 0.82 0.19")]), "prose_letters") == ["numeric_only"])
+    e18 = prose("E01", "the model reaches 45.21 accuracy on the test set")
+    check("T18 value not in the quote: value_not_in_quote",
+          lambda: _st_find(_st_run(_ST_PROSE, [], [], [{"ref": "H01", "kind": "H", "group": "H01", "prose": "E01",
+                                                         "value_printed": "45.2"}], [e18]), "value") == ["value_not_in_quote"])
+    e19 = prose("E01", "The gain is 7.56 points on split A and 7.56 points on split B")
+    v19 = {"ref": "H01", "kind": "H", "group": "H01", "prose": "E01", "value_printed": "7.56"}
+    check("T19 value twice in the quote: value_ambiguous; value_occurrence 2 passes",
+          lambda: _st_find(_st_run(_ST_PROSE, [], [], [v19], [e19]), "value") == ["value_ambiguous"]
+          and _st_find(_st_run(_ST_PROSE, [], [], [dict(v19, value_occurrence=2)], [e19]), "value") == ["pass"])
+    hy = ["=== page 1 ===", "Table 4: Synthetic table with a label split by line-end hyphenation here.",
+          "Model", "A", "B", "Diffu-", "sion-LM 1.0 2.0"]
+    hy_t = dict(twice_t, where="Table 4", caption="Table 4: Synthetic table with a label split by line-end hyphenation here.")
+    check("T20 label split by line-end hyphenation passes",
+          lambda: _st_find(_st_run(hy, [hy_t], [_st_cell("C01", "Diffusion-LM", ["1.0", "2.0"], page=1)], []), "row") == ["pass"])
+
+    def t22():
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            return qc.self_test() == 0
+    check("T22 quote_check.py self-test passes unchanged (read-only import)", t22)
+    # v0.5 sign checks (plan v0.5 s10.3) and the shared rules
+    check("sign: printed arrow against higher_is_better is rejected (arrow_conflict)",
+          lambda: _st_find(sign([_st_kunit("K01", 2, "FID", "FID ↓", True, ("12.5", "10.1"))]), "sign_arrow", "K01") == ["arrow_conflict"])
+    check("sign: agreeing arrow passes and is not routed",
+          lambda: (lambda it: _st_ok(it) and "sign_route" not in [x["check"] for x in it])(
+              sign([_st_kunit("K01", 2, "FID", "FID ↓", False, ("12.5", "10.1"))])))
+    check("sign: one group and metric key with two values is rejected",
+          lambda: _st_find(sign([_st_kunit("K01", 1, "Acc.", "Acc. ↑", True), dict(_st_kunit("K02", 1, "acc", "Acc. ↑", None),
+                                benchmark_printed="toy-2")]), "sign_group") == ["sign_conflict_in_group"] * 2)
+    check("sign: unmapped metric and lookup conflict are routed to EC, not rejected",
+          lambda: _st_find(sign([_st_kunit("K01", 3, "Cohesion", "Cohesion", True, ("0.30", "0.35"))]), "sign_route") == ["sign_extractor_only"]
+          and "sign_lookup_conflict" in _st_find(sign([_st_kunit("K01", 3, "PPL", "Cohesion", True, ("0.30", "0.35"))]), "sign_route"))
+    check("sign: header arrow against higher_is_better is routed (A20)",
+          lambda: "header_arrow_conflict" in _st_find(sign([_st_kunit("K01", 2, "FID", "FID", True, ("12.5", "10.1"))],
+                                                           ("Acc.", "FID", "Cohesion")), "sign_route"))
+    check("sign: a null value resolved by the lookup is not routed (agreement R3)",
+          lambda: (lambda it: "sign_route" not in [x["check"] for x in it] and _st_find(it, "sign_lookup") == ["null_resolved_by_lookup"])(
+              sign([_st_kunit("K01", 2, "FID", "FID", None, ("12.5", "10.1"))], ("Acc.", "FID", "Cohesion"))))
+    check("shared rules: record_arrows (no text) equals the arrows check_signs reads",
+          lambda: record_arrows(_st_sign_record([_st_kunit("K01", 2, "FID", "FID", True, ("12.5", "10.1"))], ("Acc.", "FID", "Cohesion")))
+          == {("K", 0): (set(), {"down"})})
+    check("shared rules: resolve_sign order (arrow > lookup unless a value or header arrow conflicts > EC)",
+          lambda: [resolve_sign([True], False, None, True)[1], resolve_sign([None], None, None, False)[1],
+                   resolve_sign([True], None, None, False)[1], resolve_sign([False], None, True, False)[1],
+                   resolve_sign([None], None, None, None, True, True)[1]] == ["KA1(a) printed arrow", "lookup", "pending EC", "pending EC", "EC"])
+    lk = load_metric_lookup()
+    check("KA1(b) lookup with qualifiers (Avg. acc, pass@1, FID with arrow, unlisted metric)",
+          lambda: metric_lookup("Avg. acc", lk) == ("accuracy", True) and metric_lookup("pass@1", lk) == ("pass@k", True)
+          and metric_lookup("FID ↓", lk) == ("fid", False) and metric_lookup("Cohesion index", lk) is None)
+    check("lookup CSV refusals: comment row, yes/no direction, KA1(b) direction changed, one id two directions",
+          lambda: _st_csv_refused("printed,id,higher_is_better\n# draft,x,\n")
+          and _st_csv_refused("printed,id,higher_is_better\nscore,score,yes\n")
+          and _st_csv_refused("printed,id,higher_is_better\nFID,fid,true\n")
+          and _st_csv_refused("printed,id,higher_is_better\nfoo,m1,true\nbar,m1,false\n")
+          and _st_csv_refused("# comment first\nprinted,id,higher_is_better\n"))
+    check("schema: the built-in sign record is valid (built-in engine)",
+          lambda: MiniValidator(schema).errors(_st_sign_record([_st_kunit("K01", 1, "Acc.", "Acc. ↑", True)])) == [])
+    n_fail = results.count(False)
+    if verbose:
+        print(f"self-tests passed {len(results) - n_fail}/{len(results)}")
+    return n_fail
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Extraction evidence validator (form v0.5).")
-    ap.add_argument("--record", required=True, help="one extraction record (JSON object)")
-    ap.add_argument("--text", required=True, help="the screened full text of that record")
+    ap.add_argument("--record", help="one extraction record (JSON object)")
+    ap.add_argument("--text", help="the screened full text of that record")
     ap.add_argument("--schema", default=str(DEFAULT_SCHEMA))
     ap.add_argument("--metric-lookup", help="CSV with columns printed,id,higher_is_better (default: KA1(b) list)")
     ap.add_argument("--out", help="also write the report lines to this file")
+    ap.add_argument("--self-test", action="store_true", help="run the built-in fixtures; exit 0 if all pass, else 1")
     a = ap.parse_args(argv)
+    if a.self_test:
+        return 1 if self_test() else 0
+    if not (a.record and a.text):
+        ap.error("--record and --text are required (or --self-test)")
     try:
         rec = _load_record(a.record)
         schema = json.loads(Path(a.schema).read_text(encoding="utf-8"))
@@ -1319,15 +1767,10 @@ def main(argv=None):
         print(json.dumps({"summary": True, "status": "error", "detail": f"{type(exc).__name__}: {exc}"}, ensure_ascii=True))
         return 2
     rep, engine = validate_record(rec, text, schema, lookup)
-    sev = {}
-    for x in rep.items:
-        sev[x["severity"]] = sev.get(x["severity"], 0) + 1
-    summary = {"summary": True, "id": rep.rid, "extractor": rep.extractor, "tool_version": TOOL_VERSION,
-               "status": "rejected" if rep.n_fail else "accepted", "checks": len(rep.items),
-               "fail": sev.get("fail", 0), "warn": sev.get("warn", 0), "route": sev.get("route", 0),
-               "schema_engine": engine, "record_sha256": _sha256(a.record), "text_sha256": _sha256(a.text),
-               "schema_sha256": _sha256(a.schema), "quote_check_sha256": _sha256(QUOTE_CHECK_PATH)}
-    lines = [json.dumps(x, ensure_ascii=True) for x in rep.items] + [json.dumps(summary, ensure_ascii=True)]
+    items = report_lines(rep, engine, {"record_sha256": _sha256(a.record), "text_sha256": _sha256(a.text),
+                                       "schema_sha256": _sha256(a.schema),
+                                       "metric_lookup_sha256": _sha256(a.metric_lookup) if a.metric_lookup else None})
+    lines = [json.dumps(x, ensure_ascii=True) for x in items]
     print("\n".join(lines))
     if a.out:
         Path(a.out).write_text("\n".join(lines) + "\n", encoding="utf-8")
