@@ -132,6 +132,45 @@ Total & 1082 & 65 & 306 & 1453 \\ % src: screening_agreement.py "A: {...} B: {..
 \section{Census: tables moved from the main text}
 \label{sec:s-census}
 
+\subsection{Census method in full (moved from Section~\Mref{sec:census-method})}
+\label{sec:s-census-method}
+
+The census predates the search update and samples the seed corpus only; its eligibility judgements used the protocol's eligibility rules as amended on 2026-10-15 (decision D0020), not criteria v1.6. % src: census-result-v2.md ("Sample"); decision D0020
+\paragraph{Pool, order and stopping rule.}
+The census pool is every record that neither screener excluded and that has an arXiv identifier, 1106 records. The pool was put in a random order with a fixed seed (20261015) before any coding. Coders worked down the order, checked full-text eligibility, and stopped when the primary coder's eligible count reached 150; it reached 151 at rank 176, so the sample is ranks 1 to 176. That count treated the 15 papers Codex could not read as ineligible; under the final eligibility the 150th eligible paper falls at rank 157, so 19 more ranks were coded than intended. The sample is still the first 176 ranks of a random order, so the extra ranks do not bias the proportions. % src: census-result-v2.md ("Sample", commit 8dd2af3); audits/2026-10-15-gate-census-v2.md P2; src: tools/census_sample.py docstring and code (SEED = 20261015); coverage/census-result-v2.md ("Sample")
+Full texts are the arXiv HTML rendering of the latest version on the coding date, converted to plain text; four of the 176 ranks (23, 33, 90, 144) have no full text and are left out of every count. % src: tools/census_sample.py; census-result-v2.md ("Ranks 23, 33, 90 and 144 have no full text")
+Code repositories were not opened; the census records what the paper says, not what the released code does. % src: coverage/census-codebook-v1.md "Rules"
+
+\paragraph{What is coded.}
+Per paper the coder first judges eligibility under the protocol. For an eligible paper the coder identifies the headline result, defined as the first quantitative result for the paper's own main generative method in the abstract (skipping speed-only and likelihood-only numbers), or else the first row of the first main results table for the final method (field F1). % src: coverage/census-codebook-v1.md F1; census-codebook-v1.1.md A-2
+If the paper reports no generated-sample metric, F1 is not applicable and the reporting fields are not coded; this applies to 14 eligible papers. One further paper shows samples only (F1 QL); by codebook rule B-28 it enters the value-rule count but not F3 to F6, so the value rule is counted on 153 papers and F3 to F6 on 152. % src: census-result-v2.md ("Result", first paragraph); analysis/census/summary-random.log (denominator lines); codebook B-10 and B-28
+The value rule used for the headline (F2) is coded with letters: A argmax or greedy commit; T temperature other than one; P top-$p$ or top-$k$; S sample-then-filter (values are sampled and positions chosen by a score of the sampled value); G guidance; M sequence-level selection such as best-of-$N$; C confidence-ranked or threshold unmasking with the token rule unstated (added in v1.2); U plain sampling at temperature one with no truncation or guidance, coded only when the paper says so; and NS not stated. A suffix \texttt{+NS} marks a stated letter with the base token rule unstated. % src: coverage/census-codebook-v1.md F2; census-codebook-v1.2.md B-15 (C), census-result-v2.md ("15 carry +NS")
+``Non-plain or unstated'' means any code other than U. The other fields are F3 (a diversity or entropy measure paired with the headline), F4 (the headline reported at two or more step settings, counting denoising steps, function evaluations or tokens per step; exactly two settings is coded ``partial''), F5 (the value rule stated as held fixed across the sweep) and F6 (guidance held fixed). % src: census-codebook-v1.md F3 to F6; v1.1 A-1, A-8, A-9
+Conservative codes (NS, not stated) are used whenever a paper is ambiguous. % src: census-codebook-v1.md "Rules"
+
+\paragraph{Codebook versions.}
+Codebook v1 was written on 2026-10-14 and used for a first, purposive census of 47 models that is kept as a pilot and not used as evidence here. Amendments v1.1 (A-1 to A-10, 2026-10-14) governed the coding of the random sample. Codebook v1.2 (B-1 to B-28, 2026-10-15) was written by a separate adjudicator after both codings of the random sample and after agreement was computed, from the coders' own ambiguity reports, without opening the row files or the papers; it governs the adjudication, and agreement is reported under v1.1. % src: coverage/census-codebook-v1.md, -v1.1.md, -v1.2.md ("Disclosure"); coverage/census-result-v1.md; decision D0020
+Rules in v1.2 that settle a gap and move a count are named where they matter (B-10, B-15, B-19, B-24). % src: decision D0020 item 3
+
+\paragraph{Coders.}
+Coder~A (Claude Sonnet) coded all 176 ranks, blind to coder~B. Coder~B was Codex (\texttt{gpt-6-luna}) for ranks 1 to 91, which gave 86 rows (ranks 19 and 79 failed), and then Claude Opus for ranks 92 to 176 and for ranks 19 and 79, because Codex reached its usage limit. This makes coder~A and part of coder~B models of the same family, so their agreement may overstate the agreement of independent human coders. % src: coverage/census-result-v2.md ("Process" step 1 and "Limits"); decision D0015; census/coder-B-run-log.jsonl (model gpt-6-luna in every row)
+Codex could not read the paper for 15 ranks among 1 to 88; its codes there are tool-failure placeholders, and those rows were coded from the paper at adjudication. % src: census/adjudication-notes-r001-r088.md ("Coder B (Codex) could not read the file for 15 ranks"); census-result-v2.md
+\todo{exact model identifiers and versions for coder~A and for coder~B (Claude Opus); the run logs record Codex only}
+
+\paragraph{Agreement before reconciliation.}
+Agreement between the two coders is computed on the 172 ranks with text before any reconciliation, under v1.1, and again without the 15 ranks Codex could not read; the 158 field-level disagreements are kept. % src: analysis/census/agreement-random.log and agreement-random-excl-readfail.log; census/disagreements-random.csv (158 rows)
+
+\paragraph{Adjudication.}
+Two adjudicators (Claude Opus; ranks 1 to 88 and 89 to 176) applied codebook v1.2 and checked the paper for each disputed cell, and one harmoniser then fixed six readings that the halves had settled differently. Adjudicators read both coders' rows and notes and were not blind. Of the 158 field-level disagreements, 73 were resolved to coder~A's value, 66 to coder~B's and 19 to neither. In addition, 45 cells on which both coders had agreed were reopened under a v1.2 rule, mostly because the coders' own notes showed its trigger. Three of them (ranks 114, 120, 141) were kept under the harmoniser's standard that an agreed value is changed when it cannot express a code that only v1.2 has (decision D0021). Of the 45, 42 affect a count, and the \emph{agreed cells restored} sensitivity of Section~\Mref{sec:census} undoes those 42. % src: census-result-v2.md (sensitivity paragraph, commit 8dd2af3); audits/2026-10-15-gate-census-v2.md C3, C8; decision D0021; adjudication counts: census/adjudication-notes-r001-r088.md (99 rows: A 59, B 31, neither 9); adjudication-notes-r089-r176.md (48 field rows: A 12, B 27, neither 9; 11 derived nonplain rows: A 2, B 8, neither 1); sum A 73, B 66, neither 19 = 158; census/harmonisation-notes.md (Date, harmoniser, six readings); census-result-v2.md ("45 cells")
+The final rows, with both coders' values and the basis for every changed or disputed cell, are in \texttt{research/review/census/census-random-final.jsonl} and in the supplement (S3). % src: census-result-v2.md ("Process" step 4)
+
+\paragraph{A blindness incident.}
+Coder~B's Claude batch for ranks 92 to 128 left scratch copies of its rows and an append script in a shared scratch folder. The first batch of coder~A (ranks 1 to 40) ran that script once, so it may have seen coder~B's rows for ranks 92 to 128, which coder~A did not code. The copies were deleted and later batches ran as fresh agents in private scratch folders. We report it as a possible leak of one coder's labels into the other's workspace; we know of no effect on coder~A's codes. % src: decision D0019 item 2; census-result-v2.md ("Limits")
+
+
+
+\subsection{Gap-filling rulings}
+
 The codebooks and the 176-row final table are still to be assembled (see the note above). The table below is moved from Section~\Mref{sec:census-sensitivity}, where its reading is given.
 
 \begin{table}[t]
