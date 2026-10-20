@@ -1,0 +1,48 @@
+{
+ "batches": [
+  "batch-rf-01",
+  "batch-rf-02"
+ ],
+ "batches_pending": [],
+ "pass_vs_exclude": {
+  "n": 131,
+  "raw_agreement": 0.916,
+  "kappa": 0.7923,
+  "kappa_95ci_bootstrap": [
+   0.6671,
+   0.8979
+  ],
+  "ac1": 0.8596,
+  "table": {
+   "exclude|exclude": 89,
+   "exclude|pass": 10,
+   "pass|pass": 31,
+   "pass|exclude": 1
+  }
+ },
+ "three_way": {
+  "n": 131,
+  "raw_agreement": 0.8702,
+  "kappa": 0.7069,
+  "kappa_95ci_bootstrap": [
+   0.582,
+   0.8214
+  ],
+  "ac1": 0.8335,
+  "table": {
+   "exclude|exclude": 89,
+   "exclude|unclear": 10,
+   "include|include": 15,
+   "unclear|unclear": 10,
+   "unclear|exclude": 1,
+   "unclear|include": 4,
+   "include|unclear": 2
+  }
+ },
+ "d0030": {
+  "passed_either": 42,
+  "passed_both": 31,
+  "passed_one_only": 11,
+  "excluded_both": 89
+ }
+}
