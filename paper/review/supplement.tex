@@ -53,7 +53,57 @@ This file holds the material that the main paper points to and that is not count
 
 \maketitle
 
-\todo{assemble S1 (search strings and PRISMA checklist), S2 (screening table), S3 (census codebooks and the 176-row table), S4 (agreement tables), S6 (extraction and quality-appraisal tables) and the readme.txt that CSUR asks for; OUTLINE.md section 1 lists them}
+\todo{assemble S2 (screening table), S3 (census codebooks and the 176-row table), S4 (agreement tables), S6 (extraction and quality-appraisal tables) and the readme.txt that CSUR asks for; OUTLINE.md section 1 lists them}
+
+\setcounter{section}{0}
+\section{Search strings and PRISMA 2020 checklist}
+\label{sec:s-search}
+
+\subsection{PRISMA 2020 checklist}
+Item numbers and topics follow the PRISMA 2020 statement~\cite{page2021prisma}; ``Location'' gives the section of the main paper (Section~\textit{n}) or of this supplement (S\textit{n}). Where the review meets an item only in part, the note says so.
+{\small
+\begin{longtable}{@{}p{1.2cm}p{3.6cm}p{7.8cm}@{}}
+\toprule
+Item & Topic & Location and note \\
+\midrule
+\endhead
+1 & Title & Title page: ``systematic review'' in the title. \\
+2 & Abstract & Abstract (journal limit 100 words; the PRISMA abstract items are partly covered). \\
+3 & Rationale & Section~\Mref{sec:intro-why}. \\
+4 & Objectives & Section~\Mref{sec:intro-rq} (RQ1 to RQ6). \\
+5 & Eligibility criteria & Section~\Mref{sec:method-eligibility}. \\
+6 & Information sources & Section~\Mref{sec:method-sources} and Table~\Mref{tab:sources}, with dates. \\
+7 & Search strategy & S1.2: every logged query, verbatim. \\
+8 & Selection process & Section~\Mref{sec:method-screening}: two model screeners and a model adjudicator; human validation not done. \\
+9 & Data collection process & Section~\Mref{sec:method-extraction}: one model extractor, a second on 8 studies, a validator. \\
+10a, 10b & Data items & Section~\Mref{sec:method-extraction}; the extraction schema in the repository. \\
+11 & Study risk of bias & Section~\Mref{sec:method-extraction}: QA1 to QA9, an appraisal of reporting and reproducibility, not a risk-of-bias tool for trials. \\
+12 & Effect measures & Section~\Mref{sec:rq}: direction of within-paper contrasts; no pooled effect. \\
+13a--13f & Synthesis methods & Section~\Mref{sec:method-extraction} (``Synthesis''): a verdict per question with stratum weights; no meta-analysis, so heterogeneity (13e) is not assessed. \\
+14 & Reporting bias assessment & Not assessed formally; discussed in Section~\Mref{sec:limits}. \\
+15 & Certainty assessment & Verdict vocabulary (Section~\Mref{sec:method-extraction}); no GRADE-type rating. \\
+16a & Study selection & Figure~\Mref{fig:prisma}. \\
+16b & Excluded studies & Exclusion code for every full-text exclusion (Figure~\Mref{fig:prisma}); per-record list in the repository. \\
+17 & Study characteristics & Section~\Mref{sec:rq} and S6. \\
+18 & Risk of bias in studies & Section~\Mref{sec:rq} and S6. \\
+19 & Results of individual studies & S6. \\
+20a--20d & Results of syntheses & Section~\Mref{sec:rq}. \\
+21 & Reporting biases & Section~\Mref{sec:limits}. \\
+22 & Certainty of evidence & Section~\Mref{sec:rq} (verdicts). \\
+23a--23d & Discussion & Sections~\Mref{sec:open}, \Mref{sec:limits} and \Mref{sec:conclusion}. \\
+24a & Registration & Not registered (Section~\Mref{sec:method-design}). \\
+24b & Protocol & Repository file \texttt{research/review/protocol.md}. \\
+24c & Amendments & Section~\Mref{sec:method-deviations}; decision ledger in the repository. \\
+25, 26 & Support; competing interests & Acknowledgements. \\
+27 & Availability of data and code & Repository and archive (Section~\Mref{sec:ai-use}). \\
+\bottomrule
+\end{longtable}
+}
+
+\subsection{Every logged search}
+Generated from the search log by \texttt{paper/review/scripts/search\_strings\_table.py}; the exports and their SHA-256 values are in the repository.
+
+\input{tables/search-strings}
 
 \setcounter{section}{1}
 \section{Screening: confusion table}
