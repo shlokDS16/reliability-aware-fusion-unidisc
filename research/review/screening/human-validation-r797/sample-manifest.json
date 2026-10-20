@@ -1,0 +1,12 @@
+{
+ "tranche": "R797",
+ "decision": "D0035",
+ "frame_file": "analysis/screening/r797-tranche-ids.txt",
+ "frame_note": "the tranche's full-text set as fixed by the decision row, before retrieval and before any screener row",
+ "frame_n": 715,
+ "frame_sha256": "c78088ed9f70823503d0ebc851d95cb33edd14c40e8e59302260cc2ee79c0fd5",
+ "seed": 20261016,
+ "rule": "random.Random(seed).sample(sorted frame ids, ceil(0.15 N)) (criteria v1.6 s4 item 6; minimum 100 is for T1 only)",
+ "k": 108,
+ "sample_sha256": "b1c91b6b0d900736ffc260ed2258fd4bb4b9fdaaf0318cc27e25b9fd06e3b3c3"
+}
