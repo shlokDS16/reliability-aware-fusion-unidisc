@@ -1,0 +1,1115 @@
+{
+ "n_sampled": 81,
+ "n_extracted": 0,
+ "n_by_stratum": {
+  "G-long": 0,
+  "G-mm": 0,
+  "G-short": 0
+ },
+ "N_by_stratum": {
+  "G-mm": 50,
+  "G-short": 268,
+  "G-long": 266
+ },
+ "N_frame": 584,
+ "ec_used": [],
+ "missing": [
+  "M01553",
+  "M03150",
+  "M03633",
+  "M04407",
+  "M05881",
+  "M06241",
+  "M06272",
+  "M06731",
+  "M06840",
+  "M07124",
+  "M07646",
+  "M07813",
+  "M07842",
+  "M07875",
+  "M08783",
+  "M09246",
+  "M09294",
+  "M10526",
+  "M10710",
+  "M10840",
+  "M10855",
+  "M10988",
+  "M11180",
+  "M12084",
+  "M12210",
+  "M12476",
+  "M12879",
+  "M12904",
+  "M12960",
+  "M13081",
+  "M13196",
+  "M13198",
+  "M13234",
+  "M13371",
+  "M13397",
+  "M13760",
+  "M13884",
+  "M14000",
+  "M14267",
+  "M14280",
+  "M14293",
+  "M14326",
+  "M14365",
+  "M14664",
+  "M15033",
+  "M15135",
+  "M15184",
+  "M15457",
+  "M15672",
+  "M15781",
+  "M15792",
+  "M15840",
+  "M15992",
+  "M16043",
+  "M16080",
+  "M16154",
+  "M16269",
+  "M16729",
+  "M17249",
+  "M17283",
+  "M17285",
+  "M17323",
+  "M17469",
+  "M17718",
+  "M17725",
+  "M17834",
+  "M17985",
+  "M18059",
+  "M18141",
+  "M18735",
+  "M18816",
+  "M18850",
+  "M18990",
+  "M18994",
+  "M19012",
+  "M19013",
+  "M19021",
+  "M19099",
+  "M19293",
+  "R0963",
+  "U04280"
+ ],
+ "RQ1": {
+  "study_type": {
+   "method": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "theory": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "analysis": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "benchmark": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "system": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "state_space": {
+   "discrete-absorbing": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "discrete-uniform": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "discrete-flow": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "continuous-embedding": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "continuous-latent": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "hybrid": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "objective": {
+   "elbo-ce": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "weighted-ce": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "score-entropy": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "mse-x0": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "mse-eps-or-velocity": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "flow-matching": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "other": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "NA": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "position_rule": {
+   "left-to-right": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "random": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "confidence-ranked": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "threshold-adaptive": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "fixed-order": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "learned-planner": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "all-positions": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "other": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "blockwise": {
+   "yes": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "no": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "revision": {
+   "none": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "explicit-remasking-or-editing": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "corrector": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "implicit-channel": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "output-level": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "other": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "memory": {
+   "none": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "self-conditioning": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "exact-cache": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "approximate-cache": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "planner-state": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "other": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "training_free": {
+   "yes": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "no": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "not_stated": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "training_stages": {
+   "pretraining": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "continued-pretraining": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "adaptation-from-ar": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "sft": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "rl": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "distillation": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "other": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "credited_type": {
+   "model-or-architecture": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "objective-or-loss": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "training-recipe": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "sampler-or-decoding": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "caching-or-system": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "guidance-or-constraint": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "other": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "F2_value_rule_stated": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  }
+ },
+ "RQ2": {
+  "has_ar_group": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "abstract_claims_vs_ar_CT6": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "ar_budget_matched_all": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "ar_budget_not_reported_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "ar_numbers_copied_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "ar_variance_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "diffusion_better_majority_of_units": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "diffusion_worse_majority_of_units": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "units_total": {}
+ },
+ "RQ3": {
+  "has_training_group": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "by_factor": {
+   "ar-initialisation": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "distillation": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "objective": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "pretraining-recipe": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "rl": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "sft": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "credited_ablation_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "held_fixed_stated_all": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "variance_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "anchor_better_majority": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "units_total": {}
+ },
+ "RQ4": {
+  "has_inference_group": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "by_factor": {
+   "block-or-parallel": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "cache": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "gen-length": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "guidance": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "order-rule": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "remasking": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "steps-or-nfe": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "tokens-per-step": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "value-rule": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   }
+  },
+  "budget_reported_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "variance_any": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  },
+  "dose_shapes_units": {},
+  "any_nonmonotone_dose_curve": {
+   "count": 0,
+   "of": 0,
+   "share": null,
+   "ci95": null
+  }
+ },
+ "RQ5": {
+  "n_mm_extracted": 0,
+  "CT5_claim": {},
+  "synergy_benchmark": {},
+  "synergy_group": {},
+  "claim_and_group": 0,
+  "claim_without_group": [],
+  "group_ids": {}
+ },
+ "RQ6": {
+  "QA1": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA2": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA3": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA4": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA5": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA6": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA7": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA8": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "QA9": {
+   "low": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "high": {
+    "0": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "1": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    },
+    "2": {
+     "count": 0,
+     "of": 0,
+     "share": null,
+     "ci95": null
+    }
+   },
+   "NA": 0
+  },
+  "claims_status": {}
+ }
+}
