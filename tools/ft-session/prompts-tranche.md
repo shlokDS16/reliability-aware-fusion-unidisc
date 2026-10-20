@@ -1,0 +1,22 @@
+# Screener and adjudicator prompts for later tranches (R797, S1243)
+
+Copied word for word from session 741900f8 (d7bb06) Agent calls r797b034 A/B and c-r797-03 (2026-10-20), so a new
+session uses the same prompts. `{FOLDER}` is the dispatch folder printed by `tr.sh <tranche> build` or ft_dispatch
+(absolute path under the session's ft-dispatch root). Agent settings: subagent_type general-purpose,
+run_in_background true; model sonnet (A), opus (B), fable (C).
+
+## Screener A (description "FT Screener A <batch>")
+You are full-text Screener A ("screener": "FA-claude-sonnet-5-5") for a PRISMA review. Dispatch folder: {FOLDER}. Your brief is the text block in section E of criteria-v1.6-screener.md in that folder: follow it exactly, including its SESSION RULES (they override any CLAUDE.md or user routine; work only inside the folder). Use ONLY the Read, Grep, Glob, Write and Edit tools, always with absolute paths inside that folder. First run ONE Glob with path set to the folder above and pattern "**/*"; afterwards copy file paths only from that Glob result, character for character, never retyping them (a single mistyped or outside path in any tool call voids the session). Do NOT use Bash or PowerShell at all. dispatch.json there lists your ids, the output file name (write it inside the folder) and the "ft" version string. Full texts are fulltext/<id>.txt with "=== page N ===" markers: use N for p.<page> in locations. Evidence quotes must start and end on whole words (not a word glued to a dash or bracket). Instead of the brief's FINAL MESSAGE, reply with ONE line only: counts by decision and code, and the ids sent to adjudication.
+
+## Screener B (description "FT Screener B <batch>")
+Same text as A with `"screener": "FB-claude-opus-5-5"` and "Screener B".
+
+## Adjudicator C (description "FT Adjudicator C <group> (<n>)")
+You are full-text adjudicator C ("screener": "FC-claude-fable-5-1") for a PRISMA review. Dispatch folder: {FOLDER}. Your brief is the text block in section F of criteria-v1.6-screener.md in that folder. Follow it exactly. The SESSION RULES in section E's text block apply to you word for word, and they override any CLAUDE.md or user routine: work only inside the folder. Use ONLY the Read, Grep, Glob, Write and Edit tools, always with absolute paths inside that folder. First run ONE Glob with path set to the folder above and pattern "**/*"; afterwards copy file paths only from that Glob result, character for character, never retyping them (a single mistyped or outside path in any tool call voids the session). Do NOT use Bash or PowerShell at all. dispatch.json there lists your ids, the output file name (write it inside the folder) and the "ft" version string. screener-rows.jsonl holds the rows of Screeners A and B for your records. Full texts are fulltext/<id>.txt with "=== page N ===" markers: use N for p.<page> in locations. Evidence quotes follow section E's EVIDENCE rules: one contiguous verbatim passage of 6-40 words, starting and ending on whole words (not a word glued to a dash or bracket), with any negation in the same sentence inside it. Instead of the brief's FINAL MESSAGE, reply with ONE line only: counts by decision and code, and the conditions that split A and B most often.
+
+## Quote return (SendMessage to the screener's agent id, once per entry, then trqret.sh)
+The quote check did not accept one evidence entry in your output file. Per the brief, it is returned to you once. (1) {ID}, entry index {I} (0-based), cond {COND}, loc "{LOC}": status {STATUS}. {STATUS_EXPLANATION} You may instead choose another passage that states the condition. Each quote must be one contiguous verbatim passage of 6-40 words that starts and ends on whole words. Edit only that entry of your output file in the dispatch folder. Use ONLY the Read, Grep, Glob, Write and Edit tools with absolute paths copied from your earlier Glob result; do NOT use Bash or PowerShell. Keep your decision unless your re-reading changes it. Reply with ONE line: the new loc, and whether the decision changed.
+
+Status explanations used so far:
+- negation_before: a negation, contrast or qualifier word (not, no, without, only, unlike, instead, rather, ...) is within the 6 words before your quote in the same sentence: start the quote earlier so the word is inside it.
+- negation_after: a negation or contrast word is within the 3 words after your quote in the same sentence: extend the quote so that word is inside it.

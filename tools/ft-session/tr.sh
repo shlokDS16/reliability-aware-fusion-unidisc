@@ -1,10 +1,10 @@
 #!/bin/bash
-# Later tranches (R797 D0035, S1243 D0037), session 741900f8. usage:
+# Later tranches (R797 D0035, S1243 D0037), session 741900f8; S and P now session 92c0b6b9. usage:
 #   tr.sh <tranche> build <batch>                       -> dispatch folders A and B (tools/ft_dispatch.py)
 #   tr.sh <tranche> postbatch <batch> <agentA> <agentB> -> FT_TRANCHE=<tranche> ft_postbatch.py, one-line summary, commit
 #   tr.sh <tranche> cpost <c group> <agentC>            -> FT_TRANCHE=<tranche> ft_cpost.py, commit
-S="C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/741900f8-51c9-4f19-8878-9556d9ef107b/scratchpad/ft-dispatch"
-P="C:/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/741900f8-51c9-4f19-8878-9556d9ef107b/subagents"
+S="C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/92c0b6b9-4e35-486c-8e47-398ae263ff62/scratchpad/ft-dispatch"
+P="C:/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/92c0b6b9-4e35-486c-8e47-398ae263ff62/subagents"
 cd "/c/Users/Shlok/Downloads/Multi-Modality Language model/.claude/worktrees/resume-dlm-discovery-exp-003-334706" || exit 1
 TR="$1"; shift
 export FT_TRANCHE="$TR"
