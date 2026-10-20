@@ -1,0 +1,102 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) M12960 table T01: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(2) M12960 table T02: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(3) M19099 row C073: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(4) M19099 row C074: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(5) M19099 row C075: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(6) M19099 row C076: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(7) M19099 row C077: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(8) M19099 row C078: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(9) M19099 row C079: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(10) M19099 row C080: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(11) M19099 row C081: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(12) M19099 row C082: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(13) M19099 row C083: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(14) M19099 row C084: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(15) M19099 row C085: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(16) M19099 row C086: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(17) M19099 row C087: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(18) M19099 row C088: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(19) M19099 row C089: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(20) M19099 row C090: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(21) M19099 row C091: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(22) M19099 row C092: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(23) M19099 row C093: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(24) M19099 row C094: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(25) M19099 row C095: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(26) M19099 row C096: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(27) M19099 row C097: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(28) M19099 row C098: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(29) M19099 row C099: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(30) M19099 second_factor K07.A1: second_factor_mismatch ('' against row group '8') -> see the brief
+(31) M19099 second_factor K07.A2: second_factor_mismatch ('' against row group '24') -> see the brief
+(32) M19099 second_factor K08.A1: second_factor_mismatch ('' against row group '8') -> see the brief
+(33) M19099 second_factor K08.A2: second_factor_mismatch ('' against row group '24') -> see the brief
+(34) M19099 second_factor K09.A1: second_factor_mismatch ('' against row group '8') -> see the brief
+(35) M19099 second_factor K09.A2: second_factor_mismatch ('' against row group '24') -> see the brief
+(36) M19099 second_factor K16.A1: second_factor_mismatch ('' against row group '16') -> see the brief
+(37) M19099 second_factor K16.A2: second_factor_mismatch ('' against row group '32') -> see the brief
+(38) M19099 second_factor K17.A1: second_factor_mismatch ('' against row group '16') -> see the brief
+(39) M19099 second_factor K17.A2: second_factor_mismatch ('' against row group '32') -> see the brief
+(40) M19099 second_factor K18.A1: second_factor_mismatch ('' against row group '16') -> see the brief
+(41) M19099 second_factor K18.A2: second_factor_mismatch ('' against row group '32') -> see the brief
+(42) M19099 second_factor K31.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(43) M19099 second_factor K31.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(44) M19099 second_factor K31.A3: second_factor_mismatch ('' against row group '18') -> see the brief
+(45) M19099 second_factor K31.A4: second_factor_mismatch ('' against row group '24') -> see the brief
+(46) M19099 second_factor K32.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(47) M19099 second_factor K32.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(48) M19099 second_factor K32.A3: second_factor_mismatch ('' against row group '18') -> see the brief
+(49) M19099 second_factor K32.A4: second_factor_mismatch ('' against row group '24') -> see the brief
+(50) M19099 second_factor K33.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(51) M19099 second_factor K33.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(52) M19099 second_factor K33.A3: second_factor_mismatch ('' against row group '18') -> see the brief
+(53) M19099 second_factor K33.A4: second_factor_mismatch ('' against row group '24') -> see the brief
+(54) M19099 second_factor K46.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(55) M19099 second_factor K46.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(56) M19099 second_factor K46.A3: second_factor_mismatch ('' against row group '18') -> see the brief
+(57) M19099 second_factor K46.A4: second_factor_mismatch ('' against row group '24') -> see the brief
+(58) M19099 second_factor K47.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(59) M19099 second_factor K47.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(60) M19099 second_factor K47.A3: second_factor_mismatch ('' against row group '18') -> see the brief
+(61) M19099 second_factor K47.A4: second_factor_mismatch ('' against row group '24') -> see the brief
+(62) M19099 second_factor K48.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(63) M19099 second_factor K48.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(64) M19099 second_factor K48.A3: second_factor_mismatch ('' against row group '18') -> see the brief
+(65) M19099 second_factor K48.A4: second_factor_mismatch ('' against row group '24') -> see the brief
+(66) M19099 second_factor K58.A1: second_factor_mismatch ('' against row group '5') -> see the brief
+(67) M19099 second_factor K58.A2: second_factor_mismatch ('' against row group '10') -> see the brief
+(68) M19099 second_factor K58.A3: second_factor_mismatch ('' against row group '15') -> see the brief
+(69) M19099 second_factor K59.A1: second_factor_mismatch ('' against row group '5') -> see the brief
+(70) M19099 second_factor K59.A2: second_factor_mismatch ('' against row group '10') -> see the brief
+(71) M19099 second_factor K59.A3: second_factor_mismatch ('' against row group '15') -> see the brief
+(72) M19099 second_factor K60.A1: second_factor_mismatch ('' against row group '5') -> see the brief
+(73) M19099 second_factor K60.A2: second_factor_mismatch ('' against row group '10') -> see the brief
+(74) M19099 second_factor K60.A3: second_factor_mismatch ('' against row group '15') -> see the brief
+(75) M19099 second_factor K73.A1: second_factor_mismatch ('' against row group '5') -> see the brief
+(76) M19099 second_factor K73.A2: second_factor_mismatch ('' against row group '10') -> see the brief
+(77) M19099 second_factor K73.A3: second_factor_mismatch ('' against row group '15') -> see the brief
+(78) M19099 second_factor K73.A4: second_factor_mismatch ('' against row group '20') -> see the brief
+(79) M19099 second_factor K74.A1: second_factor_mismatch ('' against row group '5') -> see the brief
+(80) M19099 second_factor K74.A2: second_factor_mismatch ('' against row group '10') -> see the brief
+(81) M19099 second_factor K74.A3: second_factor_mismatch ('' against row group '15') -> see the brief
+(82) M19099 second_factor K74.A4: second_factor_mismatch ('' against row group '20') -> see the brief
+(83) M19099 second_factor K75.A1: second_factor_mismatch ('' against row group '5') -> see the brief
+(84) M19099 second_factor K75.A2: second_factor_mismatch ('' against row group '10') -> see the brief
+(85) M19099 second_factor K75.A3: second_factor_mismatch ('' against row group '15') -> see the brief
+(86) M19099 second_factor K75.A4: second_factor_mismatch ('' against row group '20') -> see the brief
+(87) M19099 second_factor K82.A1: second_factor_mismatch ('' against row group '16') -> see the brief
+(88) M19099 second_factor K82.A2: second_factor_mismatch ('' against row group '32') -> see the brief
+(89) M19099 second_factor K83.A1: second_factor_mismatch ('' against row group '16') -> see the brief
+(90) M19099 second_factor K83.A2: second_factor_mismatch ('' against row group '32') -> see the brief
+(91) M19099 second_factor K84.A1: second_factor_mismatch ('' against row group '16') -> see the brief
+(92) M19099 second_factor K84.A2: second_factor_mismatch ('' against row group '32') -> see the brief
+(93) M19099 second_factor K91.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(94) M19099 second_factor K91.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(95) M19099 second_factor K92.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(96) M19099 second_factor K92.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+(97) M19099 second_factor K93.A1: second_factor_mismatch ('' against row group '6') -> see the brief
+(98) M19099 second_factor K93.A2: second_factor_mismatch ('' against row group '12') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
