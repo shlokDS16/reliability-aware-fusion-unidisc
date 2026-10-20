@@ -1,0 +1,123 @@
+{
+ "decision_row": "D0052",
+ "depends_on": {},
+ "drawn": [
+  "M13313",
+  "M13195",
+  "M16730",
+  "M09438",
+  "M18977",
+  "M19178",
+  "M18974"
+ ],
+ "frame_list_sha256": {
+  "C1": "91615db39bc8c69600064164d9478da544b76c1a13b7e1d09e9cb99ed8f8a80e",
+  "C2": "6766a919f8e11c23805d1849726119686bb3c0a8cd7076d657b9d2ecb09f5383",
+  "C2_mm_rule": "6766a919f8e11c23805d1849726119686bb3c0a8cd7076d657b9d2ecb09f5383",
+  "C2b": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "FR": "c7508ab7876e83d40a83f97c0f29b06264102e7914b82e3c4ba8558873798e1a",
+  "NL": "0bc9bf7d746ea841be7ea4319b74213602ebab460e3d57aa7deebfe62766b8e4",
+  "RC2": "a972ba5eac4a2e097f4c1d5174dc14982e17f2454820ca01f680b6ddad04bb13"
+ },
+ "frame_sizes": {
+  "C1": 53,
+  "C2": 108,
+  "C2_mm_rule": 108,
+  "C2b": 0,
+  "FR": 435,
+  "NL": 12,
+  "RC2": 543
+ },
+ "frames_sha256": "e93c9403c243663c197229733e8405b9581e6a960fdcda15524de8232922bc5a",
+ "ids": [
+  "M07474",
+  "M12766",
+  "M09530",
+  "M13864",
+  "M08100",
+  "M13313",
+  "M13195",
+  "M16730",
+  "M09438",
+  "M18977",
+  "M19178",
+  "M18974"
+ ],
+ "inputs_sha256": {
+  "construct": null,
+  "decisions": "962e3171e358a13b8983867a302053b78d98fdc3cf805083fefe4ed88532baaa",
+  "duplicates": null,
+  "gate_config": "fb14fd2906cf8fce136e27199dca70864ea3d2fd7458a483ff8d2426fb7135e8",
+  "multimodal_options.py": "0e9176cf32a5df32c3ff9f7b2cf89461ab1286ab0edea29cbfa27b683dfe40fb",
+  "overrides": null,
+  "strata.py": "fbe2272ecd6f24218c90164ad80009f764b6df27a41be748423bd29ae4f7e60c"
+ },
+ "option": "b",
+ "pools": {
+  "C1-ab": {
+   "sha256": "7f7969aa26d670a623de1ff791ed14f69b823b1c44de153cdef39644b79a9a9c",
+   "size": 15
+  },
+  "C1-b": {
+   "sha256": "54466160617104e418ba9a6eab5649817b69c75553c16a02a9257763e73a6349",
+   "size": 38
+  },
+  "C2": {
+   "sha256": "6766a919f8e11c23805d1849726119686bb3c0a8cd7076d657b9d2ecb09f5383",
+   "size": 108
+  },
+  "FR": {
+   "sha256": "c7508ab7876e83d40a83f97c0f29b06264102e7914b82e3c4ba8558873798e1a",
+   "size": 435
+  },
+  "FR-bench-title": {
+   "sha256": "33367fdb9c0f8bf267ddb176487070e1884ff2bd97b1a30b2dec00501e131c6a",
+   "size": 24
+  },
+  "FRC2-large": {
+   "sha256": "d893f36c0009fc789052161917e0108cbb5ddf944b3ad16bafd7c34ab1c644fb",
+   "size": 52
+  }
+ },
+ "python": "3.14.3",
+ "resolutions": [
+  "P1 frame R + C2 = all i1=a non-nonlang-only includes under every option",
+  "P2 option (a): Stage A C2 draws from the mm-rule C2",
+  "P3 options (c), (d) need mm-construct.jsonl for a real draw",
+  "P4 spares per gate stratum from --spares (<= 45)"
+ ],
+ "seed": 20261100,
+ "stage": "stage-a",
+ "strata_order": [
+  "WE",
+  "C1-ab",
+  "C1-b",
+  "C2",
+  "FR-bench-title",
+  "FRC2-large",
+  "FR"
+ ],
+ "stratum": {
+  "M07474": "WE",
+  "M08100": "WE",
+  "M09438": "C2",
+  "M09530": "WE",
+  "M12766": "WE",
+  "M13195": "C1-b",
+  "M13313": "C1-ab",
+  "M13864": "WE",
+  "M16730": "C2",
+  "M18974": "FR",
+  "M18977": "FR-bench-title",
+  "M19178": "FRC2-large"
+ },
+ "tool": "draw_pilot.py 1.0.1 (extraction form v0.5)",
+ "tool_sha256": "420c33f4a3e4fa3c7d8914a9efe3add219c01fcb811bd41ac6df06c205630e29",
+ "worked_examples": [
+  "M07474",
+  "M12766",
+  "M09530",
+  "M13864",
+  "M08100"
+ ]
+}
