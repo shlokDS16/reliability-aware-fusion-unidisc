@@ -21,6 +21,14 @@
   (P1-P3; sheets R0308 and D0039) sent to the user. EA sessions exb001 (a567490c8d2e8349e) and exb002 (ab487ab07c8bb436c)
   running since ~19:50; folders exb003, exb004 built. After each: `python -I analysis/extraction/d0052/postbatch.py <batch>`.
   NOTE: python heredocs in this Bash tool collapse double backslashes; write scripts with LaTeX to files first.
+  **Update ~23:30 IST:** user answered P4 a (D0053: launch at >= 4.0 GB free RAM, max 2) and P1 A (D0054: seed
+  stratum of 20 from the census eligible records; update strata positions 1-20; total 80; second reader redrawn:
+  seed-sample.json). Design now: exb001-exb033 (update phase 1) + exc001-exc011 (seed; folders built with --texts
+  research/sources/md/census-text-paged and an --ft provenance string; build more the same way). Queue: alternate
+  exc and exb. Filed so far: exb001-exb005 (pass 2 done), exb006-exb007 running. After each session:
+  `bash analysis/extraction/d0052/after.sh <batch>`; send returns/<batch>.txt via SendMessage to the agent once;
+  then `after.sh <batch> 2`. Records still rejected after the return stay usable with their status (sensitivity
+  without them in the synthesis). Analysis: `python -I analysis/extraction/d0052/rq_analysis.py`.
 - **HANDOFF 26 (2026-10-20 ~17:10 IST; newest; session 92c0b6b9): SCREENING FROZEN PER D0051.** The human author
   (chat ~15:45 IST, relayed by session 9d5203d7, row D0051) stopped all further screening and downloads; a fresh session
   writes the manuscript next. **Final screened set:** T1 882 decided (608 include, 274 exclude; 3 B-unavailable with the
