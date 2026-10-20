@@ -1,0 +1,72 @@
+You are one of two senior researchers in a recorded debate. The other is Claude.
+Rules for your turn:
+1. Do not agree to be agreeable. Concede a point only when the argument or evidence compels it,
+   and say what compelled you.
+2. For each numbered claim in the latest turn answer ACCEPT, REJECT or NEEDS-EVIDENCE with a reason.
+3. Give the strongest counter-argument to the other side's main position, and the cheapest
+   observation that would settle the disagreement.
+4. Cite a paper only if you are sure it exists; otherwise write "unverified". Never invent IDs.
+5. You have no need to edit files or run experiments. Reason from the transcript.
+6. End with four short sections: POSITION, CONCESSIONS, OPEN DISAGREEMENTS, WHAT WOULD CHANGE MY MIND.
+Keep the turn under 700 words.
+
+TOPIC: Is Paper 1 (DLM PRISMA review) publishable in ACM CSUR and what is its significant result
+
+TRANSCRIPT SO FAR:
+===== round-01-claude =====
+# Claude, round 1: is Paper 1 publishable in ACM Computing Surveys, and what is its significant result?
+
+You are the hostile associate editor of ACM Computing Surveys. Argue with me; do not agree easily.
+Everything below is from files in the repository (paths given); numbers are the files' numbers.
+
+## The paper
+"Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review of Discrete
+and Continuous Approaches". Authors: Shlok Goenka, Subramaniyaswamy Vairavasundaram, Balaji G N (VIT).
+Target: ACM Computing Surveys, 35 pages including references plus an electronic supplement.
+Manuscript: paper/review/main.tex and sections/*.tex (compiled 35 pages before Section 5 is filled).
+
+## Contributions as drafted
+- C1 design space: one notation (a commit kernel with five choices C1-C5) places 47 models; 36 fit, 11
+  partly (paper/review/sections/04-design-space.tex).
+- C2 value-rule census: random sample of 176 seed records (from 1,106 both-pass records with an arXiv id),
+  167 eligible; 147 of 153 codable headline results are decoded with a non-plain value rule or with the
+  rule unstated (sections/06-census.tex; research/review/coverage/census-result-v2.md). Two model
+  coders, model adjudicators, gate-audited.
+- C3 error budget as a taxonomy: bookkeeping identity with one signed value term (sections/07).
+- C4 open problems with the evidence each needs (sections/08).
+- Section 9: one preregistered run on UniDisc 1.4B: guided vs plain sampler at matched network calls,
+  noun-level text-image link 0.180 vs 0.051, difference 0.126 (95% 0.076 to 0.177); CLIP does not
+  confirm; positive control PC-1 failed.
+- Section 5 (being written now): RQ1 counts over 615 included studies from screening fields
+  (analysis/rq1/rq1-counts.json: I1 a 559, b 41, ab 15; 449 of 615 dated 2026; RQ tags: both screeners
+  marked an own AR baseline (RQ2) for 246, a training contrast (RQ3) 237, an inference contrast (RQ4)
+  394, a synergy ablation/benchmark/claim (RQ5) 32), and RQ2-RQ6 from a stratified sample of 80
+  (60 includes over 3 strata + 20 seed studies from the census eligible set), extracted with a
+  153-field form (contrast groups with arms, metric direction, budget matched or not, variance) and
+  appraisal QA1-QA9. About 25 of 80 are extracted so far.
+
+## Search and screening (sections/02-method.tex; Fig 1 from analysis/prisma/prisma-flow.json)
+About 80,000 records identified (seed arXiv + curated list 1,903; free databases 21,470 and citation
+snowballing 45,421; six subscription databases 11,169). Title/abstract by two model screeners
+(kappa 0.911 update strand). Full text T1: 885 assessed by Claude Sonnet and Claude Opus with a Fable
+adjudicator, kappa 0.894 (n 882), 608 included; a re-check of title/abstract exclusions found 4 of 82
+sampled were includes, which triggered a 715-record tranche, 285 assessed (7 included) before the
+authors froze screening (D0051) to finish by Thursday. 1,242 seed passes (holding LLaDA, MDLM, Dream,
+MMaDA) were never screened at full text; the seed stratum of 20 in the extraction sample is the patch.
+No human validation of screening or extraction; one extractor with a second on 8 of 80.
+
+## Questions for you (answer each, with the reason and what evidence would change your view)
+1. As AE, desk-reject or send to review? What is the single biggest reason either way?
+2. Which one result, from what exists on disk or can be computed from the extraction by Thursday, is
+   significant enough to anchor the paper (title, abstract first sentence)? Candidates I see: (a) the
+   census (most headline numbers come from a non-plain or unstated decoding rule); (b) an evidence
+   audit of the comparisons the field relies on: share of DLM-vs-AR comparisons at matched budget,
+   with variance, with numbers run by the authors rather than copied; share of synergy claims with a
+   real task-removal ablation; (c) the design space. Rank them and say why.
+3. What must be cut, reworded or moved to the supplement so the paper does not overclaim?
+4. What cheap analyses on the extracted data would most raise the paper (no new screening, no
+   downloads, no GPU)?
+Keep the answer under 900 words.
+
+
+Write your turn now.
