@@ -1,0 +1,426 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M12879 arm_column K10.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(2) M12879 arm_column K10.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(3) M12879 arm_column K11.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(4) M12879 arm_column K11.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(5) M12879 arm_column K12.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(6) M12879 arm_column K12.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(7) M12879 arm_column K13.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(8) M12879 arm_column K13.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(9) M12879 arm_column K14.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(10) M12879 arm_column K14.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(11) M12879 arm_column K15.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(12) M12879 arm_column K15.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(13) M12879 arm_column K16.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(14) M12879 arm_column K16.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(15) M12879 arm_column K17.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(16) M12879 arm_column K17.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(17) M12879 arm_column K18.A1: arm_column_mismatch (arm 'Gemma / D', column 'Gemma') -> see the brief
+(18) M12879 arm_column K18.A2: arm_column_mismatch (arm 'Gemma / AR', column 'Gemma') -> see the brief
+(19) M12879 arm_column K19.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(20) M12879 arm_column K19.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(21) M12879 arm_column K20.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(22) M12879 arm_column K20.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(23) M12879 arm_column K21.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(24) M12879 arm_column K21.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(25) M12879 arm_column K22.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(26) M12879 arm_column K22.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(27) M12879 arm_column K23.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(28) M12879 arm_column K23.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(29) M12879 arm_column K24.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(30) M12879 arm_column K24.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(31) M12879 arm_column K25.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(32) M12879 arm_column K25.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(33) M12879 arm_column K26.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(34) M12879 arm_column K26.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(35) M12879 arm_column K27.A1: arm_column_mismatch (arm 'Qwen / D', column 'Qwen') -> see the brief
+(36) M12879 arm_column K27.A2: arm_column_mismatch (arm 'Qwen / AR', column 'Qwen') -> see the brief
+(37) M12879 arm_column K28.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(38) M12879 arm_column K28.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(39) M12879 arm_column K29.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(40) M12879 arm_column K29.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(41) M12879 arm_column K30.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(42) M12879 arm_column K30.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(43) M12879 arm_column K31.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(44) M12879 arm_column K31.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(45) M12879 arm_column K32.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(46) M12879 arm_column K32.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(47) M12879 arm_column K33.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(48) M12879 arm_column K33.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(49) M12879 arm_column K34.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(50) M12879 arm_column K34.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(51) M12879 arm_column K35.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(52) M12879 arm_column K35.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(53) M12879 arm_column K36.A1: arm_column_mismatch (arm 'Ministral / D', column 'Ministral') -> see the brief
+(54) M12879 arm_column K36.A2: arm_column_mismatch (arm 'Ministral / AR', column 'Ministral') -> see the brief
+(55) M12879 arm_column K37.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(56) M12879 arm_column K37.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(57) M12879 arm_column K38.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(58) M12879 arm_column K38.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(59) M12879 arm_column K39.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(60) M12879 arm_column K39.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(61) M12879 arm_column K40.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(62) M12879 arm_column K40.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(63) M12879 arm_column K41.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(64) M12879 arm_column K41.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(65) M12879 arm_column K42.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(66) M12879 arm_column K42.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(67) M12879 arm_column K43.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(68) M12879 arm_column K43.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(69) M12879 arm_column K44.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(70) M12879 arm_column K44.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(71) M12879 arm_column K45.A1: arm_column_mismatch (arm 'Llama / D-25k', column 'Llama') -> see the brief
+(72) M12879 arm_column K45.A2: arm_column_mismatch (arm 'Llama / AR', column 'Llama') -> see the brief
+(73) M12879 condition K82.A1: condition_mismatch ('' against 'ARC-C') -> see the brief
+(74) M12879 condition K82.A2: condition_mismatch ('' against 'ARC-C') -> see the brief
+(75) M12879 condition K83.A1: condition_mismatch ('' against 'GPQA') -> see the brief
+(76) M12879 condition K83.A2: condition_mismatch ('' against 'GPQA') -> see the brief
+(77) M12879 condition K84.A1: condition_mismatch ('' against 'GSM8K') -> see the brief
+(78) M12879 condition K84.A2: condition_mismatch ('' against 'GSM8K') -> see the brief
+(79) M12879 condition K85.A1: condition_mismatch ('' against 'HellaSwag') -> see the brief
+(80) M12879 condition K85.A2: condition_mismatch ('' against 'HellaSwag') -> see the brief
+(81) M12879 condition K90.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(82) M12879 metric K90.A2: metric_column_mismatch ('PPL32 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(83) M12879 condition K90.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(84) M12879 condition K91.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(85) M12879 metric K91.A2: metric_column_mismatch ('D-132%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(86) M12879 condition K91.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(87) M12879 condition K92.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(88) M12879 metric K92.A2: metric_column_mismatch ('PPL64 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(89) M12879 condition K92.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(90) M12879 reuse K92.A2: cell_reused ((C51, col 7) already used by K90.A2 in group G22) -> see the brief
+(91) M12879 condition K93.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(92) M12879 metric K93.A2: metric_column_mismatch ('D-164%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(93) M12879 condition K93.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(94) M12879 reuse K93.A2: cell_reused ((C51, col 8) already used by K91.A2 in group G22) -> see the brief
+(95) M12879 condition K94.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(96) M12879 metric K94.A2: metric_column_mismatch ('PPL128 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(97) M12879 condition K94.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(98) M12879 reuse K94.A2: cell_reused ((C51, col 7) already used by K90.A2 in group G22) -> see the brief
+(99) M12879 condition K95.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(100) M12879 metric K95.A2: metric_column_mismatch ('D-1128%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(101) M12879 condition K95.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(102) M12879 reuse K95.A2: cell_reused ((C51, col 8) already used by K91.A2 in group G22) -> see the brief
+(103) M12879 condition K96.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(104) M12879 metric K96.A2: metric_column_mismatch ('D-232' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(105) M12879 condition K96.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(106) M12879 condition K97.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(107) M12879 metric K97.A2: metric_column_mismatch ('D-332' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(108) M12879 condition K97.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(109) M12879 condition K98.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(110) M12879 metric K98.A2: metric_column_mismatch ('D-264' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(111) M12879 condition K98.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(112) M12879 reuse K98.A2: cell_reused ((C57, col 7) already used by K96.A2 in group G22) -> see the brief
+(113) M12879 condition K99.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(114) M12879 metric K99.A2: metric_column_mismatch ('D-364' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(115) M12879 condition K99.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(116) M12879 reuse K99.A2: cell_reused ((C57, col 8) already used by K97.A2 in group G22) -> see the brief
+(117) M12879 condition K100.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(118) M12879 metric K100.A2: metric_column_mismatch ('D-2128' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(119) M12879 condition K100.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(120) M12879 reuse K100.A2: cell_reused ((C57, col 7) already used by K96.A2 in group G22) -> see the brief
+(121) M12879 condition K101.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(122) M12879 metric K101.A2: metric_column_mismatch ('D-3128' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(123) M12879 condition K101.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(124) M12879 reuse K101.A2: cell_reused ((C57, col 8) already used by K97.A2 in group G22) -> see the brief
+(125) M12879 condition K102.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(126) M12879 metric K102.A2: metric_column_mismatch ('PPL32 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(127) M12879 condition K102.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(128) M12879 condition K103.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(129) M12879 metric K103.A2: metric_column_mismatch ('D-132%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(130) M12879 condition K103.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(131) M12879 condition K104.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(132) M12879 metric K104.A2: metric_column_mismatch ('PPL64 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(133) M12879 condition K104.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(134) M12879 reuse K104.A2: cell_reused ((C52, col 7) already used by K102.A2 in group G23) -> see the brief
+(135) M12879 condition K105.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(136) M12879 metric K105.A2: metric_column_mismatch ('D-164%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(137) M12879 condition K105.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(138) M12879 reuse K105.A2: cell_reused ((C52, col 8) already used by K103.A2 in group G23) -> see the brief
+(139) M12879 condition K106.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(140) M12879 metric K106.A2: metric_column_mismatch ('PPL128 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(141) M12879 condition K106.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(142) M12879 reuse K106.A2: cell_reused ((C52, col 7) already used by K102.A2 in group G23) -> see the brief
+(143) M12879 condition K107.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(144) M12879 metric K107.A2: metric_column_mismatch ('D-1128%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(145) M12879 condition K107.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(146) M12879 reuse K107.A2: cell_reused ((C52, col 8) already used by K103.A2 in group G23) -> see the brief
+(147) M12879 condition K108.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(148) M12879 metric K108.A2: metric_column_mismatch ('D-232' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(149) M12879 condition K108.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(150) M12879 condition K109.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(151) M12879 metric K109.A2: metric_column_mismatch ('D-332' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(152) M12879 condition K109.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(153) M12879 condition K110.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(154) M12879 metric K110.A2: metric_column_mismatch ('D-264' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(155) M12879 condition K110.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(156) M12879 reuse K110.A2: cell_reused ((C58, col 7) already used by K108.A2 in group G23) -> see the brief
+(157) M12879 condition K111.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(158) M12879 metric K111.A2: metric_column_mismatch ('D-364' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(159) M12879 condition K111.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(160) M12879 reuse K111.A2: cell_reused ((C58, col 8) already used by K109.A2 in group G23) -> see the brief
+(161) M12879 condition K112.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(162) M12879 metric K112.A2: metric_column_mismatch ('D-2128' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(163) M12879 condition K112.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(164) M12879 reuse K112.A2: cell_reused ((C58, col 7) already used by K108.A2 in group G23) -> see the brief
+(165) M12879 condition K113.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(166) M12879 metric K113.A2: metric_column_mismatch ('D-3128' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(167) M12879 condition K113.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(168) M12879 reuse K113.A2: cell_reused ((C58, col 8) already used by K109.A2 in group G23) -> see the brief
+(169) M12879 condition K114.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(170) M12879 metric K114.A2: metric_column_mismatch ('PPL32 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(171) M12879 condition K114.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(172) M12879 condition K115.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(173) M12879 metric K115.A2: metric_column_mismatch ('D-132%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(174) M12879 condition K115.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(175) M12879 condition K116.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(176) M12879 metric K116.A2: metric_column_mismatch ('PPL64 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(177) M12879 condition K116.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(178) M12879 reuse K116.A2: cell_reused ((C53, col 7) already used by K114.A2 in group G24) -> see the brief
+(179) M12879 condition K117.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(180) M12879 metric K117.A2: metric_column_mismatch ('D-164%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(181) M12879 condition K117.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(182) M12879 reuse K117.A2: cell_reused ((C53, col 8) already used by K115.A2 in group G24) -> see the brief
+(183) M12879 condition K118.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(184) M12879 metric K118.A2: metric_column_mismatch ('PPL128 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(185) M12879 condition K118.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(186) M12879 reuse K118.A2: cell_reused ((C53, col 7) already used by K114.A2 in group G24) -> see the brief
+(187) M12879 condition K119.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(188) M12879 metric K119.A2: metric_column_mismatch ('D-1128%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(189) M12879 condition K119.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(190) M12879 reuse K119.A2: cell_reused ((C53, col 8) already used by K115.A2 in group G24) -> see the brief
+(191) M12879 condition K120.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(192) M12879 metric K120.A2: metric_column_mismatch ('D-232' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(193) M12879 condition K120.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(194) M12879 condition K121.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(195) M12879 metric K121.A2: metric_column_mismatch ('D-332' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(196) M12879 condition K121.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(197) M12879 condition K122.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(198) M12879 metric K122.A2: metric_column_mismatch ('D-264' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(199) M12879 condition K122.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(200) M12879 reuse K122.A2: cell_reused ((C59, col 7) already used by K120.A2 in group G24) -> see the brief
+(201) M12879 condition K123.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(202) M12879 metric K123.A2: metric_column_mismatch ('D-364' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(203) M12879 condition K123.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(204) M12879 reuse K123.A2: cell_reused ((C59, col 8) already used by K121.A2 in group G24) -> see the brief
+(205) M12879 condition K124.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(206) M12879 metric K124.A2: metric_column_mismatch ('D-2128' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(207) M12879 condition K124.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(208) M12879 reuse K124.A2: cell_reused ((C59, col 7) already used by K120.A2 in group G24) -> see the brief
+(209) M12879 condition K125.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(210) M12879 metric K125.A2: metric_column_mismatch ('D-3128' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(211) M12879 condition K125.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(212) M12879 reuse K125.A2: cell_reused ((C59, col 8) already used by K121.A2 in group G24) -> see the brief
+(213) M12879 condition K126.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(214) M12879 metric K126.A2: metric_column_mismatch ('PPL32 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(215) M12879 condition K126.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(216) M12879 condition K127.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(217) M12879 metric K127.A2: metric_column_mismatch ('D-132%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(218) M12879 condition K127.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(219) M12879 condition K128.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(220) M12879 metric K128.A2: metric_column_mismatch ('PPL64 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(221) M12879 condition K128.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(222) M12879 reuse K128.A2: cell_reused ((C54, col 7) already used by K126.A2 in group G25) -> see the brief
+(223) M12879 condition K129.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(224) M12879 metric K129.A2: metric_column_mismatch ('D-164%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(225) M12879 condition K129.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(226) M12879 reuse K129.A2: cell_reused ((C54, col 8) already used by K127.A2 in group G25) -> see the brief
+(227) M12879 condition K130.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(228) M12879 metric K130.A2: metric_column_mismatch ('PPL128 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(229) M12879 condition K130.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(230) M12879 reuse K130.A2: cell_reused ((C54, col 7) already used by K126.A2 in group G25) -> see the brief
+(231) M12879 condition K131.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(232) M12879 metric K131.A2: metric_column_mismatch ('D-1128%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(233) M12879 condition K131.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(234) M12879 reuse K131.A2: cell_reused ((C54, col 8) already used by K127.A2 in group G25) -> see the brief
+(235) M12879 condition K132.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(236) M12879 metric K132.A2: metric_column_mismatch ('D-232' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(237) M12879 condition K132.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(238) M12879 condition K133.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(239) M12879 metric K133.A2: metric_column_mismatch ('D-332' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(240) M12879 condition K133.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(241) M12879 condition K134.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(242) M12879 metric K134.A2: metric_column_mismatch ('D-264' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(243) M12879 condition K134.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(244) M12879 reuse K134.A2: cell_reused ((C60, col 7) already used by K132.A2 in group G25) -> see the brief
+(245) M12879 condition K135.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(246) M12879 metric K135.A2: metric_column_mismatch ('D-364' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(247) M12879 condition K135.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(248) M12879 reuse K135.A2: cell_reused ((C60, col 8) already used by K133.A2 in group G25) -> see the brief
+(249) M12879 condition K136.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(250) M12879 metric K136.A2: metric_column_mismatch ('D-2128' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(251) M12879 condition K136.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(252) M12879 reuse K136.A2: cell_reused ((C60, col 7) already used by K132.A2 in group G25) -> see the brief
+(253) M12879 condition K137.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(254) M12879 metric K137.A2: metric_column_mismatch ('D-3128' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(255) M12879 condition K137.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(256) M12879 reuse K137.A2: cell_reused ((C60, col 8) already used by K133.A2 in group G25) -> see the brief
+(257) M12879 condition K138.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(258) M12879 metric K138.A2: metric_column_mismatch ('PPL32 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(259) M12879 condition K138.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(260) M12879 condition K139.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(261) M12879 metric K139.A2: metric_column_mismatch ('D-132%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(262) M12879 condition K139.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(263) M12879 condition K140.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(264) M12879 metric K140.A2: metric_column_mismatch ('PPL64 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(265) M12879 condition K140.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(266) M12879 reuse K140.A2: cell_reused ((C55, col 7) already used by K138.A2 in group G26) -> see the brief
+(267) M12879 condition K141.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(268) M12879 metric K141.A2: metric_column_mismatch ('D-164%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(269) M12879 condition K141.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(270) M12879 reuse K141.A2: cell_reused ((C55, col 8) already used by K139.A2 in group G26) -> see the brief
+(271) M12879 condition K142.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(272) M12879 metric K142.A2: metric_column_mismatch ('PPL128 ↓' against 'PPL↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(273) M12879 condition K142.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(274) M12879 reuse K142.A2: cell_reused ((C55, col 7) already used by K138.A2 in group G26) -> see the brief
+(275) M12879 condition K143.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(276) M12879 metric K143.A2: metric_column_mismatch ('D-1128%↑' against 'D-1%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(277) M12879 condition K143.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(278) M12879 reuse K143.A2: cell_reused ((C55, col 8) already used by K139.A2 in group G26) -> see the brief
+(279) M12879 condition K144.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(280) M12879 metric K144.A2: metric_column_mismatch ('D-232' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(281) M12879 condition K144.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(282) M12879 condition K145.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(283) M12879 metric K145.A2: metric_column_mismatch ('D-332' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(284) M12879 condition K145.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(285) M12879 condition K146.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(286) M12879 metric K146.A2: metric_column_mismatch ('D-264' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(287) M12879 condition K146.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(288) M12879 reuse K146.A2: cell_reused ((C61, col 7) already used by K144.A2 in group G26) -> see the brief
+(289) M12879 condition K147.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(290) M12879 metric K147.A2: metric_column_mismatch ('D-364' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(291) M12879 condition K147.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(292) M12879 reuse K147.A2: cell_reused ((C61, col 8) already used by K145.A2 in group G26) -> see the brief
+(293) M12879 condition K148.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(294) M12879 metric K148.A2: metric_column_mismatch ('D-2128' against 'D-2') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(295) M12879 condition K148.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(296) M12879 reuse K148.A2: cell_reused ((C61, col 7) already used by K144.A2 in group G26) -> see the brief
+(297) M12879 condition K149.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(298) M12879 metric K149.A2: metric_column_mismatch ('D-3128' against 'D-3') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(299) M12879 condition K149.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(300) M12879 reuse K149.A2: cell_reused ((C61, col 8) already used by K145.A2 in group G26) -> see the brief
+(301) M12879 metric K150.A1: metric_column_mismatch ('PPLk' against 'PPL32 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(302) M12879 condition K150.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(303) M12879 metric K150.A2: metric_column_mismatch ('PPLk' against 'PPL64 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(304) M12879 condition K150.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(305) M12879 metric K150.A3: metric_column_mismatch ('PPLk' against 'PPL128 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(306) M12879 condition K150.A3: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(307) M12879 metric K151.A1: metric_column_mismatch ('D-1' against 'D-132%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(308) M12879 condition K151.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(309) M12879 metric K151.A2: metric_column_mismatch ('D-1' against 'D-164%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(310) M12879 condition K151.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(311) M12879 metric K151.A3: metric_column_mismatch ('D-1' against 'D-1128%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(312) M12879 condition K151.A3: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(313) M12879 metric K152.A1: metric_column_mismatch ('D-2' against 'D-232') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(314) M12879 condition K152.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(315) M12879 metric K152.A2: metric_column_mismatch ('D-2' against 'D-264') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(316) M12879 condition K152.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(317) M12879 metric K152.A3: metric_column_mismatch ('D-2' against 'D-2128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(318) M12879 condition K152.A3: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(319) M12879 metric K153.A1: metric_column_mismatch ('D-3' against 'D-332') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(320) M12879 condition K153.A1: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(321) M12879 metric K153.A2: metric_column_mismatch ('D-3' against 'D-364') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(322) M12879 condition K153.A2: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(323) M12879 metric K153.A3: metric_column_mismatch ('D-3' against 'D-3128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(324) M12879 condition K153.A3: condition_mismatch ('' against 'BYOD-Gemma') -> see the brief
+(325) M12879 metric K154.A1: metric_column_mismatch ('PPLk' against 'PPL32 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(326) M12879 condition K154.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(327) M12879 metric K154.A2: metric_column_mismatch ('PPLk' against 'PPL64 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(328) M12879 condition K154.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(329) M12879 metric K154.A3: metric_column_mismatch ('PPLk' against 'PPL128 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(330) M12879 condition K154.A3: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(331) M12879 metric K155.A1: metric_column_mismatch ('D-1' against 'D-132%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(332) M12879 condition K155.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(333) M12879 metric K155.A2: metric_column_mismatch ('D-1' against 'D-164%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(334) M12879 condition K155.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(335) M12879 metric K155.A3: metric_column_mismatch ('D-1' against 'D-1128%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(336) M12879 condition K155.A3: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(337) M12879 metric K156.A1: metric_column_mismatch ('D-2' against 'D-232') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(338) M12879 condition K156.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(339) M12879 metric K156.A2: metric_column_mismatch ('D-2' against 'D-264') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(340) M12879 condition K156.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(341) M12879 metric K156.A3: metric_column_mismatch ('D-2' against 'D-2128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(342) M12879 condition K156.A3: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(343) M12879 metric K157.A1: metric_column_mismatch ('D-3' against 'D-332') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(344) M12879 condition K157.A1: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(345) M12879 metric K157.A2: metric_column_mismatch ('D-3' against 'D-364') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(346) M12879 condition K157.A2: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(347) M12879 metric K157.A3: metric_column_mismatch ('D-3' against 'D-3128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(348) M12879 condition K157.A3: condition_mismatch ('' against 'BYOD-Qwen') -> see the brief
+(349) M12879 metric K158.A1: metric_column_mismatch ('PPLk' against 'PPL32 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(350) M12879 condition K158.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(351) M12879 metric K158.A2: metric_column_mismatch ('PPLk' against 'PPL64 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(352) M12879 condition K158.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(353) M12879 metric K158.A3: metric_column_mismatch ('PPLk' against 'PPL128 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(354) M12879 condition K158.A3: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(355) M12879 metric K159.A1: metric_column_mismatch ('D-1' against 'D-132%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(356) M12879 condition K159.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(357) M12879 metric K159.A2: metric_column_mismatch ('D-1' against 'D-164%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(358) M12879 condition K159.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(359) M12879 metric K159.A3: metric_column_mismatch ('D-1' against 'D-1128%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(360) M12879 condition K159.A3: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(361) M12879 metric K160.A1: metric_column_mismatch ('D-2' against 'D-232') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(362) M12879 condition K160.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(363) M12879 metric K160.A2: metric_column_mismatch ('D-2' against 'D-264') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(364) M12879 condition K160.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(365) M12879 metric K160.A3: metric_column_mismatch ('D-2' against 'D-2128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(366) M12879 condition K160.A3: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(367) M12879 metric K161.A1: metric_column_mismatch ('D-3' against 'D-332') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(368) M12879 condition K161.A1: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(369) M12879 metric K161.A2: metric_column_mismatch ('D-3' against 'D-364') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(370) M12879 condition K161.A2: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(371) M12879 metric K161.A3: metric_column_mismatch ('D-3' against 'D-3128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(372) M12879 condition K161.A3: condition_mismatch ('' against 'BYOD-Ministral') -> see the brief
+(373) M12879 metric K162.A1: metric_column_mismatch ('PPLk' against 'PPL32 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(374) M12879 condition K162.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(375) M12879 metric K162.A2: metric_column_mismatch ('PPLk' against 'PPL64 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(376) M12879 condition K162.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(377) M12879 metric K162.A3: metric_column_mismatch ('PPLk' against 'PPL128 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(378) M12879 condition K162.A3: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(379) M12879 metric K163.A1: metric_column_mismatch ('D-1' against 'D-132%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(380) M12879 condition K163.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(381) M12879 metric K163.A2: metric_column_mismatch ('D-1' against 'D-164%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(382) M12879 condition K163.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(383) M12879 metric K163.A3: metric_column_mismatch ('D-1' against 'D-1128%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(384) M12879 condition K163.A3: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(385) M12879 metric K164.A1: metric_column_mismatch ('D-2' against 'D-232') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(386) M12879 condition K164.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(387) M12879 metric K164.A2: metric_column_mismatch ('D-2' against 'D-264') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(388) M12879 condition K164.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(389) M12879 metric K164.A3: metric_column_mismatch ('D-2' against 'D-2128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(390) M12879 condition K164.A3: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(391) M12879 metric K165.A1: metric_column_mismatch ('D-3' against 'D-332') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(392) M12879 condition K165.A1: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(393) M12879 metric K165.A2: metric_column_mismatch ('D-3' against 'D-364') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(394) M12879 condition K165.A2: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(395) M12879 metric K165.A3: metric_column_mismatch ('D-3' against 'D-3128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(396) M12879 condition K165.A3: condition_mismatch ('' against 'BYOD-Llama-25k') -> see the brief
+(397) M12879 metric K166.A1: metric_column_mismatch ('PPLk' against 'PPL32 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(398) M12879 condition K166.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(399) M12879 metric K166.A2: metric_column_mismatch ('PPLk' against 'PPL64 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(400) M12879 condition K166.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(401) M12879 metric K166.A3: metric_column_mismatch ('PPLk' against 'PPL128 ↓') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(402) M12879 condition K166.A3: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(403) M12879 metric K167.A1: metric_column_mismatch ('D-1' against 'D-132%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(404) M12879 condition K167.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(405) M12879 metric K167.A2: metric_column_mismatch ('D-1' against 'D-164%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(406) M12879 condition K167.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(407) M12879 metric K167.A3: metric_column_mismatch ('D-1' against 'D-1128%↑') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(408) M12879 condition K167.A3: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(409) M12879 metric K168.A1: metric_column_mismatch ('D-2' against 'D-232') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(410) M12879 condition K168.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(411) M12879 metric K168.A2: metric_column_mismatch ('D-2' against 'D-264') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(412) M12879 condition K168.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(413) M12879 metric K168.A3: metric_column_mismatch ('D-2' against 'D-2128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(414) M12879 condition K168.A3: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(415) M12879 metric K169.A1: metric_column_mismatch ('D-3' against 'D-332') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(416) M12879 condition K169.A1: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(417) M12879 metric K169.A2: metric_column_mismatch ('D-3' against 'D-364') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(418) M12879 condition K169.A2: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(419) M12879 metric K169.A3: metric_column_mismatch ('D-3' against 'D-3128') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(420) M12879 condition K169.A3: condition_mismatch ('' against 'BYOD-Llama-50k') -> see the brief
+(421) M12879 s14_row S14.own_row: s14_row_not_found ('Gemma / D' not at a row start on page 6) -> give the row label exactly as it starts the printed row on that page, or fix the page
+(422) M12879 s14_row S14.baseline_row: s14_row_not_found ('Gemma / AR' not at a row start on page 6) -> give the row label exactly as it starts the printed row on that page, or fix the page
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
