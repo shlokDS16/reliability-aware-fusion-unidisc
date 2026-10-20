@@ -194,10 +194,15 @@ t1_prefix = collections.Counter(i[0] for i in t1)
 F["open"] = [
     f"Free-source rescue pass: {len(r2_pos)} positives (include or unclear) of {len(R2)} were neither dual-screened nor "
     f"routed to full text ({len(r2_pos & set(A2))} in the dual batches, {len(r2_pos & set(ft))} in ft-routes); D0029 sends "
-    "them to the dual queue, D0030 says they pass to full text. Needs a decision before T1 is closed.",
+    "them to the dual queue, D0030 says they pass to full text. Resolved by D0036 (2026-10-20): dual title/abstract "
+    "screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Not yet run.",
     f"Seed corpus: {len(v1_either)} of {len(v1)} records passed title/abstract (either screener; {len(v1_both)} both); "
-    f"{sum(1 for s_ in v1_either if s_ in t1)} are in T1 (T1 ids by prefix: {dict(t1_prefix)}). Their full-text route "
-    "(census reading vs criteria v1.6 full-text screening) is not in the PRISMA files; to be confirmed.",
+    f"{sum(1 for s_ in v1_either if s_ in t1)} are in T1 (T1 ids by prefix: {dict(t1_prefix)}). D0037 (2026-10-20): "
+    "full-text screening under criteria v1.6 as a further tranche (own routes, own 15 percent human-validation draw). Not yet run.",
+    f"Re-check tranche (criteria v1.6 A s5.2, K = 4): D0035 (2026-10-20) sends all {F['recheck']['frame']} frame candidates "
+    "to full text as a further tranche (own 15 percent human-validation draw). Not yet run.",
+    f"Awaiting a second screener (Screener B unavailable, safety-classifier stop): {sorted(pend)}; D0041 (2026-10-20): the "
+    "human author screens them as second screener (human-p4 sheet); agreement statistics exclude them.",
     f"Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): "
     f"{sum(v for k, v in status.items() if k.startswith('open_access_fetch_failed')) + extra_status.get('pending_oa_url', 0)} "
     "(bot walls, bot-check landing pages, dead links); need the user's Chrome or the e-gateway.",
