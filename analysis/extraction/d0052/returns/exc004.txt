@@ -1,0 +1,1062 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) R0621 table T01: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(2) R0621 table T02: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(3) R0621 table T04: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(4) R0621 table T05: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(5) R0621 table T07: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(6) R0621 table T08: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(7) R0621 table T09: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(8) R0621 table T10: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(9) R0621 table T11: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(10) R0621 table T13: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(11) R0621 row C013: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(12) R0621 row C015: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(13) R0621 row C029: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(14) R0621 row C031: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(15) R0621 row C075: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(16) R0621 row C077: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(17) R0621 row C080: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(18) R0621 row C082: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(19) R0621 row C084: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(20) R0621 row C086: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(21) R0621 row C088: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(22) R0621 row C090: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(23) R0621 row C091: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(24) R0621 row C093: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(25) R0621 row C096: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(26) R0621 row C098: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(27) R0621 row C100: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(28) R0621 row C102: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(29) R0621 row C104: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(30) R0621 row C106: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(31) R0621 row C107: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(32) R0621 row C109: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(33) R0621 row C112: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(34) R0621 row C114: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(35) R0621 row C116: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(36) R0621 row C118: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(37) R0621 row C120: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(38) R0621 row C122: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(39) R0621 row C123: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(40) R0621 row C125: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(41) R0621 prose_quote E18: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(42) R0621 row_group H02: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(43) R0621 row_group K001.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(44) R0621 condition K001.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(45) R0621 row_group K001.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(46) R0621 condition K001.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(47) R0621 row_group K001.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(48) R0621 condition K001.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(49) R0621 row_group K001.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(50) R0621 condition K001.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(51) R0621 row_group K001.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(52) R0621 condition K001.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(53) R0621 row_group K002.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(54) R0621 condition K002.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(55) R0621 row_group K002.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(56) R0621 condition K002.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(57) R0621 row_group K002.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(58) R0621 condition K002.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(59) R0621 row_group K002.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(60) R0621 condition K002.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(61) R0621 row_group K002.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(62) R0621 condition K002.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(63) R0621 row_group K003.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(64) R0621 condition K003.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(65) R0621 row_group K003.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(66) R0621 condition K003.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(67) R0621 row_group K003.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(68) R0621 condition K003.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(69) R0621 row_group K003.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(70) R0621 condition K003.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(71) R0621 row_group K003.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(72) R0621 condition K003.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(73) R0621 row_group K004.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(74) R0621 condition K004.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(75) R0621 row_group K004.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(76) R0621 condition K004.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(77) R0621 row_group K004.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(78) R0621 condition K004.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(79) R0621 row_group K004.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(80) R0621 condition K004.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(81) R0621 row_group K004.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(82) R0621 condition K004.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(83) R0621 row_group K005.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(84) R0621 condition K005.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(85) R0621 row_group K005.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(86) R0621 condition K005.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(87) R0621 row_group K005.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(88) R0621 condition K005.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(89) R0621 row_group K005.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(90) R0621 condition K005.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(91) R0621 row_group K005.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(92) R0621 condition K005.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(93) R0621 row_group K006.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(94) R0621 condition K006.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(95) R0621 row_group K006.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(96) R0621 condition K006.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(97) R0621 row_group K006.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(98) R0621 condition K006.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(99) R0621 row_group K006.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(100) R0621 condition K006.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(101) R0621 row_group K006.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(102) R0621 condition K006.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(103) R0621 row_group K007.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(104) R0621 condition K007.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(105) R0621 row_group K007.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(106) R0621 condition K007.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(107) R0621 row_group K007.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(108) R0621 condition K007.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(109) R0621 row_group K007.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(110) R0621 condition K007.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(111) R0621 row_group K007.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(112) R0621 condition K007.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(113) R0621 row_group K008.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(114) R0621 condition K008.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(115) R0621 row_group K008.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(116) R0621 condition K008.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(117) R0621 row_group K008.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(118) R0621 condition K008.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(119) R0621 row_group K008.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(120) R0621 condition K008.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(121) R0621 row_group K008.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(122) R0621 condition K008.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(123) R0621 row_group K009.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(124) R0621 condition K009.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(125) R0621 row_group K009.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(126) R0621 condition K009.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(127) R0621 row_group K009.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(128) R0621 condition K009.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(129) R0621 row_group K009.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(130) R0621 condition K009.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(131) R0621 row_group K009.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(132) R0621 condition K009.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(133) R0621 row_group K010.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(134) R0621 condition K010.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(135) R0621 row_group K010.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(136) R0621 condition K010.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(137) R0621 row_group K010.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(138) R0621 condition K010.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(139) R0621 row_group K010.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(140) R0621 condition K010.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(141) R0621 row_group K010.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(142) R0621 condition K010.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(143) R0621 row_group K011.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(144) R0621 condition K011.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(145) R0621 row_group K011.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(146) R0621 condition K011.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(147) R0621 row_group K011.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(148) R0621 condition K011.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(149) R0621 row_group K011.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(150) R0621 condition K011.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(151) R0621 row_group K011.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(152) R0621 condition K011.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(153) R0621 row_group K012.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(154) R0621 condition K012.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(155) R0621 row_group K012.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(156) R0621 condition K012.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(157) R0621 row_group K012.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(158) R0621 condition K012.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(159) R0621 row_group K012.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(160) R0621 condition K012.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(161) R0621 row_group K012.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(162) R0621 condition K012.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(163) R0621 row_group K013.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(164) R0621 condition K013.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(165) R0621 row_group K013.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(166) R0621 condition K013.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(167) R0621 row_group K013.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(168) R0621 condition K013.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(169) R0621 row_group K013.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(170) R0621 condition K013.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(171) R0621 row_group K013.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(172) R0621 condition K013.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(173) R0621 row_group K014.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(174) R0621 condition K014.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(175) R0621 row_group K014.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(176) R0621 condition K014.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(177) R0621 row_group K014.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(178) R0621 condition K014.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(179) R0621 row_group K014.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(180) R0621 condition K014.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(181) R0621 row_group K014.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(182) R0621 condition K014.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(183) R0621 row_group K015.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(184) R0621 condition K015.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(185) R0621 row_group K015.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(186) R0621 condition K015.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(187) R0621 row_group K015.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(188) R0621 condition K015.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(189) R0621 row_group K015.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(190) R0621 condition K015.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(191) R0621 row_group K015.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(192) R0621 condition K015.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(193) R0621 row_group K016.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(194) R0621 condition K016.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(195) R0621 row_group K016.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(196) R0621 condition K016.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(197) R0621 row_group K016.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(198) R0621 condition K016.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(199) R0621 row_group K016.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(200) R0621 condition K016.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(201) R0621 row_group K016.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(202) R0621 condition K016.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(203) R0621 row_group K017.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(204) R0621 condition K017.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(205) R0621 row_group K017.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(206) R0621 condition K017.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(207) R0621 row_group K017.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(208) R0621 condition K017.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(209) R0621 row_group K017.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(210) R0621 condition K017.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(211) R0621 row_group K017.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(212) R0621 condition K017.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(213) R0621 row_group K018.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(214) R0621 condition K018.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(215) R0621 row_group K018.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(216) R0621 condition K018.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(217) R0621 row_group K018.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(218) R0621 condition K018.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(219) R0621 row_group K018.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(220) R0621 condition K018.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(221) R0621 row_group K018.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(222) R0621 condition K018.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(223) R0621 row_group K019.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(224) R0621 condition K019.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(225) R0621 row_group K019.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(226) R0621 condition K019.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(227) R0621 row_group K019.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(228) R0621 condition K019.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(229) R0621 row_group K019.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(230) R0621 condition K019.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(231) R0621 row_group K019.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(232) R0621 condition K019.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(233) R0621 row_group K020.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(234) R0621 condition K020.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(235) R0621 row_group K020.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(236) R0621 condition K020.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(237) R0621 row_group K020.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(238) R0621 condition K020.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(239) R0621 row_group K020.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(240) R0621 condition K020.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(241) R0621 row_group K020.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(242) R0621 condition K020.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(243) R0621 row_group K021.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(244) R0621 condition K021.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(245) R0621 row_group K021.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(246) R0621 condition K021.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(247) R0621 row_group K021.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(248) R0621 condition K021.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(249) R0621 row_group K021.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(250) R0621 condition K021.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(251) R0621 row_group K021.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(252) R0621 condition K021.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(253) R0621 row_group K022.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(254) R0621 condition K022.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(255) R0621 row_group K022.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(256) R0621 condition K022.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(257) R0621 row_group K022.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(258) R0621 condition K022.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(259) R0621 row_group K022.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(260) R0621 condition K022.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(261) R0621 row_group K022.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(262) R0621 condition K022.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(263) R0621 row_group K023.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(264) R0621 condition K023.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(265) R0621 row_group K023.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(266) R0621 condition K023.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(267) R0621 row_group K023.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(268) R0621 condition K023.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(269) R0621 row_group K023.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(270) R0621 condition K023.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(271) R0621 row_group K023.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(272) R0621 condition K023.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(273) R0621 row_group K024.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(274) R0621 condition K024.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(275) R0621 row_group K024.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(276) R0621 condition K024.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(277) R0621 row_group K024.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(278) R0621 condition K024.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(279) R0621 row_group K024.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(280) R0621 condition K024.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(281) R0621 row_group K024.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(282) R0621 condition K024.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(283) R0621 row_group K025.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(284) R0621 condition K025.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(285) R0621 row_group K025.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(286) R0621 condition K025.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(287) R0621 row_group K025.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(288) R0621 condition K025.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(289) R0621 row_group K025.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(290) R0621 condition K025.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(291) R0621 row_group K025.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(292) R0621 condition K025.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(293) R0621 row_group K026.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(294) R0621 condition K026.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(295) R0621 row_group K026.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(296) R0621 condition K026.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(297) R0621 row_group K026.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(298) R0621 condition K026.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(299) R0621 row_group K026.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(300) R0621 condition K026.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(301) R0621 row_group K026.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(302) R0621 condition K026.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(303) R0621 row_group K027.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(304) R0621 condition K027.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(305) R0621 row_group K027.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(306) R0621 condition K027.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(307) R0621 row_group K027.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(308) R0621 condition K027.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(309) R0621 row_group K027.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(310) R0621 condition K027.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(311) R0621 row_group K027.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(312) R0621 condition K027.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(313) R0621 row_group K028.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(314) R0621 condition K028.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(315) R0621 row_group K028.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(316) R0621 condition K028.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(317) R0621 row_group K028.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(318) R0621 condition K028.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(319) R0621 row_group K028.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(320) R0621 condition K028.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(321) R0621 row_group K028.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(322) R0621 condition K028.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(323) R0621 row_group K029.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(324) R0621 condition K029.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(325) R0621 row_group K029.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(326) R0621 condition K029.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(327) R0621 row_group K029.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(328) R0621 condition K029.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(329) R0621 row_group K029.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(330) R0621 condition K029.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(331) R0621 row_group K029.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(332) R0621 condition K029.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(333) R0621 row_group K030.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(334) R0621 condition K030.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(335) R0621 row_group K030.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(336) R0621 condition K030.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(337) R0621 row_group K030.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(338) R0621 condition K030.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(339) R0621 row_group K030.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(340) R0621 condition K030.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(341) R0621 row_group K030.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(342) R0621 condition K030.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(343) R0621 row_group K031.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(344) R0621 condition K031.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(345) R0621 row_group K031.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(346) R0621 condition K031.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(347) R0621 row_group K031.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(348) R0621 condition K031.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(349) R0621 row_group K031.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(350) R0621 condition K031.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(351) R0621 row_group K031.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(352) R0621 condition K031.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(353) R0621 row_group K032.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(354) R0621 condition K032.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(355) R0621 row_group K032.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(356) R0621 condition K032.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(357) R0621 row_group K032.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(358) R0621 condition K032.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(359) R0621 row_group K032.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(360) R0621 condition K032.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(361) R0621 row_group K032.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(362) R0621 condition K032.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(363) R0621 second_factor K033.A1: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(364) R0621 second_factor K033.A2: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(365) R0621 second_factor K034.A1: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(366) R0621 second_factor K034.A2: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(367) R0621 second_factor K035.A1: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(368) R0621 second_factor K035.A2: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(369) R0621 second_factor K036.A1: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(370) R0621 second_factor K036.A2: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(371) R0621 second_factor K037.A1: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(372) R0621 second_factor K037.A2: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(373) R0621 second_factor K038.A1: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(374) R0621 second_factor K038.A2: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(375) R0621 second_factor K039.A1: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(376) R0621 second_factor K039.A2: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(377) R0621 second_factor K040.A1: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(378) R0621 second_factor K040.A2: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(379) R0621 second_factor K041.A1: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(380) R0621 second_factor K041.A2: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(381) R0621 second_factor K042.A1: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(382) R0621 second_factor K042.A2: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(383) R0621 second_factor K043.A1: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(384) R0621 second_factor K043.A2: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(385) R0621 second_factor K044.A1: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(386) R0621 second_factor K044.A2: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(387) R0621 second_factor K057.A1: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(388) R0621 second_factor K057.A2: second_factor_mismatch ('Dream' against row group 'Dream |') -> see the brief
+(389) R0621 second_factor K058.A1: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(390) R0621 second_factor K058.A2: second_factor_mismatch ('LLaDA' against row group 'LLaDA |') -> see the brief
+(391) R0621 second_factor K059.A1: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(392) R0621 second_factor K059.A2: second_factor_mismatch ('LLaDA-1.5' against row group 'LLaDA-1.5 |') -> see the brief
+(393) R0621 condition K064.A1: condition_mismatch ('' against 'GSM8K |') -> see the brief
+(394) R0621 condition K064.A2: condition_mismatch ('' against 'GSM8K |') -> see the brief
+(395) R0621 condition K065.A1: condition_mismatch ('' against 'GSM8K |') -> see the brief
+(396) R0621 condition K065.A2: condition_mismatch ('' against 'GSM8K |') -> see the brief
+(397) R0621 condition K066.A1: condition_mismatch ('' against 'MATH |') -> see the brief
+(398) R0621 condition K066.A2: condition_mismatch ('' against 'MATH |') -> see the brief
+(399) R0621 condition K067.A1: condition_mismatch ('' against 'MATH |') -> see the brief
+(400) R0621 condition K067.A2: condition_mismatch ('' against 'MATH |') -> see the brief
+(401) R0621 condition K068.A1: condition_mismatch ('' against 'HumanEval |') -> see the brief
+(402) R0621 condition K068.A2: condition_mismatch ('' against 'HumanEval |') -> see the brief
+(403) R0621 condition K069.A1: condition_mismatch ('' against 'HumanEval |') -> see the brief
+(404) R0621 condition K069.A2: condition_mismatch ('' against 'HumanEval |') -> see the brief
+(405) R0621 condition K070.A1: condition_mismatch ('' against 'MMLU-Pro |') -> see the brief
+(406) R0621 condition K070.A2: condition_mismatch ('' against 'MMLU-Pro |') -> see the brief
+(407) R0621 condition K071.A1: condition_mismatch ('' against 'MMLU-Pro |') -> see the brief
+(408) R0621 condition K071.A2: condition_mismatch ('' against 'MMLU-Pro |') -> see the brief
+(409) R0621 condition K072.A1: condition_mismatch ('' against 'BBH |') -> see the brief
+(410) R0621 condition K072.A2: condition_mismatch ('' against 'BBH |') -> see the brief
+(411) R0621 condition K073.A1: condition_mismatch ('' against 'BBH |') -> see the brief
+(412) R0621 condition K073.A2: condition_mismatch ('' against 'BBH |') -> see the brief
+(413) R0621 condition K074.A1: condition_mismatch ('' against 'CMMLU |') -> see the brief
+(414) R0621 condition K074.A2: condition_mismatch ('' against 'CMMLU |') -> see the brief
+(415) R0621 condition K075.A1: condition_mismatch ('' against 'CMMLU |') -> see the brief
+(416) R0621 condition K075.A2: condition_mismatch ('' against 'CMMLU |') -> see the brief
+(417) R0621 row_group K076.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(418) R0621 condition K076.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(419) R0621 row_group K076.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(420) R0621 condition K076.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(421) R0621 row_group K076.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(422) R0621 condition K076.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(423) R0621 row_group K076.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(424) R0621 condition K076.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(425) R0621 row_group K076.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(426) R0621 condition K076.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(427) R0621 row_group K077.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(428) R0621 condition K077.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(429) R0621 row_group K077.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(430) R0621 condition K077.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(431) R0621 row_group K077.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(432) R0621 condition K077.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(433) R0621 row_group K077.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(434) R0621 condition K077.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(435) R0621 row_group K077.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(436) R0621 condition K077.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(437) R0621 row_group K078.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(438) R0621 condition K078.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(439) R0621 row_group K078.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(440) R0621 condition K078.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(441) R0621 row_group K078.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(442) R0621 condition K078.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(443) R0621 row_group K078.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(444) R0621 condition K078.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(445) R0621 row_group K078.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(446) R0621 condition K078.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(447) R0621 row_group K079.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(448) R0621 condition K079.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(449) R0621 row_group K079.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(450) R0621 condition K079.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(451) R0621 row_group K079.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(452) R0621 condition K079.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(453) R0621 row_group K079.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(454) R0621 condition K079.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(455) R0621 row_group K079.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(456) R0621 condition K079.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(457) R0621 row_group K080.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(458) R0621 condition K080.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(459) R0621 row_group K080.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(460) R0621 condition K080.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(461) R0621 row_group K080.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(462) R0621 condition K080.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(463) R0621 row_group K080.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(464) R0621 condition K080.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(465) R0621 row_group K080.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(466) R0621 condition K080.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(467) R0621 row_group K081.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(468) R0621 condition K081.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(469) R0621 row_group K081.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(470) R0621 condition K081.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(471) R0621 row_group K081.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(472) R0621 condition K081.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(473) R0621 row_group K081.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(474) R0621 condition K081.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(475) R0621 row_group K081.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(476) R0621 condition K081.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(477) R0621 row_group K082.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(478) R0621 condition K082.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(479) R0621 row_group K082.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(480) R0621 condition K082.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(481) R0621 row_group K082.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(482) R0621 condition K082.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(483) R0621 row_group K082.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(484) R0621 condition K082.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(485) R0621 row_group K082.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(486) R0621 condition K082.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(487) R0621 row_group K083.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(488) R0621 condition K083.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(489) R0621 row_group K083.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(490) R0621 condition K083.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(491) R0621 row_group K083.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(492) R0621 condition K083.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(493) R0621 row_group K083.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(494) R0621 condition K083.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(495) R0621 row_group K083.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(496) R0621 condition K083.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(497) R0621 row_group K084.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(498) R0621 condition K084.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(499) R0621 row_group K084.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(500) R0621 condition K084.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(501) R0621 row_group K084.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(502) R0621 condition K084.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(503) R0621 row_group K084.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(504) R0621 condition K084.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(505) R0621 row_group K084.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(506) R0621 condition K084.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(507) R0621 row_group K085.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(508) R0621 condition K085.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(509) R0621 row_group K085.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(510) R0621 condition K085.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(511) R0621 row_group K085.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(512) R0621 condition K085.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(513) R0621 row_group K085.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(514) R0621 condition K085.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(515) R0621 row_group K085.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(516) R0621 condition K085.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(517) R0621 row_group K086.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(518) R0621 condition K086.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(519) R0621 row_group K086.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(520) R0621 condition K086.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(521) R0621 row_group K086.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(522) R0621 condition K086.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(523) R0621 row_group K086.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(524) R0621 condition K086.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(525) R0621 row_group K086.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(526) R0621 condition K086.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(527) R0621 row_group K087.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(528) R0621 condition K087.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(529) R0621 row_group K087.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(530) R0621 condition K087.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(531) R0621 row_group K087.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(532) R0621 condition K087.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(533) R0621 row_group K087.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(534) R0621 condition K087.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(535) R0621 row_group K087.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(536) R0621 condition K087.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(537) R0621 row_group K088.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(538) R0621 condition K088.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(539) R0621 row_group K088.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(540) R0621 condition K088.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(541) R0621 row_group K088.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(542) R0621 condition K088.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(543) R0621 row_group K088.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(544) R0621 condition K088.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(545) R0621 row_group K088.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(546) R0621 condition K088.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(547) R0621 row_group K089.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(548) R0621 condition K089.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(549) R0621 row_group K089.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(550) R0621 condition K089.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(551) R0621 row_group K089.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(552) R0621 condition K089.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(553) R0621 row_group K089.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(554) R0621 condition K089.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(555) R0621 row_group K089.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(556) R0621 condition K089.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(557) R0621 row_group K090.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(558) R0621 condition K090.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(559) R0621 row_group K090.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(560) R0621 condition K090.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(561) R0621 row_group K090.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(562) R0621 condition K090.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(563) R0621 row_group K090.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(564) R0621 condition K090.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(565) R0621 row_group K090.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(566) R0621 condition K090.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(567) R0621 row_group K091.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(568) R0621 condition K091.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(569) R0621 row_group K091.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(570) R0621 condition K091.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(571) R0621 row_group K091.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(572) R0621 condition K091.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(573) R0621 row_group K091.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(574) R0621 condition K091.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(575) R0621 row_group K091.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(576) R0621 condition K091.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(577) R0621 row_group K092.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(578) R0621 condition K092.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(579) R0621 row_group K092.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(580) R0621 condition K092.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(581) R0621 row_group K092.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(582) R0621 condition K092.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(583) R0621 row_group K092.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(584) R0621 condition K092.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(585) R0621 row_group K092.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(586) R0621 condition K092.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(587) R0621 row_group K093.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(588) R0621 condition K093.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(589) R0621 row_group K093.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(590) R0621 condition K093.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(591) R0621 row_group K093.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(592) R0621 condition K093.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(593) R0621 row_group K093.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(594) R0621 condition K093.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(595) R0621 row_group K093.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(596) R0621 condition K093.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(597) R0621 row_group K094.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(598) R0621 condition K094.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(599) R0621 row_group K094.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(600) R0621 condition K094.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(601) R0621 row_group K094.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(602) R0621 condition K094.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(603) R0621 row_group K094.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(604) R0621 condition K094.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(605) R0621 row_group K094.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(606) R0621 condition K094.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(607) R0621 row_group K095.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(608) R0621 condition K095.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(609) R0621 row_group K095.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(610) R0621 condition K095.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(611) R0621 row_group K095.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(612) R0621 condition K095.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(613) R0621 row_group K095.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(614) R0621 condition K095.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(615) R0621 row_group K095.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(616) R0621 condition K095.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(617) R0621 row_group K096.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(618) R0621 condition K096.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(619) R0621 row_group K096.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(620) R0621 condition K096.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(621) R0621 row_group K096.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(622) R0621 condition K096.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(623) R0621 row_group K096.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(624) R0621 condition K096.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(625) R0621 row_group K096.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(626) R0621 condition K096.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(627) R0621 row_group K097.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(628) R0621 condition K097.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(629) R0621 row_group K097.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(630) R0621 condition K097.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(631) R0621 row_group K097.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(632) R0621 condition K097.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(633) R0621 row_group K097.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(634) R0621 condition K097.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(635) R0621 row_group K097.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(636) R0621 condition K097.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(637) R0621 row_group K098.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(638) R0621 condition K098.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(639) R0621 row_group K098.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(640) R0621 condition K098.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(641) R0621 row_group K098.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(642) R0621 condition K098.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(643) R0621 row_group K098.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(644) R0621 condition K098.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(645) R0621 row_group K098.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(646) R0621 condition K098.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(647) R0621 row_group K099.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(648) R0621 condition K099.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(649) R0621 row_group K099.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(650) R0621 condition K099.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(651) R0621 row_group K099.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(652) R0621 condition K099.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(653) R0621 row_group K099.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(654) R0621 condition K099.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(655) R0621 row_group K099.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K-CoT (5-shot)', row group 'GSM8K-CoT (5-shot) |') -> see the brief
+(656) R0621 condition K099.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(657) R0621 row_group K100.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(658) R0621 condition K100.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(659) R0621 row_group K100.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(660) R0621 condition K100.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(661) R0621 row_group K100.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(662) R0621 condition K100.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(663) R0621 row_group K100.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(664) R0621 condition K100.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(665) R0621 row_group K100.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(666) R0621 condition K100.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(667) R0621 row_group K101.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(668) R0621 condition K101.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(669) R0621 row_group K101.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(670) R0621 condition K101.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(671) R0621 row_group K101.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(672) R0621 condition K101.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(673) R0621 row_group K101.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(674) R0621 condition K101.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(675) R0621 row_group K101.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(676) R0621 condition K101.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(677) R0621 row_group K102.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(678) R0621 condition K102.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(679) R0621 row_group K102.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(680) R0621 condition K102.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(681) R0621 row_group K102.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(682) R0621 condition K102.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(683) R0621 row_group K102.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(684) R0621 condition K102.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(685) R0621 row_group K102.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(686) R0621 condition K102.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(687) R0621 row_group K103.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(688) R0621 condition K103.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(689) R0621 row_group K103.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(690) R0621 condition K103.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(691) R0621 row_group K103.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(692) R0621 condition K103.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(693) R0621 row_group K103.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(694) R0621 condition K103.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(695) R0621 row_group K103.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(696) R0621 condition K103.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(697) R0621 row_group K104.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(698) R0621 condition K104.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(699) R0621 row_group K104.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(700) R0621 condition K104.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(701) R0621 row_group K104.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(702) R0621 condition K104.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(703) R0621 row_group K104.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(704) R0621 condition K104.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(705) R0621 row_group K104.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(706) R0621 condition K104.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(707) R0621 row_group K105.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(708) R0621 condition K105.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(709) R0621 row_group K105.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(710) R0621 condition K105.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(711) R0621 row_group K105.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(712) R0621 condition K105.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(713) R0621 row_group K105.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(714) R0621 condition K105.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(715) R0621 row_group K105.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(716) R0621 condition K105.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(717) R0621 row_group K106.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(718) R0621 condition K106.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(719) R0621 row_group K106.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(720) R0621 condition K106.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(721) R0621 row_group K106.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(722) R0621 condition K106.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(723) R0621 row_group K106.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(724) R0621 condition K106.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(725) R0621 row_group K106.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(726) R0621 condition K106.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(727) R0621 row_group K107.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(728) R0621 condition K107.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(729) R0621 row_group K107.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(730) R0621 condition K107.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(731) R0621 row_group K107.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(732) R0621 condition K107.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(733) R0621 row_group K107.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(734) R0621 condition K107.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(735) R0621 row_group K107.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(736) R0621 condition K107.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(737) R0621 row_group K108.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(738) R0621 condition K108.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(739) R0621 row_group K108.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(740) R0621 condition K108.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(741) R0621 row_group K108.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(742) R0621 condition K108.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(743) R0621 row_group K108.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(744) R0621 condition K108.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(745) R0621 row_group K108.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(746) R0621 condition K108.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(747) R0621 row_group K109.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(748) R0621 condition K109.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(749) R0621 row_group K109.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(750) R0621 condition K109.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(751) R0621 row_group K109.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(752) R0621 condition K109.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(753) R0621 row_group K109.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(754) R0621 condition K109.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(755) R0621 row_group K109.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(756) R0621 condition K109.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(757) R0621 row_group K110.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(758) R0621 condition K110.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(759) R0621 row_group K110.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(760) R0621 condition K110.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(761) R0621 row_group K110.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(762) R0621 condition K110.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(763) R0621 row_group K110.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(764) R0621 condition K110.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(765) R0621 row_group K110.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(766) R0621 condition K110.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(767) R0621 row_group K111.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(768) R0621 condition K111.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(769) R0621 row_group K111.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(770) R0621 condition K111.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(771) R0621 row_group K111.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(772) R0621 condition K111.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(773) R0621 row_group K111.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(774) R0621 condition K111.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(775) R0621 row_group K111.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(776) R0621 condition K111.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(777) R0621 row_group K112.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(778) R0621 condition K112.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(779) R0621 row_group K112.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(780) R0621 condition K112.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(781) R0621 row_group K112.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(782) R0621 condition K112.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(783) R0621 row_group K112.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(784) R0621 condition K112.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(785) R0621 row_group K112.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(786) R0621 condition K112.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(787) R0621 row_group K113.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(788) R0621 condition K113.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(789) R0621 row_group K113.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(790) R0621 condition K113.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(791) R0621 row_group K113.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(792) R0621 condition K113.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(793) R0621 row_group K113.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(794) R0621 condition K113.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(795) R0621 row_group K113.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(796) R0621 condition K113.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(797) R0621 row_group K114.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(798) R0621 condition K114.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(799) R0621 row_group K114.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(800) R0621 condition K114.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(801) R0621 row_group K114.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(802) R0621 condition K114.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(803) R0621 row_group K114.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(804) R0621 condition K114.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(805) R0621 row_group K114.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(806) R0621 condition K114.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(807) R0621 row_group K115.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(808) R0621 condition K115.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(809) R0621 row_group K115.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(810) R0621 condition K115.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(811) R0621 row_group K115.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(812) R0621 condition K115.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(813) R0621 row_group K115.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(814) R0621 condition K115.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(815) R0621 row_group K115.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(816) R0621 condition K115.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(817) R0621 row_group K116.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(818) R0621 condition K116.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(819) R0621 row_group K116.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(820) R0621 condition K116.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(821) R0621 row_group K116.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(822) R0621 condition K116.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(823) R0621 row_group K116.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(824) R0621 condition K116.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(825) R0621 row_group K116.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(826) R0621 condition K116.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(827) R0621 row_group K117.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(828) R0621 condition K117.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(829) R0621 row_group K117.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(830) R0621 condition K117.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(831) R0621 row_group K117.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(832) R0621 condition K117.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(833) R0621 row_group K117.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(834) R0621 condition K117.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(835) R0621 row_group K117.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(836) R0621 condition K117.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(837) R0621 row_group K118.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(838) R0621 condition K118.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(839) R0621 row_group K118.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(840) R0621 condition K118.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(841) R0621 row_group K118.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(842) R0621 condition K118.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(843) R0621 row_group K118.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(844) R0621 condition K118.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(845) R0621 row_group K118.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(846) R0621 condition K118.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(847) R0621 row_group K119.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(848) R0621 condition K119.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(849) R0621 row_group K119.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(850) R0621 condition K119.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(851) R0621 row_group K119.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(852) R0621 condition K119.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(853) R0621 row_group K119.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(854) R0621 condition K119.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(855) R0621 row_group K119.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(856) R0621 condition K119.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(857) R0621 row_group K120.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(858) R0621 condition K120.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(859) R0621 row_group K120.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(860) R0621 condition K120.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(861) R0621 row_group K120.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(862) R0621 condition K120.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(863) R0621 row_group K120.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(864) R0621 condition K120.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(865) R0621 row_group K120.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(866) R0621 condition K120.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(867) R0621 row_group K121.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(868) R0621 condition K121.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(869) R0621 row_group K121.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(870) R0621 condition K121.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(871) R0621 row_group K121.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(872) R0621 condition K121.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(873) R0621 row_group K121.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(874) R0621 condition K121.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(875) R0621 row_group K121.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(876) R0621 condition K121.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(877) R0621 row_group K122.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(878) R0621 condition K122.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(879) R0621 row_group K122.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(880) R0621 condition K122.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(881) R0621 row_group K122.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(882) R0621 condition K122.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(883) R0621 row_group K122.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(884) R0621 condition K122.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(885) R0621 row_group K122.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(886) R0621 condition K122.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(887) R0621 row_group K123.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(888) R0621 condition K123.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(889) R0621 row_group K123.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(890) R0621 condition K123.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(891) R0621 row_group K123.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(892) R0621 condition K123.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(893) R0621 row_group K123.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(894) R0621 condition K123.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(895) R0621 row_group K123.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(896) R0621 condition K123.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(897) R0621 row_group K124.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(898) R0621 condition K124.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(899) R0621 row_group K124.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(900) R0621 condition K124.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(901) R0621 row_group K124.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(902) R0621 condition K124.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(903) R0621 row_group K124.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(904) R0621 condition K124.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(905) R0621 row_group K124.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(906) R0621 condition K124.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(907) R0621 row_group K125.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(908) R0621 condition K125.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(909) R0621 row_group K125.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(910) R0621 condition K125.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(911) R0621 row_group K125.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(912) R0621 condition K125.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(913) R0621 row_group K125.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(914) R0621 condition K125.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(915) R0621 row_group K125.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(916) R0621 condition K125.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(917) R0621 row_group K126.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(918) R0621 condition K126.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(919) R0621 row_group K126.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(920) R0621 condition K126.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(921) R0621 row_group K126.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(922) R0621 condition K126.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(923) R0621 row_group K126.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(924) R0621 condition K126.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(925) R0621 row_group K126.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(926) R0621 condition K126.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(927) R0621 row_group K127.A1: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(928) R0621 condition K127.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(929) R0621 row_group K127.A2: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(930) R0621 condition K127.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(931) R0621 row_group K127.A3: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(932) R0621 condition K127.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(933) R0621 row_group K127.A4: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(934) R0621 condition K127.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(935) R0621 row_group K127.A5: rowgroup_benchmark_mismatch (benchmark 'HumanEval (0-shot)', row group 'HumanEval (0-shot) |') -> see the brief
+(936) R0621 condition K127.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(937) R0621 row_group K128.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(938) R0621 condition K128.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(939) R0621 row_group K128.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(940) R0621 condition K128.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(941) R0621 row_group K128.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(942) R0621 condition K128.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(943) R0621 row_group K128.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(944) R0621 condition K128.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(945) R0621 row_group K128.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(946) R0621 condition K128.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(947) R0621 row_group K129.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(948) R0621 condition K129.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(949) R0621 row_group K129.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(950) R0621 condition K129.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(951) R0621 row_group K129.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(952) R0621 condition K129.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(953) R0621 row_group K129.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(954) R0621 condition K129.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(955) R0621 row_group K129.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(956) R0621 condition K129.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(957) R0621 row_group K130.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(958) R0621 condition K130.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(959) R0621 row_group K130.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(960) R0621 condition K130.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(961) R0621 row_group K130.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(962) R0621 condition K130.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(963) R0621 row_group K130.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(964) R0621 condition K130.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(965) R0621 row_group K130.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(966) R0621 condition K130.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(967) R0621 row_group K131.A1: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(968) R0621 condition K131.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(969) R0621 row_group K131.A2: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(970) R0621 condition K131.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(971) R0621 row_group K131.A3: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(972) R0621 condition K131.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(973) R0621 row_group K131.A4: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(974) R0621 condition K131.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(975) R0621 row_group K131.A5: rowgroup_benchmark_mismatch (benchmark 'GSM8K (5-shot)', row group 'GSM8K (5-shot) |') -> see the brief
+(976) R0621 condition K131.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(977) R0621 row_group K132.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(978) R0621 condition K132.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(979) R0621 row_group K132.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(980) R0621 condition K132.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(981) R0621 row_group K132.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(982) R0621 condition K132.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(983) R0621 row_group K132.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(984) R0621 condition K132.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(985) R0621 row_group K132.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(986) R0621 condition K132.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(987) R0621 row_group K133.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(988) R0621 condition K133.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(989) R0621 row_group K133.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(990) R0621 condition K133.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(991) R0621 row_group K133.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(992) R0621 condition K133.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(993) R0621 row_group K133.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(994) R0621 condition K133.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(995) R0621 row_group K133.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(996) R0621 condition K133.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(997) R0621 row_group K134.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(998) R0621 condition K134.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(999) R0621 row_group K134.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1000) R0621 condition K134.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(1001) R0621 row_group K134.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1002) R0621 condition K134.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(1003) R0621 row_group K134.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1004) R0621 condition K134.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(1005) R0621 row_group K134.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1006) R0621 condition K134.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(1007) R0621 row_group K135.A1: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1008) R0621 condition K135.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(1009) R0621 row_group K135.A2: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1010) R0621 condition K135.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(1011) R0621 row_group K135.A3: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1012) R0621 condition K135.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(1013) R0621 row_group K135.A4: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1014) R0621 condition K135.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(1015) R0621 row_group K135.A5: rowgroup_benchmark_mismatch (benchmark 'MBPP (3-shot)', row group 'MBPP (3-shot) |') -> see the brief
+(1016) R0621 condition K135.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(1017) R0621 row_group K136.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1018) R0621 condition K136.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(1019) R0621 row_group K136.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1020) R0621 condition K136.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(1021) R0621 row_group K136.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1022) R0621 condition K136.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(1023) R0621 row_group K136.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1024) R0621 condition K136.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(1025) R0621 row_group K136.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1026) R0621 condition K136.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(1027) R0621 row_group K137.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1028) R0621 condition K137.A1: condition_mismatch ('256' against '256 |') -> see the brief
+(1029) R0621 row_group K137.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1030) R0621 condition K137.A2: condition_mismatch ('256' against '256 |') -> see the brief
+(1031) R0621 row_group K137.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1032) R0621 condition K137.A3: condition_mismatch ('256' against '256 |') -> see the brief
+(1033) R0621 row_group K137.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1034) R0621 condition K137.A4: condition_mismatch ('256' against '256 |') -> see the brief
+(1035) R0621 row_group K137.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1036) R0621 condition K137.A5: condition_mismatch ('256' against '256 |') -> see the brief
+(1037) R0621 row_group K138.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1038) R0621 condition K138.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(1039) R0621 row_group K138.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1040) R0621 condition K138.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(1041) R0621 row_group K138.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1042) R0621 condition K138.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(1043) R0621 row_group K138.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1044) R0621 condition K138.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(1045) R0621 row_group K138.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1046) R0621 condition K138.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(1047) R0621 row_group K139.A1: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1048) R0621 condition K139.A1: condition_mismatch ('512' against '512 |') -> see the brief
+(1049) R0621 row_group K139.A2: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1050) R0621 condition K139.A2: condition_mismatch ('512' against '512 |') -> see the brief
+(1051) R0621 row_group K139.A3: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1052) R0621 condition K139.A3: condition_mismatch ('512' against '512 |') -> see the brief
+(1053) R0621 row_group K139.A4: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1054) R0621 condition K139.A4: condition_mismatch ('512' against '512 |') -> see the brief
+(1055) R0621 row_group K139.A5: rowgroup_benchmark_mismatch (benchmark 'MATH (4-shot)', row group 'MATH (4-shot) |') -> see the brief
+(1056) R0621 condition K139.A5: condition_mismatch ('512' against '512 |') -> see the brief
+(1057) R0621 s14_row S14.own_row: s14_row_not_found ('Ours' not at a row start on page 1) -> give the row label exactly as it starts the printed row on that page, or fix the page
+(1058) R0621 s14_row S14.baseline_row: s14_row_not_found ('LLaDA-1.5' not at a row start on page 1) -> give the row label exactly as it starts the printed row on that page, or fix the page
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
