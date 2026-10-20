@@ -1,0 +1,21 @@
+{"id": "M08457", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2", "loc": "p.5, §III.E", "status": "negation_before"}
+{"id": "M08457", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 1 (diffusion output is trajectory)", "loc": "p.2, §III.A", "status": "found"}
+{"id": "M08457", "screener": "FA-claude-sonnet-5-5", "i": 2, "cond": "R9 step 1 (LM writes text)", "loc": "p.3, §III.C", "status": "found"}
+{"id": "M06936", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "X0 own method has no diffusion component", "loc": "p.2, §1", "status": "found"}
+{"id": "M06936", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "X0 AR training, diffusion only as baseline category", "loc": "p.3, §3.1", "status": "found"}
+{"id": "M06400", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion component in system", "loc": "p.7, §4.3", "status": "found"}
+{"id": "M06400", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 (text reaches diffusion via TTS)", "loc": "p.7, §4.3", "status": "found"}
+{"id": "M11407", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "R2 main body not in English", "loc": "p.1, §Постановка проблеми", "status": "found"}
+{"id": "M04237", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion component", "loc": "p.3, §3.1", "status": "found"}
+{"id": "M04237", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 text conditions diffusion", "loc": "p.2, §3", "status": "found"}
+{"id": "M07613", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion sampler of own method", "loc": "p.8, §3.4", "status": "found"}
+{"id": "M07613", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 text conditions diffusion; GPT-4o in system", "loc": "p.6, Fig. 2 caption", "status": "found"}
+{"id": "M09819", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion component", "loc": "p.3, §1", "status": "found"}
+{"id": "M09819", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 text conditions diffusion", "loc": "p.8, §3.3", "status": "found"}
+{"id": "M06030", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 diffusion component fine-tuned", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M06030", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 text conditions diffusion", "loc": "p.6, §5.1", "status": "found"}
+{"id": "M06030", "screener": "FA-claude-sonnet-5-5", "i": 2, "cond": "R10 b3 fails: pipeline of separate models, MLLM plans storyboard", "loc": "p.3, §4", "status": "found"}
+{"id": "M08778", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 trained score model in own method", "loc": "p.22, §F.3", "status": "found"}
+{"id": "M08778", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R8 no text result; data are manifolds and MNIST images", "loc": "p.8, §6.2", "status": "found"}
+{"id": "M11163", "screener": "FA-claude-sonnet-5-5", "i": 0, "cond": "D2 flow-matching diffusion component", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M11163", "screener": "FA-claude-sonnet-5-5", "i": 1, "cond": "R9 step 2 text conditions diffusion", "loc": "p.5, §4.1", "status": "found"}
