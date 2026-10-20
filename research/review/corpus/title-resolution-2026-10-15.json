@@ -59,10 +59,10 @@
     "datacite-arxiv-title": 11,
     "semantic-scholar-batch": 1
   },
-  "unresolved_lookup_incomplete": 173,
-  "unresolvable": 990,
+  "unresolved_lookup_incomplete": 155,
+  "unresolvable": 1008,
   "unresolvable_by_reason": {
-    "no title-agreeing record in Semantic Scholar, OpenAlex (quota exhausted) or arXiv": 203,
+    "no title-agreeing record in Semantic Scholar, OpenAlex (quota exhausted) or arXiv": 221,
     "no title-agreeing record in DataCite (arXiv) or Crossref; Semantic Scholar/arXiv API not queried (no reference-list marker, see random check)": 585,
     "not a bibliographic title (fewer than 2 or more than 40 words, equations, prose or symbols)": 202
   },
@@ -79,13 +79,12 @@
     "population": 2107
   },
   "lookup_calls_this_run": {
-    "openalex:400": 6,
-    "s2match:404": 103,
-    "openalex:200": 99,
-    "s2match:200": 18,
-    "s2match:None": 45,
-    "arxivti:200": 118,
-    "openalex:429": 1,
+    "openalex:400": 9,
+    "s2match:404": 14,
+    "s2match:200": 4,
+    "s2match:None": 8,
+    "openalex:200": 100,
+    "openalex:429": 2,
     "arxivti:None": 4
   },
   "openalex": "free budget exhausted on 2026-10-15 (HTTP 429, X-RateLimit-Remaining 0, reset at midnight UTC) apart from a few early answers (3 resolutions)",
@@ -100,5 +99,5 @@
   "queue_file": "research/review/screening/v2/title-resolved-queue.jsonl",
   "records_file": "research/review/corpus/title-resolution-records-2026-10-15.jsonl",
   "queue_sha256": "57d8c06afe420305885ed7856f9aaef9dc40578dd3014f0399ad819e9dda0b44",
-  "elapsed_seconds": 4313
+  "elapsed_seconds": 1060
 }
