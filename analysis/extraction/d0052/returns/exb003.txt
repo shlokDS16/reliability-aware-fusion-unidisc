@@ -1,0 +1,42 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M16729 schema $.claims.list[1]: schema_error (missing required 'h_units') -> the record does not match the schema; fix the named field
+(2) M16729 table T01: map_not_in_header (parts not in header: Acc.; R PPL; Acc.; R PPL) -> the column map names parts that are not in the printed header; use the header text as printed
+(3) M16729 table T03: map_not_in_header (parts not in header: Joint success; R PPL; Joint success; R PPL) -> the column map names parts that are not in the printed header; use the header text as printed
+(4) M16729 table T07: map_not_in_header (parts not in header: Acc.; R PPL; Acc.; R PPL) -> the column map names parts that are not in the printed header; use the header text as printed
+(5) M16729 table T09: map_not_in_header (parts not in header: Joint success; R PPL; Joint success; R PPL) -> the column map names parts that are not in the printed header; use the header text as printed
+(6) M16729 row C01: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(7) M16729 row C02: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(8) M16729 row C03: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(9) M16729 row C04: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(10) M16729 row C05: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(11) M16729 row C10: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(12) M16729 row C11: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(13) M16729 row C12: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(14) M16729 row C13: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(15) M16729 row C14: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(16) M16729 row C26: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(17) M16729 row C27: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(18) M16729 row C28: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(19) M16729 row C29: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(20) M16729 row C30: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(21) M16729 row C36: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(22) M16729 row C37: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(23) M16729 row C38: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(24) M16729 row C39: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(25) M16729 row C40: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(26) M16729 prose_quote E21: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(27) M16729 prose_quote E22: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(28) M13234 schema $.claims.list[1]: schema_error (missing required 'h_units') -> the record does not match the schema; fix the named field
+(29) M13234 table T01: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(30) M13234 table T02: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(31) M13234 table T03: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(32) M13234 table T04: caption_not_found (not on pages [3, 4, 5]) -> the caption is not on the stated page or the two next to it; check the page and the caption text
+(33) M13234 table T05: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(34) M13234 prose_quote E03: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(35) M13234 prose_quote E06: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(36) M13234 prose_quote E14: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(37) M13234 prose_quote E15: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(38) M13234 prose_quote E20: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
