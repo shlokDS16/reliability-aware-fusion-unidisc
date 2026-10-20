@@ -1,6 +1,27 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 28 (2026-10-20 ~22:30 IST; newest; session 0839c9f4 continues, context 73 percent, will auto-compact).**
+  **User decisions this evening (own words, this session):** D0053 launch >= 4.0 GB RAM; D0054 seed stratum (80 =
+  60 update positions 1-20 + 20 seed from census eligible, seed-sample.json); D0055 P2 ok + 3 authors (Shlok Goenka,
+  Subramaniyaswamy Vairavasundaram, Balaji G N; SCSE VIT 632014); D0056 model reads/author confirms; D0057 up to 3
+  agents, none below 3 GB free; D0058 Job A (M13184/M15873/M17195 X1, R0308 X2); D0059 Job B (9 D0039 fields; M18059
+  nonlang -> leaves the sampled frame). Downloads now allowed by the user for what serves the result (planned: QA1
+  dated link check after extraction); screening stays frozen. Still open with the user: ORCIDs, corresponding
+  author, GitHub/Zenodo go-ahead (research/RELEASE-GUIDE-paper1.md). No launches 23:50-00:10 (hotspot switch;
+  CNP session local_ebaf6b57 coordinates RAM/GPU with us).
+  **Extraction loop:** batches in analysis/extraction/d0052/batches (exb001-exb033 update phase 1; exc001-exc011
+  seed, built with --texts research/sources/md/census-text-paged and an --ft provenance string; exc003 rerun as
+  exc003r). Filed: exb001-exb013, exc001-exc004 (+exc003r). Running at 22:30: exb014 (a548b33bdd68ce02b), exc006
+  (aa23b043e38e424fe), exc005 return (a080ca3a5530b6134). Agent ids and folders: analysis/extraction/d0052/agent-map.txt.
+  Per session: `bash analysis/extraction/d0052/after.sh <batch>` -> send the summarised returns/<batch>.txt once via
+  SendMessage to the agent id -> `after.sh <batch> 2`. Use the latest EA prompt text (agent-map notes list the
+  added sentences). Analysis: `python -I analysis/extraction/d0052/rq_analysis.py` (census replication, QA8, RQ2-RQ6).
+  **Codex** debate research/debates/2026-10-20-2026-10-20-paper1-significance: anchor = census (now replicated on the
+  sample) + comparison audit; sensitivity without seed and without validator-rejected records. **Next after
+  extraction:** second reader EB on the 8 ids (seed-sample.json second_reader_ids) + EC adjudication; QA1 link check;
+  Section 5 RQ2-RQ6 + appraisal table (S6); abstract, intro, conclusion; gate-auditor, citation-validator, red-team,
+  research-humanizer; page cuts to 35; PDF. Shared notes: side-session-notes/.../0839c9f4-paper1-build-status.md.
 - **HANDOFF 27 (2026-10-20 ~19:00 IST; newest; manuscript session 0839c9f4, scratchpad
   .../0839c9f4-4e83-4067-9eb8-6394e5c875ef/scratchpad; subagents dir .../0839c9f4-.../subagents).** Paper 1
   build under D0051. **Done:** D0052 (extraction sample: draw_pilot stage-a + gate, option (b) frames = (d) frames,
