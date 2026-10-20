@@ -317,6 +317,20 @@ R["RQ1"] = {
     "credited_type": dist(lambda r: g(r, "study", "credited_component", "type"), ["model-or-architecture", "objective-or-loss", "training-recipe", "sampler-or-decoding", "caching-or-system", "guidance-or-constraint", "other"]),
     "F2_value_rule_stated": est(lambda r: None if g(r, "census", "F2_codes") in (None, "", "NA") else not (str(g(r, "census", "F2_codes")) == "NS" or str(g(r, "census", "F2_codes")).endswith("+NS"))),
 }
+# Census replication (C2 on an independent sample): 'non-plain or unstated' = any F2 code other than plain 'U'
+# (census definition, sections/06-census.tex); domain = records with a codable value rule (F2 not empty or NA).
+def nonplain(r):
+    f2 = str(g(r, "census", "F2_codes") or "").strip()
+    if f2 in ("", "NA", "None"):
+        return None
+    return f2 != "U"
+
+
+R["census_replication"] = {"all": est(nonplain), "update_strata": est_in(nonplain, UPD),
+                           "seed_stratum": est_in(nonplain, ("S-seed",)),
+                           "F2_codes": Counter(str(g(r, "census", "F2_codes")) for r in recs.values())}
+R["claims_vs_tables_QA8"] = {"any_contradicted_or_unsupported": est(lambda r: None if not [c for c in (g(r, "claims", "list") or []) if c.get("status") not in (None, "not-checkable")] else any(c.get("status") in ("unsupported", "contradicted") for c in g(r, "claims", "list"))),
+                             "update_strata": est_in(lambda r: None if not [c for c in (g(r, "claims", "list") or []) if c.get("status") not in (None, "not-checkable")] else any(c.get("status") in ("unsupported", "contradicted") for c in g(r, "claims", "list")), UPD)}
 ar = lambda r: groups(r, pred=ar_group)
 R["RQ2"] = {
     "has_ar_group": est(lambda r: bool(ar(r))),
