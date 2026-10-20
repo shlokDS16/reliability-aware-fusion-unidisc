@@ -78,8 +78,7 @@ def main(limit=None):
         except Exception as e:
             print("openalex batch failed", repr(e)[:120])
             with LOG.open("a", encoding="utf-8") as fh:
-                fh.write(json.dumps({"id": None, "status": "openalex_batch_failed", "error": repr(e)[:120], "dois": len(ch)}) + "
-")
+                fh.write(json.dumps({"id": None, "status": "openalex_batch_failed", "error": repr(e)[:120], "dois": len(ch)}) + "\n")
             continue
         for w in res["results"]:
             oa[(w.get("doi") or "").lower().replace("https://doi.org/", "")] = from_inverted(w.get("abstract_inverted_index"))
