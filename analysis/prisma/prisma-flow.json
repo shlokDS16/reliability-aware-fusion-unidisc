@@ -257,10 +257,68 @@
   ],
   "status": "T1 screened so far (interim; gate re-audit 2 PASS WITH CORRECTIONS): model screening (A, B, C route F); A-B agreement only (D0034); T1 screened so far (interim): part 19 screened; 3 awaiting the second screener (D0041); 18 unscreened sampled records moved to R797 (D0035); records awaiting retrieval not yet screened; before the human author review (protocol s4 step 4); not final"
  },
+ "full_text_R797": {
+  "frame": 715,
+  "frame_check": 715,
+  "screened_decided": 284,
+  "include": 7,
+  "exclude": 277,
+  "exclude_codes": {
+   "X0": 78,
+   "X2": 116,
+   "X1": 69,
+   "X3": 5,
+   "X4": 2,
+   "X8": 7
+  },
+  "include_i1": {
+   "a": 4,
+   "b": 3
+  },
+  "adjudicated_by_C": 15,
+  "awaiting_C": [],
+  "awaiting_second_screener_B_unavailable": [
+   "R0308"
+  ],
+  "agreement_n": 284,
+  "agreement_pass_exclude_kappa": 0.6023,
+  "agreement_pass_exclude_kappa_ci95": [
+   0.3616,
+   0.7928
+  ],
+  "agreement_pass_exclude_raw": 0.9613,
+  "agreement_pass_exclude_ac1": 0.9571,
+  "identified_not_screened_D0051": 430,
+  "identified_not_screened_by_status": {
+   "open_access_not_retrieved_not_pdf": 47,
+   "retrieved_not_screened": 216,
+   "e_gateway_not_retrieved": 123,
+   "open_access_not_retrieved_error": 41,
+   "no_identifier": 2,
+   "open_access_not_retrieved_wrong_pdf": 1
+  },
+  "status": "frozen by D0051 (2026-10-20): batches filed by the freeze; INTERIM: screened so far; A-B rows, C rulings filed so far; before the tranche gate audit and the human author review (protocol s4 step 4); not final"
+ },
+ "not_screened_D0051": {
+  "seed_tranche_S1243_D0037": {
+   "frame": 1242,
+   "full_text_screened": 0,
+   "pdfs_downloaded_before_freeze": 276
+  },
+  "R797_remainder": 430,
+  "free_source_rescue_positives_D0036": {
+   "positives": 348,
+   "dual_ta_screened": 131,
+   "dual_ta_pass": 42,
+   "pass_full_text_screened": 0,
+   "held_without_abstract_not_screened": 217
+  },
+  "note": "reported in the PRISMA flow as identified but not screened (time and resource limit), with a limitation paragraph; the re-check reversal rule (criteria v1.6 s5.2, K = 4) is reported as triggered and only partly executed (D0051)"
+ },
  "open": [
-  "Free-source rescue pass: 348 positives (include or unclear) of 4421 were neither dual-screened nor routed to full text (0 in the dual batches, 0 in ft-routes); D0029 sends them to the dual queue, D0030 says they pass to full text. Resolved by D0036 (2026-10-20): dual title/abstract screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Not yet run.",
-  "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 838, 'R': 17, 'U': 27}). D0037 (2026-10-20): full-text screening under criteria v1.6 as a further tranche (own routes, own 15 percent human-validation draw). Not yet run.",
-  "Re-check tranche (criteria v1.6 A s5.2, K = 4): D0035 (2026-10-20) sends all 797 frame candidates to full text as a further tranche (own 15 percent human-validation draw). Not yet run.",
+  "Free-source rescue pass: 348 positives (include or unclear) of 4421 were neither dual-screened nor routed to full text (0 in the dual batches, 0 in ft-routes); D0029 sends them to the dual queue, D0030 says they pass to full text. Resolved by D0036 (2026-10-20): dual title/abstract screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Partly run (131 with an abstract dual-screened), then stopped by D0051: see not_screened_D0051.",
+  "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 838, 'R': 17, 'U': 27}). D0037 (2026-10-20): full-text screening under criteria v1.6 as a further tranche (own routes, own 15 percent human-validation draw). Not screened: stopped by D0051 (identified but not screened).",
+  "Re-check tranche (criteria v1.6 A s5.2, K = 4): D0035 (2026-10-20) sends all 797 frame candidates to full text as a further tranche (own 15 percent human-validation draw). Partly run, frozen by D0051: see full_text_R797.",
   "Awaiting a second screener (Screener B unavailable, safety-classifier stop): ['M13184', 'M15873', 'M17195']; D0041 (2026-10-20): the human author screens them as second screener (human-p4 sheet); agreement statistics exclude them.",
   "Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): 54 (bot walls, bot-check landing pages, dead links); need the user's Chrome or the e-gateway.",
   "6 subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",

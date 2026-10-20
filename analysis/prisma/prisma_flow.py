@@ -1,4 +1,5 @@
-"""PRISMA 2020 flow counts for Paper 1, every number read from files (status 2026-10-20: T1 incl. part 19
+"""PRISMA 2020 flow counts for Paper 1, every number read from files (2026-10-20 evening: R797 frozen by D0051 added;
+earlier status: T1 incl. part 19
 screened, re-check K from analysis/screening/ta-recheck-k.json; before the manual e-gateway papers and the
 797-candidate re-check tranche).
 
@@ -198,18 +199,64 @@ F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_reco
                      "status": "T1 screened so far (interim; gate re-audit 2 PASS WITH CORRECTIONS): " + s["status"]}
 assert F["full_text_T1"]["screened"] == s["n"] == s["decision"]["include"] + s["decision"]["exclude"]
 
+# ---------------------------------------------------------------- re-check tranche R797 (D0035), frozen by D0051
+# D0051 (2026-10-20): screening frozen; the R797 batches filed by the freeze are screened, the rest of the frame,
+# the seed tranche S1243 (D0037) and the free-source rescue positives (D0036) are identified but not screened.
+rs = jload(SCR / "ft-r797/r797-summary-all.json")
+ra = jload(SCR / "agreement-ft-r797.json")
+r797_dec = {r["id"]: r for r in jl(SCR / "ft-r797/r797-decisions-all.jsonl")}
+r797_routes = {r["id"]: r for r in jl(SCR / "ft-routes-recheck797.jsonl")}
+r797_pend = set(rs["pending_B_unavailable"])
+r797_await = set(rs["awaiting_C"])
+r797_rem = collections.Counter()
+for i in r797 - set(r797_dec) - r797_pend - r797_await:
+    rt = (r797_routes.get(i) or {}).get("route_type", "no_route_row")
+    r797_rem["retrieved_not_screened" if i in got else
+              "e_gateway_not_retrieved" if rt == "e-gateway" else
+              "no_identifier" if rt == "no_identifier" else f"open_access_not_retrieved_{fetch.get(i, 'not_fetched')}"] += 1
+F["full_text_R797"] = {"frame": len(r797), "frame_check": rs["frame"], "screened_decided": len(r797_dec),
+                       "include": rs["decision"].get("include", 0), "exclude": rs["decision"].get("exclude", 0),
+                       "exclude_codes": rs["exclude_codes"], "include_i1": rs["include_i1"],
+                       "adjudicated_by_C": rs["C_rulings_used"], "awaiting_C": sorted(r797_await),
+                       "awaiting_second_screener_B_unavailable": sorted(r797_pend),
+                       "agreement_n": ra["pass_vs_exclude"]["n"],
+                       "agreement_pass_exclude_kappa": ra["pass_vs_exclude"]["kappa"],
+                       "agreement_pass_exclude_kappa_ci95": ra["pass_vs_exclude"]["kappa_ci95"],
+                       "agreement_pass_exclude_raw": ra["pass_vs_exclude"]["raw_agreement"],
+                       "agreement_pass_exclude_ac1": ra["pass_vs_exclude"]["ac1"],
+                       "identified_not_screened_D0051": sum(r797_rem.values()),
+                       "identified_not_screened_by_status": dict(r797_rem),
+                       "status": "frozen by D0051 (2026-10-20): batches filed by the freeze; " + rs["status"]}
+assert len(r797_dec) + len(r797_pend) + len(r797_await) + sum(r797_rem.values()) == len(r797)
+s1243 = set((SCR / "s1243-tranche-ids.txt").read_text(encoding="utf-8").split())
+rf_pass = jl(REV / "screening/v2/dual-rescue-free/passed-ta-rf.jsonl")
+rf_noabs = jl(REV / "screening/v2/dual-rescue-free/pending-no-abstract-rf.jsonl")
+rf_dual = {r["id"] for p in sorted((REV / "screening/v2/dual-rescue-free").glob("screener-A-batch-rf-*.jsonl")) for r in jl(p)}
+F["not_screened_D0051"] = {
+    "seed_tranche_S1243_D0037": {"frame": len(s1243), "full_text_screened": 0,
+                                 "pdfs_downloaded_before_freeze": sum(1 for i in s1243 if fetch.get(i) == "ok")},
+    "R797_remainder": sum(r797_rem.values()),
+    "free_source_rescue_positives_D0036": {"positives": len(r2_pos), "dual_ta_screened": len(rf_dual),
+                                           "dual_ta_pass": len(rf_pass), "pass_full_text_screened": 0,
+                                           "held_without_abstract_not_screened": len(rf_noabs)},
+    "note": "reported in the PRISMA flow as identified but not screened (time and resource limit), with a limitation "
+            "paragraph; the re-check reversal rule (criteria v1.6 s5.2, K = 4) is reported as triggered and only partly "
+            "executed (D0051)"}
+
 tq = {r["id"] for r in jl(REV / "screening/v2/title-resolved-queue.jsonl")}
 t1_prefix = collections.Counter(i[0] for i in t1)
 F["open"] = [
     f"Free-source rescue pass: {len(r2_pos)} positives (include or unclear) of {len(R2)} were neither dual-screened nor "
     f"routed to full text ({len(r2_pos & set(A2))} in the dual batches, {len(r2_pos & set(ft))} in ft-routes); D0029 sends "
     "them to the dual queue, D0030 says they pass to full text. Resolved by D0036 (2026-10-20): dual title/abstract "
-    "screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Not yet run.",
+    "screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Partly run (131 with an abstract "
+    "dual-screened), then stopped by D0051: see not_screened_D0051.",
     f"Seed corpus: {len(v1_either)} of {len(v1)} records passed title/abstract (either screener; {len(v1_both)} both); "
     f"{sum(1 for s_ in v1_either if s_ in t1)} are in T1 (T1 ids by prefix: {dict(t1_prefix)}). D0037 (2026-10-20): "
-    "full-text screening under criteria v1.6 as a further tranche (own routes, own 15 percent human-validation draw). Not yet run.",
+    "full-text screening under criteria v1.6 as a further tranche (own routes, own 15 percent human-validation draw). "
+    "Not screened: stopped by D0051 (identified but not screened).",
     f"Re-check tranche (criteria v1.6 A s5.2, K = 4): D0035 (2026-10-20) sends all {F['recheck']['frame']} frame candidates "
-    "to full text as a further tranche (own 15 percent human-validation draw). Not yet run.",
+    "to full text as a further tranche (own 15 percent human-validation draw). Partly run, frozen by D0051: see full_text_R797.",
     f"Awaiting a second screener (Screener B unavailable, safety-classifier stop): {sorted(pend)}; D0041 (2026-10-20): the "
     "human author screens them as second screener (human-p4 sheet); agreement statistics exclude them.",
     f"Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): "

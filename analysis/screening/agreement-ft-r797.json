@@ -2,12 +2,14 @@
  "scope": "r797 full-text, screeners A vs B before adjudication (criteria v1.6 A s4 item 3); INTERIM",
  "files": "analysis/screening/ft-r797/r797b*/F{A,B}-r797b*.jsonl; DISCARDED files, superseded rows and B-unavailable records excluded",
  "rows": {
-  "A": 269,
-  "B": 269,
-  "both": 269,
+  "A": 284,
+  "B": 284,
+  "both": 284,
   "A_only_ids": [],
   "B_only_ids": [],
-  "pending_B_unavailable": []
+  "pending_B_unavailable": [
+   "R0308"
+  ]
  },
  "bootstrap": {
   "B": 2000,
@@ -15,120 +17,122 @@
   "type": "percentile"
  },
  "pass_vs_exclude": {
-  "n": 269,
-  "raw_agreement": 0.9591,
-  "kappa": 0.6013,
+  "n": 284,
+  "raw_agreement": 0.9613,
+  "kappa": 0.6023,
   "kappa_ci95": [
-   0.3606,
-   0.7907
+   0.3616,
+   0.7928
   ],
-  "ac1": 0.9545,
+  "ac1": 0.9571,
   "both_pos": 9,
-  "both_neg": 249,
+  "both_neg": 264,
   "A_only_pos": 10,
   "B_only_pos": 1,
   "p_pos": 0.6207,
-  "p_neg": 0.9784,
-  "bias_index": 0.0335,
-  "prevalence_index": 0.8922,
+  "p_neg": 0.9796,
+  "bias_index": 0.0317,
+  "prevalence_index": 0.8979,
   "note": "pass = include or adjudicate (D0030); positive = pass"
  },
  "include_vs_not": {
-  "n": 269,
-  "raw_agreement": 0.9963,
-  "kappa": 0.9072,
+  "n": 284,
+  "raw_agreement": 0.9965,
+  "kappa": 0.9073,
   "kappa_ci95": [
-   0.5937,
+   0.6619,
    1.0
   ],
-  "ac1": 0.9961,
+  "ac1": 0.9963,
   "both_pos": 5,
-  "both_neg": 263,
+  "both_neg": 278,
   "A_only_pos": 0,
   "B_only_pos": 1,
   "p_pos": 0.9091,
-  "p_neg": 0.9981,
-  "bias_index": 0.0037,
-  "prevalence_index": 0.9591,
+  "p_neg": 0.9982,
+  "bias_index": 0.0035,
+  "prevalence_index": 0.9613,
   "note": "sensitivity: adjudicate counted with exclude; positive = include"
  },
  "three_way": {
-  "n": 269,
-  "raw_agreement": 0.9554,
-  "kappa": 0.571,
+  "n": 284,
+  "raw_agreement": 0.9577,
+  "kappa": 0.5719,
   "kappa_ci95": [
-   0.3247,
-   0.7598
+   0.3356,
+   0.7647
   ],
-  "ac1": 0.953,
+  "ac1": 0.9556,
   "table_A_by_B": {
    "adjudicate|adjudicate": 3,
    "adjudicate|exclude": 10,
    "adjudicate|include": 1,
    "exclude|adjudicate": 1,
-   "exclude|exclude": 249,
+   "exclude|exclude": 264,
    "include|include": 5
   }
  },
  "per_screener": {
   "A": {
    "decisions": {
-    "exclude": 250,
+    "exclude": 265,
     "adjudicate": 14,
     "include": 5
    },
-   "adjudicate_rate": 0.052,
+   "adjudicate_rate": 0.0493,
    "exclude_codes": {
-    "X0": 71,
-    "X2": 105,
-    "X1": 61,
+    "X0": 76,
+    "X2": 109,
+    "X1": 66,
     "X3": 5,
     "X4": 2,
-    "X8": 6
+    "X8": 7
    }
   },
   "B": {
    "decisions": {
-    "exclude": 259,
+    "exclude": 274,
     "include": 6,
     "adjudicate": 4
    },
-   "adjudicate_rate": 0.0149,
+   "adjudicate_rate": 0.0141,
    "exclude_codes": {
-    "X0": 70,
-    "X2": 110,
-    "X1": 66,
+    "X0": 75,
+    "X2": 114,
+    "X1": 71,
     "X3": 5,
     "X4": 2,
-    "X8": 6
+    "X8": 7
    }
   }
  },
  "sent_to_C": 15,
  "C_queue": {
-  "rows": 15,
-  "unique": 15,
+  "rows": 16,
+  "unique": 16,
   "disagreement_or_adjudicate": 15,
   "disagreement_or_adjudicate_not_queued": [],
-  "queued_for_quote_check_only": 0,
-  "quote_only_reasons": {}
+  "queued_for_quote_check_only": 1,
+  "quote_only_reasons": {
+   "quote_not_accepted_after_return": 1
+  }
  },
  "codes_on_joint_exclusions": {
-  "n": 249,
-  "same_code": 246,
-  "kappa": 0.9824,
-  "ac1": 0.986,
+  "n": 264,
+  "same_code": 261,
+  "kappa": 0.9834,
+  "ac1": 0.9868,
   "table_A_by_B": {
-   "X0|X0": 69,
+   "X0|X0": 74,
    "X0|X2": 1,
-   "X1|X1": 61,
+   "X1|X1": 66,
    "X2|X1": 2,
-   "X2|X2": 103,
+   "X2|X2": 107,
    "X3|X3": 5,
    "X4|X4": 2,
-   "X8|X8": 6
+   "X8|X8": 7
   },
-  "same_code_and_xsub": 236
+  "same_code_and_xsub": 249
  },
  "joint_inclusions": {
   "n": 5,
@@ -184,91 +188,91 @@
     "cited_B": 6,
     "cited_both": 5,
     "p_pos": 0.8333,
-    "kappa": 0.8295
+    "kappa": 0.8297
    },
    "R10": {
-    "cited_A": 70,
-    "cited_B": 94,
-    "cited_both": 59,
-    "p_pos": 0.7195,
-    "kappa": 0.6003
+    "cited_A": 73,
+    "cited_B": 97,
+    "cited_both": 61,
+    "p_pos": 0.7176,
+    "kappa": 0.6004
    },
    "R11": {
     "cited_A": 26,
-    "cited_B": 21,
+    "cited_B": 23,
     "cited_both": 14,
-    "p_pos": 0.5957,
-    "kappa": 0.5575
+    "p_pos": 0.5714,
+    "kappa": 0.5311
    },
    "R12": {
-    "cited_A": 17,
-    "cited_B": 23,
-    "cited_both": 16,
-    "p_pos": 0.8,
-    "kappa": 0.7843
+    "cited_A": 18,
+    "cited_B": 25,
+    "cited_both": 17,
+    "p_pos": 0.7907,
+    "kappa": 0.774
    },
    "R13": {
     "cited_A": 6,
     "cited_B": 5,
     "cited_both": 4,
     "p_pos": 0.7273,
-    "kappa": 0.7216
+    "kappa": 0.7219
    },
    "R14": {
     "cited_A": 1,
     "cited_B": 7,
     "cited_both": 1,
     "p_pos": 0.25,
-    "kappa": 0.2451
+    "kappa": 0.2453
    },
    "R2": {
-    "cited_A": 6,
-    "cited_B": 6,
-    "cited_both": 6,
+    "cited_A": 7,
+    "cited_B": 7,
+    "cited_both": 7,
     "p_pos": 1.0,
     "kappa": 1.0
    },
    "R4": {
-    "cited_A": 193,
-    "cited_B": 206,
-    "cited_both": 168,
-    "p_pos": 0.8421,
-    "kappa": 0.3907
+    "cited_A": 204,
+    "cited_B": 215,
+    "cited_both": 174,
+    "p_pos": 0.8305,
+    "kappa": 0.3553
    },
    "R5": {
     "cited_A": 6,
     "cited_B": 7,
     "cited_both": 6,
     "p_pos": 0.9231,
-    "kappa": 0.9212
+    "kappa": 0.9213
    },
    "R6": {
     "cited_A": 30,
-    "cited_B": 98,
+    "cited_B": 99,
     "cited_both": 20,
-    "p_pos": 0.3125,
-    "kappa": 0.1709
+    "p_pos": 0.3101,
+    "kappa": 0.1766
    },
    "R7": {
-    "cited_A": 28,
-    "cited_B": 39,
-    "cited_both": 24,
-    "p_pos": 0.7164,
-    "kappa": 0.6773
+    "cited_A": 32,
+    "cited_B": 41,
+    "cited_both": 26,
+    "p_pos": 0.7123,
+    "kappa": 0.6706
    },
    "R8": {
     "cited_A": 12,
-    "cited_B": 9,
+    "cited_B": 10,
     "cited_both": 7,
-    "p_pos": 0.6667,
-    "kappa": 0.6534
+    "p_pos": 0.6364,
+    "kappa": 0.6218
    },
    "R9": {
-    "cited_A": 176,
-    "cited_B": 177,
-    "cited_both": 175,
-    "p_pos": 0.9915,
-    "kappa": 0.9753
+    "cited_A": 185,
+    "cited_B": 186,
+    "cited_both": 184,
+    "p_pos": 0.9919,
+    "kappa": 0.9767
    }
   }
  }

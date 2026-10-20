@@ -1,6 +1,25 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 26 (2026-10-20 ~17:10 IST; newest; session 92c0b6b9): SCREENING FROZEN PER D0051.** The human author
+  (chat ~15:45 IST, relayed by session 9d5203d7, row D0051) stopped all further screening and downloads; a fresh session
+  writes the manuscript next. **Final screened set:** T1 882 decided (608 include, 274 exclude; 3 B-unavailable with the
+  human author: M13184, M15873, M17195), unchanged. **R797 (frozen at r797b001-r797b037):** 285 read by A and B; 284
+  decided, include 7, exclude 277 (X0 78, X1 69, X2 116, X3 5, X4 2, X8 7), 15 ruled by C (c-r797-01..05), none awaiting
+  C; R0308 B-unavailable -> human author (r797-pending-B.jsonl; B fell back to claude-opus-5 after a safety stop in 2 of 2
+  sessions, r797b036 and r797b069 alone; A: exclude X2 pipeline; no third session because of the freeze). A-B agreement
+  (n = 284, before adjudication): pass/exclude raw 0.961, kappa 0.602 [0.362, 0.793], AC1 0.957 (few passes, so kappa is
+  low against high raw agreement). **Identified but not screened (D0051):** R797 remainder 430 (216 retrieved, 123
+  e-gateway, 89 open-access not retrieved, 2 no identifier; part 3 plan r797b058-068 and part 4 r797b069 not run); S1243
+  1,242 (0 screened; download stopped at 276 of 1,219 PDFs, last R0375 16:57:16, resumable but not to be resumed);
+  free-source rescue positives 348 (131 dual-TA screened, 42 pass, none at full text; 217 without abstract held; D0044
+  abstract lookup not run). D0043 public versions, D0045 routes, D0047 paper versions (tool tools/find_paper_versions.py
+  written, not run): not run. Files: analysis/screening/ft-r797/r797-summary-all.json, r797-decisions-all.jsonl,
+  analysis/screening/agreement-ft-r797.json (new script analysis/screening/agreement_ft_tranche.py: skips superseded rows,
+  superseded C rulings, B-unavailable records, DISCARDED files), analysis/prisma/prisma-flow.{json,md} (new sections
+  full_text_R797 and not_screened_D0051; open notes updated). Fixes this session: ft_title_check reads verified notes for
+  no-route-row flags; cqueue skips superseded rows. r797b036 B (first run) discarded for model fallback; its first "filed"
+  commit 545c38d is not used. Weekly usage ~26 percent at 16:20. Nothing running.
 - **HANDOFF 25 (2026-10-20 ~15:00 IST; newest; execution session d7bb06 stopped at ~78 percent context to hand
   off; HANDOFF 22-24 describe the setup and tools).** **R797 (D0035):** batches r797b001-r797b034 filed (270
   records screened by A and B; every isolation and model check passed; bio batches had no B fallback; quote returns

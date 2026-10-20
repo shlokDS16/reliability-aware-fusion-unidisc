@@ -144,3 +144,12 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    decisions" (N1-N6 and item 12) and "Hands-on" (3 biology papers, extraction check OQ5-04, two blind validation
    sheets, three e-gateway checklists). Do the validation sheets before you look at any screener row of their tranche.
 27. T1 gate re-audit 2: PASS WITH CORRECTIONS for "T1 screened so far (interim)", 882 decided; fixes done.
+
+## Status 2026-10-20 ~17:30 IST (session 92c0b6b9; screening frozen by your D0051)
+28. **Screening is frozen (D0051).** The re-check tranche (R797) stopped at the batches already running; the seed-tranche
+    downloads were stopped (276 of 1,219 PDFs fetched, none screened). Final screening numbers: `research/progress.md`
+    HANDOFF 26 and `analysis/prisma/prisma-flow.md`. A fresh session writes the manuscript next.
+29. **One more record for you as second screener (D0041/D0046): R0308.** Screener B fell back to another model after a
+    safety stop in 2 of 2 sessions that read it (r797b036; r797b069 alone). Screener A excluded it (X2 pipeline). Add it
+    to your 3 biology papers (`research/review/screening/human-p4/human-p4-sheet.xlsx` holds those 3; R0308 is listed in
+    `analysis/screening/ft-r797/r797-pending-B.jsonl`). Text: `research/sources/md/fulltext-pymupdf/R0308.txt`.
