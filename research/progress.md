@@ -1,6 +1,28 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 25 (2026-10-20 ~15:00 IST; newest; execution session d7bb06 stopped at ~78 percent context to hand
+  off; HANDOFF 22-24 describe the setup and tools).** **R797 (D0035):** batches r797b001-r797b034 filed (270
+  records screened by A and B; every isolation and model check passed; bio batches had no B fallback; quote returns
+  all accepted). Includes so far (A=B or C): M00589, M02061 (C), R1391, R0908, R1396, R0542. C groups c-r797-01..03
+  filed (Fable, all checks pass). **Queued for C (not run):** M08792, M15920 (b032), M07991 (b033): run
+  `FT_TRANCHE=r797 python -I tools/ft-session/cqueue.py <worktree> <S> 4 04 1 34`, ft_dispatch --role C --batch
+  c-r797-04 --rows <S>/c-rows-4.jsonl, Fable prompt as in this session (agent-map), `tr.sh r797 cpost c-r797-04 <id>`.
+  **Next batches:** r797b035-r797b057 (part 2 plan; b035, b036, b039, b042, b049, b054, b057 are bio batches of 3;
+  build with `bash tools/ft-session/tr.sh r797 build r797bNNN`; the new session must edit S and P in
+  tools/ft-session/tr.sh and trqret.sh to its own scratchpad and subagent dir, rebuild folders (old ones live in
+  this session's scratchpad), and use the same screener prompts (agent-map history / this session's transcript).
+  Pipelining: A of batch k with B of batch k+1; at most 2 agents; launch only at >= 5 GB free RAM (other sessions
+  hold RAM near 4-6 GB; wait_ram.ps1); quote returns one at a time via SendMessage to the screener's agent id, then
+  `trqret.sh`. **Downloads:** OpenReview fetch at 57/58 (scratchpad r797-fetch2.log); then pdf_to_text,
+  ft_title_check (verify flags; held texts in analysis/screening/ft-r797/held-texts.jsonl), plan part 3
+  (`FT_DISPATCH_ROOT=<S> python -I tools/ft_plan_tranche.py r797 3 58 20261029`; it re-plans M19102 from
+  rescreen.jsonl and drops its superseded r797b020 rows when summaries are built). R797 summary/agreement script
+  not yet written (model on tools/ft-session/refresh_t1.py + analysis/screening/agreement_ft_t1.py; must skip
+  superseded-rows.jsonl). Then S1243 downloads (fetch_fulltext.py --routes analysis/screening/ft-routes-seed1243.jsonl
+  --types arxiv,acl,oa_url) and its screening; D0043 public versions (tools/fetch_public_versions.py run); D0044
+  abstract lookup after the OpenAlex reset (~05:30 IST); D0045 routes for passed-ta-rf.jsonl; D0047 paper versions
+  for 20 web-only seed records. Weekly usage 24 percent at 14:40.
 - **HANDOFF 24 (2026-10-20 ~14:15 IST; newest; HANDOFF 23 and 22 describe the setup).** User approved all
   recommendations at 12:40 -> **D0044-D0050** (N1 abstract lookup for the 217; N2 downloads for D0036 passes; N3
   D0041 note; N4 paper versions for 20 web-only seed records; N5 validation frame; item 12; Stage A S1-S24).
