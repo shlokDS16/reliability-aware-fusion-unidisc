@@ -229,7 +229,7 @@ yR7_end, r7_bottom = column(0, yT, r7s)
 # ---------------------------------------------------------------- included
 yInc = max(yT_end, yR7_end) + 10
 inc = [("Studies included in the review", B), (f"n = {f(n['included'])} (T1 {f(ft['include'])} + R797 {f(r7['include'])})", N_),
-       (f"extraction and appraisal on a stratified random sample of 81 (D0051, D0052)", N_)]
+       (f"extraction and appraisal on a stratified random sample of 80, with a seed stratum (D0052, D0054)", N_)]
 cv.line((COLS[0] + VX, r7_bottom), (COLS[0] + VX, yInc - 3))
 cv.line((xL + VX, t1_bottom), (xL + VX, yInc - 3))
 cv.line((COLS[0] + VX, yInc - 3), (xL + VX, yInc - 3))

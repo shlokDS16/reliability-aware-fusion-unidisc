@@ -6,7 +6,9 @@ Inputs: analysis/extraction/d0052/sample.json and gate-manifest.json (strata), s
 frame), batch-log.jsonl (usable sessions), the extractor records analysis/extraction/d0052/EA/<batch>/*.jsonl (the
 pass-2 file when a session was returned once, else pass 1), and for the second-reader ids the adjudicated records in
 analysis/extraction/d0052/EC/<batch>/*.jsonl when present (D0052: EC values are used for those ids).
-Stratum sizes N_h are the gate strata minus the stage-a ids, recomputed here from the T1 decisions and text sizes with
+D0054 design: update strata at positions 1-20 of each gate list and a seed stratum of 20 drawn from the census
+sample's eligible records (seed-sample.json), weight N = 1,106 x 167 / 172 (an estimate, not a count).
+Stratum sizes N_h of the update strata are the gate strata minus the stage-a ids, recomputed here from the T1 decisions and text sizes with
 the gate manifest's median (asserted against the manifest's stratum sizes before the exclusion).
 Output: analysis/extraction/d0052/rq-results.json and rq-results.md; per-study QA table qa-table.jsonl.
 
@@ -40,7 +42,9 @@ def jl(p):
 sample = json.load(open(D / "sample.json", encoding="utf-8"))
 gate = json.load(open(D / "gate-manifest.json", encoding="utf-8"))
 stage_a = set(json.load(open(D / "stage-a-manifest.json", encoding="utf-8"))["ids"])
-STRATA = sample["strata"]                       # {G-long: [...27], G-mm: [...], G-short: [...]}
+seed = json.load(open(D / "seed-sample.json", encoding="utf-8"))           # D0054: 80-record design
+STRATA = {h: v[:20] for h, v in sample["strata"].items()}                 # update strata, positions 1-20
+STRATA["S-seed"] = seed["seed_ids"]                                      # seed stratum (census eligible)
 of_id = {i: h for h, ids in STRATA.items() for i in ids}
 
 # ---------------------------------------------------------------- stratum sizes after the stage-a exclusion
@@ -55,8 +59,10 @@ long_ = [i for i in rc2 if size[i] > med]
 full = {"G-mm": mm, "G-short": short, "G-long": long_}
 for h, ids in full.items():
     assert len(ids) == gate["strata"][h]["size"], (h, len(ids), gate["strata"][h]["size"])
-    assert set(STRATA[h]) <= set(ids), h
+    assert set(sample["strata"][h]) <= set(ids), h
 N_h = {h: len(set(ids) - stage_a) for h, ids in full.items()}
+# seed stratum: estimated eligible seed records = pool x eligible / judged (census: 1,106 x 167 / 172)
+N_h["S-seed"] = seed["census_pool"] * seed["census_eligible"] / (seed["census_ranks"] - seed["census_no_text"])
 N = sum(N_h.values())
 
 # ---------------------------------------------------------------- records
@@ -79,7 +85,7 @@ for b, l in usable.items():
 ec_used = []
 for f in sorted((D / "EC").glob("*/*.jsonl")) if (D / "EC").exists() else []:
     for r in jl(f):
-        if r.get("id") in sample["second_reader_ids"]:
+        if r.get("id") in seed["second_reader_ids"]:
             recs[r["id"]] = r
             ec_used.append(r["id"])
 done = {h: [i for i in STRATA[h] if i in recs] for h in STRATA}
@@ -117,6 +123,19 @@ def est(pred):
     hw = z * math.sqrt(p * (1 - p) / neff + z * z / (4 * neff * neff)) / (1 + z * z / neff)
     return {"count": num, "of": den, "share": round(p, 3), "ci95": [round(max(0, c - hw), 3), round(min(1, c + hw), 3)],
             "by_stratum": {h: f"{sum(1 for i in done[h] if pred(recs[i]))}/{nn[h]}" for h in hs}}
+
+
+def est_in(pred, strata):
+    """est() over a subset of strata (strand-level estimates: update strata only, or the seed stratum only)."""
+    keep = done
+    globals()["done"] = {h: v for h, v in keep.items() if h in strata}
+    try:
+        return est(pred)
+    finally:
+        globals()["done"] = keep
+
+
+UPD = ("G-long", "G-mm", "G-short")
 
 
 def dist(field_fn, cats):
