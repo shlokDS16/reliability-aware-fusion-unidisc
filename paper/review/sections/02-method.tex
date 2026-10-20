@@ -89,7 +89,7 @@ Because most title-and-abstract exclusions in the update rested on one model, 79
 The remaining 715 formed tranche R797, screened as T1 until the freeze: 285 reports assessed, 284 decided, 7 included and 277 excluded; agreement before adjudication was $\kappa=0.602$ (0.362 to 0.793) with raw agreement 0.961 and Gwet's AC1 0.957, the low $\kappa$ reflecting how few records passed. % src: prisma-flow.json full_text_R797; analysis/screening/agreement-ft-r797.json (n 284)
 
 \paragraph{Human validation.}
-The protocol asks a human author to screen a random 15\% of each full-text tranche blind and requires each model screener to reach $\kappa\ge0.70$ against that author. For T1 the first author reviewed the 108-record sample without recording per-record decisions (decision D0034); the R797 sample of 108 was drawn before any download and was not screened before the freeze. No agreement with a human is therefore reported, and every screening statistic above is agreement between two models. % src: decisions D0034, D0035, D0048; screening/human-validation-t1/sample-manifest.json; human-validation-r797/sample-manifest.json
+The protocol asks a human author to screen a random 15\% of each full-text tranche blind and requires each model screener to reach $\kappa\ge0.70$ against that author. For T1 two of the authors read the 108-record sample without recording per-record decisions (decision D0034; authors' statement of 2026-10-20); the R797 sample of 108 was drawn before any download and was not screened before the freeze. No agreement with a human is therefore reported, and every screening statistic above is agreement between two models. % src: decisions D0034, D0035, D0048; screening/human-validation-t1/sample-manifest.json; human-validation-r797/sample-manifest.json
 
 
 \begin{figure}[p]
@@ -150,11 +150,11 @@ Design-space table, primers & Claude reading agents (Sonnet) & Evidence level pe
 Framework, derivations, exact-enumeration checks & Claude (method design), Claude red-team (Opus) & Scripts under \texttt{analysis/framework/} reproduce the checks; a red-team report led to withdrawing two proposed terms (decision D0011). \\ % src: framework-v2.md section A; decision D0011
 Measurement in Section~\ref{sec:exp003}: noun presence and image quality & Qwen3-VL-2B-Instruct; CLIP ViT-L/14 (\texttt{openai/\allowbreak clip-vit-\allowbreak large-\allowbreak patch14}) & Checker validated on guided text-to-image images (control PC-2 passed); the CLIP concordance check did not confirm the primary result; gate audit reproduced every number. \\ % src: runs/EXP-003/IMPLEMENTATION.md; research/review/audits/2026-10-15-gate-EXP-003.md
 Analysis scripts, figures, tables & Claude Code & Every number in the text carries a source path; gate audits reconcile them against the files. \\
-Drafting and editing of this manuscript & Claude (manuscript and clarity agents) & Source path for every empirical sentence; citation validation; adversarial review; read by both authors. \\
+Drafting and editing of this manuscript & Claude (manuscript and clarity agents) & Source path for every empirical sentence; citation validation; adversarial review; read by the authors. \\
 \bottomrule
 \end{tabular}
 \end{table*}
-\todo{state which human author checked what before submission (author task, evening page)}
+Human checks recorded: two of the authors read the T1 screening validation sample (Section~\ref{sec:method-screening}), and the first author screens the records that screener~B could not read (decision D0041). % src: decisions D0034, D0041; authors' statement, chat 2026-10-20
 
 \subsection{Departures from the protocol}
 \label{sec:method-deviations}
