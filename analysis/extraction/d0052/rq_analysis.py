@@ -16,8 +16,9 @@ Estimator: stratified proportion p = sum_h W_h p_h, W_h = N_h / N; variance sum_
 95 percent interval by the Wilson formula on the effective sample size p(1-p)/var (Korn-Graubard style; for p_h in
 {0, 1} the variance of that stratum uses p_h = 0.5/n_h to stay positive). Counts are unweighted numbers of studies.
 Nothing is imputed: a field a record leaves null or 'not_stated' is counted as not stated.
-QA scores follow EXTRACTION-PLAN-v0.2 s7.1 (low: unclear = no; high: unclear = yes). QA1 uses the text-only two-level
-rule because the dated link check (QA1 d) needs web access, which D0051 rules out: 2 if a and b; 1 if a or c; else 0.
+QA scores follow EXTRACTION-PLAN-v0.2 s7.1 (low: unclear = no; high: unclear = yes). QA1 uses the full rule with the
+dated link check d from qa1-links.jsonl (qa1_link_check.py) when that file exists: 2 if a and (b or d); 1 if a or c;
+else 0; without it, the text-only rule 2 if a and b; 1 if a or c; else 0.
 QA3 c (value rule determinable) is computed from census F2_codes (not NS, not NA, not ending '+NS').
 QA8 from the claim list statuses (s7.3): NA if no checkable claim; 2 if every checkable claim is match or direction;
 1 if at least one is and none contradicted; else 0. QA7 n is set by script when study_type is theory or benchmark or
@@ -172,6 +173,9 @@ def num(s):
 
 
 # ---------------------------------------------------------------- QA scoring (plan v0.2 s7.1)
+QA1D = {x["id"]: x["d"] for x in jl(D / "qa1-links.jsonl")} if (D / "qa1-links.jsonl").exists() else {}
+
+
 def yes(v, high):
     return v == "yes" or (high and v == "unclear")
 
@@ -181,7 +185,11 @@ def qa_scores(r, high):
     s = lambda k: (q.get(k) or {}).get("sub") or {}
     out = {}
     a = s("QA1")
-    out["QA1"] = 2 if yes(a.get("a"), high) and yes(a.get("b"), high) else 1 if yes(a.get("a"), high) or yes(a.get("c"), high) else 0
+    if QA1D:     # full rule once the dated link check exists: 2 if a and (b or d); 1 if a or c; else 0
+        d = QA1D.get(r["id"]) == "yes"
+        out["QA1"] = 2 if yes(a.get("a"), high) and (yes(a.get("b"), high) or d) else 1 if yes(a.get("a"), high) or yes(a.get("c"), high) else 0
+    else:
+        out["QA1"] = 2 if yes(a.get("a"), high) and yes(a.get("b"), high) else 1 if yes(a.get("a"), high) or yes(a.get("c"), high) else 0
     a = s("QA2")
     out["QA2"] = 2 if yes(a.get("a"), high) and yes(a.get("b"), high) else 1 if any(yes(a.get(k), high) for k in "abc") else 0
     a = s("QA3")
