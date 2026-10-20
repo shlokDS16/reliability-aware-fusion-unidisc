@@ -1,0 +1,143 @@
+ex_validate build and test log (python-expert subagent, 2026-10-20). Python 3.14.3, Windows. No downloads, no web, no commits.
+
+FILES WRITTEN
+  tools/ex_validate.py                         sha256 c329980c24ec39bd58dcc34e1e2042e9feba9f55f8ecda482f915a0d96407af9
+  tests/test_ex_validate.py                    sha256 9884ddd1181febef2094929b28678c0b0aa640fca966ea78bec0682f28d1e5dc
+  analysis/extraction/build_we_expected.py     sha256 304b1cf9da3a76dc277d51f8cda8ac792d1ff43881b8ed4729007d615a71e456
+  analysis/extraction/we-expected.jsonl        sha256 46fb41c9510703a07c99f1af8702f1c23643f6d7f9ffaa190a84e200480f1ebe
+  analysis/extraction/ex_validate-test-log.txt (this file)
+  Test location: tests/test_ex_validate.py (tests/ follows tests/<area>/ for exp001 and exp003; the brief named
+  tests/test_ex_validate.py and tests/ exists, so that path was used).
+
+INPUTS (read, not edited)
+  validator-tests.jsonl sha256 9991a1f7e60de3852c0948c95fff0561c9b071ba8afda09f96b9f88d4a12e2d2 (35 cases)
+  quote_check.py        sha256 e7d2b6ee55b794e211e63a2d27404334a90a51876acc1d05d303c704c4a2c45b (imported by path, read-only)
+  extraction-schema-v0.5.json sha256 b021c041c26cf5482b22876ba68e8fcec331d0cd9e8e6ba33387bcb0ca0bbc1c
+  worked-examples-v0.4.md     sha256 6a3219da8c5d7a54832864c96155c0561dc4157716311c073ab5216d803a9a87
+  Fixture texts research/sources/md/fulltext-pymupdf/M03416, M12766, M07474, M09530, M08100, M13864: all six sha256
+  values equal the pins in validator-tests.jsonl.
+
+COMMANDS AND RESULTS
+  python -I tests/test_ex_validate.py                                   -> tests passed: 83/83
+  python -E -P -m pytest tests/test_ex_validate.py -q -p no:cacheprovider -> 83 passed in 0.73s
+  python -I analysis/screening/quote_check.py --self-test               -> self-test: 38/38 passed (unchanged)
+  python -I analysis/extraction/build_we_expected.py                    -> count check passed; 275 rows (8 H, 267 K)
+    M07474: 25 groups, 130 K units (98 table, 32 fig-only), 1 H   = Totals line and s6 table
+    M12766:  8 groups,  21 K units (20 table,  1 fig-only), 1 H   = Totals line and s6 table
+    M09530:  9 groups,  32 K units (24 table,  8 fig-only), 1 H   = Totals line and s6 table
+    M13864:  6 groups,  18 K units (14 table,  4 fig-only), 1 H   = Totals line and s6 table
+    M08100: 10 groups,  66 K units (64 table,  2 fig-only), 4 H   = Totals line and s6 table
+    Per-group counts are also checked against the leading count of every group row's K-units column.
+  CLI smoke run on a synthetic record against the full M12766.txt (scratchpad record, Table 2 rows Show-O and
+  Muddit): accepted, 37 checks, 0 fail; identical verdict with schema engine "builtin" (python -I) and
+  "jsonschema 4.23.0" (python -E -P).
+
+TEST COMPOSITION (83)
+  35  validator-tests.jsonl cases V01-V35: status and every expected per-check status match; no case edited.
+      Every case gave the expected status on the first build; nothing to report as a tool/test disagreement.
+   1  case count (35 unique ids)
+  20  v0.2 tests T01-T22 in v0.3 entry shape (T11 and T13 are V04 and V34; T04, T14 include the prose path;
+      T22 = quote_check hash and self-test)
+   5  v0.5 sign checks: arrow conflict rejected; agreeing arrow accepted; one group and metric key with two
+      directions rejected; EC routing (unmapped metric, lookup conflict) not a rejection; header arrow routed
+   1  KA1(b) lookup with qualifiers (Avg. acc, pass@1, FID with arrow, unlisted metric)
+  21  other rules the 35 cases miss: N6 footer, no page markers, map_not_in_header, column_order_mismatch,
+      caption_not_found, cell too_long, row_group_not_found and row_group_unknown, ungrouped row before the
+      first row group, occurrence beyond matches, unreadable cell value, unreadable prose value, H figure-only,
+      loc format, condition and metric checks, schema valid/invalid, schema if/then (QA4 nulls), builtin and
+      jsonschema agreement on 18 mutations, record-level anchor/refs, where and reuse in a record, figure-only
+      in a record, CLI accept/reject/determinism (two runs byte-identical), CLI exit 2, we-expected count check
+      catches a dropped unit and equals the written file
+
+SPEC AMBIGUITIES RESOLVED (choice in each case; 24)
+ A1  Fixture lines. Fixture line ranges count lines split at "\n" only. M03416.txt holds 4 lone CR characters;
+     Python universal newlines would shift l.845-887 by 4 and lose the Table 3 caption. The CLI reads the text
+     the same way (bytes split at "\n", trailing CR removed).
+ A2  N2 forms. Three token forms are tried in order: raw (no join), line-end hyphen kept, hyphen dropped. The
+     page joins only at line ends; a quoted label or header joins any token ending in letter/digit + "-" with the
+     next token (so "Qwen3-30B- A3B-Inst-2507" matches either way). The first form with a match decides.
+ A3  N3 arrows. Arrows are split off and dropped from row tokens as well as header tokens (both sides of every
+     comparison get the same treatment; a glued "0.15↑" would otherwise make the next token mid-line and the row
+     incomplete).
+ A4  N5. One leading "(" and one trailing ")" are stripped independently, so "(Score | TPF)" gives Score, TPF.
+ A5  N6. Only the integer-only line nearest the page end among the last three non-blank lines is dropped (one
+     footer per page, so a row ending in integer cells keeps them); it also applies to the last page, which has
+     no following marker (V35 needs this).
+ A6  map_not_in_header is token membership (every token of every leaf part occurs among the header tokens), not a
+     contiguous run: in M13864 the leaf "Time (sec.)" is split by "BLEU COMET" in the header and V28 expects pass.
+ A7  Two-level order. Bottom-level parts and level-1 parts (consecutive repeats collapsed) must both align
+     greedily in header order; a one-part leaf counts at both levels. Failure is the warning
+     column_order_unverified (V06, V28 unverified; V11, V14, V22 verified, as expected).
+ A8  Ungrouped rows in a grouped table. A cell with row_group '' is accepted when its row lies between the header
+     and the first row-group line (M08100 "Average", the worked-example F1 cell H04); otherwise
+     row_group_missing (V16 still fails).
+ A9  Row search region. Without row groups the row is searched from the line after the header when the header is
+     on the cell's page, else from the page start (v0.2 searched the whole page; prose above a table could make a
+     row ambiguous). A separate check header_near_row requires the header on the cell's page or the page before
+     (v0.2 check 5); the table-entry header check uses table.page or table.page - 1 (v0.3).
+ A10 Continuation entries (first_col > 1). The token offset of earlier elements is taken from the same row's other
+     entries; elements no entry covers count one token each (V27 has no first_col 1 entry).
+ A11 Row width with declared blanks. The count is still compared with the leaf map; a mismatch fails. v0.3 names
+     only rows without blanks; a blank is declared only to fill the row to the map, so a different count is an
+     error either way.
+ A12 Check 10 benchmark and metric. Checked only when a part of columns[col] has that role (column_roles; a
+     one-part leaf takes level 1's role). The unit's string must equal the joined parts of that role or one of
+     them, by the s5.4 key, or by label-core (one trailing parenthesis) so "Time" matches "Time (sec.)". In
+     columns orientation the row label has no declared role, so the benchmark is not checked against it.
+ A13 Check 10 condition (K units). Compared as a multiset of " / " parts with the same leniency. Expected parts:
+     header parts with role condition; the row group when row_group_role is condition; in columns orientation the
+     row label unless it equals the unit's benchmark or metric (U9).
+ A14 second_factor_mismatch (K units only). When row_group_role or the level-1 column role is second-factor, an
+     empty second_factor_printed is a mismatch.
+ A15 rowgroup_benchmark_mismatch also applies to H units (they carry benchmark_printed; 'not stated' skipped) and is
+     skipped when the cell's row_group is '' (row_group_missing already reports it).
+ A16 Comparisons. Arm labels and second factors: strict U11 key (normalise, trailing citation with a year,
+     "(ours)" and markers removed, lower case, no whitespace); no label-core. column_mismatch: normalise with all
+     whitespace removed, case and arrows kept.
+ A17 where_mismatch. v0.2 check 8 (H unit loc.where against the table) is kept, and the same check is applied to a
+     K group's where against the table of every cell its values cite.
+ A18 Captions. A caption not starting with Table, Tab., Figure or Fig. is reported as caption_start (fail); v0.2
+     names only caption_not_found and caption_length. No negation window is applied (v0.2 check 6).
+ A19 Sign, group rule. v0.5 "units of one group with the same metric key and different values" is read as two K
+     units of one group whose metric key (lookup id, else raw: + s5.4 key) is equal and whose higher_is_better
+     differs, null counting as a value (KA1: "Units of one group with the same metric_printed get one value").
+ A20 Sign, arrow rule. Rejection (arrow_conflict) for an arrow in column_printed against higher_is_better (v0.5
+     s10.3) and, in a columns-oriented group, an arrow in the cited cell's row label (KA1(a) "row label"). It is
+     applied to H units too (KA1 covers H units). null with a printed arrow is the warning
+     direction_null_with_arrow. Arrows printed next to the leaf in the table header (red-team v0.5 mn2) give only
+     a warning plus EC route, because arrow attribution in a linearised header is not certain (M12766 prints
+     "Overall ↑Objects").
+ A21 EC routing (K units). Route when the metric is unmapped or its lookup direction is null (sign_extractor_only)
+     or the extractor value differs from the lookup, null against a lookup value included (sign_lookup_conflict).
+     Default lookup = the KA1(b) list built in (plan v0.5 s5.4); --metric-lookup reads a CSV printed,id,
+     higher_is_better (the columns of analysis/extraction/fixtures/lookups/metric-ids-v1.csv, which another
+     session created while this ran). KA1(b) qualifiers stripped before lookup: top-1, avg., gen., average, mean.
+ A22 figure-only and unreadable. A K value "figure-only" is exempt only in a unit with figure_only true (V31/V32);
+     an H value "figure-only" only with origin F1-figure; "unreadable" needs a cell entry (rows checked, value not).
+ A23 New statuses where v0.2/v0.3 name none: occurrence_mismatch (occurrence beyond the matches), row_group_unknown,
+     header_not_near_row, table_missing, evidence_missing, col_missing, unreadable_needs_cell; value_occurrence
+     beyond the occurrences gives value_not_in_quote; E5 loc format is a warning (loc_format).
+ A24 Schema engine. jsonschema (Draft 2020-12) when it imports; under python -I it does not (system site-packages
+     jsonschema lacks attrs), so a built-in validator covering every keyword of schema v0.5 is used. Verdicts agree
+     on the valid test record and on 18 single-keyword mutations; messages differ between engines.
+
+WORKED EXAMPLES (we-expected.jsonl) CHOICES
+  One row per expected unit: H rows (unit_id, value, origin, where, row group, row label, column, metric,
+  benchmark, trace) and K rows (seq, group_id, where, second factor, arms, anchor, figure_only, outcome_md,
+  benchmark, metric, condition, outcome_source, duplicate, note, md_line). Outcomes the markdown does not name are
+  null with outcome_source "not-enumerated" (FDM G10-G13, G16-G17, G19, G22-G25; TrustLDM G05, G07, G09 and the
+  conditions of G02-G03; LLaDA2.1 G04). Two groups take the outcomes of a named group of the same table
+  (outcome_source "same-table-as"): FDM G06-G09 (Table 2, as G02) and M13864 G03 (Table 2, as G02). Duplicates:
+  Muddit G06 true ("all three flagged"); M13864 G02 "partial" (U12 flags three contrasts, l.210-213). TrustLDM H01
+  origin F1-table (md: H-2 from Table 1). Figure arms given as ranges are kept as the markdown string.
+
+NOT IMPLEMENTED (outside the evidence checks of this brief)
+  E1 coverage of [Q]-coded fields and the searched rule (needs the field list), blocks against dispatch.json,
+  derived-field filling (value_num, rq_class, levers, QA scores, K15, metric_id; --fill-derived), the draw
+  manifest, a --self-test flag (the cases run from tests/test_ex_validate.py), multi-record JSONL input (one
+  record per call, matching one text per call).
+
+CONCERNS
+  - Another session wrote tests/extraction/, analysis/extraction/agreement.py, draw_pilot.py and fixtures/ while
+    this ran; nothing of theirs was read beyond the lookup CSV header, and nothing was changed.
+  - Real-record behaviour beyond the six fixture tables is untested; Stage A outputs are the first real input.
