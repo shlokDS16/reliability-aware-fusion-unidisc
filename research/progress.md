@@ -1,6 +1,14 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 21 (2026-10-20 ~08:10 IST; newest).** The human author approved every recommendation on
+  research/EVENING-2026-10-20.md -> **D0035-D0043** (797 re-check tranche with OA downloads; 348 rescue positives to dual
+  TA; 1,243 seed passes as a full-text tranche with OA downloads; P1 deviation; P2 rule; P3 note; B-unavailable records
+  to the human author (M13184, M15873, M17195 now, any later ones too); extraction scope = light fields + QA on all,
+  contrast data on stratified sample + multimodal option (d); public versions of anonymous texts, OA). Item 12 (tool
+  rules G1, E1, derived fields): orchestrator drafts recommendations for the user. **Execution handed to a fresh
+  session** (see its brief in the session list). User tasks this evening: P4 3-paper sheet; OQ4-04 borderline check;
+  58 e-gateway PDFs; validation-sample sheets for each new tranche (before seeing any row of that tranche).
 - **HANDOFF 20 (2026-10-20 ~07:50 IST; newest; HANDOFF 18 (T1) and 19 (instrument) stand).** **Stage A extraction
   tools built and tested, nothing drawn or extracted:** tools/ex_validate.py (table-aware validator), tools/ex_validate_batch.py
   (batch driver, pass tags, dispatch checks), tools/ex_dispatch.py (isolated E1/E2/EC folders), analysis/extraction/agreement.py
