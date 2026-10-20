@@ -1,0 +1,31 @@
+{"id": "M03703", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R9 step 1: text generated autoregressively by the VLM", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M03703", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 1: text generated autoregressively by the VLM", "loc": "p.4, §3.1", "status": "found"}
+{"id": "M03703", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9 step 1: diffusion component generates only robot actions", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M02118", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: diffusion component of own method", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M02118", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R6 fails: diffusion output is 3D motion, not text", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M02118", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.5, §3.2 Semantically Aligned Decoder", "status": "found"}
+{"id": "M02605", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R4: own method is an adversarial (GAN) generator, no diffusion component", "loc": "p.2, §I", "status": "found"}
+{"id": "M02605", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R4: own method is an adversarial (GAN) generator, no diffusion component", "loc": "p.7, §IV", "status": "found"}
+{"id": "M02605", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R4: benchmarked models are GAN/Transformer HTG models, none diffusion", "loc": "p.9, §VI-A", "status": "found"}
+{"id": "M02734", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2 and R6 fails: diffusion generates ultrasound image data, not text", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M02734", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M02734", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.3, §2.2", "status": "found"}
+{"id": "M02734", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R10 b3 fails: ASR and text encoder are separate frozen models", "loc": "p.4, §3.2", "status": "found"}
+{"id": "M02734", "screener": "FB-claude-opus-5-5", "i": 4, "cond": "R10 b3 fails: ASR and text encoder are separate frozen models", "loc": "p.3, §2.2", "status": "found"}
+{"id": "M02843", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: diffusion component of own method", "loc": "p.3, §1", "status": "found"}
+{"id": "M02843", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R10 b1 fails / R6 fails: output is motion only, no text produced", "loc": "p.8, Fig. 3 caption", "status": "found"}
+{"id": "M02843", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.7, §3.2", "status": "found"}
+{"id": "M02843", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.7, Fig. 2 caption", "status": "found"}
+{"id": "M02952", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: diffusion component of own method", "loc": "p.2, §1", "status": "found"}
+{"id": "M02952", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R6 fails: diffusion output is a 3D MANO hand grasp (D4 3D), not text", "loc": "p.4, Fig. 2 caption", "status": "found"}
+{"id": "M02952", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.4, §3.2", "status": "found"}
+{"id": "M02952", "screener": "FB-claude-opus-5-5", "i": 3, "cond": "xsub pipeline: separate LLM supplies text, R10 b1/b3 fail", "loc": "p.2, §1", "status": "found"}
+{"id": "M02617", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R4: own method is word co-occurrence graph analysis, no diffusion component", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M02617", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "D2 exclusion: diffusion only in the sense of information spread", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M03494", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "D2: discrete diffusion model with Markov jump noising", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M03494", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R8 fails: results only on spin models, no text dataset or sample", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M00568", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R4: own method is an online contention resolution algorithm, no diffusion component", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M00568", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R4: own method is an online contention resolution algorithm, no diffusion component", "loc": "p.1, Abstract", "status": "found"}
+{"id": "M03417", "screener": "FB-claude-opus-5-5", "i": 0, "cond": "R1: position paper with taxonomy, no experiment of its own", "loc": "p.2, §1", "status": "found"}
+{"id": "M03417", "screener": "FB-claude-opus-5-5", "i": 1, "cond": "R1: position paper with taxonomy, no experiment of its own", "loc": "p.2, §1", "status": "found"}
+{"id": "M03417", "screener": "FB-claude-opus-5-5", "i": 2, "cond": "R1: position paper with taxonomy, no experiment of its own", "loc": "p.2, §1", "status": "found"}
