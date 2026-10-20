@@ -1,0 +1,70 @@
+{"id": "M03546", "decision": "exclude", "code": "X1", "reason": "Multi-modal diffusion on images and labels; no text generation", "screener": "A-claude-sonnet"}
+{"id": "M08236", "decision": "exclude", "code": "X1", "reason": "Diffusion on LLM hidden states for safety defense; produces no text", "screener": "A-claude-sonnet"}
+{"id": "M16003", "decision": "exclude", "code": "X1", "reason": "Crisis detection; diffusion only synthesises missing images", "screener": "A-claude-sonnet"}
+{"id": "M03336", "decision": "exclude", "code": "X1", "reason": "Diffusion for rendering text inside images; image generation only", "screener": "A-claude-sonnet"}
+{"id": "M10824", "decision": "exclude", "code": "X1", "reason": "Diffusion renders images; AR planner only plans layout; not unified understanding", "screener": "A-claude-sonnet"}
+{"id": "M10764", "decision": "include", "code": "", "reason": "Evaluates hybrid AR-diffusion self-drafting speculative decoding Orthrus empirically", "screener": "A-claude-sonnet"}
+{"id": "M11188", "decision": "include", "code": "", "reason": "Text-distribution metric for evaluating diffusion and flow language models", "screener": "A-claude-sonnet"}
+{"id": "M10257", "decision": "exclude", "code": "X0", "reason": "Motion-language model with single-draw head; no diffusion component", "screener": "A-claude-sonnet"}
+{"id": "M02995", "decision": "exclude", "code": "X1", "reason": "Generic discrete/continuous diffusion theory; no text generation indicated", "screener": "A-claude-sonnet"}
+{"id": "M07418", "decision": "unclear", "code": "", "reason": "Small diffusion learner with LLM verifier; output modality not stated", "screener": "A-claude-sonnet"}
+{"id": "M04234", "decision": "exclude", "code": "X0", "reason": "Vector quantization collapse study; no diffusion model of text", "screener": "A-claude-sonnet"}
+{"id": "M04076", "decision": "exclude", "code": "X1", "reason": "Diffusion-nested autoregressive tabular data synthesis; not text", "screener": "A-claude-sonnet"}
+{"id": "M10501", "decision": "include", "code": "", "reason": "Diffusion-style block drafter for speculative decoding of language models", "screener": "A-claude-sonnet"}
+{"id": "M09220", "decision": "unclear", "code": "", "reason": "Discrete flow one-step theory; synthetic sequences only, text unclear", "screener": "A-claude-sonnet"}
+{"id": "M04067", "decision": "exclude", "code": "X1", "reason": "Mixed-type tabular diffusion; no text generation", "screener": "A-claude-sonnet"}
+{"id": "M07965", "decision": "exclude", "code": "X1", "reason": "Music generation; LM plans, DiT renders audio; not unified understanding", "screener": "A-claude-sonnet"}
+{"id": "M04817", "decision": "exclude", "code": "X1", "reason": "Accident video diffusion generating videos; no text generation by diffusion", "screener": "A-claude-sonnet"}
+{"id": "M19014", "decision": "unclear", "code": "", "reason": "Diffusion text-motion generation plus captioning; motion modality eligibility unclear", "screener": "A-claude-sonnet"}
+{"id": "M09176", "decision": "exclude", "code": "X1", "reason": "Driving VLA; diffusion planner generates trajectories, not text", "screener": "A-claude-sonnet"}
+{"id": "M16392", "decision": "exclude", "code": "X1", "reason": "Motion diffusion with action recognition; no text generation", "screener": "A-claude-sonnet"}
+{"id": "M10032", "decision": "unclear", "code": "", "reason": "Accelerator study of LLMs and diffusion models; diffusion type unstated", "screener": "A-claude-sonnet"}
+{"id": "M04609", "decision": "unclear", "code": "", "reason": "Theory for AR and diffusion samplers; validated on LLMs, text diffusion unclear", "screener": "A-claude-sonnet"}
+{"id": "M17001", "decision": "unclear", "code": "", "reason": "T5 text generation with diffusion-style training module; role unclear", "screener": "A-claude-sonnet"}
+{"id": "M15486", "decision": "exclude", "code": "X1", "reason": "Medical RAG framework; diffusion only in RL policy", "screener": "A-claude-sonnet"}
+{"id": "M17668", "decision": "exclude", "code": "X1", "reason": "Platform using LLM and diffusion pipeline; diffusion generates images", "screener": "A-claude-sonnet"}
+{"id": "M11944", "decision": "unclear", "code": "", "reason": "Brain imaging foundation model with diffusion and report generation; coupling unclear", "screener": "A-claude-sonnet"}
+{"id": "M07167", "decision": "exclude", "code": "X1", "reason": "Diffusion recovers missing modality features for emotion recognition; no text generation", "screener": "A-claude-sonnet"}
+{"id": "M01176", "decision": "exclude", "code": "X1", "reason": "ODE-style diffusion for images (CIFAR-10)", "screener": "A-claude-sonnet"}
+{"id": "M06740", "decision": "exclude", "code": "X1", "reason": "Diffusion TTS speech generation; no text generation or understanding", "screener": "A-claude-sonnet"}
+{"id": "M05952", "decision": "exclude", "code": "X1", "reason": "Stable Diffusion images used for data augmentation; no text diffusion", "screener": "A-claude-sonnet"}
+{"id": "M02568", "decision": "exclude", "code": "X1", "reason": "Tabular data synthesis evaluation; not text", "screener": "A-claude-sonnet"}
+{"id": "M12922", "decision": "exclude", "code": "X1", "reason": "Deception probes across architectures; Stable Diffusion not a text diffusion model", "screener": "A-claude-sonnet"}
+{"id": "M09361", "decision": "include", "code": "", "reason": "Flow-matching image model plus discrete text insertion; bidirectional vision-language generation", "screener": "A-claude-sonnet"}
+{"id": "M04947", "decision": "unclear", "code": "", "reason": "Diffusion-styled sentence-level alignment of LLM outputs; text diffusion role unclear", "screener": "A-claude-sonnet"}
+{"id": "M08813", "decision": "include", "code": "", "reason": "Discrete flow maps for one-step text sequence generation", "screener": "A-claude-sonnet"}
+{"id": "M02083", "decision": "exclude", "code": "X1", "reason": "Tabular data diffusion synthesis; not text", "screener": "A-claude-sonnet"}
+{"id": "M19288", "decision": "exclude", "code": "X0", "reason": "Educational platform for VAE, GAN, GPT; no diffusion component", "screener": "A-claude-sonnet"}
+{"id": "M09671", "decision": "exclude", "code": "X1", "reason": "TTS with flow-matching speech decoder; no text generation by diffusion", "screener": "A-claude-sonnet"}
+{"id": "M11359", "decision": "exclude", "code": "X1", "reason": "Driving VLA; diffusion generates actions, autoregressive text; robot actions", "screener": "A-claude-sonnet"}
+{"id": "M05059", "decision": "exclude", "code": "X1", "reason": "Motion generation with text conditioning only", "screener": "A-claude-sonnet"}
+{"id": "M19270", "decision": "exclude", "code": "X1", "reason": "Memorization in synthetic tabular data generators; not text", "screener": "A-claude-sonnet"}
+{"id": "M04116", "decision": "exclude", "code": "X1", "reason": "Dynamic execution for AR speculative sampling and image diffusion; no text diffusion", "screener": "A-claude-sonnet"}
+{"id": "M13719", "decision": "unclear", "code": "", "reason": "Diffusion-styled sentence-level alignment of LLM outputs; text diffusion role unclear", "screener": "A-claude-sonnet"}
+{"id": "M09422", "decision": "exclude", "code": "X1", "reason": "Driving VLA world model; diffusion renders video, actions", "screener": "A-claude-sonnet"}
+{"id": "M05212", "decision": "exclude", "code": "X1", "reason": "MLLM drives game states; diffusion only decodes video clips", "screener": "A-claude-sonnet"}
+{"id": "M06156", "decision": "include", "code": "", "reason": "Empirical comparison of LLaDA diffusion text with AR text for detection", "screener": "A-claude-sonnet"}
+{"id": "M03614", "decision": "unclear", "code": "", "reason": "LLM aligned with Stable Diffusion for image sharing; unification and joint training unclear", "screener": "A-claude-sonnet"}
+{"id": "M01197", "decision": "exclude", "code": "X1", "reason": "Dialogue model plus Stable Diffusion pipeline for image editing", "screener": "A-claude-sonnet"}
+{"id": "M02834", "decision": "exclude", "code": "X2", "reason": "Text-to-SVG diffusion; text only conditions generation", "screener": "A-claude-sonnet"}
+{"id": "M14915", "decision": "exclude", "code": "X3", "reason": "Review of generative AI in aircraft design", "screener": "A-claude-sonnet"}
+{"id": "M09821", "decision": "exclude", "code": "X1", "reason": "Materials/crystal diffusion with language backbone; non-text domain per brief", "screener": "A-claude-sonnet"}
+{"id": "M08912", "decision": "exclude", "code": "X1", "reason": "Scene graph generation by flow matching; no natural-language text", "screener": "A-claude-sonnet"}
+{"id": "M14946", "decision": "exclude", "code": "X1", "reason": "MLLM text plus Stable Diffusion images for NER augmentation; no text diffusion", "screener": "A-claude-sonnet"}
+{"id": "M01218", "decision": "exclude", "code": "X1", "reason": "Diffusion-GAN training for speech recognition; diffusion generates no text", "screener": "A-claude-sonnet"}
+{"id": "M07736", "decision": "include", "code": "", "reason": "Diffusion-styled iterative denoising of chain-of-thought reasoning steps in LLMs", "screener": "A-claude-sonnet"}
+{"id": "M07163", "decision": "exclude", "code": "X1", "reason": "Driving VLA; diffusion decodes trajectories, robot actions", "screener": "A-claude-sonnet"}
+{"id": "M07052", "decision": "exclude", "code": "X1", "reason": "Diffusion generates camera trajectories; VLM text is autoregressive", "screener": "A-claude-sonnet"}
+{"id": "M04611", "decision": "exclude", "code": "X0", "reason": "Encryption for inference privacy; no diffusion-specific method", "screener": "A-claude-sonnet"}
+{"id": "M15927", "decision": "exclude", "code": "X1", "reason": "Text-guided human motion diffusion; text only conditions", "screener": "A-claude-sonnet"}
+{"id": "M00928", "decision": "exclude", "code": "X1", "reason": "Post-training quantization of image diffusion models", "screener": "A-claude-sonnet"}
+{"id": "M14895", "decision": "exclude", "code": "X7", "reason": "Applies existing generative models to cyber simulation; no model-level finding", "screener": "A-claude-sonnet"}
+{"id": "M05486", "decision": "exclude", "code": "X2", "reason": "Model collapse for VLMs and text-to-image diffusion; no unified model", "screener": "A-claude-sonnet"}
+{"id": "M08713", "decision": "exclude", "code": "X1", "reason": "Selection among tabular synthesizers; not text", "screener": "A-claude-sonnet"}
+{"id": "M07765", "decision": "exclude", "code": "X1", "reason": "Diffusion neural process for regression; text only conditions", "screener": "A-claude-sonnet"}
+{"id": "M03534", "decision": "exclude", "code": "X1", "reason": "Diffusion generating handwriting images", "screener": "A-claude-sonnet"}
+{"id": "M10360", "decision": "exclude", "code": "X1", "reason": "Humanoid robot action diffusion", "screener": "A-claude-sonnet"}
+{"id": "M09614", "decision": "exclude", "code": "X1", "reason": "LLM dialogue plus diffusion talking-head pipeline; not unified", "screener": "A-claude-sonnet"}
+{"id": "M08893", "decision": "include", "code": "", "reason": "Unified 3D mesh understanding and generation including captioning with diffusion component", "screener": "A-claude-sonnet"}
+{"id": "M04581", "decision": "exclude", "code": "X1", "reason": "3D VLA; diffusion head generates robot actions", "screener": "A-claude-sonnet"}
+{"id": "M07329", "decision": "exclude", "code": "X1", "reason": "Speech and music diffusion generation; text only instructs", "screener": "A-claude-sonnet"}
