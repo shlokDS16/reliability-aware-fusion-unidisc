@@ -1,0 +1,25 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M13081 table T02: caption_length (5 words) -> see the brief
+(2) M13081 s14_row S14.own_row: s14_row_not_found ('This article’s model' not at a row start on page 20) -> see the brief
+(3) M13081 s14_row S14.baseline_row: s14_row_not_found ('Transformer' not at a row start on page 20) -> see the brief
+(4) M14365 prose_quote E07: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(5) M14365 prose_quote E59: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(6) M14365 metric K48.A1: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(7) M14365 metric K48.A2: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(8) M14365 metric K48.A3: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(9) M14365 metric K48.A4: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(10) M14365 metric K49.A1: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(11) M14365 metric K49.A2: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(12) M14365 metric K49.A3: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(13) M14365 metric K49.A4: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(14) M14365 metric K50.A1: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(15) M14365 metric K50.A2: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(16) M14365 metric K50.A3: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(17) M14365 metric K50.A4: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(18) M14365 metric K51.A1: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(19) M14365 metric K51.A2: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(20) M14365 metric K51.A3: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+(21) M14365 metric K51.A4: metric_column_mismatch ('WER [%]' against 'WER [%] dev-other') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
