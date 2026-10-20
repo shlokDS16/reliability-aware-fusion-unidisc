@@ -16,6 +16,11 @@
   the 5 GB rule (wait_ram.ps1). exs001/exs002 folders (v1 names) built, never launched. **Next:** launch EA
   sessions (opus, general-purpose, prompt in this session's transcript), validate with ex_validate_batch, model and
   isolation checks; rewrite 02-method (stale: describes the 10-15 state); PRISMA checklist in the supplement.
+  **Update ~20:45 IST:** 02-method rewritten (current state), 10-limitations selection/screening paragraphs, 05 RQ1
+  from all 615, supplement S1 (PRISMA checklist + every logged search), evening page research/EVENING-2026-10-20-paper1.md
+  (P1-P3; sheets R0308 and D0039) sent to the user. EA sessions exb001 (a567490c8d2e8349e) and exb002 (ab487ab07c8bb436c)
+  running since ~19:50; folders exb003, exb004 built. After each: `python -I analysis/extraction/d0052/postbatch.py <batch>`.
+  NOTE: python heredocs in this Bash tool collapse double backslashes; write scripts with LaTeX to files first.
 - **HANDOFF 26 (2026-10-20 ~17:10 IST; newest; session 92c0b6b9): SCREENING FROZEN PER D0051.** The human author
   (chat ~15:45 IST, relayed by session 9d5203d7, row D0051) stopped all further screening and downloads; a fresh session
   writes the manuscript next. **Final screened set:** T1 882 decided (608 include, 274 exclude; 3 B-unavailable with the
