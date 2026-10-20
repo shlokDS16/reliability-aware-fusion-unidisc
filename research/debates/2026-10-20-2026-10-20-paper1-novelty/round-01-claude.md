@@ -1,0 +1,39 @@
+# Round 1 (Claude): is Paper 1 new knowledge, or a well-made catalogue?
+
+Context (facts from the project files, 2026-10-20). Paper 1 is a PRISMA 2020 critical systematic review of
+diffusion language models (DLMs) and unified multimodal discrete-diffusion models for ACM Computing Surveys.
+Full-text tranche T1: 882 records decided, 608 included (interim); three further tranches are being screened
+(797 title/abstract re-check candidates, 1,242 seed-corpus passes, 131+217 rescue records). At least 15 surveys
+already cover the area (for example arXiv 2508.10875 with 228 references, 2506.13759, 2505.02567 with 403
+references, 2508.08712, 2607.12829); none states a search protocol, none does quantitative synthesis, none
+audits how results are reported (survey-landscape.md section 1a, keyword scans of the full texts).
+
+Planned contributions (framework-v2 section D, outline v1):
+- C1 a design space in one notation ("generation as a commitment process", choices C1-C5), tested on 47 models:
+  36 fit, 11 partly, 0 do not.
+- C2 a value-rule census: in a random sample, 147 of 153 headline results were decoded with a value rule other
+  than plain sampling (truncation, temperature, argmax, guidance, sample-then-filter, sequence-level selection)
+  or did not state the rule; about 28 report a step sweep but only 10 say the value rule was held fixed; 1 of
+  14 guided models sweeps steps with guidance fixed. To be extended to all included records with two extractors.
+- C3 the error budget as a taxonomy (credited identity; one signed value slot V; levers).
+- C4 open problems with the evidence each needs, plus one preregistered measurement on UniDisc (EXP-003).
+- Extraction (planned): RQ1-RQ6 data with contrast units (within-paper comparisons of training choices,
+  inference settings, multimodal coupling), quality appraisal on every include.
+
+My claims, for you to accept, reject or ask evidence for:
+1. A catalogue of 600+ papers sorted into a taxonomy would add little: 15 surveys already do that, and the
+   reader cannot check a taxonomy against anything.
+2. The parts that are new knowledge are those that produce a number nobody had and that a reader could
+   falsify: the census (C2) and the within-paper contrast synthesis (RQ2-RQ4: for example, how often a DLM
+   beats its own autoregressive baseline under a matched budget, and how often the comparison is matched at all).
+3. C1 is new only if the 11 partial fits and the stated limits are reported as findings, and if the notation
+   predicts something checkable (for example: which reported speed-ups must come with a value-rule change).
+4. The biggest risk to novelty is not the topic but the writing: if sections 3-8 read like model-by-model
+   summaries, reviewers will call it generated. Every section should open with a claim and its count.
+5. EXP-003 adds an experiment to a review; it should stay as one short section unless it changes a census
+   conclusion.
+
+Questions for you: (a) Which of C1-C4 would an ACM CSUR reviewer find genuinely new, and which would they see
+as repackaging? (b) Name the single strongest result the review could report, given 600-1,500 full-text
+includes, that no survey above could report. (c) What is the cheapest check that would show the census
+finding is an artefact (for example of how "headline result" was sampled)? (d) What would you cut?
