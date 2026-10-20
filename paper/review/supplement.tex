@@ -231,7 +231,7 @@ Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
 \section{Additional detail on the EXP-003 measurement}
 \label{sec:s-exp003}
 
-These three blocks are moved from Section~\Mref{sec:exp003}. The results they refer to are in Table~\Mref{tab:exp003-arms}.
+These four blocks are moved from Section~\Mref{sec:exp003}. The results they refer to are in Table~\Mref{tab:exp003-arms}.
 
 \subsection{Deviations from the preregistered plan}
 \label{sec:s-exp003-dev}
@@ -248,6 +248,36 @@ The hypothesis that the guided arm lowers diversity (E3-H4) was not tested by th
 
 NC-1 passed (link $-0.0003$, 95\% interval $-0.052$ to 0.050; 45 prefixes), NC-2 passed on G (0.002; $-0.016$ to 0.021) and on P64 (0.005; $-0.012$ to 0.023), and PC-2 passed (matched presence 0.77, other-caption 0.17; 113 nouns). Guardrails (i) to (iii) pass: the completion length of G is 0.79 times that of P64 (limits 0.5 to 2.0), no completion is empty, and G has 1,084 discordant nouns against 1,666 (ratio 0.65; limit 0.4). Guardrail (iv), near-uniform G images, was not computed by the frozen analysis; recomputed afterwards from the stored per-image flags it is 1 image of 276 (limit 0.15).
 % src: runs/EXP-003/ctrl/controls_decision.json; F guardrails; X item1_guardrail_iv_near_uniform; A sections 4.1 and 6 item 9 (moved with the sentences from the "Checks and controls" paragraph of sections/09-exp003.tex, whose own src comment is unchanged)
+
+\subsection{Statistic, inference, controls and checks (moved from Section~\Mref{sec:exp003})}
+\label{sec:s-exp003-detail}
+Moved unchanged from the main text for length.
+
+\paragraph{Statistic.}
+For prefix $p$ and seed $e\in\{0,1\}$ let $x_{pe}$ be the image and $D_{pe}$ the nouns that this completion names and the sibling completion (same prefix, other seed) does not, compared after removing a plural suffix. Let $y(n,x)\in\{0,1\}$ be the checker's answer to ``Is there a $n$ in this image?'', yes when $P(\text{yes})\ge 0.5$. A prefix is eligible when $D_{p0}$ and $D_{p1}$ are both non-empty. Within one arm its seed-balanced link is
+\begin{equation}
+  L_p \;=\; \tfrac12\Biggl[\frac{1}{|D_{p0}|}\sum_{n\in D_{p0}}\bigl(y(n,x_{p0})-y(n,x_{p1})\bigr)\;+\;\frac{1}{|D_{p1}|}\sum_{n\in D_{p1}}\bigl(y(n,x_{p1})-y(n,x_{p0})\bigr)\Biggr],
+  \label{eq:s-exp003-link}
+\end{equation}
+and the link of arm $a$ is the mean over its eligible prefixes $\mathcal P_a$,
+\begin{equation}
+  \Lambda_{\mathrm b}(a) \;=\; \frac{1}{|\mathcal P_a|}\sum_{p\in\mathcal P_a} L_p^{(a)} .
+  \label{eq:s-exp003-lambda}
+\end{equation}
+Equation~\eqref{eq:s-exp003-link} asks how much more often a noun that one seed's completion names is found in that seed's own image than in the sibling image. The sibling shares the prefix, the arm and the guidance setting, so what the prefix explains cancels; each seed has weight one half, so an additive yes-bias of either image cancels. The contrasts are $\Delta_1=\Lambda_{\mathrm b}(G)-\Lambda_{\mathrm b}(P64)$, $\Delta_{2a}=\Lambda_{\mathrm b}(G)-\Lambda_{\mathrm b}(O0)$ and $\Delta_{2b}=\Lambda_{\mathrm b}(O0)-\Lambda_{\mathrm b}(P32)$, each on the prefixes eligible in both its arms. On the prefixes eligible in all four arms,
+\begin{equation}
+  \Delta_1 \;=\; \Delta_{2a}+\Delta_{2b}+\bigl[\Lambda_{\mathrm b}(P32)-\Lambda_{\mathrm b}(P64)\bigr],
+  \label{eq:s-exp003-identity}
+\end{equation}
+by telescoping; the bracket is the change from 32 to 64 plain passes. % src: C sections 4.1 and 4.2
+The same-prefix sibling baseline is an instance of the same-condition independent-draw control used for co-generated outputs in MUNITE and CoDi~\cite{arXiv:2610.09866,arXiv:2305.11846}; seed balancing and the discordant-noun restriction are the parts we add. Yes/no presence probes follow POPE, TIFA and DSG~\cite{arXiv:2305.10355,arXiv:2303.11897,arXiv:2310.18235}, and judging joint coherence with a separate model is done as in MMVAE~\cite{arXiv:1911.03393}. % src: N section 4 items 4 and 5; decision D0019 (1)
+
+\paragraph{Inference and controls.}
+The prefix is the cluster; intervals are percentile bootstrap intervals with 10,000 replicates and the same resampled prefixes in every arm. The one primary test is $\Delta_1$ against zero, two-sided at 0.05; if it rejects, Holm's procedure at 0.05 covers $\Delta_{2a}$ and $\Delta_{2b}$. The minimum effect of interest, 0.10, is our choice and describes point estimates only. Four controls fix the wording: NC-1, a plain arm whose image ignores the completion given the prefix (link zero); NC-2, placebo nouns from another prefix; PC-1, a plain arm whose image is generated after the whole completion (link recoverable); PC-2, the checker on guided text-to-image images. A failed PC-1 turns every null label into ``not measurable with this instrument'' (rule W2) and leaves a positive readable. % src: C sections 4.5, 5, 6 and 7
+
+\paragraph{Checks and controls.}
+In the half of prefixes whose sibling images differ least in CLIP-IQA, $\Lambda_{\mathrm b}(G)$ is 0.131 (0.071 to 0.184; 63 prefixes), and the slope on the sibling quality difference is 0.160 ($-0.027$ to 0.366): the preregistered flag for quality-mediated coupling is not triggered, which does not exclude it. CLIP did not confirm the dependence: the sibling-link contrast of G against P64 on the completion text alone is 0.38 (100 times cosine similarity), 90\% interval $-0.085$ to 0.861 over 138 prefixes, where the rule requires a lower limit above zero. The composition sensitivity cannot be computed: G completions name more COCO-category nouns (share 0.110 against 0.065), but only 2 prefixes are eligible for it in both arms. NC-1, NC-2 and PC-2 passed (values in the supplement, Section~S7.3). PC-1 failed: the image-after-completion arm exceeds the independent arm by 0.031 (95\% interval $-0.042$ to 0.100; 44 prefixes), where 0.10 was required. We therefore cannot say that the checker registers a link even when the image sees the whole completion, and its sensitivity to within-prefix differences on guided images is untested. Guardrails (i) to (iii) pass, and guardrail (iv) was not computed by the frozen analysis; the values, with the post-freeze recomputation of (iv), are in the supplement (Section~S7.3). The plain arms' intervals in Table~\Mref{tab:exp003-arms} exclude zero. They are descriptive and uncorrected, and the statistic differs from the gate statistic of the earlier attempt on this model (Section~\Mref{sec:open-op3}). We therefore make no statement that plain sampling shows no link, and we do not read the intervals as replicating or contradicting that attempt. % src: F arms.G.quality_matched, clip_sibling_link_G_minus_P64_completion_only, W1_concordant, guardrails, arms.*.completion; runs/EXP-003/ctrl/controls_decision.json; X item1_guardrail_iv_near_uniform, item4_w3_composition; A sections 4.1 and 6 item 9; decision D0025 (5)
+
 
 \setcounter{section}{7}
 \section{Material moved from Sections 3, 4, 7 and 8}
