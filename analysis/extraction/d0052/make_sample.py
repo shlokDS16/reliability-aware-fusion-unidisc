@@ -25,25 +25,37 @@ out = {"decision": "D0052", "gate_manifest_sha256": hashlib.sha256((D / "gate-ma
        "ids": ids, "ids_sha256": hashlib.sha256("\n".join(ids).encode()).hexdigest(),
        "second_reader_seed": 20266300, "second_reader_ids": check,
        "text_bytes": sizes, "large": sorted(i for i in ids if sizes[i] > LARGE)}
-# batches: large texts alone; others in pairs, in stratum-list order
-batches, k = [], 0
-for s in strata:
-    pend = []
-    for i in strata[s]:
+# batches (v2, 2026-10-20): phase 1 = positions 1..20 of each list, phase 2 = positions 21..27, so phase 1 is complete
+# before any phase-2 record (keeps a 20-per-stratum design open while the human author decides on a seed stratum);
+# strata interleaved round robin; texts above LARGE alone, others in pairs, in list order within a stratum.
+def pairs(lst):
+    out, pend = [], []
+    for i in lst:
         if sizes[i] > LARGE:
-            batches.append([i])
+            out.append([i])
         else:
             pend.append(i)
             if len(pend) == 2:
-                batches.append(pend); pend = []
+                out.append(pend); pend = []
     if pend:
-        batches.append(pend)
+        out.append(pend)
+    return out
+batches = []
+for lo, hi in ((0, 20), (20, N)):
+    per = [pairs(strata[s][lo:hi]) for s in sorted(strata)]
+    for k in range(max(map(len, per))):
+        for b in per:
+            if k < len(b):
+                batches.append(b[k])
 bd = D / "batches"; bd.mkdir(exist_ok=True)
+for f in bd.glob("exs*.ids"):
+    f.unlink()   # v1 batch names; exs001, exs002 folders were built but never launched (dispatch-log)
 names = []
 for n, b in enumerate(batches, 1):
-    name = f"exs{n:03d}"; names.append(name)
+    name = f"exb{n:03d}"; names.append(name)
     (bd / f"{name}.ids").write_text("\n".join(b) + "\n", encoding="utf-8")
 out["batches"] = dict(zip(names, batches))
+out["phase1_batches"] = [n for n, b in zip(names, batches) if all(strata[s].index(i) < 20 for i in b for s in strata if i in strata[s])]
 (D / "sample.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
 print("sample", len(ids), "large", len(out["large"]), "batches", len(batches), "check", check)
 print({s: len(v) for s, v in strata.items()}, "available", g.get("available"))

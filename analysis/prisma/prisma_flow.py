@@ -39,7 +39,11 @@ F = {}  # every count, keyed by box
 # ---------------------------------------------------------------- (1) seed corpus
 search = {}
 for r in jl(REV / "corpus/search-log.jsonl"):
-    if r.get("string") in ("S1", "S2") and "records_retrieved" in r and "arxiv" in r.get("database", "").lower():
+    # seed runs only (2026-10-14); the 2026-10-15 "protocol string verbatim" arXiv reruns belong to the free-source
+    # update (fix 2026-10-20, session 0839c9f4: the old test took the last arXiv row, i.e. the rerun)
+    if (r.get("string") in ("S1", "S2") and "records_retrieved" in r and r.get("database", "").startswith("arXiv API")
+            and "protocol string" not in r.get("database", "") and str(r.get("executed_utc", "")).startswith("20261014")):
+        assert r["string"] not in search, "two seed arXiv rows for one string"
         search[r["string"]] = r["records_retrieved"]
 awesome = len(jl(REV / "corpus/awesome-dlms@194aa6bd.jsonl"))
 dd = jload(REV / "screening/dedup-report.json")
@@ -50,6 +54,7 @@ B1 = {d["sid"]: d["decision"] for d in jg(REV / "screening/screener-B/batch-*.js
 assert set(A1) == set(B1) == set(v1)
 v1_either = {s for s in v1 if A1[s] != "exclude" or B1[s] != "exclude"}
 v1_both = {s for s in v1 if A1[s] != "exclude" and B1[s] != "exclude"}
+assert search["S1"] + search["S2"] + awesome - dd["duplicates_merged"] == dd["records"], "seed identified - duplicates != records"
 F["seed"] = {"identified_arxiv_S1": search.get("S1"), "identified_arxiv_S2": search.get("S2"),
              "identified_awesome_dlms": awesome, "duplicates_merged": dd["duplicates_merged"],
              "records_after_dedup": dd["records"], "ta_screened_dual_v1": len(v1),
