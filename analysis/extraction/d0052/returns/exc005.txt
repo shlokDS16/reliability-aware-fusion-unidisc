@@ -1,0 +1,756 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) R0171 row_group C22: row_group_not_found ('ParaDetox |' is not a whole line after the header on page 1) -> see the brief
+(2) R0171 row_group C23: row_group_not_found ('ParaDetox |' is not a whole line after the header on page 1) -> see the brief
+(3) R0171 row_group C24: row_group_not_found ('ParaDetox |' is not a whole line after the header on page 1) -> see the brief
+(4) R0171 label_row K14.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(5) R0171 label_row K14.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Deont |') -> see the brief
+(6) R0171 label_row K15.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(7) R0171 label_row K15.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Deont |') -> see the brief
+(8) R0171 label_row K16.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(9) R0171 label_row K16.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Deont |') -> see the brief
+(10) R0171 label_row K17.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(11) R0171 label_row K17.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Deont |') -> see the brief
+(12) R0171 label_row K18.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(13) R0171 label_row K18.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Deont |') -> see the brief
+(14) R0171 label_row K19.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(15) R0171 label_row K19.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Roc |') -> see the brief
+(16) R0171 label_row K20.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(17) R0171 label_row K20.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Roc |') -> see the brief
+(18) R0171 label_row K21.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(19) R0171 label_row K21.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Roc |') -> see the brief
+(20) R0171 label_row K22.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(21) R0171 label_row K22.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Roc |') -> see the brief
+(22) R0171 label_row K23.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(23) R0171 label_row K23.A2: label_row_mismatch (arm 'w/o EAGS |', row 'Roc |') -> see the brief
+(24) R0171 label_row K24.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(25) R0171 label_row K24.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Deont |') -> see the brief
+(26) R0171 label_row K25.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(27) R0171 label_row K25.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Deont |') -> see the brief
+(28) R0171 label_row K26.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(29) R0171 label_row K26.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Deont |') -> see the brief
+(30) R0171 label_row K27.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(31) R0171 label_row K27.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Deont |') -> see the brief
+(32) R0171 label_row K28.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(33) R0171 label_row K28.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Deont |') -> see the brief
+(34) R0171 label_row K29.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(35) R0171 label_row K29.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Roc |') -> see the brief
+(36) R0171 label_row K30.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(37) R0171 label_row K30.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Roc |') -> see the brief
+(38) R0171 label_row K31.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(39) R0171 label_row K31.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Roc |') -> see the brief
+(40) R0171 label_row K32.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(41) R0171 label_row K32.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Roc |') -> see the brief
+(42) R0171 label_row K33.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(43) R0171 label_row K33.A2: label_row_mismatch (arm 'w/o Gibbs Sampling |', row 'Roc |') -> see the brief
+(44) R0171 label_row K34.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(45) R0171 label_row K34.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Deont |') -> see the brief
+(46) R0171 label_row K35.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(47) R0171 label_row K35.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Deont |') -> see the brief
+(48) R0171 label_row K36.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(49) R0171 label_row K36.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Deont |') -> see the brief
+(50) R0171 label_row K37.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(51) R0171 label_row K37.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Deont |') -> see the brief
+(52) R0171 label_row K38.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Deont |') -> see the brief
+(53) R0171 label_row K38.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Deont |') -> see the brief
+(54) R0171 label_row K39.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(55) R0171 label_row K39.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Roc |') -> see the brief
+(56) R0171 label_row K40.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(57) R0171 label_row K40.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Roc |') -> see the brief
+(58) R0171 label_row K41.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(59) R0171 label_row K41.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Roc |') -> see the brief
+(60) R0171 label_row K42.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(61) R0171 label_row K42.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Roc |') -> see the brief
+(62) R0171 label_row K43.A1: label_row_mismatch (arm 'Diffusion-EAGS |', row 'Roc |') -> see the brief
+(63) R0171 label_row K43.A2: label_row_mismatch (arm 'w/o Pre-trained MLM |', row 'Roc |') -> see the brief
+(64) R0171 row_group K44.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(65) R0171 row_group K44.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(66) R0171 row_group K44.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(67) R0171 row_group K45.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(68) R0171 row_group K45.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(69) R0171 row_group K45.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(70) R0171 row_group K46.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(71) R0171 row_group K46.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(72) R0171 row_group K46.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(73) R0171 row_group K47.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(74) R0171 row_group K47.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(75) R0171 row_group K47.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(76) R0171 row_group K48.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(77) R0171 row_group K48.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(78) R0171 row_group K48.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(79) R0171 row_group K49.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(80) R0171 row_group K49.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(81) R0171 row_group K49.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(82) R0171 row_group K50.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(83) R0171 row_group K50.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(84) R0171 row_group K50.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(85) R0171 row_group K51.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(86) R0171 row_group K51.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(87) R0171 row_group K51.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(88) R0171 row_group K52.A1: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(89) R0171 row_group K52.A2: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(90) R0171 row_group K52.A3: rowgroup_benchmark_mismatch (benchmark 'ParaDetox', row group 'ParaDetox |') -> see the brief
+(91) R0171 row_group K53.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(92) R0171 row_group K53.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(93) R0171 row_group K54.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(94) R0171 row_group K54.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(95) R0171 row_group K55.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(96) R0171 row_group K55.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(97) R0171 row_group K56.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(98) R0171 row_group K56.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(99) R0171 row_group K57.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(100) R0171 row_group K57.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(101) R0171 row_group K58.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(102) R0171 row_group K58.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(103) R0171 row_group K59.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(104) R0171 row_group K59.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(105) R0171 row_group K60.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(106) R0171 row_group K60.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(107) R0171 row_group K61.A1: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(108) R0171 row_group K61.A3: rowgroup_benchmark_mismatch (benchmark 'Deontology', row group 'Deontology |') -> see the brief
+(109) R0171 row_group K62.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(110) R0171 row_group K62.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(111) R0171 row_group K63.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(112) R0171 row_group K63.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(113) R0171 row_group K64.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(114) R0171 row_group K64.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(115) R0171 row_group K65.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(116) R0171 row_group K65.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(117) R0171 row_group K66.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(118) R0171 row_group K66.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(119) R0171 row_group K67.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(120) R0171 row_group K67.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(121) R0171 row_group K68.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(122) R0171 row_group K68.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(123) R0171 row_group K69.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(124) R0171 row_group K69.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(125) R0171 row_group K70.A1: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(126) R0171 row_group K70.A2: rowgroup_benchmark_mismatch (benchmark 'QQP', row group 'QQP |') -> see the brief
+(127) R0171 row_group K71.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(128) R0171 row_group K71.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(129) R0171 row_group K72.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(130) R0171 row_group K72.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(131) R0171 row_group K73.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(132) R0171 row_group K73.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(133) R0171 row_group K74.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(134) R0171 row_group K74.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(135) R0171 row_group K75.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(136) R0171 row_group K75.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(137) R0171 row_group K76.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(138) R0171 row_group K76.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(139) R0171 row_group K77.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(140) R0171 row_group K77.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(141) R0171 row_group K78.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(142) R0171 row_group K78.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(143) R0171 row_group K79.A1: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(144) R0171 row_group K79.A2: rowgroup_benchmark_mismatch (benchmark 'QG', row group 'QG |') -> see the brief
+(145) R1004 table T02: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(146) R1004 table T04: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(147) R1004 row C26: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(148) R1004 row C27: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(149) R1004 row C29: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(150) R1004 row C30: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(151) R1004 row C78: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(152) R1004 row C80: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(153) R1004 condition K82.A1: condition_mismatch ('4K' against '') -> see the brief
+(154) R1004 condition K82.A2: condition_mismatch ('4K' against '') -> see the brief
+(155) R1004 condition K82.A3: condition_mismatch ('4K' against '') -> see the brief
+(156) R1004 condition K83.A1: condition_mismatch ('4K' against '') -> see the brief
+(157) R1004 condition K83.A2: condition_mismatch ('4K' against '') -> see the brief
+(158) R1004 condition K83.A3: condition_mismatch ('4K' against '') -> see the brief
+(159) R1004 condition K84.A1: condition_mismatch ('4K' against '') -> see the brief
+(160) R1004 condition K84.A2: condition_mismatch ('4K' against '') -> see the brief
+(161) R1004 condition K84.A3: condition_mismatch ('4K' against '') -> see the brief
+(162) R1004 condition K85.A1: condition_mismatch ('4K' against '') -> see the brief
+(163) R1004 condition K85.A2: condition_mismatch ('4K' against '') -> see the brief
+(164) R1004 condition K85.A3: condition_mismatch ('4K' against '') -> see the brief
+(165) R1004 condition K86.A1: condition_mismatch ('4K' against '') -> see the brief
+(166) R1004 condition K86.A2: condition_mismatch ('4K' against '') -> see the brief
+(167) R1004 condition K86.A3: condition_mismatch ('4K' against '') -> see the brief
+(168) R1004 condition K87.A1: condition_mismatch ('4K' against '') -> see the brief
+(169) R1004 condition K87.A2: condition_mismatch ('4K' against '') -> see the brief
+(170) R1004 condition K87.A3: condition_mismatch ('4K' against '') -> see the brief
+(171) R1004 condition K88.A1: condition_mismatch ('4K' against '') -> see the brief
+(172) R1004 condition K88.A2: condition_mismatch ('4K' against '') -> see the brief
+(173) R1004 condition K88.A3: condition_mismatch ('4K' against '') -> see the brief
+(174) R1004 condition K89.A1: condition_mismatch ('4K' against '') -> see the brief
+(175) R1004 condition K89.A2: condition_mismatch ('4K' against '') -> see the brief
+(176) R1004 condition K89.A3: condition_mismatch ('4K' against '') -> see the brief
+(177) R1004 condition K90.A1: condition_mismatch ('4K' against '') -> see the brief
+(178) R1004 condition K90.A2: condition_mismatch ('4K' against '') -> see the brief
+(179) R1004 condition K90.A3: condition_mismatch ('4K' against '') -> see the brief
+(180) R1004 condition K91.A1: condition_mismatch ('4K' against '') -> see the brief
+(181) R1004 condition K91.A2: condition_mismatch ('4K' against '') -> see the brief
+(182) R1004 condition K91.A3: condition_mismatch ('4K' against '') -> see the brief
+(183) R1004 condition K92.A1: condition_mismatch ('4K' against '') -> see the brief
+(184) R1004 condition K92.A2: condition_mismatch ('4K' against '') -> see the brief
+(185) R1004 condition K92.A3: condition_mismatch ('4K' against '') -> see the brief
+(186) R1004 condition K93.A1: condition_mismatch ('4K' against '') -> see the brief
+(187) R1004 condition K93.A2: condition_mismatch ('4K' against '') -> see the brief
+(188) R1004 condition K93.A3: condition_mismatch ('4K' against '') -> see the brief
+(189) R1004 condition K94.A1: condition_mismatch ('4K' against '') -> see the brief
+(190) R1004 condition K94.A2: condition_mismatch ('4K' against '') -> see the brief
+(191) R1004 condition K94.A3: condition_mismatch ('4K' against '') -> see the brief
+(192) R1004 condition K95.A1: condition_mismatch ('4K' against '') -> see the brief
+(193) R1004 condition K95.A2: condition_mismatch ('4K' against '') -> see the brief
+(194) R1004 condition K95.A3: condition_mismatch ('4K' against '') -> see the brief
+(195) R1004 condition K96.A1: condition_mismatch ('4K' against '') -> see the brief
+(196) R1004 condition K96.A2: condition_mismatch ('4K' against '') -> see the brief
+(197) R1004 condition K96.A3: condition_mismatch ('4K' against '') -> see the brief
+(198) R1004 condition K97.A1: condition_mismatch ('4K' against '') -> see the brief
+(199) R1004 condition K97.A2: condition_mismatch ('4K' against '') -> see the brief
+(200) R1004 condition K97.A3: condition_mismatch ('4K' against '') -> see the brief
+(201) R1004 condition K98.A1: condition_mismatch ('4K' against '') -> see the brief
+(202) R1004 condition K98.A2: condition_mismatch ('4K' against '') -> see the brief
+(203) R1004 condition K98.A3: condition_mismatch ('4K' against '') -> see the brief
+(204) R1004 condition K99.A1: condition_mismatch ('4K' against '') -> see the brief
+(205) R1004 condition K99.A2: condition_mismatch ('4K' against '') -> see the brief
+(206) R1004 condition K99.A3: condition_mismatch ('4K' against '') -> see the brief
+(207) R1004 condition K100.A1: condition_mismatch ('4K' against '') -> see the brief
+(208) R1004 condition K100.A2: condition_mismatch ('4K' against '') -> see the brief
+(209) R1004 condition K100.A3: condition_mismatch ('4K' against '') -> see the brief
+(210) R1004 condition K101.A1: condition_mismatch ('4K' against '') -> see the brief
+(211) R1004 condition K101.A2: condition_mismatch ('4K' against '') -> see the brief
+(212) R1004 condition K101.A3: condition_mismatch ('4K' against '') -> see the brief
+(213) R1004 condition K102.A1: condition_mismatch ('4K' against '') -> see the brief
+(214) R1004 condition K102.A2: condition_mismatch ('4K' against '') -> see the brief
+(215) R1004 condition K102.A3: condition_mismatch ('4K' against '') -> see the brief
+(216) R1004 condition K103.A1: condition_mismatch ('4K' against '') -> see the brief
+(217) R1004 condition K103.A2: condition_mismatch ('4K' against '') -> see the brief
+(218) R1004 condition K103.A3: condition_mismatch ('4K' against '') -> see the brief
+(219) R1004 condition K104.A1: condition_mismatch ('4K' against '') -> see the brief
+(220) R1004 condition K104.A2: condition_mismatch ('4K' against '') -> see the brief
+(221) R1004 condition K104.A3: condition_mismatch ('4K' against '') -> see the brief
+(222) R1004 condition K105.A1: condition_mismatch ('4K' against '') -> see the brief
+(223) R1004 condition K105.A2: condition_mismatch ('4K' against '') -> see the brief
+(224) R1004 condition K105.A3: condition_mismatch ('4K' against '') -> see the brief
+(225) R1004 condition K106.A1: condition_mismatch ('4K' against '') -> see the brief
+(226) R1004 condition K106.A2: condition_mismatch ('4K' against '') -> see the brief
+(227) R1004 condition K106.A3: condition_mismatch ('4K' against '') -> see the brief
+(228) R1004 condition K107.A1: condition_mismatch ('4K' against '') -> see the brief
+(229) R1004 condition K107.A2: condition_mismatch ('4K' against '') -> see the brief
+(230) R1004 condition K107.A3: condition_mismatch ('4K' against '') -> see the brief
+(231) R1004 condition K108.A1: condition_mismatch ('4K' against '') -> see the brief
+(232) R1004 condition K108.A2: condition_mismatch ('4K' against '') -> see the brief
+(233) R1004 condition K108.A3: condition_mismatch ('4K' against '') -> see the brief
+(234) R1004 condition K109.A1: condition_mismatch ('4K' against '') -> see the brief
+(235) R1004 condition K109.A2: condition_mismatch ('4K' against '') -> see the brief
+(236) R1004 condition K109.A3: condition_mismatch ('4K' against '') -> see the brief
+(237) R1004 condition K110.A1: condition_mismatch ('4K' against '') -> see the brief
+(238) R1004 condition K110.A2: condition_mismatch ('4K' against '') -> see the brief
+(239) R1004 condition K110.A3: condition_mismatch ('4K' against '') -> see the brief
+(240) R1004 condition K111.A1: condition_mismatch ('4K' against '') -> see the brief
+(241) R1004 condition K111.A2: condition_mismatch ('4K' against '') -> see the brief
+(242) R1004 condition K111.A3: condition_mismatch ('4K' against '') -> see the brief
+(243) R1004 condition K112.A1: condition_mismatch ('8K' against '') -> see the brief
+(244) R1004 condition K112.A2: condition_mismatch ('8K' against '') -> see the brief
+(245) R1004 condition K112.A3: condition_mismatch ('8K' against '') -> see the brief
+(246) R1004 condition K113.A1: condition_mismatch ('8K' against '') -> see the brief
+(247) R1004 condition K113.A2: condition_mismatch ('8K' against '') -> see the brief
+(248) R1004 condition K113.A3: condition_mismatch ('8K' against '') -> see the brief
+(249) R1004 condition K114.A1: condition_mismatch ('8K' against '') -> see the brief
+(250) R1004 condition K114.A2: condition_mismatch ('8K' against '') -> see the brief
+(251) R1004 condition K114.A3: condition_mismatch ('8K' against '') -> see the brief
+(252) R1004 condition K115.A1: condition_mismatch ('8K' against '') -> see the brief
+(253) R1004 condition K115.A2: condition_mismatch ('8K' against '') -> see the brief
+(254) R1004 condition K115.A3: condition_mismatch ('8K' against '') -> see the brief
+(255) R1004 condition K116.A1: condition_mismatch ('8K' against '') -> see the brief
+(256) R1004 condition K116.A2: condition_mismatch ('8K' against '') -> see the brief
+(257) R1004 condition K116.A3: condition_mismatch ('8K' against '') -> see the brief
+(258) R1004 condition K117.A1: condition_mismatch ('8K' against '') -> see the brief
+(259) R1004 condition K117.A2: condition_mismatch ('8K' against '') -> see the brief
+(260) R1004 condition K117.A3: condition_mismatch ('8K' against '') -> see the brief
+(261) R1004 condition K118.A1: condition_mismatch ('8K' against '') -> see the brief
+(262) R1004 condition K118.A2: condition_mismatch ('8K' against '') -> see the brief
+(263) R1004 condition K118.A3: condition_mismatch ('8K' against '') -> see the brief
+(264) R1004 condition K119.A1: condition_mismatch ('8K' against '') -> see the brief
+(265) R1004 condition K119.A2: condition_mismatch ('8K' against '') -> see the brief
+(266) R1004 condition K119.A3: condition_mismatch ('8K' against '') -> see the brief
+(267) R1004 condition K120.A1: condition_mismatch ('8K' against '') -> see the brief
+(268) R1004 condition K120.A2: condition_mismatch ('8K' against '') -> see the brief
+(269) R1004 condition K120.A3: condition_mismatch ('8K' against '') -> see the brief
+(270) R1004 condition K121.A1: condition_mismatch ('8K' against '') -> see the brief
+(271) R1004 condition K121.A2: condition_mismatch ('8K' against '') -> see the brief
+(272) R1004 condition K121.A3: condition_mismatch ('8K' against '') -> see the brief
+(273) R1004 condition K122.A1: condition_mismatch ('8K' against '') -> see the brief
+(274) R1004 condition K122.A2: condition_mismatch ('8K' against '') -> see the brief
+(275) R1004 condition K122.A3: condition_mismatch ('8K' against '') -> see the brief
+(276) R1004 condition K123.A1: condition_mismatch ('8K' against '') -> see the brief
+(277) R1004 condition K123.A2: condition_mismatch ('8K' against '') -> see the brief
+(278) R1004 condition K123.A3: condition_mismatch ('8K' against '') -> see the brief
+(279) R1004 condition K124.A1: condition_mismatch ('8K' against '') -> see the brief
+(280) R1004 condition K124.A2: condition_mismatch ('8K' against '') -> see the brief
+(281) R1004 condition K124.A3: condition_mismatch ('8K' against '') -> see the brief
+(282) R1004 condition K125.A1: condition_mismatch ('8K' against '') -> see the brief
+(283) R1004 condition K125.A2: condition_mismatch ('8K' against '') -> see the brief
+(284) R1004 condition K125.A3: condition_mismatch ('8K' against '') -> see the brief
+(285) R1004 condition K126.A1: condition_mismatch ('8K' against '') -> see the brief
+(286) R1004 condition K126.A2: condition_mismatch ('8K' against '') -> see the brief
+(287) R1004 condition K126.A3: condition_mismatch ('8K' against '') -> see the brief
+(288) R1004 condition K127.A1: condition_mismatch ('8K' against '') -> see the brief
+(289) R1004 condition K127.A2: condition_mismatch ('8K' against '') -> see the brief
+(290) R1004 condition K127.A3: condition_mismatch ('8K' against '') -> see the brief
+(291) R1004 condition K128.A1: condition_mismatch ('8K' against '') -> see the brief
+(292) R1004 condition K128.A2: condition_mismatch ('8K' against '') -> see the brief
+(293) R1004 condition K128.A3: condition_mismatch ('8K' against '') -> see the brief
+(294) R1004 condition K129.A1: condition_mismatch ('8K' against '') -> see the brief
+(295) R1004 condition K129.A2: condition_mismatch ('8K' against '') -> see the brief
+(296) R1004 condition K129.A3: condition_mismatch ('8K' against '') -> see the brief
+(297) R1004 condition K130.A1: condition_mismatch ('8K' against '') -> see the brief
+(298) R1004 condition K130.A2: condition_mismatch ('8K' against '') -> see the brief
+(299) R1004 condition K130.A3: condition_mismatch ('8K' against '') -> see the brief
+(300) R1004 condition K131.A1: condition_mismatch ('8K' against '') -> see the brief
+(301) R1004 condition K131.A2: condition_mismatch ('8K' against '') -> see the brief
+(302) R1004 condition K131.A3: condition_mismatch ('8K' against '') -> see the brief
+(303) R1004 condition K132.A1: condition_mismatch ('8K' against '') -> see the brief
+(304) R1004 condition K132.A2: condition_mismatch ('8K' against '') -> see the brief
+(305) R1004 condition K132.A3: condition_mismatch ('8K' against '') -> see the brief
+(306) R1004 condition K133.A1: condition_mismatch ('8K' against '') -> see the brief
+(307) R1004 condition K133.A2: condition_mismatch ('8K' against '') -> see the brief
+(308) R1004 condition K133.A3: condition_mismatch ('8K' against '') -> see the brief
+(309) R1004 condition K134.A1: condition_mismatch ('8K' against '') -> see the brief
+(310) R1004 condition K134.A2: condition_mismatch ('8K' against '') -> see the brief
+(311) R1004 condition K134.A3: condition_mismatch ('8K' against '') -> see the brief
+(312) R1004 condition K135.A1: condition_mismatch ('8K' against '') -> see the brief
+(313) R1004 condition K135.A2: condition_mismatch ('8K' against '') -> see the brief
+(314) R1004 condition K135.A3: condition_mismatch ('8K' against '') -> see the brief
+(315) R1004 condition K136.A1: condition_mismatch ('8K' against '') -> see the brief
+(316) R1004 condition K136.A2: condition_mismatch ('8K' against '') -> see the brief
+(317) R1004 condition K136.A3: condition_mismatch ('8K' against '') -> see the brief
+(318) R1004 condition K137.A1: condition_mismatch ('8K' against '') -> see the brief
+(319) R1004 condition K137.A2: condition_mismatch ('8K' against '') -> see the brief
+(320) R1004 condition K137.A3: condition_mismatch ('8K' against '') -> see the brief
+(321) R1004 condition K138.A1: condition_mismatch ('8K' against '') -> see the brief
+(322) R1004 condition K138.A2: condition_mismatch ('8K' against '') -> see the brief
+(323) R1004 condition K138.A3: condition_mismatch ('8K' against '') -> see the brief
+(324) R1004 condition K139.A1: condition_mismatch ('8K' against '') -> see the brief
+(325) R1004 condition K139.A2: condition_mismatch ('8K' against '') -> see the brief
+(326) R1004 condition K139.A3: condition_mismatch ('8K' against '') -> see the brief
+(327) R1004 condition K140.A1: condition_mismatch ('8K' against '') -> see the brief
+(328) R1004 condition K140.A2: condition_mismatch ('8K' against '') -> see the brief
+(329) R1004 condition K140.A3: condition_mismatch ('8K' against '') -> see the brief
+(330) R1004 condition K141.A1: condition_mismatch ('8K' against '') -> see the brief
+(331) R1004 condition K141.A2: condition_mismatch ('8K' against '') -> see the brief
+(332) R1004 condition K141.A3: condition_mismatch ('8K' against '') -> see the brief
+(333) R1004 condition K142.A1: condition_mismatch ('4K' against '') -> see the brief
+(334) R1004 condition K142.A2: condition_mismatch ('4K' against '') -> see the brief
+(335) R1004 condition K142.A3: condition_mismatch ('4K' against '') -> see the brief
+(336) R1004 condition K143.A1: condition_mismatch ('4K' against '') -> see the brief
+(337) R1004 condition K143.A2: condition_mismatch ('4K' against '') -> see the brief
+(338) R1004 condition K143.A3: condition_mismatch ('4K' against '') -> see the brief
+(339) R1004 condition K144.A1: condition_mismatch ('4K' against '') -> see the brief
+(340) R1004 condition K144.A2: condition_mismatch ('4K' against '') -> see the brief
+(341) R1004 condition K144.A3: condition_mismatch ('4K' against '') -> see the brief
+(342) R1004 condition K145.A1: condition_mismatch ('4K' against '') -> see the brief
+(343) R1004 condition K145.A2: condition_mismatch ('4K' against '') -> see the brief
+(344) R1004 condition K145.A3: condition_mismatch ('4K' against '') -> see the brief
+(345) R1004 condition K146.A1: condition_mismatch ('4K' against '') -> see the brief
+(346) R1004 condition K146.A2: condition_mismatch ('4K' against '') -> see the brief
+(347) R1004 condition K146.A3: condition_mismatch ('4K' against '') -> see the brief
+(348) R1004 condition K147.A1: condition_mismatch ('4K' against '') -> see the brief
+(349) R1004 condition K147.A2: condition_mismatch ('4K' against '') -> see the brief
+(350) R1004 condition K147.A3: condition_mismatch ('4K' against '') -> see the brief
+(351) R1004 condition K148.A1: condition_mismatch ('4K' against '') -> see the brief
+(352) R1004 condition K148.A2: condition_mismatch ('4K' against '') -> see the brief
+(353) R1004 condition K148.A3: condition_mismatch ('4K' against '') -> see the brief
+(354) R1004 condition K149.A1: condition_mismatch ('4K' against '') -> see the brief
+(355) R1004 condition K149.A2: condition_mismatch ('4K' against '') -> see the brief
+(356) R1004 condition K149.A3: condition_mismatch ('4K' against '') -> see the brief
+(357) R1004 condition K150.A1: condition_mismatch ('4K' against '') -> see the brief
+(358) R1004 condition K150.A2: condition_mismatch ('4K' against '') -> see the brief
+(359) R1004 condition K150.A3: condition_mismatch ('4K' against '') -> see the brief
+(360) R1004 condition K151.A1: condition_mismatch ('4K' against '') -> see the brief
+(361) R1004 condition K151.A2: condition_mismatch ('4K' against '') -> see the brief
+(362) R1004 condition K151.A3: condition_mismatch ('4K' against '') -> see the brief
+(363) R1004 condition K152.A1: condition_mismatch ('4K' against '') -> see the brief
+(364) R1004 condition K152.A2: condition_mismatch ('4K' against '') -> see the brief
+(365) R1004 condition K152.A3: condition_mismatch ('4K' against '') -> see the brief
+(366) R1004 condition K153.A1: condition_mismatch ('4K' against '') -> see the brief
+(367) R1004 condition K153.A2: condition_mismatch ('4K' against '') -> see the brief
+(368) R1004 condition K153.A3: condition_mismatch ('4K' against '') -> see the brief
+(369) R1004 condition K154.A1: condition_mismatch ('4K' against '') -> see the brief
+(370) R1004 condition K154.A2: condition_mismatch ('4K' against '') -> see the brief
+(371) R1004 condition K154.A3: condition_mismatch ('4K' against '') -> see the brief
+(372) R1004 condition K155.A1: condition_mismatch ('4K' against '') -> see the brief
+(373) R1004 condition K155.A2: condition_mismatch ('4K' against '') -> see the brief
+(374) R1004 condition K155.A3: condition_mismatch ('4K' against '') -> see the brief
+(375) R1004 condition K156.A1: condition_mismatch ('4K' against '') -> see the brief
+(376) R1004 condition K156.A2: condition_mismatch ('4K' against '') -> see the brief
+(377) R1004 condition K156.A3: condition_mismatch ('4K' against '') -> see the brief
+(378) R1004 condition K157.A1: condition_mismatch ('4K' against '') -> see the brief
+(379) R1004 condition K157.A2: condition_mismatch ('4K' against '') -> see the brief
+(380) R1004 condition K157.A3: condition_mismatch ('4K' against '') -> see the brief
+(381) R1004 condition K158.A1: condition_mismatch ('4K' against '') -> see the brief
+(382) R1004 condition K158.A2: condition_mismatch ('4K' against '') -> see the brief
+(383) R1004 condition K158.A3: condition_mismatch ('4K' against '') -> see the brief
+(384) R1004 condition K159.A1: condition_mismatch ('4K' against '') -> see the brief
+(385) R1004 condition K159.A2: condition_mismatch ('4K' against '') -> see the brief
+(386) R1004 condition K159.A3: condition_mismatch ('4K' against '') -> see the brief
+(387) R1004 condition K160.A1: condition_mismatch ('4K' against '') -> see the brief
+(388) R1004 condition K160.A2: condition_mismatch ('4K' against '') -> see the brief
+(389) R1004 condition K160.A3: condition_mismatch ('4K' against '') -> see the brief
+(390) R1004 condition K161.A1: condition_mismatch ('4K' against '') -> see the brief
+(391) R1004 condition K161.A2: condition_mismatch ('4K' against '') -> see the brief
+(392) R1004 condition K161.A3: condition_mismatch ('4K' against '') -> see the brief
+(393) R1004 condition K162.A1: condition_mismatch ('4K' against '') -> see the brief
+(394) R1004 condition K162.A2: condition_mismatch ('4K' against '') -> see the brief
+(395) R1004 condition K162.A3: condition_mismatch ('4K' against '') -> see the brief
+(396) R1004 condition K163.A1: condition_mismatch ('4K' against '') -> see the brief
+(397) R1004 condition K163.A2: condition_mismatch ('4K' against '') -> see the brief
+(398) R1004 condition K163.A3: condition_mismatch ('4K' against '') -> see the brief
+(399) R1004 condition K164.A1: condition_mismatch ('4K' against '') -> see the brief
+(400) R1004 condition K164.A2: condition_mismatch ('4K' against '') -> see the brief
+(401) R1004 condition K164.A3: condition_mismatch ('4K' against '') -> see the brief
+(402) R1004 condition K165.A1: condition_mismatch ('4K' against '') -> see the brief
+(403) R1004 condition K165.A2: condition_mismatch ('4K' against '') -> see the brief
+(404) R1004 condition K165.A3: condition_mismatch ('4K' against '') -> see the brief
+(405) R1004 condition K166.A1: condition_mismatch ('4K' against '') -> see the brief
+(406) R1004 condition K166.A2: condition_mismatch ('4K' against '') -> see the brief
+(407) R1004 condition K166.A3: condition_mismatch ('4K' against '') -> see the brief
+(408) R1004 condition K167.A1: condition_mismatch ('4K' against '') -> see the brief
+(409) R1004 condition K167.A2: condition_mismatch ('4K' against '') -> see the brief
+(410) R1004 condition K167.A3: condition_mismatch ('4K' against '') -> see the brief
+(411) R1004 condition K168.A1: condition_mismatch ('4K' against '') -> see the brief
+(412) R1004 condition K168.A2: condition_mismatch ('4K' against '') -> see the brief
+(413) R1004 condition K168.A3: condition_mismatch ('4K' against '') -> see the brief
+(414) R1004 condition K169.A1: condition_mismatch ('4K' against '') -> see the brief
+(415) R1004 condition K169.A2: condition_mismatch ('4K' against '') -> see the brief
+(416) R1004 condition K169.A3: condition_mismatch ('4K' against '') -> see the brief
+(417) R1004 condition K170.A1: condition_mismatch ('4K' against '') -> see the brief
+(418) R1004 condition K170.A2: condition_mismatch ('4K' against '') -> see the brief
+(419) R1004 condition K170.A3: condition_mismatch ('4K' against '') -> see the brief
+(420) R1004 condition K171.A1: condition_mismatch ('4K' against '') -> see the brief
+(421) R1004 condition K171.A2: condition_mismatch ('4K' against '') -> see the brief
+(422) R1004 condition K171.A3: condition_mismatch ('4K' against '') -> see the brief
+(423) R1004 condition K172.A1: condition_mismatch ('8K' against '') -> see the brief
+(424) R1004 condition K172.A2: condition_mismatch ('8K' against '') -> see the brief
+(425) R1004 condition K172.A3: condition_mismatch ('8K' against '') -> see the brief
+(426) R1004 condition K173.A1: condition_mismatch ('8K' against '') -> see the brief
+(427) R1004 condition K173.A2: condition_mismatch ('8K' against '') -> see the brief
+(428) R1004 condition K173.A3: condition_mismatch ('8K' against '') -> see the brief
+(429) R1004 condition K174.A1: condition_mismatch ('8K' against '') -> see the brief
+(430) R1004 condition K174.A2: condition_mismatch ('8K' against '') -> see the brief
+(431) R1004 condition K174.A3: condition_mismatch ('8K' against '') -> see the brief
+(432) R1004 condition K175.A1: condition_mismatch ('8K' against '') -> see the brief
+(433) R1004 condition K175.A2: condition_mismatch ('8K' against '') -> see the brief
+(434) R1004 condition K175.A3: condition_mismatch ('8K' against '') -> see the brief
+(435) R1004 condition K176.A1: condition_mismatch ('8K' against '') -> see the brief
+(436) R1004 condition K176.A2: condition_mismatch ('8K' against '') -> see the brief
+(437) R1004 condition K176.A3: condition_mismatch ('8K' against '') -> see the brief
+(438) R1004 condition K177.A1: condition_mismatch ('8K' against '') -> see the brief
+(439) R1004 condition K177.A2: condition_mismatch ('8K' against '') -> see the brief
+(440) R1004 condition K177.A3: condition_mismatch ('8K' against '') -> see the brief
+(441) R1004 condition K178.A1: condition_mismatch ('8K' against '') -> see the brief
+(442) R1004 condition K178.A2: condition_mismatch ('8K' against '') -> see the brief
+(443) R1004 condition K178.A3: condition_mismatch ('8K' against '') -> see the brief
+(444) R1004 condition K179.A1: condition_mismatch ('8K' against '') -> see the brief
+(445) R1004 condition K179.A2: condition_mismatch ('8K' against '') -> see the brief
+(446) R1004 condition K179.A3: condition_mismatch ('8K' against '') -> see the brief
+(447) R1004 condition K180.A1: condition_mismatch ('8K' against '') -> see the brief
+(448) R1004 condition K180.A2: condition_mismatch ('8K' against '') -> see the brief
+(449) R1004 condition K180.A3: condition_mismatch ('8K' against '') -> see the brief
+(450) R1004 condition K181.A1: condition_mismatch ('8K' against '') -> see the brief
+(451) R1004 condition K181.A2: condition_mismatch ('8K' against '') -> see the brief
+(452) R1004 condition K181.A3: condition_mismatch ('8K' against '') -> see the brief
+(453) R1004 condition K182.A1: condition_mismatch ('8K' against '') -> see the brief
+(454) R1004 condition K182.A2: condition_mismatch ('8K' against '') -> see the brief
+(455) R1004 condition K182.A3: condition_mismatch ('8K' against '') -> see the brief
+(456) R1004 condition K183.A1: condition_mismatch ('8K' against '') -> see the brief
+(457) R1004 condition K183.A2: condition_mismatch ('8K' against '') -> see the brief
+(458) R1004 condition K183.A3: condition_mismatch ('8K' against '') -> see the brief
+(459) R1004 condition K184.A1: condition_mismatch ('8K' against '') -> see the brief
+(460) R1004 condition K184.A2: condition_mismatch ('8K' against '') -> see the brief
+(461) R1004 condition K184.A3: condition_mismatch ('8K' against '') -> see the brief
+(462) R1004 condition K185.A1: condition_mismatch ('8K' against '') -> see the brief
+(463) R1004 condition K185.A2: condition_mismatch ('8K' against '') -> see the brief
+(464) R1004 condition K185.A3: condition_mismatch ('8K' against '') -> see the brief
+(465) R1004 condition K186.A1: condition_mismatch ('8K' against '') -> see the brief
+(466) R1004 condition K186.A2: condition_mismatch ('8K' against '') -> see the brief
+(467) R1004 condition K186.A3: condition_mismatch ('8K' against '') -> see the brief
+(468) R1004 condition K187.A1: condition_mismatch ('8K' against '') -> see the brief
+(469) R1004 condition K187.A2: condition_mismatch ('8K' against '') -> see the brief
+(470) R1004 condition K187.A3: condition_mismatch ('8K' against '') -> see the brief
+(471) R1004 condition K188.A1: condition_mismatch ('8K' against '') -> see the brief
+(472) R1004 condition K188.A2: condition_mismatch ('8K' against '') -> see the brief
+(473) R1004 condition K188.A3: condition_mismatch ('8K' against '') -> see the brief
+(474) R1004 condition K189.A1: condition_mismatch ('8K' against '') -> see the brief
+(475) R1004 condition K189.A2: condition_mismatch ('8K' against '') -> see the brief
+(476) R1004 condition K189.A3: condition_mismatch ('8K' against '') -> see the brief
+(477) R1004 condition K190.A1: condition_mismatch ('8K' against '') -> see the brief
+(478) R1004 condition K190.A2: condition_mismatch ('8K' against '') -> see the brief
+(479) R1004 condition K190.A3: condition_mismatch ('8K' against '') -> see the brief
+(480) R1004 condition K191.A1: condition_mismatch ('8K' against '') -> see the brief
+(481) R1004 condition K191.A2: condition_mismatch ('8K' against '') -> see the brief
+(482) R1004 condition K191.A3: condition_mismatch ('8K' against '') -> see the brief
+(483) R1004 condition K192.A1: condition_mismatch ('8K' against '') -> see the brief
+(484) R1004 condition K192.A2: condition_mismatch ('8K' against '') -> see the brief
+(485) R1004 condition K192.A3: condition_mismatch ('8K' against '') -> see the brief
+(486) R1004 condition K193.A1: condition_mismatch ('8K' against '') -> see the brief
+(487) R1004 condition K193.A2: condition_mismatch ('8K' against '') -> see the brief
+(488) R1004 condition K193.A3: condition_mismatch ('8K' against '') -> see the brief
+(489) R1004 condition K194.A1: condition_mismatch ('8K' against '') -> see the brief
+(490) R1004 condition K194.A2: condition_mismatch ('8K' against '') -> see the brief
+(491) R1004 condition K194.A3: condition_mismatch ('8K' against '') -> see the brief
+(492) R1004 condition K195.A1: condition_mismatch ('8K' against '') -> see the brief
+(493) R1004 condition K195.A2: condition_mismatch ('8K' against '') -> see the brief
+(494) R1004 condition K195.A3: condition_mismatch ('8K' against '') -> see the brief
+(495) R1004 condition K196.A1: condition_mismatch ('8K' against '') -> see the brief
+(496) R1004 condition K196.A2: condition_mismatch ('8K' against '') -> see the brief
+(497) R1004 condition K196.A3: condition_mismatch ('8K' against '') -> see the brief
+(498) R1004 condition K197.A1: condition_mismatch ('8K' against '') -> see the brief
+(499) R1004 condition K197.A2: condition_mismatch ('8K' against '') -> see the brief
+(500) R1004 condition K197.A3: condition_mismatch ('8K' against '') -> see the brief
+(501) R1004 condition K198.A1: condition_mismatch ('8K' against '') -> see the brief
+(502) R1004 condition K198.A2: condition_mismatch ('8K' against '') -> see the brief
+(503) R1004 condition K198.A3: condition_mismatch ('8K' against '') -> see the brief
+(504) R1004 condition K199.A1: condition_mismatch ('8K' against '') -> see the brief
+(505) R1004 condition K199.A2: condition_mismatch ('8K' against '') -> see the brief
+(506) R1004 condition K199.A3: condition_mismatch ('8K' against '') -> see the brief
+(507) R1004 condition K200.A1: condition_mismatch ('8K' against '') -> see the brief
+(508) R1004 condition K200.A2: condition_mismatch ('8K' against '') -> see the brief
+(509) R1004 condition K200.A3: condition_mismatch ('8K' against '') -> see the brief
+(510) R1004 condition K201.A1: condition_mismatch ('8K' against '') -> see the brief
+(511) R1004 condition K201.A2: condition_mismatch ('8K' against '') -> see the brief
+(512) R1004 condition K201.A3: condition_mismatch ('8K' against '') -> see the brief
+(513) R1004 condition K256.A1: condition_mismatch ('4K' against '') -> see the brief
+(514) R1004 condition K256.A2: condition_mismatch ('4K' against '') -> see the brief
+(515) R1004 condition K256.A3: condition_mismatch ('4K' against '') -> see the brief
+(516) R1004 condition K257.A1: condition_mismatch ('4K' against '') -> see the brief
+(517) R1004 condition K257.A2: condition_mismatch ('4K' against '') -> see the brief
+(518) R1004 condition K257.A3: condition_mismatch ('4K' against '') -> see the brief
+(519) R1004 condition K258.A1: condition_mismatch ('4K' against '') -> see the brief
+(520) R1004 condition K258.A2: condition_mismatch ('4K' against '') -> see the brief
+(521) R1004 condition K258.A3: condition_mismatch ('4K' against '') -> see the brief
+(522) R1004 condition K259.A1: condition_mismatch ('4K' against '') -> see the brief
+(523) R1004 condition K259.A2: condition_mismatch ('4K' against '') -> see the brief
+(524) R1004 condition K259.A3: condition_mismatch ('4K' against '') -> see the brief
+(525) R1004 condition K260.A1: condition_mismatch ('4K' against '') -> see the brief
+(526) R1004 condition K260.A2: condition_mismatch ('4K' against '') -> see the brief
+(527) R1004 condition K260.A3: condition_mismatch ('4K' against '') -> see the brief
+(528) R1004 condition K261.A1: condition_mismatch ('4K' against '') -> see the brief
+(529) R1004 condition K261.A2: condition_mismatch ('4K' against '') -> see the brief
+(530) R1004 condition K261.A3: condition_mismatch ('4K' against '') -> see the brief
+(531) R1004 condition K262.A1: condition_mismatch ('4K' against '') -> see the brief
+(532) R1004 condition K262.A2: condition_mismatch ('4K' against '') -> see the brief
+(533) R1004 condition K262.A3: condition_mismatch ('4K' against '') -> see the brief
+(534) R1004 condition K263.A1: condition_mismatch ('4K' against '') -> see the brief
+(535) R1004 condition K263.A2: condition_mismatch ('4K' against '') -> see the brief
+(536) R1004 condition K263.A3: condition_mismatch ('4K' against '') -> see the brief
+(537) R1004 condition K264.A1: condition_mismatch ('4K' against '') -> see the brief
+(538) R1004 condition K264.A2: condition_mismatch ('4K' against '') -> see the brief
+(539) R1004 condition K264.A3: condition_mismatch ('4K' against '') -> see the brief
+(540) R1004 condition K265.A1: condition_mismatch ('4K' against '') -> see the brief
+(541) R1004 condition K265.A2: condition_mismatch ('4K' against '') -> see the brief
+(542) R1004 condition K265.A3: condition_mismatch ('4K' against '') -> see the brief
+(543) R1004 condition K266.A1: condition_mismatch ('4K' against '') -> see the brief
+(544) R1004 condition K266.A2: condition_mismatch ('4K' against '') -> see the brief
+(545) R1004 condition K266.A3: condition_mismatch ('4K' against '') -> see the brief
+(546) R1004 condition K267.A1: condition_mismatch ('4K' against '') -> see the brief
+(547) R1004 condition K267.A2: condition_mismatch ('4K' against '') -> see the brief
+(548) R1004 condition K267.A3: condition_mismatch ('4K' against '') -> see the brief
+(549) R1004 condition K268.A1: condition_mismatch ('4K' against '') -> see the brief
+(550) R1004 condition K268.A2: condition_mismatch ('4K' against '') -> see the brief
+(551) R1004 condition K268.A3: condition_mismatch ('4K' against '') -> see the brief
+(552) R1004 condition K269.A1: condition_mismatch ('4K' against '') -> see the brief
+(553) R1004 condition K269.A2: condition_mismatch ('4K' against '') -> see the brief
+(554) R1004 condition K269.A3: condition_mismatch ('4K' against '') -> see the brief
+(555) R1004 condition K270.A1: condition_mismatch ('4K' against '') -> see the brief
+(556) R1004 condition K270.A2: condition_mismatch ('4K' against '') -> see the brief
+(557) R1004 condition K270.A3: condition_mismatch ('4K' against '') -> see the brief
+(558) R1004 condition K271.A1: condition_mismatch ('4K' against '') -> see the brief
+(559) R1004 condition K271.A2: condition_mismatch ('4K' against '') -> see the brief
+(560) R1004 condition K271.A3: condition_mismatch ('4K' against '') -> see the brief
+(561) R1004 condition K272.A1: condition_mismatch ('4K' against '') -> see the brief
+(562) R1004 condition K272.A2: condition_mismatch ('4K' against '') -> see the brief
+(563) R1004 condition K272.A3: condition_mismatch ('4K' against '') -> see the brief
+(564) R1004 condition K273.A1: condition_mismatch ('4K' against '') -> see the brief
+(565) R1004 condition K273.A2: condition_mismatch ('4K' against '') -> see the brief
+(566) R1004 condition K273.A3: condition_mismatch ('4K' against '') -> see the brief
+(567) R1004 condition K274.A1: condition_mismatch ('4K' against '') -> see the brief
+(568) R1004 condition K274.A2: condition_mismatch ('4K' against '') -> see the brief
+(569) R1004 condition K274.A3: condition_mismatch ('4K' against '') -> see the brief
+(570) R1004 condition K275.A1: condition_mismatch ('4K' against '') -> see the brief
+(571) R1004 condition K275.A2: condition_mismatch ('4K' against '') -> see the brief
+(572) R1004 condition K275.A3: condition_mismatch ('4K' against '') -> see the brief
+(573) R1004 condition K276.A1: condition_mismatch ('8K' against '') -> see the brief
+(574) R1004 condition K276.A2: condition_mismatch ('8K' against '') -> see the brief
+(575) R1004 condition K276.A3: condition_mismatch ('8K' against '') -> see the brief
+(576) R1004 condition K277.A1: condition_mismatch ('8K' against '') -> see the brief
+(577) R1004 condition K277.A2: condition_mismatch ('8K' against '') -> see the brief
+(578) R1004 condition K277.A3: condition_mismatch ('8K' against '') -> see the brief
+(579) R1004 condition K278.A1: condition_mismatch ('8K' against '') -> see the brief
+(580) R1004 condition K278.A2: condition_mismatch ('8K' against '') -> see the brief
+(581) R1004 condition K278.A3: condition_mismatch ('8K' against '') -> see the brief
+(582) R1004 condition K279.A1: condition_mismatch ('8K' against '') -> see the brief
+(583) R1004 condition K279.A2: condition_mismatch ('8K' against '') -> see the brief
+(584) R1004 condition K279.A3: condition_mismatch ('8K' against '') -> see the brief
+(585) R1004 condition K280.A1: condition_mismatch ('8K' against '') -> see the brief
+(586) R1004 condition K280.A2: condition_mismatch ('8K' against '') -> see the brief
+(587) R1004 condition K280.A3: condition_mismatch ('8K' against '') -> see the brief
+(588) R1004 condition K281.A1: condition_mismatch ('8K' against '') -> see the brief
+(589) R1004 condition K281.A2: condition_mismatch ('8K' against '') -> see the brief
+(590) R1004 condition K281.A3: condition_mismatch ('8K' against '') -> see the brief
+(591) R1004 condition K282.A1: condition_mismatch ('8K' against '') -> see the brief
+(592) R1004 condition K282.A2: condition_mismatch ('8K' against '') -> see the brief
+(593) R1004 condition K282.A3: condition_mismatch ('8K' against '') -> see the brief
+(594) R1004 condition K283.A1: condition_mismatch ('8K' against '') -> see the brief
+(595) R1004 condition K283.A2: condition_mismatch ('8K' against '') -> see the brief
+(596) R1004 condition K283.A3: condition_mismatch ('8K' against '') -> see the brief
+(597) R1004 condition K284.A1: condition_mismatch ('8K' against '') -> see the brief
+(598) R1004 condition K284.A2: condition_mismatch ('8K' against '') -> see the brief
+(599) R1004 condition K284.A3: condition_mismatch ('8K' against '') -> see the brief
+(600) R1004 condition K285.A1: condition_mismatch ('8K' against '') -> see the brief
+(601) R1004 condition K285.A2: condition_mismatch ('8K' against '') -> see the brief
+(602) R1004 condition K285.A3: condition_mismatch ('8K' against '') -> see the brief
+(603) R1004 condition K286.A1: condition_mismatch ('8K' against '') -> see the brief
+(604) R1004 condition K286.A2: condition_mismatch ('8K' against '') -> see the brief
+(605) R1004 condition K286.A3: condition_mismatch ('8K' against '') -> see the brief
+(606) R1004 condition K287.A1: condition_mismatch ('8K' against '') -> see the brief
+(607) R1004 condition K287.A2: condition_mismatch ('8K' against '') -> see the brief
+(608) R1004 condition K287.A3: condition_mismatch ('8K' against '') -> see the brief
+(609) R1004 condition K288.A1: condition_mismatch ('8K' against '') -> see the brief
+(610) R1004 condition K288.A2: condition_mismatch ('8K' against '') -> see the brief
+(611) R1004 condition K288.A3: condition_mismatch ('8K' against '') -> see the brief
+(612) R1004 condition K289.A1: condition_mismatch ('8K' against '') -> see the brief
+(613) R1004 condition K289.A2: condition_mismatch ('8K' against '') -> see the brief
+(614) R1004 condition K289.A3: condition_mismatch ('8K' against '') -> see the brief
+(615) R1004 condition K290.A1: condition_mismatch ('8K' against '') -> see the brief
+(616) R1004 condition K290.A2: condition_mismatch ('8K' against '') -> see the brief
+(617) R1004 condition K290.A3: condition_mismatch ('8K' against '') -> see the brief
+(618) R1004 condition K291.A1: condition_mismatch ('8K' against '') -> see the brief
+(619) R1004 condition K291.A2: condition_mismatch ('8K' against '') -> see the brief
+(620) R1004 condition K291.A3: condition_mismatch ('8K' against '') -> see the brief
+(621) R1004 condition K292.A1: condition_mismatch ('8K' against '') -> see the brief
+(622) R1004 condition K292.A2: condition_mismatch ('8K' against '') -> see the brief
+(623) R1004 condition K292.A3: condition_mismatch ('8K' against '') -> see the brief
+(624) R1004 condition K293.A1: condition_mismatch ('8K' against '') -> see the brief
+(625) R1004 condition K293.A2: condition_mismatch ('8K' against '') -> see the brief
+(626) R1004 condition K293.A3: condition_mismatch ('8K' against '') -> see the brief
+(627) R1004 condition K294.A1: condition_mismatch ('8K' against '') -> see the brief
+(628) R1004 condition K294.A2: condition_mismatch ('8K' against '') -> see the brief
+(629) R1004 condition K294.A3: condition_mismatch ('8K' against '') -> see the brief
+(630) R1004 condition K295.A1: condition_mismatch ('8K' against '') -> see the brief
+(631) R1004 condition K295.A2: condition_mismatch ('8K' against '') -> see the brief
+(632) R1004 condition K295.A3: condition_mismatch ('8K' against '') -> see the brief
+(633) R1004 condition K296.A1: condition_mismatch ('4K' against '') -> see the brief
+(634) R1004 condition K296.A2: condition_mismatch ('4K' against '') -> see the brief
+(635) R1004 condition K296.A3: condition_mismatch ('4K' against '') -> see the brief
+(636) R1004 condition K297.A1: condition_mismatch ('4K' against '') -> see the brief
+(637) R1004 condition K297.A2: condition_mismatch ('4K' against '') -> see the brief
+(638) R1004 condition K297.A3: condition_mismatch ('4K' against '') -> see the brief
+(639) R1004 condition K298.A1: condition_mismatch ('4K' against '') -> see the brief
+(640) R1004 condition K298.A2: condition_mismatch ('4K' against '') -> see the brief
+(641) R1004 condition K298.A3: condition_mismatch ('4K' against '') -> see the brief
+(642) R1004 condition K299.A1: condition_mismatch ('4K' against '') -> see the brief
+(643) R1004 condition K299.A2: condition_mismatch ('4K' against '') -> see the brief
+(644) R1004 condition K299.A3: condition_mismatch ('4K' against '') -> see the brief
+(645) R1004 condition K300.A1: condition_mismatch ('4K' against '') -> see the brief
+(646) R1004 condition K300.A2: condition_mismatch ('4K' against '') -> see the brief
+(647) R1004 condition K300.A3: condition_mismatch ('4K' against '') -> see the brief
+(648) R1004 condition K301.A1: condition_mismatch ('4K' against '') -> see the brief
+(649) R1004 condition K301.A2: condition_mismatch ('4K' against '') -> see the brief
+(650) R1004 condition K301.A3: condition_mismatch ('4K' against '') -> see the brief
+(651) R1004 condition K302.A1: condition_mismatch ('4K' against '') -> see the brief
+(652) R1004 condition K302.A2: condition_mismatch ('4K' against '') -> see the brief
+(653) R1004 condition K302.A3: condition_mismatch ('4K' against '') -> see the brief
+(654) R1004 condition K303.A1: condition_mismatch ('4K' against '') -> see the brief
+(655) R1004 condition K303.A2: condition_mismatch ('4K' against '') -> see the brief
+(656) R1004 condition K303.A3: condition_mismatch ('4K' against '') -> see the brief
+(657) R1004 condition K304.A1: condition_mismatch ('4K' against '') -> see the brief
+(658) R1004 condition K304.A2: condition_mismatch ('4K' against '') -> see the brief
+(659) R1004 condition K304.A3: condition_mismatch ('4K' against '') -> see the brief
+(660) R1004 condition K305.A1: condition_mismatch ('4K' against '') -> see the brief
+(661) R1004 condition K305.A2: condition_mismatch ('4K' against '') -> see the brief
+(662) R1004 condition K305.A3: condition_mismatch ('4K' against '') -> see the brief
+(663) R1004 condition K306.A1: condition_mismatch ('4K' against '') -> see the brief
+(664) R1004 condition K306.A2: condition_mismatch ('4K' against '') -> see the brief
+(665) R1004 condition K306.A3: condition_mismatch ('4K' against '') -> see the brief
+(666) R1004 condition K307.A1: condition_mismatch ('4K' against '') -> see the brief
+(667) R1004 condition K307.A2: condition_mismatch ('4K' against '') -> see the brief
+(668) R1004 condition K307.A3: condition_mismatch ('4K' against '') -> see the brief
+(669) R1004 condition K308.A1: condition_mismatch ('4K' against '') -> see the brief
+(670) R1004 condition K308.A2: condition_mismatch ('4K' against '') -> see the brief
+(671) R1004 condition K308.A3: condition_mismatch ('4K' against '') -> see the brief
+(672) R1004 condition K309.A1: condition_mismatch ('4K' against '') -> see the brief
+(673) R1004 condition K309.A2: condition_mismatch ('4K' against '') -> see the brief
+(674) R1004 condition K309.A3: condition_mismatch ('4K' against '') -> see the brief
+(675) R1004 condition K310.A1: condition_mismatch ('4K' against '') -> see the brief
+(676) R1004 condition K310.A2: condition_mismatch ('4K' against '') -> see the brief
+(677) R1004 condition K310.A3: condition_mismatch ('4K' against '') -> see the brief
+(678) R1004 condition K311.A1: condition_mismatch ('4K' against '') -> see the brief
+(679) R1004 condition K311.A2: condition_mismatch ('4K' against '') -> see the brief
+(680) R1004 condition K311.A3: condition_mismatch ('4K' against '') -> see the brief
+(681) R1004 condition K312.A1: condition_mismatch ('4K' against '') -> see the brief
+(682) R1004 condition K312.A2: condition_mismatch ('4K' against '') -> see the brief
+(683) R1004 condition K312.A3: condition_mismatch ('4K' against '') -> see the brief
+(684) R1004 condition K313.A1: condition_mismatch ('4K' against '') -> see the brief
+(685) R1004 condition K313.A2: condition_mismatch ('4K' against '') -> see the brief
+(686) R1004 condition K313.A3: condition_mismatch ('4K' against '') -> see the brief
+(687) R1004 condition K314.A1: condition_mismatch ('4K' against '') -> see the brief
+(688) R1004 condition K314.A2: condition_mismatch ('4K' against '') -> see the brief
+(689) R1004 condition K314.A3: condition_mismatch ('4K' against '') -> see the brief
+(690) R1004 condition K315.A1: condition_mismatch ('4K' against '') -> see the brief
+(691) R1004 condition K315.A2: condition_mismatch ('4K' against '') -> see the brief
+(692) R1004 condition K315.A3: condition_mismatch ('4K' against '') -> see the brief
+(693) R1004 condition K316.A1: condition_mismatch ('8K' against '') -> see the brief
+(694) R1004 condition K316.A2: condition_mismatch ('8K' against '') -> see the brief
+(695) R1004 condition K316.A3: condition_mismatch ('8K' against '') -> see the brief
+(696) R1004 condition K317.A1: condition_mismatch ('8K' against '') -> see the brief
+(697) R1004 condition K317.A2: condition_mismatch ('8K' against '') -> see the brief
+(698) R1004 condition K317.A3: condition_mismatch ('8K' against '') -> see the brief
+(699) R1004 condition K318.A1: condition_mismatch ('8K' against '') -> see the brief
+(700) R1004 condition K318.A2: condition_mismatch ('8K' against '') -> see the brief
+(701) R1004 condition K318.A3: condition_mismatch ('8K' against '') -> see the brief
+(702) R1004 condition K319.A1: condition_mismatch ('8K' against '') -> see the brief
+(703) R1004 condition K319.A2: condition_mismatch ('8K' against '') -> see the brief
+(704) R1004 condition K319.A3: condition_mismatch ('8K' against '') -> see the brief
+(705) R1004 condition K320.A1: condition_mismatch ('8K' against '') -> see the brief
+(706) R1004 condition K320.A2: condition_mismatch ('8K' against '') -> see the brief
+(707) R1004 condition K320.A3: condition_mismatch ('8K' against '') -> see the brief
+(708) R1004 condition K321.A1: condition_mismatch ('8K' against '') -> see the brief
+(709) R1004 condition K321.A2: condition_mismatch ('8K' against '') -> see the brief
+(710) R1004 condition K321.A3: condition_mismatch ('8K' against '') -> see the brief
+(711) R1004 condition K322.A1: condition_mismatch ('8K' against '') -> see the brief
+(712) R1004 condition K322.A2: condition_mismatch ('8K' against '') -> see the brief
+(713) R1004 condition K322.A3: condition_mismatch ('8K' against '') -> see the brief
+(714) R1004 condition K323.A1: condition_mismatch ('8K' against '') -> see the brief
+(715) R1004 condition K323.A2: condition_mismatch ('8K' against '') -> see the brief
+(716) R1004 condition K323.A3: condition_mismatch ('8K' against '') -> see the brief
+(717) R1004 condition K324.A1: condition_mismatch ('8K' against '') -> see the brief
+(718) R1004 condition K324.A2: condition_mismatch ('8K' against '') -> see the brief
+(719) R1004 condition K324.A3: condition_mismatch ('8K' against '') -> see the brief
+(720) R1004 condition K325.A1: condition_mismatch ('8K' against '') -> see the brief
+(721) R1004 condition K325.A2: condition_mismatch ('8K' against '') -> see the brief
+(722) R1004 condition K325.A3: condition_mismatch ('8K' against '') -> see the brief
+(723) R1004 condition K326.A1: condition_mismatch ('8K' against '') -> see the brief
+(724) R1004 condition K326.A2: condition_mismatch ('8K' against '') -> see the brief
+(725) R1004 condition K326.A3: condition_mismatch ('8K' against '') -> see the brief
+(726) R1004 condition K327.A1: condition_mismatch ('8K' against '') -> see the brief
+(727) R1004 condition K327.A2: condition_mismatch ('8K' against '') -> see the brief
+(728) R1004 condition K327.A3: condition_mismatch ('8K' against '') -> see the brief
+(729) R1004 condition K328.A1: condition_mismatch ('8K' against '') -> see the brief
+(730) R1004 condition K328.A2: condition_mismatch ('8K' against '') -> see the brief
+(731) R1004 condition K328.A3: condition_mismatch ('8K' against '') -> see the brief
+(732) R1004 condition K329.A1: condition_mismatch ('8K' against '') -> see the brief
+(733) R1004 condition K329.A2: condition_mismatch ('8K' against '') -> see the brief
+(734) R1004 condition K329.A3: condition_mismatch ('8K' against '') -> see the brief
+(735) R1004 condition K330.A1: condition_mismatch ('8K' against '') -> see the brief
+(736) R1004 condition K330.A2: condition_mismatch ('8K' against '') -> see the brief
+(737) R1004 condition K330.A3: condition_mismatch ('8K' against '') -> see the brief
+(738) R1004 condition K331.A1: condition_mismatch ('8K' against '') -> see the brief
+(739) R1004 condition K331.A2: condition_mismatch ('8K' against '') -> see the brief
+(740) R1004 condition K331.A3: condition_mismatch ('8K' against '') -> see the brief
+(741) R1004 condition K332.A1: condition_mismatch ('8K' against '') -> see the brief
+(742) R1004 condition K332.A2: condition_mismatch ('8K' against '') -> see the brief
+(743) R1004 condition K332.A3: condition_mismatch ('8K' against '') -> see the brief
+(744) R1004 condition K333.A1: condition_mismatch ('8K' against '') -> see the brief
+(745) R1004 condition K333.A2: condition_mismatch ('8K' against '') -> see the brief
+(746) R1004 condition K333.A3: condition_mismatch ('8K' against '') -> see the brief
+(747) R1004 condition K334.A1: condition_mismatch ('8K' against '') -> see the brief
+(748) R1004 condition K334.A2: condition_mismatch ('8K' against '') -> see the brief
+(749) R1004 condition K334.A3: condition_mismatch ('8K' against '') -> see the brief
+(750) R1004 condition K335.A1: condition_mismatch ('8K' against '') -> see the brief
+(751) R1004 condition K335.A2: condition_mismatch ('8K' against '') -> see the brief
+(752) R1004 condition K335.A3: condition_mismatch ('8K' against '') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
