@@ -32,7 +32,9 @@ EXPL = {
 }
 lines = [f"The validator did not accept some entries of your output file. Per the brief, they are returned to you once. "
          f"Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result "
-         f"(absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.",
+         f"(absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. "
+         f"Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, "
+         f"leave it as it is and say so.",
          ""]
 for n, f in enumerate(F, 1):
     lines.append(f"({n}) {f['id']} {f['check']} {f.get('ref', '')}: {f['status']}"
