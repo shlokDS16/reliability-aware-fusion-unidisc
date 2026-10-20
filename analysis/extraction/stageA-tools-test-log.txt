@@ -1,0 +1,246 @@
+Stage A extraction tools: build and test log (2026-10-20)
+==========================================================
+Scope: build and test agreement.py, ex_dispatch.py and draw_pilot.py (EXTRACTION-PLAN-v0.5 s11 and s14 A7/B3, on
+top of v0.4 s11.1 and v0.3 s10.3; red-team audit 5 MJ1, mn1). No sample drawn, no extraction run, nothing
+downloaded, no commit. tools/ex_validate.py was not read or touched. Python 3.14.3, numpy 2.4.2, scipy 1.17.1,
+pytest 9.0.2.
+
+Files written (sha256 at the time of this log)
+  analysis/extraction/agreement.py                         42798b61ae8ba32972ff83353e443c1562ea67a02478b3bbca9aa63be7cbbb14
+  analysis/extraction/draw_pilot.py                        f0d4f1682e262f1a2e9a702b6c0610ed059caff3523e55826e180c119119ddfa
+  tools/ex_dispatch.py                                     6a94af4e5430cb10f108715fd8b88abd7b93df6b444c2a721f224a7f1876b135
+  analysis/extraction/fixtures/synth.py                    b7c12d2637c594f615526b55ac578e991d0baac0cf8368006b9d8f73141209a4
+  analysis/extraction/fixtures/phase1-bounds-fixture.json  ec78c17f7e6c3afe70e79cb2eec60b02f34ee5f5216323634c8f4971ec91993a
+  analysis/extraction/fixtures/lookups/benchmark-ids-v1.csv ea4a8ca2e9c14ddd8a94d514a429bf55eafdea2337b65ae79c7cf3d98429c6e6
+  analysis/extraction/fixtures/lookups/metric-ids-v1.csv   3263935d5051be6602d7c66e38385461c4e632177da65500f685727ca9061660
+  tests/extraction/conftest.py                             fa3816c84ab3fd901e2e9c3e2e2af5e3dc5ce7bd37e7d6ec1f733a77f96655d4
+  tests/extraction/test_agreement.py                       dd8b6fe9cb17060ac40c6bb4e91d455cbbece02701eecfb83234ae5dd7022db8
+  tests/extraction/test_draw_pilot.py                      b28c67f9a4cecbe072aaea5f357d598fdff975febe06895898dc7fa8cd835c3d
+  tests/extraction/test_ex_dispatch.py                     32dbaf310597b59ccd9005e102c0906ce93c791823f7fc3f8873a6380b7f48b2
+  analysis/extraction/stageA-tools-test-log.txt            (this file)
+Fixtures are synthetic (invented labels and numbers); `python -E -P analysis/extraction/fixtures/synth.py --write`
+rebuilds the lookups and the phase-1 bound fixture (U = gate_rule_v05.phase1_bounds, seed 20264901, on synthetic
+(x, m) with seed 20267000).
+
+Results
+  agreement.py --self-test (seed 20267000): 19/19 (the eleven checks of v0.4 s11.1, gate_rule_v05 self-tests 1-2, the
+    stored phase-1 fixture, the four v0.5 checks of s11, and two sign-rule checks for MJ1).
+  pytest tests/extraction: 50/50 = agreement 21/21 (one of them runs the 19 self-tests), draw_pilot 14/14,
+    ex_dispatch 15/15.
+  Dry runs on the real frames (counts only): draw_pilot reproduces strata-log.txt (C1 53, C2 108, FR 435, NL 12;
+    Stage A pools 15 / 38 / 24 / 52 / 435; gate strata 272 / 271 / 53, median 72,648 bytes); test_real_frames_equal_strata_log
+    also checks the four list hashes. Options (c)/(d) give the lower ends of multimodal_options-log.txt (C2 80; FR 463
+    or 434 with C2b 29). A real draw without a decision row is refused and writes nothing. ex_dispatch --dry-run
+    on two real ids writes nothing.
+
+Spec ambiguities resolved (each is also written into the tool's output or manifest)
+  agreement.py
+    R1 Block items: S01-S08, S09 and S10 per sub-field (S10.description out as free text), S13.type, S15, S16, S17,
+       S18, I1-I5; D01-D11 (D07 rule and blockwise), D15, twelve D16 entries; F1_status, F2_codes (as a set of
+       codes), F3-F6; QA sub-items the extractor writes; CT1-CT6. Strings compared after U11 normalisation.
+    R2 Group arm-label Jaccard = matched arms (U11 equal, then label-core, one-to-one) / union of arms.
+    R3 Final sign (MJ1, the red-team's wording): printed arrow (script-visible KA1(a)) > lookup direction unless an
+       extractor value conflicts with it (null is not a conflict) > EC value > unsigned. Without an EC file the routed
+       units are reported as "pending EC". Coverage reports counts from each source, routed share, final-null share,
+       the extractors' KA1 steps (a / b / c / unverifiable) and sign agreement where both extractors give one.
+    R4 M-sign reader value per (matched group, metric key); two values in one reader = disagreement.
+    R5 K-attr point and bootstrap = mean of the field ratios that have applicable pairs.
+    R6 An undefined gated criterion (no applicable pair) fails.
+    R7 G5 identity: F1 units matched by the H match (or both absent) and S14 equal under U11 (or both NA).
+    R8 M-val leaves out units that are figure-only in both readers.
+    R9 v0.4 pooled ICC (comparison only): K-attr as the sum of its four fields; unit counts rounded to integers.
+    Interfaces assumed: validator report = plan v0.2 s6.5 finding lines (fail by ref = entry id; column_unverified by
+    ref = cell id; pass > 1 ignored; every (id, extractor) must appear); lookups = CSV (printed, id[,
+    higher_is_better]); we-expected.jsonl = partial records (groups with arms and anchor_arm; units_k keys). The
+    abstract H key uses the text offset only with --texts; without texts it falls back to (quote, number, occurrence).
+    Gate mode requires the phase-1 output (--phase1) and checks n and the config hash against it; --regate must
+    match the manifest.
+  draw_pilot.py
+    P1 "Frame R + C2" (gate strata and the Stage A size pool) = all 543 i1 = a, non-nonlang-only includes under every
+       option, so the gate draw does not depend on the option.
+    P2 Option (a): Stage A's two C2 draws use the mm-rule C2.
+    P3 Options (c)/(d): a real draw needs mm-construct.jsonl; dry runs use the provisional inputs.
+    P4 Spares per gate stratum from --spares (required for a gate draw; at most 45, so CPython's sampling method
+       does not change); the tool checks that the first 40 ids equal sample(sorted(pool), 40).
+    List length, phase-1 length and stratum count are read from gate-config-v05.json. A real draw needs a decision
+    row that exists in research/ledgers/decisions.jsonl, Python 3.14.3, the earlier manifests (same frames and
+    option), and a new output path.
+  ex_dispatch.py
+    E1 = EA claude-opus-5-5 (model-check alias B), E2 = EB claude-sonnet-5-5 (A), EC = claude-fable-5-1 (C); the
+    schema's extractor pattern needs EA/EB/EC, so dispatch.json carries those. brief.md = the session text (first
+    ```text block; EC also gets the adjudication block). Brief and schema must match the pinned sha256 of plan s10.8.
+    EC records get neutral labels X/Y (random.Random(20261700) over sorted ids), extractor field replaced; the key
+    goes only to the dispatch log. The session-size rule of v0.2 s9 is enforced.
+
+Concerns (outside the brief)
+  1. The re-gate cannot be drawn as specified: G-mm comes from C1 (53). After Stage A (3 C1 ids, one of them a worked
+     example) and the first gate's 40 + K G-mm ids, at most 10 C1 ids remain for a fresh list of 40 (s10.7 step 8).
+     draw_pilot refuses that draw. The plan needs a re-gate rule for G-mm.
+  2. we-expected.jsonl (A11) and the lookup CSVs (A7) do not exist; agreement.py runs without --we and reports
+     that, and needs real lookups for any real run.
+  3. The validator report format is assumed from v0.2 s6.5; check it against the ex_validate.py being built now.
+  4. On synthetic near-perfect agreement the per-metric Neyman bound sits at the grid maximum (red-team MJ3); the
+     tool reports this, it does not fix it.
+
+Command output
+--------------
+### python -E -P analysis/extraction/agreement.py --self-test
+self-test  1 ok   identical X and Y: every agreement 1 and every F1 1
+self-test  2 ok   one group removed from Y: F1_G = 2*1/(2+1)
+self-test  3 ok   swapped anchor in one of two matched groups: M-anchorG = 1/2
+self-test  4 ok   flipped higher_is_better: M-sign below 1 by one decision (2 of 3)
+self-test  5 ok   null against value is a disagreement, null-null excluded (M-sign 1 of 2)
+self-test  6 ok   label-core: 'Model (x)' matches 'Model' via core
+self-test  7 ok   unmapped benchmark equal in both matches as raw; mapped against unmapped does not
+self-test  8 ok   set field credits the Jaccard value (1/2)
+self-test  9 ok   stratified bootstrap reproducible with the same seed, and within strata
+self-test 10 ok   icc_anova reproduces icc_check self-tests 1-2 (hand cases; recovery of ICC 0.30)
+self-test 11 ok   G5 line c(n): 43 of 60, 51 of 72, 63 of 90, 72 of 105, 82 of 120
+self-test 12 ok   gate_rule_v05 self-tests 1-2 (bisection, product rule, n_cap and step-6 flag)
+self-test 13 ok   phase-1 bounds reproduce the stored fixture (20 metrics, config order, one Generator)
+self-test 14 ok   a mapped anchor that falls on an unmatched arm scores 0 (M-anchorG 1 of 2)
+self-test 15 ok   two arms sharing a label key score 0 unless both anchors map to one matched pair
+self-test 16 ok   K-attr equals the mean of the four field rates on a hand case ((0.5 + 1 + 1 + 0.8) / 4)
+self-test 17 ok   M-pool on a two-group record weights groups (1/2), not units (2/3 K-unit-weighted)
+self-test 18 ok   sign coverage (MJ1): arrow, lookup, routed to EC; EC value used when given
+self-test 19 ok   final-sign rule: extractor conflict with the lookup is routed; a null extractor value is not a conflict
+self-tests passed 19/19
+exit 0
+
+### python -E -P -m pytest tests/extraction -v -p no:cacheprovider
+tests/extraction/test_agreement.py::test_self_test_passes PASSED
+tests/extraction/test_agreement.py::test_stage_a_outputs PASSED
+tests/extraction/test_agreement.py::test_stage_a_sign_coverage_mj1 PASSED
+tests/extraction/test_agreement.py::test_stage_a_pooling_matches_per_record_csv PASSED
+tests/extraction/test_agreement.py::test_parameters_and_inputs_hashed PASSED
+tests/extraction/test_agreement.py::test_deterministic PASSED
+tests/extraction/test_agreement.py::test_identical_records_give_one PASSED
+tests/extraction/test_agreement.py::test_refusals_write_nothing[id_not_in_manifest] PASSED
+tests/extraction/test_agreement.py::test_refusals_write_nothing[missing_validator_line] PASSED
+tests/extraction/test_agreement.py::test_refusals_write_nothing[output_exists] PASSED
+tests/extraction/test_agreement.py::test_refusals_write_nothing[missing_lookup] PASSED
+tests/extraction/test_agreement.py::test_gate_phase1_output_restricted PASSED
+tests/extraction/test_agreement.py::test_gate_phase1_uses_only_phase1_ids_and_replacements PASSED
+tests/extraction/test_agreement.py::test_gate_refuses_wrong_config_and_grid PASSED
+tests/extraction/test_agreement.py::test_gate_full_run_and_verdict PASSED
+tests/extraction/test_agreement.py::test_h_two_pass_matching PASSED
+tests/extraction/test_agreement.py::test_first_pass_acceptance PASSED
+tests/extraction/test_agreement.py::test_abstract_offset_key_with_texts PASSED
+tests/extraction/test_agreement.py::test_normalisation PASSED
+tests/extraction/test_agreement.py::test_synthetic_records_follow_schema_v05 PASSED
+tests/extraction/test_agreement.py::test_qa_kappa_and_flags PASSED
+tests/extraction/test_draw_pilot.py::test_stage_a_draw_rule PASSED
+tests/extraction/test_draw_pilot.py::test_gate_lists_spares_and_prefix PASSED
+tests/extraction/test_draw_pilot.py::test_mi4_excludes PASSED
+tests/extraction/test_draw_pilot.py::test_option_frames PASSED
+tests/extraction/test_draw_pilot.py::test_dry_run_counts_only_writes_nothing PASSED
+tests/extraction/test_draw_pilot.py::test_real_draw_needs_decision_row PASSED
+tests/extraction/test_draw_pilot.py::test_full_sequence PASSED
+tests/extraction/test_draw_pilot.py::test_regate_excludes_everything_earlier PASSED
+tests/extraction/test_draw_pilot.py::test_manifests_feed_agreement PASSED
+tests/extraction/test_draw_pilot.py::test_draw_is_deterministic PASSED
+tests/extraction/test_draw_pilot.py::test_options_c_d_need_construct PASSED
+tests/extraction/test_draw_pilot.py::test_option_a_stage_a_uses_mm_rule_c2 PASSED
+tests/extraction/test_draw_pilot.py::test_classification_rules PASSED
+tests/extraction/test_draw_pilot.py::test_real_frames_equal_strata_log PASSED
+tests/extraction/test_ex_dispatch.py::test_extractor_folder PASSED
+tests/extraction/test_ex_dispatch.py::test_second_extractor_role PASSED
+tests/extraction/test_ex_dispatch.py::test_shuffle_is_seeded PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[no_full_text] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[unsafe_id] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[duplicate] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[not_in_manifest] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[too_many_K] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[long_text_with_another] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[bad_blocks] PASSED
+tests/extraction/test_ex_dispatch.py::test_refusals_write_nothing[unsafe_batch] PASSED
+tests/extraction/test_ex_dispatch.py::test_session_size_rule PASSED
+tests/extraction/test_ex_dispatch.py::test_dry_run_writes_nothing PASSED
+tests/extraction/test_ex_dispatch.py::test_ec_folder_neutral_labels PASSED
+tests/extraction/test_ex_dispatch.py::test_ec_refusals PASSED
+============================= 50 passed in 13.19s =============================
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage stage-a --option b --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (b); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 108  C2b 0  FR 435  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct not used)
+stage-a: seed 20261100; worked examples excluded 5; would draw 7
+  pool C1-ab           size   15  available   14  draw 1
+  pool C1-b            size   38  available   38  draw 1
+  pool C2              size  108  available  108  draw 2
+  pool FR-bench-title  size   24  available   22  draw 1
+  pool FRC2-large      size   52  available   51  draw 1
+  pool FR              size  435  available  431  draw 1
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage gate --option b --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (b); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 108  C2b 0  FR 435  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct not used)
+gate: seeds 20261200 + h; list 40 per stratum (phase 1 20), spares 0; median 72,648 bytes; excluded ids 0 (no Stage A manifest given: counts are upper bounds)
+  stratum G-short  size  272  available  272  would draw 40
+  stratum G-long   size  271  available  271  would draw 40
+  stratum G-mm     size   53  available   53  would draw 40
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage mi4 --option b --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (b); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 108  C2b 0  FR 435  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct not used)
+mi4: seed 20266200; frame R 435; available 435; would draw 5 (Stage A or gate manifest not given: counts are upper bounds)
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage regate --option b --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (b); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 108  C2b 0  FR 435  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct not used)
+regate: seeds 20261300 + h; list 40 per stratum (phase 1 20), spares 0; median 72,648 bytes; excluded ids 0 (no Stage A manifest given: counts are upper bounds)
+  stratum G-short  size  272  available  272  would draw 40
+  stratum G-long   size  271  available  271  would draw 40
+  stratum G-mm     size   53  available   53  would draw 40
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage stage-a --option a --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (a); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 0  C2b 0  FR 543  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct not used)
+stage-a: seed 20261100; worked examples excluded 5; would draw 7
+  pool C1-ab           size   15  available   14  draw 1
+  pool C1-b            size   38  available   38  draw 1
+  pool C2              size  108  available  108  draw 2
+  pool FR-bench-title  size   29  available   27  draw 1
+  pool FRC2-large      size   52  available   51  draw 1
+  pool FR              size  543  available  539  draw 1
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage stage-a --option c --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (c); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 80  C2b 0  FR 463  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct provisional)
+  options (c)/(d) without mm-construct.jsonl: provisional inputs; a real draw is refused (P3)
+stage-a: seed 20261100; worked examples excluded 5; would draw 7
+  pool C1-ab           size   15  available   14  draw 1
+  pool C1-b            size   38  available   38  draw 1
+  pool C2              size   80  available   80  draw 2
+  pool FR-bench-title  size   24  available   22  draw 1
+  pool FRC2-large      size   52  available   51  draw 1
+  pool FR              size  463  available  459  draw 1
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage stage-a --option d --dry-run
+draw_pilot.py 1.0.0 (extraction form v0.5); python 3.14.3 (pinned 3.14.3); option (d); DRY RUN: counts only, nothing drawn, nothing written
+frames: C1 53  C2 80  C2b 29  FR 434  NL 12  RC2 543  (overrides 0, duplicates dropped 0, construct provisional)
+  options (c)/(d) without mm-construct.jsonl: provisional inputs; a real draw is refused (P3)
+stage-a: seed 20261100; worked examples excluded 5; would draw 7
+  pool C1-ab           size   15  available   14  draw 1
+  pool C1-b            size   38  available   38  draw 1
+  pool C2              size   80  available   80  draw 2
+  pool FR-bench-title  size   23  available   21  draw 1
+  pool FRC2-large      size   52  available   51  draw 1
+  pool FR              size  434  available  430  draw 1
+exit 0
+
+### python -I analysis/extraction/draw_pilot.py --stage stage-a --option b --out <scratch>\should-not-exist.json
+draw_pilot.py: a draw is written only with --i-have-the-decision-row <row id> (nothing written)
+exit 1
+
+### python -I tools/ex_dispatch.py --role E1 --batch dryrun --ids <scratch>\ids-dry.txt --root <scratch>\dispatch-dry --dry-run
+DRY RUN: would create <scratch>\dispatch-dry\EA-dryrun-<uuid4> with 2 full texts, role EA (claude-opus-5-5), output EA-dryrun.jsonl; nothing written
+exit 0
+
+should-not-exist.json written: False; dispatch-dry folder created: False
