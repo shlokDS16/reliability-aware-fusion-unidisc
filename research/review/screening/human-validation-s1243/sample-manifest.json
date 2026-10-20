@@ -1,0 +1,12 @@
+{
+ "tranche": "S1243",
+ "decision": "D0037",
+ "frame_file": "analysis/screening/s1243-tranche-ids.txt",
+ "frame_note": "the tranche's full-text set as fixed by the decision row, before retrieval and before any screener row",
+ "frame_n": 1242,
+ "frame_sha256": "bc35a659a6cd98009e4d132e865b50516d5792740d000e1ad5a51b6b15aa1d05",
+ "seed": 20261016,
+ "rule": "random.Random(seed).sample(sorted frame ids, ceil(0.15 N)) (criteria v1.6 s4 item 6; minimum 100 is for T1 only)",
+ "k": 187,
+ "sample_sha256": "c5eab7c4c012197fdb001d58ebc7811a9ae3df0726cb450814d4b9e122633c46"
+}
