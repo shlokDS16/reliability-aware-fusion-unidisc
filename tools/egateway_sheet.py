@@ -1,6 +1,7 @@
 """Build a readable Excel checklist for the e-gateway papers the user downloads by hand.
 
     python tools/egateway_sheet.py            (needs openpyxl; run without -I so the user site-packages load)
+    python tools/egateway_sheet.py --src <csv> --out <xlsx> --label "<tranche label>"   (another tranche, same layout)
 
 Reads research/review/fulltext/egateway-manual.csv and writes research/review/fulltext/egateway-manual-checklist.xlsx:
 sheet "Start here" (steps, one per row, wide wrapped column), sheet "Papers" (one row per paper, grouped by
@@ -8,7 +9,7 @@ publisher, clickable DOI link, file name to save as, a Status drop-down and a No
 columns frozen, wrapped text, row heights sized to the title) and sheet "Progress" (counts by status).
 The import step does not read this file: tools/egateway_import.py picks up whatever <id>.pdf files are in Downloads.
 """
-import csv, math
+import argparse, csv, math
 from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -16,15 +17,19 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "research/review/fulltext/egateway-manual.csv"
-OUT = ROOT / "research/review/fulltext/egateway-manual-checklist.xlsx"
+ap = argparse.ArgumentParser()
+ap.add_argument("--src", default=str(ROOT / "research/review/fulltext/egateway-manual.csv"))
+ap.add_argument("--out", default=str(ROOT / "research/review/fulltext/egateway-manual-checklist.xlsx"))
+ap.add_argument("--label", default="")
+_a = ap.parse_args()
+SRC, OUT = Path(_a.src), Path(_a.out)
 STATUSES = ["Saved", "Not in VIT subscription", "Link broken", "Skip for now"]
 
 rows = list(csv.DictReader(open(SRC, encoding="utf-8-sig")))
 for r in rows:
     r["publisher"] = r["publisher"] or "unknown"
-order = {"Elsevier": 0, "Springer Nature": 1, "ACM": 2}
-rows.sort(key=lambda r: (order.get(r["publisher"], 3), r["publisher"], r["id"]))
+order = {"Elsevier": 0, "Springer Nature": 1, "ACM": 2, "IEEE": 3}
+rows.sort(key=lambda r: (order.get(r["publisher"], 4), r["publisher"], r["id"]))
 
 def short_reason(r):
     t = r["reason"]
@@ -33,6 +38,7 @@ def short_reason(r):
         return "Springer book or chapter: the automated tab showed a purchase page. Try once; if VIT has no access, mark 'Not in VIT subscription'."
     if t.startswith("Springer"): return "Springer journal: automated access was stopped after HTML/503 replies. Download by hand."
     if t.startswith("ACM"): return "ACM: Chrome saved no file when the download was automated."
+    if t.startswith("IEEE"): return "IEEE Xplore: subscription PDF. Open the link through the VIT e-gateway and use the PDF button."
     if t.startswith("not attempted"): return "Not tried in the automated browser. Open the link; download if free or through the e-gateway."
     return t[:160]
 
@@ -42,7 +48,7 @@ head_fill = PatternFill("solid", fgColor="1F3864")
 head_font = Font(bold=True, color="FFFFFF", size=11)
 wrap_top = Alignment(wrap_text=True, vertical="top")
 center_top = Alignment(horizontal="center", vertical="top", wrap_text=True)
-pub_fill = {"Elsevier": "FFF2CC", "Springer Nature": "E2EFDA", "ACM": "DDEBF7"}
+pub_fill = {"Elsevier": "FFF2CC", "Springer Nature": "E2EFDA", "ACM": "DDEBF7", "IEEE": "FCE4D6"}
 
 wb = Workbook()
 
@@ -51,11 +57,11 @@ s = wb.active
 s.title = "Start here"
 s.column_dimensions["A"].width = 6
 s.column_dimensions["B"].width = 110
-s["A1"] = "E-gateway papers to download by hand (58)"
+s["A1"] = f"E-gateway papers to download by hand ({len(rows)}){(' - ' + _a.label) if _a.label else ''}"
 s["A1"].font = Font(bold=True, size=14)
 steps = [
     "Open Chrome where you are signed in to the VIT e-gateway (library proxy). Check the VIT access line on one Springer article first: during the automated run it vanished after a burst of requests.",
-    "Go to the sheet 'Papers'. Work down the list; rows are grouped by publisher (yellow Elsevier, green Springer, blue ACM, white others).",
+    "Go to the sheet 'Papers'. Work down the list; rows are grouped by publisher (yellow Elsevier, green Springer, blue ACM, orange IEEE, white others).",
     "Click 'Open' in the Link column. It opens the DOI page. If the page offers no PDF, use the e-gateway search for the title instead.",
     "Download the PDF and save it in your Downloads folder with the exact name in the 'Save as' column (for example M11784.pdf). Do not rename or edit the PDF.",
     "Set Status from the drop-down: Saved / Not in VIT subscription / Link broken / Skip for now. Add a short note if something was odd (wrong paper, only an abstract, a preview of 2 pages).",
