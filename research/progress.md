@@ -4,14 +4,13 @@
 - **HANDOFF 23 (2026-10-20 ~09:10 IST; PAUSE at the user's request: laptop offline from 09:30 for a presentation;
   resume when the user says "continue"; HANDOFF 22 below still describes the setup).** **R797 full text:** batches
   r797b001-r797b009 screened by A and B (all isolation and model checks pass, incl. bio batches b007/b008: no B
-  fallback); filed b001-b008 (b009 see batch-log; if its result line is missing, run
-  `bash tools/ft-session/tr.sh r797 postbatch r797b009 a531c8485f889c29e a40921e4d49667612`). C queue so far:
+  fallback); filed b001-b009 (82 records; b001 B and b009 A each had one quote returned once and accepted). C queue so far:
   M03713 (b001), M00589 (b002), M03752 (b005), M02061 (b007 adjudicate); C not yet run: build with
   `FT_TRANCHE=r797 python -I tools/ft-session/cqueue.py <worktree> <scratchpad>/ft-dispatch 1 01 1 9`, then
   ft_dispatch --role C --batch c-r797-01 --rows <scratchpad>/ft-dispatch/c-rows-1.jsonl, Fable, prompt as c-t1-19
   (agent-map history), then `tr.sh r797 cpost c-r797-01 <agent>`. Remaining part-1 batches: r797b010-r797b013 (built
-  folders: none; build with tr.sh). **Downloads:** fetch_fulltext.py was at 500/519 (ok 424, error 33, not_pdf 43) at
-  09:03, then fetch_openreview.py (58) in the same background command; if interrupted, rerun both (resumable):
+  folders: none; build with tr.sh). **Downloads:** stopped cleanly at 09:05 for the pause: 510 of the 519 non-OpenReview routes logged (ok 434,
+  not_pdf 43, error 33); the 58 OpenReview routes not started. Resume by rerunning both (resumable):
   `python -I tools/fetch_fulltext.py --routes analysis/screening/r797-oa-routes.jsonl --types arxiv,acl,oa_url` and
   `python tools/fetch_openreview.py --routes analysis/screening/r797-oa-routes.jsonl`. Then `python tools/pdf_to_text.py`,
   `python -I tools/ft_title_check.py` (4 new unverified flags to read: M15725, M16194, M16195, M18905; add notes to
