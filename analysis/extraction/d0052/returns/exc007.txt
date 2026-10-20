@@ -1,0 +1,11 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) R0958 table T01: map_not_in_header (parts not in header: MF-en; MF-zh; HPQA; 2WikiMQA; MuSiQue; DuReader; GovReport; QMSum; MultiNews; VCSum; TREC; TriviaQA; SAMSum; LSHT; PassCount; PassRe-en; Pa) -> the column map names parts that are not in the printed header; use the header text as printed
+(2) R0958 condition K01.A1: condition_mismatch ('' against 'AVG') -> see the brief
+(3) R0958 condition K01.A2: condition_mismatch ('' against 'AVG') -> see the brief
+(4) R0958 condition K01.A3: condition_mismatch ('' against 'AVG') -> see the brief
+(5) R0958 condition K02.A1: condition_mismatch ('' against 'AVG') -> see the brief
+(6) R0958 condition K02.A2: condition_mismatch ('' against 'AVG') -> see the brief
+(7) R0958 condition K02.A3: condition_mismatch ('' against 'AVG') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
