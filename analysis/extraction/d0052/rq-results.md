@@ -1,145 +1,145 @@
 # D0052 RQ results (script-generated; do not edit)
 
-extracted 29 of 80; by stratum {'G-long': 7, 'G-mm': 7, 'G-short': 8, 'S-seed': 7}; N_h {'G-mm': 52, 'G-short': 267, 'G-long': 265, 'S-seed': 1073.8488372093022}; missing ['M03150', 'M03633', 'M04407', 'M06272', 'M07646', 'M10526', 'M10840', 'M10855', 'M11180', 'M12084', 'M12879', 'M12960', 'M13371', 'M13884', 'M14280', 'M14293', 'M14326', 'M15033', 'M15781', 'M15792', 'M15840', 'M16080', 'M16154', 'M16269', 'M17249', 'M17285', 'M17725', 'M17834', 'M18059', 'M18141', 'M18735', 'M18994', 'M19012', 'M19013', 'M19021', 'M19099', 'M19293', 'R0021', 'R0171', 'R0188', 'R0214', 'R0291', 'R0588', 'R0631', 'R0677', 'R0717', 'R0738', 'R0865', 'R0958', 'R0963', 'R1004']
+extracted 57 of 80; by stratum {'G-long': 11, 'G-mm': 12, 'G-short': 14, 'S-seed': 20}; N_h {'G-mm': 52, 'G-short': 267, 'G-long': 265, 'S-seed': 1073.8488372093022}; missing ['M03150', 'M03633', 'M04407', 'M06272', 'M10855', 'M12960', 'M13371', 'M13884', 'M14293', 'M15033', 'M15781', 'M15840', 'M16080', 'M16269', 'M17249', 'M17285', 'M17725', 'M17834', 'M18059', 'M18994', 'M19013', 'M19021', 'M19099']
 
 ## RQ1
 - study_type:
-  - method: 24/29  weighted 0.819 [0.568, 0.94]
-  - theory: 1/29  weighted 0.02 [0.0, 0.527]
-  - analysis: 4/29  weighted 0.161 [0.048, 0.421]
-  - benchmark: 0/29  weighted 0.0 [0, 0.117]
-  - system: 0/29  weighted 0.0 [0, 0.117]
+  - method: 51/57  weighted 0.88 [0.747, 0.948]
+  - theory: 1/57  weighted 0.012 [0.0, 0.223]
+  - analysis: 4/57  weighted 0.076 [0.028, 0.192]
+  - benchmark: 1/57  weighted 0.032 [0.005, 0.18]
+  - system: 0/57  weighted 0.0 [0, 0.063]
 - state_space:
-  - discrete-absorbing: 15/29  weighted 0.675 [0.415, 0.859]
-  - discrete-uniform: 3/29  weighted 0.138 [0.035, 0.412]
-  - discrete-flow: 1/29  weighted 0.093 [0.015, 0.408]
-  - continuous-embedding: 2/29  weighted 0.043 [0.003, 0.394]
-  - continuous-latent: 5/29  weighted 0.038 [0.002, 0.404]
-  - hybrid: 2/29  weighted 0.009 [0.0, 0.695]
-  - not_stated: 1/29  weighted 0.004 [0.0, 0.817]
+  - discrete-absorbing: 32/57  weighted 0.703 [0.551, 0.819]
+  - discrete-uniform: 4/57  weighted 0.094 [0.034, 0.232]
+  - discrete-flow: 2/57  weighted 0.047 [0.011, 0.173]
+  - continuous-embedding: 2/57  weighted 0.026 [0.004, 0.157]
+  - continuous-latent: 12/57  weighted 0.079 [0.032, 0.183]
+  - hybrid: 3/57  weighted 0.017 [0.001, 0.179]
+  - not_stated: 2/57  weighted 0.035 [0.006, 0.176]
 - objective:
-  - elbo-ce: 4/29  weighted 0.153 [0.044, 0.416]
-  - weighted-ce: 1/29  weighted 0.093 [0.015, 0.408]
-  - score-entropy: 0/29  weighted 0.0 [0, 0.117]
-  - mse-x0: 2/29  weighted 0.025 [0.001, 0.485]
-  - mse-eps-or-velocity: 1/29  weighted 0.004 [0.0, 0.817]
-  - flow-matching: 3/29  weighted 0.029 [0.001, 0.452]
-  - other: 9/29  weighted 0.29 [0.117, 0.557]
-  - not_stated: 5/29  weighted 0.251 [0.09, 0.531]
-  - NA: 4/29  weighted 0.156 [0.045, 0.418]
+  - elbo-ce: 5/57  weighted 0.099 [0.038, 0.235]
+  - weighted-ce: 9/57  weighted 0.217 [0.114, 0.374]
+  - score-entropy: 0/57  weighted 0.0 [0, 0.063]
+  - mse-x0: 4/57  weighted 0.028 [0.005, 0.155]
+  - mse-eps-or-velocity: 1/57  weighted 0.003 [0.0, 0.512]
+  - flow-matching: 6/57  weighted 0.025 [0.004, 0.151]
+  - other: 13/57  weighted 0.192 [0.102, 0.331]
+  - not_stated: 7/57  weighted 0.128 [0.058, 0.26]
+  - NA: 12/57  weighted 0.308 [0.184, 0.468]
 - position_rule:
-  - left-to-right: 1/29  weighted 0.004 [0.0, 0.817]
-  - random: 3/29  weighted 0.12 [0.027, 0.405]
-  - confidence-ranked: 7/29  weighted 0.361 [0.159, 0.628]
-  - threshold-adaptive: 1/29  weighted 0.093 [0.015, 0.408]
-  - fixed-order: 1/29  weighted 0.093 [0.015, 0.408]
-  - learned-planner: 0/29  weighted 0.0 [0, 0.117]
-  - all-positions: 10/29  weighted 0.131 [0.04, 0.352]
-  - other: 1/29  weighted 0.02 [0.0, 0.527]
-  - not_stated: 5/29  weighted 0.178 [0.058, 0.433]
+  - left-to-right: 1/57  weighted 0.003 [0.0, 0.512]
+  - random: 6/57  weighted 0.129 [0.054, 0.277]
+  - confidence-ranked: 13/57  weighted 0.284 [0.165, 0.443]
+  - threshold-adaptive: 7/57  weighted 0.185 [0.089, 0.344]
+  - fixed-order: 1/57  weighted 0.032 [0.005, 0.18]
+  - learned-planner: 1/57  weighted 0.015 [0.001, 0.199]
+  - all-positions: 17/57  weighted 0.146 [0.08, 0.251]
+  - other: 4/57  weighted 0.058 [0.017, 0.176]
+  - not_stated: 7/57  weighted 0.149 [0.069, 0.295]
 - blockwise:
-  - yes: 9/29  weighted 0.297 [0.122, 0.563]
-  - no: 15/29  weighted 0.454 [0.229, 0.7]
-  - not_stated: 5/29  weighted 0.248 [0.088, 0.529]
+  - yes: 13/57  weighted 0.239 [0.132, 0.393]
+  - no: 34/57  weighted 0.538 [0.387, 0.683]
+  - not_stated: 10/57  weighted 0.222 [0.119, 0.378]
 - revision:
-  - none: 10/29  weighted 0.465 [0.237, 0.708]
-  - explicit-remasking-or-editing: 1/29  weighted 0.023 [0.001, 0.502]
-  - corrector: 1/29  weighted 0.023 [0.001, 0.502]
-  - implicit-channel: 11/29  weighted 0.224 [0.089, 0.461]
-  - output-level: 0/29  weighted 0.0 [0, 0.117]
-  - other: 1/29  weighted 0.004 [0.0, 0.817]
-  - not_stated: 8/29  weighted 0.311 [0.131, 0.575]
+  - none: 18/57  weighted 0.407 [0.268, 0.563]
+  - explicit-remasking-or-editing: 5/57  weighted 0.087 [0.035, 0.2]
+  - corrector: 1/57  weighted 0.015 [0.001, 0.199]
+  - implicit-channel: 21/57  weighted 0.227 [0.131, 0.365]
+  - output-level: 0/57  weighted 0.0 [0, 0.063]
+  - other: 3/57  weighted 0.067 [0.019, 0.216]
+  - not_stated: 13/57  weighted 0.26 [0.149, 0.414]
 - memory:
-  - none: 15/29  weighted 0.54 [0.294, 0.768]
-  - self-conditioning: 2/29  weighted 0.043 [0.003, 0.394]
-  - exact-cache: 1/29  weighted 0.004 [0.0, 0.817]
-  - approximate-cache: 1/29  weighted 0.093 [0.015, 0.408]
-  - planner-state: 0/29  weighted 0.0 [0, 0.117]
-  - other: 2/29  weighted 0.113 [0.023, 0.404]
-  - not_stated: 8/29  weighted 0.208 [0.077, 0.451]
+  - none: 32/57  weighted 0.578 [0.423, 0.719]
+  - self-conditioning: 2/57  weighted 0.026 [0.004, 0.157]
+  - exact-cache: 4/57  weighted 0.049 [0.013, 0.171]
+  - approximate-cache: 3/57  weighted 0.097 [0.033, 0.253]
+  - planner-state: 0/57  weighted 0.0 [0, 0.063]
+  - other: 4/57  weighted 0.07 [0.024, 0.184]
+  - not_stated: 12/57  weighted 0.18 [0.092, 0.322]
 - training_free:
-  - yes: 4/29  weighted 0.156 [0.045, 0.418]
-  - no: 20/29  weighted 0.524 [0.282, 0.755]
-  - not_stated: 5/29  weighted 0.321 [0.131, 0.596]
+  - yes: 13/57  weighted 0.305 [0.181, 0.466]
+  - no: 38/57  weighted 0.54 [0.387, 0.685]
+  - not_stated: 6/57  weighted 0.156 [0.07, 0.31]
 - training_stages:
-  - pretraining: 5/29  weighted 0.144 [0.039, 0.411]
-  - continued-pretraining: 0/29  weighted 0.0 [0, 0.117]
-  - adaptation-from-ar: 2/29  weighted 0.027 [0.001, 0.466]
-  - sft: 6/29  weighted 0.043 [0.003, 0.387]
-  - rl: 3/29  weighted 0.208 [0.064, 0.503]
-  - distillation: 2/29  weighted 0.027 [0.001, 0.466]
-  - other: 10/29  weighted 0.162 [0.06, 0.37]
+  - pretraining: 10/57  weighted 0.175 [0.085, 0.326]
+  - continued-pretraining: 3/57  weighted 0.067 [0.019, 0.216]
+  - adaptation-from-ar: 4/57  weighted 0.064 [0.021, 0.182]
+  - sft: 13/57  weighted 0.174 [0.085, 0.323]
+  - rl: 6/57  weighted 0.117 [0.05, 0.25]
+  - distillation: 3/57  weighted 0.02 [0.002, 0.17]
+  - other: 17/57  weighted 0.142 [0.083, 0.235]
 - credited_type:
-  - model-or-architecture: 10/29  weighted 0.128 [0.039, 0.351]
-  - objective-or-loss: 2/29  weighted 0.097 [0.017, 0.406]
-  - training-recipe: 3/29  weighted 0.12 [0.027, 0.405]
-  - sampler-or-decoding: 2/29  weighted 0.113 [0.023, 0.404]
-  - caching-or-system: 1/29  weighted 0.093 [0.015, 0.408]
-  - guidance-or-constraint: 2/29  weighted 0.185 [0.051, 0.491]
-  - other: 3/29  weighted 0.063 [0.008, 0.357]
-- F2_value_rule_stated: 12/27  weighted 0.626 [0.37, 0.826]
+  - model-or-architecture: 18/57  weighted 0.205 [0.113, 0.343]
+  - objective-or-loss: 3/57  weighted 0.067 [0.019, 0.216]
+  - training-recipe: 5/57  weighted 0.076 [0.028, 0.189]
+  - sampler-or-decoding: 8/57  weighted 0.203 [0.103, 0.361]
+  - caching-or-system: 3/57  weighted 0.097 [0.033, 0.253]
+  - guidance-or-constraint: 4/57  weighted 0.112 [0.043, 0.262]
+  - other: 5/57  weighted 0.043 [0.011, 0.151]
+- F2_value_rule_stated: 29/54  weighted 0.71 [0.566, 0.821]
 
 ## RQ2
-- has_ar_group: 17/29  weighted 0.492 [0.257, 0.731]
-- abstract_claims_vs_ar_CT6: 4/29  weighted 0.156 [0.045, 0.418]
-- ar_budget_matched_all: 0/17  weighted 0.0 [0, 0.184]
-- ar_budget_not_reported_any: 16/17  weighted 0.991 [0.087, 1.0]
-- ar_numbers_copied_any: 4/17  weighted 0.426 [0.15, 0.758]
-- ar_variance_any: 2/17  weighted 0.093 [0.006, 0.619]
-- diffusion_better_majority_of_units: 8/15  weighted 0.387 [0.111, 0.76]
-- diffusion_worse_majority_of_units: 5/15  weighted 0.553 [0.206, 0.855]
-- units_total: {"worse": 40, "better": 54, "tie": 2}
+- has_ar_group: 28/57  weighted 0.484 [0.335, 0.636]
+- abstract_claims_vs_ar_CT6: 6/57  weighted 0.135 [0.058, 0.281]
+- ar_budget_matched_all: 0/28  weighted 0.0 [0, 0.121]
+- ar_budget_not_reported_any: 24/28  weighted 0.831 [0.587, 0.944]
+- ar_numbers_copied_any: 5/28  weighted 0.187 [0.067, 0.425]
+- ar_variance_any: 2/28  weighted 0.06 [0.01, 0.296]
+- diffusion_better_majority_of_units: 12/25  weighted 0.337 [0.158, 0.579]
+- diffusion_worse_majority_of_units: 10/25  weighted 0.552 [0.32, 0.764]
+- units_total: {"worse": 101, "better": 109, "tie": 2}
 
 ## RQ3
-- has_training_group: 15/29  weighted 0.454 [0.229, 0.7]
+- has_training_group: 23/57  weighted 0.355 [0.226, 0.508]
 - by_factor:
-  - ar-initialisation: 1/29  weighted 0.004 [0.0, 0.817]
-  - distillation: 2/29  weighted 0.027 [0.001, 0.466]
-  - objective: 6/29  weighted 0.098 [0.022, 0.341]
-  - pretraining-recipe: 3/29  weighted 0.032 [0.001, 0.437]
-  - rl: 4/29  weighted 0.3 [0.117, 0.581]
-  - sft: 3/29  weighted 0.047 [0.004, 0.38]
-- credited_ablation_any: 4/15  weighted 0.308 [0.073, 0.717]
-- held_fixed_stated_all: 3/15  weighted 0.417 [0.133, 0.769]
-- variance_any: 3/15  weighted 0.11 [0.009, 0.639]
-- anchor_better_majority: 7/11  weighted 0.782 [0.382, 0.954]
-- units_total: {"anchor-better": 82, "anchor-worse": 44, "tie": 7}
+  - ar-initialisation: 1/57  weighted 0.003 [0.0, 0.512]
+  - distillation: 2/57  weighted 0.017 [0.001, 0.182]
+  - objective: 12/57  weighted 0.162 [0.084, 0.291]
+  - pretraining-recipe: 5/57  weighted 0.055 [0.016, 0.173]
+  - rl: 6/57  weighted 0.138 [0.06, 0.284]
+  - sft: 4/57  weighted 0.043 [0.011, 0.155]
+- credited_ablation_any: 6/23  weighted 0.296 [0.119, 0.567]
+- held_fixed_stated_all: 6/23  weighted 0.346 [0.152, 0.609]
+- variance_any: 3/23  weighted 0.089 [0.015, 0.382]
+- anchor_better_majority: 11/17  weighted 0.724 [0.385, 0.916]
+- units_total: {"anchor-better": 114, "anchor-worse": 71, "tie": 8}
 
 ## RQ4
-- has_inference_group: 17/29  weighted 0.756 [0.524, 0.897]
+- has_inference_group: 34/57  weighted 0.732 [0.587, 0.84]
 - by_factor:
-  - block-or-parallel: 2/29  weighted 0.04 [0.003, 0.405]
-  - cache: 0/29  weighted 0.0 [0, 0.117]
-  - gen-length: 2/29  weighted 0.043 [0.003, 0.394]
-  - guidance: 6/29  weighted 0.255 [0.093, 0.534]
-  - order-rule: 2/29  weighted 0.185 [0.051, 0.491]
-  - remasking: 0/29  weighted 0.0 [0, 0.117]
-  - steps-or-nfe: 10/29  weighted 0.483 [0.251, 0.723]
-  - tokens-per-step: 2/29  weighted 0.097 [0.017, 0.406]
-  - value-rule: 3/29  weighted 0.278 [0.102, 0.565]
-- budget_reported_any: 13/17  weighted 0.723 [0.386, 0.915]
-- variance_any: 6/17  weighted 0.546 [0.268, 0.798]
-- dose_shapes_units: {"up": 18, "other": 2}
-- any_nonmonotone_dose_curve: 1/6  weighted 0.366 [0.047, 0.872]
+  - block-or-parallel: 8/57  weighted 0.182 [0.089, 0.335]
+  - cache: 4/57  weighted 0.13 [0.052, 0.289]
+  - gen-length: 4/57  weighted 0.07 [0.024, 0.184]
+  - guidance: 10/57  weighted 0.199 [0.102, 0.35]
+  - order-rule: 8/57  weighted 0.203 [0.103, 0.361]
+  - remasking: 3/57  weighted 0.041 [0.01, 0.156]
+  - steps-or-nfe: 12/57  weighted 0.228 [0.126, 0.376]
+  - tokens-per-step: 7/57  weighted 0.158 [0.072, 0.312]
+  - value-rule: 5/57  weighted 0.126 [0.052, 0.275]
+- budget_reported_any: 23/34  weighted 0.611 [0.424, 0.77]
+- variance_any: 9/34  weighted 0.272 [0.141, 0.459]
+- dose_shapes_units: {"up": 21, "other": 6, "down": 7, "peaked": 5}
+- any_nonmonotone_dose_curve: 5/12  weighted 0.561 [0.271, 0.815]
 
 ## RQ5
-- n_mm_extracted: 7
-- CT5_claim: {"no": 7}
-- synergy_benchmark: {"no": 7}
-- synergy_group: {"False": 4, "True": 3}
+- n_mm_extracted: 12
+- CT5_claim: {"no": 11, "yes": 1}
+- synergy_benchmark: {"no": 12}
+- synergy_group: {"False": 6, "True": 6}
 - claim_and_group: 0
-- claim_without_group: []
-- group_ids: {"M18816": [["shared-vs-decoupled", "Table 31", [1, 1, 1, 1]], ["shared-vs-decoupled", "Table 31", [1, 1, -1, 1]], ["shared-vs-decoupled", "Figure 34", []], ["shared-vs-decoupled", "Figure 34", []]], "M15992": [["task-or-modality-removal", "Table S7", [1, 1, 1, 1, 1]]], "M09294": [["task-or-modality-removal", "Figure 10", []]]}
+- claim_without_group: ["R0963"]
+- group_ids: {"M18816": [["shared-vs-decoupled", "Table 31", [1, 1, 1, 1]], ["shared-vs-decoupled", "Table 31", [1, 1, -1, 1]], ["shared-vs-decoupled", "Figure 34", []], ["shared-vs-decoupled", "Figure 34", []]], "M15992": [["task-or-modality-removal", "Table S7", [1, 1, 1, 1, 1]]], "M09294": [["task-or-modality-removal", "Figure 10", []]], "M19012": [["task-or-modality-removal", "Table 4", []]], "M19293": [["task-or-modality-removal", "Table 6", []], ["task-or-modality-removal", "Table 6", []], ["task-or-modality-removal", "Table 7", [-1, -1, -1, 0, -1, -1]]], "M15792": [["task-or-modality-removal", "Tabl
 
 ## RQ6
-- QA1: {"low": {"0": {"count": 17, "of": 29, "share": 0.549, "ci95": [0.301, 0.775], "by_stratum": {"G-long": "4/7", "G-mm": "6/7", "G-short": "3/8", "S-seed": "4/7"}}, "1": {"count": 12, "of": 29, "share": 0.451, "ci95": [0.225, 0.699], "by_stratum": {"G-long": "3/7", "G-mm": "1/7", "G-short": "5/8", "S-seed": "3/7"}}, "2": {"count": 0, "of": 29, "share": 0.0, "ci95": [0, 0.117], "by_stratum": {"G-long": "0/7", "G-mm": "0/7", "G-short": "0/8", "S-seed": "0/7"}}}, "high": {"0": {"count": 14, "of": 29, "share": 0.499, "ci95": [0.263, 0.735], "by_stratum": {"G-long": "2/7", "G-mm": "5/7", "G-short": "3
-- QA2: {"low": {"0": {"count": 8, "of": 29, "share": 0.208, "ci95": [0.077, 0.451], "by_stratum": {"G-long": "2/7", "G-mm": "2/7", "G-short": "3/8", "S-seed": "1/7"}}, "1": {"count": 19, "of": 29, "share": 0.607, "ci95": [0.346, 0.819], "by_stratum": {"G-long": "5/7", "G-mm": "5/7", "G-short": "5/8", "S-seed": "4/7"}}, "2": {"count": 2, "of": 29, "share": 0.185, "ci95": [0.051, 0.491], "by_stratum": {"G-long": "0/7", "G-mm": "0/7", "G-short": "0/8", "S-seed": "2/7"}}}, "high": {"0": {"count": 2, "of": 29, "share": 0.027, "ci95": [0.001, 0.466], "by_stratum": {"G-long": "1/7", "G-mm": "1/7", "G-short"
-- QA3: {"low": {"0": {"count": 11, "of": 29, "share": 0.288, "ci95": [0.116, 0.555], "by_stratum": {"G-long": "0/7", "G-mm": "5/7", "G-short": "4/8", "S-seed": "2/7"}}, "1": {"count": 13, "of": 29, "share": 0.477, "ci95": [0.245, 0.719], "by_stratum": {"G-long": "5/7", "G-mm": "1/7", "G-short": "4/8", "S-seed": "3/7"}}, "2": {"count": 5, "of": 29, "share": 0.235, "ci95": [0.08, 0.52], "by_stratum": {"G-long": "2/7", "G-mm": "1/7", "G-short": "0/8", "S-seed": "2/7"}}}, "high": {"0": {"count": 5, "of": 29, "share": 0.054, "ci95": [0.006, 0.367], "by_stratum": {"G-long": "0/7", "G-mm": "3/7", "G-short":
-- QA4: {"low": {"0": {"count": 17, "of": 26, "share": 0.6, "ci95": [0.328, 0.821], "by_stratum": {"G-long": "3/6", "G-mm": "5/7", "G-short": "5/6", "S-seed": "4/7"}}, "1": {"count": 4, "of": 26, "share": 0.227, "ci95": [0.07, 0.531], "by_stratum": {"G-long": "1/6", "G-mm": "1/7", "G-short": "0/6", "S-seed": "2/7"}}, "2": {"count": 5, "of": 26, "share": 0.174, "ci95": [0.052, 0.444], "by_stratum": {"G-long": "2/6", "G-mm": "1/7", "G-short": "1/6", "S-seed": "1/7"}}}, "high": {"0": {"count": 17, "of": 26, "share": 0.6, "ci95": [0.328, 0.821], "by_stratum": {"G-long": "3/6", "G-mm": "5/7", "G-short": "5
-- QA5: {"low": {"0": {"count": 14, "of": 26, "share": 0.378, "ci95": [0.174, 0.635], "by_stratum": {"G-long": "2/6", "G-mm": "5/7", "G-short": "5/6", "S-seed": "2/7"}}, "1": {"count": 6, "of": 26, "share": 0.424, "ci95": [0.199, 0.686], "by_stratum": {"G-long": "1/6", "G-mm": "1/7", "G-short": "0/6", "S-seed": "4/7"}}, "2": {"count": 6, "of": 26, "share": 0.198, "ci95": [0.068, 0.457], "by_stratum": {"G-long": "3/6", "G-mm": "1/7", "G-short": "1/6", "S-seed": "1/7"}}}, "high": {"0": {"count": 13, "of": 26, "share": 0.373, "ci95": [0.171, 0.632], "by_stratum": {"G-long": "2/6", "G-mm": "4/7", "G-short
-- QA6: {"low": {"0": {"count": 11, "of": 26, "share": 0.233, "ci95": [0.092, 0.476], "by_stratum": {"G-long": "1/6", "G-mm": "5/7", "G-short": "4/6", "S-seed": "1/7"}}, "1": {"count": 9, "of": 26, "share": 0.4, "ci95": [0.179, 0.672], "by_stratum": {"G-long": "3/6", "G-mm": "2/7", "G-short": "1/6", "S-seed": "3/7"}}, "2": {"count": 6, "of": 26, "share": 0.367, "ci95": [0.155, 0.647], "by_stratum": {"G-long": "2/6", "G-mm": "0/7", "G-short": "1/6", "S-seed": "3/7"}}}, "high": {"0": {"count": 10, "of": 26, "share": 0.228, "ci95": [0.089, 0.473], "by_stratum": {"G-long": "1/6", "G-mm": "4/7", "G-short":
-- QA7: {"low": {"0": {"count": 1, "of": 24, "share": 0.113, "ci95": [0.018, 0.472], "by_stratum": {"G-long": "0/4", "G-mm": "0/7", "G-short": "0/7", "S-seed": "1/6"}}, "1": {"count": 15, "of": 24, "share": 0.352, "ci95": [0.168, 0.595], "by_stratum": {"G-long": "3/4", "G-mm": "6/7", "G-short": "5/7", "S-seed": "1/6"}}, "2": {"count": 8, "of": 24, "share": 0.535, "ci95": [0.274, 0.777], "by_stratum": {"G-long": "1/4", "G-mm": "1/7", "G-short": "2/7", "S-seed": "4/6"}}}, "high": {"0": {"count": 1, "of": 24, "share": 0.113, "ci95": [0.018, 0.472], "by_stratum": {"G-long": "0/4", "G-mm": "0/7", "G-short"
-- QA8: {"low": {"0": {"count": 2, "of": 26, "share": 0.029, "ci95": [0.001, 0.479], "by_stratum": {"G-long": "1/6", "G-mm": "1/6", "G-short": "0/7", "S-seed": "0/7"}}, "1": {"count": 13, "of": 26, "share": 0.465, "ci95": [0.228, 0.718], "by_stratum": {"G-long": "4/6", "G-mm": "3/6", "G-short": "3/7", "S-seed": "3/7"}}, "2": {"count": 11, "of": 26, "share": 0.506, "ci95": [0.262, 0.748], "by_stratum": {"G-long": "1/6", "G-mm": "2/6", "G-short": "4/7", "S-seed": "4/7"}}}, "high": {"0": {"count": 2, "of": 26, "share": 0.029, "ci95": [0.001, 0.479], "by_stratum": {"G-long": "1/6", "G-mm": "1/6", "G-short
-- QA9: {"low": {"0": {"count": 1, "of": 29, "share": 0.093, "ci95": [0.015, 0.408], "by_stratum": {"G-long": "0/7", "G-mm": "0/7", "G-short": "0/8", "S-seed": "1/7"}}, "1": {"count": 8, "of": 29, "share": 0.239, "ci95": [0.1, 0.471], "by_stratum": {"G-long": "2/7", "G-mm": "0/7", "G-short": "5/8", "S-seed": "1/7"}}, "2": {"count": 20, "of": 29, "share": 0.669, "ci95": [0.411, 0.854], "by_stratum": {"G-long": "5/7", "G-mm": "7/7", "G-short": "3/8", "S-seed": "5/7"}}}, "high": {"0": {"count": 1, "of": 29, "share": 0.093, "ci95": [0.015, 0.408], "by_stratum": {"G-long": "0/7", "G-mm": "0/7", "G-short": 
-- claims_status: {"direction": 33, "not-checkable": 20, "partial": 18, "match": 17, "unsupported": 4}
+- QA1: {"low": {"0": {"count": 33, "of": 57, "share": 0.556, "ci95": [0.401, 0.701], "by_stratum": {"G-long": "6/11", "G-mm": "8/12", "G-short": "8/14", "S-seed": "11/20"}}, "1": {"count": 24, "of": 57, "share": 0.444, "ci95": [0.299, 0.599], "by_stratum": {"G-long": "5/11", "G-mm": "4/12", "G-short": "6/14", "S-seed": "9/20"}}, "2": {"count": 0, "of": 57, "share": 0.0, "ci95": [0, 0.063], "by_stratum": {"G-long": "0/11", "G-mm": "0/12", "G-short": "0/14", "S-seed": "0/20"}}}, "high": {"0": {"count": 30, "of": 57, "share": 0.525, "ci95": [0.373, 0.672], "by_stratum": {"G-long": "4/11", "G-mm": "7/12"
+- QA2: {"low": {"0": {"count": 13, "of": 57, "share": 0.192, "ci95": [0.102, 0.332], "by_stratum": {"G-long": "2/11", "G-mm": "3/12", "G-short": "5/14", "S-seed": "3/20"}}, "1": {"count": 41, "of": 57, "share": 0.711, "ci95": [0.554, 0.83], "by_stratum": {"G-long": "9/11", "G-mm": "9/12", "G-short": "9/14", "S-seed": "14/20"}}, "2": {"count": 3, "of": 57, "share": 0.097, "ci95": [0.033, 0.253], "by_stratum": {"G-long": "0/11", "G-mm": "0/12", "G-short": "0/14", "S-seed": "3/20"}}}, "high": {"0": {"count": 6, "of": 57, "share": 0.096, "ci95": [0.036, 0.23], "by_stratum": {"G-long": "1/11", "G-mm": "2/
+- QA3: {"low": {"0": {"count": 19, "of": 57, "share": 0.213, "ci95": [0.121, 0.347], "by_stratum": {"G-long": "1/11", "G-mm": "8/12", "G-short": "7/14", "S-seed": "3/20"}}, "1": {"count": 28, "of": 57, "share": 0.546, "ci95": [0.392, 0.692], "by_stratum": {"G-long": "7/11", "G-mm": "3/12", "G-short": "7/14", "S-seed": "11/20"}}, "2": {"count": 10, "of": 57, "share": 0.241, "ci95": [0.13, 0.401], "by_stratum": {"G-long": "3/11", "G-mm": "1/12", "G-short": "0/14", "S-seed": "6/20"}}}, "high": {"0": {"count": 11, "of": 57, "share": 0.103, "ci95": [0.048, 0.207], "by_stratum": {"G-long": "0/11", "G-mm": 
+- QA4: {"low": {"0": {"count": 39, "of": 53, "share": 0.752, "ci95": [0.601, 0.859], "by_stratum": {"G-long": "4/10", "G-mm": "9/12", "G-short": "10/11", "S-seed": "16/20"}}, "1": {"count": 7, "of": 53, "share": 0.151, "ci95": [0.068, 0.303], "by_stratum": {"G-long": "3/10", "G-mm": "1/12", "G-short": "0/11", "S-seed": "3/20"}}, "2": {"count": 7, "of": 53, "share": 0.097, "ci95": [0.041, 0.212], "by_stratum": {"G-long": "3/10", "G-mm": "2/12", "G-short": "1/11", "S-seed": "1/20"}}}, "high": {"0": {"count": 38, "of": 53, "share": 0.74, "ci95": [0.589, 0.849], "by_stratum": {"G-long": "4/10", "G-mm": "
+- QA5: {"low": {"0": {"count": 34, "of": 53, "share": 0.654, "ci95": [0.496, 0.783], "by_stratum": {"G-long": "3/10", "G-mm": "8/12", "G-short": "9/11", "S-seed": "14/20"}}, "1": {"count": 11, "of": 53, "share": 0.221, "ci95": [0.114, 0.384], "by_stratum": {"G-long": "2/10", "G-mm": "3/12", "G-short": "1/11", "S-seed": "5/20"}}, "2": {"count": 8, "of": 53, "share": 0.125, "ci95": [0.063, 0.235], "by_stratum": {"G-long": "5/10", "G-mm": "1/12", "G-short": "1/11", "S-seed": "1/20"}}}, "high": {"0": {"count": 32, "of": 53, "share": 0.617, "ci95": [0.458, 0.754], "by_stratum": {"G-long": "3/10", "G-mm": 
+- QA6: {"low": {"0": {"count": 16, "of": 53, "share": 0.166, "ci95": [0.087, 0.293], "by_stratum": {"G-long": "1/10", "G-mm": "8/12", "G-short": "5/11", "S-seed": "2/20"}}, "1": {"count": 18, "of": 53, "share": 0.347, "ci95": [0.212, 0.511], "by_stratum": {"G-long": "4/10", "G-mm": "4/12", "G-short": "3/11", "S-seed": "7/20"}}, "2": {"count": 19, "of": 53, "share": 0.487, "ci95": [0.334, 0.643], "by_stratum": {"G-long": "5/10", "G-mm": "0/12", "G-short": "3/11", "S-seed": "11/20"}}}, "high": {"0": {"count": 15, "of": 53, "share": 0.163, "ci95": [0.085, 0.291], "by_stratum": {"G-long": "1/10", "G-mm":
+- QA7: {"low": {"0": {"count": 5, "of": 51, "share": 0.103, "ci95": [0.037, 0.256], "by_stratum": {"G-long": "0/8", "G-mm": "1/12", "G-short": "2/13", "S-seed": "2/18"}}, "1": {"count": 26, "of": 51, "share": 0.361, "ci95": [0.233, 0.512], "by_stratum": {"G-long": "5/8", "G-mm": "9/12", "G-short": "8/13", "S-seed": "4/18"}}, "2": {"count": 20, "of": 51, "share": 0.536, "ci95": [0.381, 0.685], "by_stratum": {"G-long": "3/8", "G-mm": "2/12", "G-short": "3/13", "S-seed": "12/18"}}}, "high": {"0": {"count": 4, "of": 51, "share": 0.09, "ci95": [0.029, 0.246], "by_stratum": {"G-long": "0/8", "G-mm": "1/12"
+- QA8: {"low": {"0": {"count": 8, "of": 54, "share": 0.153, "ci95": [0.071, 0.3], "by_stratum": {"G-long": "1/10", "G-mm": "1/11", "G-short": "3/13", "S-seed": "3/20"}}, "1": {"count": 18, "of": 54, "share": 0.349, "ci95": [0.215, 0.511], "by_stratum": {"G-long": "4/10", "G-mm": "3/11", "G-short": "4/13", "S-seed": "7/20"}}, "2": {"count": 28, "of": 54, "share": 0.498, "ci95": [0.344, 0.652], "by_stratum": {"G-long": "5/10", "G-mm": "7/11", "G-short": "6/13", "S-seed": "10/20"}}}, "high": {"0": {"count": 8, "of": 54, "share": 0.153, "ci95": [0.071, 0.3], "by_stratum": {"G-long": "1/10", "G-mm": "1/11
+- QA9: {"low": {"0": {"count": 1, "of": 57, "share": 0.032, "ci95": [0.005, 0.18], "by_stratum": {"G-long": "0/11", "G-mm": "0/12", "G-short": "0/14", "S-seed": "1/20"}}, "1": {"count": 14, "of": 57, "share": 0.245, "ci95": [0.14, 0.393], "by_stratum": {"G-long": "3/11", "G-mm": "1/12", "G-short": "6/14", "S-seed": "4/20"}}, "2": {"count": 42, "of": 57, "share": 0.723, "ci95": [0.569, 0.837], "by_stratum": {"G-long": "8/11", "G-mm": "11/12", "G-short": "8/14", "S-seed": "15/20"}}}, "high": {"0": {"count": 1, "of": 57, "share": 0.032, "ci95": [0.005, 0.18], "by_stratum": {"G-long": "0/11", "G-mm": "0/
+- claims_status: {"direction": 60, "not-checkable": 39, "partial": 33, "match": 42, "unsupported": 7}
 
