@@ -1,6 +1,24 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 22 (2026-10-20 ~09:30 IST; newest; execution session d7bb06 = 741900f8, scratchpad .../741900f8-51c9-4f19-8878-9556d9ef107b/scratchpad).**
+  **Gate T1 re-audit 2: PASS WITH CORRECTIONS** ("T1 screened so far (interim)", 882 decided; fixes 23/24 done in
+  e7645bb; finding 25 = D0041 note row for the human author, EVENING N3). **D0036:** 131 rescue positives with an
+  abstract dual-screened (research/review/screening/v2/dual-rescue-free/, tools/ta_dispatch.py, all isolation/model
+  pass): kappa 0.792, 42 pass to full text (downloads need the user's yes, N2); 217 without abstract held
+  (pending-no-abstract-rf.jsonl; N1). **D0035 (R797):** frame r797-tranche-ids.txt (715) and validation sample drawn
+  BEFORE any download (human-validation-r797, 108; sheet built); 577 OA downloads running in background
+  (fetch_fulltext.py on analysis/screening/r797-oa-routes.jsonl, then fetch_openreview.py; log in scratchpad
+  r797-fetch.log; resumable: rerun the same two commands); e-gateway checklist-r797 (118). Harness tranche-aware:
+  FT_TRANCHE env in ft_postbatch/ft_cpost/cqueue; tools/ft_plan_tranche.py (bio batches of 3); tools/ft-session/tr.sh
+  (build/postbatch/cpost). Plan part 1 = r797b001-013 (102 records). r797b001 A/B dispatched. Next: convert new PDFs
+  (python tools/pdf_to_text.py; python -I tools/ft_title_check.py), plan part 2, continue batches, C via cqueue
+  (FT_TRANCHE=r797). **D0037 (S1243):** routes ft-routes-seed1243.jsonl (arxiv 1,214; R0484 duplicate of M17010; 20
+  web-only, N4), frame s1243-tranche-ids.txt (1,242), sample 187 + sheet; downloads after R797's finish. **D0042:**
+  OQ5-04 workbook built (research/review/extraction/human-check-oq5-04.xlsx); Stage A also needs plan v0.5 s14 A2-A4,
+  A10 rows (N6, list to compile). **D0043:** tools/fetch_public_versions.py ready (287), run after R797 downloads.
+  Item 12 drafted (ITEM12-RECOMMENDATIONS). Note: 0cbc855 (title resolution rerun) was committed onto this branch at
+  08:14 by the starting session.
 - **HANDOFF 21 (2026-10-20 ~08:10 IST; newest).** The human author approved every recommendation on
   research/EVENING-2026-10-20.md -> **D0035-D0043** (797 re-check tranche with OA downloads; 348 rescue positives to dual
   TA; 1,243 seed passes as a full-text tranche with OA downloads; P1 deviation; P2 rule; P3 note; B-unavailable records
