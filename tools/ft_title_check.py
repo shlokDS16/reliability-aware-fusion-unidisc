@@ -43,7 +43,7 @@ flags, n = [], 0
 for p in sorted(TXT.glob("*.txt")):
     i = p.stem
     if i not in rows:
-        flags.append({"id": i, "flag": "no route row"}); continue
+        flags.append({"id": i, "flag": "no route row", "verified": verified.get(i)}); continue
     n += 1
     text = p.read_text(encoding="utf-8")
     head, title = norm(text[:6000]), norm(rows[i]["title"])

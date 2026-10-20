@@ -1,7 +1,7 @@
 {
  "checked": 1386,
  "flagged": 10,
- "flagged_not_verified": 2,
+ "flagged_not_verified": 0,
  "rule": "first 40 normalised title chars or >= 80% of 4+ letter words in the first 6,000 chars; files > 1,000,000 chars always flagged",
  "flags": [
   {
@@ -78,11 +78,13 @@
   },
   {
    "id": "M18905.wrong-file",
-   "flag": "no route row"
+   "flag": "no route row",
+   "verified": "2026-10-20 orchestrator (session 92c0b6b9): renamed copy of the wrong file fetched for M18905 (EMCDDA manual); kept aside on purpose, not a screening text; record M18905 is held (analysis/screening/ft-r797/held-texts.jsonl) and on the e-gateway checklist."
   },
   {
    "id": "M19102.wrong-file",
-   "flag": "no route row"
+   "flag": "no route row",
+   "verified": "2026-10-20 orchestrator (session 92c0b6b9): renamed copy of the wrong file fetched for M19102 (music score); kept aside on purpose, not a screening text; M19102 r797b020 rows superseded, correct journal text fetched and listed in rescreen.jsonl (held-texts.jsonl)."
   }
  ]
 }
