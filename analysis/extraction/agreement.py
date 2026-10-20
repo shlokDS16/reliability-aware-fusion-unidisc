@@ -22,16 +22,22 @@ Inputs (a missing or mismatched input stops the run before anything is written):
                 spare of its stratum and takes the failed id's position.
   --lookups     benchmark-ids-v1.csv (printed, id) and metric-ids-v1.csv (printed, id, higher_is_better).
   --validator   ex_validate first-pass report, plan v0.2 s6.5 lines {id, extractor, check, ref, status,
-                severity, detail}; every (id, extractor) of X and Y must appear at least once (a summary line).
+                severity, detail}: the concatenated --out files of tools/ex_validate.py (one record per call);
+                every (id, extractor) of X and Y must appear at least once (a summary line).
                 An evidence entry (prose E.., table T.., cell C..) fails first pass when a line with severity
-                "fail" has ref equal to its id (or the id followed by ".", "[" or ":"); a cell is column-unverified
-                when a line with check "column_unverified" refers to it. Lines with "pass" > 1 are ignored.
+                "fail" has ref equal to its id (or the id followed by ".", "[" or ":"); a ref joining cell ids
+                with "+" (row checks) names each of them (I1). A value is column-unverified when a line with
+                check "column" and status column_unverified or column_mismatch has its value ref (H unit id, or
+                K unit id "." arm id), or a line with check "column_unverified" names its cell (I2). Lines with
+                "pass" > 1 are ignored.
   --config/--grid  the declared inputs of s10.8; the grid's model_sha256 must equal gate_rule_v05.model_sha of the
                 config, and in gate modes the config's sha256 must equal --expect-config.
   --we          stage-a: worked-example expected lists, one partial record per id ({"id", "groups": [{"group_id",
                 "where", "second_factor_printed", "anchor_arm", "arms": [{"arm_id", "label_printed"}]}],
                 "units_k": [{"unit_id", "group_id", "benchmark_printed", "metric_printed", "condition_printed",
-                "split"}]}); missing fields count as ''.
+                "split"}]}); missing fields count as ''. Or analysis/extraction/we-expected.jsonl itself, one row
+                per expected unit (build_we_expected.py), folded into such records by load_we (I3); a K-key
+                part it leaves null, and split, match any value (I4).
   --ec          optional EC final records; used only for the final sign of s10.3 / MJ1.
   --texts       optional full texts; with them an abstract H unit is keyed by the character offset of its
                 number in the normalised text (U14); without them by (normalised quote, number, occurrence).
@@ -83,7 +89,7 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-TOOL_VERSION = "agreement.py 1.0.0 (extraction form v0.5)"
+TOOL_VERSION = "agreement.py 1.0.1 (extraction form v0.5)"
 SELF_TEST_SEED = 20267000
 BOOT_SEED = 20261800
 
@@ -257,6 +263,14 @@ def parse_dir(s):
 
 
 class Validator:
+    """Reads ex_validate lines {id, extractor, check, ref, status, severity, detail} (tools/ex_validate.py 1.0.0)
+    and the older synthetic shape of tests/fixtures (check "column_unverified", ref = cell id). Integration fixes
+    (analysis/extraction/stageA-integration-log.txt): I1 a row-level ref joins cell ids with "+" ("C04+C05") and
+    is split into its ids; I2 ex_validate reports column_unverified (and column_mismatch) as the status of a
+    check "column" line whose ref is the value (H unit id, or K unit id "." arm id), so verified() also takes
+    that value ref."""
+    UNVERIFIED = ("column_unverified", "column_mismatch")
+
     def __init__(self, path):
         self.seen, self.fails, self.unver = set(), defaultdict(set), defaultdict(set)
         for l in read_jsonl(path):
@@ -264,11 +278,11 @@ class Validator:
                 continue
             key = (l.get("id"), l.get("extractor"))
             self.seen.add(key)
-            ref = str(l.get("ref") or "")
+            refs = [r for r in str(l.get("ref") or "").split("+") if r] or [""]
             if l.get("severity") == "fail" or l.get("status") == "fail":
-                self.fails[key].add(ref)
-            if l.get("check") == "column_unverified":
-                self.unver[key].add(ref)
+                self.fails[key].update(refs)
+            if l.get("check") == "column_unverified" or (l.get("check") == "column" and l.get("status") in self.UNVERIFIED):
+                self.unver[key].update(refs)
         self.sha = sha_file(path)
 
     @staticmethod
@@ -278,8 +292,9 @@ class Validator:
     def failed(self, rid, ext, eid):
         return self._hit(self.fails[(rid, ext)], eid)
 
-    def verified(self, rid, ext, cid):
-        return not self._hit(self.unver[(rid, ext)], cid)
+    def verified(self, rid, ext, cid, vref=None):
+        u = self.unver[(rid, ext)]
+        return not (self._hit(u, cid) or (vref is not None and vref in u))
 
 
 # =============================================================================================================
@@ -400,7 +415,7 @@ def h_info(r, u, val, texts):
         t = tables.get(c.get("table")) or {}
         where = t.get("where") or (u.get("loc") or {}).get("where")
         return {"kind": "T", "k1": ("T", norm_label(where), norm_label(c.get("row_group")), norm_label(c.get("row_label"))),
-                "verified": bool(c) and val.verified(r["id"], r.get("extractor"), c.get("id")),
+                "verified": bool(c) and val.verified(r["id"], r.get("extractor"), c.get("id"), u.get("unit_id")),
                 "col": u.get("col"),
                 "leaf": tuple(norm_label(p) for p in (u.get("column_printed") or "").split(" / "))}
     if origin == "F1-figure":
@@ -707,7 +722,7 @@ def compare(rx, ry, L, val, texts, ec=None):
             for v in u.get("values") or []:
                 if v.get("cell"):
                     nd["diag:column_unverified share (K values)"][1] += 1
-                    if not val.verified(r["id"], r.get("extractor"), v.get("cell")):
+                    if not val.verified(r["id"], r.get("extractor"), v.get("cell"), f"{u.get('unit_id')}.{v.get('arm_id')}"):
                         nd["diag:column_unverified share (K values)"][0] += 1
     kpairs = []
     for a, b, p in km:
@@ -1061,7 +1076,9 @@ def load_config(cfg_path, grid_path, expect, need_grid):
 SPEC_RESOLUTIONS = ["R1 block items", "R2 arm Jaccard via the arm match", "R3 final-sign rule (MJ1)",
                     "R4 M-sign reader value per (group, metric key)", "R5 K-attr mean of defined fields",
                     "R6 undefined criterion fails", "R7 G5 identity", "R8 M-val without figure-only pairs",
-                    "R9 v0.4 pooled ICC for comparison"]
+                    "R9 v0.4 pooled ICC for comparison",
+                    "I1 '+'-joined validator refs split into entry ids", "I2 column_unverified read from ex_validate status lines by value ref",
+                    "I3 we-expected.jsonl unit rows folded into partial records", "I4 null worked-example key parts and split are wildcards"]
 
 
 def run(a, argv):
@@ -1326,7 +1343,7 @@ def stage_a_tests(res, ids, man, metrics, signs, X, Y, L, val, texts, we_path):
     if we_path is None:
         out["worked_examples_comparison"] = "not computed: --we not given (we-expected.jsonl is precondition A11)"
         return out
-    WE = load_records(we_path, "--we")
+    WE = load_we(we_path)
     comp = {}
     for side, R in (("EA", X), ("EB", Y)):
         g = k = a_n = a_d = 0
@@ -1336,7 +1353,7 @@ def stage_a_tests(res, ids, man, metrics, signs, X, Y, L, val, texts, we_path):
                 continue
             e = _we_record(WE[i], R[i])
             gm, _, _ = group_match(R[i].get("groups") or [], e.get("groups") or [])
-            km = match_k(R[i], e, gm, L)
+            km = match_k_we(R[i], e, gm, L)
             g += len(gm)
             k += len(km)
             gx += len(R[i].get("groups") or [])
@@ -1356,8 +1373,67 @@ def stage_a_tests(res, ids, man, metrics, signs, X, Y, L, val, texts, we_path):
     return out
 
 
+def load_we(path):
+    """--we input. Integration fix I3: analysis/extraction/we-expected.jsonl (build_we_expected.py) holds one row
+    per expected unit ({"record_id", "kind": "H"|"K", "seq", "group_id", "where", "second_factor", "arms": [labels]
+    or a markdown string, "anchor": label, "benchmark", "metric", "condition", ...}), not one partial record per id.
+    Such rows are folded into partial records: arms A1..An in list order (a string arms field, a figure range kept
+    as markdown, becomes one arm with that label); anchor_arm the arm whose label equals "anchor", else null;
+    unit_id K<seq>; benchmark, metric and condition kept as given, null meaning not given (I4: a part the worked
+    example leaves null, and split, which it never gives, do not take part in the K key). H rows are not used
+    (the comparison covers groups and K units). Partial-record files ({"id", "groups", "units_k"}) load as before."""
+    rows = read_jsonl(path)
+    if not rows or "record_id" not in rows[0]:
+        return load_records(path, "--we")
+    out = {}
+    for r in rows:
+        if "record_id" not in r or "kind" not in r:
+            fail(f"--we: a unit row has no record_id or kind: {str(r)[:80]}")
+        rec = out.setdefault(r["record_id"], {"id": r["record_id"], "groups": [], "units_k": [], "_g": {}})
+        if r["kind"] != "K":
+            continue
+        gid = r.get("group_id")
+        if gid not in rec["_g"]:
+            labels = r.get("arms") if isinstance(r.get("arms"), list) else [str(r.get("arms") or "")]
+            arms = [{"arm_id": f"A{k + 1}", "label_printed": lab} for k, lab in enumerate(labels)]
+            anchor = next((a["arm_id"] for a in arms if r.get("anchor") is not None and a["label_printed"] == r["anchor"]), None)
+            rec["_g"][gid] = {"group_id": gid, "where": r.get("where") or "", "second_factor_printed": r.get("second_factor") or "",
+                              "anchor_arm": anchor, "arms": arms}
+            rec["groups"].append(rec["_g"][gid])
+        rec["units_k"].append({"unit_id": f"K{int(r.get('seq', len(rec['units_k']) + 1)):03d}", "group_id": gid,
+                               "benchmark_printed": r.get("benchmark"), "metric_printed": r.get("metric"),
+                               "condition_printed": r.get("condition"), "split": None})
+    for rec in out.values():
+        rec.pop("_g")
+    return out
+
+
+def match_k_we(rx, e, gm, L):
+    """match_k against a worked-example record: a key part that the worked example gives as null matches any value
+    (I4); with no null parts this is match_k (first free equal key in reading order)."""
+    ux, ue = rx.get("units_k") or [], e.get("units_k") or []
+    gx, ge = rx.get("groups") or [], e.get("groups") or []
+    fields = ("benchmark_printed", "metric_printed", "condition_printed", "split")
+    out = []
+    for p, (i, j, _, _) in enumerate(gm):
+        xi = [a for a, u in enumerate(ux) if u.get("group_id") == gx[i].get("group_id")]
+        ej = [b for b, u in enumerate(ue) if u.get("group_id") == ge[j].get("group_id")]
+        used = set()
+        for a in xi:
+            kx = k_key(ux[a], L)
+            for b in ej:
+                if b in used:
+                    continue
+                ke = k_key(ue[b], L)
+                if all(ue[b].get(f) is None or kx[t] == ke[t] for t, f in enumerate(fields)):
+                    used.add(b)
+                    out.append((a, b, p))
+                    break
+    return sorted(out)
+
+
 def _we_record(e, r):
-    """A worked-example entry as a partial record (missing fields as '')."""
+    """A worked-example entry as a partial record (missing fields as ''; a null kept by load_we stays null)."""
     rec = {"id": e["id"], "extractor": "WE", "groups": [], "units_k": []}
     for g in e.get("groups") or []:
         rec["groups"].append({"group_id": g.get("group_id"), "where": g.get("where", ""),

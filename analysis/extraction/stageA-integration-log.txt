@@ -1,0 +1,134 @@
+Stage A extraction tools: integration check (form v0.5)
+date: 2026-10-20
+agent: quality-engineer (subagent); brief: end-to-end synthetic pipeline test, interface mismatches, Stage A gaps
+scope rules kept: no download, no web, no git commit, no subagent, no real extraction, no real draw
+(draw_pilot only with --dry-run), the real dispatch log research/review/extraction/dispatch-log.jsonl never
+written (it does not exist before or after this run).
+
+FILES
+  new      tests/extraction/test_pipeline.py        sha256 d46fcdbb6e57206cf0372b4ae37158f12a4b3a1406cdcd6175139754eade46ff
+  changed  analysis/extraction/agreement.py         sha256 480aa907b9f913e3c7b7b7a237f08d754236a92faee3f50a22a90f120e4bf280
+           (HEAD dda4c54 version: 42798b61ae8ba32972ff83353e443c1562ea67a02478b3bbca9aa63be7cbbb14; tool version 1.0.0 -> 1.0.1)
+  unchanged tools/ex_dispatch.py (it already has --log; no change needed), tools/ex_validate.py,
+           analysis/extraction/draw_pilot.py, all fixtures and existing tests.
+
+1. PIPELINE TEST (tests/extraction/test_pipeline.py, 9 tests, all pass)
+  ids: M03416 and M13864, both decision "include" in analysis/screening/ft-t1/t1-decisions-all.jsonl; full texts
+  research/sources/md/fulltext-pymupdf/<id>.txt (M03416 sha256 pinned ae6f033f...369cc as in validator-tests).
+  Two ids, not three: ex_dispatch's session-size rule allows at most 2 ids with block K per E1/E2 session (texts
+  under 133,280 bytes), so one batch per role covers both.
+  Steps, all inside a pytest tmp folder:
+   a. lookups written for the test (benchmark agnews, codecommenttranslation; metric accuracy, bleu, comet,
+      direction true); stage-a manifest in draw_pilot's shape (M13864 worked example, M03416 drawn, pool FR).
+   b. ex_dispatch.main --role E1 / E2 --batch pipe01 --manifest <tmp> --log <tmp>/dispatch-log.jsonl.
+   c. Two synthetic records per id (EA, EB) built on fixtures/synth.base_record, schema v0.5, citing real cells:
+        M03416 Table 3 (p.7, header "Method TF TB BA", rows DiffuseDef / w/o ensembling / w/o diffusion
+        denoising / w/o adv training), one 4-arm component-removal group, K units TF, TB, BA, F1 H unit
+        DiffuseDef TF 84.5, prose E01 from p.6 ("...difference can be reduced to less than 10% AUA.").
+        M13864 Table 2 (p.7, two-level header "Models Metrics Time BLEU COMET (sec.) ru en ru en"), group
+        Dream-v0-Instruct-7B (rate=1) vs Qwen2.5-7B, K units BLEU/COMET x ru/en and Time (sec.), F1 H unit 0.215.
+      Designed EA/EB differences: EB M03416 misses K03 (BA) and splits row "w/o adv training" into C04
+      (first_col 2) and C05 (first_col 3); EB M13864 gives COMET ru higher_is_better false (lookup true).
+   d. ex_validate CLI per record (python -I, --metric-lookup <tmp csv>, --out), reports concatenated.
+      Observed: EA 0/0 exits 0; EB M03416 exit 1 (row_start fail, ref "C04+C05"); EB M13864 exit 1 (sign_group
+      fails K03, K04; sign_route lookup conflict K03); M13864 in both readers: column_order_unverified warning
+      and column_unverified warnings on H01 and all 10 K values; K05 (Time) sign_route metric unmapped.
+   e. agreement.main --mode stage-a (with --texts and --we analysis/extraction/we-expected.jsonl), once without
+      and once with --ec (EC = EA records under extractor EC-claude-fable-5-1).
+   f. ex_dispatch --role EC on the same X/Y files and lookup dir; X/Y relabelling checked against the xy key.
+  Asserted agreement output (each value derived from the record design above, then observed):
+    G1 accept EA 9/9; G1 accept EB 8/10 (C04 and C05 fail through the joined ref)
+    F1_G 4/4; F1_H 4/4; F1_K 14/15; M-val 17/17; M-sign 3/4 (comet: EB holds two values in one group)
+    diag column_unverified share (K values) 20/39; H match M03416 "col", M13864 "leaf"
+    stage_a: F1_G drawn 1.0, worked examples 1.0, falsifier false
+    sign coverage (MJ1, no EC): contrasts 8; final_from lookup 6, pending EC 2, arrow 0, EC 0, unsigned 0;
+      routed 2 (0.25); final null 2 (0.25); sign agreement where both given 6/7; KA1 steps x {b 7,
+      unverifiable 1}, y {b 5, unverifiable 2}; MJ1 test final_null>0.10 true, routed>0.30 false;
+      K05 metric key raw:time(sec.)
+    sign coverage with EC: lookup 6, EC 2, pending 0, final null 0, routed 2
+    worked-example comparison (EA and EB): matched groups 1 (WE G02, arm Jaccard 2/3), F1_G 2/7,
+      F1_K 10/23, anchor agreement 0 (WE G02 has no anchor)
+  Pre-fix behaviour (HEAD agreement.py run on the same tmp inputs, without --we because --we crashed):
+    G1 EB 10/10, column_unverified share 0/39, M13864 H match "col"; with --we: InputError "--we: a record has
+    no id". Sign coverage and the other unit metrics were already as asserted.
+
+2. INTERFACE MISMATCHES FOUND AND FIXED (all in the consumer, analysis/extraction/agreement.py)
+  I1 Row-level validator refs. ex_validate names row checks (row_start, row_width, row_complete) by the row's
+     cell ids joined with "+" ("C04+C05"); Validator._hit matched only id, id+".", id+"[", id+":". A failed
+     row therefore never failed its entries in G1. Fix: Validator splits each ref on "+" (fails and unverified).
+  I2 column_unverified. agreement read check == "column_unverified" with ref = cell id (the synthetic shape of
+     fixtures/synth.validator_lines); ex_validate emits check "column", status "column_unverified" (warn) or
+     "column_mismatch" (fail), ref = the value (H unit id or "<K unit>.<arm>"). Every cell read as verified, so
+     the U14 col pass ran on unverified cells and the column_unverified diagnostic was always 0. Fix: Validator
+     also records check "column" lines with status column_unverified or column_mismatch by value ref, and
+     verified(rid, ext, cell, vref) takes the value ref (h_info passes the H unit id, the K-value diagnostic
+     passes unit.arm). column_mismatch is included because plan v0.5 s5.2 matches on col only for cells the
+     validator marks column-verified (v0.3 s6.3 item 9), which a column_mismatch value is not. The old
+     synthetic shape still works (existing tests unchanged).
+  I3 --we file format. agreement's docstring names --we analysis/extraction/we-expected.jsonl but read it as
+     one partial record per id ({"id","groups","units_k"}); build_we_expected.py writes one row per expected
+     unit ({"record_id","kind","seq","group_id","where","second_factor","arms","anchor","benchmark","metric",
+     "condition",...}). Result: InputError, Stage A could not run with --we. Fix: load_we folds unit rows into
+     partial records (arms A1..An in list order; a markdown-string arms field, 38 of 267 K rows, becomes one
+     arm; anchor_arm = the arm whose label equals anchor, else null, 36 rows; unit_id K<seq>); partial-record
+     files load as before.
+  I4 Null parts of worked-example keys. we-expected rows never give split and often give benchmark or
+     condition as null; _we_record turned missing fields into "" and match_k compared them with the record's
+     split ("test") and benchmark ("not stated"), so no K unit could ever match a worked example (F1_K 0 by
+     construction). Fix: match_k_we treats a null worked-example key part (and split) as matching any value;
+     with no null parts it equals match_k (first free equal key in reading order).
+  The four fixes are listed in the output's spec_resolutions (I1-I4) and in the module docstring.
+  Checked and consistent (no change): ex_validate summary line carries id and extractor (agreement's "seen"
+  check); extractor strings EA-claude-opus-5-5 / EB-claude-sonnet-5-5 from dispatch.json match the schema
+  pattern and the validator's echo; ex_dispatch --manifest accepts draw_pilot's stage-a keys (ids, stratum);
+  draw_pilot's stage-a manifest keys are those agreement reads; ex_dispatch EC and agreement read the same
+  lookup file names; route-severity lines are ignored by agreement, which recomputes the sign (R3).
+
+3. TESTS
+  python -E -P -m pytest tests/test_ex_validate.py tests/extraction -p no:cacheprovider -q
+    142 passed (83 ex_validate + 50 earlier extraction tests + 9 pipeline); 2 RuntimeWarnings "Mean of empty
+    slice" from icc_check.py with only 2 records (ICC per-metric bounds undefined at n = 2; not asserted)
+  python -E -P analysis/extraction/agreement.py --self-test     self-tests passed 19/19
+  python -I tests/test_ex_validate.py                           tests passed: 83/83
+  python -I analysis/extraction/draw_pilot.py --stage stage-a --option b --dry-run    exit 0, nothing written
+  Before this run: 133 passed (pytest), 19/19 self-test.
+
+4. WHAT STAGE A STILL LACKS (checklist)
+  [ ] Real lookups analysis/extraction/lookups/benchmark-ids-v1.csv and metric-ids-v1.csv (directory absent).
+      agreement and ex_dispatch EC refuse without them. The metric CSV must (a) contain every KA1(b) entry,
+      because ex_validate always adds its built-in KA1(b) list under the CSV while agreement uses the CSV only
+      (a metric such as PPL missing from the CSV gets a direction in ex_validate and is routed to EC by
+      agreement); (b) use only true / false / empty for higher_is_better (agreement also reads yes/no/1/0,
+      ex_validate does not).
+  [ ] E1 coverage rule for [Q]-coded fields and the searched rule (ex_validate log: not implemented; needs the
+      field list).
+  [ ] Self-test flags: plan v0.2 s6.5 gives ex_validate a --self-test; it has none (cases run from
+      tests/test_ex_validate.py). ex_dispatch and draw_pilot have none either; agreement has one.
+  [ ] Batch driver: ex_validate takes one record and one text per call; nothing splits a session file
+      (<EA|EB>-<batch>.jsonl) into records, runs the validator with the dispatched text and concatenates the
+      --out files into agreement's --validator input (the pipeline test does it by hand). Plan v0.2 s6.5 had
+      --rows/--texts.
+  [ ] Second-pass marking: agreement ignores lines with "pass" > 1, but ex_validate writes no pass field; a
+      re-run after the one return to the session (plan s9) must be kept out of the first-pass file or tagged.
+  [ ] Derived fields (--fill-derived: rq_class, value_num, K15 matched, metric_id, benchmark_id, duplicate
+      flags): not implemented in ex_validate; plan v0.4 says records reach agreement already filled.
+      agreement falls back on U8 and its own pool_flag, so Stage A runs, but the "stored id differs" diagnostic
+      is empty until ids are filled.
+  [ ] Blocks against dispatch.json: not checked by ex_validate.
+  [ ] G1 definition: value-level fails (value_mismatch, column_mismatch, where_mismatch; ref = unit or
+      unit.arm) do not fail the cited cell entry; only table, cell, row and prose checks do. Needs a decision
+      row if a value failure should reject its cell.
+  [ ] Sign-rule divergence between tools: ex_validate reads arrows also in row labels (columns orientation)
+      and in the header next to the leaf, and maps metric strings after dropping qualifiers (avg, top-1) and
+      pass@k; agreement's R3 reads arrows only in metric_printed and column_printed and keys metrics by
+      norm_bm alone. Same unit can get different keys / arrow status in the two tools.
+  [ ] KA1(a) printed-arrow path and EC adjudication not exercised on real text (neither table prints arrows);
+      covered only by synthetic tests.
+  [ ] Stage A draw: no manifest yet (needs a decisions.jsonl row, the multimodal option, and for options c/d
+      analysis/extraction/mm-construct.jsonl); Python 3.14.3 pinned for the draw.
+  [ ] Worked-example lists: 36 of 267 K rows have an anchor that is not one of the listed arms (figure ranges,
+      "as G14-G15", block size), so anchor agreement against them counts as a disagreement for those groups.
+
+CONCERNS
+  - tools/ft-session/agent-map.txt shows as modified in git status; not touched by this run (another session).
+  - Two-record pipeline: ICC bounds are not meaningful at n = 2 (warnings above); Stage A has 12 records.
