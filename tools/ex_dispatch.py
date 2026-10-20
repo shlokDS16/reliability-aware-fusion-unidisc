@@ -56,7 +56,7 @@ FORM = "0.5"
 LARGE = 133280
 SEED_XY = 20261700
 SAFE = re.compile(r"^[A-Za-z0-9_-]+$")
-TOOL = "ex_dispatch.py 1.0.1 (extraction form v0.5)"
+TOOL = "ex_dispatch.py 1.0.2 (extraction form v0.5)"
 
 
 class Refused(SystemExit):
@@ -177,7 +177,7 @@ def build(a):
     if lookups:
         versions["lookups_sha256"] = {f: sha(p.read_bytes()) for f, p in lookups.items()}
     disp = {"role": plan_role, "model": model, "extractor": f"{plan_role}-{model}", "batch": a.batch,
-            "form_version": FORM, "ft": FT, "ids": order, "blocks": {i: blocks[i] for i in order},
+            "form_version": FORM, "ft": a.ft or FT, "ids": order, "blocks": {i: blocks[i] for i in order},
             "output_file": out_file, "versions": versions}
     if rec_pairs:
         disp["records_files"] = {i: f"records-{i}.jsonl" for i in order}
@@ -355,6 +355,7 @@ def main(argv=None):
     ap.add_argument("--records-y")
     ap.add_argument("--lookups")
     ap.add_argument("--texts", default=str(MD))
+    ap.add_argument("--ft", help="full-text version string for dispatch.json (default: the pymupdf string; 1.0.2, D0053 seed texts)")
     ap.add_argument("--log", default=str(LOG))
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--self-test", action="store_true",
