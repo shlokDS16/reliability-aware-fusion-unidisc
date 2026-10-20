@@ -1,6 +1,15 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 19 (2026-10-20 ~06:40 IST; newest; HANDOFF 18 stands for T1).** **Extraction instrument:** five
+  architect/red-team rounds (research/review/extraction/*-v0.1..v0.5, audits 2026-10-20-redteam-extraction-v0.1..v0.5,
+  scripts in analysis/extraction/ with logs). v0.5 red-team: 0 critical, 3 major (MJ1 final-sign pipeline undefined and
+  unmeasured; MJ2 rule-selection approximation biased; MJ3 ceiling penalty), 5 minor; **Stage A (development, 12
+  records) GO** once the human author's rows are entered (scope, multimodal option, rules: OPEN-QUESTIONS-v0.5.md;
+  research/EVENING-2026-10-20.md items 9-11), the T1 gate passes, and the tools are built (ex_dispatch, ex_validate,
+  draw_pilot, agreement.py with MJ1 sign-coverage counts, lookups, fixtures, we-expected.jsonl); **Stage B (gate) NO-GO**
+  until MJ1-MJ3. Next: build Stage A tools (no draws), then a quality-engineer review; title resolution resumable after
+  the OpenAlex daily reset (173 lookups incomplete).
 - **HANDOFF 18 (2026-10-20 ~02:00 IST; newest; supersedes HANDOFF 17's numbers).** **T1 screened so far
   (INTERIM: T1 not closed until items 16a/16b and rows P1-P4 are decided): 885 records read; 882 decided, include
   608, exclude 274; 3 awaiting a second screener** (M13184, M15873, M17195: Opus B hits a safety-classifier stop on
