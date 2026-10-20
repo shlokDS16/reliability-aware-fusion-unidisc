@@ -1,0 +1,275 @@
+{
+ "scope": "r797 full-text, screeners A vs B before adjudication (criteria v1.6 A s4 item 3); INTERIM",
+ "files": "analysis/screening/ft-r797/r797b*/F{A,B}-r797b*.jsonl; DISCARDED files, superseded rows and B-unavailable records excluded",
+ "rows": {
+  "A": 269,
+  "B": 269,
+  "both": 269,
+  "A_only_ids": [],
+  "B_only_ids": [],
+  "pending_B_unavailable": []
+ },
+ "bootstrap": {
+  "B": 2000,
+  "seed": 20261024,
+  "type": "percentile"
+ },
+ "pass_vs_exclude": {
+  "n": 269,
+  "raw_agreement": 0.9591,
+  "kappa": 0.6013,
+  "kappa_ci95": [
+   0.3606,
+   0.7907
+  ],
+  "ac1": 0.9545,
+  "both_pos": 9,
+  "both_neg": 249,
+  "A_only_pos": 10,
+  "B_only_pos": 1,
+  "p_pos": 0.6207,
+  "p_neg": 0.9784,
+  "bias_index": 0.0335,
+  "prevalence_index": 0.8922,
+  "note": "pass = include or adjudicate (D0030); positive = pass"
+ },
+ "include_vs_not": {
+  "n": 269,
+  "raw_agreement": 0.9963,
+  "kappa": 0.9072,
+  "kappa_ci95": [
+   0.5937,
+   1.0
+  ],
+  "ac1": 0.9961,
+  "both_pos": 5,
+  "both_neg": 263,
+  "A_only_pos": 0,
+  "B_only_pos": 1,
+  "p_pos": 0.9091,
+  "p_neg": 0.9981,
+  "bias_index": 0.0037,
+  "prevalence_index": 0.9591,
+  "note": "sensitivity: adjudicate counted with exclude; positive = include"
+ },
+ "three_way": {
+  "n": 269,
+  "raw_agreement": 0.9554,
+  "kappa": 0.571,
+  "kappa_ci95": [
+   0.3247,
+   0.7598
+  ],
+  "ac1": 0.953,
+  "table_A_by_B": {
+   "adjudicate|adjudicate": 3,
+   "adjudicate|exclude": 10,
+   "adjudicate|include": 1,
+   "exclude|adjudicate": 1,
+   "exclude|exclude": 249,
+   "include|include": 5
+  }
+ },
+ "per_screener": {
+  "A": {
+   "decisions": {
+    "exclude": 250,
+    "adjudicate": 14,
+    "include": 5
+   },
+   "adjudicate_rate": 0.052,
+   "exclude_codes": {
+    "X0": 71,
+    "X2": 105,
+    "X1": 61,
+    "X3": 5,
+    "X4": 2,
+    "X8": 6
+   }
+  },
+  "B": {
+   "decisions": {
+    "exclude": 259,
+    "include": 6,
+    "adjudicate": 4
+   },
+   "adjudicate_rate": 0.0149,
+   "exclude_codes": {
+    "X0": 70,
+    "X2": 110,
+    "X1": 66,
+    "X3": 5,
+    "X4": 2,
+    "X8": 6
+   }
+  }
+ },
+ "sent_to_C": 15,
+ "C_queue": {
+  "rows": 15,
+  "unique": 15,
+  "disagreement_or_adjudicate": 15,
+  "disagreement_or_adjudicate_not_queued": [],
+  "queued_for_quote_check_only": 0,
+  "quote_only_reasons": {}
+ },
+ "codes_on_joint_exclusions": {
+  "n": 249,
+  "same_code": 246,
+  "kappa": 0.9824,
+  "ac1": 0.986,
+  "table_A_by_B": {
+   "X0|X0": 69,
+   "X0|X2": 1,
+   "X1|X1": 61,
+   "X2|X1": 2,
+   "X2|X2": 103,
+   "X3|X3": 5,
+   "X4|X4": 2,
+   "X8|X8": 6
+  },
+  "same_code_and_xsub": 236
+ },
+ "joint_inclusions": {
+  "n": 5,
+  "i1": {
+   "same": 5,
+   "kappa": 1.0,
+   "ac1": 1.0,
+   "table_A_by_B": {
+    "a|a": 2,
+    "b|b": 3
+   }
+  },
+  "nonlang_only": {
+   "n": 5,
+   "both_pos": 0,
+   "both_neg": 5,
+   "A_only_pos": 0,
+   "B_only_pos": 0,
+   "p_pos": null,
+   "p_neg": 1.0,
+   "bias_index": 0.0,
+   "prevalence_index": 1.0,
+   "A_true": 0,
+   "B_true": 0
+  }
+ },
+ "per_rule_citation": {
+  "note": "presence of the rule id in each screener's rules field, all records",
+  "rules": {
+   "D1": {
+    "cited_A": 1,
+    "cited_B": 0,
+    "cited_both": 0,
+    "p_pos": 0.0,
+    "kappa": 0.0
+   },
+   "D2": {
+    "cited_A": 2,
+    "cited_B": 0,
+    "cited_both": 0,
+    "p_pos": 0.0,
+    "kappa": 0.0
+   },
+   "D3": {
+    "cited_A": 1,
+    "cited_B": 0,
+    "cited_both": 0,
+    "p_pos": 0.0,
+    "kappa": 0.0
+   },
+   "R1": {
+    "cited_A": 6,
+    "cited_B": 6,
+    "cited_both": 5,
+    "p_pos": 0.8333,
+    "kappa": 0.8295
+   },
+   "R10": {
+    "cited_A": 70,
+    "cited_B": 94,
+    "cited_both": 59,
+    "p_pos": 0.7195,
+    "kappa": 0.6003
+   },
+   "R11": {
+    "cited_A": 26,
+    "cited_B": 21,
+    "cited_both": 14,
+    "p_pos": 0.5957,
+    "kappa": 0.5575
+   },
+   "R12": {
+    "cited_A": 17,
+    "cited_B": 23,
+    "cited_both": 16,
+    "p_pos": 0.8,
+    "kappa": 0.7843
+   },
+   "R13": {
+    "cited_A": 6,
+    "cited_B": 5,
+    "cited_both": 4,
+    "p_pos": 0.7273,
+    "kappa": 0.7216
+   },
+   "R14": {
+    "cited_A": 1,
+    "cited_B": 7,
+    "cited_both": 1,
+    "p_pos": 0.25,
+    "kappa": 0.2451
+   },
+   "R2": {
+    "cited_A": 6,
+    "cited_B": 6,
+    "cited_both": 6,
+    "p_pos": 1.0,
+    "kappa": 1.0
+   },
+   "R4": {
+    "cited_A": 193,
+    "cited_B": 206,
+    "cited_both": 168,
+    "p_pos": 0.8421,
+    "kappa": 0.3907
+   },
+   "R5": {
+    "cited_A": 6,
+    "cited_B": 7,
+    "cited_both": 6,
+    "p_pos": 0.9231,
+    "kappa": 0.9212
+   },
+   "R6": {
+    "cited_A": 30,
+    "cited_B": 98,
+    "cited_both": 20,
+    "p_pos": 0.3125,
+    "kappa": 0.1709
+   },
+   "R7": {
+    "cited_A": 28,
+    "cited_B": 39,
+    "cited_both": 24,
+    "p_pos": 0.7164,
+    "kappa": 0.6773
+   },
+   "R8": {
+    "cited_A": 12,
+    "cited_B": 9,
+    "cited_both": 7,
+    "p_pos": 0.6667,
+    "kappa": 0.6534
+   },
+   "R9": {
+    "cited_A": 176,
+    "cited_B": 177,
+    "cited_both": 175,
+    "p_pos": 0.9915,
+    "kappa": 0.9753
+   }
+  }
+ }
+}

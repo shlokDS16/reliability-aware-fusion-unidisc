@@ -1,0 +1,48 @@
+{
+ "tranche": "r797",
+ "scope": "r797 full-text model screening, batches r797b001-r797b034",
+ "status": "INTERIM: screened so far; A-B rows, C rulings filed so far; before the tranche gate audit and the human author review (protocol s4 step 4); not final",
+ "frame": 715,
+ "screened_A_and_B": 269,
+ "decided": 266,
+ "awaiting_C": [
+  "M07991",
+  "M08792",
+  "M15920"
+ ],
+ "pending_B_unavailable": [],
+ "held_texts": [
+  "M16194",
+  "M16195",
+  "M18905",
+  "M19102"
+ ],
+ "frame_not_yet_screened": 446,
+ "superseded_rows_skipped": [
+  "M19102@r797b020:A",
+  "M19102@r797b020:B"
+ ],
+ "decision": {
+  "exclude": 259,
+  "include": 7
+ },
+ "source": {
+  "A=B": 254,
+  "C": 12
+ },
+ "exclude_codes": {
+  "X0": 73,
+  "X2": 110,
+  "X1": 63,
+  "X3": 5,
+  "X4": 2,
+  "X8": 6
+ },
+ "include_i1": {
+  "a": 4,
+  "b": 3
+ },
+ "include_nonlang_only": 0,
+ "C_rulings_used": 12,
+ "files": "r797-decisions-all.jsonl; c-queue-*.jsonl; c/c-r797-*; batch-log.jsonl; superseded-rows.jsonl; held-texts.jsonl; agreement-ft-r797.json"
+}
