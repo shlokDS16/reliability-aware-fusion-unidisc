@@ -1,0 +1,22 @@
+{"id": "M00615", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 no D2 component", "loc": "p.1, §Abstract", "status": "found"}
+{"id": "M00615", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0 no D2 component", "loc": "p.5, §2.1", "status": "found"}
+{"id": "M00615", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0 no D2 component", "loc": "p.5, §2.1", "status": "found"}
+{"id": "M00615", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "X0 no D2 component", "loc": "p.6, §2.4", "status": "found"}
+{"id": "M02327", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "X0 D2(ii) fails, no denoising generation", "loc": "p.5, §Multi-modal Latent Space Learning", "status": "found"}
+{"id": "M02327", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "X0 D2 UNet not trained", "loc": "p.5, §Multi-modal Latent Space Learning", "status": "found"}
+{"id": "M02327", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "X0 text decoded autoregressively", "loc": "p.4, §Text Decoder", "status": "found"}
+{"id": "M04341", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2", "loc": "p.3, Figure 1 caption", "status": "found"}
+{"id": "M04341", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R9 non-text output", "loc": "p.5, §4.1", "status": "found"}
+{"id": "M04341", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R9 step 2 (text condition)", "loc": "p.6, Table 2 note", "status": "found"}
+{"id": "M04341", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R9 step 2 (text condition)", "loc": "p.6, Table 2", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "b1", "loc": "p.2, §1", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2 b2", "loc": "p.7, §5.1", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "D2 b2", "loc": "p.8, §5.2", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b3 fails (understanding side frozen)", "loc": "p.5, §3", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 fails (understanding side frozen)", "loc": "p.14, Appendix B", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 shared components (generation side)", "loc": "p.8, §5.2", "status": "found"}
+{"id": "M10697", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "X2 R9 step 2 (text condition)", "loc": "p.7, §5.1", "status": "found"}
+{"id": "M11043", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "R13 non-generative estimator", "loc": "p.2, §1", "status": "found"}
+{"id": "M11043", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R13 diffusion trained at noise levels on non-text data", "loc": "p.6, §6.1", "status": "found"}
+{"id": "M11043", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R9 non-text data (counts)", "loc": "p.6, §6.1", "status": "found"}
+{"id": "M11043", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R9 step 3 (no text condition, no text output)", "loc": "p.10, §8", "status": "found"}
