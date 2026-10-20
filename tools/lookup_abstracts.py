@@ -4,7 +4,8 @@ positives in research/review/screening/v2/dual-rescue-free/pending-no-abstract-r
 Order per record: OpenAlex (batched DOI filter, 50 per request; abstract rebuilt from abstract_inverted_index),
 then Crossref (DOI; JATS tags stripped), then Semantic Scholar (paper id or DOI; no key, 1.2 s gap, backs off on
 429). The first non-empty abstract of at least 200 characters is kept with its source and URL. Every request
-outcome is logged. Resumable: ids with a final row are skipped.
+outcome is logged. Resumable: ids already found are skipped; not-found ids are retried on the next run
+(OpenAlex returns 429 once its daily allowance is used; it resets about 05:30 IST).
 
     python -I tools/lookup_abstracts.py run [--limit N]
 
@@ -63,7 +64,7 @@ def main(limit=None):
     for l in open(ROOT / "research/review/corpus/new-records-2026-10-15-v2.jsonl", encoding="utf-8"):
         r = json.loads(l)
         meta[r["nid"]] = r
-    done = {r["id"] for r in jl(LOG)} if LOG.exists() else set()
+    done = {r["id"] for r in jl(LOG) if r.get("status") == "found"} if LOG.exists() else set()   # not_found rows are retried
     todo = [p["id"] for p in pend if p["id"] not in done][:limit] if limit else [p["id"] for p in pend if p["id"] not in done]
     print(f"{len(todo)} to look up", flush=True)
     oa = {}
@@ -75,7 +76,11 @@ def main(limit=None):
         try:
             res = get(url, gap=1.0) or {"results": []}
         except Exception as e:
-            print("openalex batch failed", repr(e)[:120]); continue
+            print("openalex batch failed", repr(e)[:120])
+            with LOG.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps({"id": None, "status": "openalex_batch_failed", "error": repr(e)[:120], "dois": len(ch)}) + "
+")
+            continue
         for w in res["results"]:
             oa[(w.get("doi") or "").lower().replace("https://doi.org/", "")] = from_inverted(w.get("abstract_inverted_index"))
     n = 0
