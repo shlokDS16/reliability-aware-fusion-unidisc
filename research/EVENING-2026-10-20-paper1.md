@@ -3,6 +3,11 @@
 Session 0839c9f4 is building the manuscript under your D0051 (screening frozen, finish by Thursday 22 Oct).
 Reply with item numbers, for example "P1 A, P2 ok, P3 ok".
 
+**P1 needs your own answer, in this session.** The starting session relayed your 17:30 "go with your recommended
+decision" for P1, but a decision that changes D0051's scope is recorded only on your own words. Option A is fully
+prepared (seed draw of 20 done, texts copied, 11 sessions batched; `analysis/extraction/d0052/seed-sample.json`) and
+nothing has been dispatched. The update strata (positions 1-20) run in the meantime; they are needed under A and C.
+
 ## Decisions (only you can make these)
 
 | # | Decision | Options | Recommended | Time |
