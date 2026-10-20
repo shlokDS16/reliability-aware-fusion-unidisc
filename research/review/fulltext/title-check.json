@@ -1,9 +1,18 @@
 {
- "checked": 885,
- "flagged": 4,
+ "checked": 987,
+ "flagged": 5,
  "flagged_not_verified": 0,
  "rule": "first 40 normalised title chars or >= 80% of 4+ letter words in the first 6,000 chars; files > 1,000,000 chars always flagged",
  "flags": [
+  {
+   "id": "M03302",
+   "title": "Between Randomness and Arbitrariness: Some Lessons for Reliable Machine Learning at Scale",
+   "chars": 1048255,
+   "page1_word_fraction": 1.0,
+   "title_found_later": true,
+   "flag": "very large file",
+   "verified": "2026-10-20 orchestrator read page 1: Cornell PhD dissertation (A. Feder Cooper, arXiv 2406.09548v2), 360 pages, title matches; flagged only for size; correct paper."
+  },
   {
    "id": "M12741",
    "title": "Beyond Acceptance Prediction: When Adaptivity Pays Off in Speculative Decoding",

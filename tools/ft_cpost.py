@@ -5,15 +5,16 @@
 Copies FC-<batch>.jsonl into analysis/screening/ft-t1/c/<batch>/, runs tools/ft_isolation_check.py on the
 transcript and analysis/screening/quote_check.py on the rows, and appends one line to
 analysis/screening/c-run-log.jsonl (criteria-v1.6 section D: every C session is logged when it ends).
+Tranche: environment variable FT_TRANCHE (default t1) selects analysis/screening/ft-<tranche>/c/ (2026-10-20).
 """
-import json, shutil, subprocess, sys, datetime
+import json, os, shutil, subprocess, sys, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 batch, droot, tdir, agent = sys.argv[1:5]
 outcome = sys.argv[sys.argv.index("--outcome") + 1] if "--outcome" in sys.argv else None
 d = next(Path(droot).glob(f"C-{batch}-*"))
-OUT = ROOT / "analysis/screening/ft-t1/c" / batch
+OUT = ROOT / "analysis/screening" / f"ft-{os.environ.get('FT_TRANCHE', 't1')}" / "c" / batch
 OUT.mkdir(parents=True, exist_ok=True)
 ids = json.loads((d / "dispatch.json").read_text(encoding="utf8"))["ids"]
 f = d / f"FC-{batch}.jsonl"
@@ -32,7 +33,7 @@ if f.exists():
 got = {r["id"] for r in rows}
 mc = json.loads(subprocess.run([sys.executable, "-I", str(ROOT / "tools/ft_model_check.py"), "--transcript", str(Path(tdir) / f"agent-{agent}.jsonl"),
                                 "--role", "C"], capture_output=True, text=True).stdout)   # added 2026-10-20 (gate T1 finding)
-res = {"event": "C-session", "batch": batch, "basename": d.name, "agent": agent, "model": "claude-fable-5-1",
+res = {"event": "C-session", "tranche": os.environ.get("FT_TRANCHE", "t1"), "batch": batch, "basename": d.name, "agent": agent, "model": "claude-fable-5-1",
        "model_ok": mc["pass"], "models_seen": mc["models"],
        "ended": datetime.datetime.now().isoformat(timespec="seconds"), "n": len(ids), "rows": len(rows),
        "missing": sorted(set(ids) - got), "isolation": iso["pass"], "isolation_flags": iso["flags"],

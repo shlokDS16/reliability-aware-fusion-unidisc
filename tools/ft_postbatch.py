@@ -3,18 +3,20 @@
     python tools/ft_postbatch.py <batch> <dispatch root> <subagent transcript dir> <agentA id> <agentB id> [--root-A <dir>]
 
 --root-A: dispatch root of role A when A ran in an earlier session (its transcript names that folder).
+Tranche: environment variable FT_TRANCHE (default t1) selects analysis/screening/ft-<tranche>/ (2026-10-20: r797, s1243).
 
 Copies F{A,B}-<batch>.jsonl into analysis/screening/ft-t1/<batch>/, runs tools/ft_isolation_check.py on
 both transcripts and analysis/screening/quote_check.py on both row files, and appends one line to
 analysis/screening/ft-t1/batch-log.jsonl (n, rows per screener, ids missing, isolation pass, quotes not
 accepted, decision agreement, disagreement ids, adjudicate ids). Prints that line.
 """
-import json, shutil, subprocess, sys
+import json, os, shutil, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 batch, droot, tdir, aid, bid = sys.argv[1:6]
-OUT = ROOT / "analysis/screening/ft-t1" / batch
+BASE = ROOT / "analysis/screening" / f"ft-{os.environ.get('FT_TRANCHE', 't1')}"
+OUT = BASE / batch
 OUT.mkdir(parents=True, exist_ok=True)
 res = {"batch": batch}
 rows = {}
@@ -47,6 +49,6 @@ dis = [i for i in common if rows["A"][i]["decision"] != rows["B"][i]["decision"]
 res.update(n=len(common), agree=len(common) - len(dis), disagree=dis,
            adjudicate=sorted(i for i in common if "adjudicate" in (rows["A"][i]["decision"], rows["B"][i]["decision"])),
            include_both=sum(1 for i in common if rows["A"][i]["decision"] == rows["B"][i]["decision"] == "include"))
-with (ROOT / "analysis/screening/ft-t1/batch-log.jsonl").open("a", encoding="utf8") as fh:
+with (BASE / "batch-log.jsonl").open("a", encoding="utf8") as fh:
     fh.write(json.dumps(res) + "\n")
 print(json.dumps(res))

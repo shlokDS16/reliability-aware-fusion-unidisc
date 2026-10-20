@@ -31,10 +31,11 @@ def norm(t):
 
 
 rows = {}
-for table in (ROOT / "research/review/fulltext/ft-routes.jsonl", ROOT / "analysis/screening/ft-routes-extra.jsonl"):
+for table in (ROOT / "research/review/fulltext/ft-routes.jsonl", ROOT / "analysis/screening/ft-routes-extra.jsonl",
+              ROOT / "analysis/screening/ft-routes-recheck797.jsonl", ROOT / "analysis/screening/ft-routes-seed1243.jsonl"):   # R797 (D0035), S1243 (D0037)
     for line in open(table, encoding="utf-8"):
         if line.strip():
-            r = json.loads(line); rows[r["id"]] = r
+            r = json.loads(line); rows.setdefault(r["id"], r)
 
 VER = ROOT / "research/review/fulltext/title-check-verified.json"   # flags checked by reading the file
 verified = json.loads(VER.read_text(encoding="utf-8")) if VER.exists() else {}
