@@ -153,3 +153,10 @@ Do these together in one sitting. Claude keeps this list current; items are stru
     safety stop in 2 of 2 sessions that read it (r797b036; r797b069 alone). Screener A excluded it (X2 pipeline). Add it
     to your 3 biology papers (`research/review/screening/human-p4/human-p4-sheet.xlsx` holds those 3; R0308 is listed in
     `analysis/screening/ft-r797/r797-pending-B.jsonl`). Text: `research/sources/md/fulltext-pymupdf/R0308.txt`.
+
+## Status 2026-10-20 ~20:00 IST (manuscript session 0839c9f4; D0051 build)
+Tonight's list is `research/EVENING-2026-10-20-paper1.md`: P1 (core papers missing from the 615 includes; options
+A-C), P2 (extraction sample D0052, confirm), P3 (PRISMA seed-count fix, FYI); sheets for the 4 B-unavailable papers
+(human-p4-sheet.xlsx + human-p4-sheet-R0308.xlsx) and the 9 D0039 fields (d0039-fields/d0039-fields-sheet.xlsx);
+author details and ORCIDs; who checked what; final read-through Thursday. Earlier hands-on items (validation sheets
+for R797 and S1243, e-gateway PDFs, OQ5-04 check) are moot under D0051 unless you reopen screening.
