@@ -1,0 +1,707 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) M15781 row C18: row_not_found (label not at a row start in the segment) -> see the brief
+(2) M15781 row C19: row_not_found (label not at a row start in the segment) -> see the brief
+(3) M15781 row C20: row_not_found (label not at a row start in the segment) -> see the brief
+(4) M15781 row C21: row_not_found (label not at a row start in the segment) -> see the brief
+(5) M15781 row C22: row_not_found (label not at a row start in the segment) -> see the brief
+(6) M15781 row C23: row_not_found (label not at a row start in the segment) -> see the brief
+(7) M15781 row C24: row_not_found (label not at a row start in the segment) -> see the brief
+(8) M15781 row C25: row_not_found (label not at a row start in the segment) -> see the brief
+(9) M15781 row C27: row_not_found (label not at a row start in the segment) -> see the brief
+(10) M15781 row C29: row_not_found (label not at a row start in the segment) -> see the brief
+(11) M15781 row C81: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(12) M15781 row C82: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(13) M15781 row C83: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(14) M15781 row C84: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(15) M15781 row C85: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(16) M15781 row C86: cells_mismatch (label found at a row start but the cells differ) -> the row label was found but the cells you gave differ from the printed row; re-read the row in the text file
+(17) M15781 prose_quote E41: negation_after (quote_check.quote_status) -> a negation or contrast word follows the quote in the same sentence; extend the quote
+(18) M15781 condition K17.A1: condition_mismatch ('LP-BD, null vector' against 'Tblk=1 / LP-BD, null vector') -> see the brief
+(19) M15781 condition K17.A2: condition_mismatch ('LP-BD, null vector' against '2 / LP-BD, null vector') -> see the brief
+(20) M15781 condition K17.A3: condition_mismatch ('LP-BD, null vector' against '4 / LP-BD, null vector') -> see the brief
+(21) M15781 condition K17.A4: condition_mismatch ('LP-BD, null vector' against '8 / LP-BD, null vector') -> see the brief
+(22) M15781 condition K17.A5: condition_mismatch ('LP-BD, null vector' against '16 / LP-BD, null vector') -> see the brief
+(23) M15781 condition K18.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(24) M15781 condition K18.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(25) M15781 condition K18.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(26) M15781 condition K18.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(27) M15781 condition K18.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(28) M15781 condition K19.A1: condition_mismatch ('LP-BD, best w' against 'Tblk=1 / LP-BD, best w') -> see the brief
+(29) M15781 condition K19.A2: condition_mismatch ('LP-BD, best w' against '2 / LP-BD, best w') -> see the brief
+(30) M15781 condition K19.A3: condition_mismatch ('LP-BD, best w' against '4 / LP-BD, best w') -> see the brief
+(31) M15781 condition K19.A4: condition_mismatch ('LP-BD, best w' against '8 / LP-BD, best w') -> see the brief
+(32) M15781 condition K19.A5: condition_mismatch ('LP-BD, best w' against '16 / LP-BD, best w') -> see the brief
+(33) M15781 condition K32.A1: condition_mismatch ('LP-BD, null vector' against 'Tblk=1 / LP-BD, null vector') -> see the brief
+(34) M15781 condition K32.A2: condition_mismatch ('LP-BD, null vector' against '2 / LP-BD, null vector') -> see the brief
+(35) M15781 condition K32.A3: condition_mismatch ('LP-BD, null vector' against '4 / LP-BD, null vector') -> see the brief
+(36) M15781 condition K32.A4: condition_mismatch ('LP-BD, null vector' against '8 / LP-BD, null vector') -> see the brief
+(37) M15781 condition K32.A5: condition_mismatch ('LP-BD, null vector' against '16 / LP-BD, null vector') -> see the brief
+(38) M15781 condition K32.A6: condition_mismatch ('LP-BD, null vector' against '64 / LP-BD, null vector') -> see the brief
+(39) M15781 condition K33.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(40) M15781 condition K33.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(41) M15781 condition K33.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(42) M15781 condition K33.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(43) M15781 condition K33.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(44) M15781 condition K33.A6: condition_mismatch ('LP-BD, w=1' against '64 / LP-BD, w=1') -> see the brief
+(45) M15781 condition K34.A1: condition_mismatch ('LP-BD, w=2' against 'Tblk=1 / LP-BD, w=2') -> see the brief
+(46) M15781 condition K34.A2: condition_mismatch ('LP-BD, w=2' against '2 / LP-BD, w=2') -> see the brief
+(47) M15781 condition K34.A3: condition_mismatch ('LP-BD, w=2' against '4 / LP-BD, w=2') -> see the brief
+(48) M15781 condition K34.A4: condition_mismatch ('LP-BD, w=2' against '8 / LP-BD, w=2') -> see the brief
+(49) M15781 condition K34.A5: condition_mismatch ('LP-BD, w=2' against '16 / LP-BD, w=2') -> see the brief
+(50) M15781 condition K34.A6: condition_mismatch ('LP-BD, w=2' against '64 / LP-BD, w=2') -> see the brief
+(51) M15781 condition K39.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(52) M15781 condition K39.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(53) M15781 condition K39.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(54) M15781 condition K39.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(55) M15781 condition K40.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(56) M15781 condition K40.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(57) M15781 condition K40.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(58) M15781 condition K40.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(59) M15781 condition K46.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(60) M15781 condition K46.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(61) M15781 condition K46.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(62) M15781 condition K46.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(63) M15781 condition K46.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(64) M15781 condition K47.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(65) M15781 condition K47.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(66) M15781 condition K47.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(67) M15781 condition K47.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(68) M15781 condition K47.A5: condition_mismatch ('LP-BD, w=1.5' against '16 / LP-BD, w=1.5') -> see the brief
+(69) M15781 condition K70.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(70) M15781 condition K70.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(71) M15781 condition K76.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(72) M15781 condition K76.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(73) M15781 condition K82.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(74) M15781 condition K82.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(75) M15781 condition K88.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(76) M15781 condition K88.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(77) M15781 condition K94.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(78) M15781 condition K94.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(79) M15781 condition K95.A1: condition_mismatch ('LP-BD' against 'Tblk=1 / LP-BD') -> see the brief
+(80) M15781 condition K95.A2: condition_mismatch ('LP-BD' against '2 / LP-BD') -> see the brief
+(81) M15781 condition K95.A3: condition_mismatch ('LP-BD' against '4 / LP-BD') -> see the brief
+(82) M15781 condition K95.A4: condition_mismatch ('LP-BD' against '8 / LP-BD') -> see the brief
+(83) M15781 condition K95.A5: condition_mismatch ('LP-BD' against '16 / LP-BD') -> see the brief
+(84) M15781 condition K96.A1: condition_mismatch ('adaLN injection only' against 'Tblk=1 / adaLN injection only') -> see the brief
+(85) M15781 condition K96.A2: condition_mismatch ('adaLN injection only' against '2 / adaLN injection only') -> see the brief
+(86) M15781 condition K96.A3: condition_mismatch ('adaLN injection only' against '4 / adaLN injection only') -> see the brief
+(87) M15781 condition K96.A4: condition_mismatch ('adaLN injection only' against '8 / adaLN injection only') -> see the brief
+(88) M15781 condition K96.A5: condition_mismatch ('adaLN injection only' against '16 / adaLN injection only') -> see the brief
+(89) M15781 condition K97.A1: condition_mismatch ('d=8' against 'Tblk=1 / d=8') -> see the brief
+(90) M15781 condition K97.A2: condition_mismatch ('d=8' against '2 / d=8') -> see the brief
+(91) M15781 condition K97.A3: condition_mismatch ('d=8' against '4 / d=8') -> see the brief
+(92) M15781 condition K97.A4: condition_mismatch ('d=8' against '8 / d=8') -> see the brief
+(93) M15781 condition K97.A5: condition_mismatch ('d=8' against '16 / d=8') -> see the brief
+(94) M15781 condition K98.A1: condition_mismatch ('no noise on the training plan' against 'Tblk=1 / no noise on the training plan') -> see the brief
+(95) M15781 condition K98.A2: condition_mismatch ('no noise on the training plan' against '2 / no noise on the training plan') -> see the brief
+(96) M15781 condition K98.A3: condition_mismatch ('no noise on the training plan' against '4 / no noise on the training plan') -> see the brief
+(97) M15781 condition K98.A4: condition_mismatch ('no noise on the training plan' against '8 / no noise on the training plan') -> see the brief
+(98) M15781 condition K98.A5: condition_mismatch ('no noise on the training plan' against '16 / no noise on the training plan') -> see the brief
+(99) M15781 condition K99.A1: condition_mismatch ('online target instead of EMA' against 'Tblk=1 / online target instead of EMA') -> see the brief
+(100) M15781 condition K99.A2: condition_mismatch ('online target instead of EMA' against '2 / online target instead of EMA') -> see the brief
+(101) M15781 condition K99.A3: condition_mismatch ('online target instead of EMA' against '4 / online target instead of EMA') -> see the brief
+(102) M15781 condition K99.A4: condition_mismatch ('online target instead of EMA' against '8 / online target instead of EMA') -> see the brief
+(103) M15781 condition K99.A5: condition_mismatch ('online target instead of EMA' against '16 / online target instead of EMA') -> see the brief
+(104) M15781 condition K100.A1: condition_mismatch ('deterministic plan' against 'Tblk=1 / deterministic plan') -> see the brief
+(105) M15781 condition K100.A2: condition_mismatch ('deterministic plan' against '2 / deterministic plan') -> see the brief
+(106) M15781 condition K100.A3: condition_mismatch ('deterministic plan' against '4 / deterministic plan') -> see the brief
+(107) M15781 condition K100.A4: condition_mismatch ('deterministic plan' against '8 / deterministic plan') -> see the brief
+(108) M15781 condition K100.A5: condition_mismatch ('deterministic plan' against '16 / deterministic plan') -> see the brief
+(109) M15781 condition K106.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(110) M15781 condition K106.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(111) M15781 condition K106.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(112) M15781 condition K106.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(113) M15781 condition K106.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(114) M15781 condition K107.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(115) M15781 condition K107.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(116) M15781 condition K107.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(117) M15781 condition K107.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(118) M15781 condition K107.A5: condition_mismatch ('LP-BD, w=1.5' against '16 / LP-BD, w=1.5') -> see the brief
+(119) M15781 condition K114.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(120) M15781 condition K114.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(121) M15781 condition K114.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(122) M15781 condition K114.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(123) M15781 condition K114.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(124) M15781 condition K114.A6: condition_mismatch ('LP-BD, w=1' against '64 / LP-BD, w=1') -> see the brief
+(125) M15781 condition K115.A1: condition_mismatch ('LP-BD, w=2' against 'Tblk=1 / LP-BD, w=2') -> see the brief
+(126) M15781 condition K115.A2: condition_mismatch ('LP-BD, w=2' against '2 / LP-BD, w=2') -> see the brief
+(127) M15781 condition K115.A3: condition_mismatch ('LP-BD, w=2' against '4 / LP-BD, w=2') -> see the brief
+(128) M15781 condition K115.A4: condition_mismatch ('LP-BD, w=2' against '8 / LP-BD, w=2') -> see the brief
+(129) M15781 condition K115.A5: condition_mismatch ('LP-BD, w=2' against '16 / LP-BD, w=2') -> see the brief
+(130) M15781 condition K115.A6: condition_mismatch ('LP-BD, w=2' against '64 / LP-BD, w=2') -> see the brief
+(131) M15781 condition K121.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(132) M15781 condition K121.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(133) M15781 condition K121.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(134) M15781 condition K121.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(135) M15781 condition K121.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(136) M15781 condition K122.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(137) M15781 condition K122.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(138) M15781 condition K122.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(139) M15781 condition K122.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(140) M15781 condition K122.A5: condition_mismatch ('LP-BD, w=1.5' against '16 / LP-BD, w=1.5') -> see the brief
+(141) M15781 condition K129.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(142) M15781 condition K129.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(143) M15781 condition K129.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(144) M15781 condition K129.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(145) M15781 condition K129.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(146) M15781 condition K129.A6: condition_mismatch ('LP-BD, w=1' against '64 / LP-BD, w=1') -> see the brief
+(147) M15781 condition K130.A1: condition_mismatch ('LP-BD, w=2' against 'Tblk=1 / LP-BD, w=2') -> see the brief
+(148) M15781 condition K130.A2: condition_mismatch ('LP-BD, w=2' against '2 / LP-BD, w=2') -> see the brief
+(149) M15781 condition K130.A3: condition_mismatch ('LP-BD, w=2' against '4 / LP-BD, w=2') -> see the brief
+(150) M15781 condition K130.A4: condition_mismatch ('LP-BD, w=2' against '8 / LP-BD, w=2') -> see the brief
+(151) M15781 condition K130.A5: condition_mismatch ('LP-BD, w=2' against '16 / LP-BD, w=2') -> see the brief
+(152) M15781 condition K130.A6: condition_mismatch ('LP-BD, w=2' against '64 / LP-BD, w=2') -> see the brief
+(153) M15781 condition K131.A1: condition_mismatch ('LP-BD' against 'Tblk=1 / LP-BD') -> see the brief
+(154) M15781 condition K131.A2: condition_mismatch ('LP-BD' against '2 / LP-BD') -> see the brief
+(155) M15781 condition K131.A3: condition_mismatch ('LP-BD' against '4 / LP-BD') -> see the brief
+(156) M15781 condition K131.A4: condition_mismatch ('LP-BD' against '8 / LP-BD') -> see the brief
+(157) M15781 condition K131.A5: condition_mismatch ('LP-BD' against '16 / LP-BD') -> see the brief
+(158) M15781 condition K132.A1: condition_mismatch ('LP-BD (sub-block plans)' against 'Tblk=1 / LP-BD (sub-block plans)') -> see the brief
+(159) M15781 condition K132.A2: condition_mismatch ('LP-BD (sub-block plans)' against '2 / LP-BD (sub-block plans)') -> see the brief
+(160) M15781 condition K132.A3: condition_mismatch ('LP-BD (sub-block plans)' against '4 / LP-BD (sub-block plans)') -> see the brief
+(161) M15781 condition K132.A4: condition_mismatch ('LP-BD (sub-block plans)' against '8 / LP-BD (sub-block plans)') -> see the brief
+(162) M15781 condition K132.A5: condition_mismatch ('LP-BD (sub-block plans)' against '16 / LP-BD (sub-block plans)') -> see the brief
+(163) M15781 condition K132.A6: condition_mismatch ('LP-BD (sub-block plans)' against '64 / LP-BD (sub-block plans)') -> see the brief
+(164) M15781 condition K138.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(165) M15781 condition K138.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(166) M15781 condition K149.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(167) M15781 condition K149.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(168) M15781 condition K155.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(169) M15781 condition K155.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(170) M15781 condition K161.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(171) M15781 condition K161.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(172) M15781 condition K167.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(173) M15781 condition K167.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(174) M15781 condition K173.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(175) M15781 condition K173.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(176) M15781 condition K179.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(177) M15781 condition K179.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(178) M15781 condition K185.A1: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(179) M15781 condition K185.A2: condition_mismatch ('' against 'null-path NELBO') -> see the brief
+(180) M15781 condition K186.A1: condition_mismatch ('16 LP-BD, adaLN injection' against 'Tblk=1 / 16 LP-BD, adaLN injection') -> see the brief
+(181) M15781 condition K186.A2: condition_mismatch ('16 LP-BD, adaLN injection' against '2 / 16 LP-BD, adaLN injection') -> see the brief
+(182) M15781 condition K186.A3: condition_mismatch ('16 LP-BD, adaLN injection' against '4 / 16 LP-BD, adaLN injection') -> see the brief
+(183) M15781 condition K186.A4: condition_mismatch ('16 LP-BD, adaLN injection' against '8 / 16 LP-BD, adaLN injection') -> see the brief
+(184) M15781 condition K186.A5: condition_mismatch ('16 LP-BD, adaLN injection' against '16 / 16 LP-BD, adaLN injection') -> see the brief
+(185) M15781 condition K187.A1: condition_mismatch ('16 null vector at inference' against 'Tblk=1 / 16 null vector at inference') -> see the brief
+(186) M15781 condition K187.A2: condition_mismatch ('16 null vector at inference' against '2 / 16 null vector at inference') -> see the brief
+(187) M15781 condition K187.A3: condition_mismatch ('16 null vector at inference' against '4 / 16 null vector at inference') -> see the brief
+(188) M15781 condition K187.A4: condition_mismatch ('16 null vector at inference' against '8 / 16 null vector at inference') -> see the brief
+(189) M15781 condition K187.A5: condition_mismatch ('16 null vector at inference' against '16 / 16 null vector at inference') -> see the brief
+(190) M15781 condition K188.A1: condition_mismatch ('16 LP-BD, adaLN + embedding (default)' against 'Tblk=1 / 16 LP-BD, adaLN + embedding (default)') -> see the brief
+(191) M15781 condition K188.A2: condition_mismatch ('16 LP-BD, adaLN + embedding (default)' against '2 / 16 LP-BD, adaLN + embedding (default)') -> see the brief
+(192) M15781 condition K188.A3: condition_mismatch ('16 LP-BD, adaLN + embedding (default)' against '4 / 16 LP-BD, adaLN + embedding (default)') -> see the brief
+(193) M15781 condition K188.A4: condition_mismatch ('16 LP-BD, adaLN + embedding (default)' against '8 / 16 LP-BD, adaLN + embedding (default)') -> see the brief
+(194) M15781 condition K188.A5: condition_mismatch ('16 LP-BD, adaLN + embedding (default)' against '16 / 16 LP-BD, adaLN + embedding (default)') -> see the brief
+(195) M15781 condition K189.A1: condition_mismatch ('16 deterministic plan' against 'Tblk=1 / 16 deterministic plan') -> see the brief
+(196) M15781 condition K189.A2: condition_mismatch ('16 deterministic plan' against '2 / 16 deterministic plan') -> see the brief
+(197) M15781 condition K189.A3: condition_mismatch ('16 deterministic plan' against '4 / 16 deterministic plan') -> see the brief
+(198) M15781 condition K189.A4: condition_mismatch ('16 deterministic plan' against '8 / 16 deterministic plan') -> see the brief
+(199) M15781 condition K189.A5: condition_mismatch ('16 deterministic plan' against '16 / 16 deterministic plan') -> see the brief
+(200) M15781 condition K190.A1: condition_mismatch ('16 d=8' against 'Tblk=1 / 16 d=8') -> see the brief
+(201) M15781 condition K190.A2: condition_mismatch ('16 d=8' against '2 / 16 d=8') -> see the brief
+(202) M15781 condition K190.A3: condition_mismatch ('16 d=8' against '4 / 16 d=8') -> see the brief
+(203) M15781 condition K190.A4: condition_mismatch ('16 d=8' against '8 / 16 d=8') -> see the brief
+(204) M15781 condition K190.A5: condition_mismatch ('16 d=8' against '16 / 16 d=8') -> see the brief
+(205) M15781 condition K191.A1: condition_mismatch ('16 p∅=0.4' against 'Tblk=1 / 16 p∅=0.4') -> see the brief
+(206) M15781 condition K191.A2: condition_mismatch ('16 p∅=0.4' against '2 / 16 p∅=0.4') -> see the brief
+(207) M15781 condition K191.A3: condition_mismatch ('16 p∅=0.4' against '4 / 16 p∅=0.4') -> see the brief
+(208) M15781 condition K191.A4: condition_mismatch ('16 p∅=0.4' against '8 / 16 p∅=0.4') -> see the brief
+(209) M15781 condition K191.A5: condition_mismatch ('16 p∅=0.4' against '16 / 16 p∅=0.4') -> see the brief
+(210) M15781 condition K192.A1: condition_mismatch ('16 predictability pressure 0.1×' against 'Tblk=1 / 16 predictability pressure 0.1×') -> see the brief
+(211) M15781 condition K192.A2: condition_mismatch ('16 predictability pressure 0.1×' against '2 / 16 predictability pressure 0.1×') -> see the brief
+(212) M15781 condition K192.A3: condition_mismatch ('16 predictability pressure 0.1×' against '4 / 16 predictability pressure 0.1×') -> see the brief
+(213) M15781 condition K192.A4: condition_mismatch ('16 predictability pressure 0.1×' against '8 / 16 predictability pressure 0.1×') -> see the brief
+(214) M15781 condition K192.A5: condition_mismatch ('16 predictability pressure 0.1×' against '16 / 16 predictability pressure 0.1×') -> see the brief
+(215) M15781 condition K193.A1: condition_mismatch ('16 smoothed ﬂow target (for the bound)' against 'Tblk=1 / 16 smoothed ﬂow target (for the bound)') -> see the brief
+(216) M15781 condition K193.A2: condition_mismatch ('16 smoothed ﬂow target (for the bound)' against '2 / 16 smoothed ﬂow target (for the bound)') -> see the brief
+(217) M15781 condition K193.A3: condition_mismatch ('16 smoothed ﬂow target (for the bound)' against '4 / 16 smoothed ﬂow target (for the bound)') -> see the brief
+(218) M15781 condition K193.A4: condition_mismatch ('16 smoothed ﬂow target (for the bound)' against '8 / 16 smoothed ﬂow target (for the bound)') -> see the brief
+(219) M15781 condition K193.A5: condition_mismatch ('16 smoothed ﬂow target (for the bound)' against '16 / 16 smoothed ﬂow target (for the bound)') -> see the brief
+(220) M15781 condition K194.A1: condition_mismatch ('16 no noise on the training plan' against 'Tblk=1 / 16 no noise on the training plan') -> see the brief
+(221) M15781 condition K194.A2: condition_mismatch ('16 no noise on the training plan' against '2 / 16 no noise on the training plan') -> see the brief
+(222) M15781 condition K194.A3: condition_mismatch ('16 no noise on the training plan' against '4 / 16 no noise on the training plan') -> see the brief
+(223) M15781 condition K194.A4: condition_mismatch ('16 no noise on the training plan' against '8 / 16 no noise on the training plan') -> see the brief
+(224) M15781 condition K194.A5: condition_mismatch ('16 no noise on the training plan' against '16 / 16 no noise on the training plan') -> see the brief
+(225) M15781 condition K195.A1: condition_mismatch ('16 online target instead of EMA' against 'Tblk=1 / 16 online target instead of EMA') -> see the brief
+(226) M15781 condition K195.A2: condition_mismatch ('16 online target instead of EMA' against '2 / 16 online target instead of EMA') -> see the brief
+(227) M15781 condition K195.A3: condition_mismatch ('16 online target instead of EMA' against '4 / 16 online target instead of EMA') -> see the brief
+(228) M15781 condition K195.A4: condition_mismatch ('16 online target instead of EMA' against '8 / 16 online target instead of EMA') -> see the brief
+(229) M15781 condition K195.A5: condition_mismatch ('16 online target instead of EMA' against '16 / 16 online target instead of EMA') -> see the brief
+(230) M15781 condition K208.A1: condition_mismatch ('64 LP-BD, broadcast d=32' against 'Tblk=1 / 64 LP-BD, broadcast d=32') -> see the brief
+(231) M15781 condition K208.A2: condition_mismatch ('64 LP-BD, broadcast d=32' against '2 / 64 LP-BD, broadcast d=32') -> see the brief
+(232) M15781 condition K208.A3: condition_mismatch ('64 LP-BD, broadcast d=32' against '4 / 64 LP-BD, broadcast d=32') -> see the brief
+(233) M15781 condition K208.A4: condition_mismatch ('64 LP-BD, broadcast d=32' against '8 / 64 LP-BD, broadcast d=32') -> see the brief
+(234) M15781 condition K208.A5: condition_mismatch ('64 LP-BD, broadcast d=32' against '16 / 64 LP-BD, broadcast d=32') -> see the brief
+(235) M15781 condition K208.A6: condition_mismatch ('64 LP-BD, broadcast d=32' against '64 / 64 LP-BD, broadcast d=32') -> see the brief
+(236) M15781 condition K209.A1: condition_mismatch ('64 LP-BD, broadcast d=64' against 'Tblk=1 / 64 LP-BD, broadcast d=64') -> see the brief
+(237) M15781 condition K209.A2: condition_mismatch ('64 LP-BD, broadcast d=64' against '2 / 64 LP-BD, broadcast d=64') -> see the brief
+(238) M15781 condition K209.A3: condition_mismatch ('64 LP-BD, broadcast d=64' against '4 / 64 LP-BD, broadcast d=64') -> see the brief
+(239) M15781 condition K209.A4: condition_mismatch ('64 LP-BD, broadcast d=64' against '8 / 64 LP-BD, broadcast d=64') -> see the brief
+(240) M15781 condition K209.A5: condition_mismatch ('64 LP-BD, broadcast d=64' against '16 / 64 LP-BD, broadcast d=64') -> see the brief
+(241) M15781 condition K209.A6: condition_mismatch ('64 LP-BD, broadcast d=64' against '64 / 64 LP-BD, broadcast d=64') -> see the brief
+(242) M15781 condition K210.A1: condition_mismatch ('64 LP-BD, broadcast d=128' against 'Tblk=1 / 64 LP-BD, broadcast d=128') -> see the brief
+(243) M15781 condition K210.A2: condition_mismatch ('64 LP-BD, broadcast d=128' against '2 / 64 LP-BD, broadcast d=128') -> see the brief
+(244) M15781 condition K210.A3: condition_mismatch ('64 LP-BD, broadcast d=128' against '4 / 64 LP-BD, broadcast d=128') -> see the brief
+(245) M15781 condition K210.A4: condition_mismatch ('64 LP-BD, broadcast d=128' against '8 / 64 LP-BD, broadcast d=128') -> see the brief
+(246) M15781 condition K210.A5: condition_mismatch ('64 LP-BD, broadcast d=128' against '16 / 64 LP-BD, broadcast d=128') -> see the brief
+(247) M15781 condition K210.A6: condition_mismatch ('64 LP-BD, broadcast d=128' against '64 / 64 LP-BD, broadcast d=128') -> see the brief
+(248) M15781 condition K211.A1: condition_mismatch ('64 LP-BD, broadcast + predictability pressure 0.1×' against 'Tblk=1 / 64 LP-BD, broadcast + predictability pressure 0.1×') -> see the brief
+(249) M15781 condition K211.A2: condition_mismatch ('64 LP-BD, broadcast + predictability pressure 0.1×' against '2 / 64 LP-BD, broadcast + predictability pressure 0.1×') -> see the brief
+(250) M15781 condition K211.A3: condition_mismatch ('64 LP-BD, broadcast + predictability pressure 0.1×' against '4 / 64 LP-BD, broadcast + predictability pressure 0.1×') -> see the brief
+(251) M15781 condition K211.A4: condition_mismatch ('64 LP-BD, broadcast + predictability pressure 0.1×' against '8 / 64 LP-BD, broadcast + predictability pressure 0.1×') -> see the brief
+(252) M15781 condition K211.A5: condition_mismatch ('64 LP-BD, broadcast + predictability pressure 0.1×' against '16 / 64 LP-BD, broadcast + predictability pressure 0.1×') -> see the brief
+(253) M15781 condition K211.A6: condition_mismatch ('64 LP-BD, broadcast + predictability pressure 0.1×' against '64 / 64 LP-BD, broadcast + predictability pressure 0.1×') -> see the brief
+(254) M15781 condition K212.A1: condition_mismatch ('64 LP-BD, sub-block plans 4×32' against 'Tblk=1 / 64 LP-BD, sub-block plans 4×32') -> see the brief
+(255) M15781 condition K212.A2: condition_mismatch ('64 LP-BD, sub-block plans 4×32' against '2 / 64 LP-BD, sub-block plans 4×32') -> see the brief
+(256) M15781 condition K212.A3: condition_mismatch ('64 LP-BD, sub-block plans 4×32' against '4 / 64 LP-BD, sub-block plans 4×32') -> see the brief
+(257) M15781 condition K212.A4: condition_mismatch ('64 LP-BD, sub-block plans 4×32' against '8 / 64 LP-BD, sub-block plans 4×32') -> see the brief
+(258) M15781 condition K212.A5: condition_mismatch ('64 LP-BD, sub-block plans 4×32' against '16 / 64 LP-BD, sub-block plans 4×32') -> see the brief
+(259) M15781 condition K212.A6: condition_mismatch ('64 LP-BD, sub-block plans 4×32' against '64 / 64 LP-BD, sub-block plans 4×32') -> see the brief
+(260) M15781 condition K213.A1: condition_mismatch ('64 + predictability pressure 0.1×' against 'Tblk=1 / 64 + predictability pressure 0.1×') -> see the brief
+(261) M15781 condition K213.A2: condition_mismatch ('64 + predictability pressure 0.1×' against '2 / 64 + predictability pressure 0.1×') -> see the brief
+(262) M15781 condition K213.A3: condition_mismatch ('64 + predictability pressure 0.1×' against '4 / 64 + predictability pressure 0.1×') -> see the brief
+(263) M15781 condition K213.A4: condition_mismatch ('64 + predictability pressure 0.1×' against '8 / 64 + predictability pressure 0.1×') -> see the brief
+(264) M15781 condition K213.A5: condition_mismatch ('64 + predictability pressure 0.1×' against '16 / 64 + predictability pressure 0.1×') -> see the brief
+(265) M15781 condition K213.A6: condition_mismatch ('64 + predictability pressure 0.1×' against '64 / 64 + predictability pressure 0.1×') -> see the brief
+(266) M15781 row_group K220.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(267) M15781 row_group K220.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(268) M15781 row_group K220.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(269) M15781 row_group K220.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(270) M15781 row_group K221.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(271) M15781 row_group K221.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(272) M15781 row_group K221.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(273) M15781 row_group K221.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(274) M15781 row_group K221.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(275) M15781 row_group K222.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(276) M15781 row_group K222.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(277) M15781 row_group K222.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(278) M15781 row_group K222.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(279) M15781 row_group K222.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(280) M15781 row_group K223.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(281) M15781 row_group K223.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(282) M15781 row_group K223.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(283) M15781 row_group K223.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(284) M15781 row_group K223.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(285) M15781 row_group K224.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(286) M15781 row_group K224.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(287) M15781 row_group K224.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(288) M15781 row_group K224.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(289) M15781 row_group K224.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(290) M15781 row_group K225.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(291) M15781 row_group K225.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(292) M15781 row_group K225.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(293) M15781 row_group K225.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(294) M15781 row_group K226.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(295) M15781 row_group K226.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(296) M15781 row_group K226.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(297) M15781 row_group K226.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(298) M15781 row_group K226.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(299) M15781 row_group K227.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(300) M15781 row_group K227.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(301) M15781 row_group K227.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(302) M15781 row_group K227.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(303) M15781 row_group K227.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(304) M15781 row_group K228.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(305) M15781 row_group K228.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(306) M15781 row_group K228.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(307) M15781 row_group K228.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(308) M15781 row_group K228.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(309) M15781 row_group K229.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(310) M15781 row_group K229.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(311) M15781 row_group K229.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(312) M15781 row_group K229.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(313) M15781 row_group K229.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(314) M15781 row_group K230.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(315) M15781 row_group K230.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(316) M15781 row_group K231.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(317) M15781 row_group K231.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(318) M15781 row_group K232.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(319) M15781 row_group K232.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(320) M15781 row_group K233.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(321) M15781 row_group K233.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(322) M15781 row_group K234.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(323) M15781 row_group K234.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(324) M15781 row_group K235.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(325) M15781 row_group K235.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(326) M15781 row_group K236.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(327) M15781 row_group K236.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(328) M15781 row_group K237.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(329) M15781 row_group K237.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(330) M15781 row_group K238.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(331) M15781 row_group K238.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(332) M15781 row_group K239.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(333) M15781 condition K239.A1: condition_mismatch ('LP-BD, ﬂow plan' against 'Tblk=1 / LP-BD, ﬂow plan') -> see the brief
+(334) M15781 row_group K239.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(335) M15781 condition K239.A2: condition_mismatch ('LP-BD, ﬂow plan' against '2 / LP-BD, ﬂow plan') -> see the brief
+(336) M15781 row_group K239.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(337) M15781 condition K239.A3: condition_mismatch ('LP-BD, ﬂow plan' against '4 / LP-BD, ﬂow plan') -> see the brief
+(338) M15781 row_group K239.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(339) M15781 condition K239.A4: condition_mismatch ('LP-BD, ﬂow plan' against '8 / LP-BD, ﬂow plan') -> see the brief
+(340) M15781 row_group K239.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(341) M15781 condition K239.A5: condition_mismatch ('LP-BD, ﬂow plan' against '16 / LP-BD, ﬂow plan') -> see the brief
+(342) M15781 row_group K240.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(343) M15781 condition K240.A1: condition_mismatch ('ﬂow given another preﬁx' against 'Tblk=1 / ﬂow given another preﬁx') -> see the brief
+(344) M15781 row_group K240.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(345) M15781 condition K240.A2: condition_mismatch ('ﬂow given another preﬁx' against '2 / ﬂow given another preﬁx') -> see the brief
+(346) M15781 row_group K240.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(347) M15781 condition K240.A3: condition_mismatch ('ﬂow given another preﬁx' against '4 / ﬂow given another preﬁx') -> see the brief
+(348) M15781 row_group K240.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(349) M15781 condition K240.A4: condition_mismatch ('ﬂow given another preﬁx' against '8 / ﬂow given another preﬁx') -> see the brief
+(350) M15781 row_group K240.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(351) M15781 condition K240.A5: condition_mismatch ('ﬂow given another preﬁx' against '16 / ﬂow given another preﬁx') -> see the brief
+(352) M15781 row_group K241.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(353) M15781 condition K241.A1: condition_mismatch ('uniform on the sphere' against 'Tblk=1 / uniform on the sphere') -> see the brief
+(354) M15781 row_group K241.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(355) M15781 condition K241.A2: condition_mismatch ('uniform on the sphere' against '2 / uniform on the sphere') -> see the brief
+(356) M15781 row_group K241.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(357) M15781 condition K241.A3: condition_mismatch ('uniform on the sphere' against '4 / uniform on the sphere') -> see the brief
+(358) M15781 row_group K241.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(359) M15781 condition K241.A4: condition_mismatch ('uniform on the sphere' against '8 / uniform on the sphere') -> see the brief
+(360) M15781 row_group K241.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(361) M15781 condition K241.A5: condition_mismatch ('uniform on the sphere' against '16 / uniform on the sphere') -> see the brief
+(362) M15781 row_group K242.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(363) M15781 condition K242.A2: condition_mismatch ('new plan at every step' against '2 / new plan at every step') -> see the brief
+(364) M15781 row_group K242.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(365) M15781 condition K242.A3: condition_mismatch ('new plan at every step' against '4 / new plan at every step') -> see the brief
+(366) M15781 row_group K242.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(367) M15781 condition K242.A4: condition_mismatch ('new plan at every step' against '8 / new plan at every step') -> see the brief
+(368) M15781 row_group K242.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(369) M15781 condition K242.A5: condition_mismatch ('new plan at every step' against '16 / new plan at every step') -> see the brief
+(370) M15781 row_group K243.A1: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(371) M15781 condition K243.A1: condition_mismatch ('null vector' against 'Tblk=1 / null vector') -> see the brief
+(372) M15781 row_group K243.A2: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(373) M15781 condition K243.A2: condition_mismatch ('null vector' against '2 / null vector') -> see the brief
+(374) M15781 row_group K243.A3: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(375) M15781 condition K243.A3: condition_mismatch ('null vector' against '4 / null vector') -> see the brief
+(376) M15781 row_group K243.A4: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(377) M15781 condition K243.A4: condition_mismatch ('null vector' against '8 / null vector') -> see the brief
+(378) M15781 row_group K243.A5: rowgroup_benchmark_mismatch (benchmark 'TinyStories', row group 'TinyStories, judge NLL (three seeds)') -> see the brief
+(379) M15781 condition K243.A5: condition_mismatch ('null vector' against '16 / null vector') -> see the brief
+(380) M15781 row_group K244.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(381) M15781 condition K244.A1: condition_mismatch ('LP-BD, ﬂow plan' against 'Tblk=1 / LP-BD, ﬂow plan') -> see the brief
+(382) M15781 row_group K244.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(383) M15781 condition K244.A2: condition_mismatch ('LP-BD, ﬂow plan' against '2 / LP-BD, ﬂow plan') -> see the brief
+(384) M15781 row_group K244.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(385) M15781 condition K244.A3: condition_mismatch ('LP-BD, ﬂow plan' against '4 / LP-BD, ﬂow plan') -> see the brief
+(386) M15781 row_group K244.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(387) M15781 condition K244.A4: condition_mismatch ('LP-BD, ﬂow plan' against '8 / LP-BD, ﬂow plan') -> see the brief
+(388) M15781 row_group K244.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(389) M15781 condition K244.A5: condition_mismatch ('LP-BD, ﬂow plan' against '16 / LP-BD, ﬂow plan') -> see the brief
+(390) M15781 row_group K245.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(391) M15781 condition K245.A1: condition_mismatch ('ﬂow given another preﬁx' against 'Tblk=1 / ﬂow given another preﬁx') -> see the brief
+(392) M15781 row_group K245.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(393) M15781 condition K245.A2: condition_mismatch ('ﬂow given another preﬁx' against '2 / ﬂow given another preﬁx') -> see the brief
+(394) M15781 row_group K245.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(395) M15781 condition K245.A3: condition_mismatch ('ﬂow given another preﬁx' against '4 / ﬂow given another preﬁx') -> see the brief
+(396) M15781 row_group K245.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(397) M15781 condition K245.A4: condition_mismatch ('ﬂow given another preﬁx' against '8 / ﬂow given another preﬁx') -> see the brief
+(398) M15781 row_group K245.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(399) M15781 condition K245.A5: condition_mismatch ('ﬂow given another preﬁx' against '16 / ﬂow given another preﬁx') -> see the brief
+(400) M15781 row_group K246.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(401) M15781 condition K246.A1: condition_mismatch ('uniform on the sphere' against 'Tblk=1 / uniform on the sphere') -> see the brief
+(402) M15781 row_group K246.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(403) M15781 condition K246.A2: condition_mismatch ('uniform on the sphere' against '2 / uniform on the sphere') -> see the brief
+(404) M15781 row_group K246.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(405) M15781 condition K246.A3: condition_mismatch ('uniform on the sphere' against '4 / uniform on the sphere') -> see the brief
+(406) M15781 row_group K246.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(407) M15781 condition K246.A4: condition_mismatch ('uniform on the sphere' against '8 / uniform on the sphere') -> see the brief
+(408) M15781 row_group K246.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(409) M15781 condition K246.A5: condition_mismatch ('uniform on the sphere' against '16 / uniform on the sphere') -> see the brief
+(410) M15781 row_group K247.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(411) M15781 condition K247.A2: condition_mismatch ('new plan at every step' against '2 / new plan at every step') -> see the brief
+(412) M15781 row_group K247.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(413) M15781 condition K247.A3: condition_mismatch ('new plan at every step' against '4 / new plan at every step') -> see the brief
+(414) M15781 row_group K247.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(415) M15781 condition K247.A4: condition_mismatch ('new plan at every step' against '8 / new plan at every step') -> see the brief
+(416) M15781 row_group K247.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(417) M15781 condition K247.A5: condition_mismatch ('new plan at every step' against '16 / new plan at every step') -> see the brief
+(418) M15781 row_group K248.A1: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(419) M15781 condition K248.A1: condition_mismatch ('null vector' against 'Tblk=1 / null vector') -> see the brief
+(420) M15781 row_group K248.A2: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(421) M15781 condition K248.A2: condition_mismatch ('null vector' against '2 / null vector') -> see the brief
+(422) M15781 row_group K248.A3: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(423) M15781 condition K248.A3: condition_mismatch ('null vector' against '4 / null vector') -> see the brief
+(424) M15781 row_group K248.A4: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(425) M15781 condition K248.A4: condition_mismatch ('null vector' against '8 / null vector') -> see the brief
+(426) M15781 row_group K248.A5: rowgroup_benchmark_mismatch (benchmark 'text8', row group 'text8, judge NLL') -> see the brief
+(427) M15781 condition K248.A5: condition_mismatch ('null vector' against '16 / null vector') -> see the brief
+(428) M15781 row_group K249.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(429) M15781 condition K249.A1: condition_mismatch ('LP-BD, ﬂow plan (B=8)' against 'Tblk=1 / LP-BD, ﬂow plan (B=8)') -> see the brief
+(430) M15781 row_group K249.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(431) M15781 condition K249.A2: condition_mismatch ('LP-BD, ﬂow plan (B=8)' against '2 / LP-BD, ﬂow plan (B=8)') -> see the brief
+(432) M15781 row_group K249.A3: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(433) M15781 condition K249.A3: condition_mismatch ('LP-BD, ﬂow plan (B=8)' against '4 / LP-BD, ﬂow plan (B=8)') -> see the brief
+(434) M15781 row_group K249.A4: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(435) M15781 condition K249.A4: condition_mismatch ('LP-BD, ﬂow plan (B=8)' against '8 / LP-BD, ﬂow plan (B=8)') -> see the brief
+(436) M15781 row_group K250.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(437) M15781 condition K250.A1: condition_mismatch ('ﬂow given another preﬁx' against 'Tblk=1 / ﬂow given another preﬁx') -> see the brief
+(438) M15781 row_group K250.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(439) M15781 condition K250.A2: condition_mismatch ('ﬂow given another preﬁx' against '2 / ﬂow given another preﬁx') -> see the brief
+(440) M15781 row_group K250.A3: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(441) M15781 condition K250.A3: condition_mismatch ('ﬂow given another preﬁx' against '4 / ﬂow given another preﬁx') -> see the brief
+(442) M15781 row_group K250.A4: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(443) M15781 condition K250.A4: condition_mismatch ('ﬂow given another preﬁx' against '8 / ﬂow given another preﬁx') -> see the brief
+(444) M15781 row_group K251.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(445) M15781 condition K251.A1: condition_mismatch ('LP-BD, ﬂow plan (B=16)' against 'Tblk=1 / LP-BD, ﬂow plan (B=16)') -> see the brief
+(446) M15781 row_group K251.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(447) M15781 condition K251.A2: condition_mismatch ('LP-BD, ﬂow plan (B=16)' against '2 / LP-BD, ﬂow plan (B=16)') -> see the brief
+(448) M15781 row_group K251.A3: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(449) M15781 condition K251.A3: condition_mismatch ('LP-BD, ﬂow plan (B=16)' against '4 / LP-BD, ﬂow plan (B=16)') -> see the brief
+(450) M15781 row_group K251.A4: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(451) M15781 condition K251.A4: condition_mismatch ('LP-BD, ﬂow plan (B=16)' against '8 / LP-BD, ﬂow plan (B=16)') -> see the brief
+(452) M15781 row_group K251.A5: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(453) M15781 condition K251.A5: condition_mismatch ('LP-BD, ﬂow plan (B=16)' against '16 / LP-BD, ﬂow plan (B=16)') -> see the brief
+(454) M15781 row_group K252.A1: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(455) M15781 condition K252.A1: condition_mismatch ('ﬂow given another preﬁx' against 'Tblk=1 / ﬂow given another preﬁx') -> see the brief
+(456) M15781 row_group K252.A2: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(457) M15781 condition K252.A2: condition_mismatch ('ﬂow given another preﬁx' against '2 / ﬂow given another preﬁx') -> see the brief
+(458) M15781 row_group K252.A3: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(459) M15781 condition K252.A3: condition_mismatch ('ﬂow given another preﬁx' against '4 / ﬂow given another preﬁx') -> see the brief
+(460) M15781 row_group K252.A4: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(461) M15781 condition K252.A4: condition_mismatch ('ﬂow given another preﬁx' against '8 / ﬂow given another preﬁx') -> see the brief
+(462) M15781 row_group K252.A5: rowgroup_benchmark_mismatch (benchmark 'OpenWebText', row group 'OpenWebText, change in Gen PPL at matched entropy') -> see the brief
+(463) M15781 condition K252.A5: condition_mismatch ('ﬂow given another preﬁx' against '16 / ﬂow given another preﬁx') -> see the brief
+(464) M15781 condition K261.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(465) M15781 condition K261.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(466) M15781 condition K261.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(467) M15781 condition K261.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(468) M15781 condition K262.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(469) M15781 condition K262.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(470) M15781 condition K262.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(471) M15781 condition K262.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(472) M15781 condition K263.A1: condition_mismatch ('null vector' against 'Tblk=1 / null vector') -> see the brief
+(473) M15781 condition K263.A2: condition_mismatch ('null vector' against '2 / null vector') -> see the brief
+(474) M15781 condition K263.A3: condition_mismatch ('null vector' against '4 / null vector') -> see the brief
+(475) M15781 condition K263.A4: condition_mismatch ('null vector' against '8 / null vector') -> see the brief
+(476) M15781 condition K274.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(477) M15781 condition K274.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(478) M15781 condition K274.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(479) M15781 condition K274.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(480) M15781 condition K274.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(481) M15781 condition K275.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(482) M15781 condition K275.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(483) M15781 condition K275.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(484) M15781 condition K275.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(485) M15781 condition K275.A5: condition_mismatch ('LP-BD, w=1.5' against '16 / LP-BD, w=1.5') -> see the brief
+(486) M15781 condition K276.A1: condition_mismatch ('null vector' against 'Tblk=1 / null vector') -> see the brief
+(487) M15781 condition K276.A2: condition_mismatch ('null vector' against '2 / null vector') -> see the brief
+(488) M15781 condition K276.A3: condition_mismatch ('null vector' against '4 / null vector') -> see the brief
+(489) M15781 condition K276.A4: condition_mismatch ('null vector' against '8 / null vector') -> see the brief
+(490) M15781 condition K276.A5: condition_mismatch ('null vector' against '16 / null vector') -> see the brief
+(491) M15781 condition K281.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(492) M15781 condition K281.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(493) M15781 condition K281.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(494) M15781 condition K281.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(495) M15781 condition K282.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(496) M15781 condition K282.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(497) M15781 condition K282.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(498) M15781 condition K282.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(499) M15781 condition K288.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(500) M15781 condition K288.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(501) M15781 condition K288.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(502) M15781 condition K288.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(503) M15781 condition K288.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(504) M15781 condition K289.A1: condition_mismatch ('LP-BD, w=1.5' against 'Tblk=1 / LP-BD, w=1.5') -> see the brief
+(505) M15781 condition K289.A2: condition_mismatch ('LP-BD, w=1.5' against '2 / LP-BD, w=1.5') -> see the brief
+(506) M15781 condition K289.A3: condition_mismatch ('LP-BD, w=1.5' against '4 / LP-BD, w=1.5') -> see the brief
+(507) M15781 condition K289.A4: condition_mismatch ('LP-BD, w=1.5' against '8 / LP-BD, w=1.5') -> see the brief
+(508) M15781 condition K289.A5: condition_mismatch ('LP-BD, w=1.5' against '16 / LP-BD, w=1.5') -> see the brief
+(509) M15781 condition K302.A1: condition_mismatch ('null vector' against 'Tblk=1 / null vector') -> see the brief
+(510) M15781 condition K302.A2: condition_mismatch ('null vector' against '2 / null vector') -> see the brief
+(511) M15781 condition K302.A3: condition_mismatch ('null vector' against '4 / null vector') -> see the brief
+(512) M15781 condition K302.A4: condition_mismatch ('null vector' against '8 / null vector') -> see the brief
+(513) M15781 condition K303.A1: condition_mismatch ('' against 'Tblk=1') -> see the brief
+(514) M15781 condition K303.A2: condition_mismatch ('' against '2') -> see the brief
+(515) M15781 condition K303.A3: condition_mismatch ('' against '4') -> see the brief
+(516) M15781 condition K303.A4: condition_mismatch ('' against '8') -> see the brief
+(517) M15781 condition K304.A1: condition_mismatch ('null vector' against 'Tblk=1 / null vector') -> see the brief
+(518) M15781 condition K304.A2: condition_mismatch ('null vector' against '2 / null vector') -> see the brief
+(519) M15781 condition K304.A3: condition_mismatch ('null vector' against '4 / null vector') -> see the brief
+(520) M15781 condition K304.A4: condition_mismatch ('null vector' against '8 / null vector') -> see the brief
+(521) M15781 condition K304.A5: condition_mismatch ('null vector' against '16 / null vector') -> see the brief
+(522) M15781 condition K305.A1: condition_mismatch ('' against 'Tblk=1') -> see the brief
+(523) M15781 condition K305.A2: condition_mismatch ('' against '2') -> see the brief
+(524) M15781 condition K305.A3: condition_mismatch ('' against '4') -> see the brief
+(525) M15781 condition K305.A4: condition_mismatch ('' against '8') -> see the brief
+(526) M15781 condition K305.A5: condition_mismatch ('' against '16') -> see the brief
+(527) M15781 second_factor K306.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(528) M15781 second_factor K306.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(529) M15781 second_factor K307.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(530) M15781 second_factor K307.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(531) M15781 second_factor K308.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(532) M15781 second_factor K308.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(533) M15781 second_factor K309.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(534) M15781 second_factor K309.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(535) M15781 second_factor K310.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(536) M15781 second_factor K310.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(537) M15781 second_factor K311.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(538) M15781 condition K311.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(539) M15781 second_factor K311.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(540) M15781 condition K311.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(541) M15781 second_factor K311.A3: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(542) M15781 condition K311.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(543) M15781 second_factor K311.A4: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(544) M15781 condition K311.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(545) M15781 second_factor K311.A5: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(546) M15781 condition K311.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(547) M15781 second_factor K312.A1: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(548) M15781 condition K312.A1: condition_mismatch ('LP-BD, best w' against 'Tblk=1 / LP-BD, best w') -> see the brief
+(549) M15781 second_factor K312.A2: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(550) M15781 condition K312.A2: condition_mismatch ('LP-BD, best w' against '2 / LP-BD, best w') -> see the brief
+(551) M15781 second_factor K312.A3: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(552) M15781 condition K312.A3: condition_mismatch ('LP-BD, best w' against '4 / LP-BD, best w') -> see the brief
+(553) M15781 second_factor K312.A4: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(554) M15781 condition K312.A4: condition_mismatch ('LP-BD, best w' against '8 / LP-BD, best w') -> see the brief
+(555) M15781 second_factor K312.A5: second_factor_mismatch ('28M / 16' against row group '16') -> see the brief
+(556) M15781 condition K312.A5: condition_mismatch ('LP-BD, best w' against '16 / LP-BD, best w') -> see the brief
+(557) M15781 second_factor K313.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(558) M15781 second_factor K313.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(559) M15781 second_factor K314.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(560) M15781 second_factor K314.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(561) M15781 second_factor K315.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(562) M15781 second_factor K315.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(563) M15781 second_factor K316.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(564) M15781 second_factor K316.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(565) M15781 second_factor K317.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(566) M15781 second_factor K317.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(567) M15781 second_factor K318.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(568) M15781 second_factor K318.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(569) M15781 second_factor K319.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(570) M15781 condition K319.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(571) M15781 second_factor K319.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(572) M15781 condition K319.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(573) M15781 second_factor K319.A3: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(574) M15781 condition K319.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(575) M15781 second_factor K319.A4: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(576) M15781 condition K319.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(577) M15781 second_factor K319.A5: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(578) M15781 condition K319.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(579) M15781 second_factor K319.A6: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(580) M15781 condition K319.A6: condition_mismatch ('LP-BD, w=1' against '64 / LP-BD, w=1') -> see the brief
+(581) M15781 second_factor K320.A1: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(582) M15781 condition K320.A1: condition_mismatch ('LP-BD, w=2' against 'Tblk=1 / LP-BD, w=2') -> see the brief
+(583) M15781 second_factor K320.A2: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(584) M15781 condition K320.A2: condition_mismatch ('LP-BD, w=2' against '2 / LP-BD, w=2') -> see the brief
+(585) M15781 second_factor K320.A3: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(586) M15781 condition K320.A3: condition_mismatch ('LP-BD, w=2' against '4 / LP-BD, w=2') -> see the brief
+(587) M15781 second_factor K320.A4: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(588) M15781 condition K320.A4: condition_mismatch ('LP-BD, w=2' against '8 / LP-BD, w=2') -> see the brief
+(589) M15781 second_factor K320.A5: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(590) M15781 condition K320.A5: condition_mismatch ('LP-BD, w=2' against '16 / LP-BD, w=2') -> see the brief
+(591) M15781 second_factor K320.A6: second_factor_mismatch ('28M / 64' against row group '64') -> see the brief
+(592) M15781 condition K320.A6: condition_mismatch ('LP-BD, w=2' against '64 / LP-BD, w=2') -> see the brief
+(593) M15781 second_factor K321.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(594) M15781 second_factor K321.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(595) M15781 second_factor K322.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(596) M15781 second_factor K322.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(597) M15781 second_factor K323.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(598) M15781 second_factor K323.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(599) M15781 second_factor K324.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(600) M15781 second_factor K324.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(601) M15781 second_factor K325.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(602) M15781 second_factor K325.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(603) M15781 second_factor K326.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(604) M15781 condition K326.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(605) M15781 second_factor K326.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(606) M15781 condition K326.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(607) M15781 second_factor K326.A3: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(608) M15781 condition K326.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(609) M15781 second_factor K326.A4: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(610) M15781 condition K326.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(611) M15781 second_factor K326.A5: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(612) M15781 condition K326.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(613) M15781 second_factor K327.A1: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(614) M15781 condition K327.A1: condition_mismatch ('LP-BD, best w' against 'Tblk=1 / LP-BD, best w') -> see the brief
+(615) M15781 second_factor K327.A2: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(616) M15781 condition K327.A2: condition_mismatch ('LP-BD, best w' against '2 / LP-BD, best w') -> see the brief
+(617) M15781 second_factor K327.A3: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(618) M15781 condition K327.A3: condition_mismatch ('LP-BD, best w' against '4 / LP-BD, best w') -> see the brief
+(619) M15781 second_factor K327.A4: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(620) M15781 condition K327.A4: condition_mismatch ('LP-BD, best w' against '8 / LP-BD, best w') -> see the brief
+(621) M15781 second_factor K327.A5: second_factor_mismatch ('85M / 16' against row group '16') -> see the brief
+(622) M15781 condition K327.A5: condition_mismatch ('LP-BD, best w' against '16 / LP-BD, best w') -> see the brief
+(623) M15781 second_factor K328.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(624) M15781 second_factor K328.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(625) M15781 second_factor K329.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(626) M15781 second_factor K329.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(627) M15781 second_factor K330.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(628) M15781 second_factor K330.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(629) M15781 second_factor K331.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(630) M15781 second_factor K331.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(631) M15781 second_factor K332.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(632) M15781 second_factor K332.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(633) M15781 second_factor K333.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(634) M15781 second_factor K333.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(635) M15781 second_factor K334.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(636) M15781 condition K334.A1: condition_mismatch ('LP-BD, w=1' against 'Tblk=1 / LP-BD, w=1') -> see the brief
+(637) M15781 second_factor K334.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(638) M15781 condition K334.A2: condition_mismatch ('LP-BD, w=1' against '2 / LP-BD, w=1') -> see the brief
+(639) M15781 second_factor K334.A3: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(640) M15781 condition K334.A3: condition_mismatch ('LP-BD, w=1' against '4 / LP-BD, w=1') -> see the brief
+(641) M15781 second_factor K334.A4: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(642) M15781 condition K334.A4: condition_mismatch ('LP-BD, w=1' against '8 / LP-BD, w=1') -> see the brief
+(643) M15781 second_factor K334.A5: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(644) M15781 condition K334.A5: condition_mismatch ('LP-BD, w=1' against '16 / LP-BD, w=1') -> see the brief
+(645) M15781 second_factor K334.A6: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(646) M15781 condition K334.A6: condition_mismatch ('LP-BD, w=1' against '64 / LP-BD, w=1') -> see the brief
+(647) M15781 second_factor K335.A1: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(648) M15781 condition K335.A1: condition_mismatch ('LP-BD, w=2' against 'Tblk=1 / LP-BD, w=2') -> see the brief
+(649) M15781 second_factor K335.A2: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(650) M15781 condition K335.A2: condition_mismatch ('LP-BD, w=2' against '2 / LP-BD, w=2') -> see the brief
+(651) M15781 second_factor K335.A3: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(652) M15781 condition K335.A3: condition_mismatch ('LP-BD, w=2' against '4 / LP-BD, w=2') -> see the brief
+(653) M15781 second_factor K335.A4: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(654) M15781 condition K335.A4: condition_mismatch ('LP-BD, w=2' against '8 / LP-BD, w=2') -> see the brief
+(655) M15781 second_factor K335.A5: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(656) M15781 condition K335.A5: condition_mismatch ('LP-BD, w=2' against '16 / LP-BD, w=2') -> see the brief
+(657) M15781 second_factor K335.A6: second_factor_mismatch ('85M / 64' against row group '64') -> see the brief
+(658) M15781 condition K335.A6: condition_mismatch ('LP-BD, w=2' against '64 / LP-BD, w=2') -> see the brief
+(659) M10855 prose_quote E25: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(660) M10855 prose_quote E28: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(661) M10855 prose_quote E39: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(662) M10855 arm_column K30.A1: arm_column_mismatch (arm 'AR', column 'tok/s') -> see the brief
+(663) M10855 arm_column K30.A2: arm_column_mismatch (arm 'self-spec', column 'tok/s') -> see the brief
+(664) M10855 condition K33.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(665) M10855 arm_column K33.A1: arm_column_mismatch (arm 'after', column 'Overall') -> see the brief
+(666) M10855 condition K33.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(667) M10855 arm_column K33.A2: arm_column_mismatch (arm 'before', column 'Overall') -> see the brief
+(668) M10855 condition K34.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(669) M10855 arm_column K34.A1: arm_column_mismatch (arm 'after', column 'TPF') -> see the brief
+(670) M10855 condition K34.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(671) M10855 arm_column K34.A2: arm_column_mismatch (arm 'before', column 'TPF') -> see the brief
+(672) M10855 condition K35.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(673) M10855 arm_column K35.A1: arm_column_mismatch (arm 'after', column 'Overall') -> see the brief
+(674) M10855 condition K35.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(675) M10855 arm_column K35.A2: arm_column_mismatch (arm 'before', column 'Overall') -> see the brief
+(676) M10855 condition K36.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(677) M10855 arm_column K36.A1: arm_column_mismatch (arm 'after', column 'TPF') -> see the brief
+(678) M10855 condition K36.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(679) M10855 arm_column K36.A2: arm_column_mismatch (arm 'before', column 'TPF') -> see the brief
+(680) M10855 condition K37.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(681) M10855 arm_column K37.A1: arm_column_mismatch (arm 'after', column 'Overall') -> see the brief
+(682) M10855 condition K37.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(683) M10855 arm_column K37.A2: arm_column_mismatch (arm 'before', column 'Overall') -> see the brief
+(684) M10855 condition K38.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(685) M10855 arm_column K38.A1: arm_column_mismatch (arm 'after', column 'TPF') -> see the brief
+(686) M10855 condition K38.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(687) M10855 arm_column K38.A2: arm_column_mismatch (arm 'before', column 'TPF') -> see the brief
+(688) M10855 condition K39.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(689) M10855 arm_column K39.A1: arm_column_mismatch (arm 'after', column 'Overall') -> see the brief
+(690) M10855 condition K39.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(691) M10855 arm_column K39.A2: arm_column_mismatch (arm 'before', column 'Overall') -> see the brief
+(692) M10855 condition K40.A1: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(693) M10855 arm_column K40.A1: arm_column_mismatch (arm 'after', column 'TPF') -> see the brief
+(694) M10855 condition K40.A2: condition_mismatch ('' against 'Block diffusion') -> see the brief
+(695) M10855 arm_column K40.A2: arm_column_mismatch (arm 'before', column 'TPF') -> see the brief
+(696) M10855 condition K41.A1: condition_mismatch ('' against 'Self-spec') -> see the brief
+(697) M10855 arm_column K41.A1: arm_column_mismatch (arm 'after', column 'Overall') -> see the brief
+(698) M10855 condition K41.A2: condition_mismatch ('' against 'Self-spec') -> see the brief
+(699) M10855 arm_column K41.A2: arm_column_mismatch (arm 'before', column 'Overall') -> see the brief
+(700) M10855 condition K42.A1: condition_mismatch ('' against 'Self-spec') -> see the brief
+(701) M10855 arm_column K42.A1: arm_column_mismatch (arm 'after', column 'TPF') -> see the brief
+(702) M10855 condition K42.A2: condition_mismatch ('' against 'Self-spec') -> see the brief
+(703) M10855 arm_column K42.A2: arm_column_mismatch (arm 'before', column 'TPF') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
