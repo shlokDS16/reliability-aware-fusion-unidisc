@@ -1,6 +1,25 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 23 (2026-10-20 ~09:10 IST; PAUSE at the user's request: laptop offline from 09:30 for a presentation;
+  resume when the user says "continue"; HANDOFF 22 below still describes the setup).** **R797 full text:** batches
+  r797b001-r797b009 screened by A and B (all isolation and model checks pass, incl. bio batches b007/b008: no B
+  fallback); filed b001-b008 (b009 see batch-log; if its result line is missing, run
+  `bash tools/ft-session/tr.sh r797 postbatch r797b009 a531c8485f889c29e a40921e4d49667612`). C queue so far:
+  M03713 (b001), M00589 (b002), M03752 (b005), M02061 (b007 adjudicate); C not yet run: build with
+  `FT_TRANCHE=r797 python -I tools/ft-session/cqueue.py <worktree> <scratchpad>/ft-dispatch 1 01 1 9`, then
+  ft_dispatch --role C --batch c-r797-01 --rows <scratchpad>/ft-dispatch/c-rows-1.jsonl, Fable, prompt as c-t1-19
+  (agent-map history), then `tr.sh r797 cpost c-r797-01 <agent>`. Remaining part-1 batches: r797b010-r797b013 (built
+  folders: none; build with tr.sh). **Downloads:** fetch_fulltext.py was at 500/519 (ok 424, error 33, not_pdf 43) at
+  09:03, then fetch_openreview.py (58) in the same background command; if interrupted, rerun both (resumable):
+  `python -I tools/fetch_fulltext.py --routes analysis/screening/r797-oa-routes.jsonl --types arxiv,acl,oa_url` and
+  `python tools/fetch_openreview.py --routes analysis/screening/r797-oa-routes.jsonl`. Then `python tools/pdf_to_text.py`,
+  `python -I tools/ft_title_check.py` (4 new unverified flags to read: M15725, M16194, M16195, M18905; add notes to
+  title-check-verified.json), then `FT_DISPATCH_ROOT=<scratchpad>/ft-dispatch python -I tools/ft_plan_tranche.py r797
+  2 14 20261028`. The 76 OA failures (error/not_pdf) go to a retry (tools/fetch_oa_retry.py style) or the user's
+  checklist. After R797 downloads: S1243 downloads (fetch_fulltext.py --routes analysis/screening/ft-routes-seed1243.jsonl
+  --types arxiv,acl,oa_url), then D0043 (python tools/fetch_public_versions.py run). Evening page items N1-N6 + 12
+  wait for the user.
 - **HANDOFF 22 (2026-10-20 ~09:30 IST; newest; execution session d7bb06 = 741900f8, scratchpad .../741900f8-51c9-4f19-8878-9556d9ef107b/scratchpad).**
   **Gate T1 re-audit 2: PASS WITH CORRECTIONS** ("T1 screened so far (interim)", 882 decided; fixes 23/24 done in
   e7645bb; finding 25 = D0041 note row for the human author, EVENING N3). **D0036:** 131 rescue positives with an
