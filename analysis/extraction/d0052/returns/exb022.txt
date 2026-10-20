@@ -1,0 +1,32 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) M15840 condition K79.A1: condition_mismatch ('' against 'dSpark') -> see the brief
+(2) M15840 condition K79.A2: condition_mismatch ('' against 'dSpark') -> see the brief
+(3) M15840 condition K79.A3: condition_mismatch ('' against 'dSpark') -> see the brief
+(4) M15840 condition K80.A1: condition_mismatch ('' against 'dSpark') -> see the brief
+(5) M15840 condition K80.A2: condition_mismatch ('' against 'dSpark') -> see the brief
+(6) M15840 condition K80.A3: condition_mismatch ('' against 'dSpark') -> see the brief
+(7) M15840 condition K81.A1: condition_mismatch ('' against 'dSpark') -> see the brief
+(8) M15840 condition K81.A2: condition_mismatch ('' against 'dSpark') -> see the brief
+(9) M15840 condition K81.A3: condition_mismatch ('' against 'dSpark') -> see the brief
+(10) M15840 condition K82.A1: condition_mismatch ('' against 'dSpark') -> see the brief
+(11) M15840 condition K82.A2: condition_mismatch ('' against 'dSpark') -> see the brief
+(12) M15840 condition K82.A3: condition_mismatch ('' against 'dSpark') -> see the brief
+(13) M15840 arm_column K91.A1: arm_column_mismatch (arm 'Promoted', column 'Accuracy (%)') -> see the brief
+(14) M15840 arm_column K91.A2: arm_column_mismatch (arm 'Not promoted', column 'Accuracy (%)') -> see the brief
+(15) M15840 arm_column K92.A1: arm_column_mismatch (arm 'Promoted', column 'Accuracy (%)') -> see the brief
+(16) M15840 arm_column K92.A2: arm_column_mismatch (arm 'Not promoted', column 'Accuracy (%)') -> see the brief
+(17) M15840 arm_column K93.A1: arm_column_mismatch (arm 'Promoted', column 'Accuracy (%)') -> see the brief
+(18) M15840 arm_column K93.A2: arm_column_mismatch (arm 'Not promoted', column 'Accuracy (%)') -> see the brief
+(19) M15840 arm_column K94.A1: arm_column_mismatch (arm 'Promoted', column 'Forward passes to finish') -> see the brief
+(20) M15840 arm_column K94.A2: arm_column_mismatch (arm 'Not promoted', column 'Forward passes to finish') -> see the brief
+(21) M15840 arm_column K95.A1: arm_column_mismatch (arm 'Promoted', column 'Forward passes to finish') -> see the brief
+(22) M15840 arm_column K95.A2: arm_column_mismatch (arm 'Not promoted', column 'Forward passes to finish') -> see the brief
+(23) M15840 arm_column K96.A1: arm_column_mismatch (arm 'Promoted', column 'Forward passes to finish') -> see the brief
+(24) M15840 arm_column K96.A2: arm_column_mismatch (arm 'Not promoted', column 'Forward passes to finish') -> see the brief
+(25) M15840 condition K101.A1: condition_mismatch ('' against 'Surprisal reduction (Eq. 6)') -> see the brief
+(26) M15840 condition K101.A2: condition_mismatch ('' against 'Surprisal reduction (Eq. 6)') -> see the brief
+(27) M15840 condition K102.A1: condition_mismatch ('' against 'Surprisal reduction (Eq. 6)') -> see the brief
+(28) M15840 condition K102.A2: condition_mismatch ('' against 'Surprisal reduction (Eq. 6)') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
