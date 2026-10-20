@@ -1,0 +1,40 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M14000 condition K59.A1: condition_mismatch ('' against 'LLADA') -> see the brief
+(2) M14000 arm_column K59.A1: arm_column_mismatch (arm 'FP', column 'Speed (Tokens/s)') -> see the brief
+(3) M14000 condition K59.A2: condition_mismatch ('' against 'LLADA') -> see the brief
+(4) M14000 arm_column K59.A2: arm_column_mismatch (arm 'Quant', column 'Speed (Tokens/s)') -> see the brief
+(5) M14000 condition K60.A1: condition_mismatch ('' against 'LLADA') -> see the brief
+(6) M14000 arm_column K60.A1: arm_column_mismatch (arm 'FP', column 'Memory (GB)') -> see the brief
+(7) M14000 condition K60.A2: condition_mismatch ('' against 'LLADA') -> see the brief
+(8) M14000 arm_column K60.A2: arm_column_mismatch (arm 'Quant', column 'Memory (GB)') -> see the brief
+(9) M14000 condition K61.A1: condition_mismatch ('' against 'LLADA- 1.5') -> see the brief
+(10) M14000 arm_column K61.A1: arm_column_mismatch (arm 'FP', column 'Speed (Tokens/s)') -> see the brief
+(11) M14000 condition K61.A2: condition_mismatch ('' against 'LLADA- 1.5') -> see the brief
+(12) M14000 arm_column K61.A2: arm_column_mismatch (arm 'Quant', column 'Speed (Tokens/s)') -> see the brief
+(13) M14000 condition K62.A1: condition_mismatch ('' against 'LLADA- 1.5') -> see the brief
+(14) M14000 arm_column K62.A1: arm_column_mismatch (arm 'FP', column 'Memory (GB)') -> see the brief
+(15) M14000 condition K62.A2: condition_mismatch ('' against 'LLADA- 1.5') -> see the brief
+(16) M14000 arm_column K62.A2: arm_column_mismatch (arm 'Quant', column 'Memory (GB)') -> see the brief
+(17) M14000 condition K63.A1: condition_mismatch ('' against 'DREAM') -> see the brief
+(18) M14000 arm_column K63.A1: arm_column_mismatch (arm 'FP', column 'Speed (Tokens/s)') -> see the brief
+(19) M14000 condition K63.A2: condition_mismatch ('' against 'DREAM') -> see the brief
+(20) M14000 arm_column K63.A2: arm_column_mismatch (arm 'Quant', column 'Speed (Tokens/s)') -> see the brief
+(21) M14000 condition K64.A1: condition_mismatch ('' against 'DREAM') -> see the brief
+(22) M14000 arm_column K64.A1: arm_column_mismatch (arm 'FP', column 'Memory (GB)') -> see the brief
+(23) M14000 condition K64.A2: condition_mismatch ('' against 'DREAM') -> see the brief
+(24) M14000 arm_column K64.A2: arm_column_mismatch (arm 'Quant', column 'Memory (GB)') -> see the brief
+(25) M06241 table T03: map_not_in_header (parts not in header: MMSU∗; OBQA) -> the column map names parts that are not in the printed header; use the header text as printed
+(26) M06241 table T03: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(27) M06241 prose_quote E09: negation_after (quote_check.quote_status) -> a negation or contrast word follows the quote in the same sentence; extend the quote
+(28) M06241 metric H01: metric_column_mismatch ('average accuracy' against 'Overall / Avg') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(29) M06241 metric K17.A1: metric_column_mismatch ('average accuracy' against 'Overall / Avg') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(30) M06241 metric K17.A2: metric_column_mismatch ('average accuracy' against 'Overall / Avg') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(31) M06241 metric K17.A3: metric_column_mismatch ('average accuracy' against 'Overall / Avg') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(32) M06241 metric K18.A1: metric_column_mismatch ('average accuracy' against 'Average') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(33) M06241 metric K18.A2: metric_column_mismatch ('average accuracy' against 'Average') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(34) M06241 metric K18.A3: metric_column_mismatch ('average accuracy' against 'Average') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(35) M06241 metric K18.A4: metric_column_mismatch ('average accuracy' against 'Average') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(36) M06241 metric K18.A5: metric_column_mismatch ('average accuracy' against 'Average') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
