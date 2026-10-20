@@ -1,0 +1,108 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M18735 second_factor K08.A1: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(2) M18735 second_factor K08.A2: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(3) M18735 second_factor K08.A3: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(4) M18735 second_factor K08.A4: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(5) M18735 second_factor K08.A5: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(6) M18735 second_factor K16.A1: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(7) M18735 second_factor K16.A2: second_factor_mismatch ('' against level-1 column part 'AUC') -> see the brief
+(8) M18735 second_factor K19.A1: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 16' against row group 'Dream-7B: zero-shot transfer, 1×256.') -> see the brief
+(9) M18735 second_factor K19.A1: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 16' against level-1 column part 'T = 16') -> see the brief
+(10) M18735 second_factor K19.A2: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 16' against row group 'Dream-7B: zero-shot transfer, 1×256.') -> see the brief
+(11) M18735 second_factor K19.A2: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 16' against level-1 column part 'T = 16') -> see the brief
+(12) M18735 second_factor K20.A1: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 32' against row group 'Dream-7B: zero-shot transfer, 1×256.') -> see the brief
+(13) M18735 second_factor K20.A1: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 32' against level-1 column part 'T = 32') -> see the brief
+(14) M18735 second_factor K20.A2: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 32' against row group 'Dream-7B: zero-shot transfer, 1×256.') -> see the brief
+(15) M18735 second_factor K20.A2: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 32' against level-1 column part 'T = 32') -> see the brief
+(16) M18735 second_factor K21.A1: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 64' against row group 'Dream-7B: zero-shot transfer, 1×256.') -> see the brief
+(17) M18735 second_factor K21.A1: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 64' against level-1 column part 'T = 64') -> see the brief
+(18) M18735 second_factor K21.A2: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 64' against row group 'Dream-7B: zero-shot transfer, 1×256.') -> see the brief
+(19) M18735 second_factor K21.A2: second_factor_mismatch ('Dream-7B: zero-shot transfer, 1×256. / T = 64' against level-1 column part 'T = 64') -> see the brief
+(20) M18735 second_factor K22.A1: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against row group 'LLaDA: block-size transfer.') -> see the brief
+(21) M18735 second_factor K22.A1: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against level-1 column part 'T = 16') -> see the brief
+(22) M18735 second_factor K22.A2: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against row group 'LLaDA: block-size transfer.') -> see the brief
+(23) M18735 second_factor K22.A2: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against level-1 column part 'T = 16') -> see the brief
+(24) M18735 second_factor K22.A3: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against row group 'LLaDA: block-size transfer.') -> see the brief
+(25) M18735 second_factor K22.A3: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against level-1 column part 'T = 16') -> see the brief
+(26) M18735 second_factor K22.A4: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against row group 'LLaDA: block-size transfer.') -> see the brief
+(27) M18735 second_factor K22.A4: second_factor_mismatch ('LLaDA: block-size transfer. / T = 16' against level-1 column part 'T = 16') -> see the brief
+(28) M18735 second_factor K23.A1: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against row group 'LLaDA: block-size transfer.') -> see the brief
+(29) M18735 second_factor K23.A1: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against level-1 column part 'T = 32') -> see the brief
+(30) M18735 second_factor K23.A2: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against row group 'LLaDA: block-size transfer.') -> see the brief
+(31) M18735 second_factor K23.A2: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against level-1 column part 'T = 32') -> see the brief
+(32) M18735 second_factor K23.A3: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against row group 'LLaDA: block-size transfer.') -> see the brief
+(33) M18735 second_factor K23.A3: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against level-1 column part 'T = 32') -> see the brief
+(34) M18735 second_factor K23.A4: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against row group 'LLaDA: block-size transfer.') -> see the brief
+(35) M18735 second_factor K23.A4: second_factor_mismatch ('LLaDA: block-size transfer. / T = 32' against level-1 column part 'T = 32') -> see the brief
+(36) M18735 second_factor K24.A1: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against row group 'LLaDA: block-size transfer.') -> see the brief
+(37) M18735 second_factor K24.A1: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against level-1 column part 'T = 64') -> see the brief
+(38) M18735 second_factor K24.A2: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against row group 'LLaDA: block-size transfer.') -> see the brief
+(39) M18735 second_factor K24.A2: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against level-1 column part 'T = 64') -> see the brief
+(40) M18735 second_factor K24.A3: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against row group 'LLaDA: block-size transfer.') -> see the brief
+(41) M18735 second_factor K24.A3: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against level-1 column part 'T = 64') -> see the brief
+(42) M18735 second_factor K24.A4: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against row group 'LLaDA: block-size transfer.') -> see the brief
+(43) M18735 second_factor K24.A4: second_factor_mismatch ('LLaDA: block-size transfer. / T = 64' against level-1 column part 'T = 64') -> see the brief
+(44) M18735 second_factor K78.A1: second_factor_mismatch ('' against level-1 column part 'Policy time (ms)') -> see the brief
+(45) M18735 second_factor K78.A2: second_factor_mismatch ('' against level-1 column part 'Policy time (ms)') -> see the brief
+(46) M18735 second_factor K78.A3: second_factor_mismatch ('' against level-1 column part 'Policy time (ms)') -> see the brief
+(47) M18735 condition K115.A1: condition_mismatch ('1 / 0.25' against '1') -> see the brief
+(48) M18735 condition K115.A2: condition_mismatch ('1 / 0.25' against '1') -> see the brief
+(49) M18735 condition K115.A3: condition_mismatch ('1 / 0.25' against '1') -> see the brief
+(50) M18735 condition K115.A4: condition_mismatch ('1 / 0.25' against '1') -> see the brief
+(51) M18735 condition K116.A1: condition_mismatch ('1 / 0.50' against '1') -> see the brief
+(52) M18735 condition K116.A2: condition_mismatch ('1 / 0.50' against '1') -> see the brief
+(53) M18735 condition K116.A3: condition_mismatch ('1 / 0.50' against '1') -> see the brief
+(54) M18735 condition K116.A4: condition_mismatch ('1 / 0.50' against '1') -> see the brief
+(55) M18735 condition K117.A1: condition_mismatch ('1 / 0.75' against '1') -> see the brief
+(56) M18735 condition K117.A2: condition_mismatch ('1 / 0.75' against '1') -> see the brief
+(57) M18735 condition K117.A3: condition_mismatch ('1 / 0.75' against '1') -> see the brief
+(58) M18735 condition K117.A4: condition_mismatch ('1 / 0.75' against '1') -> see the brief
+(59) M18735 condition K118.A1: condition_mismatch ('2 / 0.25' against '2') -> see the brief
+(60) M18735 condition K118.A2: condition_mismatch ('2 / 0.25' against '2') -> see the brief
+(61) M18735 condition K118.A3: condition_mismatch ('2 / 0.25' against '2') -> see the brief
+(62) M18735 condition K118.A4: condition_mismatch ('2 / 0.25' against '2') -> see the brief
+(63) M18735 condition K119.A1: condition_mismatch ('2 / 0.50' against '2') -> see the brief
+(64) M18735 condition K119.A2: condition_mismatch ('2 / 0.50' against '2') -> see the brief
+(65) M18735 condition K119.A3: condition_mismatch ('2 / 0.50' against '2') -> see the brief
+(66) M18735 condition K119.A4: condition_mismatch ('2 / 0.50' against '2') -> see the brief
+(67) M18735 condition K120.A1: condition_mismatch ('2 / 0.75' against '2') -> see the brief
+(68) M18735 condition K120.A2: condition_mismatch ('2 / 0.75' against '2') -> see the brief
+(69) M18735 condition K120.A3: condition_mismatch ('2 / 0.75' against '2') -> see the brief
+(70) M18735 condition K120.A4: condition_mismatch ('2 / 0.75' against '2') -> see the brief
+(71) M18735 condition K121.A1: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(72) M18735 condition K121.A2: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(73) M18735 condition K121.A3: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(74) M18735 condition K121.A4: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(75) M18735 condition K121.A5: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(76) M18735 condition K122.A1: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(77) M18735 condition K122.A2: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(78) M18735 condition K122.A3: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(79) M18735 condition K122.A4: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(80) M18735 condition K122.A5: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(81) M18735 condition K123.A1: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(82) M18735 condition K123.A2: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(83) M18735 condition K123.A3: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(84) M18735 condition K123.A4: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(85) M18735 condition K123.A5: condition_mismatch ('' against 'TIPSfull') -> see the brief
+(86) M18735 condition K124.A1: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(87) M18735 condition K124.A2: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(88) M18735 condition K124.A3: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(89) M18735 condition K124.A4: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(90) M18735 condition K124.A5: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(91) M18735 condition K125.A1: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(92) M18735 condition K125.A2: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(93) M18735 condition K125.A3: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(94) M18735 condition K125.A4: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(95) M18735 condition K125.A5: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(96) M18735 condition K126.A1: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(97) M18735 condition K126.A2: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(98) M18735 condition K126.A3: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(99) M18735 condition K126.A4: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(100) M18735 condition K126.A5: condition_mismatch ('' against 'TIPSblock') -> see the brief
+(101) M18735 arm_column K133.A1: arm_column_mismatch (arm '+TIPSfull', column 'Accuracy (%)') -> see the brief
+(102) M18735 arm_column K133.A2: arm_column_mismatch (arm 'Non-adjusted Fast-dLLM', column 'Accuracy (%)') -> see the brief
+(103) M18735 arm_column K134.A1: arm_column_mismatch (arm '+TIPSfull', column 'Accuracy (%)') -> see the brief
+(104) M18735 arm_column K134.A2: arm_column_mismatch (arm 'Non-adjusted Fast-dLLM', column 'Accuracy (%)') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
