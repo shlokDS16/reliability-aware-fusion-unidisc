@@ -1,0 +1,44 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) M10526 table T03: caption_not_found (not on pages [7, 8, 9]) -> the caption is not on the stated page or the two next to it; check the page and the caption text
+(2) M10526 prose_quote E03: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(3) M10526 prose_quote E11: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(4) M10526 prose_quote E23: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(5) M10526 prose_quote E41: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(6) M10526 condition K26.A1: condition_mismatch ('' against '16') -> see the brief
+(7) M10526 condition K26.A2: condition_mismatch ('' against '16') -> see the brief
+(8) M10526 condition K26.A3: condition_mismatch ('' against '16') -> see the brief
+(9) M10526 condition K26.A4: condition_mismatch ('' against '16') -> see the brief
+(10) M10526 condition K27.A1: condition_mismatch ('' against '32') -> see the brief
+(11) M10526 condition K27.A2: condition_mismatch ('' against '32') -> see the brief
+(12) M10526 condition K27.A3: condition_mismatch ('' against '32') -> see the brief
+(13) M10526 condition K27.A4: condition_mismatch ('' against '32') -> see the brief
+(14) M10526 condition K28.A1: condition_mismatch ('' against '64') -> see the brief
+(15) M10526 condition K28.A2: condition_mismatch ('' against '64') -> see the brief
+(16) M10526 condition K28.A3: condition_mismatch ('' against '64') -> see the brief
+(17) M10526 condition K28.A4: condition_mismatch ('' against '64') -> see the brief
+(18) M10526 condition K29.A1: condition_mismatch ('' against '128') -> see the brief
+(19) M10526 condition K29.A2: condition_mismatch ('' against '128') -> see the brief
+(20) M10526 condition K29.A3: condition_mismatch ('' against '128') -> see the brief
+(21) M10526 condition K29.A4: condition_mismatch ('' against '128') -> see the brief
+(22) M10526 condition K30.A1: condition_mismatch ('' against '256') -> see the brief
+(23) M10526 condition K30.A2: condition_mismatch ('' against '256') -> see the brief
+(24) M10526 condition K30.A3: condition_mismatch ('' against '256') -> see the brief
+(25) M10526 condition K30.A4: condition_mismatch ('' against '256') -> see the brief
+(26) M10526 condition K31.A1: condition_mismatch ('' against '512') -> see the brief
+(27) M10526 condition K31.A2: condition_mismatch ('' against '512') -> see the brief
+(28) M10526 condition K31.A3: condition_mismatch ('' against '512') -> see the brief
+(29) M10526 condition K31.A4: condition_mismatch ('' against '512') -> see the brief
+(30) M10526 condition K32.A1: condition_mismatch ('' against '1024') -> see the brief
+(31) M10526 condition K32.A2: condition_mismatch ('' against '1024') -> see the brief
+(32) M10526 condition K32.A3: condition_mismatch ('' against '1024') -> see the brief
+(33) M10526 condition K32.A4: condition_mismatch ('' against '1024') -> see the brief
+(34) M10526 condition K33.A1: condition_mismatch ('' against '16') -> see the brief
+(35) M10526 condition K33.A2: condition_mismatch ('' against '32') -> see the brief
+(36) M10526 condition K33.A3: condition_mismatch ('' against '64') -> see the brief
+(37) M10526 condition K33.A4: condition_mismatch ('' against '128') -> see the brief
+(38) M10526 condition K33.A5: condition_mismatch ('' against '256') -> see the brief
+(39) M10526 condition K33.A6: condition_mismatch ('' against '512') -> see the brief
+(40) M10526 condition K33.A7: condition_mismatch ('' against '1024') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
