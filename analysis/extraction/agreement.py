@@ -1514,7 +1514,7 @@ def we_markdown(s):
 # =============================================================================================================
 def _st_records():
     sys.path.insert(0, str(HERE / "fixtures"))
-    import synth                                       # noqa: E402  (synthetic records, no paper content)
+    import ex_synth as synth                                     # noqa: E402  (synthetic records, no paper content)
     return synth
 
 

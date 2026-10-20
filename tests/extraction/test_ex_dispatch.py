@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-import synth
+import ex_synth as synth
 
 ROOT = Path(__file__).resolve().parents[2]
 BRIEF = ROOT / "research/review/extraction/extractor-brief-v0.5.md"

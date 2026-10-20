@@ -32,7 +32,7 @@ from pathlib import Path
 
 import pytest
 
-import synth
+import ex_synth as synth
 
 ROOT = Path(__file__).resolve().parents[2]
 TEXTS = ROOT / "research" / "sources" / "md" / "fulltext-pymupdf"

@@ -132,3 +132,5 @@ FILES
 CONCERNS
   - tools/ft-session/agent-map.txt shows as modified in git status; not touched by this run (another session).
   - Two-record pipeline: ICC bounds are not meaningful at n = 2 (warnings above); Stage A has 12 records.
+
+2026-10-20 (orchestrator): tests/extraction/test_pipeline.py renamed test_extraction_pipeline.py (basename clash with tests/exp003/test_pipeline.py) and fixtures/synth.py renamed ex_synth.py (module clash with the exp003 tests). Full tree: 293 passed, 2 failed; the 2 failures (tests/exp001/test_metrics_stats.py, frozen_analysis attribute) occur only when exp001 and exp003 run in one pytest process and predate the extraction tools (exp001 alone 130/130, exp003 + extraction pass). Run test folders separately.
