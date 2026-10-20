@@ -1,0 +1,23 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M08783 table T01: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(2) M08783 table T02: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(3) M08783 table T03: caption_start (caption must start with Table, Tab., Figure or Fig.) -> the caption must start with Table, Tab., Figure or Fig., as printed
+(4) M08783 prose_quote E08: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(5) M08783 prose_quote E10: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(6) M08783 prose_quote E13: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(7) M08783 prose_quote E21: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(8) M08783 prose_quote E23: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(9) M08783 prose_quote E24: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(10) M08783 prose_quote E25: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(11) M08783 prose_quote E34: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(12) M08783 prose_quote E36: negation_before (quote_check.quote_status) -> a negation or contrast word sits just before the quote in the same sentence; start the quote earlier
+(13) M08783 s14_row S14.baseline_row: s14_row_not_found ('Two-stream [22]' not at a row start on page 6) -> give the row label exactly as it starts the printed row on that page, or fix the page
+(14) M12476 prose_quote E06: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(15) M12476 prose_quote E12: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(16) M12476 prose_quote E16: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(17) M12476 prose_quote E17: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(18) M12476 prose_quote E18: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+(19) M12476 prose_quote E19: not_found (quote_check.quote_status) -> the quote is not a contiguous verbatim passage of the text file; copy it again character for character
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
