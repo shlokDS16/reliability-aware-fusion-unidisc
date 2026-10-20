@@ -137,3 +137,10 @@ Do these together in one sitting. Claude keeps this list current; items are stru
    ACL 14; roughly 1-1.5 GB) **and 118 e-gateway** (IEEE 68, others 50), 2 with no identifier. Reply "yes, start the 797
    tranche" for the open-access downloads (logged, hashed, title-checked as before); the e-gateway ones go to a new
    checklist like item 21.
+
+## Status 2026-10-20 day (execution session d7bb06; you are in class)
+25. Your 08:00 answers are decision rows **D0035-D0043**. Items 16a, 16b and 24 above are therefore settled.
+26. **The evening page lists everything for you**, in one place: `research/EVENING-2026-10-20.md`, section "New
+   decisions" (N1-N6 and item 12) and "Hands-on" (3 biology papers, extraction check OQ5-04, two blind validation
+   sheets, three e-gateway checklists). Do the validation sheets before you look at any screener row of their tranche.
+27. T1 gate re-audit 2: PASS WITH CORRECTIONS for "T1 screened so far (interim)", 882 decided; fixes done.
