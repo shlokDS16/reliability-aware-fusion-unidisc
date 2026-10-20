@@ -212,6 +212,25 @@ B-22 & diversity metrics not on the v1.1 list (decides F3) & 1 & 1 & 0 & 0 \\
 \end{tabular}
 \end{table}
 
+\setcounter{section}{3}
+\section{Agreement of the two extractors}
+\label{sec:s-agree}
+Eight studies of the extraction sample were read by both extractors (Claude Opus~5.5 and Claude Sonnet~5.5, each blind to the other) and adjudicated by a third model (Claude Fable~5.1) from the full text (Section~\Mref{sec:method-extraction}). Table~\ref{tab:s-agree} gives the agreement measures of the extraction plan, computed by \texttt{analysis/extraction/agreement.py} on the two records of each study before adjudication; Table~\ref{tab:s-agree-rec} gives the matching of comparison groups and contrast units per study. Values and metric directions of the units both extractors found agree almost always; which groups and units the two extractors cut out of the same tables agrees far less, and least on two seed-corpus studies whose text comes from the arXiv HTML page. The plan's warning threshold for group matching (0.6) is not met, so the RQ2--RQ4 unit totals in Section~\Mref{sec:rq} are indicative and the conclusions rest on study-level statements. % src: analysis/extraction/d0052/agreement-8-texts/agreement-stage-a.json; stage_a falsifier_F1_G_drawn_below_0.6 true
+
+\begin{table}[h]
+\caption{Agreement of the two extractors on the eight double-read studies. Lower bound: the 5th percentile of a bootstrap over studies within strata (4,000 resamples), the lower end of a two-sided 90\% interval.}
+\label{tab:s-agree}
+\small
+\input{tables/extraction-agreement.tex}
+\end{table}
+
+\begin{table}[h]
+\caption{Per study: comparison groups and contrast units found by both extractors (matched over the union), and entries of each extractor accepted by the validator. R-numbered studies belong to the seed stratum and are read from the arXiv HTML text.}
+\label{tab:s-agree-rec}
+\small
+\input{tables/extraction-agreement-records.tex}
+\end{table}
+
 \setcounter{section}{4}
 \section{The design-space table of the 47 models}
 \label{sec:s-design}
@@ -244,6 +263,13 @@ Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
 \label{sec:s-design-long}
 
 \todo{long form of the design-space table with every cell and its source location (research/review/coverage/design-space-v1.csv); it is promised in Section~\Mref{sec:design-table}}
+
+\setcounter{section}{5}
+\section{Quality appraisal of each sampled study}
+\label{sec:s-qa}
+One row per study of the extraction frame (79 studies; one sampled study left the frame under decision D0059). Scores follow the items of Section~\Mref{sec:method-extraction}; a single number means the low and the high readings agree, ``low/high'' that an unclear sub-item changes the score. NA: the item does not apply. QA1 uses the dated link check of 2026-10-21 (\texttt{analysis/extraction/d0052/qa1-links.jsonl}). The full extraction records, with every quote and table location, are in the repository (\texttt{analysis/extraction/d0052/}). % src: paper/review/tables/qa-per-study.tex (scripts/qa_tables.py from qa-table.jsonl)
+
+\input{tables/qa-per-study.tex}
 
 \setcounter{section}{6}
 \section{Additional detail on the EXP-003 measurement}

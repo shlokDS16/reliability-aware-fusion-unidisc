@@ -402,7 +402,7 @@ for k in [f"QA{j}" for j in range(1, 10)]:
     R["RQ6"][k] = {lvl: {s: est(lambda r, k=k, lvl=lvl, s=s: None if qa_by[r["id"]][lvl][k] == "NA" else qa_by[r["id"]][lvl][k] == s) for s in (0, 1, 2)}
                    for lvl in ("low", "high")}
     R["RQ6"][k]["NA"] = sum(1 for x in qa_rows if x["low"][k] == "NA")
-R["RQ6"]["claims_status"] = Counter(c.get("status") for r in recs.values() for c in (g(r, "claims", "list") or []))
+R["RQ6"]["claims_status"] = Counter(c.get("status") for r in IN_FRAME for c in (g(r, "claims", "list") or []))
 
 # ---------------------------------------------------------------- sensitivity (Codex debate round 2 asks)
 # S1 update strata only (no seed stratum); S2 without records the validator still rejects at their final pass (any

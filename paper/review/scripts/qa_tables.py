@@ -16,8 +16,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 D = ROOT / "analysis/extraction/d0052"
 OUT = ROOT / "paper/review/tables"
-R = json.load(open(D / "rq-results.json", encoding="utf-8"))["RQ6"]
+RES = json.load(open(D / "rq-results.json", encoding="utf-8"))
+R = RES["RQ6"]
 rows = [json.loads(l) for l in open(D / "qa-table.jsonl", encoding="utf-8") if l.strip()]
+rows = [x for x in rows if x["id"] not in RES["left_frame_D0059"]]          # same frame as the weighted estimates
 seed = json.load(open(D / "seed-sample.json", encoding="utf-8"))
 NAMES = {"QA1": "Code released", "QA2": "Weights and data released", "QA3": "Protocol reported",
          "QA4": "Repeated runs (main comparison)", "QA5": "Uncertainty (main comparison)",

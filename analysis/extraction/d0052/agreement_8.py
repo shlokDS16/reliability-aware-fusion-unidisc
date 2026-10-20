@@ -5,7 +5,9 @@
     python -E -P analysis/extraction/agreement.py --mode stage-a --x analysis/extraction/d0052/ec-input/EA-pairs.jsonl
         --y analysis/extraction/d0052/ec-input/EB-pairs.jsonl --manifest analysis/extraction/d0052/ec-input/manifest-8.json
         --lookups analysis/extraction/lookups --validator analysis/extraction/d0052/ec-input/validator-8.jsonl
-        --config analysis/extraction/gate-config-v05.json --out analysis/extraction/d0052/agreement-8 [--ec <EC records>]
+        --config analysis/extraction/gate-config-v05.json --texts <folder with the 8 texts> --out analysis/extraction/d0052/agreement-8-texts
+    (agreement-8 is the same run without --texts: headline units then match by quote and F1_H drops to 2/52; the
+    canonical run is agreement-8-texts, with the five pymupdf texts and the three census-text-paged texts in one folder)
 
 The manifest is a stage-a shaped wrapper (no worked examples; every id "drawn"); strata are the D0054 strata.
 The validator file is the first-pass lines (validate-pass1.jsonl) of the 8 ids, as agreement.py defines first pass.
