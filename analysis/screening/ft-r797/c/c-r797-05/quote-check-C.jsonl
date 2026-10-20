@@ -1,0 +1,4 @@
+{"id": "R0902", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "R4 no diffusion component (D2 ii: single-pass, no iterative denoising)", "loc": "p.2, §1 Introduction (D3)", "status": "found"}
+{"id": "R0902", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R4 no diffusion component (sampling is one autoregressive flow inversion)", "loc": "p.11, §6 Related Work", "status": "found"}
+{"id": "R0902", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R4 no diffusion component (own method: text by VLM next-token head, images by TARFlow next Gaussian prediction)", "loc": "p.6, §3.3", "status": "found"}
+{"id": "R0902", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "D2 doubt considered: multi-noise training named only, no multi-step denoising sampler stated", "loc": "p.7, §4 Model and Training Details", "status": "found"}
