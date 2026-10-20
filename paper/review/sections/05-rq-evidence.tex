@@ -1,15 +1,37 @@
-% Section 5. Evidence by research question. STUB. Needs gate R2 (full extraction and appraisal) before any verdict.
+% Section 5. Evidence by research question. Rewritten 2026-10-20 (session 0839c9f4) under D0051/D0052: counts over all
+% 615 includes from the screening fields (analysis/rq1/rq1-counts.json); RQ2-RQ6 from the stratified extraction sample
+% (analysis/extraction/d0052/; weighted estimates by analysis/extraction/d0052/rq_analysis.py). No number without a file.
 \section{What the evidence shows, by research question}
 \label{sec:rq}
 
-\todo{stub: no verdict may be written from the stage-two samples; needs the full extraction and the quality appraisal (QA1--QA9) of every included study}
+This section answers the six research questions from the 615 included studies. Two kinds of number appear. Counts over all included studies come from fields the full-text screeners recorded (Section~\ref{sec:method-extraction}). Statements about how studies ran their comparisons, and the quality appraisal, come from the stratified sample of 81 studies; they are given as the number of sampled studies and as a share weighted to the 596 studies of the three strata, with a 95\% interval. Every count describes the included studies, which lean towards recent work and leave out the seed corpus (Section~\ref{sec:limits}); none describes the field as a whole. % src: analysis/rq1/rq1-counts.json; analysis/extraction/d0052/sample.json; gate-manifest.json frame sizes
 
-Plan, one subsection per question, each ending with a verdict (well supported, mixed, weakly supported, untested) and the counts behind it.
-\begin{itemize}
-  \item RQ2, diffusion against autoregressive models: protocol-comparability table; pooled only where task, metric and budget match. No contrast table exists yet (stage two recorded none). % src: research/review/protocol.md section 1; feasibility/stage2/summary-steps.md (RQ2-vs-AR row: 0)
-  \item RQ3, training strategies: within-paper ablations; the sampled strata have candidate rows but almost none with an interval. % src: feasibility/stage2/summary-steps.md and summary-remask-synergy.md (RQ3-training rows)
-  \item RQ4, quality against compute: dose-response of step sweeps; non-monotone sweeps exist (quality peaks at 32 steps in two papers), so any interpolation rule must say what it does there; the census supplies the reporting side (Section~\ref{sec:census}). % src: feasibility/stage2/summary-steps.md ("Quality is not monotone in steps")
-  \item RQ5, synergy: claims against the ablation that supports them. Of 8 unified-model papers in the sampled synergy stratum, 3 contain a real task-removal or shared-versus-decoupled contrast, direction mixed, no interval. Prior statements that synergy is conditional~\cite{arXiv:2609.01607,arXiv:2607.04423} and a benchmark reporting it largely absent~\cite{arXiv:2509.24897} are credited. % src: feasibility/stage2/summary-remask-synergy.md ("Synergy"); survey-landscape.md section 2 (CA)
-  \item RQ6, rigour: quality appraisal table (supplement) and distributions by year and venue type; 92\% of rule-poolable contrasts in the stage-two sample report no variance. % src: summary-remask-synergy.md; protocol.md section 6
-  \item Statement of the pooling decision: threshold of protocol section 7 not met for remasking and synergy, borderline for steps. % src: research/progress.md (2026-10-14 results); feasibility/stage2/summary-*.md
-\end{itemize}
+\subsection{RQ1: which formulations exist}
+\label{sec:rq1}
+
+Of the 615 included studies, 559 qualify through a diffusion model whose output includes text or code (criterion I1(a)), 41 through a unified model that understands and generates across text and another modality (I1(b)), and 15 through both. In 12 of the I1(a) studies no reported result is text: the model generates only non-language strings, and these studies are counted apart. % src: analysis/rq1/rq1-counts.json i1 {"a": 559, "b": 41, "ab": 15}, nonlang_only 12
+Both screeners recorded the study's modality as text only for 410 studies and as involving image, video, audio, speech or 3D for 164; 28 involve other non-text inputs or outputs and 13 were recorded differently by the two screeners. % src: rq1-counts.json mm (text 410, multimodal 164, other 28; splits 3 + 2 + 2 + 6 = 13)
+The included studies are recent: 449 are dated 2026 and 111 are dated 2025, against 55 for 2021 to 2024 together. Unified I1(b) or I1(a)-and-(b) studies number 34 in 2026, 12 in 2025 and 10 earlier. % src: rq1-counts.json year {2021: 3, 2022: 5, 2023: 13, 2024: 34, 2025: 111, 2026: 449}; i1_by_year (2026 b 25 + ab 9 = 34; 2025 b 8 + ab 4 = 12; earlier b 1 + ab 2 + b 7 = 10)
+The screeners also marked which research questions each study carries evidence for, by pointing to a results table or figure. Both screeners marked an autoregressive baseline on the same task in the study's own results (RQ2) for 246 studies, a within-paper contrast of a training choice (RQ3) for 237, a within-paper contrast of an inference setting (RQ4) for 394, and, among unified studies, a synergy ablation, benchmark or claim (RQ5) for 32. % src: rq1-counts.json rq_both {"RQ2": 246, "RQ3": 237, "RQ4": 394, "RQ5": 32}; criteria-v1.6-screener.md "RQ TAGS"
+
+\todo{RQ1 formulation shares from the sample (state space, objective, position rule, revision, memory, training stages) with weighted intervals, once the extraction is complete}
+
+\subsection{RQ2: diffusion against autoregressive models}
+\label{sec:rq2}
+\todo{from the sample: studies with an autoregressive arm; matched or reported budget (KA2); direction; uncertainty; verdict}
+
+\subsection{RQ3: what training strategies contribute}
+\label{sec:rq3}
+\todo{from the sample: credited training-recipe groups with a with/without contrast; direction; verdict}
+
+\subsection{RQ4: quality against inference compute}
+\label{sec:rq4}
+\todo{from the sample: step and NFE sweeps, caching and parallel-decoding contrasts; direction and monotonicity; verdict}
+
+\subsection{RQ5: synergy in unified models}
+\label{sec:rq5}
+\todo{from the G-mm stratum: synergy claims, task-removal or shared-versus-decoupled ablations, synergy benchmarks; verdict}
+
+\subsection{RQ6: how rigorous the evidence is}
+\label{sec:rq6}
+\todo{QA1-QA9 weighted distributions (low and high scores), claim checks (QA8); Table: appraisal summary; per-study table in S6}
