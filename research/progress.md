@@ -1,6 +1,21 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 27 (2026-10-20 ~19:00 IST; newest; manuscript session 0839c9f4, scratchpad
+  .../0839c9f4-4e83-4067-9eb8-6394e5c875ef/scratchpad; subagents dir .../0839c9f4-.../subagents).** Paper 1
+  build under D0051. **Done:** D0052 (extraction sample: draw_pilot stage-a + gate, option (b) frames = (d) frames,
+  first 27 of each gate list = 81; second reader on 8, seed 20266300; files analysis/extraction/d0052/, batches
+  exb001-exb045 in phase order, phase 1 = exb001-exb033 = positions 1-20); RQ1 counts over 615 includes
+  (analysis/rq1/rq1-counts.json); prisma_flow.py seed-count bug fixed (seed arXiv 1158/173, was the 10-15 rerun
+  1286/190); Fig 1 rebuilt (paper/review/scripts/fig01_prisma.py, all sums asserted). **Raised to the user
+  (message to the starting session ~18:20):** the 615 includes hold none of the core papers (LLaDA R0205, MDLM
+  R0128, Dream R0350, MMaDA R0246 are in the unscreened seed tranche S1243); options A (seed stratum of 20 from the
+  census sample's 167 eligible records, texts in the main checkout research/sources/census-text, update strata
+  cut to 20 each; recommended), B (lift the freeze), C (limitation only). Phase-1 batches serve A and C.
+  **Extraction:** EA folders exb001, exb002 built (scratchpad/ex-dispatch), not launched: free RAM 3.8-4.3 GB, below
+  the 5 GB rule (wait_ram.ps1). exs001/exs002 folders (v1 names) built, never launched. **Next:** launch EA
+  sessions (opus, general-purpose, prompt in this session's transcript), validate with ex_validate_batch, model and
+  isolation checks; rewrite 02-method (stale: describes the 10-15 state); PRISMA checklist in the supplement.
 - **HANDOFF 26 (2026-10-20 ~17:10 IST; newest; session 92c0b6b9): SCREENING FROZEN PER D0051.** The human author
   (chat ~15:45 IST, relayed by session 9d5203d7, row D0051) stopped all further screening and downloads; a fresh session
   writes the manuscript next. **Final screened set:** T1 882 decided (608 include, 274 exclude; 3 B-unavailable with the
