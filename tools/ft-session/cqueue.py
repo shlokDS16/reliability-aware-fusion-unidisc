@@ -19,11 +19,18 @@ for f in base.glob(f"c/c-{TR}-*/FC-*.jsonl"):
     done |= {json.loads(l)["id"] for l in open(f, encoding="utf-8") if l.strip()} - {i for i, g in SUP if g == f.parent.name}
 A, B, bo = {}, {}, {}
 batches = [f"{TR}b{n:03d}" for n in range(int(lo), int(hi) + 1)]
+# rows listed in superseded-rows.jsonl ({id, batch, roles}) are not used (2026-10-20: wrong file, B model fallback)
+SROWS = {(r["id"], r["batch"], x) for r in map(json.loads, open(base / "superseded-rows.jsonl", encoding="utf-8")) if r
+         for x in r["roles"]} if (base / "superseded-rows.jsonl").exists() else set()
 for b in batches:
     for role, st in (("A", A), ("B", B)):
         for l in open(base / b / f"F{role}-{b}.jsonl", encoding="utf-8"):
             if l.strip():
-                r = json.loads(l); st[r["id"]] = r; bo[r["id"]] = b
+                r = json.loads(l)
+                if (r["id"], b, role) not in SROWS:
+                    st[r["id"]] = r; bo[r["id"]] = b
+for i in [i for i in A if i not in B and (i, bo[i], "B") in SROWS]:   # pair broken by a superseded B row: re-screened later
+    A.pop(i)
 qbad = set()
 for l in open(base / "batch-log.jsonl", encoding="utf-8"):
     e = json.loads(l)
