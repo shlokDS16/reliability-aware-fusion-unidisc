@@ -1,0 +1,22 @@
+python 3.14.3, numpy 2.4.2; SEED 20265500; reps 1000 per scenario (4 chunks); bound R 1000; simulated gate bootstrap B 500 (production 4000)
+config C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\gate-config-v05.json sha256 fb14fd2906cf8fce136e27199dca70864ea3d2fd7458a483ff8d2426fb7135e8; model sha256 1328a75af9e8f62b4c01d66815b076a514bbc6fe50e43c859343b4818af774ea
+grid C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\analysis\extraction\bip-grid-v2.json sha256 64628119cb826689c512d30ab9c7d439e8c9f417275045bf94a99b8893c18635; scripts sha256: gate_bip_v05 c8f85b7cfee4b920, gate_rule_v05 8dea739cf98838cd, gate_oc_v05 fcb87e928a4994e3
+gated criteria (18): G1 accept EA, G1 accept EB, G3 raw S, G3 raw D, G3 raw F, G3 raw QA-sub, G3 raw CT, G3 raw H-attr, G3 K-attr, G3 QA kappa, G4 F1_H, G4 F1_G, G4 F1_K, G4 M-val, G4 M-class, G4 M-anchorG, G4 M-pool, G5 anchors; report only: G4 M-sign, D credited_ablation alone
+
+Per rule: P(pass) [MC s.e.]; share of n = 60/72/90/105/120; mean n; expected gate cost (mean n x 176k-310k tokens); P(step 6) for the product rules
+
+[H10] good; red-team H10: M-sign, M-pool 0.6, M-anchorG 0.3, others 0.10 (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.28
+  P80: P(pass) 0.884 [0.010]; n 0.00 0.00 0.00 0.01 0.99; mean n 119.7; cost 21.1M-37.1M; P(step 6) 0.81
+  P50: P(pass) 0.876 [0.010]; n 0.00 0.01 0.05 0.09 0.84; mean n 116.4; cost 20.5M-36.1M; P(step 6) 0.37
+  X80: P(pass) 0.885 [0.010]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.833 [0.012]; n 0.01 0.02 0.33 0.30 0.34; mean n 104.2; cost 18.3M-32.3M
+  median U80 per metric: G1 accept EA 0.12; G1 accept EB 0.12; G3 raw S 0.12; G3 raw D 0.12; G3 raw F 0.14; G3 raw QA-sub 0.12; G3 raw CT 0.14; G3 raw H-attr 0.12; KA:held_fixed 0.24; KA:budget_across_arms 0.24; KA:credited_ablation 0.22; KA:scoring 0.14; G4 F1_H 0.14; G4 F1_G 0.16; G4 F1_K 0.12; G4 M-val 0.14; G4 M-class 0.24; G4 M-anchorG 0.44; G4 M-sign 0.60; G4 M-pool 0.60
+
+[B30 G1 EB] G1 accept EB bad; ICC 0.30 all (1000 replicates); median largest U80 of the gated count metrics 0.60; median pooled U (V4) 0.32
+  P80: P(pass) 0.074 [0.008]; n 0.00 0.00 0.00 0.03 0.97; mean n 119.5; cost 21.0M-37.1M; P(step 6) 0.85
+  P50: P(pass) 0.069 [0.008]; n 0.00 0.01 0.13 0.32 0.55; mean n 111.0; cost 19.5M-34.4M; P(step 6) 0.20
+  X80: P(pass) 0.075 [0.008]; n 0.00 0.00 0.00 0.00 1.00; mean n 120.0; cost 21.1M-37.2M
+  V4: P(pass) 0.070 [0.008]; n 0.00 0.00 0.11 0.30 0.58; mean n 112.1; cost 19.7M-34.7M
+  median U80 per metric: G1 accept EA 0.40; G1 accept EB 0.34; G3 raw S 0.34; G3 raw D 0.36; G3 raw F 0.36; G3 raw QA-sub 0.34; G3 raw CT 0.36; G3 raw H-attr 0.36; KA:held_fixed 0.46; KA:budget_across_arms 0.46; KA:credited_ablation 0.44; KA:scoring 0.40; G4 F1_H 0.36; G4 F1_G 0.38; G4 F1_K 0.36; G4 M-val 0.46; G4 M-class 0.46; G4 M-anchorG 0.46; G4 M-sign 0.60; G4 M-pool 0.46
+
+written C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-fcff62/9d5203d7-a6be-4a10-8e9d-83c85c9e81ca/scratchpad/rt5/bip-sub.json; elapsed 318 s
