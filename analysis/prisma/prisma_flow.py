@@ -209,6 +209,9 @@ assert F["full_text_T1"]["screened"] == s["n"] == s["decision"]["include"] + s["
 RES = {r["id"]: r for r in jl(SCR / "b-unavailable-resolved.jsonl")} if (SCR / "b-unavailable-resolved.jsonl").exists() else {}
 
 
+T1_A_CODE = {i: r["code"] for i, r in t1.items() if r["decision"] == "exclude"}
+
+
 def with_resolved(box, tranche):
     res = [r for r in RES.values() if r["tranche"] == tranche]
     codes = dict(box["exclude_codes"])
@@ -219,6 +222,13 @@ def with_resolved(box, tranche):
     box["decided_incl_resolved"] = box.get("screened", box.get("screened_decided")) + len(res)
     box["include_incl_resolved"] = box["include"] + sum(r["decision"] == "include" for r in res)
     box["exclude_incl_resolved"] = box["exclude"] + sum(r["decision"] == "exclude" for r in res)
+    # D0039 code resolutions (D0059): move a record from A's code to the confirmed code
+    for x in jl(SCR / "d0039-resolved.jsonl") if (SCR / "d0039-resolved.jsonl").exists() else []:
+        if x["field"] == "code" and (tranche == "T1") and x["id"] in T1_A_CODE:
+            a = T1_A_CODE[x["id"]]
+            if a != x["value"]:
+                codes[a] -= 1
+                codes[x["value"]] = codes.get(x["value"], 0) + 1
     box["exclude_codes_incl_resolved"] = codes
 
 

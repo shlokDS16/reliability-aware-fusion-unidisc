@@ -60,7 +60,17 @@ full = {"G-mm": mm, "G-short": short, "G-long": long_}
 for h, ids in full.items():
     assert len(ids) == gate["strata"][h]["size"], (h, len(ids), gate["strata"][h]["size"])
     assert set(sample["strata"][h]) <= set(ids), h
-N_h = {h: len(set(ids) - stage_a) for h, ids in full.items()}
+# D0059: D0039 records follow the resolved basis (D0050 S5); recompute stratum membership with the overrides
+OVR = {}
+for x in jl(SCR / "d0039-resolved.jsonl") if (SCR / "d0039-resolved.jsonl").exists() else []:
+    OVR.setdefault(x["id"], {})[x["field"]] = x["value"]
+inc_r = [{**r, **{k: v for k, v in OVR.get(r["id"], {}).items() if k in ("i1", "nonlang_only")}} for r in inc]
+mm_r = {r["id"] for r in inc_r if r["i1"] in ("b", "ab")}
+rc2_r = {r["id"] for r in inc_r if r["i1"] == "a" and not r["nonlang_only"]}
+size_r = {i: (MD / f"{i}.txt").stat().st_size for i in rc2_r}
+full_r = {"G-mm": mm_r, "G-short": {i for i in rc2_r if size_r[i] <= med}, "G-long": {i for i in rc2_r if size_r[i] > med}}
+LEFT_FRAME = sorted(i for h in ("G-mm", "G-short", "G-long") for i in sample["strata"][h][:20] if i not in full_r[h])
+N_h = {h: len(set(ids) - stage_a) for h, ids in full_r.items()}
 # seed stratum: estimated eligible seed records = pool x eligible / judged (census: 1,106 x 167 / 172)
 N_h["S-seed"] = seed["census_pool"] * seed["census_eligible"] / (seed["census_ranks"] - seed["census_no_text"])
 N = sum(N_h.values())
@@ -88,7 +98,7 @@ for f in sorted((D / "EC").glob("*/*.jsonl")) if (D / "EC").exists() else []:
         if r.get("id") in seed["second_reader_ids"]:
             recs[r["id"]] = r
             ec_used.append(r["id"])
-done = {h: [i for i in STRATA[h] if i in recs] for h in STRATA}
+done = {h: [i for i in STRATA[h] if i in recs and i not in LEFT_FRAME] for h in STRATA}
 n_h = {h: len(v) for h, v in done.items()}
 
 
@@ -291,7 +301,7 @@ def monotone(r, gr):
 
 # ---------------------------------------------------------------- results
 R = {"n_sampled": sum(len(v) for v in STRATA.values()), "n_extracted": len(recs), "n_by_stratum": n_h,
-     "N_by_stratum": N_h, "N_frame": N, "ec_used": sorted(ec_used),
+     "N_by_stratum": N_h, "N_frame": N, "left_frame_D0059": LEFT_FRAME, "ec_used": sorted(ec_used),
      "missing": sorted(i for h in STRATA for i in STRATA[h] if i not in recs)}
 SS = ["discrete-absorbing", "discrete-uniform", "discrete-flow", "continuous-embedding", "continuous-latent", "hybrid", "not_stated"]
 R["RQ1"] = {

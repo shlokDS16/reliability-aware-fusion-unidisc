@@ -36,6 +36,14 @@ def rows(tr, batch, who):
     return {x["id"]: x for x in jl(p)} if p.exists() else {}
 
 
+# D0039 fields resolved by the first author (D0059): i1 and nonlang_only overrides
+OVR = {}
+for x in jl(SCR / "d0039-resolved.jsonl") if (SCR / "d0039-resolved.jsonl").exists() else []:
+    OVR.setdefault(x["id"], {})[x["field"]] = x["value"]
+for r in inc:
+    for f, v in OVR.get(r["id"], {}).items():
+        if f in ("i1", "nonlang_only"):
+            r[f] = v
 cache, out = {}, []
 for r in inc:
     k = (r["tranche"], r["batch"])
@@ -59,6 +67,7 @@ res = {"n": len(out), "by_tranche": dict(C(o["tranche"] for o in out)),
        "rq_either": dict(sorted(C(t for o in out for t in o["rq_either"]).items())),
        "venue_listed": sum(o["venue_listed"] for o in out),
        "screener_rows_missing": [o["id"] for o in out if not all(o["rows_found"])],
+       "d0039_overrides_applied": OVR,
        "note": "i1: a = diffusion model with text or code output; b = unified understanding-and-generation model; "
                "ab = both (criteria v1.6). mm: screeners' modality field (text, multimodal, other). rq tags: which RQ "
                "a screener judged the study to carry evidence for (both = A and B; either = A or B). C-decided "

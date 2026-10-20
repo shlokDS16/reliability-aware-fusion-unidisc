@@ -5,8 +5,8 @@
   "R797": 7
  },
  "i1": {
-  "a": 559,
-  "ab": 15,
+  "a": 557,
+  "ab": 17,
   "b": 41
  },
  "nonlang_only": 12,
@@ -49,9 +49,9 @@
    "ab": 4
   },
   "2026": {
-   "a": 415,
+   "a": 413,
    "b": 25,
-   "ab": 9
+   "ab": 11
   }
  },
  "rq_both": {
@@ -72,5 +72,34 @@
  },
  "venue_listed": 524,
  "screener_rows_missing": [],
+ "d0039_overrides_applied": {
+  "M17653": {
+   "code": "X1"
+  },
+  "M18667": {
+   "code": "X3"
+  },
+  "M17462": {
+   "code": "X4"
+  },
+  "M10840": {
+   "i1": "a"
+  },
+  "M12859": {
+   "i1": "ab"
+  },
+  "U04330": {
+   "i1": "ab"
+  },
+  "M16043": {
+   "i1": "ab"
+  },
+  "M11389": {
+   "nonlang_only": false
+  },
+  "M18059": {
+   "nonlang_only": true
+  }
+ },
  "note": "i1: a = diffusion model with text or code output; b = unified understanding-and-generation model; ab = both (criteria v1.6). mm: screeners' modality field (text, multimodal, other). rq tags: which RQ a screener judged the study to carry evidence for (both = A and B; either = A or B). C-decided includes keep A's and B's own fields."
 }
