@@ -205,8 +205,8 @@ t1 = [("main", [("Full-text tranche T1: reports sought", B),
                                        f"{st['open_access_fetch_failed_not_pdf'] + st['open_access_fetch_failed_error'] + sx.get('pending_oa_url', 0)},", N_),
                 (f"OpenReview note missing (X6) {st['not_retrieved_openreview_note_missing_X6']}", N_)]),
       ("main", [("Reports assessed (two screeners, adjudicator)", B), (f"n = {f(n['t1_assessed'])}", N_)]),
-      ("side", [("Excluded", B), (f"n = {f(ft['exclude'])}: {codes(ft['exclude_codes'])}", N_),
-                (f"Awaiting second screener (human author): {n['t1_awaitB']}", N_)]),
+      ("side", [("Excluded", B), (f"n = {f(ft['exclude_incl_resolved'])}: {codes(ft['exclude_codes_incl_resolved'])}", N_),
+                (f"incl. {len(ft['resolved_B_unavailable_D0058'])} read by screener A only, confirmed by the first author", N_)]),
       ("main", [("Included from T1", B), (f"n = {f(ft['include'])}", N_)])]
 GX_save, GW_save, CW_save = GX, GW, CW
 GX, GW, CW = 34, WW - 34, WW
@@ -221,8 +221,8 @@ r7s = [("main", [("Re-check of title/abstract", B), ("exclusions: K = " + str(rc
                  (f"triggered: {f(rc['frame'])} candidates,", N_), (f"tranche R797 n = {f(r7['frame'])}", N_)]),
        ("side", [("Not assessed", B), ("(frozen, D0051)", N_), (f"n = {f(r7['identified_not_screened_D0051'])}", N_)]),
        ("main", [("Reports assessed", B), (f"n = {f(n['r7_assessed'])}", N_)]),
-       ("side", [("Excluded", B), (f"n = {f(r7['exclude'])}", N_),
-                 (f"awaiting second", N_), (f"screener: {len(r7['awaiting_second_screener_B_unavailable'])}", N_)]),
+       ("side", [("Excluded", B), (f"n = {f(r7['exclude_incl_resolved'])}", N_),
+                 (f"incl. {len(r7['resolved_B_unavailable_D0058'])} confirmed by", N_), ("the first author", N_)]),
        ("main", [("Included from R797", B), (f"n = {f(r7['include'])}", N_)])]
 yR7_end, r7_bottom = column(0, yT, r7s)
 

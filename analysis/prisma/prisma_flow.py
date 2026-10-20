@@ -204,6 +204,27 @@ F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_reco
                      "status": "T1 screened so far (interim; gate re-audit 2 PASS WITH CORRECTIONS): " + s["status"]}
 assert F["full_text_T1"]["screened"] == s["n"] == s["decision"]["include"] + s["decision"]["exclude"]
 
+# B-unavailable records resolved by the first author on Screener A's reading (D0056, D0058): added to the decided and
+# excluded counts with their code; agreement statistics keep excluding them.
+RES = {r["id"]: r for r in jl(SCR / "b-unavailable-resolved.jsonl")} if (SCR / "b-unavailable-resolved.jsonl").exists() else {}
+
+
+def with_resolved(box, tranche):
+    res = [r for r in RES.values() if r["tranche"] == tranche]
+    codes = dict(box["exclude_codes"])
+    for r in res:
+        if r["decision"] == "exclude":
+            codes[r["code"]] = codes.get(r["code"], 0) + 1
+    box["resolved_B_unavailable_D0058"] = sorted(r["id"] for r in res)
+    box["decided_incl_resolved"] = box.get("screened", box.get("screened_decided")) + len(res)
+    box["include_incl_resolved"] = box["include"] + sum(r["decision"] == "include" for r in res)
+    box["exclude_incl_resolved"] = box["exclude"] + sum(r["decision"] == "exclude" for r in res)
+    box["exclude_codes_incl_resolved"] = codes
+
+
+with_resolved(F["full_text_T1"], "T1")
+assert set(F["full_text_T1"]["resolved_B_unavailable_D0058"]) <= pend
+
 # ---------------------------------------------------------------- re-check tranche R797 (D0035), frozen by D0051
 # D0051 (2026-10-20): screening frozen; the R797 batches filed by the freeze are screened, the rest of the frame,
 # the seed tranche S1243 (D0037) and the free-source rescue positives (D0036) are identified but not screened.
@@ -233,6 +254,8 @@ F["full_text_R797"] = {"frame": len(r797), "frame_check": rs["frame"], "screened
                        "identified_not_screened_by_status": dict(r797_rem),
                        "status": "frozen by D0051 (2026-10-20): batches filed by the freeze; " + rs["status"]}
 assert len(r797_dec) + len(r797_pend) + len(r797_await) + sum(r797_rem.values()) == len(r797)
+with_resolved(F["full_text_R797"], "R797")
+assert set(F["full_text_R797"]["resolved_B_unavailable_D0058"]) <= r797_pend
 s1243 = set((SCR / "s1243-tranche-ids.txt").read_text(encoding="utf-8").split())
 rf_pass = jl(REV / "screening/v2/dual-rescue-free/passed-ta-rf.jsonl")
 rf_noabs = jl(REV / "screening/v2/dual-rescue-free/pending-no-abstract-rf.jsonl")
