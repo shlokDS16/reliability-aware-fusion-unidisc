@@ -387,6 +387,65 @@ for k in [f"QA{j}" for j in range(1, 10)]:
                    for lvl in ("low", "high")}
     R["RQ6"][k]["NA"] = sum(1 for x in qa_rows if x["low"][k] == "NA")
 R["RQ6"]["claims_status"] = Counter(c.get("status") for r in recs.values() for c in (g(r, "claims", "list") or []))
+
+# ---------------------------------------------------------------- sensitivity (Codex debate round 2 asks)
+# S1 update strata only (no seed stratum); S2 without records the validator still rejects at their final pass (any
+# fail-severity line for that id and session); S3 the second-reader ids from EB instead of EC/EA (extractor swap).
+HEAD = {
+    "census_nonplain_or_unstated": nonplain,
+    "RQ2_has_ar_group": lambda r: bool(ar(r)),
+    "RQ2_ar_budget_not_reported_any": lambda r: None if not ar(r) else any(gr.get("budget_across_arms") == "not reported" for gr in ar(r)),
+    "RQ2_ar_numbers_copied_any": lambda r: None if not ar(r) else any(a.get("number_source") == "copied-stated" for gr in ar(r) for a in gr.get("arms") or [] if a.get("generator") == "autoregressive"),
+    "RQ2_ar_variance_any": lambda r: None if not ar(r) else any(any_var(r, gr) for gr in ar(r)),
+    "RQ3_credited_ablation_any": lambda r: None if not tr(r) else any(gr.get("credited_ablation") for gr in tr(r)),
+    "RQ3_held_fixed_stated_all": lambda r: None if not tr(r) else all(gr.get("held_fixed") == "stated" for gr in tr(r)),
+    "RQ3_variance_any": lambda r: None if not tr(r) else any(any_var(r, gr) for gr in tr(r)),
+    "RQ4_has_inference_group": lambda r: bool(inf(r)),
+    "RQ4_budget_reported_any": lambda r: None if not inf(r) else any(gr.get("budget_across_arms") in ("matched", "reported") for gr in inf(r)),
+    "RQ4_variance_any": lambda r: None if not inf(r) else any(any_var(r, gr) for gr in inf(r)),
+    "RQ4_any_nonmonotone_dose_curve": lambda r: None if not sh(r) else any(s in ("peaked", "other") for s in sh(r)),
+}
+final_pass = {}
+for l in log:
+    if l["role"] == "EA":
+        final_pass[l["basename"]] = l["pass"]
+rejected = set()
+for p in (1, 2):
+    vf = D / f"validate-pass{p}.jsonl"
+    for x in (jl(vf) if vf.exists() else []):
+        if x.get("severity") == "fail" and final_pass.get(x.get("session")) == p:
+            rejected.add(x["id"])
+rejected -= set(ec_used)
+eb_recs = {}
+for folder in sorted((D / "EB").glob("*")):
+    files = sorted(folder.glob("EB-*.jsonl"))
+    p2 = [f for f in files if f.stem.endswith("-pass2")]
+    for f in (p2 or [f for f in files if not f.stem.endswith("-pass2")]):
+        for r in jl(f):
+            eb_recs[r["id"]] = r
+
+
+def run_variant(keep=None, swap=None):
+    old_done, old_recs = done, recs
+    nd = {h: [i for i in v if keep is None or i in keep] for h, v in done.items()}
+    nr = {**recs, **(swap or {})}
+    globals()["done"], globals()["recs"] = nd, nr
+    globals()["n_h"] = {h: len(v) for h, v in nd.items()}
+    try:
+        return {k: est(f) for k, f in HEAD.items()}
+    finally:
+        globals()["done"], globals()["recs"] = old_done, old_recs
+        globals()["n_h"] = {h: len(v) for h, v in old_done.items()}
+
+
+all_ids = {i for v in done.values() for i in v}
+R["sensitivity"] = {
+    "rejected_at_final_pass": sorted(rejected),
+    "S0_main": run_variant(),
+    "S1_update_strata_only": {k: est_in(f, UPD) for k, f in HEAD.items()},
+    "S2_without_rejected": run_variant(keep=all_ids - rejected),
+    "S3_second_reader_ids_from_EB": run_variant(swap={i: eb_recs[i] for i in seed["second_reader_ids"] if i in eb_recs}),
+}
 (D / "rq-results.json").write_text(json.dumps(R, indent=1, default=dict) + "\n", encoding="utf-8")
 
 
@@ -409,5 +468,11 @@ for rq in ("RQ1", "RQ2", "RQ3", "RQ4", "RQ5", "RQ6"):
         else:
             L.append(f"- {k}: {json.dumps(v, default=dict)[:600]}")
     L.append("")
+S = R["sensitivity"]
+L += ["## Sensitivity", f"rejected at final pass (S2 drops them): {S['rejected_at_final_pass']}", "",
+      "| estimate | S0 main | S1 update strata only | S2 without rejected | S3 second-reader ids from EB |", "|---|---|---|---|---|"]
+for k in HEAD:
+    L.append(f"| {k} | " + " | ".join(fmt(S[v][k]) for v in ("S0_main", "S1_update_strata_only", "S2_without_rejected", "S3_second_reader_ids_from_EB")) + " |")
+L.append("")
 (D / "rq-results.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 print("\n".join(L[:6]))
