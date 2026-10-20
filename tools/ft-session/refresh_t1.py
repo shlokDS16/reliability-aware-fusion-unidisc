@@ -34,7 +34,7 @@ def part(b):
     if b >= 't1b077': return f'part 19: retrieved after T1 (t1b077-{last})'
     return 'OpenReview (t1b035-t1b076)' if b >= 't1b035' else 'open access + remaps (t1b001-t1b034)'
 s = {'scope': f'T1 full-text model screening, batches t1b001-{last}',
-     'status': 'model screening (A, B, C route F); A-B agreement only (D0034); ' + ('part 19 complete' if last == 't1b093' else f'part 19 screened to {last}') + '; before the human author review (protocol s4 step 4); not final',
+     'status': 'model screening (A, B, C route F); A-B agreement only (D0034); ' + ('T1 screened so far (interim): part 19 screened; 3 awaiting the second screener (D0041); 18 unscreened sampled records moved to R797 (D0035); records awaiting retrieval not yet screened' if last == 't1b093' else f'part 19 screened to {last}') + '; before the human author review (protocol s4 step 4); not final',
      'n': len(rows), 'pending_B_unavailable': sorted(PEND),
      'decision': dict(collections.Counter(r['decision'] for r in rows)),
      'by_part': {p: dict(collections.Counter(r['decision'] for r in rows if part(r['batch']) == p)) for p in sorted({part(r['batch']) for r in rows})},

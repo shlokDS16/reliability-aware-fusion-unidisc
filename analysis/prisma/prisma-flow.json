@@ -46,8 +46,8 @@
   "title_only_snowball_population": 2107,
   "title_only_duplicates": 105,
   "title_only_resolved": 839,
-  "title_only_unresolvable": 990,
-  "title_only_lookup_incomplete": 173,
+  "title_only_unresolvable": 1008,
+  "title_only_lookup_incomplete": 155,
   "title_only_queued": 7
  },
  "subscription": {
@@ -120,7 +120,7 @@
     "include": 4,
     "exclude": 78,
     "awaiting_second_screener": [],
-    "not_yet_screened": [
+    "moved_to_R797_D0035": [
      "M12398",
      "M12684",
      "M12932",
@@ -139,7 +139,8 @@
      "M17805",
      "M18665",
      "M18685"
-    ]
+    ],
+    "not_yet_screened": []
    },
    "c8": {
     "n": 32,
@@ -151,6 +152,7 @@
      "M15873",
      "M17195"
     ],
+    "moved_to_R797_D0035": [],
     "not_yet_screened": [
      "M14933"
     ]
@@ -193,7 +195,27 @@
   }
  },
  "full_text_T1": {
-  "reports_sought": 1111,
+  "reports_sought": 1093,
+  "moved_to_recheck_tranche_R797_D0035": [
+   "M12398",
+   "M12684",
+   "M12932",
+   "M13388",
+   "M14105",
+   "M14415",
+   "M14442",
+   "M14992",
+   "M15324",
+   "M16158",
+   "M16605",
+   "M16626",
+   "M17019",
+   "M17070",
+   "M17712",
+   "M17805",
+   "M18665",
+   "M18685"
+  ],
   "status_ft_routes": {
    "screened": 770,
    "no_full_text_found": 97,
@@ -204,9 +226,10 @@
    "not_retrieved_openreview_note_missing_X6": 4
   },
   "status_ft_routes_extra": {
-   "pending_oa_url": 16,
+   "moved_to_recheck_tranche_R797_D0035": 18,
    "awaiting_second_screener_B_unavailable": 3,
-   "pending_e-gateway": 7
+   "pending_oa_url": 3,
+   "pending_e-gateway": 2
   },
   "screened": 882,
   "screened_check": 882,
@@ -232,14 +255,14 @@
    0.8589,
    0.9268
   ],
-  "status": "model screening (A, B, C route F); A-B agreement only (D0034); part 19 complete; before the human author review (protocol s4 step 4); not final"
+  "status": "T1 screened so far (interim; gate re-audit 2 PASS WITH CORRECTIONS): model screening (A, B, C route F); A-B agreement only (D0034); T1 screened so far (interim): part 19 screened; 3 awaiting the second screener (D0041); 18 unscreened sampled records moved to R797 (D0035); records awaiting retrieval not yet screened; before the human author review (protocol s4 step 4); not final"
  },
  "open": [
   "Free-source rescue pass: 348 positives (include or unclear) of 4421 were neither dual-screened nor routed to full text (0 in the dual batches, 0 in ft-routes); D0029 sends them to the dual queue, D0030 says they pass to full text. Resolved by D0036 (2026-10-20): dual title/abstract screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Not yet run.",
   "Seed corpus: 1243 of 1453 records passed title/abstract (either screener; 1123 both); 0 are in T1 (T1 ids by prefix: {'M': 838, 'R': 17, 'U': 27}). D0037 (2026-10-20): full-text screening under criteria v1.6 as a further tranche (own routes, own 15 percent human-validation draw). Not yet run.",
   "Re-check tranche (criteria v1.6 A s5.2, K = 4): D0035 (2026-10-20) sends all 797 frame candidates to full text as a further tranche (own 15 percent human-validation draw). Not yet run.",
   "Awaiting a second screener (Screener B unavailable, safety-classifier stop): ['M13184', 'M15873', 'M17195']; D0041 (2026-10-20): the human author screens them as second screener (human-p4 sheet); agreement statistics exclude them.",
-  "Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): 67 (bot walls, bot-check landing pages, dead links); need the user's Chrome or the e-gateway.",
+  "Open-access records still without a PDF after the retry (tools/fetch_oa_retry.py): 54 (bot walls, bot-check landing pages, dead links); need the user's Chrome or the e-gateway.",
   "6 subscription TA passes had no route in ft-routes.jsonl (now in ft-routes-extra.jsonl).",
   "Subscription: string failures 4201 = rescue-screened 2788 + without abstract 1413 (pending-no-abstract.txt lists 1421; 8 of them later gained an abstract and were rescue-screened). Dual-screened 260 = queue 179 + rescue positives 81 (rescued-queue.jsonl holds 74; the other 7 entered the dual batches directly). The 7 title-resolved queue records are not dual-screened (0 in the dual batches).",
   "IEEE I3-I5 not exported (298 hits); the Springer no-abstract set not screened (count in the subscription section); title-only lookups incomplete (D0033)."

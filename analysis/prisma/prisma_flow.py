@@ -134,6 +134,10 @@ for r in jl(REV / "fulltext/fetch-log.jsonl"):
 t1 = {r["id"]: r for r in jl(SCR / "ft-t1/t1-decisions-all.jsonl")}
 nr = {r["id"] for r in jl(SCR / "ft-t1/t1-not-retrieved.jsonl")}
 pend = {r["id"] for r in jl(SCR / "ft-t1/t1-pending-B.jsonl")} if (SCR / "ft-t1/t1-pending-B.jsonl").exists() else set()   # read by A, B unavailable
+# re-check tranche R797 (D0035): unscreened T1 records that are also R797 frame records move there, so each record sits
+# in one tranche (gate re-audit 2 finding 23)
+r797 = set((SCR / "r797-tranche-ids.txt").read_text(encoding="utf-8").split()) if (SCR / "r797-tranche-ids.txt").exists() else set()
+moved = {i for i in (set(ft) | set(extra)) - set(t1) - pend if i in r797}
 ta_pass = v2_pass | set(passed_sub)
 assert set(ft) <= ta_pass and set(t1) <= set(ft) | set(extra)   # part 19 (t1b077-t1b093) screened ft-routes-extra records too
 status = collections.Counter()
@@ -143,6 +147,8 @@ for i, r in ft.items():
         status["screened"] += 1
     elif i in pend:
         status["awaiting_second_screener_B_unavailable"] += 1
+    elif i in moved:
+        status["moved_to_recheck_tranche_R797_D0035"] += 1
     elif i in nr:
         status["not_retrieved_openreview_note_missing_X6"] += 1
     elif i in got:
@@ -155,7 +161,8 @@ for i, r in ft.items():
         status["pending_e_gateway"] += 1
     else:
         status[f"open_access_fetch_failed_{fetch.get(i, 'not_fetched')}"] += 1
-extra_status = collections.Counter(("awaiting_second_screener_B_unavailable" if i in pend else "retrieved_not_yet_screened" if i in got else f"pending_{r['route_type']}")
+extra_status = collections.Counter(("awaiting_second_screener_B_unavailable" if i in pend else "moved_to_recheck_tranche_R797_D0035" if i in moved
+                                    else "retrieved_not_yet_screened" if i in got else f"pending_{r['route_type']}")
                                    for i, r in extra.items() if i not in t1)
 s = jload(SCR / "ft-t1/t1-summary-all.json")
 ag = jload(SCR / "agreement-ft-t1.json")
@@ -173,11 +180,13 @@ F["recheck"] = {"frame": jload(SCR / "ta-recheck-sample-v1.3-frozen.json")["fram
                                            "include": sum(i in t1 and t1[i]["decision"] == "include" for i in ids),
                                            "exclude": sum(i in t1 and t1[i]["decision"] == "exclude" for i in ids),
                                            "awaiting_second_screener": sorted(i for i in ids if i in pend),
-                                           "not_yet_screened": sorted(i for i in ids if i not in t1 and i not in pend)})(
+                                           "moved_to_R797_D0035": sorted(i for i in ids if i in moved),
+                                           "not_yet_screened": sorted(i for i in ids if i not in t1 and i not in pend and i not in moved)})(
                               [i for i, r in extra.items() if g in r["group"].split("+")]) for g in ("recheck-sample", "c8")},
                 "K": (lambda k: {"K": k["K"], "counts": k["counts"], "included": k["included"]} if k else "pending")(
                     jload(SCR / "ta-recheck-k.json") if (SCR / "ta-recheck-k.json").exists() else None)}
-F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_record_not_sought"] + len(extra),
+F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_record_not_sought"] + len(extra) - len(moved),
+                     "moved_to_recheck_tranche_R797_D0035": sorted(moved),
                      "status_ft_routes": dict(status),
                      "status_ft_routes_extra": dict(extra_status),
                      "screened": len(t1), "screened_check": s["n"], "include": s["decision"]["include"],
@@ -186,7 +195,7 @@ F["full_text_T1"] = {"reports_sought": len(ft) - status["duplicate_of_known_reco
                      "adjudicated_by_C": s["adjudicated_by_C"],
                      "agreement_pass_exclude_kappa": ag["pass_vs_exclude"]["kappa"],
                      "agreement_pass_exclude_kappa_ci95": ag["pass_vs_exclude"]["kappa_ci95"],
-                     "status": s["status"]}
+                     "status": "T1 screened so far (interim; gate re-audit 2 PASS WITH CORRECTIONS): " + s["status"]}
 assert F["full_text_T1"]["screened"] == s["n"] == s["decision"]["include"] + s["decision"]["exclude"]
 
 tq = {r["id"] for r in jl(REV / "screening/v2/title-resolved-queue.jsonl")}
