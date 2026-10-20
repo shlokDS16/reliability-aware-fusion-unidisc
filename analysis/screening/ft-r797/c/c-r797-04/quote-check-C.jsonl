@@ -1,0 +1,22 @@
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2 (R4): diffusion components served", "loc": "p.2, §1", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "b1 holds", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "b2 holds", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "b3 fails: only training statement is generic to the model class, no stage or shared parameters described", "loc": "p.1, §1", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "b3 fails: components described as separate experts", "loc": "p.3, §2.1", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "b3 fails: modular pipeline", "loc": "p.3, §2.1", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "R6 fails: text comes from the AR Thinker, audio from the DiT", "loc": "p.7, §4.1", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 7, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.8, §4.3", "status": "found"}
+{"id": "M07991", "screener": "FC-claude-fable-5-1", "i": 8, "cond": "R9 step 2: text input reaches the DiT through the LLM stages", "loc": "p.5, §3.2", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2: Gaussian diffusion on rule-body embeddings, multi-step reverse process", "loc": "p.2, §Introduction", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "D2", "loc": "p.4, §Forward Process", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R7/D1: output is a chain of KG relation ids (graph encoding), not natural language", "loc": "p.4, §Reverse Process", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R7/D1: relations drawn from the KG relation set", "loc": "p.4, §LLM-based Rule Generation Constraints", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R7/D1: generated outputs are rule bodies", "loc": "p.7, Table 3", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R9 step 1: own method generates text with an LLM", "loc": "p.5, §Coarse-Grained Rule Evaluation", "status": "found"}
+{"id": "M15920", "screener": "FC-claude-fable-5-1", "i": 6, "cond": "R9 step 1: LLM identity", "loc": "p.5, §Evaluation Protocol", "status": "found"}
+{"id": "M08792", "screener": "FC-claude-fable-5-1", "i": 0, "cond": "D2/R13: pretrained image diffusion model used as a guidance instrument over non-text data", "loc": "p.4, §2.2", "status": "found"}
+{"id": "M08792", "screener": "FC-claude-fable-5-1", "i": 1, "cond": "R13: use is score distillation, not generation", "loc": "p.9, §3.4", "status": "found"}
+{"id": "M08792", "screener": "FC-claude-fable-5-1", "i": 2, "cond": "R13: paper's final method does not generate", "loc": "p.14, §7", "status": "found"}
+{"id": "M08792", "screener": "FC-claude-fable-5-1", "i": 3, "cond": "R10 b3 fails: separately trained VLM and frozen diffusion prior", "loc": "p.9, §3.5", "status": "found"}
+{"id": "M08792", "screener": "FC-claude-fable-5-1", "i": 4, "cond": "R9 step 2: text conditions the diffusion component", "loc": "p.12, §5.1", "status": "found"}
+{"id": "M08792", "screener": "FC-claude-fable-5-1", "i": 5, "cond": "R9 step 2: text prompt given to the diffusion model", "loc": "p.24, §B.2", "status": "found"}
