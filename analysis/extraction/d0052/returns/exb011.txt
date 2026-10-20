@@ -1,0 +1,13 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) M15992 row_width C25: row_width_mismatch (1 vs 2) -> see the brief
+(2) M15992 metric K06.A1: metric_column_mismatch ('Diversity' against 'Diversity→') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(3) M15992 metric K06.A2: metric_column_mismatch ('Diversity' against 'Diversity→') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(4) M15992 metric K06.A3: metric_column_mismatch ('Diversity' against 'Diversity→') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(5) M15992 metric K06.A4: metric_column_mismatch ('Diversity' against 'Diversity→') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(6) M15992 metric K12.A1: metric_column_mismatch ('Diversity' against 'Diversity→') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(7) M15992 metric K12.A2: metric_column_mismatch ('Diversity' against 'Diversity→') -> metric_printed must equal the column-map part you gave the role metric; map a split or benchmark part of the header as its own part, as the brief says
+(8) M09294 prose_quote E22: negation_after (quote_check.quote_status) -> a negation or contrast word follows the quote in the same sentence; extend the quote
+(9) M09294 s14_row S14.baseline_row: s14_row_not_found ('Shap-E Jun and Nichol (2023)' not at a row start on page 10) -> give the row label exactly as it starts the printed row on that page, or fix the page
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
