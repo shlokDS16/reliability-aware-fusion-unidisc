@@ -1,0 +1,134 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so.
+
+(1) R0717 table T02: map_not_in_header (parts not in header: Syntax; Pass@1; Syntax; Pass@1; Syntax; Pass@1; Syntax; Pass@1) -> the column map names parts that are not in the printed header; use the header text as printed
+(2) R0717 table T03: map_not_in_header (parts not in header: Syntax; Pass@1; Syntax; Pass@1; Syntax; Pass@1; Syntax; Pass@1) -> the column map names parts that are not in the printed header; use the header text as printed
+(3) R0717 row_group C17: row_group_not_found ('AnchorTree' is not a whole line after the header on page 1) -> see the brief
+(4) R0717 row_group C18: row_group_not_found ('AnchorTree' is not a whole line after the header on page 1) -> see the brief
+(5) R0717 row_group C19: row_group_not_found ('AnchorTree' is not a whole line after the header on page 1) -> see the brief
+(6) R0717 row_group C20: row_group_not_found ('AnchorTree' is not a whole line after the header on page 1) -> see the brief
+(7) R0717 row_group C21: row_group_not_found ('AnchorTree' is not a whole line after the header on page 1) -> see the brief
+(8) R0717 row_group C22: row_group_not_found ('Keyword' is not a whole line after the header on page 1) -> see the brief
+(9) R0717 row_group C23: row_group_not_found ('Keyword' is not a whole line after the header on page 1) -> see the brief
+(10) R0717 row_group C24: row_group_not_found ('Keyword' is not a whole line after the header on page 1) -> see the brief
+(11) R0717 row_group C25: row_group_not_found ('Keyword' is not a whole line after the header on page 1) -> see the brief
+(12) R0717 row_group C26: row_group_not_found ('Keyword' is not a whole line after the header on page 1) -> see the brief
+(13) R0717 row_group C27: row_group_not_found ('Identifier' is not a whole line after the header on page 1) -> see the brief
+(14) R0717 row_group C28: row_group_not_found ('Identifier' is not a whole line after the header on page 1) -> see the brief
+(15) R0717 row_group C29: row_group_not_found ('Identifier' is not a whole line after the header on page 1) -> see the brief
+(16) R0717 row_group C30: row_group_not_found ('Identifier' is not a whole line after the header on page 1) -> see the brief
+(17) R0717 row_group C31: row_group_not_found ('Identifier' is not a whole line after the header on page 1) -> see the brief
+(18) R0717 second_factor K09.A1: second_factor_mismatch ('' against level-1 column part 'T = 256 T=256') -> see the brief
+(19) R0717 condition K09.A1: condition_mismatch ('' against 'AnCoder') -> see the brief
+(20) R0717 second_factor K09.A2: second_factor_mismatch ('' against level-1 column part 'T = 512 T=512') -> see the brief
+(21) R0717 condition K09.A2: condition_mismatch ('' against 'AnCoder') -> see the brief
+(22) R0717 second_factor K09.A3: second_factor_mismatch ('' against level-1 column part 'T = 1024 T=1024') -> see the brief
+(23) R0717 condition K09.A3: condition_mismatch ('' against 'AnCoder') -> see the brief
+(24) R0717 second_factor K09.A4: second_factor_mismatch ('' against level-1 column part 'T = 2048 T=2048') -> see the brief
+(25) R0717 condition K09.A4: condition_mismatch ('' against 'AnCoder') -> see the brief
+(26) R0717 second_factor K10.A1: second_factor_mismatch ('' against level-1 column part 'T = 256 T=256') -> see the brief
+(27) R0717 condition K10.A1: condition_mismatch ('' against 'AnCoder') -> see the brief
+(28) R0717 second_factor K10.A2: second_factor_mismatch ('' against level-1 column part 'T = 512 T=512') -> see the brief
+(29) R0717 condition K10.A2: condition_mismatch ('' against 'AnCoder') -> see the brief
+(30) R0717 second_factor K10.A3: second_factor_mismatch ('' against level-1 column part 'T = 1024 T=1024') -> see the brief
+(31) R0717 condition K10.A3: condition_mismatch ('' against 'AnCoder') -> see the brief
+(32) R0717 second_factor K10.A4: second_factor_mismatch ('' against level-1 column part 'T = 2048 T=2048') -> see the brief
+(33) R0717 condition K10.A4: condition_mismatch ('' against 'AnCoder') -> see the brief
+(34) R0717 second_factor K19.A1: second_factor_mismatch ('' against level-1 column part 'T = 256 T=256') -> see the brief
+(35) R0717 condition K19.A1: condition_mismatch ('' against 'AnCoder') -> see the brief
+(36) R0717 second_factor K19.A2: second_factor_mismatch ('' against level-1 column part 'T = 512 T=512') -> see the brief
+(37) R0717 condition K19.A2: condition_mismatch ('' against 'AnCoder') -> see the brief
+(38) R0717 second_factor K19.A3: second_factor_mismatch ('' against level-1 column part 'T = 1024 T=1024') -> see the brief
+(39) R0717 condition K19.A3: condition_mismatch ('' against 'AnCoder') -> see the brief
+(40) R0717 second_factor K19.A4: second_factor_mismatch ('' against level-1 column part 'T = 2048 T=2048') -> see the brief
+(41) R0717 condition K19.A4: condition_mismatch ('' against 'AnCoder') -> see the brief
+(42) R0717 second_factor K20.A1: second_factor_mismatch ('' against level-1 column part 'T = 256 T=256') -> see the brief
+(43) R0717 condition K20.A1: condition_mismatch ('' against 'AnCoder') -> see the brief
+(44) R0717 second_factor K20.A2: second_factor_mismatch ('' against level-1 column part 'T = 512 T=512') -> see the brief
+(45) R0717 condition K20.A2: condition_mismatch ('' against 'AnCoder') -> see the brief
+(46) R0717 second_factor K20.A3: second_factor_mismatch ('' against level-1 column part 'T = 1024 T=1024') -> see the brief
+(47) R0717 condition K20.A3: condition_mismatch ('' against 'AnCoder') -> see the brief
+(48) R0717 second_factor K20.A4: second_factor_mismatch ('' against level-1 column part 'T = 2048 T=2048') -> see the brief
+(49) R0717 condition K20.A4: condition_mismatch ('' against 'AnCoder') -> see the brief
+(50) R0865 condition K01.A1: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(51) R0865 condition K01.A2: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(52) R0865 condition K01.A3: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(53) R0865 condition K01.A4: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(54) R0865 condition K01.A5: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(55) R0865 condition K01.A6: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(56) R0865 condition K01.A7: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(57) R0865 condition K02.A1: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(58) R0865 condition K02.A2: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(59) R0865 condition K02.A3: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(60) R0865 condition K02.A4: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(61) R0865 condition K02.A5: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(62) R0865 condition K02.A6: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(63) R0865 condition K02.A7: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(64) R0865 condition K03.A1: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(65) R0865 condition K03.A2: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(66) R0865 condition K03.A3: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(67) R0865 condition K03.A4: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(68) R0865 condition K03.A5: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(69) R0865 condition K03.A6: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(70) R0865 condition K03.A7: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(71) R0865 condition K04.A1: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(72) R0865 condition K04.A2: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(73) R0865 condition K04.A3: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(74) R0865 condition K04.A4: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(75) R0865 condition K04.A5: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(76) R0865 condition K04.A6: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(77) R0865 condition K04.A7: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(78) R0865 condition K05.A1: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(79) R0865 condition K05.A2: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(80) R0865 condition K05.A3: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(81) R0865 condition K05.A4: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(82) R0865 condition K05.A5: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(83) R0865 condition K05.A6: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(84) R0865 condition K05.A7: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(85) R0865 condition K06.A1: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(86) R0865 condition K06.A2: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(87) R0865 condition K06.A3: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(88) R0865 condition K06.A4: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(89) R0865 condition K06.A5: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(90) R0865 condition K06.A6: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(91) R0865 condition K06.A7: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(92) R0865 condition K07.A1: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(93) R0865 condition K07.A2: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(94) R0865 condition K07.A3: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(95) R0865 condition K07.A4: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(96) R0865 condition K07.A5: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(97) R0865 condition K07.A6: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(98) R0865 condition K07.A7: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(99) R0865 condition K08.A1: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(100) R0865 condition K08.A2: condition_mismatch ('Math & Science / (512, 0)' against '(512, 0)') -> see the brief
+(101) R0865 condition K09.A1: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(102) R0865 condition K09.A2: condition_mismatch ('Math & Science / (512, 4)' against '(512, 4)') -> see the brief
+(103) R0865 condition K10.A1: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(104) R0865 condition K10.A2: condition_mismatch ('Math & Science / (64, 0)' against '(64, 0)') -> see the brief
+(105) R0865 condition K11.A1: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(106) R0865 condition K11.A2: condition_mismatch ('Code / (512, 0)' against '(512, 0)') -> see the brief
+(107) R0865 condition K12.A1: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(108) R0865 condition K12.A2: condition_mismatch ('Code / (256, 3)' against '(256, 3)') -> see the brief
+(109) R0865 condition K13.A1: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(110) R0865 condition K13.A2: condition_mismatch ('General Knowledge / (3, 0)' against '(3, 0)') -> see the brief
+(111) R0865 condition K14.A1: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(112) R0865 condition K14.A2: condition_mismatch ('General Knowledge / (10, 0)' against '(10, 0)') -> see the brief
+(113) R0865 arm_column K30.A1: arm_column_mismatch (arm 'Full', column 'MBPP (64)') -> see the brief
+(114) R0865 arm_column K30.A2: arm_column_mismatch (arm '( 8 , 2 ) (8,2)', column 'MBPP (64)') -> see the brief
+(115) R0865 arm_column K30.A3: arm_column_mismatch (arm '( 16 , 4 ) (16,4)', column 'MBPP (64)') -> see the brief
+(116) R0865 arm_column K30.A4: arm_column_mismatch (arm '( 32 , 8 ) (32,8)', column 'MBPP (64)') -> see the brief
+(117) R0865 arm_column K31.A1: arm_column_mismatch (arm 'Full', column 'MBPP (64)') -> see the brief
+(118) R0865 arm_column K31.A2: arm_column_mismatch (arm '( 8 , 2 ) (8,2)', column 'MBPP (64)') -> see the brief
+(119) R0865 arm_column K31.A3: arm_column_mismatch (arm '( 16 , 4 ) (16,4)', column 'MBPP (64)') -> see the brief
+(120) R0865 arm_column K31.A4: arm_column_mismatch (arm '( 32 , 8 ) (32,8)', column 'MBPP (64)') -> see the brief
+(121) R0865 arm_column K32.A1: arm_column_mismatch (arm 'Full', column 'HellaSwag (10)') -> see the brief
+(122) R0865 arm_column K32.A5: arm_column_mismatch (arm '( 5 , 2 ) (5,2)', column 'HellaSwag (10)') -> see the brief
+(123) R0865 arm_column K33.A1: arm_column_mismatch (arm 'Full', column 'HellaSwag (10)') -> see the brief
+(124) R0865 arm_column K33.A5: arm_column_mismatch (arm '( 5 , 2 ) (5,2)', column 'HellaSwag (10)') -> see the brief
+(125) R0865 arm_column K34.A1: arm_column_mismatch (arm 'Full', column 'GPQA-Diamond (64)') -> see the brief
+(126) R0865 arm_column K34.A2: arm_column_mismatch (arm '( 8 , 2 ) (8,2)', column 'GPQA-Diamond (64)') -> see the brief
+(127) R0865 arm_column K34.A3: arm_column_mismatch (arm '( 16 , 4 ) (16,4)', column 'GPQA-Diamond (64)') -> see the brief
+(128) R0865 arm_column K35.A1: arm_column_mismatch (arm 'Full', column 'GPQA-Diamond (64)') -> see the brief
+(129) R0865 arm_column K35.A2: arm_column_mismatch (arm '( 8 , 2 ) (8,2)', column 'GPQA-Diamond (64)') -> see the brief
+(130) R0865 arm_column K35.A3: arm_column_mismatch (arm '( 16 , 4 ) (16,4)', column 'GPQA-Diamond (64)') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
