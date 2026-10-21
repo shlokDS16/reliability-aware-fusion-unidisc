@@ -1,6 +1,11 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 45 (2026-10-21; revision lead dc7ef7d8; D0070; newest).** The author's reviewed check sheets replace
+  research/HUMAN-CHECK-*.xlsx; agreement rerun with the committed scripts: screening 18 of 24 decided, kappa 0.50
+  (0.12 to 0.83), 16 unclear (no readable full text), code 9 of 9; extraction and census value rule unchanged; census
+  headline 21 of 24. Methods, Limitations and Supplement S9 call them the author's own checks; AI appears only in the
+  Declaration (which keeps the ChatGPT cross-check disclosure). scripts/human_checks_update.py. main 37 pp, checks 0.
 - **HANDOFF 44 (2026-10-21; revision lead session dc7ef7d8; professor's assessment, D0069; newest).** Commits b2ef278
   to c68559c. AI model names only in the Declaration (rewritten positively); no repository paths in prose
   (paper/review/scripts/final_checks.py: 0 problems in main.pdf, supplement.pdf, main.docx). New Section 8 "What the

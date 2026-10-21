@@ -138,7 +138,9 @@ Where they are integrated:
      or more (the plan's warning line).
    - Below either threshold, the criteria or form are revised and the affected set redone.
 
-   The existing author checks (kappa 0.41 on 40 screening records) are reported as a first step, not a substitute.
+   The existing author checks are reported as a first step, not a substitute. They are the first author's own blind
+   checks; the reviewed sheets (D0070) give kappa 0.50 on the 24 of 40 screening records decided (16 unclear because
+   the full text could not be opened), 0.82 on extraction flags and 0.79 on the census value-rule class.
 6. **Design-space table with provenance; 11 partial fits.** The new Supplement S5 table lists the 11 partial fits
    with provenance and the extension each needs. The full 47-row table, with per-row provenance, version read and
    sections read, is released with the data (Section 4 says so).

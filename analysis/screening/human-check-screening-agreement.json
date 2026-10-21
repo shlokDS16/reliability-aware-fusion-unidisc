@@ -15,13 +15,13 @@
  },
  "primary": "first reading of each record (main sheet first, top to bottom)",
  "decision": {
-  "pairs": 30,
-  "agree": 21,
-  "agreement": 0.7,
-  "kappa": 0.40528634361233473,
+  "pairs": 24,
+  "agree": 18,
+  "agreement": 0.75,
+  "kappa": 0.503448275862069,
   "kappa_ci95": [
-   0.08695652173913046,
-   0.7058823529411765
+   0.11764705882352947,
+   0.8321678321678322
   ],
   "bootstrap": {
    "reps": 2000,
@@ -30,46 +30,49 @@
    "method": "percentile, records resampled"
   },
   "table": {
-   "human_include_model_include": 10,
-   "human_include_model_exclude": 6,
-   "human_exclude_model_include": 3,
-   "human_exclude_model_exclude": 11
+   "human_include_model_include": 9,
+   "human_include_model_exclude": 4,
+   "human_exclude_model_include": 2,
+   "human_exclude_model_exclude": 9
   },
   "human_include_model_exclude": [
    "U04039",
    "M14797",
-   "M13335",
    "M10607",
-   "M15989",
    "M13723"
   ],
   "human_exclude_model_include": [
    "M16593",
-   "M14971",
-   "U01304"
+   "M14971"
   ]
  },
  "unclear": {
-  "n": 10,
-  "model_include": 7,
-  "model_exclude": 3,
+  "n": 16,
+  "model_include": 9,
+  "model_exclude": 7,
   "ids": [
    "M18853",
+   "M14023",
    "M16622",
    "M15673",
    "M12741",
    "M15810",
+   "M15919",
    "M16383",
+   "M12080",
+   "M13335",
    "M15650",
+   "M15989",
    "M13313",
+   "U01304",
    "U00122",
    "M13333"
   ]
  },
  "code": {
-  "both_exclude": 11,
-  "with_human_code": 11,
-  "agree": 11,
+  "both_exclude": 9,
+  "with_human_code": 9,
+  "agree": 9,
   "agreement": 1.0,
   "kappa": 1.0,
   "disagreements": []
