@@ -1,6 +1,14 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 40 (2026-10-21; side session of 00fe9279; all three author checks returned, D0065).** Sheets copied
+  from the user's Downloads into research/ (ids verified against the draws); agreement: extraction 31/34 pairs,
+  kappa 0.82 (7 of 12 studies answered); screening 21/30, kappa 0.41 [0.09, 0.71], 10 unclear, codes 11/11, below the
+  protocol's 0.70; census Q2 21/24, kappa 0.79, frame-weighted 0.93, Q3 0.86, Q4 0.64. Answers are the author's
+  combined with an AI reading (user's words in D0065): the paper says "author checks assisted by an AI system".
+  AUTHOR-CHECKS items confirmed by the author (D0065): remove "await the first author's confirmation".
+  Full detail and paper wording: research/review/human-checks-results-2026-10-21.md. **Next:** manuscript session
+  updates 02-method, 06-census, 10-limitations and the supplement, then the DOCX is rebuilt.
 - **HANDOFF 39 (2026-10-21; side session of 00fe9279, after H37; human check 3 of 3, blind census sheet built, not
   yet filled).** analysis/census/human_check_census_sheet.py draws 24 of the 152 census rows with a headline metric
   and an F2 code (census-random-final.jsonl; 6 already-seen papers left out), stratified 12 non-plain / 8 not stated

@@ -1,0 +1,91 @@
+{
+ "sheets": [
+  "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\HUMAN-CHECK-SCREENING.xlsx"
+ ],
+ "answers": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\analysis\\screening\\human-check-screening-model-answers.json",
+ "of": 40,
+ "filled": {
+  "readings": 40,
+  "records": 40,
+  "by_reader": {
+   "SG": 40
+  },
+  "include_stratum": 20,
+  "exclude_stratum": 20
+ },
+ "primary": "first reading of each record (main sheet first, top to bottom)",
+ "decision": {
+  "pairs": 30,
+  "agree": 21,
+  "agreement": 0.7,
+  "kappa": 0.40528634361233473,
+  "kappa_ci95": [
+   0.08695652173913046,
+   0.7058823529411765
+  ],
+  "bootstrap": {
+   "reps": 2000,
+   "seed": 20261023,
+   "valid_draws": 2000,
+   "method": "percentile, records resampled"
+  },
+  "table": {
+   "human_include_model_include": 10,
+   "human_include_model_exclude": 6,
+   "human_exclude_model_include": 3,
+   "human_exclude_model_exclude": 11
+  },
+  "human_include_model_exclude": [
+   "U04039",
+   "M14797",
+   "M13335",
+   "M10607",
+   "M15989",
+   "M13723"
+  ],
+  "human_exclude_model_include": [
+   "M16593",
+   "M14971",
+   "U01304"
+  ]
+ },
+ "unclear": {
+  "n": 10,
+  "model_include": 7,
+  "model_exclude": 3,
+  "ids": [
+   "M18853",
+   "M16622",
+   "M15673",
+   "M12741",
+   "M15810",
+   "M16383",
+   "M15650",
+   "M13313",
+   "U00122",
+   "M13333"
+  ]
+ },
+ "code": {
+  "both_exclude": 11,
+  "with_human_code": 11,
+  "agree": 11,
+  "agreement": 1.0,
+  "kappa": 1.0,
+  "disagreements": []
+ },
+ "per_reader": {},
+ "human_human": {
+  "overlap_records": 0,
+  "decision_pairs": 0,
+  "decision_agree": 0,
+  "decision_kappa": null,
+  "decision_kappa_ci95": null,
+  "bootstrap_valid_draws": 0,
+  "code_pairs": 0,
+  "code_agree": 0,
+  "unclear_in_overlap": 0,
+  "rows": []
+ },
+ "warnings": []
+}

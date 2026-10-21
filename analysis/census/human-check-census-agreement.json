@@ -1,0 +1,270 @@
+{
+ "sheets": [
+  "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\HUMAN-CHECK-CENSUS.xlsx"
+ ],
+ "answers": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\analysis\\census\\human-check-census-model-answers.json",
+ "of": 24,
+ "filled": {
+  "readings": 24,
+  "papers": 24,
+  "by_reader": {
+   "SG": 24
+  },
+  "by_census_class": {
+   "not stated": 8,
+   "non-plain": 12,
+   "plain": 4
+  }
+ },
+ "primary": "first reading of each paper (main sheet first, top to bottom)",
+ "weights": {
+  "frame_class_counts": {
+   "non-plain": 96,
+   "not stated": 50,
+   "plain": 6
+  },
+  "sample_sizes": {
+   "non-plain": 12,
+   "not stated": 8,
+   "plain": 4
+  }
+ },
+ "Q2": {
+  "pairs": 24,
+  "agree": 21,
+  "agreement": 0.875,
+  "kappa": 0.793103448275862,
+  "kappa_ci95": [
+   0.558282208588957,
+   1.0
+  ],
+  "bootstrap_valid_draws": 2000,
+  "table_human_vs_census": {
+   "non-plain | non-plain": 11,
+   "not stated | non-plain": 1,
+   "not stated | not stated": 8,
+   "not stated | plain": 2,
+   "plain | plain": 2
+  },
+  "unclear": [],
+  "disagreements": [
+   {
+    "id": "R0191",
+    "human": "not stated",
+    "census": "non-plain"
+   },
+   {
+    "id": "R0802",
+    "human": "not stated",
+    "census": "plain"
+   },
+   {
+    "id": "R0669",
+    "human": "not stated",
+    "census": "plain"
+   }
+  ],
+  "agreement_frame_weighted": 0.9276315789473685
+ },
+ "Q3": {
+  "pairs": 24,
+  "agree": 23,
+  "agreement": 0.9583333333333334,
+  "kappa": 0.8636363636363638,
+  "kappa_ci95": [
+   0.46666666666666606,
+   1.0
+  ],
+  "bootstrap_valid_draws": 1992,
+  "table_human_vs_census": {
+   "no | no": 19,
+   "yes | no": 1,
+   "yes | yes": 4
+  },
+  "unclear": [],
+  "disagreements": [
+   {
+    "id": "R0875",
+    "human": "yes",
+    "census": "no"
+   }
+  ]
+ },
+ "Q4": {
+  "pairs": 24,
+  "agree": 20,
+  "agreement": 0.8333333333333334,
+  "kappa": 0.6377358490566039,
+  "kappa_ci95": [
+   0.2653061224489796,
+   0.9090909090909092
+  ],
+  "bootstrap_valid_draws": 2000,
+  "table_human_vs_census": {
+   "no | no": 14,
+   "no | partial": 1,
+   "no | yes": 2,
+   "yes | no": 1,
+   "yes | yes": 6
+  },
+  "unclear": [],
+  "disagreements": [
+   {
+    "id": "R0773",
+    "human": "no",
+    "census": "partial"
+   },
+   {
+    "id": "R0517",
+    "human": "yes",
+    "census": "no"
+   },
+   {
+    "id": "R1068",
+    "human": "no",
+    "census": "yes"
+   },
+   {
+    "id": "R0696",
+    "human": "no",
+    "census": "yes"
+   }
+  ]
+ },
+ "Q2_claim_split": {
+  "pairs": 24,
+  "agree": 22,
+  "agreement": 0.9166666666666666,
+  "kappa": 0.625,
+  "kappa_ci95": [
+   0.0,
+   1.0
+  ],
+  "bootstrap_valid_draws": 1979,
+  "table_human_vs_census": {
+   "non-plain or not stated | non-plain or not stated": 20,
+   "non-plain or not stated | plain": 2,
+   "plain | plain": 2
+  }
+ },
+ "Q4_yes_or_partial_vs_no": {
+  "pairs": 24,
+  "agree": 20,
+  "agreement": 0.8333333333333334,
+  "kappa": 0.627906976744186,
+  "kappa_ci95": [
+   0.25000000000000006,
+   0.9090909090909092
+  ],
+  "bootstrap_valid_draws": 2000,
+  "table_human_vs_census": {
+   "no | no": 14,
+   "no | yes or partial": 3,
+   "yes or partial | no": 1,
+   "yes or partial | yes or partial": 6
+  }
+ },
+ "Q1": {
+  "answered": 24,
+  "yes": 20,
+  "no": 2,
+  "unclear": 2,
+  "no_ids": [
+   "R0875",
+   "R1354"
+  ]
+ },
+ "Q2_letters": {
+  "given": 11,
+  "exact_match": 6,
+  "rows": [
+   {
+    "id": "R0174",
+    "human": "G+NS",
+    "census": "G+NS"
+   },
+   {
+    "id": "R0773",
+    "human": "A",
+    "census": "A"
+   },
+   {
+    "id": "R0214",
+    "human": "P",
+    "census": "P"
+   },
+   {
+    "id": "R1120",
+    "human": "A",
+    "census": "A"
+   },
+   {
+    "id": "R0496",
+    "human": "P+T",
+    "census": "T+P+S"
+   },
+   {
+    "id": "R1164",
+    "human": "A",
+    "census": "A"
+   },
+   {
+    "id": "R1280",
+    "human": "G+NS",
+    "census": "G+NS"
+   },
+   {
+    "id": "R0517",
+    "human": "G+NS",
+    "census": "G+M+NS"
+   },
+   {
+    "id": "R0021",
+    "human": "C",
+    "census": "G+NS"
+   },
+   {
+    "id": "R1068",
+    "human": "P+T",
+    "census": "C"
+   },
+   {
+    "id": "R0696",
+    "human": "C",
+    "census": "A+T"
+   }
+  ]
+ },
+ "per_reader": {},
+ "human_human": {
+  "overlap_papers": 0,
+  "Q2": {
+   "pairs": 0,
+   "agree": 0,
+   "agreement": null,
+   "kappa": null,
+   "kappa_ci95": null,
+   "bootstrap_valid_draws": 0,
+   "table_human_vs_census": {}
+  },
+  "Q3": {
+   "pairs": 0,
+   "agree": 0,
+   "agreement": null,
+   "kappa": null,
+   "kappa_ci95": null,
+   "bootstrap_valid_draws": 0,
+   "table_human_vs_census": {}
+  },
+  "Q4": {
+   "pairs": 0,
+   "agree": 0,
+   "agreement": null,
+   "kappa": null,
+   "kappa_ci95": null,
+   "bootstrap_valid_draws": 0,
+   "table_human_vs_census": {}
+  }
+ },
+ "warnings": []
+}
