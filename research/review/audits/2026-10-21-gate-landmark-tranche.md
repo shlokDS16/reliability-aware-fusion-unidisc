@@ -107,3 +107,27 @@ the RAM reading at each launch in agent-map.txt from now on; state in D0062's ev
 
 ## Out of scope (pre-existing, unchanged since 59b136c)
 - Figure 1 Description (02-method.tex:100) says T1 "274 excluded"; the figure and 885 - 608 give 277.
+
+## Re-check (2026-10-21, commit 15381e4)
+
+PASS
+
+- F1 fixed: supplement.tex has 0 CR bytes in HEAD (no changed text file holds a CR); line reads `Table~\ref{tab:s-sens-landmark}`;
+  `git diff 59b136c -- paper/review/supplement.tex` is 7+/6- lines (acmart screen option from d1072c2, S1 rows 8/9/16a, S6 notes,
+  the new \input). Rebuilt supplement.pdf p. 29: "Table S10 gives the same inputs"; no "eftab".
+- F2 fixed: 05 RQ1 gives the 30/9 range on B's reading, RQ5 gives "five on screener B's reading"; checked EA-lmx011(-pass2) for
+  R0523: factor types block-or-parallel, model-class, objective, rl (no synergy group), CT5 no, so RQ5 counts and verdict hold.
+  02 says "every include or exclude decision". R0523 listed in research/AUTHOR-CHECKS-2026-10-21.md:58.
+- F3 fixed ("match, approach or beat"; "match or beat" absent from main.pdf).
+- F4 fixed: sensitivity-landmark.tex:12 now 5/11 0.45 (qa_tables.py prints count/of for the landmark columns); supplement.pdf shows it.
+- F5 fixed: 10-limitations.tex:7 and the Figure 1 Description note the 41 seed records assessed later (text found in main.pdf).
+- F6 fixed ("in the included or seed column").
+- F7 withdrawn: analysis/extraction/lmk/EC/ecl002/dispatch.json is tracked and dated 12:36; my first listing was cut off by `head`.
+- F8 resolved: readings now in both agent-map.txt files; spot-check of the session transcript: "Free RAM is 5.6 GB" at
+  04:38:42Z, 22 s before lmx001-003 started (04:39:04Z), within D0057 (3 agents at >= 4.0 GB).
+- Description now says 277 T1 exclusions = prisma-flow.json full_text_T1.exclude_incl_resolved 277 (= 885 - 608).
+- No other number changed: 51acac8..15381e4 touches only the lines above in sections/tables; rq-results.json, prisma-flow.json,
+  qa-summary.tex unchanged; tables/sensitivity.tex vs 59b136c is layout only (\begingroup\setlength{\tabcolsep}{4pt}, p{5.2cm} to
+  p{4.6cm}, \endgroup); qa-per-study.tex change is layout only (tabcolsep 3.5pt, p{5.6cm} to p{4.0cm}).
+- Out of scope, pre-existing since before 59b136c: supplement.pdf p. 21 (S5.1) prints "Figure ??" because supplement.tex:272
+  uses \Mref{fig:taxonomy} for a label defined in the supplement itself (supplement.tex:268); \ref would resolve it.

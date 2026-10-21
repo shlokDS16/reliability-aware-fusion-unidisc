@@ -1,6 +1,28 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 36 (2026-10-21 ~14:30 IST; session bfefb6fe; fix D done, full D within the user's budget).** Landmark
+  tranche L (D0061): the 44 design-space models whose papers are not among the 615 (41 unscreened S1243 seed records +
+  3 D0026 string-filter drops; agrees with fix B's landmark-coverage.json). Full texts all retrieved (9 fetched,
+  35 already on disk) and screened at full text, criteria v1.6, A Sonnet 5.5 / B Opus 5.5, batches lmkb001-006
+  (analysis/screening/ft-lmk/): A=B on all 44 decisions, no adjudication, include 42, exclude 2 (X1: M00595 Campbell
+  CTMC theory-no-text, M00430 MaskGIT nontext); one I1 split (R0523 A a, B ab; D0039 rule, author item). PRISMA flow +
+  Figure 1: "identification via other methods" row (prisma_flow.py landmark_tranche_D0061; existing counts unchanged).
+  Extraction (user: "Extract till 90 percent", then raised to 95, D0064): seeded order of the 42 fixed first
+  (extraction-order.json, seed 20261024, commit 73c7b4b), one study per EA session, stopped at 87 percent with
+  positions 1-16 extracted (D0063); EB Sonnet + EC Fable on R0268, R0326 (second-reader.json; agreement-2/: values
+  128/128, signs 30/30, groups 14 of 116 listed). rq_analysis.py: separate stratum L-lmk (N 42, n 16), own column and
+  verdicts (RQ2-RQ4 mixed, RQ5 untested; same without the 2 rejected records), every existing value unchanged (JSON
+  diff). Paper: Section 2 (landmark paragraph, Figure 1 caption/Description, departures item, AI-use table row),
+  Section 5 (RQ1 screening line, one landmark sentence per RQ, verdicts, Table 3 landmark column), Section 10, S1 rows
+  8/9/16a, S6 rows + Table S-sens-landmark. Also this session (orchestrator requests): Zenodo DOI
+  10.5281/zenodo.23524470 in the data statement (GitHub mirror clause removed), acmart `screen` option, DOCX citations
+  linked to ref_n bookmarks + DOI/URL/arXiv links (Word check 129 internal, 86 external). Gate audit
+  research/review/audits/2026-10-21-gate-landmark-tranche.md: PASS WITH FIXES (8) -> fixed (response file) -> re-check
+  PASS. Decisions D0061-D0064. main.pdf 35 pp, supplement.pdf 42 pp, no LaTeX errors or undefined refs; DOCX rebuilt;
+  release folder rebuilt (2,684 files). AI-USE-STATEMENTS-paper1.md pages re-checked. Author items: research/AUTHOR-
+  CHECKS-2026-10-21.md part 3 (R0523 I1; EC items for R0326, R0268; proposed lookup ids). Not done: the remaining 26
+  landmark includes are not extracted (budget); QA1 link check not run for L. Weekly usage ~90-91 percent.
 - **HANDOFF 35 (2026-10-21; newest; side session of 0839c9f4/00fe9279; fixes A, B, C).** Commits 7032442 (A),
   1a4d47f (B), 7bc2f23 (C), 04d2d66 (rebuild). **A:** rq_analysis.py `verdict()` takes thresholds;
   rq-results.json D0060.verdicts_threshold_sensitivity (included column, one threshold changed at a time): direction
