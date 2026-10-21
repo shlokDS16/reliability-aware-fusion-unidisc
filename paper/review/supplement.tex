@@ -309,6 +309,14 @@ A reader should take the result as ``the vocabulary was not contradicted by any 
 Both surveys we compared (Section~\Mref{sec:intro-related}) organise the field by section topic. The survey of discrete diffusion~\cite{arXiv:2506.13759} has an outline tree with models at the leaves and no comparison table; its mathematics specifies the channel in one notation but leaves the reveal law and the commitment policy as filed techniques. The survey of diffusion language models~\cite{arXiv:2508.10875} classifies models by one axis, continuous, discrete or hybrid with autoregression, and its model table has columns for parameters, diffusion type, task and training data, of which only the diffusion type is a design choice. % src: dossier/competitor-anatomy.md sections 1b, 1c, 2b and 3 (verdicts i and ii); both read in full or in the body (competitor-anatomy.md section 0)
 \suppTabDesign{} differs in that every column is a choice a model makes. That is a difference of purpose, not a claim to a better taxonomy for readers who want applications or training recipes.
 
+\subsection{Coverage of the landmark models by the review's study sets}
+\label{sec:s-landmark}
+Screening was frozen before the seed corpus was assessed at full text (decision D0051; Section~\Mref{sec:method-freeze}), so most widely used models are not among the included studies. Table~\ref{tab:landmark} shows, for each of the 47 design-space models, whether its paper is one of the 615 included studies, one of the deduplicated seed-corpus records, or in the census random sample, and which main-text sections cite it. Of the 47, 3 are included studies (ARDM, Transfusion and UDLM); 41 of the other 44 are seed-corpus records; 7 of those 44 are in the census random sample; and 32 of the 44 are cited in the main text. Every model is a row of \suppTabDesign{}, so the notation and the lever table cover all 47, but the counts of Section~\Mref{sec:rq} rest on none of the 44 that are not included, and the census describes the 7 only through its random sample. A model counts as included when an included record has its arXiv identifier or, for records without one, the same normalised title. % src: paper/review/tables/landmark-coverage.json counts (models 47, included 3, not_included 44, not_included_but_seed_record 41, not_included_but_census 7, not_included_cited_in_main_text 32); scripts/landmark_coverage.py
+
+{\scriptsize
+\input{tables/landmark-coverage.tex}
+}
+
 \setcounter{section}{5}
 \section{Quality appraisal of each sampled study}
 \label{sec:s-qa}
