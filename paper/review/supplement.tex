@@ -98,14 +98,14 @@ Item & Topic & Location and note \\
 7 & Search strategy & S1.2: every logged query, verbatim. \\
 8 & Selection process & Section~\Mref{sec:method-screening}: two model screeners and a model adjudicator; the planned human validation was not done, and a later blind check of 40 records by the first author, cross-checked with a separate AI assistant without project access, is in Section~S9. The landmark tranche was screened the same way (Section~\Mref{sec:method-freeze}; decision D0061). \\
 9 & Data collection process & Section~\Mref{sec:method-extraction}: one model extractor, a second on 8 studies (and on 2 of the 16 extracted landmark studies), a validator. \\
-10a, 10b & Data items & Section~\Mref{sec:method-extraction}; the extraction schema in the repository. \\
+10a, 10b & Data items & Section~\Mref{sec:method-extraction}; the extraction schema in the archived data. \\
 11 & Study risk of bias & Section~\Mref{sec:method-extraction}: QA1 to QA9, an appraisal of reporting and reproducibility, not a risk-of-bias tool for trials. \\
 12 & Effect measures & Section~\Mref{sec:rq}: direction of within-paper contrasts; no pooled effect. \\
 13a--13f & Synthesis methods & Section~\Mref{sec:method-extraction} (``Synthesis''): a verdict per question with stratum weights; no meta-analysis, so heterogeneity (13e) is not assessed. \\
 14 & Reporting bias assessment & Not assessed formally; discussed in Section~\Mref{sec:limits}. \\
 15 & Certainty assessment & Verdict vocabulary (Section~\Mref{sec:method-extraction}); no GRADE-type rating. \\
 16a & Study selection & Figure~\Mref{fig:prisma}, with the landmark tranche identified by other methods in its bottom row (decision D0061). \\
-16b & Excluded studies & Exclusion code for every full-text exclusion (Figure~\Mref{fig:prisma}); per-record list in the repository. \\
+16b & Excluded studies & Exclusion code for every full-text exclusion (Figure~\Mref{fig:prisma}); per-record list in the archived data. \\
 17 & Study characteristics & Section~\Mref{sec:rq} and S6. \\
 18 & Risk of bias in studies & Section~\Mref{sec:rq} and S6. \\
 19 & Results of individual studies & S6. \\
@@ -115,7 +115,7 @@ Item & Topic & Location and note \\
 23a--23d & Discussion & Sections~\Mref{sec:open}, \Mref{sec:limits} and \Mref{sec:conclusion}. \\
 24a & Registration & Not registered (Section~\Mref{sec:method-design}). \\
 24b & Protocol & Archived with the data and code (see the data availability statement). \\
-24c & Amendments & Section~\Mref{sec:method-deviations}; decision ledger in the repository. \\
+24c & Amendments & Section~\Mref{sec:method-deviations}; decision ledger in the archived data. \\
 25, 26 & Support; competing interests & Acknowledgments of the main paper (funding and competing-interests statements). \\
 27 & Availability of data and code & Data and code availability statement of the main paper (after Section~\Mref{sec:conclusion}); repository and archive. \\
 \bottomrule
@@ -139,6 +139,23 @@ Item & Topic & Location and note \\
   \item A targeted landmark tranche of 44 papers was screened after the freeze, and 16 of its 42 included studies, a seeded random prefix, were extracted before the compute budget was spent; it is reported apart, and its code links were not checked (decisions D0061, D0063). % src: decisions D0061, D0063; prisma-flow.json landmark_tranche_D0061; rq-results.json D0060 landmark_meta
   \item The estimator and its intervals were chosen after extraction. The protocol's promised comparability table for RQ2, dose--response curves for RQ4 and appraisal distributions by year and venue for RQ6 are not given.
 \end{enumerate}
+
+\subsection{Searches and automation filters in full (from Section~\Mref{sec:method-sources})}
+\label{sec:s-sources}
+
+The search ran in three strands (Table~\Mref{tab:sources}; Figure~\Mref{fig:prisma}). The \emph{seed corpus} joined the curated list Awesome-DLMs at commit 194aa6bd (572 works) with two logged arXiv API searches of 2026-10-14, one for diffusion language models (S1) and one for unified multimodal models with a diffusion-type component (S2), restricted to cs.CL, cs.LG, cs.CV, cs.AI and stat.ML and to first submission from 2021-01-01. % src: corpus/search-log.jsonl (S1 1158, executed 20261014T074854Z; S2 173, 20261014T074905Z); corpus/awesome-dlms@194aa6bd.jsonl (572 lines)
+The \emph{search update} of 2026-10-15 ran revised strings on OpenAlex, the Semantic Scholar bulk API, the arXiv API, the ACL Anthology metadata export and the OpenReview API, and snowballed backward and forward citations from the seed. % src: corpus/search-v2-merge-stats-2026-10-15.json sources; search-log.jsonl rows of 2026-10-15
+The strings were revised because the protocol's recall pilot failed: the original strings retrieved 27 of the 28 multimodal seed papers and 41 of a random 50 others, and every missed seed failed the strings on its own title and abstract. The revision (S1$'$, S2$'$) was checked for recall on all 540 seed papers with an arXiv identifier, and a precision round (S1$''$, S2$''$) kept seed recall at 525 of 540. % src: decisions D0026, D0027, D0028; corpus/pilot-recall-2026-10-15.json; search-v2-report-2026-10-15.md
+The \emph{subscription strand} searched Scopus, Web of Science Core Collection, IEEE Xplore, the ACM Digital Library, SpringerLink and ScienceDirect on 2026-10-15 and 2026-10-16 through the authors' institutional access, one combined query per database where the syntax allowed it. % src: decision D0031; search-log.jsonl subscription rows (executed 20261015T164821Z to 20261016T090239Z); corpus/subscription-ingest-2026-10-15.json
+Every query text, date and hit count is logged, and the exports are kept with their SHA-256; the supplement (Section~S1) prints the strings. % src: corpus/search-log.jsonl; research/sources/search-raw/
+Three export limits apply: Web of Science and one SpringerLink query were exported in pages capped at 1,000 records, and three IEEE Xplore queries (298 hits) could not be exported. % src: search-log.jsonl (WoS rows 1000, 1000, 267; SpringerLink "S2:top1000"); prisma-flow.json subscription.ieee_not_exported {"I3": 245, "I4": 41, "I5": 12}
+
+\paragraph{Deduplication and automation filters.}
+Records were merged on shared identifiers (arXiv, DOI and the sources' own identifiers, where present) and on normalised titles, first within each strand and then against the records already held; the keys used are listed in each strand's merge report. % src: screening/dedup-report.json; corpus/search-v2-merge-stats-2026-10-15.json; corpus/subscription-ingest-2026-10-15.json
+The seed gave 1,453 records after removing 450 duplicates. The update gave 19,328 new records after removing 47,563 duplicates, 5,519 of them records already in the seed. The subscription strand gave 4,380 new records after removing 6,487 duplicates and 302 proceedings front-matter entries. % src: fig01-prisma.log (upd_dup 47563, sub_dup 6487, sub_front 302); prisma-flow.json seed.records_after_dedup, free.new_records_after_dedup, subscription.new_unique_records
+In the update and subscription strands the final strings were then applied locally, and records that failed them were excluded by automation: 17,486 in the update and 4,201 in the subscription strand. The 111 update records that matched the protocol's original strings were released back into screening. % src: decisions D0026-D0028; prisma-flow.json free.automation_excluded_D0026 12952 + D0027 4534; free.released_D0028; subscription.automation_excluded_S1pp_S2pp
+The filter was validated on a random 200 of the excluded database records: 2 were includes and 5 includes or unclear, which crossed the preset reversal threshold, so a single-screener rescue pass (liberal threshold) read every filtered record with an abstract: 4,421 from the update and 2,788 from the subscription strand. % src: decision D0029; screening/v2/screener-V-validation.jsonl; prisma-flow.json free.rescue_screened_single_haiku, subscription.rescue_screened_single_haiku
+Its 81 subscription positives entered dual screening; its 348 update positives were partly dual-screened before the freeze (Section~\Mref{sec:method-freeze}), and 1,413 subscription records without an abstract were not screened. % src: prisma-flow.json subscription.rescue_positives, automation_excluded_without_abstract_pending; not_screened_D0051.free_source_rescue_positives_D0036
 
 \subsection{Every logged search}
 Generated by script from the search log; the exports and their SHA-256 values are in the archived data.
@@ -208,6 +225,42 @@ The final rows, with both coders' values and the basis for every changed or disp
 Coder~B's second-system batch for ranks 92 to 128 left scratch copies of its rows and an append script in a shared scratch folder. The first batch of coder~A (ranks 1 to 40) ran that script once, so it may have seen coder~B's rows for ranks 92 to 128, which coder~A did not code. The copies were deleted and later batches ran as fresh agents in private scratch folders. We report it as a possible leak of one coder's labels into the other's workspace; we know of no effect on coder~A's codes. % src: decision D0019 item 2; census-result-v2.md ("Limits")
 
 
+
+\subsection{Agreement between the two coders, in full (from Section~\Mref{sec:census-agreement})}
+\label{sec:s-census-agree}
+
+Table~\ref{tab:census-agree} gives agreement before any reconciliation, under codebook v1.1, on the 172 ranks that have a full text. % src: analysis/census/agreement-random.log; census-result-v2.md ("Agreement before reconciliation")
+Class-level agreement is good: kappa is 0.82 to 0.97 for the letters A, T, P, G and M among the 62 papers where both coders could determine a rule. The exception is S (sample-then-filter), with kappa 0.40, which is the confusion that led codebook v1.2 to add the code C for confidence-ranked or threshold unmasking whose token rule is not stated. % src: agreement-random.log (class rows); census-codebook-v1.2.md B-15; decision D0020(4) (the class-S kappa of 0.31 in the first log came from a parsing bug that read G+NS as containing S; the corrected log is used)
+Whether a value rule can be determined at all is the weaker point: the two coders agree on whether the rule is non-plain, unknown or plain for 149 papers with kappa 0.65, and on whether the rule is determinable with kappa 0.65. % src: agreement-random.log
+Eligibility has a kappa of 0.05 at raw agreement of 0.87. This is a prevalence effect, because nearly every record is eligible, compounded by tool failures: 20 of the 22 eligibility disagreements are coder~A yes and coder~B no, and 15 of those 20 are papers coder~B could not read (placeholder codes, adjudicated from the paper). Without these 15 ranks, eligibility agreement is 0.96 with kappa 0.20. % src: census-result-v2.md ("Reading" paragraph, corrected per audit C2); analysis/census/agreement-random-excl-readfail.log
+F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for both coders. % src: census-result-v2.md (agreement table, F6 row)
+
+\begin{table}[h]
+\caption{Agreement between the two census coders before reconciliation, codebook v1.1. Raw agreement, Cohen's $\kappa$, and the number of papers compared. Rows ``class $X$'' compare the presence of letter $X$ in the headline value rule among papers where both coders could determine a rule.}
+\label{tab:census-agree}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Field & Raw & $\kappa$ & $n$ \\
+\midrule
+Eligible, all ranks with text & 0.87 & 0.05 & 172 \\ % src: agreement-random.log
+Eligible, without 15 coder-B read failures & 0.96 & 0.20 & 157 \\ % src: agreement-random-excl-readfail.log
+Non-plain value rule (yes/no/unknown), both eligible & 0.81 & 0.65 & 149 \\
+Non-plain value rule, both determinable & 0.97 & 0.73 & 62 \\
+Value rule determinable (not NS or NA) & 0.83 & 0.65 & 149 \\
+Class A, argmax or greedy & 0.98 & 0.97 & 62 \\
+Class T, temperature & 0.97 & 0.87 & 62 \\
+Class P, top-$p$ or top-$k$ & 0.98 & 0.93 & 62 \\
+Class S, sample-then-filter & 0.92 & 0.40 & 62 \\
+Class G, guidance & 0.98 & 0.96 & 62 \\
+Class M, sequence-level selection & 0.97 & 0.82 & 62 \\
+F3, diversity paired with headline & 0.93 & 0.83 & 149 \\
+F4, headline at two or more step settings & 0.83 & 0.72 & 149 \\
+F5, rule stated as held fixed & 0.83 & 0.70 & 149 \\
+F6, guidance held fixed & 0.97 & 0.68 & 149 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Value-rule classes by year and venue}
 \label{sec:s-census-year}
@@ -290,6 +343,18 @@ Eight studies of the extraction sample were read by both extractors (two automat
 \end{table}
 
 \setcounter{section}{4}
+\subsection{Extraction procedure in full (from Section~\Mref{sec:method-extraction})}
+\label{sec:s-extraction}
+
+Evidence for RQ2 to RQ5 and the quality appraisal (RQ6) were extracted from a stratified random sample of 80 studies, not from every included study (decisions D0051, D0052, D0054). Three strata cover the T1 includes: unified multimodal studies (I1(b) or both, 53) and the I1(a)-only studies, split at the median text length into a shorter (272) and a longer (271) stratum. The first 20 of each stratum's seeded random order are sampled. The 12 studies whose output is not language and the 7 R797 includes are outside these strata. The weights use the strata after two later steps. Twelve records inside them, reserved for an instrument-development stage that was not run, are removed. The D0059 field resolutions move three records between strata and one sampled record (M18059) out of the frame. This leaves 52, 267 and 265 studies (584 in all) and 59 sampled. A fourth stratum covers the seed corpus: 20 studies drawn at random from the 167 that the census found eligible at full text. The census sample is itself a random sample of the 1,106 seed records that both title-and-abstract screeners passed and that have an arXiv identifier, so this stratum stands for an estimated 1,074 eligible seed studies. Its eligibility was judged under the census rules (the protocol as amended on 2026-10-15), not criteria v1.6, and its texts are the census's arXiv HTML renderings, which have no page numbers. Unified multimodal models are over-sampled, and every estimate carries the weight of its stratum. The primary estimates describe the included studies (the three update strata). The seed stratum is reported in a separate column, because its studies were not screened under the review's criteria (decision D0060). The landmark tranche is a further separate column, weighted to its 42 included studies (decision D0063). Shares are weighted to the stratum sizes, with a 95\% interval from a bootstrap over studies within strata (4,000 resamples) and, for a count of zero, an exact binomial bound on the design-effective sample size. This estimator was chosen after extraction. % src: analysis/extraction/d0052/gate-manifest.json (strata G-short 272, G-long 271, G-mm 53; seeds 20261200 + h), stage-a-manifest.json (12 ids), sample.json; rq-results.json N_by_stratum (G-mm 52, G-short 267, G-long 265) after stage-a removal and D0059 moves (M12859, U04330 into G-mm; M11389 into G-long; M18059 out); D0060 bootstrap; seed-sample.json (seed 20266400; census_pool 1106, census_eligible 167, census_ranks 176, census_no_text 4; 1106 x 167 / 172 = 1073.8); decisions D0052, D0054
+The form (version~0.5; 153 fields) records the study type, modality, state space, objective and sampler; the paper's own comparisons as matched groups with their arms, metric, direction and compute budget; the headline numbers with their table locations. It also records nine appraisal items: code released (QA1), weights or data available (QA2), evaluation protocol specified (QA3), variation over runs (QA4), uncertainty for the main comparison (QA5), baselines at matched or reported budget (QA6), an ablation of the credited component (QA7), claims in agreement with the paper's own tables (QA8) and limitations stated (QA9). % src: research/review/extraction/extraction-schema-v0.5.json; extractor-brief-v0.5.md (QA block); protocol.md section 6 table
+The form was revised through five red-team audits before use. % src: research/review/audits/2026-10-20-redteam-extraction-v0.1.md to -v0.5.md
+One automated extractor filled the form for each sampled study in an isolated folder like the screeners', citing a page for every value. A validator checked each value against the text. A second extractor filled it independently for 8 randomly chosen studies of the 80; field agreement is reported. On those 8, an adjudicator settled the differences. % src: decisions D0052, D0054 (second reader: random.Random(20266300) over the 80); tools/ex_dispatch.py, tools/ex_validate_batch.py, analysis/extraction/agreement.py
+The planned two-extractor pilot and its reliability gate were not run (decision D0051).
+All 80 sampled studies were extracted in 44 sessions. One study left the frame when its screening fields were resolved (decision D0059), so the estimates rest on 79. Every session passed a check of the model that ran it and a check that no tool call left its folder. Validator findings were returned once to the session that made them (42 of the 44 sessions); 27 records still carried at least one rejected entry after that return. They are kept, and Supplement~S6 repeats the estimates without them. % src: analysis/extraction/d0052/batch-log.jsonl (44 EA sessions, 42 with pass 2, model_ok and isolation true for all); rq-results.json sensitivity.rejected_at_final_pass (27); left_frame_D0059 [M18059]
+On the eight double-read studies the adjudicator settled every disagreement from the full text; one adjudication session was voided because a single tool call named a folder outside its own (the folder did not exist, nothing was read), and it was run again. The two extractors agree on the values (616 of 616) and metric directions (75 of 76) of the contrast units both found, on 65 of 72 appraisal scores and on 50 of 54 descriptive study-level flags. They agree on only 5 of 8 direction flags. They agree far less on how the same tables are cut into comparison groups. Of the 245 groups they listed together, 36 were found by both (F1 0.29), as were 150 of 1,227 contrast units (F1 0.24). Agreement was worst on two seed-corpus studies read from arXiv HTML. Headline numbers were found by both in 24 of 28 (F1 0.92), and claim status agrees with $\kappa=0.44$ (Supplement~S4). Section~\Mref{sec:rq} therefore uses no unit totals; its statements are about studies. % src: analysis/extraction/d0052/agreement-8-texts/agreement-stage-a.json (M-val 616/616 over units both found, from 4 studies; M-sign 75/76; F1 numerators are 2 x matched: F1_G 72/245 = 36 matched, F1_K 300/1227 = 150, F1_H 48/52 = 24 of a union of 28; R0588 2 of 124 groups, R0171 0 of 24); rq-results.json D0060 agreement_extra (QA 65/72, flags 55/62, claim status kappa 0.44, 33 pairs); EC/ (ecx001-ecx005), EC-void/README.md (ecx002b)
+Code links were checked on 2026-10-21 by a script that fetched each own-code repository URL the text prints (QA1, sub-item d). Of the 19 sampled studies that say code is released, 17 print an own-code URL that resolved and 2 print none. In three cases the script could not tell own code from cited code; an automated reading settled them, and the first author confirmed it. Items the adjudicator could not settle from the text (for example whether a paper's first contribution is an analysis or a method) were listed for the first author, who confirmed the adjudicator's values for all twelve, most of which concern single appraisal scores (decision D0065). % src: analysis/extraction/d0052/qa1_link_check.py, qa1-links.jsonl (17 of 19 resolve), qa1-owner-reads.jsonl; agent-map.txt (EC items for the author); decision D0065 (author: "I have already validated everything with human action performed")
+
 \section{The design-space table of the 47 models}
 \label{sec:s-design}
 
@@ -375,7 +440,7 @@ Screening was frozen before the seed corpus was assessed at full text (decision 
 \setcounter{section}{5}
 \section{Quality appraisal of each sampled study}
 \label{sec:s-qa}
-One row per study of the extraction frame (79 studies; one sampled study left the frame under decision D0059), followed by the 16 extracted studies of the landmark tranche (stratum L-lmk; decisions D0061, D0063), whose QA1 uses the text-only part of the rule because their code links were not checked. Scores follow the items of Section~\Mref{sec:method-extraction}; a single number means the low and the high readings agree, ``low/high'' that an unclear sub-item changes the score. NA: the item does not apply. QA1 uses the dated link check of 2026-10-21 (\texttt{analysis/extraction/d0052/qa1-links.jsonl}). The full extraction records, with every quote and table location, are in the repository (\texttt{analysis/extraction/d0052/}). % src: paper/review/tables/qa-per-study.tex (scripts/qa_tables.py from qa-table.jsonl and analysis/extraction/lmk/qa-table-landmark.jsonl); rq-results.json D0060 landmark_meta n_extracted 16
+One row per study of the extraction frame (79 studies; one sampled study left the frame under decision D0059), followed by the 16 extracted studies of the landmark tranche (stratum L-lmk; decisions D0061, D0063), whose QA1 uses the text-only part of the rule because their code links were not checked. Scores follow the items of Section~\Mref{sec:method-extraction}; a single number means the low and the high readings agree, ``low/high'' that an unclear sub-item changes the score. NA: the item does not apply. QA1 uses the dated link check of 2026-10-21 (\texttt{analysis/extraction/d0052/qa1-links.jsonl}). The full extraction records, with every quote and table location, are in the archived data. % src: paper/review/tables/qa-per-study.tex (scripts/qa_tables.py from qa-table.jsonl and analysis/extraction/lmk/qa-table-landmark.jsonl); rq-results.json D0060 landmark_meta n_extracted 16
 
 \input{tables/qa-per-study.tex}
 

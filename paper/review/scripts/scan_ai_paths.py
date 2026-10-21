@@ -18,11 +18,11 @@ hits = 0
 for f in files:
     in_decl = False
     for i, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
-        if "Declaration on the use of AI" in line:
+        if line.startswith("\\section*{Declaration on the use of AI"):
             in_decl = True
         if in_decl and line.startswith("\\bibliography"):
             in_decl = False
-        text = COMMENT.split(line)[0]
+        text = "" if line.lstrip().startswith("%") else re.sub(r"(?<!\\)% .*$", "", line)
         if PAT.search(text) and not in_decl:
             hits += 1
             print(f"{f}:{i}: {text.strip()[:240]}")

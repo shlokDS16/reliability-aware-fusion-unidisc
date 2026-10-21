@@ -13,38 +13,7 @@ The reported quality of a diffusion language model depends on how the committed 
 \subsection{Agreement between the two coders}
 \label{sec:census-agreement}
 
-Table~\ref{tab:census-agree} gives agreement before any reconciliation, under codebook v1.1, on the 172 ranks that have a full text. % src: analysis/census/agreement-random.log; census-result-v2.md ("Agreement before reconciliation")
-Class-level agreement is good: kappa is 0.82 to 0.97 for the letters A, T, P, G and M among the 62 papers where both coders could determine a rule. The exception is S (sample-then-filter), with kappa 0.40, which is the confusion that led codebook v1.2 to add the code C for confidence-ranked or threshold unmasking whose token rule is not stated. % src: agreement-random.log (class rows); census-codebook-v1.2.md B-15; decision D0020(4) (the class-S kappa of 0.31 in the first log came from a parsing bug that read G+NS as containing S; the corrected log is used)
-Whether a value rule can be determined at all is the weaker point: the two coders agree on whether the rule is non-plain, unknown or plain for 149 papers with kappa 0.65, and on whether the rule is determinable with kappa 0.65. % src: agreement-random.log
-Eligibility has a kappa of 0.05 at raw agreement of 0.87. This is a prevalence effect, because nearly every record is eligible, compounded by tool failures: 20 of the 22 eligibility disagreements are coder~A yes and coder~B no, and 15 of those 20 are papers coder~B could not read (placeholder codes, adjudicated from the paper). Without these 15 ranks, eligibility agreement is 0.96 with kappa 0.20. % src: census-result-v2.md ("Reading" paragraph, corrected per audit C2); analysis/census/agreement-random-excl-readfail.log
-F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for both coders. % src: census-result-v2.md (agreement table, F6 row)
-
-\begin{table}[t]
-\caption{Agreement between the two census coders before reconciliation, codebook v1.1. Raw agreement, Cohen's $\kappa$, and the number of papers compared. Rows ``class $X$'' compare the presence of letter $X$ in the headline value rule among papers where both coders could determine a rule.}
-\label{tab:census-agree}
-\small
-\begin{tabular}{@{}lrrr@{}}
-\toprule
-Field & Raw & $\kappa$ & $n$ \\
-\midrule
-Eligible, all ranks with text & 0.87 & 0.05 & 172 \\ % src: agreement-random.log
-Eligible, without 15 coder-B read failures & 0.96 & 0.20 & 157 \\ % src: agreement-random-excl-readfail.log
-Non-plain value rule (yes/no/unknown), both eligible & 0.81 & 0.65 & 149 \\
-Non-plain value rule, both determinable & 0.97 & 0.73 & 62 \\
-Value rule determinable (not NS or NA) & 0.83 & 0.65 & 149 \\
-Class A, argmax or greedy & 0.98 & 0.97 & 62 \\
-Class T, temperature & 0.97 & 0.87 & 62 \\
-Class P, top-$p$ or top-$k$ & 0.98 & 0.93 & 62 \\
-Class S, sample-then-filter & 0.92 & 0.40 & 62 \\
-Class G, guidance & 0.98 & 0.96 & 62 \\
-Class M, sequence-level selection & 0.97 & 0.82 & 62 \\
-F3, diversity paired with headline & 0.93 & 0.83 & 149 \\
-F4, headline at two or more step settings & 0.83 & 0.72 & 149 \\
-F5, rule stated as held fixed & 0.83 & 0.70 & 149 \\
-F6, guidance held fixed & 0.97 & 0.68 & 149 \\
-\bottomrule
-\end{tabular}
-\end{table}
+Agreement before any reconciliation (codebook v1.1, the 172 ranks with a full text) is good for the value-rule classes: $\kappa$ is 0.82 to 0.97 for A, T, P, G and M among the 62 papers where both coders could determine a rule, and 0.40 for S (sample-then-filter), the confusion that led codebook v1.2 to add a code for confidence-ranked unmasking whose token rule is not stated. Whether a rule can be determined at all is weaker ($\kappa=0.65$ on 149 papers), and the low eligibility $\kappa$ (0.05 at raw agreement 0.87) is a prevalence effect compounded by coder~B's read failures. The full table is in the Supplement (Section~S3).
 
 \subsection{Results}
 \label{sec:census-results}
