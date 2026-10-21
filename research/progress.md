@@ -1,7 +1,16 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 33 (2026-10-21 ~14:30 IST; newest; session 0839c9f4). PAPER 1 READY EXCEPT USER ITEMS.** main.pdf 35 pp
+- **HANDOFF 34 (2026-10-21 evening; newest; session 0839c9f4 at 80 percent context).** Since H33: abstract cut to
+  98 words, third person (CSUR rules); Word version paper/review/docx/main.docx (scripts/make_docx.py; numbering from
+  main.aux, refs from main.bbl, placeholders highlighted); research/AI-USE-STATEMENTS-paper1.md; supplement-readme.txt;
+  PRISMA items 25-27 pointers; competing-interests placeholder; release folder rebuilt with .zenodo.json and
+  CITATION.cff; research/RELEASE-GUIDE-paper1.md rewritten as exact steps (user creates shlokDS16/dlm-review-prisma).
+  Pending from user: GitHub link + Zenodo DOI, funding/competing interests/acks, ORCIDs, corresponding author, author
+  checks parts 1-2. Open fix options (user to choose; run in a fresh session): verdict-threshold sensitivity (cheap),
+  landmark-model coverage statement (cheap), move Section 9 to supplement (moderate), extend extraction or screen
+  landmark seed papers (expensive, for revision).
+- **HANDOFF 33 (2026-10-21 ~14:30 IST; session 0839c9f4). PAPER 1 READY EXCEPT USER ITEMS.** main.pdf 35 pp
   incl. references, supplement.pdf 37 pp, no LaTeX errors or undefined refs. Gates: Section 5 re-audit PASS WITH
   FIXES (fixed), citation gate fixes applied, census re-verified PASS (audit tags removed), clarity edit verified
   (numbers/keys/verdicts identical). Data and code availability statement added (DOI to-do). Release folder built
