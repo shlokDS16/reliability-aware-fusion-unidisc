@@ -1,6 +1,12 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 41 (2026-10-21; side session of 00fe9279; author checks in the paper, D0066).** Commit 4a634ba: Methods
+  2.4/2.6/2.8, Table 2 (ChatGPT row), departure 4, 6.6, Section 10 and new Supplement S9 (Table S12) report the blind
+  author checks validated with ChatGPT; twelve adjudicator items confirmed. main.pdf 35 pp, supplement 43 pp, DOCX
+  rebuilt, AI-USE-STATEMENTS updated, release pushed (dlm-review-prisma ea90215; now includes the filled sheets).
+  **Open with the user:** reference count (89 unique now; survey example 290). Proposal: cite the 80 S6 studies in
+  the supplement (~167 unique, no page cost) or grow the main list past 150 (~4 more pages, over CSUR's 35).
 - **HANDOFF 40 (2026-10-21; side session of 00fe9279; all three author checks returned, D0065).** Sheets copied
   from the user's Downloads into research/ (ids verified against the draws); agreement: extraction 31/34 pairs,
   kappa 0.82 (7 of 12 studies answered); screening 21/30, kappa 0.41 [0.09, 0.71], 10 unclear, codes 11/11, below the
