@@ -44,7 +44,11 @@ model = json.loads(out.strip().splitlines()[-1]) if out.strip() else {"pass": Fa
 rc, out, err = run(ROOT / "tools/ft_isolation_check.py", tr, folder)
 iso = json.loads(out.strip().splitlines()[-1]) if out.strip() else {"pass": False, "error": err[-300:]}
 dj = json.loads((folder / "dispatch.json").read_text(encoding="utf-8"))
-outf = folder / dj["output_file"]
+name = dj["output_file"]
+# the session can write inside its folder, so dispatch.json is not trusted as a path: plain file name, .jsonl, inside
+assert name == f"{role}-{batch}.jsonl" and "/" not in name and "\\" not in name, name
+outf = folder / name
+assert outf.resolve().is_relative_to(folder.resolve()), outf
 dest = D / role / batch
 dest.mkdir(parents=True, exist_ok=True)
 shutil.copy2(folder / "dispatch.json", dest / "dispatch.json")
