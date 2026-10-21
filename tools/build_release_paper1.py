@@ -84,7 +84,7 @@ def main():
         if dst.suffix in (".py", ".md", ".json", ".jsonl", ".txt", ".tex", ".toml", ".yaml", ".yml", ".cfg", ".ini", ".sh", ".bat"):
             for m in SECRET.finditer(b.decode("utf-8", errors="replace")):
                 hits.append(f"{rel}: {m.group(0)[:12]}...")
-    for name in ("README.md", "LICENSE", "LICENSE-DATA"):          # release root files (templates)
+    for name in ("README.md", "LICENSE", "LICENSE-DATA", ".zenodo.json", "CITATION.cff"):   # release root files (templates)
         shutil.copy2(ROOT / "paper/review/release" / name, OUT / name)
         man.append(f"{hashlib.sha256((OUT / name).read_bytes()).hexdigest()}  {name}")
     (OUT / "MANIFEST.sha256").write_text("\n".join(man) + "\n", encoding="utf-8")
