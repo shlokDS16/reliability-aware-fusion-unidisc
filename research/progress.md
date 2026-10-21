@@ -1,7 +1,16 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 32 (2026-10-21 ~11:30 IST; newest; session 0839c9f4).** Gate re-audit: PASS WITH FIXES
+- **HANDOFF 33 (2026-10-21 ~14:30 IST; newest; session 0839c9f4). PAPER 1 READY EXCEPT USER ITEMS.** main.pdf 35 pp
+  incl. references, supplement.pdf 37 pp, no LaTeX errors or undefined refs. Gates: Section 5 re-audit PASS WITH
+  FIXES (fixed), citation gate fixes applied, census re-verified PASS (audit tags removed), clarity edit verified
+  (numbers/keys/verdicts identical). Data and code availability statement added (DOI to-do). Release folder built
+  locally by tools/build_release_paper1.py at ..\release\dlm-review-prisma-v1 (2,472 files, 185 MB; nothing
+  uploaded). Remaining red to-dos in main.pdf: Zenodo DOI, funding/acknowledgements. User list:
+  research/SUBMISSION-CHECKLIST-paper1.md (author checks parts 1-2, ORCIDs, corresponding author, funding, GitHub
+  go-ahead, read-through). Build order: latexmk main; scripts/mainrefs.py; latexmk supplement; scripts/supprefs.py;
+  latexmk main. Page margin is tight (35 pp exactly): any added text needs an equal cut after the census figure.
+- **HANDOFF 32 (2026-10-21 ~11:30 IST; session 0839c9f4).** Gate re-audit: PASS WITH FIXES
   (research/review/audits/2026-10-21-gate-section5-reaudit.md); its text findings fixed (commit 6bf656b: included-only
   claim counts 179, direction-flag agreement 5/8 reported, matched-budget wording, S4/S6 captions). Open: M6 (blind
   human check, user) and supplement.tex:74 todo (prompts and raw outputs for the release). **Page limit met:** main
