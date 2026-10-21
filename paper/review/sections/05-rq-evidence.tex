@@ -4,7 +4,26 @@
 \section{What the evidence shows, by research question}
 \label{sec:rq}
 
-This section answers the six research questions from the 615 included studies. Two kinds of number appear. Counts over all included studies come from fields the full-text screeners recorded (Section~\ref{sec:method-extraction}). Statements about how studies ran their comparisons, and the quality appraisal, come from the stratified sample of 80 studies. They are given as the number of sampled studies and as a share weighted to the size of each stratum, with a 95\% interval. Both the counts over all 615 and the sample estimates describe the included studies. These studies lean towards recent work and leave out most of the seed corpus (Section~\ref{sec:limits}). A sampled stratum of seed-corpus studies is reported in a separate column. No number describes the field as a whole. % src: analysis/rq1/rq1-counts.json; analysis/extraction/d0052/sample.json; gate-manifest.json frame sizes
+This section answers the six research questions from the 615 included studies. Two kinds of number appear. Counts over all included studies come from fields the full-text screeners recorded (Section~\ref{sec:method-extraction}). Statements about how studies ran their comparisons, and the quality appraisal, come from the stratified sample of 80 studies. They are given as the number of sampled studies and as a share weighted to the size of each stratum, with a 95\% interval. Both the counts over all 615 and the sample estimates describe the included studies. These studies lean towards recent work and leave out most of the seed corpus (Section~\ref{sec:limits}). A sampled stratum of seed-corpus studies is reported in a separate column. No number describes the field as a whole. Table~\ref{tab:rq-summary} gives the answers in brief. % src: analysis/rq1/rq1-counts.json; analysis/extraction/d0052/sample.json; gate-manifest.json frame sizes
+
+% Revision 2026-10-21 (D0069): per-RQ summary table; every number is repeated from the subsections below.
+\begin{table}[t]
+\caption{The six research questions at a glance: the answer, the evidence it rests on and the verdict (rules in Section~\ref{sec:rq2} onwards; robustness in the \emph{Verdicts} paragraph). Counts are sampled included studies unless stated.}
+\label{tab:rq-summary}
+\footnotesize
+\begin{tabular}{@{}p{1.9cm}p{7.6cm}p{2.0cm}p{1.6cm}@{}}
+\toprule
+Question & Answer in brief & Evidence & Verdict \\
+\midrule
+RQ1 Formulations & Absorbing (masked) discrete state spaces dominate (27 of 59); continuous latent spaces appear in 17, mostly unified models & all 615 includes; 59 sampled & not graded \\
+RQ2 Against AR & Diffusion better on most units in 12, worse in 8 of 22 signed studies; 1 of 25 matches the compute budget in any comparison & 25 studies & mixed \\
+RQ3 Training & The paper's anchor configuration wins in 18 of 24 signed studies, but 3 of 27 state what was held fixed & 27 studies & weakly supported \\
+RQ4 Inference compute & More steps or less parallelism helps on most curves in 9 of 15 sweeping studies; 7 have a curve that peaks inside the range or moves both ways & 15 studies & mixed \\
+RQ5 Synergy & Joint model better in 2, worse in 3 of 5 signed ablations; no purpose-built benchmark & 20 unified studies & mixed \\
+RQ6 Rigour & Code released in 9 of 59; runs repeated for the main comparison in 10 of 54; 12 of 179 claims unsupported by any printed number & 59 studies & not graded \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{RQ1: which formulations exist}
 \label{sec:rq1}
