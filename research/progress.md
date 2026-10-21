@@ -10,8 +10,9 @@
   13 references verified via arXiv API (scripts/revision_refs.py); OP4 preregistrable design, OP5 bracketing V;
   human-validation plan in Section 11. Response: research/RESPONSE-TO-PROFESSOR-2026-10-21.md. main.pdf 39 pp (text
   to p34) against the 35-page target of D0068: author to choose what to move (EXP-003 section, Section 7 corollaries,
-  formalism figure). Not done: research-humanizer pass on new text; release rebuild/push; hostile-referee findings in
-  research/review/audits/2026-10-21-revision-redteam.md if present. Build order unchanged; make_docx.py now resolves
+  formalism figure). Hostile-referee pass (research/review/audits/2026-10-21-revision-redteam.md): no number or name
+  failures; findings 1-11 fixed in 3cdbd48 (scripts/revision_redteam_fixes.py); 12 (PSD in bib, uncited) harmless.
+  Not done: research-humanizer pass on new text; release rebuild/push. Stopped at 94 percent weekly usage. Build order unchanged; make_docx.py now resolves
   \csname @@input\endcsname table inputs. Heredocs collapse backslashes here: use Write/Edit for .tex edits.
 - **HANDOFF 43 (2026-10-21; orchestrator 00fe9279/0839c9f4 stopping at 95 percent context; newest).** State:
   branch claude/resume-dlm-discovery-exp-003-334706 at 5ecae26, all committed; release pushed to private
