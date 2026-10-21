@@ -1,0 +1,171 @@
+{
+ "seed": 20261022,
+ "drawn": [
+  [
+   "G-long",
+   "M14365"
+  ],
+  [
+   "G-long",
+   "M14293"
+  ],
+  [
+   "G-long",
+   "M12904"
+  ],
+  [
+   "G-long",
+   "M09246"
+  ],
+  [
+   "G-mm",
+   "M13196"
+  ],
+  [
+   "G-mm",
+   "R0963"
+  ],
+  [
+   "G-mm",
+   "M19293"
+  ],
+  [
+   "G-mm",
+   "M01553"
+  ],
+  [
+   "G-short",
+   "M18141"
+  ],
+  [
+   "G-short",
+   "M10526"
+  ],
+  [
+   "G-short",
+   "M07124"
+  ],
+  [
+   "G-short",
+   "M12084"
+  ]
+ ],
+ "answers": {
+  "M14365": {
+   "stratum": "G-long",
+   "Q1": "yes",
+   "Q2": "yes",
+   "Q3": "yes",
+   "Q4": "yes",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "M14293": {
+   "stratum": "G-long",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "yes",
+   "Q4": "yes",
+   "Q5": "no",
+   "Q6": "unclear"
+  },
+  "M12904": {
+   "stratum": "G-long",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "yes",
+   "Q4": "no",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "M09246": {
+   "stratum": "G-long",
+   "Q1": "yes",
+   "Q2": "no",
+   "Q3": "no",
+   "Q4": "yes",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "M13196": {
+   "stratum": "G-mm",
+   "Q1": "yes",
+   "Q2": "no",
+   "Q3": "yes",
+   "Q4": "yes",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "R0963": {
+   "stratum": "G-mm",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "no",
+   "Q4": "no",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "M19293": {
+   "stratum": "G-mm",
+   "Q1": "yes",
+   "Q2": "no",
+   "Q3": "no",
+   "Q4": "no",
+   "Q5": "no",
+   "Q6": "no"
+  },
+  "M01553": {
+   "stratum": "G-mm",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "yes",
+   "Q4": "no",
+   "Q5": "yes",
+   "Q6": "yes"
+  },
+  "M18141": {
+   "stratum": "G-short",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "no",
+   "Q4": "no",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "M10526": {
+   "stratum": "G-short",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "no",
+   "Q4": "yes",
+   "Q5": "no",
+   "Q6": "yes"
+  },
+  "M07124": {
+   "stratum": "G-short",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "no",
+   "Q4": "no",
+   "Q5": null,
+   "Q6": "yes"
+  },
+  "M12084": {
+   "stratum": "G-short",
+   "Q1": "no",
+   "Q2": "NA",
+   "Q3": "yes",
+   "Q4": "yes",
+   "Q5": "no",
+   "Q6": "yes"
+  }
+ },
+ "questions": {
+  "Q1": "Does any results table or figure put a diffusion model and an autoregressive model side by side on the same task?",
+  "Q2": "If Q1 is yes: for at least one such comparison, does the paper state the compute budget of both (steps, network calls, tokens per second, FLOPs or time), or say they are matched? (write NA if Q1 is no)",
+  "Q3": "Does the paper compare two or more training choices in its own experiments (objective, pretraining recipe, fine-tuning, RL, distillation, initialisation)?",
+  "Q4": "Does the paper compare inference settings in its own experiments (number of steps, tokens per step, guidance, decoding order, caching, block size, remasking)?",
+  "Q5": "Is the paper's main comparison repeated over two or more runs or seeds?",
+  "Q6": "Is there a limitations section or a paragraph on limitations?"
+ }
+}
