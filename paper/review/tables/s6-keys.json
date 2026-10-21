@@ -27,7 +27,7 @@
   "M13196": "Conflux: Self-Refining Unified Diffusion LLM with Cross-Paradigm On-Policy Distillation",
   "M13234": "Context-Aware Slot Refinement with Diffusion Language Models",
   "M13371": "Culturally-Guided Style Transfer for Southeast Asian Text using Constrained Diffusion Models",
-  "M13397": "D-Miner: Extract Alignment Data from Masked Diffusion Language Models",
+  "M13397": "D-Miner: Extracting Alignment Data from Masked Diffusion Language Models",
   "M13760": "Diffusion-based dynamics as a cognitive model of human speech production",
   "M13884": "DiffuSpeech: Bidirectional Co-Refinement of Reasoning and Speech via Unified Speech-Text Diffusion",
   "M14000": "DLLMQuant: A Post-Training Quantization Framework Tailored for Diffusion-Based Large Language Models",
@@ -58,7 +58,7 @@
   "M19013": "UniQ: Modality-Aware Post-Training Quantization for Unified Multimodal Models",
   "M19021": "Unlearning bias in text diffusion models based on decoupled adapter",
   "M19099": "Value-Informed Schedule Trimming for Accelerated Sequential Monte Carlo Guidance in Discrete Diffusion",
-  "M19293": "World-Language-Action Models for Autonomous Driving",
+  "M19293": "DOE-3: World-Language-Action Models for Autonomous Driving",
   "R0738": "Divide and Conquer: Accelerating Diffusion-Based Large Language Models via Adaptive Parallel Decoding",
   "R0171": "Conditional [MASK] Discrete Diffusion Language Model",
   "R0588": "Deferred Commitment Decoding for Diffusion Language Models",
@@ -78,7 +78,8 @@
   "R0677": "DSB: Dynamic Sliding Block Scheduling for Diffusion LLMs",
   "R0193": "Fine-Tuning Discrete Diffusion Models with Policy Gradient Methods",
   "R0021": "Exploring Discrete Diffusion Models for Image Captioning",
-  "R0958": "Efficient Long-Context Modeling in Diffusion Language Models via Block Approximate Sparse Attention"
+  "R0958": "Efficient Long-Context Modeling in Diffusion Language Models via Block Approximate Sparse Attention",
+  "R0963": "Bernini: Latent Semantic Planning for Video Diffusion"
  },
  "keys": {
   "M01553": {
@@ -481,5 +482,15 @@
    "source": "existing",
    "similarity": null
   }
+ },
+ "validation": {
+  "date": "2026-10-21",
+  "by": "citation-validator",
+  "entries": 78,
+  "ok": 73,
+  "fix": 4,
+  "fail": 1,
+  "all_fixes_applied": true,
+  "script": "scripts/s6_bib_fix.py"
  }
 }

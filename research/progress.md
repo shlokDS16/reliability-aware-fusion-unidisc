@@ -1,6 +1,18 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 42 (2026-10-21; side session of 00fe9279; D0067 AI declaration, D0068 references, Yang-style pass).**
+  AI use only in an unnumbered "Declaration on the use of AI" (main.tex, before the references); Section 2.8, Table 2,
+  the abstract's last sentence and the Section 10 "Use of AI" paragraph removed; Methods say "automated" with a
+  pointer; supplement keeps the detailed record with model names. Introduction: taxonomy tree of the 47 design-space
+  models (scripts/fig_taxonomy.py, forest; cropped into the DOCX by make_docx.py), which adds 12 main citations (main
+  list 81). Supplement Table S6 cites all 80 appraised studies (scripts/s6_bib.py arXiv/Crossref with title match;
+  s6_bib_local.py from page 1 of the screened text because OpenReview's API now needs a bot challenge; s6_bib_fix.py
+  applies the citation-validator report: 73 OK, 4 FIX, 1 FAIL, all fixed). Unique references 166. Supplement page 1
+  marked as the electronic supplement; cover-letter draft research/COVER-LETTER-paper1.md (placeholders).
+  hidden-unicode: no carriers in .tex/.bib/tables; DOCX has no author or AI metadata. main.pdf 35 pp, supplement 48 pp.
+  Open: 8 arXiv entries have a published version (validator note); 22 anonymous ICLR citations will need updating
+  when the reviews close.
 - **HANDOFF 41 (2026-10-21; side session of 00fe9279; author checks in the paper, D0066).** Commit 4a634ba: Methods
   2.4/2.6/2.8, Table 2 (ChatGPT row), departure 4, 6.6, Section 10 and new Supplement S9 (Table S12) report the blind
   author checks validated with ChatGPT; twelve adjudicator items confirmed. main.pdf 35 pp, supplement 43 pp, DOCX
