@@ -256,6 +256,9 @@ refs = []
 for e in entries:
     key = re.search(r"\]%?\s*\{([^}]*)\}", e).group(1)
     txt = e[re.search(r"\]%?\s*\{[^}]*\}", e).end():]
+    txt = re.sub(r"(?<!\\)%[ \t]*\n\s*", "", txt)      # line-end comment markers would hide the next line once joined
+    for m in list(re.finditer(r"\\urldef\\tempurl%?\s*\\url\{([^}]*)\}", txt)):   # ACM style stores URLs in \tempurl
+        txt = txt.replace(m.group(0), "", 1).replace("\\tempurl", "\\url{" + m.group(1) + "}", 1)
     for cmd in ("bibfield", "bibinfo"):
         txt = re.sub(r"\\" + cmd + r"\{[^}]*\}\{", r"\\keep{", txt)
     while "\\keep{" in txt:                              # nested (author list holds per-person fields)
