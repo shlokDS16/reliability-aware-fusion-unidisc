@@ -465,7 +465,8 @@ R["sensitivity"] = {
 # ================================================================ D0060 (response to the 2026-10-21 red-team audit)
 # Primary estimand: the included studies (update strata). The seed stratum is a separate column; the combined frame
 # is kept above (R["RQ*"], R["sensitivity"]) for the supplement only. Intervals: stratified bootstrap over studies
-# within strata (percentile, B = 4000, seed 20261021). Verdicts: thresholds of D0060, applied to RQ2-RQ5 only.
+# within strata (percentile, B = 4000, seed 20261021); a zero or full cell gets the exact binomial bound on the Kish
+# effective n of its domain. Verdicts: thresholds of D0060, applied to RQ2-RQ5 only.
 import numpy as np
 
 B, BOOT_SEED = 4000, 20261021
@@ -606,6 +607,11 @@ def boot_est(var, strata, keep=None):
     for b in range(B):
         bs[b] = share({h: a[rng.integers(0, len(a), len(a))] for h, a in vals.items() if len(a)})
     lo, hi = np.nanquantile(bs, [0.025, 0.975])
+    if p in (0.0, 1.0):        # zero or full cell: exact binomial bound on the Kish effective n of the domain
+        w = [N_h[h] / len(a) for h, a in vals.items() for x in a if x >= 0]
+        kish = sum(w) ** 2 / sum(x * x for x in w)
+        bound = 1 - 0.025 ** (1 / kish)
+        lo, hi = (0.0, bound) if p == 0.0 else (1 - bound, 1.0)
     by = {h: f"{int((a == 1).sum())}/{int((a >= 0).sum())}" for h, a in vals.items()}
     return {"count": count, "of": of, "share": round(float(p), 3), "ci95": [round(float(lo), 3), round(float(hi), 3)], "by_stratum": by}
 
