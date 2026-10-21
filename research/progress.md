@@ -1,7 +1,23 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 30 (2026-10-21 ~06:30 IST; newest; session 0839c9f4).** **EC adjudication (Fable, alias C):** filed
+- **HANDOFF 31 (2026-10-21 ~09:30 IST; newest; session 0839c9f4).** EC complete for all 8 (ecx002b void, re-run as
+  ecx002c). Gate-auditor FAILED Section 5 (22 findings) and red-team found 1 fatal + 8 major (reports in
+  research/review/audits/2026-10-21-*.md). Response: **D0060** (orchestrator, listed for the user): included studies
+  (update strata, 59 sampled of 584) primary, seed stratum (20 ~ 1,074) a separate column, stratified bootstrap
+  intervals (exact Kish bound for zero cells), verdict thresholds stated and applied mechanically to RQ2-RQ5 (RQ1, RQ6
+  described), RQ5 signs by joint arm (rq5-orientation.jsonl), no unit totals, agreement as matched counts (36 of 245
+  groups, 150 of 1,227 units, 24 of 28 headline), plus QA-score (65/72), flag (55/62) and claim-status (kappa 0.44)
+  agreement. Verdicts (included): RQ2 mixed, RQ3 weakly supported, RQ4 mixed, RQ5 mixed (2 vs 3); unchanged without
+  rejected records except RQ5 -> untested, unchanged with extractor B. Section 5, method, limitations, intro, abstract,
+  conclusion, S4, S6 rewritten (commit bda6ef7); main 39 pp, supplement 32 pp. EXP-003 confirmatory.json and
+  postfreeze.json copied into runs/EXP-003/analysis (sha256 equal to ca3357's). **User items:**
+  research/AUTHOR-CHECKS-2026-10-21.md part 1 (12 yes/no checks) and part 2 (blind 12-study check,
+  research/HUMAN-CHECK-2026-10-21.xlsx; agreement by human_check_agreement.py, then report it in 02-method and S4).
+  **Running:** gate re-audit -> research/review/audits/2026-10-21-gate-section5-reaudit.md. **Next:** fix re-audit
+  findings; citation-validator; research-humanizer clarity pass; page cuts to ~35 pp; the census \aud tag (abstract
+  vs conclusion) needs the census re-verification closed or the tag removed everywhere; graph-memory sync.
+- **HANDOFF 30 (2026-10-21 ~06:30 IST; session 0839c9f4).** **EC adjudication (Fable, alias C):** filed
   ecx001 (M08783, M15033), ecx002 (M16154), ecx003 (M19021), ecx004a (R0171) in analysis/extraction/d0052/EC/;
   ecx002b (M15840) VOID (isolation: one mistyped nonexistent path; kept in EC-void/ with README) and re-run as ecx002c;
   RUNNING ecx004b (R0588, split from ecx004 because the records are 749 KB), ecx002c (M15840), ecx005 (R0738). Filing
