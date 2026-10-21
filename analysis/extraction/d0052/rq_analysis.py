@@ -699,6 +699,7 @@ P["group_counts_included"] = {
     "sweep_curves": dict(Counter(s for i in UPD_IDS for s in sh(recs[i]))),
     "sweep_curves_by_study": {i: len(sh(recs[i])) for i in UPD_IDS if sh(recs[i])},
     "rq5_signed_by_study": {i: syn(recs[i]) for i in done["G-mm"] if syn(recs[i])},
+    "claims_status": dict(Counter(c.get("status") for i in UPD_IDS for c in (g(recs[i], "claims", "list") or []))),
     "rq3_anchor_rules_signed_groups": dict(Counter(gr.get("anchor_rule") for i in UPD_IDS for gr in tr(recs[i]) if direction(recs[i], gr))),
 }
 R["D0060"] = P

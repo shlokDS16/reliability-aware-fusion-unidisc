@@ -42,8 +42,12 @@ for k, name in RATIO:
     L.append(f"{name} & {e['numerator']:.0f} & {e['denominator']:.0f} & {f(e.get('point'))} \\\\")
 qa = X["qa_item_scores_low"]
 L.append(f"QA item scores (low reading), 8 studies x 9 items & {qa['agree']} & {qa['of']} & {f(qa['agree'] / qa['of'])} \\\\")
-fl = X["study_level_flags_total"]
-L.append(f"Study-level flags behind the verdicts (14 flags) & {fl['agree']} & {fl['of']} & {f(fl['agree'] / fl['of'])} \\\\")
+DIRF = ("RQ2_better_majority", "RQ3_anchor_better_majority", "RQ4_sweep_up_majority")
+fls = X["study_level_flags"]
+da, do = sum(fls[k]["agree"] for k in DIRF), sum(fls[k]["of"] for k in DIRF)
+ra, ro = sum(v["agree"] for k, v in fls.items() if k not in DIRF), sum(v["of"] for k, v in fls.items() if k not in DIRF)
+L.append(f"Descriptive study-level flags ({len(fls) - len(DIRF)} flags) & {ra} & {ro} & {f(ra / ro)} \\\\")
+L.append(f"Direction flags behind the verdicts (RQ2--RQ4) & {da} & {do} & {f(da / do)} \\\\")
 cs = X["claim_status"]
 L.append(f"Claim status of matched claims, Cohen's $\\kappa$ & \\multicolumn{{2}}{{r}}{{{cs['pairs']} pairs}} & {f(cs['kappa'])} \\\\")
 L += [r"\midrule", r"Item found by both & Matched & Listed (A + B) & Union, F1 \\", r"\midrule"]
