@@ -1,6 +1,24 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 43 (2026-10-21; orchestrator 00fe9279/0839c9f4 stopping at 95 percent context; newest).** State:
+  branch claude/resume-dlm-discovery-exp-003-334706 at 5ecae26, all committed; release pushed to private
+  shlokDS16/dlm-review-prisma at a667ce3; Zenodo 10.5281/zenodo.23524470 published v1.0.0 (its zip predates the
+  dataset citation and later edits; a new version is optional; creator 2 shows family/given swapped on Zenodo).
+  main.pdf 35 pp, supplement 48 pp, docx/main.docx (layout script make_docx.py; 7 equations, 6 tables).
+  **Open, for the revision lead session:** (1) USER DECISION (relayed by 9d5203d7, user's words: "A sub chat is
+  asking whether ai models needs to be removed from the paper so yeah it should be removed." and "portray use of ai
+  in positive manner, I will still recommend to keep ai only in declaration of ai statements."): remove AI model
+  names from the supplement too, keep AI only in the Declaration on the use of AI, framed positively; record as a
+  decision row. Keep "automated" once in Methods (integrity note). (2) 8 arXiv references have published versions;
+  22 anonymous ICLR citations to update when reviews close; R0963 (Bernini) scope question for the author.
+  (3) research/AUTHOR-CHECKS-2026-10-21.md user items; ORCIDs, corresponding author, funding and competing
+  interests placeholders; cover letter draft research/COVER-LETTER-paper1.md. Idle side sessions: paper1-fixes-abc
+  (fixes A-C done), paper1-fix-d-landmark (landmark tranche, D0061-D0064), paper1-docx-quality (Word layout script),
+  paper1-screening-check (author checks, D0065-D0068, AI declaration, S6 references, taxonomy figure). Build order:
+  latexmk main; scripts/mainrefs.py; latexmk supplement; scripts/supprefs.py; latexmk main; then
+  `python -E -P -W ignore paper/review/scripts/make_docx.py`; release: tools/build_release_paper1.py then
+  tools/sync_release_repo.py.
 - **HANDOFF 42 (2026-10-21; side session of 00fe9279; D0067 AI declaration, D0068 references, Yang-style pass).**
   AI use only in an unnumbered "Declaration on the use of AI" (main.tex, before the references); Section 2.8, Table 2,
   the abstract's last sentence and the Section 10 "Use of AI" paragraph removed; Methods say "automated" with a
