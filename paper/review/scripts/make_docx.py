@@ -22,7 +22,10 @@ from pathlib import Path
 
 import fitz
 from docx import Document
+from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_COLOR_INDEX
+from docx.text.paragraph import Paragraph
+from docx.text.run import Run
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt, Cm
@@ -253,6 +256,39 @@ bib = "\\section*{References}\n\n" + "\n\n".join(f"[\\hypertarget{{ref_{n}}}{{{n
 body = re.sub(r"\\bibliographystyle\{[^}]*\}", "", body)
 body = re.sub(r"\\bibliography\{[^}]*\}", lambda m: bib, body)
 
+
+# ---------------------------------------------------------------- table column specs (used for Word column widths)
+def tab_specs(t):
+    """[(columns, header_rows)] for every tabular in order; a column is ('p', width_cm) or ('l'|'r'|'c', None)."""
+    out, i = [], 0
+    while True:
+        k = t.find("\\begin{tabular}", i)
+        if k < 0:
+            return out
+        spec, j = braced(t, k + len("\\begin{tabular}"))
+        e = t.find("\\end{tabular}", j)
+        cols, s = [], 0
+        while s < len(spec):
+            c = spec[s]
+            if c == "@":
+                _, s = braced(spec, s + 1)
+                continue
+            if c in "pmb" and spec[s + 1:s + 2] == "{":
+                w, s = braced(spec, s + 1)
+                m = re.match(r"([\d.]*)\\(?:linewidth|textwidth)", w)
+                cols.append(("p", float(m.group(1) or 1) * 13.97 if m else float(w.replace("cm", ""))))
+                continue
+            if c in "lrc":
+                cols.append((c, None))
+            s += 1
+        inner = t[j:e]
+        mid = inner.find("\\midrule")
+        out.append((cols, inner[:mid].count("\\\\") if mid >= 0 else 1))
+        i = e
+
+
+TABSPECS = tab_specs(body)
+
 tex = ("\\documentclass{article}\n\\usepackage{amsmath}\n" + macros + "\n\\begin{document}\n" + body + "\n\\end{document}\n")
 (OUT / "main-flat.tex").write_text(tex, encoding="utf-8")
 raw = OUT / "main-pandoc.docx"
@@ -263,8 +299,23 @@ if r.returncode:
 warn = [l for l in r.stderr.splitlines() if l.strip()]
 
 # ---------------------------------------------------------------- Word pass
+# Layout follows the authors' earlier Word manuscripts (A4, 2.5 cm margins, Times New Roman, justified text,
+# Body Text / First Paragraph with a first-line indent, bold "Figure N." / "Table N." captions, centred booktabs
+# tables, hanging-indent references) and main.pdf (no space between paragraphs, indent except after a heading,
+# figure or table, equation numbers at the right margin).
+TEXT_W = 16.0                     # cm: A4 width 21 cm minus 2 x 2.5 cm margins
+MAX_FIG_H = 20.0                  # cm: page body is 24.7 cm; leaves room for the caption on the same page
+ACM_TEXT_W = 13.97                # cm: \linewidth in acmsmall, the unit pandoc used for image sizes
+EMU, DXA = 360000, 1440 / 2.54    # per cm
+MNS = "{http://schemas.openxmlformats.org/officeDocument/2006/math}"
+WP = "{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}"
+A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+TNR = fitz.Font(fontfile="C:/Windows/Fonts/times.ttf")
+TNRB = fitz.Font(fontfile="C:/Windows/Fonts/timesbd.ttf")
+
 doc = Document(raw)
 st = doc.styles
+body_el = doc.element.body
 # theme fonts (Aptos/Calibri) override the font name; drop the theme attributes so Times New Roman applies everywhere
 for s in st:
     rpr = s.element.find(qn("w:rPr"))
@@ -278,54 +329,442 @@ for s in st:
             del rf.attrib[qn(att)]
     rf.set(qn("w:ascii"), "Times New Roman")
     rf.set(qn("w:hAnsi"), "Times New Roman")
-for name in ("Normal", "Body Text", "First Paragraph", "Compact"):
-    if name in [s.name for s in st]:
-        s = st[name]
-        s.font.name, s.font.size = "Times New Roman", Pt(11)
-        s.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
-        s.paragraph_format.space_after = Pt(4)
-        s.paragraph_format.line_spacing = 1.15
-for lvl, size in ((1, 13), (2, 12), (3, 11)):
-    nm = f"Heading {lvl}"
-    if nm in [s.name for s in st]:
-        s = st[nm]
-        s.font.name, s.font.size, s.font.bold = "Times New Roman", Pt(size), True
-        s.font.color.rgb = None
-        s.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
-for nm in ("Caption", "Image Caption", "Table Caption"):
-    if nm in [s.name for s in st]:
-        s = st[nm]
-        s.font.name, s.font.size, s.font.italic = "Times New Roman", Pt(9.5), False
 
-# title block at the start
+
+def lname(el):
+    return el.tag.split("}")[1] if isinstance(el.tag, str) and "}" in el.tag else ""
+
+
+def put(parent, child, order):
+    """Insert or replace child in parent, keeping the schema order given as a list of local names."""
+    old = parent.find(child.tag)
+    if old is not None:
+        parent.replace(old, child)
+        return child
+    idx = order.index(lname(child))
+    for ex in parent:
+        ln = lname(ex)
+        if ln in order and order.index(ln) > idx:
+            ex.addprevious(child)
+            return child
+    parent.append(child)
+    return child
+
+
+def el(tag, **attrs):
+    e = OxmlElement(tag)
+    for k, v in attrs.items():
+        e.set(qn("w:" + k), str(v))
+    return e
+
+
+def sty(name):
+    return st[name] if name in [s.name for s in st] else None
+
+
+def fmt(name, size=None, bold=None, italic=None, align=None, sb=None, sa=None, ls=None, first=None, left=None,
+        kwn=None, base=None):
+    s = sty(name)
+    if s is None:
+        s = st.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
+        s.base_style = st[base or "Normal"]
+    f, pf = s.font, s.paragraph_format
+    f.name = "Times New Roman"
+    if size is not None:
+        f.size = Pt(size)
+    if bold is not None:
+        f.bold = bold
+    if italic is not None:
+        f.italic = italic
+    if align is not None:
+        pf.alignment = align
+    if sb is not None:
+        pf.space_before = Pt(sb)
+    if sa is not None:
+        pf.space_after = Pt(sa)
+    if ls is not None:
+        pf.line_spacing = ls
+    if first is not None:
+        pf.first_line_indent = Cm(first)
+    if left is not None:
+        pf.left_indent = Cm(left)
+    if kwn is not None:
+        pf.keep_with_next = kwn
+    return s
+
+
+J, C, L, RIGHT = WD_ALIGN_PARAGRAPH.JUSTIFY, WD_ALIGN_PARAGRAPH.CENTER, WD_ALIGN_PARAGRAPH.LEFT, WD_ALIGN_PARAGRAPH.RIGHT
+fmt("Normal", 11, align=J, sb=0, sa=0, ls=1.15)
+st["Normal"].element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
+st["Normal"].paragraph_format.widow_control = True
+fmt("Body Text", sb=0, sa=0, first=0.5)
+fmt("First Paragraph", first=0)
+fmt("Compact", 9, align=L, sb=1, sa=1, ls=1.0, first=0)                 # pandoc's style for table cells
+for lvl, size, ital, sb, sa, tab in ((1, 13, False, 18, 6, 1.0), (2, 11.5, False, 12, 4, 1.15), (3, 11, True, 10, 3, 1.4)):
+    h = fmt(f"Heading {lvl}", size, bold=True, italic=ital, align=L, sb=sb, sa=sa, ls=1.0, first=0, left=0, kwn=True)
+    h.font.color.rgb = None
+    h.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
+    h.paragraph_format.keep_together = True
+    h.paragraph_format.tab_stops.add_tab_stop(Cm(tab))
+fmt("Caption", 10, italic=False, align=J, ls=1.0, first=0)
+fmt("Image Caption", 10, italic=False, align=J, sb=4, sa=12, ls=1.0, first=0)
+fmt("Table Caption", 10, italic=False, align=J, sb=12, sa=5, ls=1.0, first=0, kwn=True)
+fmt("Figure", align=C, sb=12, sa=0, first=0, kwn=True)
+fmt("Captioned Figure", align=C, sb=12, sa=0, first=0, kwn=True)
+fmt("Definition Term", bold=True, align=L, sb=4, sa=0, first=0, kwn=True)
+fmt("Definition", align=J, sb=0, sa=2, first=0, left=0.6)
+fmt("Equation", align=C, sb=4, sa=4, ls=1.0, first=0, left=0)
+fmt("Reference", 9.5, align=L, sb=0, sa=3, ls=1.0, first=-0.8, left=0.8)
+fmt("Front Matter", 10, align=J, sb=0, sa=0, ls=1.15, first=0)
+# \texttt (pandoc's Verbatim Char) takes the size of its paragraph, so it is 9 pt inside tables
+vc = sty("Verbatim Char")
+if vc is not None:
+    vc.font.size = None
+    vc.font.name = "Consolas"
+for nm in ("Compact", "Reference", "Front Matter", "Heading 1", "Heading 2", "Heading 3", "Definition Term"):
+    # no automatic hyphenation in cells, references, the title block or headings
+    put(st[nm].element.get_or_add_pPr(), el("w:suppressAutoHyphens"), ["pStyle", "keepNext", "keepLines",
+        "pageBreakBefore", "framePr", "widowControl", "numPr", "suppressLineNumbers", "pBdr", "shd", "tabs",
+        "suppressAutoHyphens", "kinsoku", "wordWrap", "overflowPunct", "topLinePunct", "autoSpaceDE", "autoSpaceDN",
+        "bidi", "adjustRightInd", "snapToGrid", "spacing", "ind", "contextualSpacing", "mirrorIndents",
+        "suppressOverlap", "jc"])
+
+# justified text reads better with hyphenation, as in the PDF
+settings = doc.settings.element
+put(settings, el("w:autoHyphenation"), ["writeProtection", "view", "zoom", "removePersonalInformation",
+    "removeDateAndTime", "doNotDisplayPageBoundaries", "displayBackgroundShape", "printPostScriptOverText",
+    "printFractionalCharacterWidth", "printFormsData", "embedTrueTypeFonts", "embedSystemFonts", "saveSubsetFonts",
+    "saveFormsData", "mirrorMargins", "alignBordersAndEdges", "bordersDoNotSurroundHeader",
+    "bordersDoNotSurroundFooter", "gutterAtTop", "hideSpellingErrors", "hideGrammaticalErrors", "activeWritingStyle",
+    "proofState", "formsDesign", "attachedTemplate", "linkStyles", "stylePaneFormatFilter", "stylePaneSortMethod",
+    "documentType", "mailMerge", "revisionView", "trackRevisions", "doNotTrackMoves", "doNotTrackFormatting",
+    "documentProtection", "autoFormatOverride", "styleLockTheme", "styleLockQFSet", "defaultTabStop",
+    "autoHyphenation", "consecutiveHyphenLimit", "hyphenationZone", "doNotHyphenateCaps"])
+
+
+def pstyle(p_el):
+    ppr = p_el.find(qn("w:pPr"))
+    ps = ppr.find(qn("w:pStyle")) if ppr is not None else None
+    return ps.get(qn("w:val")) if ps is not None else None
+
+
+def set_pstyle(p_el, sid):
+    ppr = p_el.find(qn("w:pPr"))
+    if ppr is None:
+        ppr = OxmlElement("w:pPr")
+        p_el.insert(0, ppr)
+    ps = ppr.find(qn("w:pStyle"))
+    if ps is None:
+        ps = OxmlElement("w:pStyle")
+        ppr.insert(0, ps)
+    ps.set(qn("w:val"), sid)
+
+
+def has_drawing(p_el):
+    return p_el.find(".//" + qn("w:drawing")) is not None
+
+
+# ---- paragraph after a figure, a table or the algorithm starts flush left (First Paragraph), as after a heading
+prev = None
+for ch in list(body_el):
+    ln = lname(ch)
+    if ln in ("bookmarkStart", "bookmarkEnd"):
+        continue
+    if ln == "p" and prev is not None and pstyle(ch) == "BodyText" and not has_drawing(ch):
+        pl = lname(prev)
+        if pl == "tbl" or (pl == "p" and (has_drawing(prev) or pstyle(prev) in ("ImageCaption", "TableCaption"))):
+            set_pstyle(ch, "FirstParagraph")
+    if ln == "p" and prev is not None and lname(prev) == "tbl":
+        Paragraph(ch, None).paragraph_format.space_before = Pt(12)      # air below the table's bottom rule
+    prev = ch
+
+# ---- figures: scaled to the text width (aspect kept, height capped), centred, kept with the caption
+for p in doc.paragraphs:
+    if not has_drawing(p._p):
+        continue
+    for inline in p._p.iter(WP + "inline"):
+        ext = inline.find(WP + "extent")
+        w, h = int(ext.get("cx")) / EMU, int(ext.get("cy")) / EMU
+        k = min(TEXT_W / ACM_TEXT_W, TEXT_W / w, MAX_FIG_H / h)
+        cx, cy = int(w * k * EMU), int(h * k * EMU)
+        ext.set("cx", str(cx))
+        ext.set("cy", str(cy))
+        for aext in inline.iter(A + "ext"):
+            if aext.get("cx") is not None:
+                aext.set("cx", str(cx))
+                aext.set("cy", str(cy))
+    pf = p.paragraph_format
+    pf.alignment, pf.first_line_indent, pf.left_indent = C, Cm(0), Cm(0)
+    if p.style.name not in ("Captioned Figure", "Figure"):            # Algorithm 1 (its caption is in the image)
+        pf.space_before, pf.space_after = Pt(10), Pt(10)
+
+# ---- numbered list items: a little air between items
+for p in doc.paragraphs:
+    if p._p.find(qn("w:pPr")) is not None and p._p.find(qn("w:pPr")).find(qn("w:numPr")) is not None:
+        p.paragraph_format.space_after = Pt(2)
+
+# ---- tables: widths from the LaTeX column specs and the measured text, booktabs rules, bold header, 9 pt
+TBLPR = ["tblStyle", "tblpPr", "tblOverlap", "bidiVisual", "tblStyleRowBandSize", "tblStyleColBandSize", "tblW", "jc",
+         "tblCellSpacing", "tblInd", "tblBorders", "shd", "tblLayout", "tblCellMar", "tblLook", "tblCaption",
+         "tblDescription"]
+TCPR = ["cnfStyle", "tcW", "gridSpan", "hMerge", "vMerge", "tcBorders", "shd", "noWrap", "tcMar", "textDirection",
+        "tcFitText", "vAlign", "hideMark"]
+TRPR = ["cnfStyle", "divId", "gridBefore", "gridAfter", "wBefore", "wAfter", "cantSplit", "trHeight", "tblHeader",
+        "tblCellSpacing", "jc", "hidden"]
+NUM = re.compile(r"^[\d\s.,;:\[\]/=%()+\u2013\u2212\u2009\u00a0-]*\d[\d\s.,;:\[\]/=%()+\u2013\u2212\u2009\u00a0-]*$")
+PAD = 0.32                        # cm per column: two 0.1 cm cell margins plus slack
+
+
+def cell_text(tc):
+    return ["".join(t.text or "" for t in p.iter(qn("w:t"), MNS + "t")) for p in tc.iter(qn("w:p"))]
+
+
+def borders(tag, **edges):
+    b = OxmlElement(tag)
+    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        if edge in edges:
+            v = edges[edge]
+            e = el("w:" + edge, val="single" if v else "nil")
+            if v:
+                e.set(qn("w:sz"), str(v))
+                e.set(qn("w:space"), "0")
+                e.set(qn("w:color"), "000000")
+            b.append(e)
+    return b
+
+
+def table_grid(tbl, widths):
+    grid = tbl.find(qn("w:tblGrid"))
+    for g in list(grid):
+        grid.remove(g)
+    for w in widths:
+        grid.append(el("w:gridCol", w=int(round(w * DXA))))
+    tblPr = tbl.find(qn("w:tblPr"))
+    put(tblPr, el("w:tblW", w=int(round(sum(widths) * DXA)), type="dxa"), TBLPR)
+    put(tblPr, el("w:jc", val="center"), TBLPR)
+    put(tblPr, el("w:tblLayout", type="fixed"), TBLPR)
+
+
+data_tables = [t._tbl for t in doc.tables]
+assert len(data_tables) == len(TABSPECS), (len(data_tables), len(TABSPECS))
+table_sizes = []
+for tbl, (cols, nhead) in zip(data_tables, TABSPECS):
+    n = len(cols)
+    rows = tbl.findall(qn("w:tr"))
+    cells = []                                                          # (row, tc, first column, span)
+    for ri, tr in enumerate(rows):
+        c = 0
+        for tc in tr.findall(qn("w:tc")):
+            gs = tc.find(qn("w:tcPr")).find(qn("w:gridSpan")) if tc.find(qn("w:tcPr")) is not None else None
+            span = int(gs.get(qn("w:val"))) if gs is not None else 1
+            cells.append((ri, tc, c, span))
+            c += span
+        assert c == n, ("column count", c, n)
+    numeric = []
+    for ci in range(n):
+        vals = [" ".join(cell_text(tc)).strip() for ri, tc, c, sp in cells if c == ci and sp == 1 and ri >= nhead]
+        vals = [v for v in vals if v and v not in ("NA", "\u2014", "-")]
+        numeric.append(bool(vals) and all(NUM.match(v) for v in vals))
+
+    def layout(size):
+        nat, minw = [0.0] * n, [0.0] * n
+        for ri, tc, c, sp in cells:
+            if sp != 1:
+                continue
+            font = TNRB if ri < nhead else TNR
+            for line in cell_text(tc):
+                nat[c] = max(nat[c], font.text_length(line, fontsize=size) / 72 * 2.54)
+                for word in line.split():
+                    minw[c] = max(minw[c], font.text_length(word, fontsize=size) / 72 * 2.54)
+        ps = [i for i in range(n) if cols[i][0] == "p"]
+        widths = [nat[i] + PAD for i in range(n)]
+        if ps:                                                          # paragraph columns share what is left
+            fixed = sum(widths[i] for i in range(n) if i not in ps)
+            psum = sum(cols[i][1] for i in ps)
+            for i in ps:
+                widths[i] = (TEXT_W - fixed) * cols[i][1] / psum
+            ok = all(widths[i] >= minw[i] + PAD for i in ps)
+            return widths, ok
+        if sum(widths) <= TEXT_W:
+            return widths, True
+        # too wide: text columns may wrap (never below their longest word); numeric columns never wrap
+        slack = [(widths[i] - minw[i] - PAD) if not numeric[i] else 0 for i in range(n)]
+        need = sum(widths) - TEXT_W
+        if sum(slack) < need:
+            return widths, False
+        for i in range(n):
+            widths[i] -= need * slack[i] / sum(slack)
+        return widths, True
+
+    for size in (9, 8.5, 8):
+        widths, ok = layout(size)
+        if ok:
+            break
+    table_sizes.append(size)
+    table_grid(tbl, widths)
+    tblPr = tbl.find(qn("w:tblPr"))
+    put(tblPr, borders("w:tblBorders", top=8, bottom=8, left=0, right=0, insideH=0, insideV=0), TBLPR)
+    mar = OxmlElement("w:tblCellMar")
+    for edge, v in (("top", 0), ("left", 57), ("bottom", 0), ("right", 57)):
+        mar.append(el("w:" + edge, w=v, type="dxa"))
+    put(tblPr, mar, TBLPR)
+    for ri, tc, c, sp in cells:
+        tcPr = tc.find(qn("w:tcPr"))
+        if tcPr is None:
+            tcPr = OxmlElement("w:tcPr")
+            tc.insert(0, tcPr)
+        put(tcPr, el("w:tcW", w=int(round(sum(widths[c:c + sp]) * DXA)), type="dxa"), TCPR)
+        if ri == nhead - 1:                                             # rule under the header (booktabs \midrule)
+            put(tcPr, borders("w:tcBorders", bottom=4), TCPR)
+        elif ri < nhead - 1 and sp > 1 and "".join(cell_text(tc)).strip():   # \cmidrule under spanning headings
+            put(tcPr, borders("w:tcBorders", bottom=4), TCPR)
+        put(tcPr, el("w:vAlign", val="top" if ri >= nhead else "bottom"), TCPR)
+        for p in tc.iter(qn("w:p")):
+            pp = Paragraph(p, None)
+            if sp > 1 and ri < nhead:
+                pp.alignment = C
+            elif numeric[c] and sp == 1:
+                pp.alignment = RIGHT
+            pp.paragraph_format.keep_with_next = ri < len(rows) - 1      # keep the table on one page where it fits
+        for r in tc.iter(qn("w:r")):
+            rr = Run(r, None)
+            if size != 9:
+                rr.font.size = Pt(size)
+            if ri < nhead:
+                rr.font.bold = True
+    for ri, tr in enumerate(rows):
+        trPr = tr.find(qn("w:trPr"))
+        if trPr is None:
+            trPr = OxmlElement("w:trPr")
+            tr.insert(0, trPr)
+        put(trPr, el("w:cantSplit"), TRPR)
+        if ri < nhead:
+            put(trPr, el("w:tblHeader"), TRPR)
+
+# ---- numbered equations: borderless three-cell row, equation centred, number at the right margin
+# cm: the number cell fits "(7)"; a narrow left cell leaves 15 cm, so equations (4) and (7) (about 14.5 cm in Times
+# New Roman 11 pt) stay on one line, at the cost of centring them 2 mm left of the text centre
+EQ_LEFT, EQ_RIGHT = 0.25, 0.75
+eq_count = 0
+for mp in list(body_el.iter(MNS + "oMathPara")):
+    p_el = mp.getparent()
+    if lname(p_el) != "p":
+        continue
+    set_pstyle(p_el, "Equation")
+    ppr = p_el.find(qn("w:pPr"))
+    for tag in ("w:ind", "w:jc", "w:numPr"):
+        x = ppr.find(qn(tag))
+        if x is not None:
+            ppr.remove(x)
+    runs = list(mp.iter(MNS + "r"))
+    last = "".join(t.text or "" for t in runs[-1].iter(MNS + "t")) if runs else ""
+    if not re.fullmatch(r"\(\d+\)", last):
+        continue
+    parent = runs[-1].getparent()
+    parent.remove(runs[-1])
+    if len(runs) > 1 and not "".join(t.text or "" for t in runs[-2].iter(MNS + "t")).strip():
+        runs[-2].getparent().remove(runs[-2])                         # the \qquad before the number
+    tbl = OxmlElement("w:tbl")
+    tblPr = OxmlElement("w:tblPr")
+    tbl.append(tblPr)
+    tblPr.append(el("w:tblW", w=int(round(TEXT_W * DXA)), type="dxa"))
+    tblPr.append(el("w:jc", val="center"))
+    tblPr.append(borders("w:tblBorders", top=0, left=0, bottom=0, right=0, insideH=0, insideV=0))
+    tblPr.append(el("w:tblLayout", type="fixed"))
+    mar = OxmlElement("w:tblCellMar")
+    for edge in ("left", "right"):
+        mar.append(el("w:" + edge, w=0, type="dxa"))
+    tblPr.append(mar)
+    look = el("w:tblLook", val="0000", firstRow=0, lastRow=0, firstColumn=0, lastColumn=0, noHBand=1, noVBand=1)
+    tblPr.append(look)
+    tblPr.append(el("w:tblDescription", val="Equation " + last))
+    grid = OxmlElement("w:tblGrid")
+    ws = (EQ_LEFT, TEXT_W - EQ_LEFT - EQ_RIGHT, EQ_RIGHT)
+    for w in ws:
+        grid.append(el("w:gridCol", w=int(round(w * DXA))))
+    tbl.append(grid)
+    tr = OxmlElement("w:tr")
+    tr.append(el("w:trPr"))
+    tr[0].append(el("w:cantSplit"))
+    tbl.append(tr)
+    p_el.addprevious(tbl)
+    for i, w in enumerate(ws):
+        tc = OxmlElement("w:tc")
+        tcPr = OxmlElement("w:tcPr")
+        tcPr.append(el("w:tcW", w=int(round(w * DXA)), type="dxa"))
+        tcPr.append(el("w:vAlign", val="center"))
+        tc.append(tcPr)
+        if i == 1:
+            tc.append(p_el)
+        else:
+            q = OxmlElement("w:p")
+            tc.append(q)
+            qq = Paragraph(q, None)
+            set_pstyle(q, "Equation")
+            if i == 2:
+                qq.alignment = RIGHT
+                qq.add_run(last)
+        tr.append(tc)
+    eq_count += 1
+
+# ---- references: hanging indent, label then a tab, 9.5 pt; links kept
+in_refs = False
+n_refs = 0
+for p in doc.paragraphs:
+    if p.style.name.startswith("Heading"):
+        in_refs = p.text.strip() == "References"
+        continue
+    if not in_refs or not p.text.strip():
+        continue
+    set_pstyle(p._p, "Reference")
+    p.paragraph_format.first_line_indent = None
+    n_refs += 1
+    for t in p._p.iter(qn("w:t")):
+        if t.text and "] " in t.text:
+            before_, after_ = t.text.split("] ", 1)
+            t.text = before_ + "]"
+            tab = OxmlElement("w:tab")
+            t.addnext(tab)
+            t2 = OxmlElement("w:t")
+            t2.text = after_
+            t2.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
+            tab.addnext(t2)
+            break
+
+# ---- title block at the start (centred, as in the authors' earlier manuscripts)
 first = doc.paragraphs[0]
 
 
-def before(p, text, size=11, bold=False, italic=False, align=None, style=None):
+def before(p, text, size=11, bold=False, italic=False, align=None, sb=0, sa=0, style="Front Matter"):
     q = p.insert_paragraph_before("", style=style)
     run = q.add_run(text)
     run.font.size, run.font.bold, run.font.italic, run.font.name = Pt(size), bold, italic, "Times New Roman"
     if align is not None:
         q.alignment = align
+    q.paragraph_format.space_before, q.paragraph_format.space_after = Pt(sb), Pt(sa)
     return q
 
 
-before(first, re.sub(r"\s+", " ", title), 16, bold=True)
+before(first, re.sub(r"\s+", " ", title), 16, bold=True, align=C, sa=14).paragraph_format.line_spacing = 1.0
 authors = [("Shlok Goenka", "shlok.goenka2023@vitstudent.ac.in"),
            ("Subramaniyaswamy Vairavasundaram", "subramaniyaswamy.v@vit.ac.in"),
            ("Balaji G N", "balaji.gn@vit.ac.in")]
-before(first, ", ".join(n for n, _ in authors), 12, bold=True)
-before(first, "School of Computer Science and Engineering, Vellore Institute of Technology, Vellore, 632014, Tamil Nadu, India", 10, italic=True)
-before(first, "; ".join(m for _, m in authors), 10)
-before(first, "Abstract", 12, bold=True)
+before(first, ", ".join(n for n, _ in authors), 12, bold=True, align=C, sa=6)
+before(first, "School of Computer Science and Engineering, Vellore Institute of Technology, Vellore, 632014, Tamil Nadu, India", 10, italic=True, align=C, sa=3)
+before(first, "; ".join(m for _, m in authors), 10, align=C, sa=18)
+before(first, "Abstract", 11, bold=True, align=L, sa=4)
 abs_txt = re.sub(r"\s+", " ", abstract)
-before(first, abs_txt, 11)
-q = before(first, "CCS Concepts: ", 10, bold=True)
+before(first, abs_txt, 10, align=J, sa=8)
+q = before(first, "CCS Concepts: ", 10, bold=True, align=J, sa=4)
 r2 = q.add_run("; ".join("\u2022 " + c.replace("~", " \u2192 ") for c in ccs))
 r2.font.size, r2.font.name = Pt(10), "Times New Roman"
-q = before(first, "Additional Key Words and Phrases: ", 10, bold=True)
+q = before(first, "Additional Key Words and Phrases: ", 10, bold=True, align=J, sa=6)
 r2 = q.add_run(keywords)
 r2.font.size, r2.font.name = Pt(10), "Times New Roman"
+put(q._p.get_or_add_pPr(), borders("w:pBdr", bottom=6), ["pStyle", "keepNext", "keepLines", "pageBreakBefore",
+    "framePr", "widowControl", "numPr", "suppressLineNumbers", "pBdr", "shd", "tabs", "suppressAutoHyphens",
+    "spacing", "ind", "jc"])
+q._p.get_or_add_pPr().find(qn("w:pBdr")).find(qn("w:bottom")).set(qn("w:space"), "8")
 
 # placeholders yellow
 for p in doc.paragraphs:
@@ -333,46 +772,14 @@ for p in doc.paragraphs:
         if "to be added]" in run.text:
             run.font.highlight_color = WD_COLOR_INDEX.YELLOW
 
-
-# tables: booktabs look (top, header, bottom rules), 9 pt
-def set_borders(tbl):
-    tblPr = tbl._tbl.tblPr
-    b = OxmlElement("w:tblBorders")
-    for edge, val in (("top", "single"), ("bottom", "single"), ("left", "nil"), ("right", "nil"),
-                      ("insideH", "nil"), ("insideV", "nil")):
-        el = OxmlElement(f"w:{edge}")
-        el.set(qn("w:val"), val)
-        if val == "single":
-            el.set(qn("w:sz"), "8")
-        b.append(el)
-    tblPr.append(b)
-    if tbl.rows:
-        for cell in tbl.rows[0].cells:
-            tcPr = cell._tc.get_or_add_tcPr()
-            cb = OxmlElement("w:tcBorders")
-            bt = OxmlElement("w:bottom")
-            bt.set(qn("w:val"), "single")
-            bt.set(qn("w:sz"), "4")
-            cb.append(bt)
-            tcPr.append(cb)
-
-
-for tbl in doc.tables:
-    set_borders(tbl)
-    for row in tbl.rows:
-        for cell in row.cells:
-            for p in cell.paragraphs:
-                p.paragraph_format.space_after = Pt(0)
-                p.paragraph_format.line_spacing = 1.0
-                for run in p.runs:
-                    run.font.size = Pt(9)
-                    run.font.name = "Times New Roman"
-
 for sec in doc.sections:
-    sec.left_margin = sec.right_margin = Cm(2.2)
-    sec.top_margin = sec.bottom_margin = Cm(2.2)
+    sec.page_width, sec.page_height = Cm(21.0), Cm(29.7)
+    sec.left_margin = sec.right_margin = Cm(2.5)
+    sec.top_margin = sec.bottom_margin = Cm(2.5)
+    sec.header_distance = sec.footer_distance = Cm(1.25)
 final = OUT / "main.docx"
 doc.save(final)
-print("written", final, "| pandoc warnings:", len(warn))
+print("written", final, "| pandoc warnings:", len(warn), "| equations numbered:", eq_count, "| references:", n_refs,
+      "| table font sizes:", table_sizes)
 for w in warn[:15]:
     print("  ", w[:200])
