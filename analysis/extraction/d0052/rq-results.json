@@ -12375,6 +12375,87 @@
     }
    }
   },
+  "verdicts_threshold_sensitivity": {
+   "column": "included",
+   "defaults": {
+    "min_signed": 5,
+    "direction_share": 0.667,
+    "control_share": 0.5
+   },
+   "variants": [
+    {
+     "threshold": "direction_share",
+     "value": 0.6,
+     "verdicts": {
+      "RQ2": "mixed",
+      "RQ3": "weakly supported",
+      "RQ4": "weakly supported",
+      "RQ5": "weakly supported"
+     },
+     "changed": [
+      "RQ4",
+      "RQ5"
+     ]
+    },
+    {
+     "threshold": "direction_share",
+     "value": 0.75,
+     "verdicts": {
+      "RQ2": "mixed",
+      "RQ3": "weakly supported",
+      "RQ4": "mixed",
+      "RQ5": "mixed"
+     },
+     "changed": []
+    },
+    {
+     "threshold": "control_share",
+     "value": 0.4,
+     "verdicts": {
+      "RQ2": "mixed",
+      "RQ3": "weakly supported",
+      "RQ4": "mixed",
+      "RQ5": "mixed"
+     },
+     "changed": []
+    },
+    {
+     "threshold": "control_share",
+     "value": 0.6,
+     "verdicts": {
+      "RQ2": "mixed",
+      "RQ3": "weakly supported",
+      "RQ4": "mixed",
+      "RQ5": "mixed"
+     },
+     "changed": []
+    },
+    {
+     "threshold": "min_signed",
+     "value": 3,
+     "verdicts": {
+      "RQ2": "mixed",
+      "RQ3": "weakly supported",
+      "RQ4": "mixed",
+      "RQ5": "mixed"
+     },
+     "changed": []
+    },
+    {
+     "threshold": "min_signed",
+     "value": 8,
+     "verdicts": {
+      "RQ2": "mixed",
+      "RQ3": "weakly supported",
+      "RQ4": "mixed",
+      "RQ5": "untested"
+     },
+     "changed": [
+      "RQ5"
+     ]
+    }
+   ]
+  },
   "agreement_extra": {
    "factor_type_matched_groups": {
     "agree": 23.0,

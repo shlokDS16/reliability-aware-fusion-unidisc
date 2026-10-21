@@ -635,8 +635,9 @@ qa_by.clear(); qa_by.update(_qa_saved)
 recs = old_recs
 
 
-def verdict(rq, E):
-    """D0060 thresholds on the included-study estimates E (weighted shares)."""
+def verdict(rq, E, min_signed=5, direction_share=2 / 3, control_share=0.5):
+    """D0060 thresholds on the included-study estimates E (weighted shares).
+    Defaults are the D0060 thresholds; other values are only for the threshold-sensitivity block."""
     if rq == "RQ4":
         up, down, n_sig = E["RQ4_sweep_up_majority"], E["RQ4_sweep_down_majority"], E["RQ4_has_sweep"]["count"]
         control = E["RQ4_sweep_control"]
@@ -649,11 +650,11 @@ def verdict(rq, E):
     else:
         up, down, n_sig = E["RQ2_better_majority"], E["RQ2_worse_majority"], E["RQ2_signed"]["count"]
         control = E["RQ2_control"]
-    if n_sig < 5:
+    if n_sig < min_signed:
         v = "untested"
-    elif max(up["share"] or 0, down["share"] or 0) < 2 / 3:
+    elif max(up["share"] or 0, down["share"] or 0) < direction_share:
         v = "mixed"
-    elif (control["share"] or 0) < 0.5:
+    elif (control["share"] or 0) < control_share:
         v = "weakly supported"
     else:
         v = "well supported"
@@ -664,6 +665,16 @@ def verdict(rq, E):
 
 for col in ("included", "seed", "combined", "included_without_rejected", "included_EB_on_8"):
     P.setdefault("verdicts", {})[col] = {rq: verdict(rq, P[col]) for rq in ("RQ2", "RQ3", "RQ4", "RQ5")}
+# threshold sensitivity (included column): change one D0060 threshold at a time, keep the other two
+THRESH_ALT = [("direction_share", 0.60), ("direction_share", 0.75), ("control_share", 0.40),
+              ("control_share", 0.60), ("min_signed", 3), ("min_signed", 8)]
+_base_v = {rq: P["verdicts"]["included"][rq]["verdict"] for rq in ("RQ2", "RQ3", "RQ4", "RQ5")}
+P["verdicts_threshold_sensitivity"] = {
+    "column": "included", "defaults": {"min_signed": 5, "direction_share": round(2 / 3, 3), "control_share": 0.5},
+    "variants": [{"threshold": k, "value": x,
+                  "verdicts": {rq: verdict(rq, P["included"], **{k: x})["verdict"] for rq in _base_v},
+                  "changed": [rq for rq in _base_v if verdict(rq, P["included"], **{k: x})["verdict"] != _base_v[rq]]}
+                 for k, x in THRESH_ALT]}
 # extra agreement measures for S4 (red-team M4): factor type, claim status, QA item scores, study-level flags
 AG = json.load(open(D / "agreement-8-texts/agreement-stage-a.json", encoding="utf-8"))
 ea_p = {r["id"]: r for r in jl(D / "ec-input/EA-pairs.jsonl")}
