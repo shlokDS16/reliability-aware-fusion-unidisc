@@ -1,0 +1,129 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) R0249 table T05: column_order_mismatch (leaves do not occur in header order) -> see the brief
+(2) R0249 row C40: ambiguous_row (2 match(es) in segment, raw form) -> see the brief
+(3) R0249 value H04: value_not_in_quote (1 occurrence(s) in E45) -> see the brief
+(4) R0249 label_row K02.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(5) R0249 label_row K02.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(6) R0249 label_row K03.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(7) R0249 label_row K03.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(8) R0249 label_row K04.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(9) R0249 label_row K04.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(10) R0249 label_row K05.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(11) R0249 label_row K05.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(12) R0249 label_row K06.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(13) R0249 label_row K06.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(14) R0249 label_row K07.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(15) R0249 label_row K07.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(16) R0249 condition K08.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(17) R0249 label_row K08.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(18) R0249 condition K08.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(19) R0249 label_row K08.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(20) R0249 condition K09.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(21) R0249 label_row K09.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(22) R0249 condition K09.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(23) R0249 label_row K09.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(24) R0249 condition K10.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(25) R0249 label_row K10.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(26) R0249 condition K10.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(27) R0249 label_row K10.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(28) R0249 condition K11.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(29) R0249 label_row K11.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(30) R0249 condition K11.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(31) R0249 label_row K11.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(32) R0249 condition K12.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(33) R0249 label_row K12.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(34) R0249 condition K12.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(35) R0249 label_row K12.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(36) R0249 condition K13.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(37) R0249 label_row K13.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(38) R0249 condition K13.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(39) R0249 label_row K13.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(40) R0249 condition K14.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(41) R0249 label_row K14.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(42) R0249 condition K14.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(43) R0249 label_row K14.A2: label_row_mismatch (arm '✓', row '4 ✓ TPS 32') -> see the brief
+(44) R0249 condition K15.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(45) R0249 label_row K15.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(46) R0249 condition K15.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(47) R0249 label_row K15.A2: label_row_mismatch (arm '✓', row '4 ✓ TPS 32') -> see the brief
+(48) R0249 condition K16.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(49) R0249 label_row K16.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(50) R0249 condition K16.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(51) R0249 label_row K16.A2: label_row_mismatch (arm '✓', row '4 ✓ TPS 32') -> see the brief
+(52) R0249 condition K17.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(53) R0249 label_row K17.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(54) R0249 condition K17.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(55) R0249 label_row K17.A2: label_row_mismatch (arm '✓', row '4 ✓ TPS 32') -> see the brief
+(56) R0249 condition K18.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(57) R0249 label_row K18.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(58) R0249 condition K18.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(59) R0249 label_row K18.A2: label_row_mismatch (arm '✓', row '4 ✓ TPS 32') -> see the brief
+(60) R0249 condition K19.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(61) R0249 label_row K19.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(62) R0249 condition K19.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(63) R0249 label_row K19.A2: label_row_mismatch (arm '✓', row '4 ✓ TPS 32') -> see the brief
+(64) R0249 label_row K20.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(65) R0249 label_row K20.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(66) R0249 label_row K21.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(67) R0249 label_row K21.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(68) R0249 label_row K22.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(69) R0249 label_row K22.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(70) R0249 label_row K23.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(71) R0249 label_row K23.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(72) R0249 label_row K24.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(73) R0249 label_row K24.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(74) R0249 label_row K25.A1: label_row_mismatch (arm '×', row 'ACC 1 or 32') -> see the brief
+(75) R0249 label_row K25.A2: label_row_mismatch (arm '✓', row 'ACC 1 or 32') -> see the brief
+(76) R0249 condition K26.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(77) R0249 label_row K26.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(78) R0249 condition K26.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(79) R0249 label_row K26.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(80) R0249 condition K27.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(81) R0249 label_row K27.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(82) R0249 condition K27.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(83) R0249 label_row K27.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(84) R0249 condition K28.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(85) R0249 label_row K28.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(86) R0249 condition K28.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(87) R0249 label_row K28.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(88) R0249 condition K29.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(89) R0249 label_row K29.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(90) R0249 condition K29.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(91) R0249 label_row K29.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(92) R0249 condition K30.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(93) R0249 label_row K30.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(94) R0249 condition K30.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(95) R0249 label_row K30.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(96) R0249 condition K31.A1: condition_mismatch ('B.S. 1' against '') -> see the brief
+(97) R0249 label_row K31.A1: label_row_mismatch (arm '×', row '1') -> see the brief
+(98) R0249 condition K31.A2: condition_mismatch ('B.S. 1' against '') -> see the brief
+(99) R0249 label_row K31.A2: label_row_mismatch (arm '✓', row '1') -> see the brief
+(100) R0249 condition K32.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(101) R0249 label_row K32.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(102) R0249 condition K32.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(103) R0249 label_row K32.A2: label_row_mismatch (arm '✓', row '8 ✓ TPS 32') -> see the brief
+(104) R0249 condition K33.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(105) R0249 label_row K33.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(106) R0249 condition K33.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(107) R0249 label_row K33.A2: label_row_mismatch (arm '✓', row '8 ✓ TPS 32') -> see the brief
+(108) R0249 condition K34.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(109) R0249 label_row K34.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(110) R0249 condition K34.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(111) R0249 label_row K34.A2: label_row_mismatch (arm '✓', row '8 ✓ TPS 32') -> see the brief
+(112) R0249 condition K35.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(113) R0249 label_row K35.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(114) R0249 condition K35.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(115) R0249 label_row K35.A2: label_row_mismatch (arm '✓', row '8 ✓ TPS 32') -> see the brief
+(116) R0249 condition K36.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(117) R0249 label_row K36.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(118) R0249 condition K36.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(119) R0249 label_row K36.A2: label_row_mismatch (arm '✓', row '8 ✓ TPS 32') -> see the brief
+(120) R0249 condition K37.A1: condition_mismatch ('B.S. 32' against '') -> see the brief
+(121) R0249 label_row K37.A1: label_row_mismatch (arm '×', row '× TPS 32') -> see the brief
+(122) R0249 condition K37.A2: condition_mismatch ('B.S. 32' against '') -> see the brief
+(123) R0249 label_row K37.A2: label_row_mismatch (arm '✓', row '8 ✓ TPS 32') -> see the brief
+(124) R0249 s14_row S14.own_row: s14_row_not_found ('Dimple-7B (ours)' not at a row start on page 5) -> give the row label exactly as it starts the printed row on that page, or fix the page
+(125) R0249 s14_row S14.baseline_row: s14_row_not_found ('Dimple-7B (AR Baseline)' not at a row start on page 5) -> give the row label exactly as it starts the printed row on that page, or fix the page
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
