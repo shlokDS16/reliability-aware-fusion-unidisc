@@ -1,12 +1,14 @@
 # Cover letter (draft for the authors to edit)
 
-Items in [square brackets] are for the authors to fill in or confirm before submission.
+Items in [square brackets] are for the authors to fill in or confirm before submission. Updated 2026-10-21 after the
+revision for the supervising professor's reviews (main paper 34 pages including references; supplement 60 pages).
 
 ---
 
 [Date]
 
-Professor My T. Thai and Professor Hanghang Tong
+[Confirm the current Editor-in-Chief on https://dl.acm.org/journal/csur before sending: the earlier draft named
+Professor My T. Thai and Professor Hanghang Tong]
 Editors-in-Chief, ACM Computing Surveys
 
 Dear Editors,
@@ -15,33 +17,49 @@ We submit the manuscript "Diffusion Language Models and Unified Multimodal Gener
 of Discrete and Continuous Approaches" for consideration as a **Long Survey** in ACM Computing Surveys.
 
 **What the survey does.** Diffusion language models and unified multimodal diffusion models are decoded in many
-ways, and papers rarely say which decoder produced a headline number. The review follows PRISMA 2020 under a written
-protocol: a search of free and subscription databases with citation snowballing, full-text screening of the
-identified reports, and 615 included studies. Evidence for six research questions is drawn from all included studies
-and from a stratified random sample appraised with a nine-item quality appraisal. The survey adds a unified notation
-and design space tested on 47 models, a census of how headline results are decoded, an error-budget taxonomy, open
-problems, and one preregistered measurement on a frozen unified model. Departures from the protocol are listed in
-the Methods.
+ways, and papers rarely state which decoding rule produced a headline result. Our review follows PRISMA 2020 under a
+written protocol. From 79,963 records identified in open sources, six subscription databases and citation searching,
+615 studies were included, and a stratified random sample of them was extracted in full and appraised on nine quality
+items. The survey makes four contributions:
+- a design space that describes every generator by five choices, tested on 47 models (36 fit fully, 11 partly);
+- a census of a random sample of papers, which finds that 147 of 153 report their headline result with a non-plain
+  or unstated decoding rule;
+- an error budget that separates factorisation, learning and decoding-rule error, used as a taxonomy of methods;
+- open problems, each stated with the measurement that would settle it.
 
-**Length and supplement.** The manuscript for publication is the main paper, `main.pdf`, pages 1 to 35 including
-references, prepared in the ACM Surveys style. The file `supplement.pdf` is the electronic supplement (search strings
-and PRISMA checklist, census tables, extractor agreement, the full design-space table, the per-study appraisal table,
-the measurement details and the author checks). It is marked on its first page as not part of the 35 pages, and we
-ask that it be published with the article as an online supplement.
+An evidence synthesis answers six research questions with explicit verdicts and robustness checks. A practical
+section then gives a decision framework, decoding defaults and a reporting checklist, and separates conclusions the
+evidence supports from hypotheses that remain open.
 
-**Data and code.** The protocol, search log, screening and extraction records, decision ledger, analysis scripts and
-manuscript sources are archived at Zenodo, doi:10.5281/zenodo.23524470. Every number in the paper names its source
-file there.
+**Length and supplement.** The manuscript for publication is the main paper, `main.pdf`, 34 pages including
+references, prepared in the ACM Surveys style. The file `supplement.pdf` is the electronic supplement. It holds:
+- the search strings, the full selection procedure and the PRISMA checklist;
+- the census tables;
+- the extraction agreement;
+- the full design-space table and taxonomy;
+- the per-study quality appraisal and the sensitivity analyses;
+- the details of the preregistered measurement;
+- the open problems in full;
+- the author checks.
 
-**Use of AI.** AI tools were used for screening, data extraction, census coding and adjudication, and to assist with
-analysis scripts, figures and the drafting and editing of the text. The paper's "Declaration on the use of AI" names
-each tool, what it did and how its output was checked; no AI system is an author, and the authors take full
-responsibility for the content.
+It is marked on its first page as not part of the main paper, and we ask that it be published with the article as an
+online supplement.
+
+**Data and code.** The protocol, search log, screening and extraction records, the log of methodological decisions,
+the analysis scripts and the manuscript sources are archived at Zenodo, doi:10.5281/zenodo.23524470. Every number in
+the paper can be traced to its source file there.
+
+**Use of AI.** [Align with the final wording of the paper's "Declaration on the use of AI".] The use of AI tools in
+conducting this review is described in the paper's "Declaration on the use of AI". No AI system is an author, and the
+authors take full responsibility for the content.
 
 **Originality.** [Confirm: the manuscript is original, has not been published, and is not under consideration
 elsewhere. Name any related preprint or the companion research article here, if applicable.]
 
-**Competing interests and funding.** [To be added.]
+**Funding.** No funding was received for conducting this study. The article processing charge is covered by the
+authors' institution, Vellore Institute of Technology, Vellore.
+
+**Competing interests.** The authors declare no competing interests.
 
 **Suggested reviewers (optional).** [Names, affiliations and e-mail addresses, if the authors wish to suggest any.]
 
