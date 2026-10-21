@@ -9,17 +9,28 @@ This section condenses Sections~\ref{sec:design} to~\ref{sec:budget} for readers
 \subsection{Canonical models in the five choices}
 \label{sec:practice-exemplars}
 
-Table~\ref{tab:exemplars} places twelve widely used models in the design space. Read across the rows, most recent large models share the erasure channel and differ mainly in the commitment policy (C4): which positions are committed and how their values are chosen. LLaDA ranks positions by confidence and takes the argmax; MMaDA and UniDisc add guidance; Fast-dLLM commits by an entropy or threshold rule; BD3-LM decodes in blocks with truncated sampling; ReMDM adds remasking. Continuous models (Plaid) and uniform-state models (Duo) update every position at each step and revise implicitly. For Dream~7B, the sections we read state neither the position rule nor the value rule of the headline results.
+Table~\ref{tab:exemplars} in Section~\ref{sec:design} places thirteen widely used models in the design space. Read across the rows, most recent large models share the erasure channel and differ mainly in the commitment policy (C4): which positions are committed and how their values are chosen. LLaDA ranks positions by confidence and takes the argmax; MMaDA and UniDisc add guidance; Fast-dLLM commits by an entropy or threshold rule; BD3-LM decodes in blocks with truncated sampling; ReMDM adds remasking. Continuous models (Plaid) and uniform-state models (Duo) update every position at each step and revise implicitly. For Dream~7B, the sections we read state neither the position rule nor the value rule of the headline results.
+
+
+
+\subsection{A decision framework}
+\label{sec:practice-framework}
+Table~\ref{tab:framework} turns the evidence into a starting point for choosing a formulation and a decoding strategy by the requirement that matters most. The last column states what each row rests on, so that a reader can tell a finding of this review from a single study outside it.
 
 \begin{table}[t]
-\caption{Canonical models mapped onto the design space (rows from the 47-model table, Supplement Section~S5). C1: Er erasure, Un uniform, Gs Gaussian on embeddings, AR+Fl autoregressive text with a flow component for images. Position rule (C4): rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position each step, ar left to right, ns not stated. Value rule (C4): lik.\ the headline is a likelihood bound, A argmax, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance. Revision (C5): impl implicit. ``partly'': the notation fits only with a stated extension. A row whose cells are not stated (Dream~7B) fits trivially.}
-\label{tab:exemplars}
+\caption{Choosing a formulation and decoding strategy by requirement. ``Sample'' marks evidence from the review's own sample or census; ``outside'' marks single studies outside the sample; neither has been tested head to head on a common benchmark.}
+\label{tab:framework}
 \footnotesize
-\begin{tabular}{@{}llllll@{}}
+\begin{tabular}{@{}p{2.6cm}p{3.3cm}p{4.0cm}p{3.4cm}@{}}
 \toprule
-Model & C1 channel & Position rule & Value rule & Revision & Fit \\
+Requirement & Formulation to consider & Decoding strategy & Evidence \\
 \midrule
-\csname @@input\endcsname tables/exemplars.tex \bottomrule
+Quality at a fixed model size, latency secondary & masked diffusion or an autoregressive model & few tokens per step; value rule stated and held fixed & sample: RQ2 mixed; RQ4, 9 of 15 sweeps improve with compute \\
+Low latency or high throughput & masked diffusion with parallel commitment; uniform-state diffusion for few-step sampling & several tokens per step chosen by dependence or a calibrated threshold, swept on the target task & outside~\cite{arXiv:2604.02560,arXiv:2605.24697,arXiv:2602.15014}; sample: 7 of 15 sweeps non-monotone \\
+Pretraining with scarce unique data & masked diffusion & -- & outside~\cite{arXiv:2507.15857,arXiv:2511.03276} \\
+Joint text and image generation & unified discrete diffusion or a unified flow model & guidance and sampler reported with every number & sample: RQ5 unresolved; one preregistered run (Section~\ref{sec:exp003}) \\
+Revision of early mistakes & masked diffusion with remasking & remasking compared with confidence-based unmasking at matched calls & outside~\cite{arXiv:2606.12232} \\
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -34,6 +45,37 @@ Model & C1 channel & Position rule & Value rule & Revision & Fit \\
   \item \emph{Choose a diffusion model for the constraint it relaxes.} In compute-matched studies, masked diffusion shows a compute gap to autoregressive models~\cite{arXiv:2410.18514} but overtakes autoregressive training when unique data is scarce~\cite{arXiv:2507.15857,arXiv:2511.03276}; among diffusion families, faster sampling can outweigh worse likelihood on the speed--quality frontier~\cite{arXiv:2602.15014}.
 \end{enumerate}
 
+\subsection{What is established and what remains a hypothesis}
+\label{sec:practice-status}
+Table~\ref{tab:status} separates the conclusions this review supports with its own evidence from those resting on single studies outside it and from hypotheses that still need a measurement.
+
+\begin{table}[t]
+\caption{Status of the main conclusions.}
+\label{tab:status}
+\footnotesize
+\begin{tabular}{@{}p{8.6cm}p{4.6cm}@{}}
+\toprule
+Statement & Basis \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Supported by the review's own evidence}} \\
+Headline results are mostly decoded with a non-plain or unstated value rule & census, 147 of 153 \\
+Comparisons with autoregressive models are rarely made at matched compute & sample, 1 of 25 \\
+More inference compute does not help monotonically & sample, 7 of 15 sweeps non-monotone \\
+Run-to-run variation is seldom reported & sample, 10 of 54 \\
+On one frozen unified model, the official guided sampler raises the text--image link at matched network calls & one preregistered run (Section~\ref{sec:exp003}) \\
+\multicolumn{2}{@{}l}{\emph{Supported by single studies outside the sample}} \\
+Diffusion overtakes autoregressive training when unique data is scarce & \cite{arXiv:2507.15857,arXiv:2511.03276} \\
+Dependency-aware selection speeds parallel decoding at matched accuracy & \cite{arXiv:2604.02560} \\
+Few-step samplers are inexact even with an exact denoiser & \cite{arXiv:2602.19619} \\
+\multicolumn{2}{@{}l}{\emph{Hypotheses that need a measurement}} \\
+The value term dominates reported gains for a given model and task & open problem OP5 \\
+A revision sampler's gain survives matching the value rule & open problem OP2 \\
+Cross-modal dependence in unified models is concentrated in early steps & open problem OP3 \\
+Understanding and generation help each other in unified models & RQ5 unresolved \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{A reporting checklist}
 \label{sec:practice-checklist}
 
@@ -44,6 +86,6 @@ The census and the extraction sample give the checklist its content and, where t
   \item For any comparison with an autoregressive model, the parameter count, training tokens and inference budget of both arms, and whether the baseline was run or copied. In the sample, 23 of the 25 studies with such a comparison leave one arm's budget unreported in at least one comparison, and 5 state that they copied the baseline numbers.
   \item Run-to-run variation or seeds for every contrast the paper interprets; 3 of the 25 report it for the autoregressive comparison.
   \item A quality--diversity frontier, or at least a diversity or entropy measure, beside any single quality number.
-  \item For any sweep, which settings were held fixed; 20 of the 55 census papers that report the headline at two or more step settings say that the value rule was.
+  \item For any sweep, which settings were held fixed; 20 of the 55 census papers that report the headline at two or more step settings state that the value rule was held fixed.
   \item Code and checkpoint at a stated commit, so that a reader can rerun the headline under another value rule.
 \end{enumerate}

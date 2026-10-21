@@ -24,15 +24,29 @@ Four candidates were dropped for repeating a row already present or for not bein
 \subsection{The table}
 \label{sec:design-table}
 
-The condensed table of the 47 models (\suppTabDesign{}, with its code key) is in the supplement (Section~S5), and the long form with every cell, the version read and the evidence level is in the archived repository. Figure~S1 in the supplement (Section~S5.1) shows the same models.
+The condensed table of the 47 models (\suppTabDesign{}, with its code key) is in the supplement (Section~S5), and the long form with every cell, the version read and the evidence level is in the archived data. Figure~S1 in the supplement (Section~S5.1) shows the same models.
 The value-rule column of \suppTabDesign{} is our coding of what was found in the parts read. It is a pilot, kept for the structure of the table. Any statement about how often the field uses a non-plain value rule rests on the random sample of Section~\ref{sec:census}. % src: design-space-v1.md section 0 (value-rule classes) and section 4; OUTLINE.md section 2 "6" (the 47-model result is a pilot, not evidence)
 
 
 
+Table~\ref{tab:exemplars} compares the choices across representative discrete, continuous and unified multimodal models. Within the discrete group the models share the erasure channel and differ mainly in how positions are committed and values chosen; the continuous models update every position at each step and revise implicitly; and the unified models combine a discrete or flow channel for images with guidance in the value rule.
+
+\begin{table}[t]
+\caption{The design choices compared across representative discrete, continuous and unified multimodal models (rows from the 47-model table, Supplement Section~S5; the reveal law C2 and the predictor C3 are recorded in the long form). C1: Er erasure, Un uniform, Gs Gaussian on embeddings, AR+Fl autoregressive text with a flow component for images. Position rule (C4): rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position each step, ar left to right, ns not stated. Value rule (C4): lik.\ the headline is a likelihood bound, A argmax, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance. Revision (C5): impl implicit. ``partly'': the notation fits only with a stated extension. A row whose cells are not stated (Dream~7B) fits trivially.}
+\label{tab:exemplars}
+\footnotesize
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Model & C1 channel & Position rule & Value rule & Revision & Fit \\
+\midrule
+\csname @@input\endcsname tables/exemplars.tex \bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Result: what fits, and the stated limits}
 \label{sec:design-limits}
 
-Thirty-six of the 47 models fit, 11 fit partly, and none was left unplaced. % src: design-space-v1.csv column "fits (yes/partly/no)" (36 yes, 11 partly, 0 no; tables/design-space-counts.log); design-space-v1.md claims block (level E2, confidence 0.6)
+Of the 47 models, 36 fit the notation fully and 11 fit it partly; every model could be placed. % src: design-space-v1.csv column "fits (yes/partly/no)" (36 yes, 11 partly, 0 no; tables/design-space-counts.log); design-space-v1.md claims block (level E2, confidence 0.6)
 We give no interval for this proportion, because the rows were not drawn at random and the count says nothing about the field. The 11 partial fits are the stated limits of the notation; the Supplement (Section~S5) lists each with its row provenance (copied from an earlier reading or read at section level), its evidence level and the extension it needs, and the released data give the full 47-row table with the provenance of every row. Six of them come from five features that the notation does not express without an extension, and five from two further reasons. Each is stated with the smallest extension we can see, and with what we recommend. % src: framework-v2.md section D1 (the five features); design-space-v1.md section 3(a) items 1 to 5 and 9
 
 \paragraph{Five features beyond the notation (six rows).}

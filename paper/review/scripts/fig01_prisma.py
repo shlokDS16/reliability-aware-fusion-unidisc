@@ -158,15 +158,15 @@ seed = [("main", [("Records identified", B), (f"n = {f(n['seed_id'])}", N_),
         ("side", [("Excluded by both", B), (f"n = {f(sd['ta_both_exclude'])}", N_)]),
         ("main", [("Passed by either screener", B), (f"n = {f(sd['ta_pass_either'])}", N_)]),
         ("side", [("Duplicate of an", B), ("update record", B), (f"n = {f(n['seed_pass_not_in_frame'])}", N_)]),
-        ("dashed", [("Not assessed at full text", B), ("(screening frozen, D0051)", N_),
+        ("dashed", [("Not assessed at full text", B), ("(screening stopped)", N_),
                     (f"n = {f(n['s1243'])}", N_),
-                    (f"{f(ns['seed_tranche_S1243_D0037']['assessed_later_in_landmark_tranche_D0061'])} later assessed in tranche L", N_)])]
+                    (f"{f(ns['seed_tranche_S1243_D0037']['assessed_later_in_landmark_tranche_D0061'])} later assessed in the landmark set", N_)])]
 upd = [("main", [("Records identified", B), (f"n = {f(n['upd_id'])}", N_),
                  (f"5 databases {f(n['upd_db'])}", N_), (f"citation searching {f(n['upd_cit'])}", N_)]),
        ("side", [("Duplicates removed", B), (f"n = {f(n['upd_dup'])}", N_), (f"of seed records {f(fr['duplicates_against_seed_corpus'])}", N_)]),
        ("main", [("New records", B), (f"n = {f(fr['new_records_after_dedup'])}", N_)]),
        ("side", [("Removed by string filter", B), (f"n = {f(n['upd_auto'])}", N_),
-                 (f"{f(fr['released_D0028'])} released back", N_)]),
+                 (f"{f(fr['released_D0028'])} returned to screening", N_)]),
        ("main", [("Title/abstract screened", B), ("two screeners", N_), (f"n = {f(fr['ta_screened_dual'])}", N_)]),
        ("side", [("Excluded by both", B), (f"n = {f(fr['ta_both_exclude'])}", N_)]),
        ("main", [("Passed to full text", B), (f"n = {f(fr['ta_pass_D0030'])}", N_)])]
@@ -175,7 +175,7 @@ sub = [("main", [("Records identified", B), (f"n = {f(sb['identified'])}", N_), 
        ("side", [("Removed before screening", B), (f"duplicates {f(n['sub_dup'])}", N_), (f"front matter {f(n['sub_front'])}", N_)]),
        ("main", [("New records", B), (f"n = {f(sb['new_unique_records'])}", N_)]),
        ("side", [("Failed string filter", B), (f"n = {f(sb['automation_excluded_S1pp_S2pp'])}", N_),
-                 (f"rescue-screened {f(sb['rescue_screened_single_haiku'])}", N_),
+                 (f"single-reviewer check {f(sb['rescue_screened_single_haiku'])}", N_),
                  (f"{f(sb['rescue_positives'])} back to screening;", N_),
                  (f"{f(sb['automation_excluded_without_abstract_pending'])} without abstract", N_)]),
        ("main", [("Title/abstract screened", B), ("two screeners", N_), (f"n = {f(sb['ta_screened_dual'])}", N_)]),
@@ -188,7 +188,7 @@ yS_end = max(e[0] for e in ends)
 yR = ends[1][0] + 6
 cv.box(COLS[1] + GX, yR, GW, [("Rescue screen of filtered", B), (f"records: {f(fr['rescue_screened_single_haiku'])}", N_),
                                (f"{f(rf['positives'])} positives; {f(rf['dual_ta_screened'])} dual-", N_),
-                               (f"screened, {f(rf['dual_ta_pass'])} passed", N_), ("not assessed (D0051)", B)], "dashed")
+                               (f"screened, {f(rf['dual_ta_pass'])} passed", N_), ("not assessed", B)], "dashed")
 yRb = yR + hb([1, 2, 3, 4, 5])
 
 # ---------------------------------------------------------------- full text: T1 over the update and subscription columns
@@ -199,7 +199,7 @@ for ci in (1, 2):
     cv.line((COLS[ci] + VX, ends[ci][1]), (COLS[ci] + VX, yT - 2), arrow=False)
 cv.line((COLS[1] + VX, yT - 2), (COLS[2] + VX, yT - 2))
 cv.line((xL + VX + 30, yT - 2), (xL + VX + 30, yT), arrow=True)
-t1 = [("main", [("Full-text tranche T1: reports sought", B),
+t1 = [("main", [("Full-text assessment: reports sought", B),
                 (f"n = {f(ft['reports_sought'])} ({f(n['t1_fromTA'])} title/abstract passes and re-check samples)", N_)]),
       ("side", [("Not retrieved", B), (f"n = {f(n['t1_not_retrieved'])}: no full text {st['no_full_text_found']}, e-gateway "
                                        f"{st['pending_e_gateway'] + sx.get('pending_e-gateway', 0)}, open access failed "
@@ -207,8 +207,8 @@ t1 = [("main", [("Full-text tranche T1: reports sought", B),
                 (f"OpenReview note missing (X6) {st['not_retrieved_openreview_note_missing_X6']}", N_)]),
       ("main", [("Reports assessed (two screeners, adjudicator)", B), (f"n = {f(n['t1_assessed'])}", N_)]),
       ("side", [("Excluded", B), (f"n = {f(ft['exclude_incl_resolved'])}: {codes(ft['exclude_codes_incl_resolved'])}", N_),
-                (f"incl. {len(ft['resolved_B_unavailable_D0058'])} read by screener A only, confirmed by the first author", N_)]),
-      ("main", [("Included from T1", B), (f"n = {f(ft['include'])}", N_)])]
+                (f"incl. {len(ft['resolved_B_unavailable_D0058'])} settled by the first author", N_)]),
+      ("main", [("Included at full text", B), (f"n = {f(ft['include'])}", N_)])]
 GX_save, GW_save, CW_save = GX, GW, CW
 GX, GW, CW = 34, WW - 34, WW
 COLS_save = COLS[:]
@@ -219,18 +219,18 @@ yT_end, t1_bottom = column(1, yT, t1)
 COLS = COLS_save
 GX, GW, CW = GX_save, GW_save, CW_save
 r7s = [("main", [("Re-check of title/abstract", B), ("exclusions: K = " + str(rc["K"]["K"]) + " of " + str(sum(rc["K"]["counts"].values()) - rc["K"]["counts"]["not_in_T1"]), N_),
-                 (f"triggered: {f(rc['frame'])} candidates,", N_), (f"tranche R797 n = {f(r7['frame'])}", N_)]),
-       ("side", [("Not assessed", B), ("(frozen, D0051)", N_), (f"n = {f(r7['identified_not_screened_D0051'])}", N_)]),
+                 (f"triggered: {f(rc['frame'])} candidates,", N_), (f"Reassessed exclusions n = {f(r7['frame'])}", N_)]),
+       ("side", [("Not assessed", B), ("(not reached)", N_), (f"n = {f(r7['identified_not_screened_D0051'])}", N_)]),
        ("main", [("Reports assessed", B), (f"n = {f(n['r7_assessed'])}", N_)]),
        ("side", [("Excluded", B), (f"n = {f(r7['exclude_incl_resolved'])}", N_),
                  (f"incl. {len(r7['resolved_B_unavailable_D0058'])} confirmed by", N_), ("the first author", N_)]),
-       ("main", [("Included from R797", B), (f"n = {f(r7['include'])}", N_)])]
+       ("main", [("Included on reassessment", B), (f"n = {f(r7['include'])}", N_)])]
 yR7_end, r7_bottom = column(0, yT, r7s)
 
 # ---------------------------------------------------------------- included
 yInc = max(yT_end, yR7_end) + 10
-inc = [("Studies included in the review", B), (f"n = {f(n['included'])} (T1 {f(ft['include'])} + R797 {f(r7['include'])})", N_),
-       (f"extraction and appraisal on a stratified random sample of 80, with a seed stratum (D0052, D0054)", N_)]
+inc = [("Studies included in the review", B), (f"n = {f(n['included'])} ({f(ft['include'])} + {f(r7['include'])})", N_),
+       (f"extraction and appraisal on a stratified random sample of 80, with a seed stratum", N_)]
 cv.line((COLS[0] + VX, r7_bottom), (COLS[0] + VX, yInc - 3))
 cv.line((xL + VX, t1_bottom), (xL + VX, yInc - 3))
 cv.line((COLS[0] + VX, yInc - 3), (xL + VX, yInc - 3))
@@ -244,13 +244,13 @@ assert lt["reports_assessed"] == lt["include"] + lt["exclude"] == sum(lt["exclud
 assert lt["frame_models"] - lt["models_already_included_615"] == lt["identified"]
 n.update(lmk_identified=lt["identified"], lmk_assessed=lt["reports_assessed"], lmk_include=lt["include"])
 yL = yEnd + 10
-row = [[("Identification via", B), ("other methods (D0061):", B), ("landmark models not in", N_),
+row = [[("Identification via", B), ("other methods:", B), ("landmark models not in", N_),
         (f"the {f(n['included'])}: n = {f(lt['identified'])}", N_),
         (f"seed {lt['identified_from_unscreened_seed_S1243']}, string filter {lt['identified_removed_by_string_filter_D0026']}", N_)],
        [("Reports sought", B), (f"n = {f(lt['reports_sought'])}", N_), ("Reports retrieved", B), (f"n = {f(lt['reports_retrieved'])}", N_)],
        [("Reports assessed", B), (f"n = {f(lt['reports_assessed'])}", N_), ("Excluded", B),
         (f"n = {f(lt['exclude'])}: {codes(lt['exclude_codes'])}", N_)],
-       [("Landmark tranche", B), ("included", B), (f"n = {f(lt['include'])}, reported", N_), (f"apart from the {f(n['included'])}", N_)]]
+       [("Landmark set", B), ("included", B), (f"n = {f(lt['include'])}, reported", N_), (f"apart from the {f(n['included'])}", N_)]]
 GAPX = 8
 BW = (W - COLS[0] - 4 - 3 * GAPX) / 4
 hmax = max(len(r) for r in row)

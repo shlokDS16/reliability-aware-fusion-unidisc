@@ -3,7 +3,11 @@
 \section{Introduction}
 \label{sec:intro}
 
-\subsection{Why a critical review of this literature}
+A diffusion language model (DLM) generates text by repeatedly predicting many positions in parallel and committing a subset of them, rather than emitting one token at a time from left to right. \citet{arXiv:2107.03006} introduced diffusion on categorical state spaces; later work specialised it to the masked, or absorbing-state, case~\cite{arXiv:2310.16834,arXiv:2406.07524,arXiv:2406.04329,arXiv:2406.03736}, developed a parallel line that diffuses continuous embeddings~\cite{arXiv:2205.14217}, and trained such models at the scale of autoregressive language models~\cite{arXiv:2502.09992}. The same machinery now underlies unified models that understand and generate more than one modality with a single network~\cite{arXiv:2503.20853,arXiv:2505.15809,arXiv:2408.12528}. The literature is growing quickly: of the 540 records with an arXiv identifier in the curated list that seeds our corpus, 243 first appeared in 2026 and only 19 in 2022 or earlier.
+
+This article reviews that literature systematically. From 79,964 identified records, 615 studies were included; a stratified random sample of them was extracted in full and appraised for quality. Beyond describing methods, the review organises the field around five design choices that every generator makes, asks how well the published evidence supports the field's main claims, and records how the headline results of a random sample of papers were decoded. The rest of this section explains why such a review is needed (Section~\ref{sec:intro-why}), positions it against earlier surveys (Section~\ref{sec:intro-related}), and states the research questions, the contributions and the organisation of the article.
+
+\subsection{Decoding choices and the comparability of reported results}
 \label{sec:intro-why}
 
 A diffusion language model (DLM) produces text by repeatedly predicting many positions at once and committing some of them, instead of emitting one token after another from left to right. The line began with diffusion on categorical state spaces~\cite{arXiv:2107.03006}, was specialised to the masked (absorbing-state) case~\cite{arXiv:2310.16834,arXiv:2406.07524,arXiv:2406.04329,arXiv:2406.03736}, has a parallel branch that diffuses continuous embeddings~\cite{arXiv:2205.14217}, and now includes models trained at the scale of autoregressive language models~\cite{arXiv:2502.09992}. The same machinery has been carried over to unified models that understand and generate more than one modality with one network~\cite{arXiv:2503.20853,arXiv:2505.15809,arXiv:2408.12528}. The literature has grown fast: of the 540 records with an arXiv identifier in the curated list that seeds our corpus, 243 have a first version in 2026 and 19 in 2022 or earlier. % src: research/review/feasibility-inventory.md (corpus by first-version year: 19, 39, 46, 193, 243; list commit 194aa6bd, 2026-10-02)
@@ -12,21 +16,21 @@ Reading this literature, or choosing a decoder from it, is hard for a reason par
 
 This review asks how well the published evidence supports the claims made from it, and it organises the design choices of these models so that the question can be asked precisely. It follows PRISMA~2020~\cite{page2021prisma} for the search and selection, and it judges each body of evidence rather than only describing it.
 
-\subsection{Existing reviews and what they lack}
+\subsection{Prior surveys of diffusion language and unified multimodal models}
 \label{sec:intro-related}
 
-Two surveys are close to ours in scope. ``A Survey on Diffusion Language Models''~\cite{arXiv:2508.10875} (version~3, over 220 references) covers continuous, discrete and hybrid models, training, inference, multimodal models and applications. Its performance study compares DLMs with autoregressive models on eight benchmarks using numbers that are, in its words, primarily taken from the original publications. % src: research/review/survey-landscape.md section 1a (row 2508.10875 v3: refs 228; Sec VI Performance Study)
-``Discrete Diffusion in Large Language and Multimodal Models: A Survey''~\cite{arXiv:2506.13759} (version~5, 175 references) covers the discrete case with catalogue tables. % src: research/review/survey-landscape.md section 1a (row 2506.13759 v5: refs 175)
-Around them sit surveys of unified multimodal models~\cite{arXiv:2505.02567,arXiv:2409.14993,arXiv:2605.25343}, of parallel text generation~\cite{arXiv:2508.08712}, of inference efficiency~\cite{arXiv:2607.12829}, of edge deployment~\cite{arXiv:2609.04778}, of alternatives to next-token prediction~\cite{arXiv:2509.24435}, and of earlier diffusion-for-text work~\cite{arXiv:2303.06574}.
+Two surveys are closest to ours in scope. The survey of \citet{arXiv:2508.10875} (version~3, over 220 references) covers continuous, discrete and hybrid models, training, inference, multimodal models and applications. Its performance study compares DLMs with autoregressive models on eight benchmarks using numbers that are, in its words, primarily taken from the original publications. % src: research/review/survey-landscape.md section 1a (row 2508.10875 v3: refs 228; Sec VI Performance Study)
+\citet{arXiv:2506.13759} (version~5, 175 references) cover the discrete case with catalogue tables. % src: research/review/survey-landscape.md section 1a (row 2506.13759 v5: refs 175)
+Other surveys address unified multimodal models~\cite{arXiv:2505.02567,arXiv:2409.14993,arXiv:2605.25343}, of parallel text generation~\cite{arXiv:2508.08712}, of inference efficiency~\cite{arXiv:2607.12829}, of edge deployment~\cite{arXiv:2609.04778}, of alternatives to next-token prediction~\cite{arXiv:2509.24435}, and of earlier diffusion-for-text work~\cite{arXiv:2303.06574}.
 
-In a keyword scan of the full text of the sixteen surveys and tutorials in the first tier of our landscape file, none states a search protocol with database strings, screening counts and a flow diagram. % src: research/review/survey-landscape.md claims block and section 1a. Reconciled 2026-10-21: the claim block's "14" predates two rows added to table 1a (arXiv:2512.05092, a tutorial, protocol "not applicable"; arXiv:2608.20743, protocol "none found"), so all 16 rows lack a stated search protocol.
+In a keyword scan of the full texts of sixteen related surveys and tutorials, none states a search protocol with database strings, screening counts and a flow diagram. % src: research/review/survey-landscape.md claims block and section 1a. Reconciled 2026-10-21: the claim block's "14" predates two rows added to table 1a (arXiv:2512.05092, a tutorial, protocol "not applicable"; arXiv:2608.20743, protocol "none found"), so all 16 rows lack a stated search protocol.
 One of them is titled a survey, says it was conducted through a systematic review, and gives venues, years and inclusion criteria, but no search strings or counts~\cite{arXiv:2509.24435}; another gives inclusion criteria for one subsection~\cite{arXiv:2508.08712}. % src: survey-landscape.md section 1a (rows 2509.24435, 2508.08712)
 None of them audits what the surveyed papers report: seeds, intervals, matched compute, or the sampling rule behind the headline number. % src: survey-landscape.md section 1a, columns "Audits reporting" (none found in any Tier-1 row)
-Neither close survey places models in a design table whose columns are design choices. The survey of discrete diffusion~\cite{arXiv:2506.13759} has no comparison table; the survey of diffusion language models~\cite{arXiv:2508.10875} has a 36-model table whose columns are mostly metadata, with only the diffusion type being a design choice. % src: research/review/dossier/competitor-anatomy.md section 3, verdict ii
+Neither close survey places models in a design table whose columns are design choices. \citet{arXiv:2506.13759} give no comparison table, and the 36-model table of \citet{arXiv:2508.10875} has mostly metadata columns, of which only the diffusion type is a design choice. % src: research/review/dossier/competitor-anatomy.md section 3, verdict ii
 The latter also states the independence of parallel predictions as a qualitative problem, without a decomposition. % src: competitor-anatomy.md section 3, verdicts iii and iv
 We do not claim to be the first survey of this area. We claim a different kind of review: a documented search and selection, a design space tested on named models, a census of how results are decoded and reported, and an error budget used to classify methods.
 
-\subsection{Research questions}
+\subsection{Research questions and evidence base}
 \label{sec:intro-rq}
 
 The protocol, which follows the guidelines of Kitchenham and Charters for systematic reviews in computing~\cite{kitchenham2007guidelines}, fixes six research questions; each is answered from evidence in a dedicated subsection and ends with a verdict (well supported, mixed, weakly supported or untested). % src: research/review/protocol.md sections 1 and 7
@@ -45,13 +49,13 @@ Not every question rests on every included study. RQ1 is answered by counts over
 An earlier feasibility pass over a different sample of papers found the protocol's pooling threshold (at least eight matched contrasts from at least five independent groups sharing task family and metric) unmet for remasking and synergy, and 348 of 377 poolable contrasts without any variance. % src: research/review/feasibility/stage2/summary-remask-synergy.md (RQ5-synergy row: 4 papers with a poolable row; remasking section: only AW0399 is a clean on/off contrast; "Of 377 rule-poolable rows, 348 (92 percent) report no variance"); research/progress.md ("pooling not supported for remasking or synergy")
 The paper is therefore a systematic review without a pooled estimate, and quantitative statements are counts with intervals.
 
-\subsection{Contributions}
+\subsection{Contributions of this review}
 \label{sec:intro-contrib}
 
 We make four contributions, listed in order of weight, with credit to the work each builds on. Section~\ref{sec:practice} condenses them for practitioners: canonical models mapped onto the five choices, decoding defaults and a reporting checklist.
 
 \paragraph{C1. A design space in one notation, tested on 47 models.}
-Every generator in scope is written as a choice of channel, reveal law, predictor, commitment policy and revision rule, with fourteen levers that change quality or cost (Sections~\ref{sec:notation} and~\ref{sec:design}). The notation builds on published unification results for the masked case~\cite{arXiv:2406.07524,arXiv:2406.04329,arXiv:2406.03736}; we do not claim them. Of 47 models, 36 fit with no new cell value, 11 fit partly, and none could not be placed; the 11 define the stated limits of the notation. % src: research/review/coverage/design-space-v1.csv (column "fits": yes 36, partly 11; counted by script 2026-10-15); design-space-v1.md claims block
+Every generator in scope is written as a choice of channel, reveal law, predictor, commitment policy and revision rule, with fourteen levers that change quality or cost (Sections~\ref{sec:notation} and~\ref{sec:design}). The notation builds on published unification results for the masked case~\cite{arXiv:2406.07524,arXiv:2406.04329,arXiv:2406.03736}; we do not claim them. Of the 47 models, 36 fit the notation fully and 11 fit it partly, and every model could be placed; the 11 define the stated limits of the notation. % src: research/review/coverage/design-space-v1.csv (column "fits": yes 36, partly 11; counted by script 2026-10-15); design-space-v1.md claims block
 The test is weaker than it sounds: the vocabulary was written to be inclusive, and 29 of the 47 rows were copied from earlier reading of primary sources rather than re-read for this table. % src: design-space-v1.md "competing_explanations" and "How to read the table" (M01 to M29 copied from the primers)
 
 \paragraph{C2. A census of value rules and reporting.}
@@ -60,19 +64,19 @@ That reported quality and fairness depend on the sampling or evaluation setting 
 
 \paragraph{C3. The error budget as a taxonomy.}
 For any commit kernel, along a data path with the same position law, the divergence between data and sampler splits into a factorisation term, a learning term and one signed value term $V$ that collects every departure of the committed values from the product of the predicted marginals (Section~\ref{sec:budget}). The two-term case $V=0$ is published~\cite{arXiv:2505.24857}; the three-term form is a corollary of the chain rule that we write out. Other pieces are published and we credit them: the majorisation argument for a one-token commit and the sample--select--resample fix~\cite{arXiv:2605.12522}; the distinction between sampling then choosing and choosing then sampling, and the closeness of noised MaskGIT~\cite{arXiv:2202.04200} to a tilted sampler~\cite{arXiv:2510.04525}; the split between confidence-based remasking and top-probability selection~\cite{arXiv:2609.34509}; and the best-of-$N$ KL and win-rate bounds~\cite{arXiv:2401.01879}. % src: research/review/framework-v2.md sections A and B; dossier/prior-art-selection.md
-We use $V$ as bookkeeping that locates where a sampler's value rule acts. It is not a quantity with a canonical size: the split depends on the data-path coupling and, for any ``selection'' share, on a reference policy. % src: framework-v2.md section B (paragraph beginning "The decomposition is not unique")
+We treat $V$ as a bookkeeping device that locates where a sampler's value rule acts. It is not a quantity with a canonical size: the split depends on the data-path coupling and, for any ``selection'' share, on a reference policy. % src: framework-v2.md section B (paragraph beginning "The decomposition is not unique")
 
 \paragraph{C4. Open problems with the evidence each needs.}
 Each open problem is stated with what is known now, the measurement that would settle it, and what would refute it (Section~\ref{sec:open}). They are: what a step sweep identifies and what it does not; whether a revision sampler's gain survives matching the value rule; whether cross-modal dependence in a unified model is front-loaded, and whether schedules that avoid co-committing dependent text and image positions help; and a four-arm measurement on one frozen checkpoint that separates sample-then-filter from its resampled and tilted twins. % src: research/review/framework-v2.md sections C (P1, P3, P5) and D item 4
 
-\subsection{What is not claimed}
+\subsection{Scope of the claims}
 \label{sec:intro-notclaimed}
 
-We do not claim a selection error or tilt cost as new error terms; both were derived, attacked and withdrawn (decision D0011). % src: research/ledgers/decisions.jsonl D0011; research/review/framework-v2.md section A
+We do not claim a selection error or tilt cost as new error terms; both were derived, attacked and withdrawn. % src: research/ledgers/decisions.jsonl D0011; research/review/framework-v2.md section A
 We do not claim any per-step impossibility result, any size of the value term, the coupling term or the cross-modal dependence on a real model, or the U-shaped dependence on the number of steps that appears in a toy model. % src: framework-v2.md section D "Not claimed"
 We do not claim that the census sample is a sample of the whole field: it is a random sample of records that passed title-and-abstract screening and have an arXiv identifier. We do not claim that sampler effects on joint text--image consistency are new, or that the value rule carries that consistency; the single preregistered run of Section~\ref{sec:exp003} supports neither claim. % src: research/review/audits/2026-10-15-gate-EXP-003.md section 6 items 4 and 7; decision D0019
 
-\subsection{How to read the paper}
+\subsection{Organisation of the article}
 \label{sec:intro-guide}
 
 Figure~\ref{fig:taxonomy} places the 47 models of the design space (Section~\ref{sec:design}) in a taxonomy by state space and model family, and gives an entry point to the literature: each leaf cites the model's paper. % src: research/review/coverage/design-space-v1.csv ("family"); scripts/fig_taxonomy.py
