@@ -1,0 +1,773 @@
+{
+ "base_verdicts": {
+  "RQ2": "mixed",
+  "RQ3": "weakly supported",
+  "RQ4": "mixed",
+  "RQ5": "mixed"
+ },
+ "strata": {
+  "G-long": {
+   "N_h": 265,
+   "n_extracted": 19,
+   "weight": 13.95
+  },
+  "G-mm": {
+   "N_h": 52,
+   "n_extracted": 20,
+   "weight": 2.6
+  },
+  "G-short": {
+   "N_h": 267,
+   "n_extracted": 20,
+   "weight": 13.35
+  }
+ },
+ "kish_effective_n_included": {
+  "n": 59,
+  "n_eff": 46.1
+ },
+ "kish_effective_n_signed_domain": {
+  "RQ2": {
+   "n": 22,
+   "n_eff": 15.6,
+   "by_stratum": {
+    "G-long": 7,
+    "G-mm": 10,
+    "G-short": 5
+   }
+  },
+  "RQ3": {
+   "n": 24,
+   "n_eff": 18.2,
+   "by_stratum": {
+    "G-long": 10,
+    "G-mm": 9,
+    "G-short": 5
+   }
+  },
+  "RQ4": {
+   "n": 15,
+   "n_eff": 13.7,
+   "by_stratum": {
+    "G-long": 8,
+    "G-mm": 2,
+    "G-short": 5
+   }
+  },
+  "RQ5": {
+   "n": 5,
+   "n_eff": 5.0,
+   "by_stratum": {
+    "G-long": 0,
+    "G-mm": 5,
+    "G-short": 0
+   }
+  }
+ },
+ "threshold_grid": {
+  "n_settings": 60,
+  "verdict_counts": {
+   "RQ2": {
+    "mixed": 60
+   },
+   "RQ3": {
+    "weakly supported": 48,
+    "mixed": 12
+   },
+   "RQ4": {
+    "weakly supported": 24,
+    "mixed": 36
+   },
+   "RQ5": {
+    "weakly supported": 16,
+    "untested": 20,
+    "mixed": 24
+   }
+  },
+  "settings_with_any_well_supported": 0,
+  "settings_identical_to_base": 16,
+  "grid": [
+   {
+    "direction_share": 0.55,
+    "control_share": 0.3,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.3,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.3,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.4,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.4,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.4,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.5,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.5,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.5,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.6,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.6,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.55,
+    "control_share": 0.6,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.3,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.3,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.3,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.4,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.4,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.4,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.5,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.5,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.5,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.6,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.6,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "weakly supported"
+    }
+   },
+   {
+    "direction_share": 0.6,
+    "control_share": 0.6,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "weakly supported",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.3,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.3,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.3,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.4,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.4,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.4,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.5,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.5,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.5,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.6,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.6,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.667,
+    "control_share": 0.6,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.3,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.3,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.3,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.4,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.4,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.4,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.5,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.5,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.5,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.6,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.6,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.75,
+    "control_share": 0.6,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "weakly supported",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.3,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.3,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.3,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.4,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.4,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.4,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.5,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.5,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.5,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.6,
+    "min_signed": 3,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.6,
+    "min_signed": 5,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "mixed"
+    }
+   },
+   {
+    "direction_share": 0.8,
+    "control_share": 0.6,
+    "min_signed": 8,
+    "verdicts": {
+     "RQ2": "mixed",
+     "RQ3": "mixed",
+     "RQ4": "mixed",
+     "RQ5": "untested"
+    }
+   }
+  ]
+ },
+ "misclass_merged_language_strata": {
+  "RQ2": "mixed",
+  "RQ3": "weakly supported",
+  "RQ4": "mixed",
+  "RQ5": "mixed"
+ },
+ "misclass_random_swaps": {
+  "draws": 1000,
+  "p_swap": 0.2,
+  "seed": 20261021,
+  "changes": {
+   "draws_any_change": 8,
+   "RQ4: mixed -> weakly supported": 8
+  }
+ },
+ "leave_one_out": {
+  "n_runs": 59,
+  "changes": {
+   "RQ5: mixed -> untested": 5
+  }
+ }
+}

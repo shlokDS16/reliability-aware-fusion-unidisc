@@ -1,0 +1,87 @@
+"""Census value-rule classes by arXiv year and by publication venue (revision 2026-10-21, assessment Q8).
+
+Rows and the value-rule classifier come from summary_random.py (final adjudicated rows, codebook v1.2).
+Year = 2000 + the first two digits of the arXiv identifier (first-version year).
+Venue = Semantic Scholar venue: the cached corpus file venues-semantic-scholar.json (2026-10-14) where it
+covers the paper, else one batch call to the Semantic Scholar Graph API, cached to census-venues-s2.json.
+A paper counts as "peer-reviewed venue" when the venue is set and is not arXiv; otherwise "preprint only".
+Intervals: Wilson 95 percent (ranks treated as a simple random sample of the census pool).
+
+    python analysis/census/census_by_year_venue.py
+"""
+import contextlib
+import io
+import json
+import runpy
+import time
+import urllib.error
+import urllib.request
+from collections import defaultdict
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[1]
+with contextlib.redirect_stdout(io.StringIO()):
+    ns = runpy.run_path(str(HERE / "summary_random.py"))
+rows, nonplain, low, wilson = ns["R"], ns["nonplain"], ns["low"], ns["wilson"]
+v = [d for d in rows if low(d.get("eligible")) == "yes" and nonplain(d) != "NA"]
+
+cache = HERE / "census-venues-s2.json"
+known = json.load(open(ROOT / "research/review/corpus/venues-semantic-scholar.json", encoding="utf-8"))["records"]
+fetched = json.load(open(cache, encoding="utf-8")) if cache.exists() else {}
+missing = [d["arxiv"] for d in v if d["arxiv"] not in known and d["arxiv"] not in fetched]
+if missing:
+    req = urllib.request.Request(
+        "https://api.semanticscholar.org/graph/v1/paper/batch?fields=venue,year,publicationVenue",
+        data=json.dumps({"ids": [f"arXiv:{a}" for a in missing]}).encode(), headers={"Content-Type": "application/json"})
+    for attempt in range(8):                     # the public API rate-limits unauthenticated calls (HTTP 429)
+        try:
+            res = json.load(urllib.request.urlopen(req, timeout=60))
+            break
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == 7:
+                raise
+            time.sleep(15 * (attempt + 1))
+    for a, r in zip(missing, res):
+        fetched[a] = {"venue": (r or {}).get("venue") or None, "year": (r or {}).get("year"),
+                      "found": r is not None}
+    fetched["_retrieved"] = "2026-10-21"
+    cache.write_text(json.dumps(fetched, indent=1, sort_keys=True), encoding="utf-8")
+
+
+def venue(a):
+    x = known.get(a) or fetched.get(a) or {}
+    return x.get("venue") or None
+
+
+def vclass(a):
+    s = venue(a)
+    return "preprint only" if not s or "arxiv" in s.lower() else "peer-reviewed venue"
+
+
+def table(key):
+    g = defaultdict(list)
+    for d in v:
+        g[key(d)].append(nonplain(d))
+    out = {}
+    for k in sorted(g):
+        c = g[k]
+        k_np = sum(x in ("yes", "unknown") for x in c)
+        out[str(k)] = {"n": len(c), "non_plain": c.count("yes"), "not_stated": c.count("unknown"), "plain": c.count("no"),
+                       "non_plain_or_not_stated": wilson(k_np, len(c))}
+    return out
+
+
+R = {"denominator": len(v), "by_year": table(lambda d: 2000 + int(d["arxiv"][:2])),
+     "by_venue_class": table(lambda d: vclass(d["arxiv"])),
+     "venue_coverage": {"from_corpus_file": sum(d["arxiv"] in known for d in v),
+                        "from_api": sum(d["arxiv"] in fetched for d in v),
+                        "not_found": sum(not (known.get(d["arxiv"]) or fetched.get(d["arxiv"], {}).get("found")) for d in v)}}
+named = defaultdict(list)
+for d in v:
+    if vclass(d["arxiv"]) == "peer-reviewed venue":
+        named[venue(d["arxiv"])].append(nonplain(d))
+R["peer_reviewed_by_venue"] = {k: {"n": len(c), "non_plain_or_not_stated": sum(x in ("yes", "unknown") for x in c)}
+                               for k, c in sorted(named.items(), key=lambda kv: -len(kv[1]))}
+(HERE / "census-by-year-venue.json").write_text(json.dumps(R, indent=1), encoding="utf-8")
+print(json.dumps(R, indent=1))
