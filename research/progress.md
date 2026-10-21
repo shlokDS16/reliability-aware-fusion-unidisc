@@ -1,7 +1,19 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 31 (2026-10-21 ~09:30 IST; newest; session 0839c9f4).** EC complete for all 8 (ecx002b void, re-run as
+- **HANDOFF 32 (2026-10-21 ~11:30 IST; newest; session 0839c9f4).** Gate re-audit: PASS WITH FIXES
+  (research/review/audits/2026-10-21-gate-section5-reaudit.md); its text findings fixed (commit 6bf656b: included-only
+  claim counts 179, direction-flag agreement 5/8 reported, matched-budget wording, S4/S6 captions). Open: M6 (blind
+  human check, user) and supplement.tex:74 todo (prompts and raw outputs for the release). **Page limit met:** main
+  35 pp including references (commits 5feb8e1, 0cbce1b, 30c96a8): Section 9 detail -> S7.5; Section 7 mechanisms,
+  other terms, revision corollary -> S8.6-S8.8; Section 4 test limits + survey comparison -> S5.3; Section 6 coding
+  sensitivity + census limits -> S3.3-S3.4; design-space figure -> S5.1 (Figure S1); census figure 0.82 width.
+  Supplement table numbers now generated (scripts/supprefs.py -> supprefs.tex; build order in its docstring) - the
+  old hard-coded Table S1/S2/S3 refs were wrong. Supplement 37 pp. **Running:** citation-validator ->
+  research/review/audits/2026-10-21-citations-paper1.md. **Next:** apply citation fixes; clarity pass with
+  research-humanizer on sections 2 (extraction), 5, 10, 11 and the abstract; recheck 35 pp; census \aud tag decision;
+  user items (AUTHOR-CHECKS part 1 and 2); graph-memory sync.
+- **HANDOFF 31 (2026-10-21 ~09:30 IST; session 0839c9f4).** EC complete for all 8 (ecx002b void, re-run as
   ecx002c). Gate-auditor FAILED Section 5 (22 findings) and red-team found 1 fatal + 8 major (reports in
   research/review/audits/2026-10-21-*.md). Response: **D0060** (orchestrator, listed for the user): included studies
   (update strata, 59 sampled of 584) primary, seed stratum (20 ~ 1,074) a separate column, stratified bootstrap
