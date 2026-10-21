@@ -1,6 +1,6 @@
 """RQ1-RQ6 estimates from the D0052 extraction sample (stratified; weights N_h / n_h).
 
-    python -I analysis/extraction/d0052/rq_analysis.py
+    python -E -P analysis/extraction/d0052/rq_analysis.py      (numpy, for the D0060 bootstrap)
 
 Inputs: analysis/extraction/d0052/sample.json and gate-manifest.json (strata), stage-a-manifest.json (ids left out of the
 frame), batch-log.jsonl (usable sessions), the extractor records analysis/extraction/d0052/EA/<batch>/*.jsonl (the
@@ -462,6 +462,241 @@ R["sensitivity"] = {
     "S2_without_rejected": run_variant(keep=all_ids - rejected),
     "S3_second_reader_ids_from_EB": run_variant(swap={i: eb_recs[i] for i in seed["second_reader_ids"] if i in eb_recs}),
 }
+# ================================================================ D0060 (response to the 2026-10-21 red-team audit)
+# Primary estimand: the included studies (update strata). The seed stratum is a separate column; the combined frame
+# is kept above (R["RQ*"], R["sensitivity"]) for the supplement only. Intervals: stratified bootstrap over studies
+# within strata (percentile, B = 4000, seed 20261021). Verdicts: thresholds of D0060, applied to RQ2-RQ5 only.
+import numpy as np
+
+B, BOOT_SEED = 4000, 20261021
+
+
+def tol_shapes(r, gr, tol=0.01):
+    """monotone() with dips or rises within tol of the larger neighbour ignored (red-team M2 sensitivity)."""
+    arms = {a["arm_id"]: a.get("level_num") if a.get("level_num") is not None else num(a.get("level_printed")) for a in gr.get("arms") or []}
+    out = []
+    for u in units(r, gr["group_id"]):
+        hib = u.get("higher_is_better")
+        if hib is None or u.get("metric_kind") != "generated-sample":
+            continue
+        pts = sorted((arms[x["arm_id"]], num(x.get("value_printed"))) for x in u.get("values") or []
+                     if arms.get(x["arm_id"]) is not None and num(x.get("value_printed")) is not None)
+        if len(pts) < 3:
+            continue
+        q = [y if hib else -y for _, y in pts]
+        d = [b - a if abs(b - a) > tol * max(abs(a), abs(b), 1e-12) else 0.0 for a, b in zip(q, q[1:])]
+        if all(x >= 0 for x in d) and any(x > 0 for x in d):
+            out.append("up")
+        elif all(x <= 0 for x in d) and any(x < 0 for x in d):
+            out.append("down")
+        elif all(x == 0 for x in d):
+            out.append("flat")
+        elif max(q) > max(q[0], q[-1]) and d[0] > 0:
+            out.append("peaked")
+        else:
+            out.append("other")
+    return out
+
+
+sh_tol = lambda r: ([s for gr in groups(r, {"steps-or-nfe"}) for s in tol_shapes(r, gr)]
+                    + [FLIP.get(s, s) for gr in groups(r, {"tokens-per-step"}) for s in tol_shapes(r, gr)])
+ctrl = lambda gs, r: (any(gr.get("budget_across_arms") in ("matched", "reported") for gr in gs)
+                      and any(any_var(r, gr) for gr in gs))
+# RQ5 signs oriented as joint (shared, fuller) arm against the reduced (decoupled) arm, not anchor against the rest:
+# rq5-orientation.jsonl gives, per synergy group, whether the anchor is the joint arm (gate audit 2026-10-21 finding 2)
+ORIENT = {(x["id"], x["group_id"]): (1 if x["anchor_is_joint"] else -1) for x in jl(D / "rq5-orientation.jsonl")}
+
+
+def syn(r):
+    out = []
+    for gr in groups(r, SYN):
+        s_ = direction(r, gr)
+        if s_:
+            assert (r["id"], gr["group_id"]) in ORIENT, ("RQ5 group without orientation", r["id"], gr["group_id"])
+            out += [x * ORIENT[(r["id"], gr["group_id"])] for x in s_]
+    return out
+maj = lambda xs, sgn: None if not xs else (sum(1 for x in xs if x == sgn) > len(xs) / 2)
+VARS = {
+    # RQ2
+    "RQ2_has_ar": lambda r: bool(ar(r)),
+    "RQ2_matched_any": lambda r: None if not ar(r) else any(gr.get("budget_across_arms") == "matched" for gr in ar(r)),
+    "RQ2_matched_all": lambda r: None if not ar(r) else all(gr.get("budget_across_arms") == "matched" for gr in ar(r)),
+    "RQ2_budget_not_reported_any": lambda r: None if not ar(r) else any(gr.get("budget_across_arms") == "not reported" for gr in ar(r)),
+    "RQ2_copied_stated_any": lambda r: None if not ar(r) else any(a.get("number_source") == "copied-stated" for gr in ar(r) for a in gr.get("arms") or [] if a.get("generator") == "autoregressive"),
+    "RQ2_variance_any": lambda r: None if not ar(r) else any(any_var(r, gr) for gr in ar(r)),
+    "RQ2_control": lambda r: None if not ar(r) else ctrl(ar(r), r),
+    "RQ2_signed": lambda r: bool(sg(r)),
+    "RQ2_better_majority": lambda r: maj(sg(r), 1),
+    "RQ2_worse_majority": lambda r: maj(sg(r), -1),
+    "RQ2_abstract_claim": lambda r: None if g(r, "claims", "CT") is None else g(r, "claims", "CT", "CT6") == "yes",
+    # RQ3
+    "RQ3_has_training": lambda r: bool(tr(r)),
+    "RQ3_credited_ablation_any": lambda r: None if not tr(r) else any(gr.get("credited_ablation") for gr in tr(r)),
+    "RQ3_held_fixed_all": lambda r: None if not tr(r) else all(gr.get("held_fixed") == "stated" for gr in tr(r)),
+    "RQ3_variance_any": lambda r: None if not tr(r) else any(any_var(r, gr) for gr in tr(r)),
+    "RQ3_control": lambda r: None if not tr(r) else ctrl(tr(r), r),
+    "RQ3_signed": lambda r: bool(ts(r)),
+    "RQ3_anchor_better_majority": lambda r: maj(ts(r), 1),
+    "RQ3_anchor_worse_majority": lambda r: maj(ts(r), -1),
+    # RQ4
+    "RQ4_has_inference": lambda r: bool(inf(r)),
+    "RQ4_budget_reported_any": lambda r: None if not inf(r) else any(gr.get("budget_across_arms") in ("matched", "reported") for gr in inf(r)),
+    "RQ4_variance_any": lambda r: None if not inf(r) else any(any_var(r, gr) for gr in inf(r)),
+    "RQ4_control": lambda r: None if not inf(r) else ctrl(inf(r), r),
+    "RQ4_has_sweep": lambda r: bool(sh(r)),
+    "RQ4_sweep_up_majority": lambda r: None if not sh(r) else sum(s == "up" for s in sh(r)) > len(sh(r)) / 2,
+    "RQ4_sweep_down_majority": lambda r: None if not sh(r) else sum(s == "down" for s in sh(r)) > len(sh(r)) / 2,
+    "RQ4_sweep_all_up": lambda r: None if not sh(r) else all(s == "up" for s in sh(r)),
+    "RQ4_any_nonmonotone": lambda r: None if not sh(r) else any(s in ("peaked", "other") for s in sh(r)),
+    "RQ4_any_nonmonotone_tol1pct": lambda r: None if not sh_tol(r) else any(s in ("peaked", "other") for s in sh_tol(r)),
+    "RQ4_sweep_control": lambda r: None if not sh(r) else ctrl(groups(r, {"steps-or-nfe", "tokens-per-step"}), r),
+    # RQ5 (G-mm only; other strata give None through the domain)
+    "RQ5_claim": lambda r: None if of_id.get(r["id"]) != "G-mm" else g(r, "claims", "CT", "CT5") == "yes",
+    "RQ5_has_ablation": lambda r: None if of_id.get(r["id"]) != "G-mm" else bool(groups(r, SYN)),
+    "RQ5_signed": lambda r: None if of_id.get(r["id"]) != "G-mm" else bool(syn(r)),
+    "RQ5_joint_better_majority": lambda r: None if of_id.get(r["id"]) != "G-mm" else maj(syn(r), 1),
+    "RQ5_joint_worse_majority": lambda r: None if of_id.get(r["id"]) != "G-mm" else maj(syn(r), -1),
+    "RQ5_benchmark": lambda r: None if of_id.get(r["id"]) != "G-mm" else str(g(r, "study", "synergy_benchmark", "present")) == "yes",
+    "RQ5_control": lambda r: None if of_id.get(r["id"]) != "G-mm" or not groups(r, SYN) else ctrl(groups(r, SYN), r),
+    # claims
+    "claims_any_unsupported": lambda r: None if not [c for c in (g(r, "claims", "list") or []) if c.get("status") not in (None, "not-checkable")] else any(c.get("status") in ("unsupported", "contradicted") for c in g(r, "claims", "list")),
+}
+for k in [f"QA{j}" for j in range(1, 10)]:
+    for s_ in (0, 1, 2):
+        VARS[f"{k}_low_eq{s_}"] = (lambda r, k=k, s_=s_: None if qa_by[r["id"]]["low"][k] == "NA" else qa_by[r["id"]]["low"][k] == s_)
+        VARS[f"{k}_high_eq{s_}"] = (lambda r, k=k, s_=s_: None if qa_by[r["id"]]["high"][k] == "NA" else qa_by[r["id"]]["high"][k] == s_)
+# RQ1 descriptive shares
+for fld, path, cats in (("state_space", ("study", "state_space"), SS),
+                        ("position_rule", ("design", "c4_position", "rule"), ["left-to-right", "random", "confidence-ranked", "threshold-adaptive", "fixed-order", "learned-planner", "all-positions", "other", "not_stated"]),
+                        ("blockwise", ("design", "c4_position", "blockwise"), ["yes", "no", "not_stated"]),
+                        ("revision", ("design", "c5_revision"), ["none", "explicit-remasking-or-editing", "corrector", "implicit-channel", "output-level", "other", "not_stated"]),
+                        ("memory", ("design", "memory"), ["none", "self-conditioning", "exact-cache", "approximate-cache", "planner-state", "other", "not_stated"]),
+                        ("training_free", ("study", "training", "training_free"), ["yes", "no", "not_stated"])):
+    for c in cats:
+        def f_(r, path=path, c=c):
+            v = g(r, *path)
+            v = v if isinstance(v, list) else [v]
+            return c in [x if x is not None else "not_stated" for x in v]
+        VARS[f"RQ1_{fld}={c}"] = f_
+
+
+def boot_est(var, strata, keep=None):
+    """Domain proportion over the given strata, weights N_h * (domain count / n_h); stratified bootstrap percentile CI."""
+    ids = {h: [i for i in done[h] if keep is None or i in keep] for h in strata if h in done}
+    vals = {h: np.array([(-1 if v is None else int(v)) for v in (VARS[var](recs[i]) for i in L_)], int) for h, L_ in ids.items()}
+    count = int(sum((a == 1).sum() for a in vals.values()))
+    of = int(sum((a >= 0).sum() for a in vals.values()))
+    if of == 0:
+        return {"count": 0, "of": 0, "share": None, "ci95": None}
+
+    def share(arrs):
+        num_, den_ = 0.0, 0.0
+        for h, a in arrs.items():
+            n_ = len(a)
+            dom = (a >= 0).sum()
+            if n_ == 0 or dom == 0:
+                continue
+            w = N_h[h] * dom / n_
+            num_ += w * (a == 1).sum() / dom
+            den_ += w
+        return num_ / den_ if den_ > 0 else np.nan
+    p = share(vals)
+    rng = np.random.default_rng(BOOT_SEED)
+    bs = np.empty(B)
+    for b in range(B):
+        bs[b] = share({h: a[rng.integers(0, len(a), len(a))] for h, a in vals.items() if len(a)})
+    lo, hi = np.nanquantile(bs, [0.025, 0.975])
+    by = {h: f"{int((a == 1).sum())}/{int((a >= 0).sum())}" for h, a in vals.items()}
+    return {"count": count, "of": of, "share": round(float(p), 3), "ci95": [round(float(lo), 3), round(float(hi), 3)], "by_stratum": by}
+
+
+SEED = ("S-seed",)
+P = {"population_primary": "included studies (update strata G-mm, G-short, G-long)", "N_primary": sum(N_h[h] for h in UPD),
+     "n_primary": sum(n_h[h] for h in UPD), "N_seed": N_h["S-seed"], "n_seed": n_h["S-seed"],
+     "bootstrap": {"B": B, "seed": BOOT_SEED, "method": "stratified percentile"}}
+P["included"] = {v: boot_est(v, UPD) for v in VARS}
+P["seed"] = {v: boot_est(v, SEED) for v in VARS}
+P["combined"] = {v: boot_est(v, UPD + SEED) for v in VARS}
+P["included_without_rejected"] = {v: boot_est(v, UPD, keep=all_ids - rejected) for v in VARS}
+old_recs = recs
+recs = {**recs, **{i: eb_recs[i] for i in seed["second_reader_ids"] if i in eb_recs}}
+qa_rows_eb = {i: {"low": qa_scores(recs[i], False), "high": qa_scores(recs[i], True)} for i in seed["second_reader_ids"] if i in eb_recs}
+_qa_saved = dict(qa_by)
+for i, x in qa_rows_eb.items():
+    qa_by[i] = {**qa_by.get(i, {}), **x}
+P["included_EB_on_8"] = {v: boot_est(v, UPD) for v in VARS}
+qa_by.clear(); qa_by.update(_qa_saved)
+recs = old_recs
+
+
+def verdict(rq, E):
+    """D0060 thresholds on the included-study estimates E (weighted shares)."""
+    if rq == "RQ4":
+        up, down, n_sig = E["RQ4_sweep_up_majority"], E["RQ4_sweep_down_majority"], E["RQ4_has_sweep"]["count"]
+        control = E["RQ4_sweep_control"]
+    elif rq == "RQ5":
+        up, down, n_sig = E["RQ5_joint_better_majority"], E["RQ5_joint_worse_majority"], E["RQ5_signed"]["count"]
+        control = E["RQ5_control"]
+    elif rq == "RQ3":
+        up, down, n_sig = E["RQ3_anchor_better_majority"], E["RQ3_anchor_worse_majority"], E["RQ3_signed"]["count"]
+        control = E["RQ3_control"]
+    else:
+        up, down, n_sig = E["RQ2_better_majority"], E["RQ2_worse_majority"], E["RQ2_signed"]["count"]
+        control = E["RQ2_control"]
+    if n_sig < 5:
+        v = "untested"
+    elif max(up["share"] or 0, down["share"] or 0) < 2 / 3:
+        v = "mixed"
+    elif (control["share"] or 0) < 0.5:
+        v = "weakly supported"
+    else:
+        v = "well supported"
+    return {"verdict": v, "n_signed": n_sig, "share_one_way": max(up["share"] or 0, down["share"] or 0),
+            "direction": "positive" if (up["share"] or 0) >= (down["share"] or 0) else "negative",
+            "control_share": control["share"]}
+
+
+for col in ("included", "seed", "combined", "included_without_rejected", "included_EB_on_8"):
+    P.setdefault("verdicts", {})[col] = {rq: verdict(rq, P[col]) for rq in ("RQ2", "RQ3", "RQ4", "RQ5")}
+# extra agreement measures for S4 (red-team M4): factor type, claim status, QA item scores, study-level flags
+AG = json.load(open(D / "agreement-8-texts/agreement-stage-a.json", encoding="utf-8"))
+ea_p = {r["id"]: r for r in jl(D / "ec-input/EA-pairs.jsonl")}
+eb_p = {r["id"]: r for r in jl(D / "ec-input/EB-pairs.jsonl")}
+qa_pairs = [(qa_scores(ea_p[i], False)[k], qa_scores(eb_p[i], False)[k]) for i in ea_p for k in [f"QA{j}" for j in range(1, 10)]]
+FLAGS = ["RQ2_has_ar", "RQ2_matched_any", "RQ2_budget_not_reported_any", "RQ2_better_majority", "RQ3_has_training",
+         "RQ3_held_fixed_all", "RQ3_anchor_better_majority", "RQ4_has_inference", "RQ4_budget_reported_any",
+         "RQ4_variance_any", "RQ4_sweep_up_majority", "RQ4_any_nonmonotone", "RQ5_has_ablation", "claims_any_unsupported"]
+flag_pairs = {}
+for k in FLAGS:
+    pr = [(VARS[k](ea_p[i]), VARS[k](eb_p[i])) for i in ea_p]
+    pr = [(a, b) for a, b in pr if not (a is None and b is None)]
+    flag_pairs[k] = {"agree": sum(a == b for a, b in pr), "of": len(pr)}
+P["agreement_extra"] = {
+    "factor_type_matched_groups": {"agree": AG["metrics"]["G4 M-class"]["numerator"], "of": AG["metrics"]["G4 M-class"]["denominator"]},
+    "claim_status": AG["diagnostics"]["M-CL"],
+    "qa_item_scores_low": {"agree": sum(a == b for a, b in qa_pairs), "of": len(qa_pairs)},
+    "study_level_flags": flag_pairs,
+    "study_level_flags_total": {"agree": sum(v["agree"] for v in flag_pairs.values()), "of": sum(v["of"] for v in flag_pairs.values())},
+    "units_both_found_studies": AG["metrics"]["G4 M-val"].get("records_used"),
+}
+P["kish_n_included"] = {}
+for v in ("RQ2_has_ar", "RQ2_signed", "RQ3_has_training", "RQ4_has_inference", "RQ4_has_sweep"):
+    w = []
+    for h in UPD:
+        for i in done[h]:
+            if VARS[v](recs[i]):
+                w.append(N_h[h] / n_h[h])
+    P["kish_n_included"][v] = round(sum(w) ** 2 / sum(x * x for x in w), 1) if w else 0
+UPD_IDS = [i for h in UPD for i in done[h]]
+P["group_counts_included"] = {
+    "ar_groups_by_budget": dict(Counter(gr.get("budget_across_arms") for i in UPD_IDS for gr in ar(recs[i]))),
+    "sweep_curves": dict(Counter(s for i in UPD_IDS for s in sh(recs[i]))),
+    "sweep_curves_by_study": {i: len(sh(recs[i])) for i in UPD_IDS if sh(recs[i])},
+    "rq5_signed_by_study": {i: syn(recs[i]) for i in done["G-mm"] if syn(recs[i])},
+    "rq3_anchor_rules_signed_groups": dict(Counter(gr.get("anchor_rule") for i in UPD_IDS for gr in tr(recs[i]) if direction(recs[i], gr))),
+}
+R["D0060"] = P
+
 (D / "rq-results.json").write_text(json.dumps(R, indent=1, default=dict) + "\n", encoding="utf-8")
 
 
