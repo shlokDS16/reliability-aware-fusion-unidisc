@@ -75,32 +75,8 @@ $S_\theta$ is the same directed quantity under the model's own joint over the co
 \subsection{The lever table}
 \label{sec:budget-levers}
 
-Table~\ref{tab:levers} places each method by the term it acts on and what it pays, with the value rows merged into one row keyed by mechanism. Position and value choice stay separate because in practice one often depends on the other (Section~\ref{sec:design-limits}). ``Rows'' counts the models of \suppTabDesign{} whose long-form entry lists the lever; the assignment is our reading, and the training count is not a count of trained models. % src: framework-v1.md section 3 with the merge of framework-v2.md D3; tables/design-space-counts.log (lever counts; value-rule row: L11 or L12 or sequence-level selection)
+\suppTabLevers{} in the supplement places each method by the term it acts on and what it pays. In brief, fewer tokens per step, position order, joint draws inside a set, block-wise generation and modality-ordered schedules act on the factorisation term and pay in forward passes, planning or parallelism; training choices, self-conditioning and distillation act on the learning term and pay in training compute; token-level and output-level revision repair realised errors at the cost of extra passes or generations; value rules act on $V$ and pay in diversity, extra passes or extra samples; and compute reuse saves wall-clock time, exactly or at the cost of an approximation error. The table lists the methods with the value rows merged into one row keyed by mechanism. Position and value choice stay separate because in practice one often depends on the other (Section~\ref{sec:design-limits}). ``Rows'' counts the models of \suppTabDesign{} whose long-form entry lists the lever; the assignment is our reading, and the training count is not a count of trained models. % src: framework-v1.md section 3 with the merge of framework-v2.md D3; tables/design-space-counts.log (lever counts; value-rule row: L11 or L12 or sequence-level selection)
 
-\begin{table}[t]
-\caption{Lever table. $\Efact$, $\Elearn$, $V$ and $\Eapprox$ as in Section~\ref{sec:budget}. ``Rows'' is the number of the 47 models listing the lever.}
-\label{tab:levers}
-\footnotesize
-\begin{tabular}{@{}p{3.6cm}p{3.4cm}p{3.2cm}r@{}}
-\toprule
-Lever (row in \suppTabDesign{}) & Acts on & Pays & Rows \\
-\midrule
-Fewer tokens per step; adaptive $k$ (L1) & $\Efact$ & forward passes & 21 \\ % src: tables/design-space-counts.log
-Choose weakly dependent sets, i.e.\ position order (L2) & $\Efact$; also moves $\Elearn$ (visited states) & planner cost & 9 \\
-Joint draw inside the set (L3) & $\Efact$, through $V<0$ & a second model or head & 2 \\
-Block-wise generation (L4) & $\Efact$ across blocks & global parallelism & 8 \\
-Modality-ordered or planned schedules (L5) & the cross-modal part of $\Efact$ & forward passes; within-modality total correlation & 6 \\
-Training: objective, scale, fine-tuning, RL (L6) & $\Elearn$ & training compute & 11 \\
-Self-conditioning, learned schedules, time warping (L7) & $\Elearn$ (Gaussian models) & training compute & 4 \\
-Distillation into few steps (L8) & moves $\Efact$ into the model class & training; the student must represent joint structure & 3 \\
-Token-level revision (L9) & repairs realised errors & forward passes & 7 \\
-Output-level revision (L10) & repairs finished samples & full generations & 2 \\
-Value rules: argmax, temperature, truncation, guidance and modality dropout, sample-then-filter, sequence-level selection (L11, L12, SL) & $V$; guidance also re-conditions & diversity; an extra pass per step for guidance; samples for selection & 29 \\
-Exact compute reuse (L13) & nothing & wall-clock only (an $\Elearn$ cost if bought by an attention mask) & 4 \\
-Lossy compute reuse (L14) & adds $\Eapprox$ & wall-clock only & 3 \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \subsection{Two corollaries, one withdrawn proposition, and what the census says}
 \label{sec:budget-props}

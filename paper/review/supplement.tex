@@ -368,7 +368,7 @@ Code links were checked on 2026-10-21 by a script that fetched each own-code rep
 \Description{A dot matrix with one row per model and one column per cell of the position rule, value rule and revision choices. Rows are grouped into six channel groups: erasure (26 models), Gaussian on embeddings or logits (7), mixed or hybrid channel (7), uniform (3), general Markov or CTMC (2) and flow (2). Thirty-six rows are marked as fitting the notation and eleven, tinted, as fitting it partly.}
 \end{figure}
 
-Table~\ref{tab:design} is the condensed table of the 47 models (Section~\Mref{sec:design-table}); Figure~\ref{fig:taxonomy} shows the same models as a dot matrix. The codes are as follows. \emph{C1}: Er erasure, Un uniform, Gs Gaussian on embeddings, Sx Gaussian on a logit simplex, Q general Markov or continuous-time transition matrices, Fl probability path (flow), Ed edit channel, AR+$X$ autoregressive text with diffusion component $X$ for images, +aux an auxiliary latent. \emph{Position rule (C4)}: rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position updated each step with no committed set, ar left to right, ns not stated. \emph{Value rule (C4)}: A argmax or greedy, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance, M sequence-level selection; plain sampled values; lik.\ the headline is a likelihood bound; ns not stated in the parts read; $\dagger$ temperature varied on purpose to trace an entropy frontier; (M) an optional variant. \emph{Revision (C5)}: none, impl implicit, corr corrector, remask, edit, out output-level, ns not stated. \emph{Levers}: L1 to L14 as in Table~\Mref{tab:levers}; SL sequence-level selection, for which the lever table has no row.
+Table~\ref{tab:design} is the condensed table of the 47 models (Section~\Mref{sec:design-table}); Figure~\ref{fig:taxonomy} shows the same models as a dot matrix. The codes are as follows. \emph{C1}: Er erasure, Un uniform, Gs Gaussian on embeddings, Sx Gaussian on a logit simplex, Q general Markov or continuous-time transition matrices, Fl probability path (flow), Ed edit channel, AR+$X$ autoregressive text with diffusion component $X$ for images, +aux an auxiliary latent. \emph{Position rule (C4)}: rnd random sets, cnf ranked by confidence, ent entropy or threshold rule, blk blocks, all every position updated each step with no committed set, ar left to right, ns not stated. \emph{Value rule (C4)}: A argmax or greedy, T temperature, P top-$p$ or top-$k$, S sample-then-filter, G guidance, M sequence-level selection; plain sampled values; lik.\ the headline is a likelihood bound; ns not stated in the parts read; $\dagger$ temperature varied on purpose to trace an entropy frontier; (M) an optional variant. \emph{Revision (C5)}: none, impl implicit, corr corrector, remask, edit, out output-level, ns not stated. \emph{Levers}: L1 to L14 as in Table~\ref{tab:levers}; SL sequence-level selection, for which the lever table has no row.
 Position and revision codes in Table~\ref{tab:design} are condensed by us from the free-text cells of the long form.
 
 {\scriptsize
@@ -571,6 +571,17 @@ On this model, at equal network calls and equal weights, the link between a comp
 
 Each block below is moved unchanged in content from the section named, where a one-sentence pointer remains.
 
+\subsection{The commitment process at a glance (from Section~\Mref{sec:notation})}
+\label{sec:s-formalism}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/fig02-formalism.pdf} % schematic, no data: paper/review/scripts/fig02_formalism.py
+\caption{The commitment process and where the five design choices act. Training fixes the channel (C1) and the reveal law (C2) and fits the predictor (C3). Each sampling step passes the state through the network (C3), the position law and the value law (C4) and a commit; a revision rule (C5), where one exists, then remasks positions. Dashed boxes and arrows are optional or concern training only.}
+\label{fig:formalism}
+\Description{Two bands. Top: data, then the channel (C1), the reveal law (C2) and the fitted predictor (C3), joined left to right. Bottom: a loop of six boxes, state, network (C3), position law (C4), value law (C4), commit, and optional revision (C5), returning to the state; a dashed arrow carries the fitted predictor to the network.}
+\end{figure}
+
 \subsection{The commit-kernel sampler (from Section~\Mref{sec:notation-alg})}
 \label{sec:s-alg}
 
@@ -598,6 +609,34 @@ $z_0\leftarrow$ all positions masked except those fixed by $c$; $m_0\leftarrow\v
 \label{sec:s-refine}
 
 Four refinements were needed for rows that fit. Guidance by a classifier or reward gradient on logits or scores edits the state, not the marginals, so lever row L12 was renamed to cover it. The position rule often reads sampled or tempered values (MaskGIT, Show-o, UniDisc, Dynin-Omni, DiffuCoder), so position and value rules are separate rows in the table but coupled in practice. An exact cache can be bought by restricting the attention mask, which changes the learning term (LaViDa's prefix mask)~\cite{arXiv:2505.16839}. And the structured transition matrices already in D3PM need the same C1 entry as FUDOKI. % src: design-space-v1.md section 3(a) items 6 to 9
+
+\subsection{The lever table (from Section~\Mref{sec:budget-levers})}
+\label{sec:s-levers}
+
+\begin{table}[h]
+\caption{Lever table. $\Efact$, $\Elearn$, $V$ and $\Eapprox$ as in Section~\Mref{sec:budget}. ``Rows'' is the number of the 47 models listing the lever.}
+\label{tab:levers}
+\footnotesize
+\begin{tabular}{@{}p{3.6cm}p{3.4cm}p{3.2cm}r@{}}
+\toprule
+Lever (row in Table~\ref{tab:design}) & Acts on & Pays & Rows \\
+\midrule
+Fewer tokens per step; adaptive $k$ (L1) & $\Efact$ & forward passes & 21 \\ % src: tables/design-space-counts.log
+Choose weakly dependent sets, i.e.\ position order (L2) & $\Efact$; also moves $\Elearn$ (visited states) & planner cost & 9 \\
+Joint draw inside the set (L3) & $\Efact$, through $V<0$ & a second model or head & 2 \\
+Block-wise generation (L4) & $\Efact$ across blocks & global parallelism & 8 \\
+Modality-ordered or planned schedules (L5) & the cross-modal part of $\Efact$ & forward passes; within-modality total correlation & 6 \\
+Training: objective, scale, fine-tuning, RL (L6) & $\Elearn$ & training compute & 11 \\
+Self-conditioning, learned schedules, time warping (L7) & $\Elearn$ (Gaussian models) & training compute & 4 \\
+Distillation into few steps (L8) & moves $\Efact$ into the model class & training; the student must represent joint structure & 3 \\
+Token-level revision (L9) & repairs realised errors & forward passes & 7 \\
+Output-level revision (L10) & repairs finished samples & full generations & 2 \\
+Value rules: argmax, temperature, truncation, guidance and modality dropout, sample-then-filter, sequence-level selection (L11, L12, SL) & $V$; guidance also re-conditions & diversity; an extra pass per step for guidance; samples for selection & 29 \\
+Exact compute reuse (L13) & nothing & wall-clock only (an $\Elearn$ cost if bought by an attention mask) & 4 \\
+Lossy compute reuse (L14) & adds $\Eapprox$ & wall-clock only & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Memory in the error budget (from Section~\Mref{sec:budget-other})}
 \label{sec:s-memory}
@@ -646,7 +685,7 @@ The second item depends on the regime: the released MaskGIT sampler adds Gumbel 
 
 The second corollary, on where a revision sampler's gain comes from, and two withdrawn statements follow in the next subsection. % src: framework-v2.md section C (P3); moved text in supplement.tex S8.8
 
-\emph{What the census says about the levers.} Of 153 headline results with a codable value rule, 147 use a non-plain rule or do not state one (the value-rule row of Table~\Mref{tab:levers}). Of the 152 with a generated-sample metric, 55 report the headline at two or more step settings (the rows for tokens per step and position order), and only 20 of those state that the value rule was held fixed. A diversity or entropy measure accompanies the headline in 28 of the 152; by the withdrawn proposition it does not close the gap. These count what is written, not how much any rule changed any number. % src: coverage/census-result-v2.md ("Result"); the same numbers as Table~\Mref{tab:census-main}
+\emph{What the census says about the levers.} Of 153 headline results with a codable value rule, 147 use a non-plain rule or do not state one (the value-rule row of Table~\ref{tab:levers}). Of the 152 with a generated-sample metric, 55 report the headline at two or more step settings (the rows for tokens per step and position order), and only 20 of those state that the value rule was held fixed. A diversity or entropy measure accompanies the headline in 28 of the 152; by the withdrawn proposition it does not close the gap. These count what is written, not how much any rule changed any number. % src: coverage/census-result-v2.md ("Result"); the same numbers as Table~\Mref{tab:census-main}
 
 \subsection{Where a revision gain comes from, and withdrawn statements (from Section~\Mref{sec:budget-props})}
 \label{sec:s-props}

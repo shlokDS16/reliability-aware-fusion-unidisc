@@ -86,12 +86,5 @@ Algorithm~\ref{alg:commit} draws one commit from a policy; the sampler loop that
 }
 \Return $(A,y)$\;
 \end{algorithm}
-For channels without a committed set (Gaussian, uniform), the commit step is replaced by an update of every position and a re-noising step, and a final rounding commits all $L$ positions at once; in the notation this is a last step with $k=L$. % src: framework-v1.md section 1, C4 (G10)
+For channels without a committed set (Gaussian, uniform), the commit step is replaced by an update of every position and a re-noising step, and a final rounding commits all $L$ positions at once; in the notation this is a last step with $k=L$. \suppFigFormalism{} in the supplement draws the process: training fixes C1 and C2 and fits C3, and each sampling step passes the state through the network (C3), the position and value laws (C4), a commit and an optional revision (C5). % src: framework-v1.md section 1, C4 (G10)
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\linewidth]{figures/fig02-formalism.pdf} % schematic, no data: paper/review/scripts/fig02_formalism.py
-\caption{The commitment process and where the five design choices act. Training fixes the channel (C1) and the reveal law (C2) and fits the predictor (C3). Each sampling step passes the state through the network (C3), the position law and the value law (C4) and a commit; a revision rule (C5), where one exists, then remasks positions. Dashed boxes and arrows are optional or concern training only.}
-\label{fig:formalism}
-\Description{Two bands. Top: data, then the channel (C1), the reveal law (C2) and the fitted predictor (C3), joined left to right. Bottom: a loop of six boxes, state, network (C3), position law (C4), value law (C4), commit, and optional revision (C5), returning to the state; a dashed arrow carries the fitted predictor to the network.}
-\end{figure}

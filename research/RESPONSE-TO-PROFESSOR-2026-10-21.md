@@ -2,7 +2,7 @@
 
 Paper 1, "Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review".
 Revision commits on branch `claude/resume-dlm-discovery-exp-003-334706`, from b2ef278 onward (decision D0069).
-Outputs: `paper/review/main.pdf` (38 pages: text to page 33, references 5 pages), `paper/review/supplement.pdf`
+Outputs: `paper/review/main.pdf` (37 pages: text to page 32, references 5 pages), `paper/review/supplement.pdf`
 (52 pages), `paper/review/docx/main.docx`. Section numbers below are those of the revised main text (a new
 Section 8 was inserted, the old EXP-003 section is now a short subsection of Section 9, and Limitations is Section 10).
 
@@ -167,8 +167,9 @@ Where they are integrated:
 
 - Page length: at the author's request the EXP-003 section became a short subsection of Section 9 (full text in
   Supplement S7), and the step-sweep corollary and census-lever paragraph of Section 7 moved to Supplement S8.
-  main.pdf is now 38 pages (text to page 33, references 5) against the 35-page target recorded in D0068. Reaching 35
-  would need about 3 more pages moved (for example the formalism figure of Section 3 or the lever table of Section 7).
+  The formalism figure of Section 3 and the lever table of Section 7 then moved to Supplement S8 (Figure S2,
+  Table S15), with prose summaries in place. main.pdf is now 37 pages (text to page 32, references 5) against the
+  35-page target recorded in D0068; the remaining 2 pages are the reference list.
 - The human-only validation pass (Q5) and the four-arm and V measurements (Q2, Q7) are designs, not results.
 - Clarity editing with research-humanizer was not run on the new text, to stay within the weekly budget.
 - The release (GitHub and Zenodo) was not rebuilt or pushed.
