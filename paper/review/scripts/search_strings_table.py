@@ -1,3 +1,4 @@
+import re
 """Supplement S1: every logged search, read from research/review/corpus/search-log.jsonl.
 
 Writes paper/review/tables/search-strings.tex: one entry per distinct (database, query) with string label, run time
@@ -61,6 +62,15 @@ for k, v in by.items():
     L.append(r"\item \texttt{" + tex(k) + "}: " + "; ".join(v))
 L.append(r"\end{itemize}")
 L.append(r"\end{small}")
+def _nopath(s):
+    if s.startswith("%"):
+        return s
+    s = re.sub(r", ingest tools/ingest\\_subscription\.py", "", s)
+    s = re.sub(r"(research|tools|analysis)/[A-Za-z0-9_\\\-./]+", "the archived search log", s)
+    return re.sub(r"  +", " ", s)
+
+
+L = [_nopath(x) for x in L]
 out = ROOT / "paper/review/tables/search-strings.tex"
 out.write_text("\n".join(L) + "\n", encoding="utf-8")
 print(out, "entries", len(seen), "openreview runs", len(orv))
