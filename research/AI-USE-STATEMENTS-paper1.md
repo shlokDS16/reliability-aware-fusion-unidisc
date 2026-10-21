@@ -1,6 +1,7 @@
 # Where the paper states its use of AI (Paper 1, version of 2026-10-21)
 
-Page numbers are those of `paper/review/main.pdf` (35 pages) and `paper/review/supplement.pdf`. The Word file
+Page numbers are those of `paper/review/main.pdf` (34 pages) and `paper/review/supplement.pdf` (40 pages), re-checked
+on 2026-10-21 after fixes A-C (Section 9 shortened; its detail moved to supplement S7.6). The Word file
 (`paper/review/docx/main.docx`) has the same sections and headings, so the section numbers below find the same text there.
 
 ## The required statement (ACM policy: AI used to conduct the research must be described in the Methods section)
@@ -24,8 +25,8 @@ Page numbers are those of `paper/review/main.pdf` (35 pages) and `paper/review/s
 | 10 | **Section 2.9 "Departures from the protocol"**, p. 10 | Items 4 and 5: records and fields resolved by the first author confirming a model reading, not by an independent second screening; item on the verdict thresholds written after the results. |
 | 11 | **Section 6.2 "Agreement between the two coders"**, p. 20-21 | Codex read failures (tool failures) and their effect on agreement. |
 | 12 | **Section 6.6 "Limits of the census"**, p. 23 | No human coded the sample; coders, adjudicators and harmoniser are language models, mostly of one family. |
-| 13 | **Section 9.1 "Question and design"**, p. 29 | The EXP-003 preregistration was reviewed by Claude agent roles (statistician, red team); no human review recorded. |
-| 14 | **Section 10 "Threats to validity and limitations"**, p. 30-31, paragraphs "Screening, extraction and protocol" and "Use of AI" | Every screening and extraction decision was made by language models; extraction reliability rests on 8 studies; models of one family did most of the coding, adjudication and drafting, so their errors are likely correlated and most checks are by models of the same family. |
+| 13 | **Section 10, paragraph "The measurement on a frozen model"**, p. 30 (the detail is in supplement S7.6, item 19) | No human reviewed the EXP-003 preregistration. |
+| 14 | **Section 10 "Threats to validity and limitations"**, p. 29-30, paragraphs "Screening, extraction and protocol" and "Use of AI" | Every screening and extraction decision was made by language models; extraction reliability rests on 8 studies; models of one family did most of the coding, adjudication and drafting, so their errors are likely correlated and most checks are by models of the same family. |
 
 ## In the supplement
 
@@ -35,6 +36,7 @@ Page numbers are those of `paper/review/main.pdf` (35 pages) and `paper/review/s
 | 16 | **S3.1 "Census method in full"**, p. 18-19 (coder roles on p. 19) | Coder A Claude Sonnet; coder B Codex (gpt-6-luna) and Claude Opus; adjudicators Claude Opus; exact model versions of the Claude coders not recorded; one possible leak between coders' workspaces. |
 | 17 | **S3.4 "Limits of the census, in full"**, p. 20 | No human coded the sample; the two systems behind coder B; Codex read failures. |
 | 18 | **S4 "Agreement of the two extractors"**, p. 21 | Extractors Claude Opus 5.5 and Claude Sonnet 5.5, each blind to the other; adjudicator Claude Fable 5.1. |
+| 19 | **S7.6 "Question, results and reading in full"**, paragraph "Question and design", p. 32 | The EXP-003 preregistration was reviewed by Claude agent roles (statistician, red team); no human review recorded (moved from the former Section 9.1). |
 
 ## Before submission
 
