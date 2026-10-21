@@ -67,6 +67,7 @@ def _nopath(s):
         return s
     s = re.sub(r", ingest tools/ingest\\_subscription\.py", "", s)
     s = re.sub(r"(research|tools|analysis)/[A-Za-z0-9_\\\-./]+", "the archived search log", s)
+    s = re.sub(r",?\s*D00\d\d combined query", ", combined query", s)
     return re.sub(r"  +", " ", s)
 
 

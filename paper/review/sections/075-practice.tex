@@ -1,31 +1,29 @@
 % Section 8 (revision 2026-10-21, D0069): practitioner synthesis requested by the supervising professor.
 % Exemplar rows: tables/exemplars.tex (scripts/revision_tables.py, from tables/design-space-condensed.tex).
 % Every number below is already in Sections 5 and 6 (census-result-v2; rq-results.json).
-\section{What the evidence means for practice}
+\section{Practical guidance for building, decoding and evaluating diffusion language models}
 \label{sec:practice}
 
-This section condenses Sections~\ref{sec:design} to~\ref{sec:budget} for readers who build, decode or evaluate these models. Each recommendation names the evidence it rests on; none is a measured optimum. Some rest on single studies outside the review's sample and are suggestions for practice, not findings of the review.
+This section condenses Sections~\ref{sec:design} to~\ref{sec:budget} for readers who build, decode or evaluate these models. Each recommendation names the evidence it rests on, and none is a measured optimum. Some rest on single studies outside the review's sample; these are suggestions for practice, not findings of the review.
 
-\subsection{Canonical models in the five choices}
+\subsection{How widely used models differ in the five design choices}
 \label{sec:practice-exemplars}
 
-Table~\ref{tab:exemplars} in Section~\ref{sec:design} places thirteen widely used models in the design space. Read across the rows, most recent large models share the erasure channel and differ mainly in the commitment policy (C4): which positions are committed and how their values are chosen. LLaDA ranks positions by confidence and takes the argmax; MMaDA and UniDisc add guidance; Fast-dLLM commits by an entropy or threshold rule; BD3-LM decodes in blocks with truncated sampling; ReMDM adds remasking. Continuous models (Plaid) and uniform-state models (Duo) update every position at each step and revise implicitly. For Dream~7B, the sections we read state neither the position rule nor the value rule of the headline results.
+Table~\ref{tab:exemplars} in Section~\ref{sec:design} places thirteen widely used models in the five design choices C1 to C5. Most recent large models share the erasure (masking) channel and differ mainly in the commitment policy, choice C4, which fixes which positions are committed (the position rule) and how their values are chosen (the value rule). LLaDA ranks positions by confidence and takes the argmax; MMaDA and UniDisc add guidance; Fast-dLLM commits by an entropy or threshold rule; BD3-LM decodes in blocks with truncated sampling; ReMDM adds remasking. Continuous models (Plaid) and uniform-state models (Duo) update every position at each step and revise implicitly. For Dream~7B, the parts read state neither the position rule nor the value rule of the headline results.
 
-
-
-\subsection{A decision framework}
+\subsection{Choosing a formulation and a decoding strategy by requirement}
 \label{sec:practice-framework}
-Table~\ref{tab:framework} turns the evidence into a starting point for choosing a formulation and a decoding strategy by the requirement that matters most. The last column states what each row rests on, so that a reader can tell a finding of this review from a single study outside it.
+Table~\ref{tab:framework} offers a starting point for choosing a formulation and a decoding strategy by the requirement that matters most. The last column states what each row rests on, so that a reader can tell a finding of this review from a single study outside it.
 
 \begin{table}[t]
-\caption{Choosing a formulation and decoding strategy by requirement. ``Sample'' marks evidence from the review's own sample or census; ``outside'' marks single studies outside the sample; neither has been tested head to head on a common benchmark.}
+\caption{Choosing a formulation and decoding strategy by requirement. ``Sample'' marks evidence from the review's own sample or census; ``outside'' marks single studies outside the sample. Neither kind of evidence compares the options head to head on a common benchmark.}
 \label{tab:framework}
 \footnotesize
 \begin{tabular}{@{}p{2.6cm}p{3.3cm}p{4.0cm}p{3.4cm}@{}}
 \toprule
 Requirement & Formulation to consider & Decoding strategy & Evidence \\
 \midrule
-Quality at a fixed model size, latency secondary & masked diffusion or an autoregressive model & few tokens per step; value rule stated and held fixed & sample: RQ2 mixed; RQ4, 9 of 15 sweeps improve with compute \\
+Quality at a fixed model size, latency secondary & masked diffusion or an autoregressive model & few tokens per step; value rule stated and held fixed & sample: RQ2 mixed; RQ4, 9 of 15 sweeps improve with more compute \\
 Low latency or high throughput & masked diffusion with parallel commitment; uniform-state diffusion for few-step sampling & several tokens per step chosen by dependence or a calibrated threshold, swept on the target task & outside~\cite{arXiv:2604.02560,arXiv:2605.24697,arXiv:2602.15014}; sample: 7 of 15 sweeps non-monotone \\
 Pretraining with scarce unique data & masked diffusion & -- & outside~\cite{arXiv:2507.15857,arXiv:2511.03276} \\
 Joint text and image generation & unified discrete diffusion or a unified flow model & guidance and sampler reported with every number & sample: RQ5 mixed; one preregistered run (Section~\ref{sec:exp003}) \\
@@ -34,23 +32,23 @@ Revision of early mistakes & masked diffusion with remasking & remasking compare
 \end{tabular}
 \end{table}
 
-\subsection{Decoding defaults}
+\subsection{Decoding defaults and the evidence behind them}
 \label{sec:practice-defaults}
 
 \begin{enumerate}
   \item \emph{Fix and state the value rule before tuning anything else.} In the census, 147 of 153 headline results use a rule other than plain sampling or leave it unstated (Section~\ref{sec:census}); Section~\ref{sec:budget-value} shows where the rule enters the error budget.
-  \item \emph{Do not treat more parallelism, or more steps, as free.} In 7 of the 15 sampled studies that sweep steps or tokens per step, at least one curve peaks inside the range or moves both ways (Section~\ref{sec:rq4}). Sweep the tokens per step on the target task with the value rule held fixed. Dependency-aware selection~\cite{arXiv:2604.02560} and learned commitment policies~\cite{arXiv:2605.24697} are two recent alternatives to a single confidence threshold.
-  \item \emph{Test remasking rather than assume it helps.} A re-evaluation of one post-hoc confidence-based remasking method found little or no benefit at short block lengths and only partial help under more stochastic decoding~\cite{arXiv:2606.12232}; other remaskers have not been re-evaluated this way, so compare any of them at matched network calls against confidence-based unmasking.
-  \item \emph{Judge a sampler by quality and diversity together.} Low NLL or generative perplexity can coexist with an incorrect sampling distribution~\cite{arXiv:2602.19619}, and output entropy can fall far below the data entropy from factorisation error alone (Section~\ref{sec:budget}).
-  \item \emph{Choose a diffusion model for the constraint it relaxes.} In compute-matched studies, masked diffusion shows a compute gap to autoregressive models~\cite{arXiv:2410.18514} but overtakes autoregressive training when unique data is scarce~\cite{arXiv:2507.15857,arXiv:2511.03276}; among diffusion families, faster sampling can outweigh worse likelihood on the speed--quality frontier~\cite{arXiv:2602.15014}.
+  \item \emph{Do not assume that more parallelism or more steps is free.} In 7 of the 15 sampled studies that sweep steps or tokens per step, at least one curve peaks inside the range or moves both ways (Section~\ref{sec:rq4}). The tokens per step should therefore be swept on the target task with the value rule held fixed. Dependency-aware selection~\cite{arXiv:2604.02560} and learned commitment policies~\cite{arXiv:2605.24697} are two recent alternatives to a single confidence threshold.
+  \item \emph{Test remasking rather than assume that it helps.} A re-evaluation of one post-hoc confidence-based remasking method found little or no benefit at short block lengths and only partial help under more stochastic decoding~\cite{arXiv:2606.12232}. Other remaskers have not been re-evaluated this way, so any of them should be compared with confidence-based unmasking at matched network calls.
+  \item \emph{Judge a sampler by quality and diversity together.} Low negative log-likelihood or generative perplexity can coexist with an incorrect sampling distribution~\cite{arXiv:2602.19619}, and output entropy can fall far below the data entropy from factorisation error alone, the error of treating positions committed together as independent (Section~\ref{sec:budget}).
+  \item \emph{Choose a diffusion model for the constraint it relaxes.} In compute-matched studies, masked diffusion shows a compute gap to autoregressive models~\cite{arXiv:2410.18514} but overtakes autoregressive training when unique data is scarce~\cite{arXiv:2507.15857,arXiv:2511.03276}. Among diffusion families, faster sampling can outweigh worse likelihood on the speed--quality frontier~\cite{arXiv:2602.15014}.
 \end{enumerate}
 
-\subsection{What is established and what remains a hypothesis}
+\subsection{Which conclusions are supported and which remain hypotheses}
 \label{sec:practice-status}
-Table~\ref{tab:status} separates the conclusions this review supports with its own evidence from those resting on single studies outside it and from hypotheses that still need a measurement.
+Table~\ref{tab:status} separates the conclusions that the review's own evidence supports from those resting on single studies outside it and from hypotheses that still need a measurement.
 
 \begin{table}[t]
-\caption{Status of the main conclusions.}
+\caption{Evidence status of the main conclusions.}
 \label{tab:status}
 \footnotesize
 \begin{tabular}{@{}p{8.6cm}p{4.6cm}@{}}
@@ -61,31 +59,31 @@ Statement & Basis \\
 Headline results are mostly decoded with a non-plain or unstated value rule & census, 147 of 153 \\
 Comparisons with autoregressive models are rarely made at matched compute & sample, 1 of 25 \\
 More inference compute does not help monotonically & sample, 7 of 15 sweeps non-monotone \\
-Run-to-run variation is seldom reported & sample, 10 of 54 \\
+Run-to-run variation is seldom reported & sample, reported in 10 of 54 \\
 \multicolumn{2}{@{}l}{\emph{Supported by single studies}} \\
-On one frozen unified model, a guided sampler gave a larger text--image dependence than plain sampling at matched network calls (not confirmed by CLIP) & our preregistered run (Section~\ref{sec:exp003}) \\
+On one frozen unified model, a guided sampler gave a larger text--image dependence than plain sampling at matched network calls (not confirmed by CLIP) & the preregistered run of Section~\ref{sec:exp003} \\
 Diffusion overtakes autoregressive training when unique data is scarce & \cite{arXiv:2507.15857,arXiv:2511.03276} \\
 Dependency-aware selection speeds parallel decoding at matched accuracy & \cite{arXiv:2604.02560} \\
 Few-step samplers are inexact even with an exact denoiser & \cite{arXiv:2602.19619} \\
 \multicolumn{2}{@{}l}{\emph{Hypotheses that need a measurement}} \\
-The value term dominates reported gains for a given model and task & open problem OP5 \\
+The value-rule term of the error budget dominates reported gains for a given model and task & open problem OP5 \\
 A revision sampler's gain survives matching the value rule & open problem OP2 \\
 Cross-modal dependence in unified models is concentrated in early steps & open problem OP3 \\
-Understanding and generation help each other in unified models & RQ5 mixed, five signed studies \\
+Understanding and generation help each other in unified models & RQ5 mixed, five studies with a clear direction of effect \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{A reporting checklist}
+\subsection{A reporting checklist for diffusion-model results}
 \label{sec:practice-checklist}
 
 The census and the extraction sample give the checklist its content and, where they measure it, how often each item is missing.
 \begin{enumerate}
-  \item The value rule of every headline result: temperature, truncation, guidance weight, and any selection among drawn values. Unstated for 50 of the 153 census headlines.
+  \item The value rule of every headline result: temperature, truncation, guidance weight, and any selection among drawn values. The rule is unstated for 50 of the 153 census headlines.
   \item The position rule, the tokens per step or number of steps, and the number of network calls.
   \item For any comparison with an autoregressive model, the parameter count, training tokens and inference budget of both arms, and whether the baseline was run or copied. In the sample, 23 of the 25 studies with such a comparison leave one arm's budget unreported in at least one comparison, and 5 state that they copied the baseline numbers.
-  \item Run-to-run variation or seeds for every contrast the paper interprets; 3 of the 25 report it for the autoregressive comparison.
+  \item Run-to-run variation or seeds for every contrast the paper interprets. In the sample, 3 of the 25 studies report it for the autoregressive comparison.
   \item A quality--diversity frontier, or at least a diversity or entropy measure, beside any single quality number.
-  \item For any sweep, which settings were held fixed; 20 of the 55 census papers that report the headline at two or more step settings state that the value rule was held fixed.
+  \item For any sweep, which settings were held fixed. Of the 55 census papers that report the headline at two or more step settings, 20 state that the value rule was held fixed.
   \item Code and checkpoint at a stated commit, so that a reader can rerun the headline under another value rule.
 \end{enumerate}

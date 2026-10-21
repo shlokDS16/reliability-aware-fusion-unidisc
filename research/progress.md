@@ -1,6 +1,7 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 47 (2026-10-21; revision lead dc7ef7d8; newest).** Publication-level clarity pass on every main section and the supplement (brief research/review/EDIT-BRIEF-2026-10-21.md; number, citation and label integrity checked with scripts/integrity_diff.py); Sections 9 and 11 kept at their shorter reviewed versions for length; taxonomy tree moved to Supplement S5.1; generated captions without decision IDs; main 34 pp incl. references, supplement 59 pp; checks 0 problems. Stopped at 96 percent weekly usage.
 - **HANDOFF 46 (2026-10-21; revision lead dc7ef7d8; D0072; newest).** Professor's second review applied (see research/RESPONSE-TO-PROFESSOR-2026-10-21.md, second part): Section 2 rewritten, AI only in the Declaration, main 34 pp incl. references, DOCX layout checked in Word; desk check in research/review/audits/2026-10-21-desk-check.md. Open: 1,242 unscreened seed records (stated as threat); ACM policy asks AI in Methods (author chose Declaration only).
 - **HANDOFF 45 (2026-10-21; revision lead dc7ef7d8; D0070; newest).** The author's reviewed check sheets replace
   research/HUMAN-CHECK-*.xlsx; agreement rerun with the committed scripts: screening 18 of 24 decided, kappa 0.50
