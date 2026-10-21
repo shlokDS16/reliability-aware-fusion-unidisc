@@ -50,3 +50,20 @@ you and the model agree.
 The six questions: (1) diffusion and autoregressive model side by side? (2) if so, compute budget of both stated or
 matched? (3) a comparison of training choices? (4) a comparison of inference settings? (5) main comparison repeated
 over two or more runs? (6) a limitations section or paragraph?
+
+## Part 3. Landmark tranche items (added 2026-10-21, decisions D0061, D0063)
+
+These come from the landmark screening and extraction. Each is a yes/no or pick-one confirmation of a model reading.
+
+1. **R0523 (MMaDA-Parallel), eligibility basis.** Screener A read I1(a) (diffusion model with text output); screener B
+   read I1(a) and (b) (also a unified understanding-and-generation model). Rule D0039: the counts use A's value and give
+   B's as a range (Section 5 RQ1 and RQ5 say so). Which is right: a, or ab?
+2. **R0326 (Seed Diffusion), adjudicator EC.** (a) Headline table: EC chose Table 2 (MBXP Python 79.4) because Table 1
+   is printed inside Section 3.4; the second extractor chose Table 1 (Aider 44.4). Agree with EC? (b) EC kept no
+   diffusion-versus-autoregressive groups, because the only autoregressive label is one collective sentence that also
+   names diffusion baselines. Agree?
+3. **R0268 (EB-sampler), adjudicator EC.** (a) Is the future-work sentence a stated limitation (QA9a, S15)? (b) CT1 and
+   F4 were left in doubt by EC; see analysis/extraction/lmk/EC/ecl001/EC-ecl001.jsonl, field "doubt".
+4. **Proposed lookup entries** (benchmark and metric names the extractors met): MBXP -> mbxp; "Relative Time Per
+   Forward" -> relative-time-per-forward (lower is better); "inference speed" -> tps; "Accuracy (%)" -> accuracy;
+   "Speed-Up" -> speed-up; "Maze navigation" -> maze-navigation; "Sudoku solving" -> sudoku. Accept all?
