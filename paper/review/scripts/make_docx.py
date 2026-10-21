@@ -7,9 +7,11 @@ Run after a full LaTeX build (main.aux, main.bbl and main.pdf current). Steps:
 2. Resolve every \\ref/\\eqref from main.aux and every \\cite from main.aux's \\bibcite numbers, so section, table,
    figure, equation and citation numbers are those of main.pdf; captions get "Table N." / "Figure N." prefixes.
 3. Figures: PDF figures rendered to PNG at 300 dpi; Algorithm 1 cropped from main.pdf as an image.
-4. Bibliography: main.bbl (the ACM-Reference-Format output the PDF uses) turned into numbered entries.
-5. Placeholders for what the authors supply later ([Zenodo DOI to be added], [GitHub repository link to be added],
-   [Funding statement to be added]) are kept and highlighted yellow.
+4. Bibliography: main.bbl (the ACM-Reference-Format output the PDF uses) turned into numbered entries. Each entry
+   carries a bookmark ref_n; every in-text citation number is an internal hyperlink to it, and every DOI, URL and
+   arXiv identifier is an external hyperlink (pandoc's "Hyperlink" character style: blue, underlined).
+5. Placeholders for what the authors supply later ([Funding statement ... to be added]) are kept and highlighted
+   yellow.
 6. pandoc (LaTeX -> docx, equations as Word equations, --number-sections), then a python-docx pass: title block,
    authors, abstract, CCS concepts and keywords, fonts, tables, captions. No line or page numbers are added.
 """
@@ -195,9 +197,10 @@ body = re.sub(r"\\ref\{([^}]*)\}", lambda m: LAB[m.group(1)], body)
 
 
 def cite(m):
+    # each number is an internal link to its reference entry (bookmark ref_n, set in the bibliography below)
     keys = [k.strip() for k in m.group(1).split(",")]
     nums = sorted(CIT[k] for k in keys)
-    return "[" + ", ".join(str(n) for n in nums) + "]"
+    return "[" + ", ".join(f"\\hyperlink{{ref_{n}}}{{{n}}}" for n in nums) + "]"
 
 
 body = re.sub(r"\\cite[pt]?\{([^}]*)\}", cite, body)
@@ -205,8 +208,7 @@ for k, v in SUPP.items():
     body = body.replace("\\" + k + "{}", v).replace("\\" + k, v)
 
 # ---------------------------------------------------------------- placeholders and small fixes
-PH = {"Zenodo DOI": "[Zenodo DOI to be added]",
-      "funding": "[Funding statement, competing-interests statement and acknowledgements to be added]"}
+PH = {"funding":"[Funding statement, competing-interests statement and acknowledgements to be added]"}
 
 
 def todo(arg):
@@ -217,7 +219,6 @@ def todo(arg):
 
 
 body = replace_cmd(body, "todo", todo)
-body = body.replace("\\url{https://github.com/shlokDS16/dlm-review-prisma}", "\\textbf{[GitHub repository link to be added]}")
 body = body.replace("\\begin{acks}", "\\section*{Acknowledgments}").replace("\\end{acks}", "")
 body = re.sub(r"\\paragraph\{([^}]*)\}", lambda m: "\\textbf{" + m.group(1) + "} ", body)
 body = re.sub(r"\\cmidrule(\([a-z]*\))?\{[^}]*\}", "", body)
@@ -242,12 +243,13 @@ for e in entries:
     txt = replace_cmd(txt, "showarticletitle", lambda x: x)
     txt = replace_cmd(txt, "showDOI", lambda x: x)
     txt = replace_cmd(txt, "showURL", lambda x: x)
-    txt = re.sub(r"\\showeprint\[[^\]]*\]\{([^}]*)\}", r"arXiv:\1", txt)
+    txt = re.sub(r"\\showeprint\[[^\]]*\]\{([^}]*)\}", r"\\href{https://arxiv.org/abs/\1}{arXiv:\1}", txt)
+    txt = replace_cmd(txt, "nolinkurl", lambda x: x)   # DOI link text as plain text (not monospace)
     txt = txt.replace("\\natexlab{}", "").replace("\\newblock", " ").replace("\\mbox{.}", ".").replace("{and}", "and")
     txt = re.sub(r"\s+", " ", txt).strip()
     refs.append((CIT[key], txt))
 refs.sort()
-bib = "\\section*{References}\n\n" + "\n\n".join(f"[{n}] {t}" for n, t in refs) + "\n"
+bib = "\\section*{References}\n\n" + "\n\n".join(f"[\\hypertarget{{ref_{n}}}{{{n}}}] {t}" for n, t in refs) + "\n"
 body = re.sub(r"\\bibliographystyle\{[^}]*\}", "", body)
 body = re.sub(r"\\bibliography\{[^}]*\}", lambda m: bib, body)
 

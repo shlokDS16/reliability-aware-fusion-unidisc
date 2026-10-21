@@ -6,7 +6,7 @@ Subramaniyaswamy Vairavasundaram, Balaji G N; School of Computer Science and Eng
 Technology). The review follows PRISMA 2020. Every number in the paper carries a `% src:` comment in the LaTeX source
 naming the file it comes from.
 
-Archived version: DOI pending (Zenodo).
+Archived version: https://doi.org/10.5281/zenodo.23524470 (Zenodo).
 
 ## What is here
 

@@ -4,7 +4,7 @@
 % Page counting uses acmsmall (6.75 x 10 in). For the review submission switch to
 % \documentclass[manuscript,review]{acmart} (csur.md section 2); its page count is not the CSUR count.
 % Build: latexmk -pdf main.tex   (bibliography: ACM-Reference-Format.bst, copied from paper/style/acm/minimal-csur)
-\documentclass[acmsmall]{acmart}
+\documentclass[acmsmall,screen]{acmart}
 
 \AtBeginDocument{\providecommand\BibTeX{{Bib\TeX}}}
 \citestyle{acmnumeric}
@@ -96,7 +96,7 @@ Diffusion language models and unified multimodal diffusion models are reviewed u
 \input{sections/11-conclusion}
 
 \section*{Data and code availability}
-The protocol, search log, screening and extraction records, decision ledger, analysis scripts and manuscript sources are archived at Zenodo (DOI \todo{Zenodo DOI after the GitHub release}) and mirrored at \url{https://github.com/shlokDS16/dlm-review-prisma}; every number in the paper names its source file there. Full texts of the reviewed papers and raw database exports are not redistributed; each record carries an identifier from which its text can be retrieved. % src: paper/review/release/README.md; tools/build_release_paper1.py
+The protocol, search log, screening and extraction records, decision ledger, analysis scripts and manuscript sources are archived at Zenodo (\url{https://doi.org/10.5281/zenodo.23524470}); every number in the paper names its source file there. Full texts of the reviewed papers and raw database exports are not redistributed; each record carries an identifier from which its text can be retrieved. % src: paper/review/release/README.md; tools/build_release_paper1.py
 
 \begin{acks}
 \todo{funding statement, competing-interests statement and acknowledgements}
