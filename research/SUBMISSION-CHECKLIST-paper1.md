@@ -1,7 +1,11 @@
 # Paper 1 submission checklist (ACM Computing Surveys), state on 2026-10-21
 
-Manuscript: `paper/review/main.pdf` (35 pages including references, the CSUR limit) and
-`paper/review/supplement.pdf` (37 pages, electronic supplement). Sources in `paper/review/`.
+Manuscript: `paper/review/main.pdf` (35 pages including references, the CSUR limit; abstract 98 words, limit 100;
+body about 18,900 words and references about 2,600 words, CSUR sets no word limit) and its Word version
+`paper/review/docx/main.docx` (same text, numbering of sections, tables, figures, equations and citations as the PDF;
+no line or page numbers; built by `paper/review/scripts/make_docx.py`), and `paper/review/supplement.pdf`
+(37 pages, electronic supplement). Sources in `paper/review/`. Every AI-use statement is listed with its page in
+`research/AI-USE-STATEMENTS-paper1.md`.
 Release folder (local, not uploaded): `C:\Users\Shlok\Downloads\Multi-Modality Language model\release\dlm-review-prisma-v1`
 (2,472 files, 185 MB, abstracts stripped, secret scan clean, MANIFEST.sha256).
 
@@ -25,9 +29,10 @@ Release folder (local, not uploaded): `C:\Users\Shlok\Downloads\Multi-Modality L
    in Section 2 and supplement S4. Without part 2 the paper says no human check of the extraction was recorded.
 2. **Front matter**: ORCIDs of the three authors; who is the corresponding author; the funding statement and any
    acknowledgements (the paper shows a red to-do there).
-3. **GitHub and Zenodo** (`research/RELEASE-GUIDE-paper1.md`): say "create the GitHub repo" (I create
-   `shlokDS16/dlm-review-prisma` private and push the release folder) or create it yourself; make it public, connect
-   Zenodo, publish release v1.0.0, send me the DOI. I put the DOI in the data availability statement (red to-do now).
+3. **GitHub and Zenodo** (`research/RELEASE-GUIDE-paper1.md`): you create the repository yourself (decided
+   2026-10-21) and upload the release folder; make it public, connect Zenodo, publish release v1.0.0, then send me the
+   GitHub link and the DOI. I put both into the data availability statement in the PDF and the Word file (both are
+   highlighted placeholders now).
 4. **Final read-through** of main.pdf by the authors (ACM: all authors are responsible for the content).
 5. **Submit** through the CSUR system (Manuscript Central): main.pdf, supplement.pdf as supplementary material, the
    LaTeX sources if asked, the AI-use statement is in Section 2.8.

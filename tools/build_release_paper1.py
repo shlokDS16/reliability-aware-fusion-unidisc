@@ -25,8 +25,8 @@ INCLUDE = ["tools", "tests", "analysis", "paper/review", "research/review", "res
            "research/preregistration", "research/CONTRACT.md", "runs/EXP-003/analysis",
            "runs/EXP-003/ctrl/controls_decision.json"]
 EXCLUDE_DIRS = {"__pycache__", ".pytest_cache", "fulltext-pymupdf", "census-text-paged", "pdfs", "html", "search-raw",
-                "gen", "images", ".venv", "node_modules"}
-EXCLUDE_FILES = {"human-check-model-answers.json"}
+                "gen", "images", "img", ".venv", "node_modules"}
+EXCLUDE_FILES = {"human-check-model-answers.json", "main-flat.tex", "main-pandoc.docx"}   # + docx build intermediates
 EXCLUDE_SUFFIX = {".pdf.part", ".pyc", ".aux", ".log", ".fls", ".fdb_latexmk", ".out", ".blg", ".synctex.gz", ".png.tmp"}
 KEEP_PDF = {"paper/review/main.pdf", "paper/review/supplement.pdf"}
 STRIP_ABSTRACT = re.compile(r"^research/review/(corpus|screening)/.*\.jsonl$")
