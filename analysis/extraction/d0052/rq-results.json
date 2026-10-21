@@ -12373,6 +12373,66 @@
      "direction": "negative",
      "control_share": 0.0
     }
+   },
+   "landmark": {
+    "RQ2": {
+     "verdict": "untested",
+     "n_signed": 2,
+     "share_one_way": 0.5,
+     "direction": "positive",
+     "control_share": 0.0
+    },
+    "RQ3": {
+     "verdict": "untested",
+     "n_signed": 3,
+     "share_one_way": 0.667,
+     "direction": "positive",
+     "control_share": 0.0
+    },
+    "RQ4": {
+     "verdict": "untested",
+     "n_signed": 2,
+     "share_one_way": 0,
+     "direction": "positive",
+     "control_share": 0.0
+    },
+    "RQ5": {
+     "verdict": "untested",
+     "n_signed": 0,
+     "share_one_way": 0,
+     "direction": "positive",
+     "control_share": null
+    }
+   },
+   "landmark_without_rejected": {
+    "RQ2": {
+     "verdict": "untested",
+     "n_signed": 1,
+     "share_one_way": 1.0,
+     "direction": "positive",
+     "control_share": 0.0
+    },
+    "RQ3": {
+     "verdict": "untested",
+     "n_signed": 1,
+     "share_one_way": 1.0,
+     "direction": "positive",
+     "control_share": 0.0
+    },
+    "RQ4": {
+     "verdict": "untested",
+     "n_signed": 0,
+     "share_one_way": 0,
+     "direction": "positive",
+     "control_share": null
+    },
+    "RQ5": {
+     "verdict": "untested",
+     "n_signed": 0,
+     "share_one_way": 0,
+     "direction": "positive",
+     "control_share": null
+    }
    }
   },
   "verdicts_threshold_sensitivity": {
@@ -12619,6 +12679,3032 @@
     "value-identity": 24,
     "other-own-model": 2
    }
+  },
+  "landmark": {
+   "RQ2_has_ar": {
+    "count": 3,
+    "of": 4,
+    "share": 0.75,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/4"
+    }
+   },
+   "RQ2_matched_any": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ2_matched_all": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ2_budget_not_reported_any": {
+    "count": 3,
+    "of": 3,
+    "share": 1.0,
+    "ci95": [
+     0.292,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/3"
+    }
+   },
+   "RQ2_copied_stated_any": {
+    "count": 2,
+    "of": 3,
+    "share": 0.667,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/3"
+    }
+   },
+   "RQ2_variance_any": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ2_control": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ2_signed": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ2_better_majority": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ2_worse_majority": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ2_abstract_claim": {
+    "count": 3,
+    "of": 4,
+    "share": 0.75,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/4"
+    }
+   },
+   "RQ3_has_training": {
+    "count": 3,
+    "of": 4,
+    "share": 0.75,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/4"
+    }
+   },
+   "RQ3_credited_ablation_any": {
+    "count": 1,
+    "of": 3,
+    "share": 0.333,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/3"
+    }
+   },
+   "RQ3_held_fixed_all": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ3_variance_any": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ3_control": {
+    "count": 0,
+    "of": 3,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.708
+    ],
+    "by_stratum": {
+     "L-lmk": "0/3"
+    }
+   },
+   "RQ3_signed": {
+    "count": 3,
+    "of": 4,
+    "share": 0.75,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/4"
+    }
+   },
+   "RQ3_anchor_better_majority": {
+    "count": 2,
+    "of": 3,
+    "share": 0.667,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/3"
+    }
+   },
+   "RQ3_anchor_worse_majority": {
+    "count": 1,
+    "of": 3,
+    "share": 0.333,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/3"
+    }
+   },
+   "RQ4_has_inference": {
+    "count": 4,
+    "of": 4,
+    "share": 1.0,
+    "ci95": [
+     0.398,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "4/4"
+    }
+   },
+   "RQ4_budget_reported_any": {
+    "count": 3,
+    "of": 4,
+    "share": 0.75,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/4"
+    }
+   },
+   "RQ4_variance_any": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ4_control": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ4_has_sweep": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ4_sweep_up_majority": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ4_sweep_down_majority": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ4_sweep_all_up": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ4_any_nonmonotone": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "RQ4_any_nonmonotone_tol1pct": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ4_sweep_control": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ5_claim": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_has_ablation": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_signed": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_joint_better_majority": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ5_joint_worse_majority": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ5_benchmark": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_control": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "claims_any_unsupported": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA1_low_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA1_high_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA1_low_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA1_high_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA1_low_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA1_high_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA2_low_eq0": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA2_high_eq0": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA2_low_eq1": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA2_high_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA2_low_eq2": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA2_high_eq2": {
+    "count": 3,
+    "of": 4,
+    "share": 0.75,
+    "ci95": [
+     0.25,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "3/4"
+    }
+   },
+   "QA3_low_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA3_high_eq0": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA3_low_eq1": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA3_high_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA3_low_eq2": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA3_high_eq2": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA4_low_eq0": {
+    "count": 4,
+    "of": 4,
+    "share": 1.0,
+    "ci95": [
+     0.398,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "4/4"
+    }
+   },
+   "QA4_high_eq0": {
+    "count": 4,
+    "of": 4,
+    "share": 1.0,
+    "ci95": [
+     0.398,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "4/4"
+    }
+   },
+   "QA4_low_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA4_high_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA4_low_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA4_high_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA5_low_eq0": {
+    "count": 4,
+    "of": 4,
+    "share": 1.0,
+    "ci95": [
+     0.398,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "4/4"
+    }
+   },
+   "QA5_high_eq0": {
+    "count": 4,
+    "of": 4,
+    "share": 1.0,
+    "ci95": [
+     0.398,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "4/4"
+    }
+   },
+   "QA5_low_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA5_high_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA5_low_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA5_high_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA6_low_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA6_high_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA6_low_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA6_high_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA6_low_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA6_high_eq2": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA7_low_eq0": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA7_high_eq0": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA7_low_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA7_high_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA7_low_eq2": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA7_high_eq2": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "QA8_low_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA8_high_eq0": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA8_low_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA8_high_eq1": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA8_low_eq2": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA8_high_eq2": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA9_low_eq0": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA9_high_eq0": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "QA9_low_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA9_high_eq1": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA9_low_eq2": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "QA9_high_eq2": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_state_space=discrete-absorbing": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_state_space=discrete-uniform": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_state_space=discrete-flow": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_state_space=continuous-embedding": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_state_space=continuous-latent": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_state_space=hybrid": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_state_space=not_stated": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=left-to-right": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=random": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=confidence-ranked": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_position_rule=threshold-adaptive": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=fixed-order": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=learned-planner": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=all-positions": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "RQ1_position_rule=other": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_position_rule=not_stated": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "RQ1_blockwise=yes": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "RQ1_blockwise=no": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "RQ1_blockwise=not_stated": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_revision=none": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_revision=explicit-remasking-or-editing": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_revision=corrector": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_revision=implicit-channel": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_revision=output-level": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_revision=other": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_revision=not_stated": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_memory=none": {
+    "count": 2,
+    "of": 4,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/4"
+    }
+   },
+   "RQ1_memory=self-conditioning": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_memory=exact-cache": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_memory=approximate-cache": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "RQ1_memory=planner-state": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_memory=other": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_memory=not_stated": {
+    "count": 1,
+    "of": 4,
+    "share": 0.25,
+    "ci95": [
+     0.0,
+     0.75
+    ],
+    "by_stratum": {
+     "L-lmk": "1/4"
+    }
+   },
+   "RQ1_training_free=yes": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   },
+   "RQ1_training_free=no": {
+    "count": 4,
+    "of": 4,
+    "share": 1.0,
+    "ci95": [
+     0.398,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "4/4"
+    }
+   },
+   "RQ1_training_free=not_stated": {
+    "count": 0,
+    "of": 4,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.602
+    ],
+    "by_stratum": {
+     "L-lmk": "0/4"
+    }
+   }
+  },
+  "landmark_without_rejected": {
+   "RQ2_has_ar": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ2_matched_any": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ2_matched_all": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ2_budget_not_reported_any": {
+    "count": 1,
+    "of": 1,
+    "share": 1.0,
+    "ci95": [
+     0.025,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/1"
+    }
+   },
+   "RQ2_copied_stated_any": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ2_variance_any": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ2_control": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ2_signed": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ2_better_majority": {
+    "count": 1,
+    "of": 1,
+    "share": 1.0,
+    "ci95": [
+     0.025,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/1"
+    }
+   },
+   "RQ2_worse_majority": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ2_abstract_claim": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ3_has_training": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ3_credited_ablation_any": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ3_held_fixed_all": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ3_variance_any": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ3_control": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ3_signed": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ3_anchor_better_majority": {
+    "count": 1,
+    "of": 1,
+    "share": 1.0,
+    "ci95": [
+     0.025,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/1"
+    }
+   },
+   "RQ3_anchor_worse_majority": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ4_has_inference": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "RQ4_budget_reported_any": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ4_variance_any": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ4_control": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ4_has_sweep": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ4_sweep_up_majority": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ4_sweep_down_majority": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ4_sweep_all_up": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ4_any_nonmonotone": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ4_any_nonmonotone_tol1pct": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ4_sweep_control": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ5_claim": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_has_ablation": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_signed": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_joint_better_majority": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ5_joint_worse_majority": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "RQ5_benchmark": {
+    "count": 0,
+    "of": 1,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.975
+    ],
+    "by_stratum": {
+     "L-lmk": "0/1"
+    }
+   },
+   "RQ5_control": {
+    "count": 0,
+    "of": 0,
+    "share": null,
+    "ci95": null
+   },
+   "claims_any_unsupported": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA1_low_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA1_high_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA1_low_eq1": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA1_high_eq1": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA1_low_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA1_high_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA2_low_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA2_high_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA2_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA2_high_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA2_low_eq2": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA2_high_eq2": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA3_low_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA3_high_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA3_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA3_high_eq1": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA3_low_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA3_high_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA4_low_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA4_high_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA4_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA4_high_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA4_low_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA4_high_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA5_low_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA5_high_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA5_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA5_high_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA5_low_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA5_high_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA6_low_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA6_high_eq0": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA6_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA6_high_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA6_low_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA6_high_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA7_low_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA7_high_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA7_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA7_high_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA7_low_eq2": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA7_high_eq2": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA8_low_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA8_high_eq0": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA8_low_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA8_high_eq1": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA8_low_eq2": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA8_high_eq2": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "QA9_low_eq0": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA9_high_eq0": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA9_low_eq1": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA9_high_eq1": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "QA9_low_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "QA9_high_eq2": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_state_space=discrete-absorbing": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_state_space=discrete-uniform": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_state_space=discrete-flow": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_state_space=continuous-embedding": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_state_space=continuous-latent": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_state_space=hybrid": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_state_space=not_stated": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=left-to-right": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=random": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=confidence-ranked": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_position_rule=threshold-adaptive": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=fixed-order": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=learned-planner": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=all-positions": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=other": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_position_rule=not_stated": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_blockwise=yes": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_blockwise=no": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_blockwise=not_stated": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_revision=none": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_revision=explicit-remasking-or-editing": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_revision=corrector": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_revision=implicit-channel": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_revision=output-level": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_revision=other": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_revision=not_stated": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_memory=none": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_memory=self-conditioning": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_memory=exact-cache": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_memory=approximate-cache": {
+    "count": 1,
+    "of": 2,
+    "share": 0.5,
+    "ci95": [
+     0.0,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "1/2"
+    }
+   },
+   "RQ1_memory=planner-state": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_memory=other": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_memory=not_stated": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_training_free=yes": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   },
+   "RQ1_training_free=no": {
+    "count": 2,
+    "of": 2,
+    "share": 1.0,
+    "ci95": [
+     0.158,
+     1.0
+    ],
+    "by_stratum": {
+     "L-lmk": "2/2"
+    }
+   },
+   "RQ1_training_free=not_stated": {
+    "count": 0,
+    "of": 2,
+    "share": 0.0,
+    "ci95": [
+     0.0,
+     0.842
+    ],
+    "by_stratum": {
+     "L-lmk": "0/2"
+    }
+   }
+  },
+  "landmark_meta": {
+   "decision": "D0061",
+   "N_includes": 42,
+   "n_extracted": 4,
+   "order_seed": 20261024,
+   "extracted_prefix": [
+    "R0326",
+    "R0249",
+    "R0284",
+    "R0221"
+   ],
+   "unified_I1b_or_both": [
+    "R0221"
+   ],
+   "rejected_at_final_pass": [
+    "R0249",
+    "R0284"
+   ],
+   "second_reader_ids": [],
+   "ec_used": [],
+   "QA1_link_check": "not run for the landmark studies (QA1 by the text-only part of the rule)"
   }
  }
 }

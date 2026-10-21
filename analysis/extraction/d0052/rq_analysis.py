@@ -11,6 +11,10 @@ sample's eligible records (seed-sample.json), weight N = 1,106 x 167 / 172 (an e
 Stratum sizes N_h of the update strata are the gate strata minus the stage-a ids, recomputed here from the T1 decisions and text sizes with
 the gate manifest's median (asserted against the manifest's stratum sizes before the exclusion).
 Output: analysis/extraction/d0052/rq-results.json and rq-results.md; per-study QA table qa-table.jsonl.
+Landmark tranche (D0061): a separate stratum L-lmk, the extracted prefix of the seeded order over the landmark
+includes (analysis/extraction/lmk/), weight N = the number of landmark includes; it is added after every other
+estimate is computed, so it changes none of them, and is reported in D0060.landmark (own column and verdicts);
+per-study QA rows in analysis/extraction/lmk/qa-table-landmark.jsonl.
 
 Estimator: stratified proportion p = sum_h W_h p_h, W_h = N_h / N; variance sum_h W_h^2 (1 - n_h/N_h) p_h (1-p_h) / (n_h - 1);
 95 percent interval by the Wilson formula on the effective sample size p(1-p)/var (Korn-Graubard style; for p_h in
@@ -47,6 +51,8 @@ seed = json.load(open(D / "seed-sample.json", encoding="utf-8"))           # D00
 STRATA = {h: v[:20] for h, v in sample["strata"].items()}                 # update strata, positions 1-20
 STRATA["S-seed"] = seed["seed_ids"]                                      # seed stratum (census eligible)
 of_id = {i: h for h, ids in STRATA.items() for i in ids}
+LMK_MM = set()          # unified (I1(b) or both) landmark studies, filled by the landmark block (D0061)
+is_mm = lambda r: of_id.get(r["id"]) == "G-mm" or r["id"] in LMK_MM
 
 # ---------------------------------------------------------------- stratum sizes after the stage-a exclusion
 t1 = {r["id"]: r for r in jl(SCR / "ft-t1/t1-decisions-all.jsonl")}
@@ -552,13 +558,13 @@ VARS = {
     "RQ4_any_nonmonotone_tol1pct": lambda r: None if not sh_tol(r) else any(s in ("peaked", "other") for s in sh_tol(r)),
     "RQ4_sweep_control": lambda r: None if not sh(r) else ctrl(groups(r, {"steps-or-nfe", "tokens-per-step"}), r),
     # RQ5 (G-mm only; other strata give None through the domain)
-    "RQ5_claim": lambda r: None if of_id.get(r["id"]) != "G-mm" else g(r, "claims", "CT", "CT5") == "yes",
-    "RQ5_has_ablation": lambda r: None if of_id.get(r["id"]) != "G-mm" else bool(groups(r, SYN)),
-    "RQ5_signed": lambda r: None if of_id.get(r["id"]) != "G-mm" else bool(syn(r)),
-    "RQ5_joint_better_majority": lambda r: None if of_id.get(r["id"]) != "G-mm" else maj(syn(r), 1),
-    "RQ5_joint_worse_majority": lambda r: None if of_id.get(r["id"]) != "G-mm" else maj(syn(r), -1),
-    "RQ5_benchmark": lambda r: None if of_id.get(r["id"]) != "G-mm" else str(g(r, "study", "synergy_benchmark", "present")) == "yes",
-    "RQ5_control": lambda r: None if of_id.get(r["id"]) != "G-mm" or not groups(r, SYN) else ctrl(groups(r, SYN), r),
+    "RQ5_claim": lambda r: None if not is_mm(r) else g(r, "claims", "CT", "CT5") == "yes",
+    "RQ5_has_ablation": lambda r: None if not is_mm(r) else bool(groups(r, SYN)),
+    "RQ5_signed": lambda r: None if not is_mm(r) else bool(syn(r)),
+    "RQ5_joint_better_majority": lambda r: None if not is_mm(r) else maj(syn(r), 1),
+    "RQ5_joint_worse_majority": lambda r: None if not is_mm(r) else maj(syn(r), -1),
+    "RQ5_benchmark": lambda r: None if not is_mm(r) else str(g(r, "study", "synergy_benchmark", "present")) == "yes",
+    "RQ5_control": lambda r: None if not is_mm(r) or not groups(r, SYN) else ctrl(groups(r, SYN), r),
     # claims
     "claims_any_unsupported": lambda r: None if not [c for c in (g(r, "claims", "list") or []) if c.get("status") not in (None, "not-checkable")] else any(c.get("status") in ("unsupported", "contradicted") for c in g(r, "claims", "list")),
 }
@@ -713,6 +719,69 @@ P["group_counts_included"] = {
     "claims_status": dict(Counter(c.get("status") for i in UPD_IDS for c in (g(recs[i], "claims", "list") or []))),
     "rq3_anchor_rules_signed_groups": dict(Counter(gr.get("anchor_rule") for i in UPD_IDS for gr in tr(recs[i]) if direction(recs[i], gr))),
 }
+# ================================================================ landmark tranche L (D0061)
+# Separate stratum "L-lmk": the extracted prefix of the seeded order (analysis/extraction/lmk/extraction-order.json)
+# over the landmark includes; weight N = number of includes, n = studies extracted. Added after every estimate above,
+# so none of them changes; reported in its own column with its own verdicts (D0060 thresholds), never merged into the
+# included-studies estimates.
+LMK = ROOT / "analysis/extraction/lmk"
+if (LMK / "extraction-order.json").exists() and (LMK / "batch-log.jsonl").exists():
+    lorder = json.load(open(LMK / "extraction-order.json", encoding="utf-8"))
+    lus, lfinal = {}, {}
+    for l in jl(LMK / "batch-log.jsonl"):
+        if l["role"] == "EA":
+            lfinal[l["basename"]] = l["pass"]
+            if l.get("usable"):
+                lus[l["batch"]] = l
+            else:
+                lus.pop(l["batch"], None)
+    lrecs = {}
+    for b in lus:
+        files = sorted((LMK / "EA" / b).glob("EA-*.jsonl"))
+        p2 = [f for f in files if f.stem.endswith("-pass2")]
+        for r in jl((p2 or [f for f in files if not f.stem.endswith("-pass2")])[0]):
+            lrecs[r["id"]] = r
+    lsr = json.load(open(LMK / "second-reader.json", encoding="utf-8"))["ids"] if (LMK / "second-reader.json").exists() else []
+    lec = []
+    for f in sorted((LMK / "EC").glob("*/*.jsonl")) if (LMK / "EC").exists() else []:
+        for r in jl(f):
+            if r.get("id") in lsr:
+                lrecs[r["id"]] = r
+                lec.append(r["id"])
+    pos = {i: k for k, i in enumerate(lorder["order"])}
+    lids = sorted(lrecs, key=pos.get)
+    assert lids == lorder["order"][:len(lids)], "extracted landmark set is not a prefix of the seeded order"
+    ldec = {r["id"]: r for r in jl(SCR / "ft-lmk/lmk-decisions-all.jsonl")}
+    LMK_MM.update(i for i in lids if ldec[i]["i1"] in ("b", "ab"))
+    lrej = set()
+    for p_ in (1, 2):
+        vf = LMK / f"validate-pass{p_}.jsonl"
+        for x in (jl(vf) if vf.exists() else []):
+            if x.get("severity") == "fail" and lfinal.get(x.get("session")) == p_:
+                lrej.add(x["id"])
+    lrej -= set(lec)
+    lqa = []
+    for i in lids:
+        r = lrecs[i]
+        lqa.append({"id": i, "stratum": "L-lmk", "low": qa_scores(r, False), "high": qa_scores(r, True),
+                    "study_type": g(r, "study", "study_type")})
+    (LMK / "qa-table-landmark.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lqa), encoding="utf-8")
+    R["N_by_stratum"] = dict(R["N_by_stratum"])          # R holds N_h itself: keep the reported strata as they are
+    R["n_by_stratum"] = dict(R["n_by_stratum"])
+    recs.update(lrecs)
+    qa_by.update({x["id"]: x for x in lqa})
+    done["L-lmk"] = lids
+    N_h["L-lmk"] = lorder["N"]
+    n_h["L-lmk"] = len(lids)
+    LM = ("L-lmk",)
+    P["landmark"] = {v: boot_est(v, LM) for v in VARS}
+    P["landmark_without_rejected"] = {v: boot_est(v, LM, keep=set(lids) - lrej) for v in VARS}
+    for col in ("landmark", "landmark_without_rejected"):
+        P["verdicts"][col] = {rq: verdict(rq, P[col]) for rq in ("RQ2", "RQ3", "RQ4", "RQ5")}
+    P["landmark_meta"] = {"decision": "D0061", "N_includes": lorder["N"], "n_extracted": len(lids),
+                          "order_seed": lorder["seed"], "extracted_prefix": lids, "unified_I1b_or_both": sorted(LMK_MM),
+                          "rejected_at_final_pass": sorted(lrej), "second_reader_ids": lsr, "ec_used": sorted(lec),
+                          "QA1_link_check": "not run for the landmark studies (QA1 by the text-only part of the rule)"}
 R["D0060"] = P
 
 (D / "rq-results.json").write_text(json.dumps(R, indent=1, default=dict) + "\n", encoding="utf-8")
@@ -743,5 +812,13 @@ L += ["## Sensitivity", f"rejected at final pass (S2 drops them): {S['rejected_a
 for k in HEAD:
     L.append(f"| {k} | " + " | ".join(fmt(S[v][k]) for v in ("S0_main", "S1_update_strata_only", "S2_without_rejected", "S3_second_reader_ids_from_EB")) + " |")
 L.append("")
+if "landmark" in P:
+    m = P["landmark_meta"]
+    L += ["## Landmark stratum (D0061; separate column)", f"extracted {m['n_extracted']} of {m['N_includes']} includes "
+          f"(prefix of seeded order {m['order_seed']}); rejected at final pass {m['rejected_at_final_pass']}", "",
+          "| verdict | included | seed | landmark | landmark without rejected |", "|---|---|---|---|---|"]
+    for rq in ("RQ2", "RQ3", "RQ4", "RQ5"):
+        L.append(f"| {rq} | " + " | ".join(P["verdicts"][c][rq]["verdict"] for c in ("included", "seed", "landmark", "landmark_without_rejected")) + " |")
+    L.append("")
 (D / "rq-results.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 print("\n".join(L[:6]))

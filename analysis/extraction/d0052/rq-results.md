@@ -1,6 +1,6 @@
 # D0052 RQ results (script-generated; do not edit)
 
-extracted 80 of 80; by stratum {'G-long': 19, 'G-mm': 20, 'G-short': 20, 'S-seed': 20}; N_h {'G-mm': 52, 'G-short': 267, 'G-long': 265, 'S-seed': 1073.8488372093022}; missing []
+extracted 80 of 80; by stratum {'G-long': 19, 'G-mm': 20, 'G-short': 20, 'S-seed': 20, 'L-lmk': 4}; N_h {'G-mm': 52, 'G-short': 267, 'G-long': 265, 'S-seed': 1073.8488372093022, 'L-lmk': 42}; missing []
 
 ## RQ1
 - study_type:
@@ -161,4 +161,14 @@ rejected at final pass (S2 drops them): ['M04407', 'M06241', 'M06272', 'M07124',
 | RQ4_budget_reported_any | 31/47  weighted 0.551 [0.377, 0.712] | 24/31  weighted 0.806 [0.631, 0.91] | 14/25  weighted 0.485 [0.283, 0.692] | 33/47  weighted 0.637 [0.453, 0.788] |
 | RQ4_variance_any | 12/47  weighted 0.262 [0.138, 0.441] | 8/31  weighted 0.29 [0.158, 0.471] | 6/25  weighted 0.229 [0.095, 0.456] | 12/47  weighted 0.262 [0.138, 0.441] |
 | RQ4_any_nonmonotone_dose_curve | 10/19  weighted 0.62 [0.34, 0.837] | 7/15  weighted 0.467 [0.249, 0.699] | 5/9  weighted 0.635 [0.253, 0.9] | 9/18  weighted 0.56 [0.266, 0.818] |
+
+## Landmark stratum (D0061; separate column)
+extracted 4 of 42 includes (prefix of seeded order 20261024); rejected at final pass ['R0249', 'R0284']
+
+| verdict | included | seed | landmark | landmark without rejected |
+|---|---|---|---|---|
+| RQ2 | mixed | mixed | untested | untested |
+| RQ3 | weakly supported | untested | untested | untested |
+| RQ4 | mixed | untested | untested | untested |
+| RQ5 | mixed | untested | untested | untested |
 
