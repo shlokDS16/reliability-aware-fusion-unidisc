@@ -1,0 +1,18 @@
+The validator did not accept some entries of your output file. Per the brief, they are returned to you once. Correct only these entries, in place, with Read, Grep and Edit on paths from your earlier Glob result (absolute paths inside your folder; no Bash or PowerShell). If an entry is right as it stands, leave it and say so. Never delete a group, unit or value to satisfy the validator: if a printed comparison cannot be mapped so that it passes, leave it as it is and say so.
+
+(1) R0163 condition K37.A1: condition_mismatch ('512 / flash-attention 2' against '512') -> see the brief
+(2) R0163 condition K37.A2: condition_mismatch ('512 / flash-attention 2' against '512') -> see the brief
+(3) R0163 condition K38.A1: condition_mismatch ('1024 / SDPA' against '1024') -> see the brief
+(4) R0163 condition K38.A2: condition_mismatch ('1024 / SDPA' against '1024') -> see the brief
+(5) R0163 condition K39.A1: condition_mismatch ('1024 / flash-attention 2' against '1024') -> see the brief
+(6) R0163 condition K39.A2: condition_mismatch ('1024 / flash-attention 2' against '1024') -> see the brief
+(7) R0163 condition K40.A1: condition_mismatch ('1024 / vanilla' against '1024') -> see the brief
+(8) R0163 condition K40.A2: condition_mismatch ('1024 / vanilla' against '1024') -> see the brief
+(9) R0163 condition K41.A1: condition_mismatch ('2048 / SDPA' against '2048') -> see the brief
+(10) R0163 condition K41.A2: condition_mismatch ('2048 / SDPA' against '2048') -> see the brief
+(11) R0163 condition K42.A1: condition_mismatch ('2048 / flash-attention 2' against '2048') -> see the brief
+(12) R0163 condition K42.A2: condition_mismatch ('2048 / flash-attention 2' against '2048') -> see the brief
+(13) R0163 condition K43.A1: condition_mismatch ('2048 / vanilla' against '2048') -> see the brief
+(14) R0163 condition K43.A2: condition_mismatch ('2048 / vanilla' against '2048') -> see the brief
+
+Reply with ONE line: how many entries you changed and how many you left as they were.
