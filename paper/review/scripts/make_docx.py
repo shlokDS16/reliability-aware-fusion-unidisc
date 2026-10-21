@@ -84,6 +84,7 @@ def flatten(path):
         name = m.group(1)
         p = R / (name if name.endswith(".tex") else name + ".tex")
         return flatten(p)
+    t = re.sub(r"\\csname @@input\\endcsname (\S+) ", lambda m: rep(m) + "\n", t)   # primitive input inside tabulars
     return re.sub(r"\\input\{([^}]*)\}", rep, t)
 
 
