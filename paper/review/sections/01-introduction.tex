@@ -72,7 +72,16 @@ We do not claim a selection error or tilt cost as new error terms; both were der
 We do not claim any per-step impossibility result, any size of the value term, the coupling term or the cross-modal dependence on a real model, or the U-shaped dependence on the number of steps that appears in a toy model. % src: framework-v2.md section D "Not claimed"
 We do not claim that the census sample is a sample of the whole field: it is a random sample of records that passed title-and-abstract screening and have an arXiv identifier. We do not claim that sampler effects on joint text--image consistency are new, or that the value rule carries that consistency; the single preregistered run of Section~\ref{sec:exp003} supports neither claim. % src: research/review/audits/2026-10-15-gate-EXP-003.md section 6 items 4 and 7; decision D0019
 
-\subsection{How the work was done, and how to read the paper}
+\subsection{How to read the paper}
 \label{sec:intro-guide}
+
+Figure~\ref{fig:taxonomy} places the 47 models of the design space (Section~\ref{sec:design}) in a taxonomy by state space and model family, and gives an entry point to the literature: each leaf cites the model's paper. % src: research/review/coverage/design-space-v1.csv ("family"); scripts/fig_taxonomy.py
+\begin{figure}[t]
+\centering
+\input{tables/taxonomy-tree.tex}
+\caption{Taxonomy of the 47 design-space models by state space and family. Families are those recorded in the design-space table (\suppTabDesign{}); a model appears once, under the family that table assigns.}
+\label{fig:taxonomy}
+\Description{A tree with four branches. Discrete state space: general corruption (D3PM, Campbell et al., SEDD), absorbing or masked (MDLM, MD4, RADD, Zheng et al., ARDM, LLaDA), uniform (Duo, Simplax, UDLM), block semi-autoregressive (BD3-LM), adapted from autoregressive models (Dream 7B, DiffuLLaMA, DiffuCoder, Seed Diffusion), flow and hybrid channels (DFM, CANDI). Continuous state space: Gaussian on embeddings (Diffusion-LM, CDCD, Plaid, DiffuSeq) and logit simplex (TESS, TESS 2, SSD-LM). Samplers and distillation: order and remasking (MaskGIT, ReMDM, EB-sampler) and cache and joint draws (Fast-dLLM, DCD, Di4C). Unified multimodal: discrete diffusion (UniDisc, MMaDA, MMaDA-Parallel, Lumina-DiMOO, LaViDa-O, Muddit, Dynin-Omni), understanding (LaViDa, Dimple), flow and dual diffusion (FUDOKI, D-DiT), and autoregressive text with diffusion images (Show-o, Transfusion, BAGEL, Show-o2).}
+\end{figure}
 
 Section~\ref{sec:method} gives the review method, Section~\ref{sec:notation} the notation, Section~\ref{sec:design} the design space, Section~\ref{sec:rq} the evidence by research question, Section~\ref{sec:census} the census, Section~\ref{sec:budget} the error budget, Section~\ref{sec:open} the open problems, Section~\ref{sec:exp003} a preregistered measurement on a frozen unified model, and Section~\ref{sec:limits} the threats to validity. Full search strings, the PRISMA checklist, the codebooks and the row-level tables are in the electronic supplement; the main text, references included, fits the journal's limit of 35 pages.

@@ -142,6 +142,22 @@ a = body.index("\\begin{algorithm}")
 b = body.index("\\end{algorithm}") + len("\\end{algorithm}")
 body = body[:a] + "\\begin{center}\n\\includegraphics[width=\\linewidth]{" + alg_png.as_posix() + "}\n\\end{center}" + body[b:]
 
+# ---------------------------------------------------------------- taxonomy tree (forest) as image, cropped from main.pdf
+if "\\begin{forest}" in body:
+    tree_png = None
+    for pg in pdf:
+        cap = pg.search_for("Taxonomy of the 47 design-space models")
+        if cap and pg.search_for("Samplers and distillation"):
+            boxes = [d["rect"] for d in pg.get_drawings() if d["rect"].y1 < cap[0].y0 and d["rect"].y0 > 60]
+            top, bot = min(r.y0 for r in boxes) - 6, cap[0].y0 - 4
+            tree_png = IMG / "taxonomy-tree.png"
+            pg.get_pixmap(dpi=300, clip=fitz.Rect(40, top, pg.rect.width - 40, bot)).save(tree_png)
+            break
+    assert tree_png, "taxonomy tree not found in main.pdf"
+    a = body.index("\\begin{forest}")
+    b = body.index("\\end{forest}") + len("\\end{forest}")
+    body = body[:a] + "\\includegraphics[width=\\linewidth]{" + tree_png.as_posix() + "}" + body[b:]
+
 
 # ---------------------------------------------------------------- figures to PNG
 def fig_png(m):
