@@ -74,7 +74,7 @@ This file holds the material that the main paper points to and that is not count
 
 \maketitle
 
-\todo{assemble S2 (screening table), S3 (census codebooks and the 176-row table), S4 (agreement tables), S6 (extraction and quality-appraisal tables) and the readme.txt that CSUR asks for; OUTLINE.md section 1 lists them}
+This supplement gives the tables and text moved from the main paper. Row-level material (every screening row of both screeners and the adjudicator, the census codebooks and the 176-row census table, the extraction records and validator reports) is in the archived repository named in the main paper's data and code availability statement, with a README that maps each file to the section that uses it.
 
 \setcounter{section}{0}
 \section{Search strings and PRISMA 2020 checklist}
@@ -158,7 +158,7 @@ Total & 1082 & 65 & 306 & 1453 \\ % src: screening_agreement.py "A: {...} B: {..
 
 The census predates the search update and samples the seed corpus only; its eligibility judgements used the protocol's eligibility rules as amended on 2026-10-15 (decision D0020), not criteria v1.6. % src: census-result-v2.md ("Sample"); decision D0020
 \paragraph{Pool, order and stopping rule.}
-The census pool is every record that neither screener excluded and that has an arXiv identifier, 1106 records. The pool was put in a random order with a fixed seed (20261015) before any coding. Coders worked down the order, checked full-text eligibility, and stopped when the primary coder's eligible count reached 150; it reached 151 at rank 176, so the sample is ranks 1 to 176. That count treated the 15 papers Codex could not read as ineligible; under the final eligibility the 150th eligible paper falls at rank 157, so 19 more ranks were coded than intended. The sample is still the first 176 ranks of a random order, so the extra ranks do not bias the proportions. % src: census-result-v2.md ("Sample", commit 8dd2af3); audits/2026-10-15-gate-census-v2.md P2; src: tools/census_sample.py docstring and code (SEED = 20261015); coverage/census-result-v2.md ("Sample")
+The census pool is every record that neither screener excluded and that has an arXiv identifier, 1106 records. The pool was put in a random order with a fixed seed (20261015) before any coding. Coders worked down the order, checked full-text eligibility, and stopped when coder~B's eligible count reached 150; it reached 151 at rank 176, so the sample is ranks 1 to 176. That count treated the 15 papers Codex could not read as ineligible; under the final eligibility the 150th eligible paper falls at rank 157, so 19 more ranks were coded than intended. The sample is still the first 176 ranks of a random order, so the extra ranks do not bias the proportions. % src: census-result-v2.md ("Sample", commit 8dd2af3); audits/2026-10-15-gate-census-v2.md P2; src: tools/census_sample.py docstring and code (SEED = 20261015); coverage/census-result-v2.md ("Sample")
 Full texts are the arXiv HTML rendering of the latest version on the coding date, converted to plain text; four of the 176 ranks (23, 33, 90, 144) have no full text and are left out of every count. % src: tools/census_sample.py; census-result-v2.md ("Ranks 23, 33, 90 and 144 have no full text")
 Code repositories were not opened; the census records what the paper says, not what the released code does. % src: coverage/census-codebook-v1.md "Rules"
 
@@ -176,7 +176,7 @@ Rules in v1.2 that settle a gap and move a count are named where they matter (B-
 \paragraph{Coders.}
 Coder~A (Claude Sonnet) coded all 176 ranks, blind to coder~B. Coder~B was Codex (\texttt{gpt-6-luna}) for ranks 1 to 91, which gave 86 rows (ranks 19 and 79 failed), and then Claude Opus for ranks 92 to 176 and for ranks 19 and 79, because Codex reached its usage limit. This makes coder~A and part of coder~B models of the same family, so their agreement may overstate the agreement of independent human coders. % src: coverage/census-result-v2.md ("Process" step 1 and "Limits"); decision D0015; census/coder-B-run-log.jsonl (model gpt-6-luna in every row)
 Codex could not read the paper for 15 ranks among 1 to 88; its codes there are tool-failure placeholders, and those rows were coded from the paper at adjudication. % src: census/adjudication-notes-r001-r088.md ("Coder B (Codex) could not read the file for 15 ranks"); census-result-v2.md
-\todo{exact model identifiers and versions for coder~A and for coder~B (Claude Opus); the run logs record Codex only}
+The census coder files record the model family of the Claude coders (coder~A Claude Sonnet, the Claude part of coder~B Claude Opus) but not an exact model identifier or version; the Codex runs record \texttt{gpt-6-luna}.
 
 \paragraph{Agreement before reconciliation.}
 Agreement between the two coders is computed on the 172 ranks with text before any reconciliation, under v1.1, and again without the 15 ranks Codex could not read; the 158 field-level disagreements are kept. % src: analysis/census/agreement-random.log and agreement-random-excl-readfail.log; census/disagreements-random.csv (158 rows)
@@ -293,7 +293,7 @@ Id & Model & C1 & Position & Value & Revision & Levers & Fit \\
 \subsection{Long form}
 \label{sec:s-design-long}
 
-\todo{long form of the design-space table with every cell and its source location (research/review/coverage/design-space-v1.csv); it is promised in Section~\Mref{sec:design-table}}
+The long form is the file \texttt{research/review/coverage/design-space-v1.csv} in the archived repository: one row per model, with the arXiv version read, the evidence level, the sections read, and the full text of every cell (C1 to C5, memory and levers).
 
 \subsection{What the design-space test could and could not fail, and the taxonomies of the closest surveys (from Section~\Mref{sec:design-weak})}
 \label{sec:s-design-weak}
