@@ -7,7 +7,8 @@ analysis/), the manuscript sources and PDFs (paper/review/), the protocol, crite
 audits and ledgers (research/review/ without full texts, research/ledgers/, research/preregistration/), the EXP-003
 analysis outputs, and CONTRACT.md. Left out: every full text and PDF from the literature (research/sources/), the
 census HTML texts, raw database exports, generated images, private notes (research/*.md pages written for the
-authors), the blind human-check model answers until the check is done, and caches.
+authors) and caches. The blind author-check model answers and the three filled check sheets are included now that
+the checks are done (D0065, D0066).
 Bibliographic records (research/review/corpus/*.jsonl, research/review/screening/**.jsonl) keep ids, titles, authors,
 years, venues, identifiers and decisions; their "abstract" fields are removed (database licence terms).
 Writes MANIFEST.sha256 (one line per file) and a secret scan report SECRET-SCAN.txt; exits 1 if the scan finds a hit.
@@ -23,10 +24,12 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(sys.argv[1]).resolve()
 INCLUDE = ["tools", "tests", "analysis", "paper/review", "research/review", "research/ledgers",
            "research/preregistration", "research/CONTRACT.md", "runs/EXP-003/analysis",
-           "runs/EXP-003/ctrl/controls_decision.json"]
+           "runs/EXP-003/ctrl/controls_decision.json",
+           # the three filled author-check sheets (checks done 2026-10-21, D0065/D0066); the agreement scripts read them
+           "research/HUMAN-CHECK-2026-10-21.xlsx", "research/HUMAN-CHECK-SCREENING.xlsx", "research/HUMAN-CHECK-CENSUS.xlsx"]
 EXCLUDE_DIRS = {"__pycache__", ".pytest_cache", "fulltext-pymupdf", "census-text-paged", "pdfs", "html", "search-raw",
                 "gen", "images", "img", ".venv", "node_modules"}
-EXCLUDE_FILES = {"human-check-model-answers.json", "main-flat.tex", "main-pandoc.docx"}   # + docx build intermediates
+EXCLUDE_FILES = {"main-flat.tex", "main-pandoc.docx"}   # + docx build intermediates
 EXCLUDE_SUFFIX = {".pdf.part", ".pyc", ".aux", ".log", ".fls", ".fdb_latexmk", ".out", ".blg", ".synctex.gz", ".png.tmp"}
 KEEP_PDF = {"paper/review/main.pdf", "paper/review/supplement.pdf"}
 STRIP_ABSTRACT = re.compile(r"^research/review/(corpus|screening)/.*\.jsonl$")

@@ -95,7 +95,7 @@ Item & Topic & Location and note \\
 5 & Eligibility criteria & Section~\Mref{sec:method-eligibility}. \\
 6 & Information sources & Section~\Mref{sec:method-sources} and Table~\Mref{tab:sources}, with dates. \\
 7 & Search strategy & S1.2: every logged query, verbatim. \\
-8 & Selection process & Section~\Mref{sec:method-screening}: two model screeners and a model adjudicator; human validation not done. The landmark tranche was screened the same way (Section~\Mref{sec:method-freeze}; decision D0061). \\
+8 & Selection process & Section~\Mref{sec:method-screening}: two model screeners and a model adjudicator; the planned human validation was not done, and a later blind check of 40 records by the first author, validated with ChatGPT, is in Section~S9. The landmark tranche was screened the same way (Section~\Mref{sec:method-freeze}; decision D0061). \\
 9 & Data collection process & Section~\Mref{sec:method-extraction}: one model extractor, a second on 8 studies (and on 2 of the 16 extracted landmark studies), a validator. \\
 10a, 10b & Data items & Section~\Mref{sec:method-extraction}; the extraction schema in the repository. \\
 11 & Study risk of bias & Section~\Mref{sec:method-extraction}: QA1 to QA9, an appraisal of reporting and reproducibility, not a risk-of-bias tool for trials. \\
@@ -227,7 +227,7 @@ A ruling can lower ``non-plain or not stated'' only by turning a row into plain 
 \label{sec:s-census-limits}
 \begin{itemize}
   \item The frame is the 1106 records that passed title-and-abstract screening and have an arXiv identifier, sampled at random. It is not the whole field, and intervals treat the ranks as a simple random sample; they ignore clustering by research group. % src: census-result-v2.md ("Result", interval note)
-  \item No human has coded the sample. Coder~B is two systems (Codex, then Claude Opus); coder~A, the Claude part of coder~B, both adjudicators and the harmoniser are Claude models, and the adjudicators and harmoniser were not blind to the coders. Agreement may therefore overstate the agreement of independent human coders, and the 15 Codex read-failure ranks are in effect coded once plus adjudication. % src: census-result-v2.md ("Limits")
+  \item No human coded the sample; a later blind check of 24 papers by the first author, validated with ChatGPT, agrees on the value-rule class for 21 ($\kappa=0.79$; Section~S9). Coder~B is two systems (Codex, then Claude Opus); coder~A, the Claude part of coder~B, both adjudicators and the harmoniser are Claude models, and the adjudicators and harmoniser were not blind to the coders. Agreement may therefore overstate the agreement of independent human coders, and the 15 Codex read-failure ranks are in effect coded once plus adjudication. % src: census-result-v2.md ("Limits")
   \item A possible blindness leak is described in Section~\Mref{sec:census-method}; we know of no effect on coder~A's codes. % src: decision D0019 item 2
   \item Codebook v1.2 was written after the agreement was computed; agreement is reported under v1.1. \suppTabGap{} shows the rulings that decided the most papers. % src: census-codebook-v1.2.md "Disclosure"
   \item Fifteen rows carry F1 as a relative gain or a ratio rather than a level. % src: census-result-v2.md ("Limits"; harmonisation reading 5)
@@ -522,6 +522,37 @@ The second item depends on the regime: the released MaskGIT sampler adds Gumbel 
 \emph{Where a revision gain comes from.} When $T\ge L$ further steps cannot lower $\Efact$, so a revision sampler's gain over its base at matched forward passes comes through $\Elearn$ on the states it visits or through its value rule $V$. Which of the two can be settled only by rerunning with the value rule matched on both arms. The closest published table does not separate them: with nucleus sampling at $p=0.9$ in its text experiments, ReMDM's MAUVE rises from 0.403 to 0.610 and 0.656 at $T=1024$, 2048 and 4096, while the MDLM baseline is flat at 0.042, 0.037 and 0.035~\cite{arXiv:2503.00307}. % src: framework-v2.md section C (P3); primer-samplers.md section 2.7 (ReMDM Table 1)
 
 \emph{Withdrawn.} Two further statements are withdrawn and not claimed: that output entropy below a reference indicates value sharpening, and the U-shaped dependence on the number of steps that a toy model produces (supplement, Section~S8.4).
+
+
+\setcounter{section}{8}
+\section{Author checks of screening, extraction and census}
+\label{sec:s-author-checks}
+
+After the analysis, the first author checked three blind random samples, validating the answers with ChatGPT (OpenAI), which had no access to the project files or to the model answers (decisions D0065, D0066). Each sample was drawn by a script with a recorded seed, after leaving out records the first author had already seen with a model decision. Extraction: 12 of the 59 sampled included studies, 4 per update stratum (seed 20261022), with six yes/no questions mirroring the study-level flags behind RQ2 to RQ6. Screening: 40 of the 885 T1 full-text decisions, 20 the models included and 20 they excluded, drawn from 586 and 271 records after 28 seen records were left out (seed 20261023), each decided include, exclude or unclear with the first exclusion code that applies under criteria v1.6. Census: 24 of the 152 papers with a headline metric and a value-rule code, drawn from the census classes non-plain (12 of 90), not stated (8 of 50) and plain (4 of 6) after 6 seen papers were left out (seed 20261024); plain is oversampled, so the value-rule agreement is also given weighted back to the frame. The census headline was shown as the anchor and the value rule, diversity and step sweep were asked for it. Intervals for $\kappa$ are percentile bootstraps over records (studies for extraction), 2,000 draws. The checks changed no decision used in the review. % src: analysis/extraction/d0052/human_check_sheet.py; analysis/screening/human_check_screening_sheet.py and human-check-screening-model-answers.json (frame_counts include 586, exclude 271; left_out 28); analysis/census/human_check_census_sheet.py and human-check-census-model-answers.json (pool 90/50/6; left out 6); decisions D0065, D0066
+
+\begin{table}[h]
+\caption{Agreement between the first author's blind checks (validated with ChatGPT) and the models' final answers. ``Decided'' excludes answers marked unclear.}
+\label{tab:author-checks}
+\small
+\begin{tabular}{@{}p{5.2cm}rrrl@{}}
+\toprule
+Check & Sample & Decided & Agree & $\kappa$ (95\% interval) \\
+\midrule
+Extraction: six study-level flags & 12 & 7 studies, 34 pairs & 31 & 0.82 (0.63 to 0.95) \\ % src: analysis/extraction/d0052/human-check-agreement.json overall
+Screening: include or exclude & 40 & 30 & 21 & 0.41 (0.09 to 0.71) \\ % src: analysis/screening/human-check-screening-agreement.json decision
+Screening: exclusion code, both exclude & 11 & 11 & 11 & -- \\ % src: same file, code
+Census: value-rule class & 24 & 24 & 21 & 0.79 (0.56 to 1.00) \\ % src: analysis/census/human-check-census-agreement.json Q2
+Census: diversity reported (F3) & 24 & 24 & 23 & 0.86 (0.47 to 1.00) \\ % src: same file, Q3
+Census: step sweep (F4) & 24 & 24 & 20 & 0.64 (0.27 to 0.91) \\ % src: same file, Q4
+\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{Screening.} The author included 6 records that the models excluded: 3 turn on whether a multimodal system is one unified model (I1(b)), and 3 were adjudicated exclusions (two X0, one X7). The author excluded 3 records that the models included. The notes of most of the 10 unclear records say that the full text could not be opened. Agreement is below the protocol's bar of $\kappa\ge0.70$, on 40 records rather than at least 100, and no screener prompt was revised; this is a departure (Section~\Mref{sec:method-deviations}). % src: human-check-screening-agreement.json (table, human_include_model_exclude U04039 M14797 M15989 [X2], M13335 M10607 [X0, C], M13723 [X7, C]; human_exclude_model_include 3; unclear 10); research/HUMAN-CHECK-SCREENING.xlsx Notes
+\emph{Extraction.} Five of the 12 studies were marked unclear on every question. Per question the author and the final records agree on 6 of 7, 1 of 1, 7 of 7, 6 of 7, 6 of 6 and 5 of 6 pairs (AR comparison, its budget, training contrast, inference contrast, repeated runs, limitations). % src: analysis/extraction/d0052/human-check-agreement.json per_question
+\emph{Census.} All three value-rule disagreements are the author answering ``not stated'': one paper the census coded non-plain and two it coded plain. The last two move papers into the group that the census claim counts, so the check does not lower the 147 of 153. Weighted back to the frame, value-rule agreement is 0.93. The author judged the census headline to be the one its rules pick for 20 of the 24 papers (2 no, 2 unclear). % src: human-check-census-agreement.json (Q2 disagreements R0191, R0802, R0669; agreement_frame_weighted 0.928; Q1 yes 20, no 2, unclear 2)
+
+The sheets and scripts are in the archived repository: \texttt{research/HUMAN-CHECK-2026-10-21.xlsx}, \texttt{research/HUMAN-CHECK-SCREENING.xlsx}, \texttt{research/HUMAN-CHECK-CENSUS.xlsx}, and the \texttt{human\_check\_*} scripts and agreement files under \texttt{analysis/}.
 
 
 

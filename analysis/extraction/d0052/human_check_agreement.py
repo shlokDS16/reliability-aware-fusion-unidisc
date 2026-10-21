@@ -47,5 +47,18 @@ for q in M["questions"]:
     out["per_question"][q] = {"pairs": len(pairs), "agree": sum(a == b for a, b in pairs), "kappa": kappa(pairs),
                               "unclear_or_na": other}
 out["overall"] = {"pairs": len(allp), "agree": sum(a == b for a, b in allp), "kappa": kappa(allp)}
+# 95 percent percentile bootstrap of the overall kappa, resampling studies (pairs stay with their study); added 2026-10-21
+import random
+by = {}
+for i, m in M["answers"].items():
+    p = [(human.get(i, {}).get(q, ""), m[q]) for q in M["questions"]]
+    p = [(h, v) for h, v in p if h in ("yes", "no") and v in ("yes", "no")]
+    if p:
+        by[i] = p
+ids = sorted(by)
+rng = random.Random(20261022)
+ks = sorted(k for k in (kappa([x for _ in ids for x in by[ids[rng.randrange(len(ids))]]]) for _ in range(2000)) if k is not None)
+out["overall"].update({"studies": len(ids), "kappa_ci95": [ks[int(0.025 * (len(ks) - 1))], ks[int(0.975 * (len(ks) - 1))]] if ks else None,
+                       "bootstrap": {"reps": 2000, "seed": 20261022, "valid_draws": len(ks), "unit": "study"}})
 (D / "human-check-agreement.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
 print(json.dumps(out["overall"]), "filled", out["filled"], "of", out["of"])
