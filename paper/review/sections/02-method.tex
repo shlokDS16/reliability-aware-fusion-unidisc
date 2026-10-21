@@ -41,7 +41,7 @@ IEEE Xplore & 2026-10-15 & 1,300 \\
 ScienceDirect & 2026-10-16 & 613 \\
 ACM Digital Library & 2026-10-15 & 329 \\
 \midrule
-Total identified & & 79,964 \\ % src: 1903 + 66891 + 11169 (fig01-prisma.log seed_id, upd_id; subscription.identified)
+Total identified & & 79,963 \\ % src: 1903 + 66891 + 11169 (fig01-prisma.log seed_id, upd_id; subscription.identified)
 \bottomrule
 \end{tabular}
 \end{table}
@@ -50,7 +50,7 @@ Total identified & & 79,964 \\ % src: 1903 + 66891 + 11169 (fig01-prisma.log see
 \label{sec:method-eligibility}
 A study was included if it met all of the following criteria.
 \begin{itemize}
-  \item It proposes, analyses, evaluates or benchmarks (a) a diffusion model, in a discrete or continuous state space, whose output includes natural-language text or code, or (b) a unified model, a single model rather than a pipeline, that both understands and generates text and at least one other modality (image, video, audio or speech, or 3D) with a diffusion, masked-generative or discrete-flow component.
+  \item It proposes, analyses, evaluates or benchmarks (a) a diffusion model, in a discrete or continuous state space, whose output includes natural-language text or code (criterion I1(a)), or (b) a unified model, a single model rather than a pipeline, that both understands and generates text and at least one other modality (image, video, audio or speech, or 3D) with a diffusion, masked-generative or discrete-flow component (criterion I1(b)).
   \item It is a primary study that reports a method, a theoretical result or an empirical result.
   \item Its full text is in English, and its first public version is dated 1 January 2021 or later.
 \end{itemize}
@@ -81,7 +81,7 @@ Screening stopped on 20 October 2026 with 615 included studies. Three identified
 \label{sec:method-extraction}
 For all 615 included studies, the counts for RQ1 come from fields recorded at full-text screening: the eligibility criterion met, the modality, whether text is produced, the research questions the study bears on, and the year.
 
-Evidence for RQ2 to RQ5 and the quality appraisal for RQ6 come from a stratified random sample. Three strata cover the included studies: unified multimodal studies, and language-only studies split at the median text length into shorter and longer ones (52, 267 and 265 studies; 59 sampled). A fourth stratum of 20 seed-corpus studies is reported separately, as is the targeted set of landmark studies. Shares are weighted to the stratum sizes and given with 95\% bootstrap intervals.
+Evidence for RQ2 to RQ5 and the quality appraisal for RQ6 come from a stratified random sample. Three strata cover the included studies: unified multimodal studies, and language-only studies split at the median text length into shorter and longer ones (52, 267 and 265 studies, 59 of them sampled). The 12 included studies whose output is not language, the 7 included on reassessment and 12 records reserved for a pilot of the extraction form fall outside the strata. A fourth stratum of 20 seed-corpus studies is reported separately, as is the targeted set of landmark studies. Shares are weighted to the stratum sizes and given with 95\% bootstrap intervals.
 
 The extraction form records each paper's own comparisons as matched groups, with their arms, metric, direction of effect and compute budget, together with nine appraisal items (QA1 to QA9): code release, release of weights or data, a specified evaluation protocol, run-to-run variation, uncertainty for the main comparison, baselines at a matched or reported budget, an ablation of the credited component, agreement of the claims with the paper's own tables, and stated limitations. One reviewer extracted each study and cited a page for every value, and every value was checked against the text. A second reviewer independently extracted 8 studies; the two agree on the extracted values (616 of 616) and on most appraisal scores, but they divide the same tables into comparison groups differently (36 of 245 groups found by both), so Section~\ref{sec:rq} makes its statements about studies rather than about pooled comparisons. The full procedure is in the Supplement (Section~S4).
 

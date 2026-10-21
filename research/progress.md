@@ -1,6 +1,7 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 46 (2026-10-21; revision lead dc7ef7d8; D0072; newest).** Professor's second review applied (see research/RESPONSE-TO-PROFESSOR-2026-10-21.md, second part): Section 2 rewritten, AI only in the Declaration, main 34 pp incl. references, DOCX layout checked in Word; desk check in research/review/audits/2026-10-21-desk-check.md. Open: 1,242 unscreened seed records (stated as threat); ACM policy asks AI in Methods (author chose Declaration only).
 - **HANDOFF 45 (2026-10-21; revision lead dc7ef7d8; D0070; newest).** The author's reviewed check sheets replace
   research/HUMAN-CHECK-*.xlsx; agreement rerun with the committed scripts: screening 18 of 24 decided, kappa 0.50
   (0.12 to 0.83), 16 unclear (no readable full text), code 9 of 9; extraction and census value rule unchanged; census

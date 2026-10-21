@@ -175,3 +175,50 @@ Where they are integrated:
 - The human-only validation pass (Q5) and the four-arm and V measurements (Q2, Q7) are designs, not results.
 - Clarity editing with research-humanizer was not run on the new text, to stay within the weekly budget.
 - The release (GitHub and Zenodo) was not rebuilt or pushed.
+
+---
+
+# Second review (2026-10-21, evening): changes made
+
+Decision D0072. main.pdf is now 34 pages including references (CSUR limit: 35 including references); the
+supplement is 58 pages. Section numbers below are those of this version.
+
+| Point raised | What changed | Where |
+|---|---|---|
+| (a) Reference format: "arXiv:2605.25343 [cs.CV]" repeated | eprint, archivePrefix and primaryClass removed from every entry, so each preprint prints once as "arXiv preprint arXiv:…" | references.bib, s6-refs.bib |
+| (b) Abstract should state the contributions | Rewritten: scope, numbers, four contributions, findings, practical outputs | Abstract |
+| (c) Text needed after the Introduction heading | Two opening paragraphs before 1.1 (what DLMs are, how the field grew, what this review does) | Section 1 |
+| (d) Specific subsection names | 1.1 Decoding choices and the comparability of reported results; 1.2 Prior surveys of diffusion language and unified multimodal models; 1.3 Research questions and evidence base; 1.5 Scope of the claims; 1.6 Organisation of the article | Section 1 |
+| (e) No paper titles in running text | Titles replaced by author citations (Li et al., Yu et al.) | 1.2 |
+| Reference paper (Yang et al. 2023) and a CSUR systematic review (Ali and Molla 2025) | Their structure followed: unnumbered opening, short planning and protocol, bulleted criteria, selection summary with a flow figure, topical sections | Sections 1-2 |
+| 4. Design space | Comparison table of 13 representative discrete, continuous and unified models; wording for 36 full and 11 partial fits made consistent; provenance and the extension each partial fit needs in Supplement S5.2. Reassessing all 29 transferred rows from the primary papers was not possible in this round | Section 4, Table 2 |
+| 5. Reliability of the synthesis | New subsection 5.6 "How firm the conclusions for RQ2 to RQ5 are": matched compute (1 of 25), repeated runs (10 of 54), RQ5 threshold sensitivity | Section 5.6 |
+| 6. Decision framework; supported vs hypotheses | Table "Choosing a formulation and decoding strategy by requirement" and table "Status of the main conclusions" | Section 8 |
+| 1. Awkward wording in the abstract and 1.1 | Rewritten ("The line began", "615 included studies, 59 extracted…") | Abstract, Section 1 |
+| 2. "Around them sit surveys", "none could not be placed", "We use V as bookkeeping" | Rewritten | Section 1 |
+| 3. Table 1 labels "S1, S2, S1, S2" | The primes were lost in text extraction; the row now reads "strings S1 and S2 and their revisions" | Table 1 |
+| 3. Agreement statistics in 2.4; [11] (Cohen) placement; screening vs PRISMA consistency | Section 2.4 rewritten with κ values in words and symbols; Cohen cited at the first κ; the counts match the PRISMA figure; the total is corrected to 79,963 (the sum of Table 1) | Section 2.4, Figure 2 |
+| 4. / 6. Missing symbols in Sections 3, 6, 7, Table 6 | Present in the PDF and in the DOCX (192 Word equations); the extraction used for the review dropped inline math. Sentences that read badly without symbols were rewritten | various |
+| 5. Claims for [26] Di4C, [43] Discrete Copula Diffusion, [53] CANDI | Checked against each paper's abstract: joint outputs over a set (Di4C, DCD) and a hybrid continuous-discrete channel (CANDI) are what those papers propose | Section 4.4 |
+| 6. "agrees on the value-rule class for 21, ;" | Rewritten in full | Section 6.6 |
+| 6. Equation (5); attribution to [28] (ARDM) and [36] (Li and Cai) | Checked: [28] introduces the any-order objective we credit; [36] gives the information-theoretic KL bound we credit | Sections 3, 7 |
+| 7. "20 of the 55 … say that the value rule was" | Completed: "…state that the value rule was held fixed" | Section 8.5 |
+| 8. "The evidence by research question is thin" | Rewritten: "The evidence for the research questions is weakest where…" | Section 11 |
+| 8. Zenodo DOI of [19] | 10.5281/zenodo.23524470, the published v1.0.0 record of the data and code | References |
+| (f) AI only in the Declaration | All mentions of AI, automated screeners and model names removed from the main text and supplement; AI appears only in the Declaration on the use of AI | whole paper |
+| Not citing a table and a figure in one place | Separated (Section 2.2, Supplement S1.3) | Section 2 |
+| (g) Screening section reads like a low-quality audit | Section 2 rewritten as a conventional SLR method: protocol, search strategy, eligibility criteria, two-stage study selection, scope of the screened set, extraction and appraisal, census, synthesis, deviations. Decision identifiers, internal set names (T1, R797), session checks and exclusion-code tallies removed from the text; the full procedure is in Supplement S1. PRISMA labels rewritten in plain terms | Section 2, Figure 2 |
+| (h) Large empty spaces | PRISMA figure placed directly under the Study selection heading with a shorter caption; Word export checked: no part-empty page | DOCX |
+| Statements and Declarations | Funding and competing-interests text as supplied | end matter |
+| Page limit about 34 | 34 pages including references: open problems in full, landmark column, census figure, census agreement table, lever table and formalism figure moved to the supplement; limitations rewritten | whole paper |
+
+Also fixed after an independent desk check (research/review/audits/2026-10-21-desk-check.md):
+- the duplicated introduction paragraph;
+- the internal process text (feasibility pass, "withdrawn", evidence-level wording);
+- the strata explanation (584 of 615);
+- the supplement pointers (author checks are now S11; the other S-numbers corrected);
+- the criterion labels I1(a) and I1(b), now defined in Section 2.3.
+
+Two items remain open:
+- The 1,242 seed records outside the screened set are stated as the main threat to validity. Screening them would need a further screening round.
+- ACM's authorship policy asks for AI used to conduct research to be described in the Methods section. At the author's instruction, AI is described only in the Declaration.

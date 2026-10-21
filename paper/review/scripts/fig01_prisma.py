@@ -186,7 +186,7 @@ yS_end = max(e[0] for e in ends)
 
 # side note in the update column: single-screener rescue of filtered records (not screened further)
 yR = ends[1][0] + 6
-cv.box(COLS[1] + GX, yR, GW, [("Rescue screen of filtered", B), (f"records: {f(fr['rescue_screened_single_haiku'])}", N_),
+cv.box(COLS[1] + GX, yR, GW, [("Check of set-aside", B), (f"records: {f(fr['rescue_screened_single_haiku'])}", N_),
                                (f"{f(rf['positives'])} positives; {f(rf['dual_ta_screened'])} dual-", N_),
                                (f"screened, {f(rf['dual_ta_pass'])} passed", N_), ("not assessed", B)], "dashed")
 yRb = yR + hb([1, 2, 3, 4, 5])
@@ -201,7 +201,7 @@ cv.line((COLS[1] + VX, yT - 2), (COLS[2] + VX, yT - 2))
 cv.line((xL + VX + 30, yT - 2), (xL + VX + 30, yT), arrow=True)
 t1 = [("main", [("Full-text assessment: reports sought", B),
                 (f"n = {f(ft['reports_sought'])} ({f(n['t1_fromTA'])} title/abstract passes and re-check samples)", N_)]),
-      ("side", [("Not retrieved", B), (f"n = {f(n['t1_not_retrieved'])}: no full text {st['no_full_text_found']}, e-gateway "
+      ("side", [("Not retrieved", B), (f"n = {f(n['t1_not_retrieved'])}: no full text {st['no_full_text_found']}, institutional access "
                                        f"{st['pending_e_gateway'] + sx.get('pending_e-gateway', 0)}, open access failed "
                                        f"{st['open_access_fetch_failed_not_pdf'] + st['open_access_fetch_failed_error'] + sx.get('pending_oa_url', 0)},", N_),
                 (f"OpenReview note missing (X6) {st['not_retrieved_openreview_note_missing_X6']}", N_)]),
@@ -218,8 +218,8 @@ yT_end, t1_bottom = column(1, yT, t1)
 # R797 in the seed column, beside T1
 COLS = COLS_save
 GX, GW, CW = GX_save, GW_save, CW_save
-r7s = [("main", [("Re-check of title/abstract", B), ("exclusions: K = " + str(rc["K"]["K"]) + " of " + str(sum(rc["K"]["counts"].values()) - rc["K"]["counts"]["not_in_T1"]), N_),
-                 (f"triggered: {f(rc['frame'])} candidates,", N_), (f"Reassessed exclusions n = {f(r7['frame'])}", N_)]),
+r7s = [("main", [("Re-check of title/abstract", B), ("exclusions: eligible " + str(rc["K"]["K"]) + " of " + str(sum(rc["K"]["counts"].values()) - rc["K"]["counts"]["not_in_T1"]), N_),
+                 (f"flagged: {f(rc['frame'])} records,", N_), (f"Reassessed exclusions n = {f(r7['frame'])}", N_)]),
        ("side", [("Not assessed", B), ("(not reached)", N_), (f"n = {f(r7['identified_not_screened_D0051'])}", N_)]),
        ("main", [("Reports assessed", B), (f"n = {f(n['r7_assessed'])}", N_)]),
        ("side", [("Excluded", B), (f"n = {f(r7['exclude_incl_resolved'])}", N_),
@@ -230,7 +230,7 @@ yR7_end, r7_bottom = column(0, yT, r7s)
 # ---------------------------------------------------------------- included
 yInc = max(yT_end, yR7_end) + 10
 inc = [("Studies included in the review", B), (f"n = {f(n['included'])} ({f(ft['include'])} + {f(r7['include'])})", N_),
-       (f"extraction and appraisal on a stratified random sample of 80, with a seed stratum", N_)]
+       (f"extraction and appraisal: stratified random sample of 59 included and 20 seed-corpus studies", N_)]
 cv.line((COLS[0] + VX, r7_bottom), (COLS[0] + VX, yInc - 3))
 cv.line((xL + VX, t1_bottom), (xL + VX, yInc - 3))
 cv.line((COLS[0] + VX, yInc - 3), (xL + VX, yInc - 3))

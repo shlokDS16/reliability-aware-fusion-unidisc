@@ -61,13 +61,13 @@ Of the corruption, the bound keeps only the reveal law (here the Bernoulli mask)
 The restrictions are these.
 \emph{Same objective, not the same model:} the any-order loss is a Jensen bound on a mixture over orders whose conditionals need not agree with one joint, and the model class differs (a bidirectional network with mask inputs against a causal one). The samplers coincide only in the exact event-driven limit, the first-hitting sampler~\cite{arXiv:2409.02908}; a finite-step sampler commits several positions with independent draws and pays for it (Section~\ref{sec:budget}). Autoregression arises from the same forward process only through the deterministic, non-factorised process of D3PM~\cite{arXiv:2107.03006}. % src: primer-foundations.md section 2c ("Not equivalent", items 1 to 4)
 \emph{Ratio and marginal:} for the erasure channel the concrete score at a masked position is the clean-token marginal times $\alpha_t/(1-\alpha_t)$~\cite{arXiv:2406.03736,arXiv:2406.04329}, for the true score or a constrained network, but not for the symmetric channel, where it is affine in two posterior entries. % src: primer-foundations.md section 2d (restrictions 1 to 3) and 2e item 3
-\emph{Symmetric channel:} every position stays revisable, and the time-free parameterisation and the any-order link are lost (the last two are inference in the primer). % src: primer-foundations.md section 2e items 1, 2, 4, 5
+\emph{Symmetric channel:} every position stays revisable, and the time-free parameterisation and the any-order link are lost. % src: primer-foundations.md section 2e items 1, 2, 4, 5
 \emph{Gaussian and uniform:} a Gaussian on one-hot vectors and the uniform-state channel coincide per position and per time through a map given by Duo~\cite{arXiv:2506.10892}, not along trajectories. Embedding Gaussians~\cite{arXiv:2205.14217,arXiv:2211.15089,arXiv:2305.18619} have no such map, so the uniform-state accounting cannot be read off the Gaussian one. % src: framework-v1.md section 1 (G12); primer-gaussian.md section 2.5
 
 \subsection{Two algorithms}
 \label{sec:notation-alg}
 
-Algorithm~\ref{alg:commit} draws one commit from a policy; the sampler loop that calls it at every step is Algorithm~S1 in the supplement (Section~S8.1). The same kernel~\eqref{eq:kernel} results whether the set is chosen before the values (rank-then-sample, line~\ref{l:rts}) or after them (sample-then-filter, line~\ref{l:stf}); Section~\ref{sec:budget-mechanisms} places the two by their laws. % src: method/selection-term.md T1.2 (policies as kernels); framework-v2.md section B
+Algorithm~\ref{alg:commit} draws one commit from a policy; the sampler loop that calls it at every step is Algorithm~S1 in the supplement (Section~S8.2). The same kernel~\eqref{eq:kernel} results whether the set is chosen before the values (rank-then-sample, line~\ref{l:rts}) or after them (sample-then-filter, line~\ref{l:stf}); Section~\ref{sec:budget-mechanisms} places the two by their laws. % src: method/selection-term.md T1.2 (policies as kernels); framework-v2.md section B
 
 \begin{algorithm}[t]
 \caption{\textsc{Commit}: one draw from a commit kernel}

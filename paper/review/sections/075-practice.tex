@@ -28,7 +28,7 @@ Requirement & Formulation to consider & Decoding strategy & Evidence \\
 Quality at a fixed model size, latency secondary & masked diffusion or an autoregressive model & few tokens per step; value rule stated and held fixed & sample: RQ2 mixed; RQ4, 9 of 15 sweeps improve with compute \\
 Low latency or high throughput & masked diffusion with parallel commitment; uniform-state diffusion for few-step sampling & several tokens per step chosen by dependence or a calibrated threshold, swept on the target task & outside~\cite{arXiv:2604.02560,arXiv:2605.24697,arXiv:2602.15014}; sample: 7 of 15 sweeps non-monotone \\
 Pretraining with scarce unique data & masked diffusion & -- & outside~\cite{arXiv:2507.15857,arXiv:2511.03276} \\
-Joint text and image generation & unified discrete diffusion or a unified flow model & guidance and sampler reported with every number & sample: RQ5 unresolved; one preregistered run (Section~\ref{sec:exp003}) \\
+Joint text and image generation & unified discrete diffusion or a unified flow model & guidance and sampler reported with every number & sample: RQ5 mixed; one preregistered run (Section~\ref{sec:exp003}) \\
 Revision of early mistakes & masked diffusion with remasking & remasking compared with confidence-based unmasking at matched calls & outside~\cite{arXiv:2606.12232} \\
 \bottomrule
 \end{tabular}
@@ -62,8 +62,8 @@ Headline results are mostly decoded with a non-plain or unstated value rule & ce
 Comparisons with autoregressive models are rarely made at matched compute & sample, 1 of 25 \\
 More inference compute does not help monotonically & sample, 7 of 15 sweeps non-monotone \\
 Run-to-run variation is seldom reported & sample, 10 of 54 \\
-On one frozen unified model, the official guided sampler raises the text--image link at matched network calls & one preregistered run (Section~\ref{sec:exp003}) \\
-\multicolumn{2}{@{}l}{\emph{Supported by single studies outside the sample}} \\
+\multicolumn{2}{@{}l}{\emph{Supported by single studies}} \\
+On one frozen unified model, a guided sampler gave a larger text--image dependence than plain sampling at matched network calls (not confirmed by CLIP) & our preregistered run (Section~\ref{sec:exp003}) \\
 Diffusion overtakes autoregressive training when unique data is scarce & \cite{arXiv:2507.15857,arXiv:2511.03276} \\
 Dependency-aware selection speeds parallel decoding at matched accuracy & \cite{arXiv:2604.02560} \\
 Few-step samplers are inexact even with an exact denoiser & \cite{arXiv:2602.19619} \\
@@ -71,7 +71,7 @@ Few-step samplers are inexact even with an exact denoiser & \cite{arXiv:2602.196
 The value term dominates reported gains for a given model and task & open problem OP5 \\
 A revision sampler's gain survives matching the value rule & open problem OP2 \\
 Cross-modal dependence in unified models is concentrated in early steps & open problem OP3 \\
-Understanding and generation help each other in unified models & RQ5 unresolved \\
+Understanding and generation help each other in unified models & RQ5 mixed, five signed studies \\
 \bottomrule
 \end{tabular}
 \end{table}
