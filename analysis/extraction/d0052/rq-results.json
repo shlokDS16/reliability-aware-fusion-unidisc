@@ -13726,51 +13726,51 @@
     }
    },
    "QA9_low_eq1": {
-    "count": 3,
+    "count": 4,
     "of": 16,
-    "share": 0.188,
+    "share": 0.25,
     "ci95": [
-     0.0,
-     0.375
+     0.062,
+     0.5
     ],
     "by_stratum": {
-     "L-lmk": "3/16"
+     "L-lmk": "4/16"
     }
    },
    "QA9_high_eq1": {
-    "count": 3,
+    "count": 2,
     "of": 16,
-    "share": 0.188,
+    "share": 0.125,
     "ci95": [
      0.0,
-     0.375
+     0.312
     ],
     "by_stratum": {
-     "L-lmk": "3/16"
+     "L-lmk": "2/16"
     }
    },
    "QA9_low_eq2": {
-    "count": 13,
+    "count": 12,
     "of": 16,
-    "share": 0.812,
+    "share": 0.75,
     "ci95": [
-     0.625,
-     1.0
+     0.5,
+     0.938
     ],
     "by_stratum": {
-     "L-lmk": "13/16"
+     "L-lmk": "12/16"
     }
    },
    "QA9_high_eq2": {
-    "count": 13,
+    "count": 14,
     "of": 16,
-    "share": 0.812,
+    "share": 0.875,
     "ci95": [
-     0.625,
+     0.688,
      1.0
     ],
     "by_stratum": {
-     "L-lmk": "13/16"
+     "L-lmk": "14/16"
     }
    },
    "RQ1_state_space=discrete-absorbing": {
@@ -15252,51 +15252,51 @@
     }
    },
    "QA9_low_eq1": {
-    "count": 3,
+    "count": 4,
     "of": 14,
-    "share": 0.214,
+    "share": 0.286,
     "ci95": [
-     0.0,
-     0.429
+     0.071,
+     0.5
     ],
     "by_stratum": {
-     "L-lmk": "3/14"
+     "L-lmk": "4/14"
     }
    },
    "QA9_high_eq1": {
-    "count": 3,
+    "count": 2,
     "of": 14,
-    "share": 0.214,
+    "share": 0.143,
     "ci95": [
      0.0,
-     0.429
+     0.357
     ],
     "by_stratum": {
-     "L-lmk": "3/14"
+     "L-lmk": "2/14"
     }
    },
    "QA9_low_eq2": {
-    "count": 11,
+    "count": 10,
     "of": 14,
-    "share": 0.786,
+    "share": 0.714,
     "ci95": [
-     0.571,
-     1.0
+     0.5,
+     0.929
     ],
     "by_stratum": {
-     "L-lmk": "11/14"
+     "L-lmk": "10/14"
     }
    },
    "QA9_high_eq2": {
-    "count": 11,
+    "count": 12,
     "of": 14,
-    "share": 0.786,
+    "share": 0.857,
     "ci95": [
-     0.571,
+     0.643,
      1.0
     ],
     "by_stratum": {
-     "L-lmk": "11/14"
+     "L-lmk": "12/14"
     }
    },
    "RQ1_state_space=discrete-absorbing": {
@@ -15769,7 +15769,10 @@
     "R0268",
     "R0326"
    ],
-   "ec_used": [],
+   "ec_used": [
+    "R0268",
+    "R0326"
+   ],
    "QA1_link_check": "not run for the landmark studies (QA1 by the text-only part of the rule)"
   }
  }
