@@ -308,10 +308,10 @@
   "identified_not_screened_by_status": {
    "open_access_not_retrieved_error": 41,
    "e_gateway_not_retrieved": 123,
-   "retrieved_not_screened": 216,
    "open_access_not_retrieved_not_pdf": 47,
-   "no_identifier": 2,
-   "open_access_not_retrieved_wrong_pdf": 1
+   "retrieved_not_screened": 216,
+   "open_access_not_retrieved_wrong_pdf": 1,
+   "no_identifier": 2
   },
   "status": "frozen by D0051 (2026-10-20): batches filed by the freeze; INTERIM: screened so far; A-B rows, C rulings filed so far; before the tranche gate audit and the human author review (protocol s4 step 4); not final",
   "resolved_B_unavailable_D0058": [
@@ -333,7 +333,8 @@
   "seed_tranche_S1243_D0037": {
    "frame": 1242,
    "full_text_screened": 0,
-   "pdfs_downloaded_before_freeze": 276
+   "pdfs_downloaded_before_freeze": 276,
+   "assessed_later_in_landmark_tranche_D0061": 41
   },
   "R797_remainder": 430,
   "free_source_rescue_positives_D0036": {
@@ -344,6 +345,34 @@
    "held_without_abstract_not_screened": 217
   },
   "note": "reported in the PRISMA flow as identified but not screened (time and resource limit), with a limitation paragraph; the re-check reversal rule (criteria v1.6 s5.2, K = 4) is reported as triggered and only partly executed (D0051)"
+ },
+ "landmark_tranche_D0061": {
+  "frame_models": 47,
+  "models_already_included_615": 3,
+  "identified": 44,
+  "identified_from_unscreened_seed_S1243": 41,
+  "identified_removed_by_string_filter_D0026": 3,
+  "reports_sought": 44,
+  "reports_retrieved": 44,
+  "reports_assessed": 44,
+  "include": 42,
+  "exclude": 2,
+  "exclude_codes": {
+   "X1": 2
+  },
+  "exclude_xsub": {
+   "nontext": 1,
+   "theory-no-text": 1
+  },
+  "include_i1": {
+   "b": 3,
+   "a": 31,
+   "ab": 8
+  },
+  "include_nonlang_only": 0,
+  "agreement_A_B": 44,
+  "adjudicated_by_C": 0,
+  "status": "targeted landmark tranche (D0061), other methods; not merged into the 615 included studies"
  },
  "open": [
   "Free-source rescue pass: 348 positives (include or unclear) of 4421 were neither dual-screened nor routed to full text (0 in the dual batches, 0 in ft-routes); D0029 sends them to the dual queue, D0030 says they pass to full text. Resolved by D0036 (2026-10-20): dual title/abstract screening (A Sonnet, B Opus) first; passes join full text as a further tranche. Partly run (131 with an abstract dual-screened), then stopped by D0051: see not_screened_D0051.",

@@ -133,8 +133,11 @@ F["subscription"] = {"identified_by_database": pr["by_database"], "identified": 
 ft = {r["id"]: r for r in jl(REV / "fulltext/ft-routes.jsonl")}
 extra = {r["id"]: r for r in jl(SCR / "ft-routes-extra.jsonl")}
 fetch, got = {}, set()                 # last fetch status; ids with a PDF and its converted text
+fetch_pre_freeze = {}                  # fetches before the D0051 freeze (the landmark tranche fetched on 2026-10-21)
 for r in jl(REV / "fulltext/fetch-log.jsonl"):
     fetch[r["id"]] = r["status"]
+    if r.get("ts", "") < "2026-10-21":
+        fetch_pre_freeze[r["id"]] = r["status"]
     if r["status"] == "ok" and (ROOT / f"research/sources/md/fulltext-pymupdf/{r['id']}.txt").exists():
         got.add(r["id"])
 t1 = {r["id"]: r for r in jl(SCR / "ft-t1/t1-decisions-all.jsonl")}
@@ -272,7 +275,7 @@ rf_noabs = jl(REV / "screening/v2/dual-rescue-free/pending-no-abstract-rf.jsonl"
 rf_dual = {r["id"] for p in sorted((REV / "screening/v2/dual-rescue-free").glob("screener-A-batch-rf-*.jsonl")) for r in jl(p)}
 F["not_screened_D0051"] = {
     "seed_tranche_S1243_D0037": {"frame": len(s1243), "full_text_screened": 0,
-                                 "pdfs_downloaded_before_freeze": sum(1 for i in s1243 if fetch.get(i) == "ok")},
+                                 "pdfs_downloaded_before_freeze": sum(1 for i in s1243 if fetch_pre_freeze.get(i) == "ok")},
     "R797_remainder": sum(r797_rem.values()),
     "free_source_rescue_positives_D0036": {"positives": len(r2_pos), "dual_ta_screened": len(rf_dual),
                                            "dual_ta_pass": len(rf_pass), "pass_full_text_screened": 0,
@@ -280,6 +283,37 @@ F["not_screened_D0051"] = {
     "note": "reported in the PRISMA flow as identified but not screened (time and resource limit), with a limitation "
             "paragraph; the re-check reversal rule (criteria v1.6 s5.2, K = 4) is reported as triggered and only partly "
             "executed (D0051)"}
+
+# ---------------------------------------------------------------- landmark tranche L (D0061), other methods
+# Targeted, non-systematic: the design-space models (research/review/coverage/design-space-v1.csv) whose papers are not
+# among the 615 includes; screened at full text with criteria v1.6 and the T1 procedure. Reported in PRISMA 2020's
+# "identification via other methods" column; the 615 and the frozen sets above are unchanged.
+LM = SCR / "landmark"
+lframe = jl(LM / "landmark-frame.jsonl")
+ltr = [r for r in lframe if not r["covered_615"]]
+lids = [r["tranche_record"] for r in ltr]
+ldec = {r["id"]: r for r in jl(SCR / "ft-lmk/lmk-decisions-all.jsonl")}
+lsum = jload(SCR / "ft-lmk/lmk-summary-all.json")
+lconv = {}
+for r in jl(REV / "fulltext/convert-pymupdf-log.jsonl"):
+    if r.get("tranche") == "L":
+        lconv[r["id"]] = r["status"]
+prior = collections.Counter(r["status"].get(r["tranche_record"], "none") for r in ltr)
+F["landmark_tranche_D0061"] = {
+    "frame_models": len(lframe), "models_already_included_615": sum(r["covered_615"] for r in lframe),
+    "identified": len(lids), "identified_from_unscreened_seed_S1243": prior.get("S1243_not_screened", 0),
+    "identified_removed_by_string_filter_D0026": sum(1 for r in ltr if r["status"].get(r["tranche_record"]) == "other"),
+    "reports_sought": len(lids), "reports_retrieved": sum(1 for i in lids if fetch.get(i) == "ok" and lconv.get(i) == "ok"),
+    "reports_assessed": len(ldec), "include": lsum["decision"].get("include", 0),
+    "exclude": lsum["decision"].get("exclude", 0), "exclude_codes": lsum["exclude_codes"],
+    "exclude_xsub": lsum["exclude_xsub"], "include_i1": lsum["include_i1"],
+    "include_nonlang_only": lsum["include_nonlang_only"], "agreement_A_B": lsum["agree_A_B"],
+    "adjudicated_by_C": lsum["adjudicated_by_C"],
+    "status": "targeted landmark tranche (D0061), other methods; not merged into the 615 included studies"}
+assert set(ldec) == set(lids) and len(lids) == len(set(lids))
+assert prior.get("S1243_not_screened", 0) + F["landmark_tranche_D0061"]["identified_removed_by_string_filter_D0026"] == len(lids)
+assert F["landmark_tranche_D0061"]["include"] + F["landmark_tranche_D0061"]["exclude"] == len(ldec)
+F["not_screened_D0051"]["seed_tranche_S1243_D0037"]["assessed_later_in_landmark_tranche_D0061"] = len(set(lids) & s1243)
 
 tq = {r["id"] for r in jl(REV / "screening/v2/title-resolved-queue.jsonl")}
 t1_prefix = collections.Counter(i[0] for i in t1)

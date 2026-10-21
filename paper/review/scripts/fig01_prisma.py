@@ -159,7 +159,8 @@ seed = [("main", [("Records identified", B), (f"n = {f(n['seed_id'])}", N_),
         ("main", [("Passed by either screener", B), (f"n = {f(sd['ta_pass_either'])}", N_)]),
         ("side", [("Duplicate of an", B), ("update record", B), (f"n = {f(n['seed_pass_not_in_frame'])}", N_)]),
         ("dashed", [("Not assessed at full text", B), ("(screening frozen, D0051)", N_),
-                    (f"n = {f(n['s1243'])}", N_)])]
+                    (f"n = {f(n['s1243'])}", N_),
+                    (f"{f(ns['seed_tranche_S1243_D0037']['assessed_later_in_landmark_tranche_D0061'])} later assessed in tranche L", N_)])]
 upd = [("main", [("Records identified", B), (f"n = {f(n['upd_id'])}", N_),
                  (f"5 databases {f(n['upd_db'])}", N_), (f"citation searching {f(n['upd_cit'])}", N_)]),
        ("side", [("Duplicates removed", B), (f"n = {f(n['upd_dup'])}", N_), (f"of seed records {f(fr['duplicates_against_seed_corpus'])}", N_)]),
@@ -235,6 +236,31 @@ cv.line((xL + VX, t1_bottom), (xL + VX, yInc - 3))
 cv.line((COLS[0] + VX, yInc - 3), (xL + VX, yInc - 3))
 cv.line((COLS[0] + VX + 60, yInc - 3), (COLS[0] + VX + 60, yInc), arrow=True)
 yEnd = cv.box(COLS[0], yInc, W - COLS[0] - 4, inc, "main")
+
+# ---------------------------------------------------------------- landmark tranche L (D0061): other methods, one row
+lt = F["landmark_tranche_D0061"]
+assert lt["identified"] == lt["identified_from_unscreened_seed_S1243"] + lt["identified_removed_by_string_filter_D0026"]
+assert lt["reports_assessed"] == lt["include"] + lt["exclude"] == sum(lt["exclude_codes"].values()) + lt["include"]
+assert lt["frame_models"] - lt["models_already_included_615"] == lt["identified"]
+n.update(lmk_identified=lt["identified"], lmk_assessed=lt["reports_assessed"], lmk_include=lt["include"])
+yL = yEnd + 10
+row = [[("Identification via", B), ("other methods (D0061):", B), ("landmark models not in", N_),
+        (f"the {f(n['included'])}: n = {f(lt['identified'])}", N_),
+        (f"seed {lt['identified_from_unscreened_seed_S1243']}, string filter {lt['identified_removed_by_string_filter_D0026']}", N_)],
+       [("Reports sought", B), (f"n = {f(lt['reports_sought'])}", N_), ("Reports retrieved", B), (f"n = {f(lt['reports_retrieved'])}", N_)],
+       [("Reports assessed", B), (f"n = {f(lt['reports_assessed'])}", N_), ("Excluded", B),
+        (f"n = {f(lt['exclude'])}: {codes(lt['exclude_codes'])}", N_)],
+       [("Landmark tranche", B), ("included", B), (f"n = {f(lt['include'])}, reported", N_), (f"apart from the {f(n['included'])}", N_)]]
+GAPX = 8
+BW = (W - COLS[0] - 4 - 3 * GAPX) / 4
+hmax = max(len(r) for r in row)
+for k, lines in enumerate(row):
+    x = COLS[0] + k * (BW + GAPX)
+    cv.box(x, yL, BW, lines + [("", N_)] * (hmax - len(lines)), "main")
+    if k:
+        cv.line((x - GAPX, yL + hb([0] * hmax) / 2), (x, yL + hb([0] * hmax) / 2), arrow=True)
+yEnd = yL + hb([0] * hmax)
+(FIGDIR / "fig01-prisma.log").write_text("\n".join(f"{k} = {v}" for k, v in n.items()) + "\n", encoding="utf8")
 H = yEnd + 4
 
 fig, ax = plt.subplots(figsize=(TEXTWIDTH_IN, H / 72))
@@ -275,5 +301,6 @@ def band(top, bot, label, colour):
 
 band(yI, yI + 50, "Identification", C["sky"])
 band(yI + 52, yS_end, "Screening", C["green"])
-band(yT, yEnd, "Full text and included", C["orange"])
+band(yT, yL - 2, "Full text and included", C["orange"])
+band(yL, yEnd, "Other methods", C["lightgrey"])
 save(fig, "fig01-prisma")
