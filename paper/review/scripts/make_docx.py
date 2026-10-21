@@ -205,7 +205,8 @@ for k, v in SUPP.items():
     body = body.replace("\\" + k + "{}", v).replace("\\" + k, v)
 
 # ---------------------------------------------------------------- placeholders and small fixes
-PH = {"Zenodo DOI": "[Zenodo DOI to be added]", "funding": "[Funding statement and acknowledgements to be added]"}
+PH = {"Zenodo DOI": "[Zenodo DOI to be added]",
+      "funding": "[Funding statement, competing-interests statement and acknowledgements to be added]"}
 
 
 def todo(arg):
