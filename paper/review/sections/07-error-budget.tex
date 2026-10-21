@@ -47,6 +47,8 @@ The decomposition is not unique. It depends on the coupling of the data path wit
 
 \paragraph{What was withdrawn.} An earlier version of our framework proposed two new terms, a selection bias for value-dependent rules and a tilting cost for temperature, truncation, argmax and guidance. Both are withdrawn (decision D0011) and not claimed. The reasons are in the supplement (Section~S8.4), which also credits the published work that covers what remains; the sample-then-filter and rank-then-sample vocabulary is that of~\cite{arXiv:2604.00375}.
 
+\paragraph{Independent evidence, and sizing $V$.} The oracle study of Section~\ref{sec:rq4} isolates the factorisation term: with an exact denoiser, few-step samplers remain distributionally wrong~\cite{arXiv:2602.19619}. Dependency-aware selection bounds the same term by choosing which positions to co-commit~\cite{arXiv:2604.02560}, and a learned commitment policy acts on the position rule~\cite{arXiv:2605.24697}; both lower the factorisation term at a given number of passes rather than $V$. Because $V$ depends on the coupling, we do not give it a magnitude; Section~\ref{sec:open-v} sets out a protocol that brackets its effect on reported quality for one frozen model.
+
 \subsection{Mechanisms placed by their law}
 \label{sec:budget-mechanisms}
 
