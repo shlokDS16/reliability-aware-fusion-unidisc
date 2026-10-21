@@ -1,102 +1,69 @@
-# GitHub and Zenodo for Paper 1 (DLM review): exact steps (updated 2026-10-21)
+# GitHub and Zenodo for Paper 1 (DLM review): exact steps (updated 2026-10-21, manual Zenodo route)
 
-You create the repository yourself (your decision of 2026-10-21). Everything to upload is already built.
+## GitHub: done by Claude, repository stays private
 
-## What you upload
+- Repository: https://github.com/shlokDS16/dlm-review-prisma (private, created by you on 2026-10-21).
+- First push done on 2026-10-21 (2,476 files, pre-review draft). Claude pushes the final version after fixes A-D with
+  `python -I tools/sync_release_repo.py "<message>"`, which mirrors the build folder into the local clone
+  `C:\Users\Shlok\Downloads\Multi-Modality Language model\release\dlm-review-prisma-git` and pushes.
+- Because the repository is private, Zenodo cannot archive it automatically (its GitHub link works only for public
+  repositories). So the DOI comes from a **manual Zenodo upload**, below. Nothing else on GitHub is needed from you.
+- The paper's data availability statement currently says the archive is "mirrored at [GitHub link]". With a private
+  repository readers cannot open that link, so before submission either make the repository public, or tell Claude
+  to cite only the Zenodo DOI (recommended while it stays private).
 
-Folder (local, ready): `C:\Users\Shlok\Downloads\Multi-Modality Language model\release\dlm-review-prisma-v1`
-- About 2,475 files, 185 MB; the largest file is 36 MB (GitHub limit 100 MB per file, so no Git LFS is needed).
-- Root files already in it: `README.md`, `LICENSE` (MIT, code), `LICENSE-DATA` (CC BY 4.0, data and text),
-  `.zenodo.json` (pre-fills the Zenodo record), `CITATION.cff` (citation box on GitHub), `MANIFEST.sha256`,
-  `SECRET-SCAN.txt` (no secrets found).
-- Not in it (on purpose): full texts and PDFs of reviewed papers, raw database exports, generated images,
-  your private notes, abstracts of the bibliographic records.
+## Zenodo: manual upload (about 15 minutes)
 
-## Step 1. Create the GitHub repository (about 3 minutes)
+**File to upload** (rebuilt by Claude after fixes A-D; upload only after Claude says the final version is ready):
+`C:\Users\Shlok\Downloads\Multi-Modality Language model\release\dlm-review-prisma-v1.0.0.zip`
+(about 22 MB; one zip holds all 2,476 files, because Zenodo allows at most 100 files per record).
 
-At https://github.com/new, signed in as **shlokDS16**:
+### Step 1. Start a new upload
+1. Go to https://zenodo.org and log in (GitHub or ORCID login both work).
+2. Click **+ New upload** (top bar, or "Upload" in your profile menu).
 
-| Field | Enter |
-|---|---|
-| Repository name | `dlm-review-prisma` |
-| Description | `Data and code for "Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review of Discrete and Continuous Approaches" (PRISMA 2020; ACM Computing Surveys submission)` |
-| Visibility | **Public** (Zenodo archives only public repositories). If you prefer to wait, choose Private now and switch to Public in Step 3. |
-| Add a README / .gitignore / licence | **Leave all unticked** (the folder already has them) |
+### Step 2. Files
+- Drag in `dlm-review-prisma-v1.0.0.zip` and wait until it shows 100 %.
 
-Click **Create repository**. Then, in **Settings > General > Topics** (gear icon next to "About" on the repo page),
-add: `systematic-review`, `prisma`, `diffusion-language-models`, `multimodal`, `reproducibility`.
+### Step 3. Reserve the DOI first
+- Under **Digital Object Identifier**: "Do you already have a DOI for this upload?" choose **No**, then click
+  **Get a DOI now!**. Zenodo shows a reserved DOI such as `10.5281/zenodo.NNNNNNNN`.
+- **Send this DOI to Claude now.** It goes into the paper before you publish, so the paper and the record match.
+  The record stays a private draft until Step 6.
 
-## Step 2. Upload the folder (about 5 minutes)
-
-The browser upload takes at most 100 files at a time, so use the terminal. Paste these one at a time:
-
-```bash
-cd "C:/Users/Shlok/Downloads/Multi-Modality Language model/release/dlm-review-prisma-v1"
-```
-```bash
-git init -b main
-```
-```bash
-git add -A
-```
-```bash
-git commit -m "Paper 1 data and code, version 1.0.0"
-```
-```bash
-git remote add origin https://github.com/shlokDS16/dlm-review-prisma.git
-```
-```bash
-git push -u origin main
-```
-
-(Alternatively: GitHub Desktop > File > Add local repository > choose that folder > Publish repository.)
-Check on the repository page that `README.md` shows and that the file count looks right.
-
-## Step 3. Connect Zenodo (about 3 minutes, once)
-
-1. Go to https://zenodo.org and **Log in with GitHub** (same account, shlokDS16).
-2. Top-right menu (your name) > **GitHub**.
-3. Click **Sync now**; find `shlokDS16/dlm-review-prisma` and switch its toggle **On**.
-   (If the repository is still private, make it public first: repo **Settings > General > Danger Zone > Change
-   visibility > Public**, then Sync again.)
-
-## Step 4. Make the release that Zenodo archives (about 2 minutes)
-
-On the GitHub repository page: **Releases** (right side) > **Create a new release**:
+### Step 4. Basic information (fill exactly)
 
 | Field | Enter |
 |---|---|
-| Choose a tag | type `v1.0.0` > **Create new tag** |
-| Release title | `Version 1.0.0: submission version` |
-| Description | `Data, code and LaTeX sources of the review as submitted to ACM Computing Surveys.` |
+| Resource type | **Dataset** |
+| Title | `Data and code for: Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review of Discrete and Continuous Approaches` |
+| Publication date | today's date (the default) |
+| Creators | Add three persons, in this order. 1) Family name `Goenka`, given name `Shlok`. 2) `Vairavasundaram`, `Subramaniyaswamy`. 3) `G N`, `Balaji`. For each: **ORCID** (type it in the identifier box), **Affiliation** `Vellore Institute of Technology` (pick it from the list; it is in ROR), **Role** leave empty or "Researcher". |
+| Description | `Protocol, search log with every query and export checksum, screening records of two model screeners and the adjudicator, extraction records and validator reports, decision ledger, analysis scripts, figure and table scripts, and LaTeX sources of a PRISMA 2020 systematic review of diffusion language models and unified multimodal diffusion models (submitted to ACM Computing Surveys). Full texts of the reviewed papers and raw database exports are not included; abstracts were removed from the bibliographic records. Code is under the MIT licence (LICENSE), data and text under CC BY 4.0 (LICENSE-DATA).` |
+| Licenses | **Creative Commons Attribution 4.0 International** (add **MIT** as a second licence for the code) |
 
-Click **Publish release**. Within a few minutes Zenodo creates the record; it appears under Zenodo > menu > **GitHub**
-with a DOI badge (`10.5281/zenodo.NNNNNNNN`).
+### Step 5. Recommended information
 
-## Step 5. Check the Zenodo record (about 5 minutes)
-
-Open the record on Zenodo > **Edit**. `.zenodo.json` already fills title, description, authors, affiliations,
-keywords, licence (CC BY 4.0), version 1.0.0 and language. Check and add:
-
-| Field | Value |
+| Field | Enter |
 |---|---|
-| Resource type | Dataset |
-| Creators (order) | Goenka, Shlok; Vairavasundaram, Subramaniyaswamy; G N, Balaji (all: School of Computer Science and Engineering, Vellore Institute of Technology, Vellore, India) |
-| ORCID | add each author's ORCID in the creator entry (not in the file because I don't have them) |
-| Related works | leave empty now; after acceptance add "Is supplement to" + the paper's DOI |
+| Keywords and subjects | `diffusion language models`, `masked diffusion`, `discrete diffusion`, `unified multimodal models`, `decoding strategies`, `systematic review`, `PRISMA 2020` (press Enter after each) |
+| Languages | English |
+| Version | `1.0.0` |
+| Publisher | Zenodo (default) |
+| Related works | leave empty now; after the paper is accepted add "Is supplement to" + the paper's DOI (Zenodo lets you edit metadata after publishing) |
+| Funding | add the grant only if the paper's funding statement names one |
 
-Click **Save**, then **Publish**.
+Leave **Visibility** as **Public** and access **Open** (the zip holds no full texts or private notes).
 
-## Step 6. Send me two things
+### Step 6. Publish
+- Click **Save draft**, check the preview, then **Publish**. After publishing, the files cannot be changed; a later
+  correction is a **New version** on the same record (it gets its own DOI, and the concept DOI stays the same).
 
-1. The GitHub link: `https://github.com/shlokDS16/dlm-review-prisma` (or whatever name you used).
-2. The Zenodo DOI (`10.5281/zenodo.NNNNNNNN`).
-
-I then replace the two highlighted placeholders in the PDF and in the Word file (Data and code availability
-statement, just before the Acknowledgments), rebuild both, and send them back.
+### Step 7. After publishing
+- Tell Claude "published". Claude checks that the DOI resolves (https://doi.org/10.5281/zenodo.NNNNNNNN) and that the
+  paper, the Word file and the repository README carry it.
 
 ## If something goes wrong
-
-- `git push` asks for a password: GitHub needs a personal access token or GitHub Desktop; easiest is GitHub Desktop.
-- Zenodo does not show the repository: make sure it is public, then **Sync now** again.
-- No DOI after 10 minutes: Zenodo > GitHub page shows the release status; a failed one can be retried there.
+- Upload stalls: reload the page; the draft keeps the reserved DOI.
+- ORCID not found: check the 16-digit ORCID at https://orcid.org; every author needs one before ACM production.
+- Published the wrong file: use **New version**, upload the right zip, publish; send Claude the new version DOI.
