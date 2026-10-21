@@ -54,7 +54,9 @@ conducting this review is described in the paper's "Declaration on the use of AI
 authors take full responsibility for the content.
 
 **Originality.** [Confirm: the manuscript is original, has not been published, and is not under consideration
-elsewhere. Name any related preprint or the companion research article here, if applicable.]
+elsewhere.] An earlier version of the manuscript sources is part of the public data and code archive of the review
+(Zenodo, doi:10.5281/zenodo.23524470, version 1.0.0); it has not appeared in any journal, proceedings or preprint
+server. [Name the companion research article here, if applicable.]
 
 **Funding.** No funding was received for conducting this study. The article processing charge is covered by the
 authors' institution, Vellore Institute of Technology, Vellore.

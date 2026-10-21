@@ -87,4 +87,3 @@ Algorithm~\ref{alg:commit} draws one commit from a policy; the sampler loop that
 \Return $(A,y)$\;
 \end{algorithm}
 For channels without a committed set (Gaussian, uniform), the commit step is replaced by an update of every position and a re-noising step, and a final rounding commits all $L$ positions at once; in the notation this is a final step with the number to commit $k=L$. \suppFigFormalism{} in the Supplement draws the process: training fixes C1 and C2 and fits C3, and each sampling step passes the state through the network (C3), the position and value laws (C4), and then a commit and an optional revision (C5). % src: framework-v1.md section 1, C4 (G10)
-

@@ -71,3 +71,5 @@ The fit count is weak evidence, for four reasons: the vocabulary was written to 
 \label{sec:design-unified}
 
 Fifteen of the 47 rows are unified models, and for them the notation needs four additions: guidance (including whole-modality dropout), per-modality loss weights and schedules, continuous image channels in the hybrids, and output-level revision by planning or reflection loops. The factorisation term gains a cross-modal part only for tokens of two discrete modalities that are committed in the same step (Section~\ref{sec:budget-crossmodal}). % src: framework-v1.md section 3 (last paragraph, "four additions, not no new machinery"); design-space-v1.csv family counts
+
+In summary, the five choices place all 47 models: 36 fit fully and 11 fit with a stated extension. The partial fits mark the limits of the notation, namely edit channels that change length, predictors that output a joint distribution over a set, continuous image channels without a committed set, and sequence-level selection.
