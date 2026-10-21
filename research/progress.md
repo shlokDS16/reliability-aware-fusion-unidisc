@@ -1,6 +1,16 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 38 (2026-10-21; side session of 00fe9279; Word layout).** paper/review/scripts/make_docx.py Word pass
+  rewritten for journal layout (commit 350801c): A4, 2.5 cm margins, Times New Roman 11 pt justified, 1.15 lines,
+  0.5 cm first-line indent except after heading/figure/table/algorithm (conventions of the ISPRS, eTransportation,
+  TPAMI and AIR Word manuscripts), figures to the 16 cm text width (height cap 20 cm) centred and kept with
+  captions, tables with widths from the LaTeX column specs plus measured text, booktabs rules, bold header,
+  right-aligned numeric columns, rows unsplit; numbered equations as a borderless row with the number at the right
+  margin; references with hanging indent; auto-hyphenation (off in headings, title block, cells, references).
+  Text check: 644 paragraphs equal to the previous build; 217 links, 140 bookmarks, highlight kept. Word export
+  35 pages (was 38). Release folder rebuilt (2,687 files, secret hits 0) and pushed (dlm-review-prisma 4ff7a8b).
+  Word export: PowerShell COM (Documents.Open read-only, ExportAsFixedFormat(out, 17)).
 - **HANDOFF 37 (2026-10-21; side session of 00fe9279; human check 2 of 3, blind screening sheet built, not yet
   filled).** analysis/screening/human_check_screening_sheet.py draws 20 included + 20 excluded of the 885 final T1
   decisions (t1-decisions-all 882 + D0058 3, D0059 code overrides; 608/277), seed 20261023, after leaving out 28
