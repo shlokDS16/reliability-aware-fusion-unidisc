@@ -3,8 +3,9 @@
 #   tr.sh <tranche> build <batch>                       -> dispatch folders A and B (tools/ft_dispatch.py)
 #   tr.sh <tranche> postbatch <batch> <agentA> <agentB> -> FT_TRANCHE=<tranche> ft_postbatch.py, one-line summary, commit
 #   tr.sh <tranche> cpost <c group> <agentC>            -> FT_TRANCHE=<tranche> ft_cpost.py, commit
-S="C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/92c0b6b9-4e35-486c-8e47-398ae263ff62/scratchpad/ft-dispatch"
-P="C:/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/92c0b6b9-4e35-486c-8e47-398ae263ff62/subagents"
+# landmark tranche lmk (D0061, 2026-10-21): S and P now session bfefb6fe
+S="C:/Users/Shlok/AppData/Local/Temp/claude/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/bfefb6fe-654c-43b1-a1f0-c80e3f972b2f/scratchpad/ft-dispatch"
+P="C:/Users/Shlok/.claude/projects/C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-resume-dlm-discovery-exp-003-334706/bfefb6fe-654c-43b1-a1f0-c80e3f972b2f/subagents"
 cd "/c/Users/Shlok/Downloads/Multi-Modality Language model/.claude/worktrees/resume-dlm-discovery-exp-003-334706" || exit 1
 TR="$1"; shift
 export FT_TRANCHE="$TR"
