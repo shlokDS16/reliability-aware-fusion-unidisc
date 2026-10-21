@@ -8,9 +8,10 @@
   summary table in Section 5; Section 2 detail and census agreement table moved to supplement; verdict robustness
   (analysis/extraction/d0052/revision_sensitivity.py) and census by year/venue (analysis/census/census_by_year_venue.py);
   13 references verified via arXiv API (scripts/revision_refs.py); OP4 preregistrable design, OP5 bracketing V;
-  human-validation plan in Section 11. Response: research/RESPONSE-TO-PROFESSOR-2026-10-21.md. main.pdf 39 pp (text
-  to p34) against the 35-page target of D0068: author to choose what to move (EXP-003 section, Section 7 corollaries,
-  formalism figure). Hostile-referee pass (research/review/audits/2026-10-21-revision-redteam.md): no number or name
+  human-validation plan in Section 11. Response: research/RESPONSE-TO-PROFESSOR-2026-10-21.md. At the author's request
+  EXP-003 became a short subsection of Section 9 and the Section 7 step-sweep corollary moved to Supplement S8
+  (scripts/revision_move3.py); main.pdf 38 pp (text to p33) against the 35-page target of D0068; about 3 pp more
+  would have to move (formalism figure, lever table) to reach 35. Hostile-referee pass (research/review/audits/2026-10-21-revision-redteam.md): no number or name
   failures; findings 1-11 fixed in 3cdbd48 (scripts/revision_redteam_fixes.py); 12 (PSD in bib, uncited) harmless.
   Not done: research-humanizer pass on new text; release rebuild/push. Stopped at 94 percent weekly usage. Build order unchanged; make_docx.py now resolves
   \csname @@input\endcsname table inputs. Heredocs collapse backslashes here: use Write/Edit for .tex edits.

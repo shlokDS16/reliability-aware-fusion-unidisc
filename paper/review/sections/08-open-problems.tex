@@ -47,6 +47,11 @@ The estimator, described in the supplement (Section~S8.5), draws the text set fr
 A preregistered measurement on the same frozen model, reported in Section~\ref{sec:exp003}, concerns the sampler's role in joint text--image consistency and not the estimator above. % src: research/preregistration/EXP-003-value-rule-consistency.md header; gate audit 2026-10-15-gate-EXP-003.md; decisions D0019, D0025
 An earlier preregistered attempt at P5a on the same frozen model stopped at its feasibility gate: under plain sampling at temperature 1 without guidance, the completion-specific text--image link measured by its gate statistic stayed below the preregistered threshold, so a per-step estimator had too little dependence to locate. P5a therefore needs a regime in which the joint link is clearly present before its timing can be measured. % src: decision D0016; runs/EXP-001/gates/verdict-pgv-rung1.json, verdict-pgv-rung2.json; reconciled with EXP-003 (decision D0025 item 5)
 
+\subsection{A preregistered check on one frozen unified model}
+\label{sec:exp003}
+
+One preregistered run checks, at matched network calls on the released UniDisc 1.4B weights~\cite{arXiv:2503.20853}, what earlier work reports for unified masked-diffusion models~\cite{arXiv:2607.13188,arXiv:2511.09611}: that the sampler changes joint text--image agreement. On 138 prefixes from COCO val2017 captions with two seeds each, a 32-step variant of the official guided sampler (guidance weight 3.0) gives a larger seed-specific, noun-level dependence between a generated caption tail and its image than plain sampling at the same 64 network calls ($\Delta_1=0.126$, 95\% interval 0.076 to 0.177, on the 123 prefixes eligible in both arms). The dependence is measured by a vision-language checker and is not confirmed by CLIP; the checker's positive control failed, so no null can be read, and the positive term bundles selection with ordering and schedule. The run therefore shows only that, on this model, a joint-consistency number reported without its sampler is not attributable to the model, which is how the census is read (Section~\ref{sec:census-reading}). It is not a contribution of the review; the arms, statistic, controls, deviations and secondary results are in the Supplement (Section~S7).
+
 \subsection{OP4. A four-arm value-rule measurement on one checkpoint}
 \label{sec:open-op4}
 

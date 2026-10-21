@@ -2,9 +2,9 @@
 
 Paper 1, "Diffusion Language Models and Unified Multimodal Generation: A Critical Systematic Review".
 Revision commits on branch `claude/resume-dlm-discovery-exp-003-334706`, from b2ef278 onward (decision D0069).
-Outputs: `paper/review/main.pdf` (39 pages: text to page 34, references 5 pages), `paper/review/supplement.pdf`
+Outputs: `paper/review/main.pdf` (38 pages: text to page 33, references 5 pages), `paper/review/supplement.pdf`
 (52 pages), `paper/review/docx/main.docx`. Section numbers below are those of the revised main text (a new
-Section 8 was inserted, so the old Sections 8 to 11 are now 9 to 12).
+Section 8 was inserted, the old EXP-003 section is now a short subsection of Section 9, and Limitations is Section 10).
 
 New numbers come from committed scripts only:
 `analysis/extraction/d0052/revision_sensitivity.py` (output `revision-sensitivity.json`),
@@ -30,8 +30,8 @@ and the diffusion models under review are method content and stay.
 **Technical limitations: protocol departures, AI screeners without human validation, screening freeze.**
 The departures are still stated, but no longer as a 12-item list in Section 2. A summary paragraph groups them
 (protocol status, selection, extraction and synthesis), and the full list moved to Supplement S1. A new paragraph in
-Section 11 (Limitations), "What would close the validation gap", sets the human-only validation standard (see Q5).
-The freeze and the landmark tranche are unchanged; Section 11 now also says that compute-matched studies outside the
+Section 10 (Limitations), "What would close the validation gap", sets the human-only validation standard (see Q5).
+The freeze and the landmark tranche are unchanged; Section 10 now also says that compute-matched studies outside the
 sample may be under-represented and that Section 5 reconciles them.
 
 **Design-space table only partly re-validated; 11 partial fits.** Supplement S5 has a new table of the 11 partial
@@ -97,7 +97,7 @@ Where they are integrated:
 ## Questions
 
 1. **Sensitivity of RQ2-RQ5 to compute-matched studies.** Answered by qualitative reconciliation (Section 5, RQ2,
-   RQ4 and RQ5 paragraphs; Section 11). No verdict changes, because each verdict describes the sampled studies. The
+   RQ4 and RQ5 paragraphs; Section 10). No verdict changes, because each verdict describes the sampled studies. The
    matched studies change the reading:
    - The RQ2 split reflects unmatched budgets.
    - Diffusion pays a compute gap on likelihood under single-pass training, overtakes autoregressive training when
@@ -130,7 +130,7 @@ Where they are integrated:
    - 16 settings reproduce all four main verdicts.
 
    This adds to the earlier one-at-a-time analysis (Section 5, Supplement S6).
-5. **Human validation plan.** Section 11, "What would close the validation gap":
+5. **Human validation plan.** Section 10, "What would close the validation gap":
    - Readers: two human readers, blind to the model decisions and to each other.
    - Sample: at least 100 full-text decisions (the protocol's own size), stratified by model decision, plus 20 extracted
      studies.
@@ -159,19 +159,16 @@ Where they are integrated:
 ## Overall points
 
 - (i) Integration of compute-matched and sampler-aware studies: done in RQ2, RQ4 and RQ5 and in Sections 6 to 8.
-- (ii) A targeted human-validated audit: specified as a plan with sample size and acceptance thresholds (Section 11).
+- (ii) A targeted human-validated audit: specified as a plan with sample size and acceptance thresholds (Section 10).
   It has not been run; it needs two human readers and is the main remaining gap.
 - (iii) Practitioner synthesis: the new Section 8 and the per-RQ summary table.
 
 ## Not done
 
-- Page length: main.pdf is 39 pages (text to page 34, references 5) against the 35-page target recorded in D0068.
-  Candidates to move to the supplement:
-  - Section 10 (EXP-003, about 1 page).
-  - The corollaries subsection of Section 7.
-  - The formalism figure of Section 3.
-
-  The author decides which.
+- Page length: at the author's request the EXP-003 section became a short subsection of Section 9 (full text in
+  Supplement S7), and the step-sweep corollary and census-lever paragraph of Section 7 moved to Supplement S8.
+  main.pdf is now 38 pages (text to page 33, references 5) against the 35-page target recorded in D0068. Reaching 35
+  would need about 3 more pages moved (for example the formalism figure of Section 3 or the lever table of Section 7).
 - The human-only validation pass (Q5) and the four-arm and V measurements (Q2, Q7) are designs, not results.
 - Clarity editing with research-humanizer was not run on the new text, to stay within the weekly budget.
 - The release (GitHub and Zenodo) was not rebuilt or pushed.
