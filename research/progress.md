@@ -1,7 +1,26 @@
 # Progress ledger
 
 ## RESUME
-- **HANDOFF 34 (2026-10-21 evening; newest; session 0839c9f4 at 80 percent context).** Since H33: abstract cut to
+- **HANDOFF 35 (2026-10-21; newest; side session of 0839c9f4/00fe9279; fixes A, B, C).** Commits 7032442 (A),
+  1a4d47f (B), 7bc2f23 (C), 04d2d66 (rebuild). **A:** rq_analysis.py `verdict()` takes thresholds;
+  rq-results.json D0060.verdicts_threshold_sensitivity (included column, one threshold changed at a time): direction
+  share 0.60 -> RQ4 and RQ5 weakly supported (RQ5 share exactly 0.60); minimum 8 signed -> RQ5 untested; 0.75, control
+  0.40/0.60, minimum 3 change nothing. Rows at the foot of Table S9 (qa_tables.py); one sentence in Section 5
+  "Verdicts". Existing numbers unchanged (json diff additions only). **B:** scripts/landmark_coverage.py ->
+  tables/landmark-coverage.{tex,json}; Table S7 in new S5.4 (sec:s-landmark); sentence in Section 10 "Selection of
+  studies" via \suppTabLandmark. Counts: 3 of 47 design-space models included (ARDM, Transfusion, UDLM), 41 of the
+  other 44 seed records, 7 of the 44 in the census sample, 32 of the 44 cited in the main text (match by arXiv id or
+  normalised title; agrees with the D0061 frame of the parallel landmark-screening session). **If D0061 adds
+  includes, rerun landmark_coverage.py and update the Section 10 and S5.4 sentences.** **C:** Section 9 cut to three
+  paragraphs (supports the census reading; Delta1 0.126 [0.076, 0.177]; CLIP caveat; PC-1 failed; meaning); table
+  tab:exp003-arms, design, full primary result, deviations and reading moved to new S7.6 (sec:s-exp003-main); S7.1-7.5
+  numbering kept; \suppTabExp added to supprefs.py; Section 10 ref to deviations -> S7.1. Intro "is the 35 pages" ->
+  "fits the journal's limit of 35 pages". **Build:** main.pdf 34 pp, supplement.pdf 40 pp, no errors or undefined refs;
+  DOCX rebuilt, Word export 36 pp with 7 tables, 4 images (3 figures + Algorithm 1), same as main.pdf. PDFs are
+  gitignored (paper/review/.gitignore), so not committed; they are in the release folder, rebuilt (2,499 files,
+  185.7 MB, 0 secret hits), which also holds D0061's unfinished landmark files: rebuild it after D0061 finishes.
+  AI-USE-STATEMENTS-paper1.md pages re-checked (item 13 moved to Section 10 / new item 19 S7.6).
+- **HANDOFF 34 (2026-10-21 evening; session 0839c9f4 at 80 percent context).** Since H33: abstract cut to
   98 words, third person (CSUR rules); Word version paper/review/docx/main.docx (scripts/make_docx.py; numbering from
   main.aux, refs from main.bbl, placeholders highlighted); research/AI-USE-STATEMENTS-paper1.md; supplement-readme.txt;
   PRISMA items 25-27 pointers; competing-interests placeholder; release folder rebuilt with .zenodo.json and
