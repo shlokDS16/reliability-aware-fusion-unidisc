@@ -1,0 +1,801 @@
+{
+ "label": "exploratory, post-freeze",
+ "script": "analysis/EXP-003-postfreeze/postfreeze.py (resume-dlm-discovery-exp-003-334706 worktree)",
+ "frozen_inputs_read_only": [
+  "runs/EXP-003/analysis/confirmatory.json",
+  "analysis/EXP-003/{frozen_analysis,stats,tables,nounkey}.py",
+  "analysis/EXP-003/coco_object_nouns.txt",
+  "runs/EXP-003/gen/{m1,m2,m3}",
+  "runs/EXP-003/score/main",
+  "runs/EXP-003/n_conf.json"
+ ],
+ "n_generated_prefixes": 138,
+ "item1_guardrail_iv_near_uniform": {
+  "label": "exploratory, post-freeze",
+  "definition": "fraction of generated images (2 seeds x prefixes, no filtering) with grey-level pixel SD < 6.0 (PIL convert('L'), float64 std over all pixels); guardrail (iv) passes when G's fraction is at most 0.15 (card 4.4)",
+  "threshold": 0.15,
+  "G_passes_guardrail_iv": true,
+  "sources": [
+   "R/runs/EXP-003/score/main/<arm>/p*.json (field near_uniform, written by analysis/EXP-003/score.py near_uniform())",
+   "R/runs/EXP-003/gen/{m1,m2,m3}/<arm>/p*_e*.png (recomputed here with the same formula)"
+  ],
+  "per_arm": {
+   "P64": {
+    "n_images_png": 276,
+    "n_score_files": 138,
+    "n_flags_stored": 276,
+    "n_near_uniform_stored": 1,
+    "fraction_stored": 0.0036231884057971015,
+    "n_near_uniform_recomputed_png": 1,
+    "fraction_recomputed_png": 0.0036231884057971015,
+    "pixel_sd_min": 5.52575972922365,
+    "pixel_sd_median": 47.863171740294035,
+    "pixel_sd_mean": 48.112397026390454,
+    "smallest_5_pixel_sd": [
+     5.52575972922365,
+     8.385013554428228,
+     8.577634157870511,
+     13.698386785343894,
+     14.267679278716669
+    ],
+    "stored_equals_recomputed": true
+   },
+   "G": {
+    "n_images_png": 276,
+    "n_score_files": 138,
+    "n_flags_stored": 276,
+    "n_near_uniform_stored": 1,
+    "fraction_stored": 0.0036231884057971015,
+    "n_near_uniform_recomputed_png": 1,
+    "fraction_recomputed_png": 0.0036231884057971015,
+    "pixel_sd_min": 4.9522563698391515,
+    "pixel_sd_median": 54.13671270517828,
+    "pixel_sd_mean": 55.39746965501316,
+    "smallest_5_pixel_sd": [
+     4.9522563698391515,
+     7.405978025062759,
+     12.981166323604016,
+     15.116108228590019,
+     16.621966405181475
+    ],
+    "stored_equals_recomputed": true
+   },
+   "O0": {
+    "n_images_png": 276,
+    "n_score_files": 138,
+    "n_flags_stored": 276,
+    "n_near_uniform_stored": 0,
+    "fraction_stored": 0.0,
+    "n_near_uniform_recomputed_png": 0,
+    "fraction_recomputed_png": 0.0,
+    "pixel_sd_min": 7.587098008258641,
+    "pixel_sd_median": 55.96219197122301,
+    "pixel_sd_mean": 55.93379100393488,
+    "smallest_5_pixel_sd": [
+     7.587098008258641,
+     9.193893130064733,
+     14.85986615238664,
+     16.35387097877774,
+     17.538843539400467
+    ],
+    "stored_equals_recomputed": true
+   },
+   "P32": {
+    "n_images_png": 276,
+    "n_score_files": 138,
+    "n_flags_stored": 276,
+    "n_near_uniform_stored": 0,
+    "fraction_stored": 0.0,
+    "n_near_uniform_recomputed_png": 0,
+    "fraction_recomputed_png": 0.0,
+    "pixel_sd_min": 7.912608421624053,
+    "pixel_sd_median": 45.7578242304375,
+    "pixel_sd_mean": 44.55332114129888,
+    "smallest_5_pixel_sd": [
+     7.912608421624053,
+     8.70391407895499,
+     9.25341858414883,
+     9.773716673826819,
+     11.024500578378316
+    ],
+    "stored_equals_recomputed": true
+   }
+  }
+ },
+ "item2_achieved_mde_and_power": {
+  "label": "exploratory, post-freeze",
+  "source": "R/runs/EXP-003/analysis/confirmatory.json confirmatory.<contrast>.{sd, n_prefix, d} (read only); sd = SD of the B = 10,000 bootstrap replicates of the contrast = its standard error",
+  "formula": "card section 7: MDE_power = (z_{1-alpha/2} + z_{power}) x SE, alpha = 0.05 two-sided, z_{0.975} = 1.95996, z_{0.80} = 0.84162, z_{0.90} = 1.28155 (the card's own line: SE 0.0367 -> MDE 0.119 at power 0.90 and 0.103 at 0.80); power at a true effect delta = Phi(delta/SE - z_{0.975}) + Phi(-delta/SE - z_{0.975}); Wald/normal approximation, SE taken as known",
+  "card_planning_values": {
+   "se": 0.0367,
+   "mde_0p90": 0.119,
+   "mde_0p80": 0.103,
+   "sigma_d_planning": 0.45,
+   "n_planning": 150
+  },
+  "per_contrast": {
+   "delta1": {
+    "name": "Delta1 = Lambda_b(G) - Lambda_b(P64)",
+    "n_prefix": 123,
+    "sd_bootstrap_SE": 0.025786693098512014,
+    "implied_per_prefix_sd": 0.28598826118862325,
+    "d_observed": 0.12561229420985517,
+    "mde_power_0p80": 0.07224361820880695,
+    "mde_power_0p90": 0.08358796666408733,
+    "power_at_MEI_0p10": 0.9724448237757352,
+    "power_at_observed_d": 0.9982000247307913,
+    "note": null
+   },
+   "delta2a": {
+    "name": "Delta2a = Lambda_b(G) - Lambda_b(O0)",
+    "n_prefix": 122,
+    "sd_bootstrap_SE": 0.028013370891637787,
+    "implied_per_prefix_sd": 0.3094177948065044,
+    "d_observed": 0.022759060156601143,
+    "mde_power_0p80": 0.07848184579952854,
+    "mde_power_0p90": 0.0908057773555327,
+    "power_at_MEI_0p10": 0.9462748780474757,
+    "power_at_observed_d": 0.1283638912642065,
+    "note": "Holm second step uses alpha 0.05/2 = 0.025 for the smaller p; these figures use two-sided 0.05 as the card's Delta1 line does"
+   },
+   "delta2b": {
+    "name": "Delta2b = Lambda_b(O0) - Lambda_b(P32)",
+    "n_prefix": 127,
+    "sd_bootstrap_SE": 0.027474032627070134,
+    "implied_per_prefix_sd": 0.30961662348257546,
+    "d_observed": 0.07729914442512868,
+    "mde_power_0p80": 0.07697084368995309,
+    "mde_power_0p90": 0.08905750398418098,
+    "power_at_MEI_0p10": 0.9535054547081425,
+    "power_at_observed_d": 0.8033294629819319,
+    "note": "Holm second step uses alpha 0.05/2 = 0.025 for the smaller p; these figures use two-sided 0.05 as the card's Delta1 line does"
+   }
+  }
+ },
+ "item3_placebo_short_and_dropped": {
+  "label": "exploratory, post-freeze",
+  "definition": "IMPLEMENTATION.md section 5 item 3 / D0018 (3): placebo pool = both seeds' discordant nouns of the seed-5302 derangement partner minus the prefix's own keys; if smaller than |D_pe| all of it is used (flag short = len(placebo_e) < len(D_e), per seed); a prefix with an empty placebo side (either seed) is not eligible for Lambda_b^plac. short counts: prefixes with the flag set for at least one seed (all prefixes with both seeds generated); dropped: prefixes eligible for Lambda_b but not for Lambda_b^plac",
+  "sources": [
+   "analysis/EXP-003/tables.py placebo_sets / arm_bundle (frozen, imported; rebuilt from runs/EXP-003/gen)",
+   "runs/EXP-003/score/main/*/p*.json (scores)",
+   "runs/EXP-003/analysis/confirmatory.json arms.*.{n_eligible, placebo_n_eligible} (read only, for the cross-check)"
+  ],
+  "per_arm": {
+   "P64": {
+    "n_prefix": 138,
+    "n_prefix_both_seeds_ok": 138,
+    "n_eligible_lambda_b": 134,
+    "n_prefix_with_short_placebo_pool_any_seed": 16,
+    "n_prefix_short_both_seeds": 3,
+    "n_seed_units_short": 19,
+    "n_short_among_lambda_b_eligible": 16,
+    "n_seed_units_with_discordant_nouns_but_empty_placebo": 0,
+    "n_dropped_from_lambda_b_plac_among_eligible": 0,
+    "n_eligible_lambda_b_plac": 134,
+    "n_eligible_in_plac_but_not_lambda_b": 0,
+    "frozen_check": {
+     "n_eligible_frozen": 134,
+     "placebo_n_eligible_frozen": 134,
+     "recomputed_matches": true,
+     "dropped_equals_eligible_minus_plac_eligible": true
+    }
+   },
+   "G": {
+    "n_prefix": 138,
+    "n_prefix_both_seeds_ok": 138,
+    "n_eligible_lambda_b": 126,
+    "n_prefix_with_short_placebo_pool_any_seed": 27,
+    "n_prefix_short_both_seeds": 9,
+    "n_seed_units_short": 36,
+    "n_short_among_lambda_b_eligible": 25,
+    "n_seed_units_with_discordant_nouns_but_empty_placebo": 4,
+    "n_dropped_from_lambda_b_plac_among_eligible": 2,
+    "n_eligible_lambda_b_plac": 124,
+    "n_eligible_in_plac_but_not_lambda_b": 0,
+    "frozen_check": {
+     "n_eligible_frozen": 126,
+     "placebo_n_eligible_frozen": 124,
+     "recomputed_matches": true,
+     "dropped_equals_eligible_minus_plac_eligible": true
+    }
+   },
+   "O0": {
+    "n_prefix": 138,
+    "n_prefix_both_seeds_ok": 138,
+    "n_eligible_lambda_b": 129,
+    "n_prefix_with_short_placebo_pool_any_seed": 30,
+    "n_prefix_short_both_seeds": 11,
+    "n_seed_units_short": 41,
+    "n_short_among_lambda_b_eligible": 27,
+    "n_seed_units_with_discordant_nouns_but_empty_placebo": 4,
+    "n_dropped_from_lambda_b_plac_among_eligible": 2,
+    "n_eligible_lambda_b_plac": 127,
+    "n_eligible_in_plac_but_not_lambda_b": 0,
+    "frozen_check": {
+     "n_eligible_frozen": 129,
+     "placebo_n_eligible_frozen": 127,
+     "recomputed_matches": true,
+     "dropped_equals_eligible_minus_plac_eligible": true
+    }
+   },
+   "P32": {
+    "n_prefix": 138,
+    "n_prefix_both_seeds_ok": 138,
+    "n_eligible_lambda_b": 135,
+    "n_prefix_with_short_placebo_pool_any_seed": 27,
+    "n_prefix_short_both_seeds": 11,
+    "n_seed_units_short": 38,
+    "n_short_among_lambda_b_eligible": 27,
+    "n_seed_units_with_discordant_nouns_but_empty_placebo": 0,
+    "n_dropped_from_lambda_b_plac_among_eligible": 0,
+    "n_eligible_lambda_b_plac": 135,
+    "n_eligible_in_plac_but_not_lambda_b": 0,
+    "frozen_check": {
+     "n_eligible_frozen": 135,
+     "placebo_n_eligible_frozen": 135,
+     "recomputed_matches": true,
+     "dropped_equals_eligible_minus_plac_eligible": true
+    }
+   }
+  }
+ },
+ "item4_w3_composition": {
+  "label": "exploratory, post-freeze",
+  "definition": "card 4.3 item 8 and 4.5 W3: composition shares = share of each arm's completion nouns whose noun key is on analysis/EXP-003/coco_object_nouns.txt (frozen); sensitivity = Lambda_b recomputed on those nouns only (frozen_analysis.lam_coco), contrast G - P64 on the prefixes eligible in BOTH arms (card 4.2 prefix-set rule), percentile cluster bootstrap B = 10,000. W3 wording is added only if the 90 percent upper limit is below 0.05",
+  "minimum_rule": "the card states NO minimum eligible-prefix count for the W3 contrast; this script labels it 'not estimable' when fewer than 20 prefixes are eligible in both arms (own threshold, not the card's; the count 2 reported by the gate audit is far below any reasonable threshold)",
+  "composition_shares_and_per_arm_sensitivity": {
+   "P64": {
+    "coco_noun_share": 0.06506849315068493,
+    "n_nouns": 1752,
+    "n_coco_nouns": 114,
+    "n_eligible_prefix_lambda_b_coco": 15,
+    "lambda_b_coco": 0.16666666666666666,
+    "frozen_share_check": 0.06506849315068493,
+    "frozen_lambda_b_coco": 0.16666666666666666
+   },
+   "G": {
+    "coco_noun_share": 0.1104,
+    "n_nouns": 1250,
+    "n_coco_nouns": 138,
+    "n_eligible_prefix_lambda_b_coco": 13,
+    "lambda_b_coco": 0.21794871794871792,
+    "frozen_share_check": 0.1104,
+    "frozen_lambda_b_coco": 0.21794871794871792
+   },
+   "O0": {
+    "coco_noun_share": 0.10768126346015794,
+    "n_nouns": 1393,
+    "n_coco_nouns": 150,
+    "n_eligible_prefix_lambda_b_coco": 18,
+    "lambda_b_coco": 0.3888888888888889,
+    "frozen_share_check": 0.10768126346015794,
+    "frozen_lambda_b_coco": 0.3888888888888889
+   },
+   "P32": {
+    "coco_noun_share": 0.0634441087613293,
+    "n_nouns": 1655,
+    "n_coco_nouns": 105,
+    "n_eligible_prefix_lambda_b_coco": 14,
+    "lambda_b_coco": 0.19047619047619047,
+    "frozen_share_check": 0.0634441087613293,
+    "frozen_lambda_b_coco": 0.19047619047619047
+   }
+  },
+  "contrast_G_minus_P64": {
+   "n_common_eligible_G_P64": 2,
+   "d": 0.0,
+   "pct95": [
+    -0.5,
+    0.5
+   ],
+   "pct90": [
+    -0.5,
+    0.5
+   ],
+   "bca90": [
+    -0.5,
+    0.5
+   ],
+   "B": 10000,
+   "sd": 0.3775245818591145,
+   "w3_trigger_90_upper_limit_below_0p05": false,
+   "estimable": false,
+   "label": "not estimable"
+  }
+ },
+ "item5_e3h4_diversity": {
+  "label": "exploratory, post-freeze; descriptive only (card 4.3 item 7, E3-H4), no decision rule, no multiplicity correction",
+  "definition": "cluster = prefix (both seeds together); B = 10,000, seed 5304 (default_rng([5304,0]) draws the prefix indices, the SAME in every arm; default_rng([5304,3]) the subsamples); percentile 95 percent intervals, reported raw (pct95_raw) and bias-centred (pct95_bias_centred = point + percentile - bootstrap mean; this is the one to quote, because duplicated prefixes in a resampled pool lower the rarefied entropy and distinct-2 of every replicate, so for a single arm the raw interval does not contain the point). Words = lower-cased completion text split on whitespace, as the frozen analysis. Unigram entropy = plug-in, nats, of exactly T_words = 2991 words drawn without replacement from the arm's pooled words (0.8 x the smallest arm total 3739; removes the sample-size bias; point = mean of 100 subsamples of the original pool, replicate = one subsample of the resampled pool; a replicate whose resampled pool is smaller than T is redrawn). Distinct-2 = distinct bigrams / T_bigrams = 2770 bigrams drawn without replacement (0.8 x the smallest arm total 3463); bigrams are formed WITHIN each completion, never across completions. Sibling noun Jaccard = mean over prefixes of |K0 & K1| / |K0 | K1| of the completion noun-key sets (frozen definition 4.3 item 7a; prefixes with both sets empty are skipped). E3-H4 direction: G lower diversity than P64 = Jaccard higher, entropy lower; a claim needs BOTH 95 percent intervals to exclude 0.",
+  "caveats": [
+   "bootstrap pools contain duplicated prefixes, so the without-replacement subsample entropy is slightly lower than at the point estimate (compare boot_mean with point); the raw interval is shifted accordingly and the bias-centred interval corrects the shift but is a normal-shift approximation, not BCa",
+   "the frozen confirmatory.json diversity.distinct2 forms bigrams from a shuffled word subsample (np.random choice order), so it is not comparable with the distinct2 here and should not be quoted",
+   "frozen entropy used T_ref = smallest arm total; point.unigram_entropy_nats_at_frozen_T_ref reproduces that definition (with this script's seed) for comparison"
+  ],
+  "B": 10000,
+  "seed": 5304,
+  "redraws": 0,
+  "T_words": 2991,
+  "T_bigrams": 2770,
+  "per_arm": {
+   "P64": {
+    "unigram_entropy_nats": {
+     "point": 6.100193234108065,
+     "pct95_bias_centred": [
+      6.006724347740643,
+      6.188577964261891
+     ],
+     "pct95_raw": [
+      5.812532333603766,
+      5.994385950125015
+     ],
+     "boot_mean": 5.906001219971189
+    },
+    "distinct2": {
+     "point": 0.847263537906137,
+     "pct95_bias_centred": [
+      0.8069900722021657,
+      0.8846164259927793
+     ],
+     "pct95_raw": [
+      0.5924187725631769,
+      0.6700451263537904
+     ],
+     "boot_mean": 0.632692238267148
+    },
+    "sibling_noun_jaccard": {
+     "point": 0.027762492912580407,
+     "pct95_bias_centred": [
+      0.019654551776526478,
+      0.036542679115042484
+     ],
+     "pct95_raw": [
+      0.019657210440668847,
+      0.03654533777918485
+     ],
+     "n_prefix_defined": 138
+    },
+    "detail": {
+     "unigram_entropy_nats": 6.100193234108065,
+     "distinct2": 0.847263537906137,
+     "T_words": 2991,
+     "T_bigrams": 2770,
+     "words_total": 4531,
+     "bigrams_total": 4255,
+     "vocab_words_used": 1863,
+     "unigram_entropy_nats_at_frozen_T_ref": 6.185887415449752,
+     "T_ref_frozen": 3739
+    }
+   },
+   "G": {
+    "unigram_entropy_nats": {
+     "point": 5.658802764128766,
+     "pct95_bias_centred": [
+      5.570572849068392,
+      5.743256149473866
+     ],
+     "pct95_raw": [
+      5.380208518962059,
+      5.5528918193675345
+     ],
+     "boot_mean": 5.468438434022434
+    },
+    "distinct2": {
+     "point": 0.7605379061371842,
+     "pct95_bias_centred": [
+      0.720253285198556,
+      0.7989536462093864
+     ],
+     "pct95_raw": [
+      0.5,
+      0.5787003610108303
+     ],
+     "boot_mean": 0.5402846209386282
+    },
+    "sibling_noun_jaccard": {
+     "point": 0.08134310944529922,
+     "pct95_bias_centred": [
+      0.061706327127318286,
+      0.10416337584616879
+     ],
+     "pct95_raw": [
+      0.0617161483083016,
+      0.10417319702715211
+     ],
+     "n_prefix_defined": 137
+    },
+    "detail": {
+     "unigram_entropy_nats": 5.658802764128766,
+     "distinct2": 0.7605379061371842,
+     "T_words": 2991,
+     "T_bigrams": 2770,
+     "words_total": 3739,
+     "bigrams_total": 3463,
+     "vocab_words_used": 1235,
+     "unigram_entropy_nats_at_frozen_T_ref": 5.724302252485384,
+     "T_ref_frozen": 3739
+    }
+   },
+   "O0": {
+    "unigram_entropy_nats": {
+     "point": 5.60179710585306,
+     "pct95_bias_centred": [
+      5.509661929402939,
+      5.688689476068672
+     ],
+     "pct95_raw": [
+      5.340028406271164,
+      5.519055952936896
+     ],
+     "boot_mean": 5.432163582721285
+    },
+    "distinct2": {
+     "point": 0.7648736462093865,
+     "pct95_bias_centred": [
+      0.7267406859205778,
+      0.801830938628159
+     ],
+     "pct95_raw": [
+      0.5231046931407942,
+      0.5981949458483754
+     ],
+     "boot_mean": 0.5612376534296029
+    },
+    "sibling_noun_jaccard": {
+     "point": 0.056803900941886525,
+     "pct95_bias_centred": [
+      0.03940878182655564,
+      0.07726819552886052
+     ],
+     "pct95_raw": [
+      0.03944376098140985,
+      0.07730317468371474
+     ],
+     "n_prefix_defined": 137
+    },
+    "detail": {
+     "unigram_entropy_nats": 5.60179710585306,
+     "distinct2": 0.7648736462093865,
+     "T_words": 2991,
+     "T_bigrams": 2770,
+     "words_total": 4125,
+     "bigrams_total": 3849,
+     "vocab_words_used": 1363,
+     "unigram_entropy_nats_at_frozen_T_ref": 5.672147855300073,
+     "T_ref_frozen": 3739
+    }
+   },
+   "P32": {
+    "unigram_entropy_nats": {
+     "point": 6.0269862149084465,
+     "pct95_bias_centred": [
+      5.932175948818252,
+      6.116729841774059
+     ],
+     "pct95_raw": [
+      5.751194416717989,
+      5.935748309673796
+     ],
+     "boot_mean": 5.846004682808183
+    },
+    "distinct2": {
+     "point": 0.8393898916967508,
+     "pct95_bias_centred": [
+      0.7988686642599276,
+      0.877569025270758
+     ],
+     "pct95_raw": [
+      0.5906137184115523,
+      0.6693140794223826
+     ],
+     "boot_mean": 0.6311349458483755
+    },
+    "sibling_noun_jaccard": {
+     "point": 0.023520986057161852,
+     "pct95_bias_centred": [
+      0.016250117956637167,
+      0.03131472777788062
+     ],
+     "pct95_raw": [
+      0.01621962717081929,
+      0.031284236992062744
+     ],
+     "n_prefix_defined": 138
+    },
+    "detail": {
+     "unigram_entropy_nats": 6.0269862149084465,
+     "distinct2": 0.8393898916967508,
+     "T_words": 2991,
+     "T_bigrams": 2770,
+     "words_total": 4594,
+     "bigrams_total": 4318,
+     "vocab_words_used": 1808,
+     "unigram_entropy_nats_at_frozen_T_ref": 6.113351598221718,
+     "T_ref_frozen": 3739
+    }
+   }
+  },
+  "G_minus_other": {
+   "G_minus_P64.unigram_entropy_nats": {
+    "point": -0.4413904699792992,
+    "pct95_bias_centred": [
+     -0.5513590567401776,
+     -0.33383487568260295
+    ],
+    "pct95_raw": [
+     -0.5475313727096326,
+     -0.33000719165205794
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": -0.4375627859487542
+   },
+   "G_minus_P64.distinct2": {
+    "point": -0.08672563176895276,
+    "pct95_bias_centred": [
+     -0.11200754512635343,
+     -0.06110501805054115
+    ],
+    "pct95_raw": [
+     -0.11768953068592053,
+     -0.06678700361010825
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": -0.09240761732851986
+   },
+   "G_minus_P64.sibling_noun_jaccard": {
+    "point": 0.05358061653271882,
+    "pct95_bias_centred": [
+     0.03502684756664963,
+     0.07453101568028257
+    ],
+    "pct95_raw": [
+     0.03503401008349054,
+     0.07453817819712348
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": 0.05358777904955973
+   },
+   "G_minus_P32.unigram_entropy_nats": {
+    "point": -0.3681834507796804,
+    "pct95_bias_centred": [
+     -0.47729534371128157,
+     -0.25754057170332856
+    ],
+    "pct95_raw": [
+     -0.48667814171735,
+     -0.266923369709397
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": -0.37756624878574885
+   },
+   "G_minus_P32.distinct2": {
+    "point": -0.07885198555956663,
+    "pct95_bias_centred": [
+     -0.10460815884476518,
+     -0.0522615884476533
+    ],
+    "pct95_raw": [
+     -0.11660649819494584,
+     -0.06425992779783396
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": -0.09085032490974729
+   },
+   "G_minus_P32.sibling_noun_jaccard": {
+    "point": 0.05782212338813737,
+    "pct95_bias_centred": [
+     0.03785059238968044,
+     0.08041297200979516
+    ],
+    "pct95_raw": [
+     0.03789090435648162,
+     0.08045328397659635
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": 0.05786243535493854
+   },
+   "G_minus_O0.unigram_entropy_nats": {
+    "point": 0.05700565827570614,
+    "pct95_bias_centred": [
+     -0.033963878061273954,
+     0.1495820337774308
+    ],
+    "pct95_raw": [
+     -0.05469468503583097,
+     0.12885122680287378
+    ],
+    "excludes_0_bias_centred": false,
+    "excludes_0_raw": false,
+    "boot_mean": 0.03627485130114912
+   },
+   "G_minus_O0.distinct2": {
+    "point": -0.0043357400722022765,
+    "pct95_bias_centred": [
+     -0.025259963898917118,
+     0.017339314079422175
+    ],
+    "pct95_raw": [
+     -0.04187725631768957,
+     0.0007220216606497216
+    ],
+    "excludes_0_bias_centred": false,
+    "excludes_0_raw": false,
+    "boot_mean": -0.02095303249097473
+   },
+   "G_minus_O0.sibling_noun_jaccard": {
+    "point": 0.0245392085034127,
+    "pct95_bias_centred": [
+     0.008959653650707201,
+     0.040066232665470596
+    ],
+    "pct95_raw": [
+     0.008934495676836293,
+     0.040041074691599676
+    ],
+    "excludes_0_bias_centred": true,
+    "excludes_0_raw": true,
+    "boot_mean": 0.024514050529541788
+   }
+  },
+  "frozen_confirmatory_for_comparison": {
+   "P64": {
+    "unigram_entropy": 6.1840761482561,
+    "distinct2": 0.9098635634028892
+   },
+   "G": {
+    "unigram_entropy": 5.724302252485384,
+    "distinct2": 0.8596334938469771
+   },
+   "O0": {
+    "unigram_entropy": 5.671419966468521,
+    "distinct2": 0.845585874799358
+   },
+   "P32": {
+    "unigram_entropy": 6.112774375863031,
+    "distinct2": 0.9036704119850189
+   }
+  }
+ },
+ "item6_bootstrap_B_used": {
+  "label": "exploratory, post-freeze",
+  "card_B": "card section 7: percentile cluster bootstrap, B = 10,000 (rerun at B = 100,000 if p lies near its threshold)",
+  "source": "R/runs/EXP-003/analysis/confirmatory.json: every object under 'confirmatory' with fields name and B (read only); the code-side B values are read from the frozen source",
+  "recorded_in_confirmatory_json": [
+   {
+    "path": "confirmatory.delta1",
+    "name": "Delta1 = Lambda_b(G) - Lambda_b(P64)",
+    "B": 10000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.00019998000199980003,
+    "card_B": 10000,
+    "matches_card": true
+   },
+   {
+    "path": "confirmatory.delta2a",
+    "name": "Delta2a = Lambda_b(G) - Lambda_b(O0)",
+    "B": 10000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.42515748425157485,
+    "card_B": 10000,
+    "matches_card": true
+   },
+   {
+    "path": "confirmatory.delta2b",
+    "name": "Delta2b = Lambda_b(O0) - Lambda_b(P32)",
+    "B": 10000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.0057994200579942,
+    "card_B": 10000,
+    "matches_card": true
+   },
+   {
+    "path": "confirmatory.steps_matched_G_minus_P32",
+    "name": "G - P32",
+    "B": 10000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.0007999200079992001,
+    "card_B": 10000,
+    "matches_card": true
+   },
+   {
+    "path": "confirmatory.plain_doubling_P64_minus_P32",
+    "name": "P64 - P32",
+    "B": 10000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.12918708129187081,
+    "card_B": 10000,
+    "matches_card": true
+   },
+   {
+    "path": "confirmatory.delta1_net_of_placebo",
+    "name": "Delta1 net of placebo",
+    "B": 5000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.0003999200159968006,
+    "card_B": 10000,
+    "matches_card": false
+   },
+   {
+    "path": "confirmatory.delta1_exact_surface",
+    "name": "Delta1 exact surface",
+    "B": 5000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.0003999200159968006,
+    "card_B": 10000,
+    "matches_card": false
+   },
+   {
+    "path": "confirmatory.clip_sibling_link_G_minus_P64_completion_only",
+    "name": "CLIP sibling link comp-only G - P64",
+    "B": 5000,
+    "redraws": 0,
+    "rerun_B100000": false,
+    "p": 0.1767646470705859,
+    "card_B": 10000,
+    "matches_card": false
+   }
+  ],
+  "n_below_card_B": 3,
+  "below_card": [
+   {
+    "name": "Delta1 net of placebo",
+    "B": 5000
+   },
+   {
+    "name": "Delta1 exact surface",
+    "B": 5000
+   },
+   {
+    "name": "CLIP sibling link comp-only G - P64",
+    "B": 5000
+   }
+  ],
+  "from_frozen_code": [
+   {
+    "quantity": "per-arm Lambda_b, Lambda_b^plac, Lambda_d (arms.*.lambda_*_pct95)",
+    "B": 10000,
+    "source": "frozen_analysis.py arm_summary(B=B_MAIN)"
+   },
+   {
+    "quantity": "quality-matched sensitivity: matched-half Lambda_b bootstrap",
+    "B": 4000,
+    "source": "frozen_analysis.py arm_summary: quality_matched(B=min(B, 4000))"
+   },
+   {
+    "quantity": "quality-matched slope bootstrap",
+    "B": 2000,
+    "source": "stats.py quality_matched: range(min(B, 2000))"
+   },
+   {
+    "quantity": "confirmatory contrasts delta1, delta2a, delta2b, G-P32, P64-P32",
+    "B": 10000,
+    "source": "frozen_analysis.py analyse"
+   },
+   {
+    "quantity": "exact-surface Delta1, Delta1 net of placebo, CLIP completion-only sibling link G - P64 (W1)",
+    "B": 5000,
+    "source": "frozen_analysis.py analyse: min(B, 5000)"
+   },
+   {
+    "quantity": "B = 100,000 rerun when p within 2 sqrt(p(1-p)/B) of the threshold",
+    "B": 100000,
+    "source": "frozen_analysis.py analyse (needs_rerun)"
+   }
+  ],
+  "not_recorded_in_json": [
+   "the CLIP-based and exact-surface/net-of-placebo contrasts are the ones below the card's B (5,000); the quality-matched pieces use 4,000 and 2,000; Delta1, Delta2a, Delta2b, G-P32, P64-P32 and every per-arm interval use 10,000"
+  ]
+ }
+}
