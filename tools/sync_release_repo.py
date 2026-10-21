@@ -40,6 +40,11 @@ for p in CLONE.iterdir():
 for p in BUILD.iterdir():
     (shutil.copytree if p.is_dir() else shutil.copy2)(p, CLONE / p.name)
 git("add", "-A")
+# .gitignore files copied with the sources hide release files (compiled PDFs, .bbl); force-add every manifest path
+listed = [l.split("  ", 1)[1].strip() for l in (CLONE / "MANIFEST.sha256").read_text(encoding="utf-8").splitlines()
+          if "  " in l and not l.rstrip().endswith(".cut")]
+for i in range(0, len(listed), 200):
+    git("add", "-f", "--", *listed[i:i + 200])
 if not git("status", "--porcelain"):
     print("nothing to commit")
     sys.exit(0)
