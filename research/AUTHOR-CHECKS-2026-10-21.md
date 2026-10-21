@@ -29,3 +29,24 @@ change whether a code link counts as working (QA1). Checks 10 to 12 are minor.
 provenance codes (D03, D08, D10, D11, D15), arm membership in figures, and about 40 proposed new entries for the
 benchmark and metric look-up lists. The look-up entries change no reported number: units without a mapped benchmark
 are still counted and only left out of matching across papers, which the review does not do.
+
+---
+
+## Part 2: blind check of 12 studies (the one item a referee will insist on)
+
+**Why.** Two audits of the draft said the same thing: no human ever made a recorded screening or extraction decision,
+and a CSUR referee is likely to ask for one before acceptance. A small recorded check fixes that: you answer six yes/no
+questions for 12 randomly drawn included studies, without seeing the model's answers, and the paper reports how often
+you and the model agree.
+
+**What to do.**
+1. Open `research/HUMAN-CHECK-2026-10-21.xlsx` (sheet "check"; the full wording of Q1 to Q6 is on sheet "questions").
+2. For each row, open the link, skim the experiments and the end of the paper, and pick yes / no / unclear / NA in
+   columns Q1 to Q6. Use Notes for anything odd. About 8 to 10 minutes per paper, so 1.5 to 2 hours in all; doing
+   only some rows still helps (the paper reports how many were done).
+3. Save the file and tell me in the chat. Please do not open `analysis/extraction/d0052/human-check-model-answers.json`
+   before you finish: the check only counts if it is blind.
+
+The six questions: (1) diffusion and autoregressive model side by side? (2) if so, compute budget of both stated or
+matched? (3) a comparison of training choices? (4) a comparison of inference settings? (5) main comparison repeated
+over two or more runs? (6) a limitations section or paragraph?
