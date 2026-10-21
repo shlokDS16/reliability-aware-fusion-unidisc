@@ -1,6 +1,16 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 39 (2026-10-21; side session of 00fe9279, after H37; human check 3 of 3, blind census sheet built, not
+  yet filled).** analysis/census/human_check_census_sheet.py draws 24 of the 152 census rows with a headline metric
+  and an F2 code (census-random-final.jsonl; 6 already-seen papers left out), stratified 12 non-plain / 8 not stated
+  / 4 plain, seed 20261024. Sheet research/HUMAN-CHECK-CENSUS.xlsx ("check": census headline shown as anchor, with
+  decoding-setting parentheticals stripped; Q1 headline right, Q2 value-rule class + optional letters, Q3 diversity,
+  Q4 step sweep; "rules" = codebook v1-v1.2 in plain language); model answers analysis/census/human-check-census-
+  model-answers.json. All 24 arXiv links return 200; local texts are in the MAIN checkout's research/sources/
+  census-text. Instructions: AUTHOR-CHECKS Part 5. **Next:** when returned, run
+  `python -E -P analysis/census/human_check_census_agreement.py` (tested on a dummy copy; reports raw and
+  frame-weighted agreement because plain is oversampled).
 - **HANDOFF 38 (2026-10-21; side session of 00fe9279; Word layout).** paper/review/scripts/make_docx.py Word pass
   rewritten for journal layout (commit 350801c): A4, 2.5 cm margins, Times New Roman 11 pt justified, 1.15 lines,
   0.5 cm first-line indent except after heading/figure/table/algorithm (conventions of the ISPRS, eTransportation,

@@ -107,3 +107,36 @@ person adds a new row at the bottom with the same Record id, or saves a copy nam
 not look the papers up in the review's own lists of included studies (the supplement tables, the release files or
 the screening folders). Records you have already seen with a decision (CONFIRM-2026-10-20, the items of Parts 1 and 3
 above, and the 12 studies of Part 2) were left out of the draw.
+
+## Part 5: blind census check (24 papers)
+
+**Why.** The value-rule census (Section 6: 147 of 153 headline results decoded with a non-plain rule or with the rule
+not stated) was coded by two language models and an adjudicating model. This check records a human coding of 24 of
+those papers, drawn at random within the three census classes, and the paper reports agreement (Cohen's kappa with a
+95 percent interval).
+
+**The file.**
+`C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\research\HUMAN-CHECK-CENSUS.xlsx`
+Sheet "check" has one row per paper; sheet "rules" has the census codebook in plain language.
+
+**What to do.**
+1. Open the file and read the sheet "rules" once. Keep it open in a second window.
+2. For each row, open the **Link** (the arXiv version the census read) or the **Local text copy** (the same text, in
+   `C:\Users\Shlok\Downloads\Multi-Modality Language model\research\sources\census-text`).
+3. Find the **Headline result** at the place given in **Where**. The census coded this one number per paper.
+4. **Q1 Headline right?** yes if it is the number the rules pick (first in-scope number in the abstract, else the
+   first main results table); no if the rules clearly pick another (say which in Notes).
+5. **Q2 Value rule:** read the experiment section, captions, hyperparameter tables and appendix for how the tokens
+   were chosen for that result, and pick non-plain, plain or not stated. Optionally write the letters (for example
+   A, C, G+NS) in **Q2 Letters**.
+6. **Q3 Diversity:** is a diversity measure reported with that result (same table or one the text pairs with it)?
+7. **Q4 Step sweep:** is the paper's own method shown at several step counts, NFE or tokens per step on the same
+   task? yes (three or more settings), partial (exactly two) or no.
+8. Type your initials in **Reader**, use **Notes** for anything odd, save under the same name and tell Claude.
+
+About 6 minutes per paper, so about 2.5 hours in all. Partial filling still counts. Two people may split the rows, or
+both read the same paper (add a row at the bottom with the same Paper id, or save a copy named
+`HUMAN-CHECK-CENSUS-<initials>.xlsx` in the same folder).
+
+**Keep it blind.** Do not open `analysis\census\human-check-census-model-answers.json`, the census files in
+`research\review\census\`, or Section 6 of the paper and its census tables in the supplement before you finish.

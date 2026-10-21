@@ -1,0 +1,571 @@
+{
+ "purpose": "model answers for the blind human census check; do not open before the sheet is filled",
+ "script": "analysis/census/human_check_census_sheet.py",
+ "seed": 20261024,
+ "sizes": {
+  "non-plain": 12,
+  "not stated": 8,
+  "plain": 4
+ },
+ "frame": "census-random-final.jsonl rows: eligible yes, F2 coded, F1 not NA/QL (152)",
+ "frame_class_counts": {
+  "non-plain": 96,
+  "not stated": 50,
+  "plain": 6
+ },
+ "left_out_already_seen": [
+  "R0171",
+  "R0188",
+  "R0268",
+  "R0588",
+  "R0674",
+  "R0738"
+ ],
+ "pool_class_counts": {
+  "non-plain": 90,
+  "not stated": 50,
+  "plain": 6
+ },
+ "frame_sha256": "610c903df93ca13a6672f89f063e827458ebf0afd796b6bf42dffc85e3968afa",
+ "rule": "rng=random.Random(seed); per class in the order non-plain, not stated, plain: rng.sample(sorted sids, n); rng.sample(all 24) = row order",
+ "drawn": {
+  "non-plain": [
+   "R1164",
+   "R0496",
+   "R0191",
+   "R0696",
+   "R1280",
+   "R0021",
+   "R0517",
+   "R1068",
+   "R0174",
+   "R1120",
+   "R0214",
+   "R0773"
+  ],
+  "not stated": [
+   "R0730",
+   "R1023",
+   "R1354",
+   "R0961",
+   "R0508",
+   "R0539",
+   "R1351",
+   "R0350"
+  ],
+  "plain": [
+   "R0669",
+   "R0802",
+   "R0875",
+   "R1334"
+  ]
+ },
+ "rows": [
+  {
+   "row": 1,
+   "sid": "R1351",
+   "arxiv": "2610.00576",
+   "link": "https://arxiv.org/abs/2610.00576v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2610.00576.txt"
+  },
+  {
+   "row": 2,
+   "sid": "R0174",
+   "arxiv": "2412.00127",
+   "link": "https://arxiv.org/abs/2412.00127v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2412.00127.txt"
+  },
+  {
+   "row": 3,
+   "sid": "R0875",
+   "arxiv": "2605.00161",
+   "link": "https://arxiv.org/abs/2605.00161v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2605.00161.txt"
+  },
+  {
+   "row": 4,
+   "sid": "R0773",
+   "arxiv": "2603.13319",
+   "link": "https://arxiv.org/abs/2603.13319v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2603.13319.txt"
+  },
+  {
+   "row": 5,
+   "sid": "R0214",
+   "arxiv": "2503.09573",
+   "link": "https://arxiv.org/abs/2503.09573v3",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2503.09573.txt"
+  },
+  {
+   "row": 6,
+   "sid": "R1120",
+   "arxiv": "2607.04469",
+   "link": "https://arxiv.org/abs/2607.04469v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2607.04469.txt"
+  },
+  {
+   "row": 7,
+   "sid": "R0191",
+   "arxiv": "2502.00234",
+   "link": "https://arxiv.org/abs/2502.00234v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2502.00234.txt"
+  },
+  {
+   "row": 8,
+   "sid": "R0496",
+   "arxiv": "2510.21961",
+   "link": "https://arxiv.org/abs/2510.21961v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2510.21961.txt"
+  },
+  {
+   "row": 9,
+   "sid": "R1023",
+   "arxiv": "2606.04535",
+   "link": "https://arxiv.org/abs/2606.04535v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2606.04535.txt"
+  },
+  {
+   "row": 10,
+   "sid": "R0961",
+   "arxiv": "2605.20813",
+   "link": "https://arxiv.org/abs/2605.20813v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2605.20813.txt"
+  },
+  {
+   "row": 11,
+   "sid": "R1164",
+   "arxiv": "2607.25157",
+   "link": "https://arxiv.org/abs/2607.25157v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2607.25157.txt"
+  },
+  {
+   "row": 12,
+   "sid": "R0539",
+   "arxiv": "2511.22146",
+   "link": "https://arxiv.org/abs/2511.22146v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2511.22146.txt"
+  },
+  {
+   "row": 13,
+   "sid": "R1280",
+   "arxiv": "2609.19356",
+   "link": "https://arxiv.org/abs/2609.19356v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2609.19356.txt"
+  },
+  {
+   "row": 14,
+   "sid": "R0802",
+   "arxiv": "2603.23507",
+   "link": "https://arxiv.org/abs/2603.23507v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2603.23507.txt"
+  },
+  {
+   "row": 15,
+   "sid": "R0730",
+   "arxiv": "2602.22246",
+   "link": "https://arxiv.org/abs/2602.22246v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2602.22246.txt"
+  },
+  {
+   "row": 16,
+   "sid": "R1334",
+   "arxiv": "2609.37533",
+   "link": "https://arxiv.org/abs/2609.37533v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2609.37533.txt"
+  },
+  {
+   "row": 17,
+   "sid": "R0669",
+   "arxiv": "2602.03769",
+   "link": "https://arxiv.org/abs/2602.03769v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2602.03769.txt"
+  },
+  {
+   "row": 18,
+   "sid": "R1354",
+   "arxiv": "2610.00953",
+   "link": "https://arxiv.org/abs/2610.00953v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2610.00953.txt"
+  },
+  {
+   "row": 19,
+   "sid": "R0350",
+   "arxiv": "2508.15487",
+   "link": "https://arxiv.org/abs/2508.15487v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2508.15487.txt"
+  },
+  {
+   "row": 20,
+   "sid": "R0508",
+   "arxiv": "2510.26583",
+   "link": "https://arxiv.org/abs/2510.26583v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2510.26583.txt"
+  },
+  {
+   "row": 21,
+   "sid": "R0517",
+   "arxiv": "2511.05562",
+   "link": "https://arxiv.org/abs/2511.05562v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2511.05562.txt"
+  },
+  {
+   "row": 22,
+   "sid": "R0021",
+   "arxiv": "2211.11694",
+   "link": "https://arxiv.org/abs/2211.11694v2",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2211.11694.txt"
+  },
+  {
+   "row": 23,
+   "sid": "R1068",
+   "arxiv": "2606.16908",
+   "link": "https://arxiv.org/abs/2606.16908v1",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2606.16908.txt"
+  },
+  {
+   "row": 24,
+   "sid": "R0696",
+   "arxiv": "2602.11133",
+   "link": "https://arxiv.org/abs/2602.11133v3",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\research\\sources\\census-text\\2602.11133.txt"
+  }
+ ],
+ "answers": {
+  "R1351": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "no sampler, temperature, remasking, guidance or step settings stated anywhere in the text",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 59,
+   "F1_task": "text-to-image generation (named first among tasks in abstract), UniGenBench English Long, Gestalt unified discrete diffusion model",
+   "F1_metric": "overall score",
+   "F1_value": "73.30",
+   "F1_location": "Table 1, Gestalt row (abstract has no number)"
+  },
+  "R0174": {
+   "class": "non-plain",
+   "F2_codes": "G+NS",
+   "F2_detail": "image path (F1 output): diffusion head sampled with DDIM, 100 steps, classifier-free guidance scale 5 (Sec 4 implementation details); DDIM is ODE-type integration with no statement on temperature or truncation, so base rule unstated; text path greedy (not the F1 task)",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 114,
+   "F1_task": "text-to-image generation, GenEval, Orthus 7B (first generation task in abstract)",
+   "F1_metric": "GenEval overall score",
+   "F1_value": "0.58",
+   "F1_location": "abstract; Table 3"
+  },
+  "R0875": {
+   "class": "plain",
+   "F2_codes": "U",
+   "F2_detail": "ancestral sampler with FP64 sampling (Table 3 caption); no temperature, truncation or guidance stated",
+   "F3": "no",
+   "F4": "yes",
+   "F5": "stated",
+   "F6": "NA",
+   "rank": 45,
+   "F1_task": "conditional text generation (OpenWebText, 50% prefix condition), MCDLM-PPLOptimized",
+   "F1_metric": "generative perplexity (gpt2-large)",
+   "F1_value": "31.6",
+   "F1_location": "Table 3, Ours: MCDLM-PPLOptimized row, OpenWebText, first step column (abstract has no number)"
+  },
+  "R0773": {
+   "class": "non-plain",
+   "F2_codes": "A",
+   "F2_detail": "greedy decoding for evaluation; dynamic low-confidence decoding threshold 0.9; (training rollouts use temperature 1.0, top-k 0, top-p 1)",
+   "F3": "no",
+   "F4": "partial",
+   "F5": "not stated",
+   "F6": "NA",
+   "rank": 94,
+   "F1_task": "GSM8K, SDAR-8B-b32 post-trained with LightningRL (abstract number is TPF, speed-only)",
+   "F1_metric": "accuracy",
+   "F1_value": "90.3%",
+   "F1_location": "Table 1, GSM8K, LightningRL row"
+  },
+  "R0214": {
+   "class": "non-plain",
+   "F2_codes": "P",
+   "F2_detail": "nucleus sampling p=0.9 for BD3-LMs, AR and MDLM (SEDD p=0.99); 64-bit Gumbel categorical sampling; T=5K diffusion steps, no remasking",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 60,
+   "F1_task": "unconditional generation, OpenWebText 110M, BD3-LM block size 16, L=1024",
+   "F1_metric": "generative PPL (GPT2-Large)",
+   "F1_value": "33.4",
+   "F1_location": "Table 7, first BD3-LM row (L'=16), L=1024 (abstract has no number; Tables 1-5 are likelihood)"
+  },
+  "R1120": {
+   "class": "non-plain",
+   "F2_codes": "A",
+   "F2_detail": "greedy argmax commits per position after marker-gated coordination pass; confidence-threshold bundle selection (tau_m2t), edits tau_t2t=0",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 73,
+   "F1_task": "GSM8K, LLaDA2.1-mini + CoCommit (LoRA adapters, greedy inference)",
+   "F1_metric": "accuracy (%)",
+   "F1_value": "91.13",
+   "F1_location": "Table 1 first row (abstract gives no number)"
+  },
+  "R0191": {
+   "class": "non-plain",
+   "F2_codes": "T",
+   "F2_detail": "sampling temperature 0.5 for all evaluated inference methods; theta-Trapezoidal (theta=1/2) high-order tau-leaping-type solver, log-linear schedule",
+   "F3": "no",
+   "F4": "yes",
+   "F5": "stated",
+   "F6": "NA",
+   "rank": 42,
+   "F1_task": "GSM8K math reasoning with LLaDA-8B-Instruct, theta-Trapezoidal sampler (task named first in the abstract)",
+   "F1_metric": "response accuracy (%), NFE=64",
+   "F1_value": "35.1",
+   "F1_location": "Table 2, theta-Trapezoidal row, NFE=64 (abstract has no number)"
+  },
+  "R0496": {
+   "class": "non-plain",
+   "F2_codes": "T+P+S",
+   "F2_detail": "temperatures 0.1 and 0.7 both reported (paper says PUNT pulls ahead at 0.7); nucleus p=0.9 for all methods; tokens sampled, positions confidence-ordered (margin for LLaDA, negative entropy for Dream) and split by conditional-independence tests",
+   "F3": "no",
+   "F4": "yes",
+   "F5": "stated",
+   "F6": "NA",
+   "rank": 20,
+   "F1_task": "IFEval instruction following, Dream 7B / LLaDA with the PUNT sampler",
+   "F1_metric": "accuracy gain over baseline samplers",
+   "F1_value": "up to 16% higher accuracy over baseline methods",
+   "F1_location": "Abstract"
+  },
+  "R1023": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "hyperparameters listed (confidence threshold 0.065/0.05, expand size 4, 512 diffusion steps, max block 512) but no temperature, truncation or argmax statement",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 105,
+   "F1_task": "GSM8K 0-shot format-constrained reasoning, Dream-7B with DIA",
+   "F1_metric": "format score (accuracy 46.78% in the same sentence)",
+   "F1_value": "72.63%",
+   "F1_location": "abstract; Table 1"
+  },
+  "R0961": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "no value rule stated; configurations follow SparseD",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 11,
+   "F1_task": "GSM8K 4-shot, LLaDA-1.5 with PulseCol column-sparse attention at 50% sparsity",
+   "F1_metric": "accuracy (%)",
+   "F1_value": "81.05",
+   "F1_location": "Table 1, first Ours row (abstract number is speed-only: up to 1.95x)"
+  },
+  "R1164": {
+   "class": "non-plain",
+   "F2_codes": "A",
+   "F2_detail": "Algorithm 1 confidence-aware unmasking: top-k_s positions by confidence, committed tokens set to argmax; cosine schedule; 32 denoising steps unless stated otherwise",
+   "F3": "yes",
+   "F4": "yes",
+   "F5": "not stated",
+   "F6": "NA",
+   "rank": 54,
+   "F1_task": "unconditional generation, WikiText-103, PreDiff-LM-M (GPT-2 Medium init, hybrid attention), 32 steps",
+   "F1_metric": "MAUVE",
+   "F1_value": "0.78",
+   "F1_location": "abstract; Table 1"
+  },
+  "R0539": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "no temperature, remasking or guidance rule stated; only generation length 512 and block length 512",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 161,
+   "F1_task": "COT-OrderPerturb, C2DLM (LoRA on LLaDA-8B-Instruct) vs SFT",
+   "F1_metric": "accuracy improvement over SFT",
+   "F1_value": "12% higher performance",
+   "F1_location": "Abstract; Sec 1 (Table 2 cells not readable in the extraction)"
+  },
+  "R1280": {
+   "class": "non-plain",
+   "F2_codes": "G+NS",
+   "F2_detail": "probe guidance with swept strength lambda (headline lambda not stated; lambda>1 extrapolates); self-conditioning CFG 1.0; 32-step SDE sampler gamma=1.5 (process-level, no statement on temperature or truncation)",
+   "F3": "yes",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 141,
+   "F1_task": "OWT unconditional generation, ELF-L with probe guidance",
+   "F1_metric": "GenPPL at OWT-matched unigram entropy",
+   "F1_value": "GenPPL 23 at entropy 5.40",
+   "F1_location": "Fig 1(a) caption (abstract has no number)"
+  },
+  "R0802": {
+   "class": "plain",
+   "F2_codes": "U",
+   "F2_detail": "'direct sampling' (equated with top-p p=1.0 in App Table 21) with float64 Gumbel-argmax categorical sampling for all generation tasks; nucleus p=0.9 only as a separate appendix variant (Tables 15-16)",
+   "F3": "yes",
+   "F4": "yes",
+   "F5": "stated",
+   "F6": "NA",
+   "rank": 49,
+   "F1_task": "unconditional generation, OpenWebText fixed-length (DID vs RADD)",
+   "F1_metric": "generative perplexity (GPT-2 Large)",
+   "F1_value": "158.93",
+   "F1_location": "Table 2, DID PPL row, first step column (16 steps); Table 1 is ELBO perplexity (skipped); abstract has no number"
+  },
+  "R0730": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "only steps=32, gen_length=32, block_length=32 (LLaDA-V) and step_ratio=0.5 (LaViDa) stated; no temperature, truncation or remasking rule",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 95,
+   "F1_task": "backdoor defense (DiSP) on multimodal diffusion LMs, LLaDA-V and LaViDa",
+   "F1_metric": "attack success rate with trigger",
+   "F1_value": "from over 90% to typically under 5% (Table 1 targeted refusal LLaDA-V: 1.00%)",
+   "F1_location": "abstract; Table 1"
+  },
+  "R1334": {
+   "class": "plain",
+   "F2_codes": "U",
+   "F2_detail": "ancestral_cache predictor, nucleus p=1.0 (no truncation), categorical sampling in fp64, routes sampled from prior",
+   "F3": "yes",
+   "F4": "yes",
+   "F5": "stated",
+   "F6": "NA",
+   "rank": 153,
+   "F1_task": "LM1B few-step generation, E-MoE at NFE=1",
+   "F1_metric": "generative perplexity (GPT-2 Large) with sample entropy",
+   "F1_value": "Gen-PPL 643.8 (H=4.35) at NFE=1; MDLM 1433.8; data H 4.32",
+   "F1_location": "Table 4 / Fig 1 (abstract has no number; Tables 2-3 are toy and MNIST)"
+  },
+  "R0669": {
+   "class": "plain",
+   "F2_codes": "U",
+   "F2_detail": "uniform (random-order) decoding for sequence modeling tasks, one token per step, T=L, tokens sampled from p_theta (Algorithm 1); greedy stated only for Countdown; no truncation or guidance in the App G.4 decoding settings",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 3,
+   "F1_task": "unconditional text generation, OpenWebText, SCDM-like model (Sahoo et al. checkpoint) with latent token modulation",
+   "F1_metric": "generative perplexity",
+   "F1_value": "figure-only",
+   "F1_location": "Fig 5 (Sec 4.3.2); prose: gen PPL from approximately 48 to 40 with more latent tokens"
+  },
+  "R1354": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "Nemotron prompting runs: 128-token canvas, 64 steps, EOS allowed, runner-specific early-exit threshold; temperature and token value rule not stated (greedy candidate selection is stated only for the LaViDa timing condition)",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 6,
+   "F1_task": "EOS-enabled prompting comparison, Nemotron diffusion VLM path, M3CoT: direct vs reasoning-requested prefix",
+   "F1_metric": "overall accuracy change (percentage points)",
+   "F1_value": "+15.0 points",
+   "F1_location": "abstract (first generated-sample number); Table 4"
+  },
+  "R0350": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "no decoding value rule (temperature, truncation, remasking) stated for reported benchmarks",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 82,
+   "F1_task": "MMLU 5-shot, Dream 7B base (first row of Table 1; abstract has no number)",
+   "F1_metric": "accuracy",
+   "F1_value": "69.5",
+   "F1_location": "Table 1, first row"
+  },
+  "R0508": {
+   "class": "not stated",
+   "F2_codes": "NS",
+   "F2_detail": "no sampling value rule (temperature, top-k, CFG) stated for the reported GenEval numbers",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 119,
+   "F1_task": "text-to-image GenEval, Emu3.5 34B with DiDA discrete-diffusion decoding (abstract number is 20x speed-up; first generation metric for the diffusion component)",
+   "F1_metric": "GenEval overall",
+   "F1_value": "0.86 (AR decoding 0.86)",
+   "F1_location": "Table 16, Emu3.5 DiDA row (Sec 6 item (6))"
+  },
+  "R0517": {
+   "class": "non-plain",
+   "F2_codes": "G+M+NS",
+   "F2_detail": "IterRef: multiple-try Metropolis noising-denoising refinement; proposals selected and accepted by reward (toxicity reward; B-19: selection among candidates with external reward = M plus G); MDLM 1,000 denoising steps; base token temperature/truncation not stated",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 166,
+   "F1_task": "reward-guided text generation (toxicity), MDLM, IterRef applied evenly",
+   "F1_metric": "Toxic reward score (higher better)",
+   "F1_value": "65.0",
+   "F1_location": "Table 2 ('Evenly' column; abstract has no number; Figure 2 gives no values; Table 1 is MaskGIT image)"
+  },
+  "R0021": {
+   "class": "non-plain",
+   "F2_codes": "G+NS",
+   "F2_detail": "image-free (classifier-free style) guidance scale s=1.17; best-first inference keeps the top-K_t recovered tokens unchanged per step (ranking score not stated); whether recovered values are argmax or sampled not stated; steps reduced to predicted length",
+   "F3": "no",
+   "F4": "no",
+   "F5": "NA",
+   "F6": "NA",
+   "rank": 156,
+   "F1_task": "COCO image captioning (Karpathy split, no caption pre-training), DDCap vs AR baseline",
+   "F1_metric": "CIDEr",
+   "F1_value": "117.8",
+   "F1_location": "Abstract; Table 4 (controlled comparison)"
+  },
+  "R1068": {
+   "class": "non-plain",
+   "F2_codes": "C",
+   "F2_detail": "unmasking by top-1 confidence/persistence/JSD (Sec 3, Eq. 4-5); token chosen 'by argmax or the model's configured stochastic decoding rule', not specified for Table 1; argmax vs nucleus compared only in App E.5",
+   "F3": "no",
+   "F4": "yes",
+   "F5": "not stated",
+   "F6": "NA",
+   "rank": 140,
+   "F1_task": "Seven-benchmark mean accuracy, LESS on Dream-7B (T=256 budget, L=256)",
+   "F1_metric": "mean accuracy (category-macro) with avg steps",
+   "F1_value": "65.18 (64.3 avg steps; Base +1.88 lower)",
+   "F1_location": "Table 1 / Sec 5; abstract states 72.1% fewer steps"
+  },
+  "R0696": {
+   "class": "non-plain",
+   "F2_codes": "A+T",
+   "F2_detail": "positions finalized early when the top-2 confidence ratio clears a spatially adaptive gate; finalized tokens chosen by argmax ('we use argmax in our experiments'); remaining positions follow Dream's standard transfer schedule, sampled at T=0.1 (Table 1 caption)",
+   "F3": "no",
+   "F4": "yes",
+   "F5": "stated",
+   "F6": "NA",
+   "rank": 34,
+   "F1_task": "GSM8K, Dream-7B-Instruct with JoT token-level early stopping (tau_max=90)",
+   "F1_metric": "score (%)",
+   "F1_value": "78.8",
+   "F1_location": "Table 1, first JoT row (Dream-7B-Instruct, GSM8K), cell confirmed in Sec 6.2 text and Table 3 tau=90 row (abstract has no number)"
+  }
+ }
+}
