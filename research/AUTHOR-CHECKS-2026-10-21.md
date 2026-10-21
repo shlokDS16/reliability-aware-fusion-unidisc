@@ -67,3 +67,43 @@ These come from the landmark screening and extraction. Each is a yes/no or pick-
 4. **Proposed lookup entries** (benchmark and metric names the extractors met): MBXP -> mbxp; "Relative Time Per
    Forward" -> relative-time-per-forward (lower is better); "inference speed" -> tps; "Accuracy (%)" -> accuracy;
    "Speed-Up" -> speed-up; "Maze navigation" -> maze-navigation; "Sudoku solving" -> sudoku. Accept all?
+
+## Part 4: blind screening check (40 records)
+
+**Why.** All full-text screening was done by language models. This check records a human decision on a random 40 of
+the 885 tranche-T1 records (20 the models included, 20 they excluded; you are not told which), and the paper reports
+how often you and the models agree (Cohen's kappa with a 95 percent interval).
+
+**The file.**
+`C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\resume-dlm-discovery-exp-003-334706\research\HUMAN-CHECK-SCREENING.xlsx`
+Sheet "check" has one row per record; sheet "rules" has the screening rules (criteria v1.6) in plain language on one
+screen.
+
+**What to do.**
+1. Open the file and read the sheet "rules" once. Keep it open in a second window while you work.
+2. For each row, open the **Link** (the open-access copy the models screened) or, if it does not open, the **Local
+   text copy** (a plain-text file of the same paper; the PDF is in
+   `...\research\sources\pdfs\fulltext\<Record id>.pdf`). Six links are IEEE DOIs and need VIT access; off campus,
+   use the local copy.
+3. Read the title and abstract, then skim the method and the results tables (and the appendix if the output type is
+   unclear).
+4. In **Decision** pick include, exclude or unclear from the drop-down. Use unclear only if you cannot decide, and say
+   why in **Notes**.
+5. If you pick exclude, pick the **first** code that applies in **Exclusion code** (order X8, X3, X5, X4, X0, X1, X2,
+   X7; meanings on sheet "rules"). For X1 versus X2 follow the three steps on the rules sheet. Leave the code blank for
+   include and unclear.
+6. Type your initials in **Reader**. Use **Notes** for anything odd.
+7. Save the file under the same name and tell Claude in the chat. Doing only some rows still helps: the paper reports
+   how many were filled.
+
+About 4 to 5 minutes per record, so about 3 hours in all.
+
+**Two readers.** Two people may split the rows (for example rows 1-20 and 21-40); each types their own initials in
+Reader. If you both want to read the same record (this gives a human-to-human agreement figure as well), the second
+person adds a new row at the bottom with the same Record id, or saves a copy named
+`HUMAN-CHECK-SCREENING-<initials>.xlsx` in the same folder; the script reads both.
+
+**Keep it blind.** Do not open `analysis\screening\human-check-screening-model-answers.json` before you finish, and do
+not look the papers up in the review's own lists of included studies (the supplement tables, the release files or
+the screening folders). Records you have already seen with a decision (CONFIRM-2026-10-20, the items of Parts 1 and 3
+above, and the 12 studies of Part 2) were left out of the draw.

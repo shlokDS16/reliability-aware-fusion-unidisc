@@ -1,0 +1,776 @@
+{
+ "purpose": "model answers for the blind human screening check; do not open before the sheet is filled",
+ "script": "analysis/screening/human_check_screening_sheet.py",
+ "seed": 20261023,
+ "final_decisions": "t1-decisions-all.jsonl (882) + b-unavailable-resolved.jsonl T1 (3, D0058) + d0039-resolved.jsonl overrides (D0059)",
+ "final_counts": {
+  "records": 885,
+  "include": 608,
+  "exclude": 277
+ },
+ "left_out_already_seen": {
+  "n": 28,
+  "ids": [
+   "M01553",
+   "M07124",
+   "M08783",
+   "M09246",
+   "M10526",
+   "M10840",
+   "M11389",
+   "M12084",
+   "M12859",
+   "M12904",
+   "M13184",
+   "M13196",
+   "M14293",
+   "M14365",
+   "M15033",
+   "M15840",
+   "M15873",
+   "M16043",
+   "M17195",
+   "M17462",
+   "M17653",
+   "M18059",
+   "M18141",
+   "M18667",
+   "M19021",
+   "M19293",
+   "R0963",
+   "U04330"
+  ],
+  "sources": {
+   "research/CONFIRM-2026-10-20.md": [
+    "M10840",
+    "M11389",
+    "M12859",
+    "M13184",
+    "M15873",
+    "M16043",
+    "M17195",
+    "M17462",
+    "M17653",
+    "M18059",
+    "M18667",
+    "U04330"
+   ],
+   "research/AUTHOR-CHECKS-2026-10-21.md": [
+    "M08783",
+    "M15033",
+    "M15840",
+    "M19021"
+   ],
+   "analysis/extraction/d0052/human-check-model-answers.json (drawn ids)": [
+    "M01553",
+    "M07124",
+    "M09246",
+    "M10526",
+    "M12084",
+    "M12904",
+    "M13196",
+    "M14293",
+    "M14365",
+    "M18141",
+    "M19293",
+    "R0963"
+   ]
+  }
+ },
+ "frame_counts": {
+  "include": 586,
+  "exclude": 271
+ },
+ "frame_sha256": "bce5a19c54d56412f868fb8346a4e96a2b3261eb2d049c20921183969c7e845a",
+ "rule": "rng=random.Random(seed); rng.sample(sorted include, 20); rng.sample(sorted exclude, 20); rng.sample(both, 40) = row order",
+ "drawn": {
+  "include": [
+   "M13933",
+   "M14023",
+   "M13313",
+   "M18977",
+   "M15673",
+   "M13801",
+   "M15810",
+   "M05262",
+   "M16622",
+   "M08407",
+   "M16383",
+   "M13333",
+   "M14971",
+   "M15650",
+   "M14568",
+   "M13989",
+   "M15719",
+   "M07267",
+   "U01304",
+   "M16593"
+  ],
+  "exclude": [
+   "M02145",
+   "M08294",
+   "M18853",
+   "M15989",
+   "M08662",
+   "M13723",
+   "M04453",
+   "M13335",
+   "M10607",
+   "M17219",
+   "M12741",
+   "M15919",
+   "M14797",
+   "M03710",
+   "M03048",
+   "M12862",
+   "M12080",
+   "M08827",
+   "U04039",
+   "U00122"
+  ]
+ },
+ "rows": [
+  {
+   "row": 1,
+   "id": "U04039",
+   "link": "https://arxiv.org/pdf/2503.14350",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\U04039.txt"
+  },
+  {
+   "row": 2,
+   "id": "M08827",
+   "link": "https://arxiv.org/pdf/2604.10961",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M08827.txt"
+  },
+  {
+   "row": 3,
+   "id": "M13989",
+   "link": "https://www.jstage.jst.go.jp/article/transfun/advpub/0/advpub_2025EAP1042/_pdf",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13989.txt"
+  },
+  {
+   "row": 4,
+   "id": "M02145",
+   "link": "https://arxiv.org/pdf/2311.03886",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M02145.txt"
+  },
+  {
+   "row": 5,
+   "id": "M03710",
+   "link": "https://arxiv.org/pdf/2409.06065",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M03710.txt"
+  },
+  {
+   "row": 6,
+   "id": "M07267",
+   "link": "https://arxiv.org/pdf/2511.12280",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M07267.txt"
+  },
+  {
+   "row": 7,
+   "id": "M16593",
+   "link": "https://aclanthology.org/2025.mtsummit-1.17.pdf",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M16593.txt"
+  },
+  {
+   "row": 8,
+   "id": "M18853",
+   "link": "https://openreview.net/forum?id=MWT5JACcVr",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M18853.txt"
+  },
+  {
+   "row": 9,
+   "id": "M14023",
+   "link": "https://doi.org/10.1109/icassp55912.2026.11462605",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M14023.txt"
+  },
+  {
+   "row": 10,
+   "id": "M16622",
+   "link": "https://openreview.net/forum?id=SuZeaUL9M5",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M16622.txt"
+  },
+  {
+   "row": 11,
+   "id": "M08662",
+   "link": "https://arxiv.org/pdf/2603.26128",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M08662.txt"
+  },
+  {
+   "row": 12,
+   "id": "M14797",
+   "link": "https://ojs.aaai.org/index.php/AAAI/article/download/40064/44025",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M14797.txt"
+  },
+  {
+   "row": 13,
+   "id": "M15673",
+   "link": "https://openreview.net/forum?id=w0FKZQKXO9",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M15673.txt"
+  },
+  {
+   "row": 14,
+   "id": "M12741",
+   "link": "https://openreview.net/forum?id=pXjoxWMzLd",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M12741.txt"
+  },
+  {
+   "row": 15,
+   "id": "M05262",
+   "link": "https://arxiv.org/pdf/2504.06416",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M05262.txt"
+  },
+  {
+   "row": 16,
+   "id": "M15810",
+   "link": "https://openreview.net/forum?id=2jHUS4ljTj",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M15810.txt"
+  },
+  {
+   "row": 17,
+   "id": "M18977",
+   "link": "https://openreview.net/forum?id=f970HdoREa",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M18977.txt"
+  },
+  {
+   "row": 18,
+   "id": "M15919",
+   "link": "https://doi.org/10.1109/lra.2026.3685930",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M15919.txt"
+  },
+  {
+   "row": 19,
+   "id": "M16383",
+   "link": "https://openreview.net/forum?id=Uh2vvMhjmA",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M16383.txt"
+  },
+  {
+   "row": 20,
+   "id": "M12862",
+   "link": "https://openreview.net/forum?id=t8gFNr1S05",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M12862.txt"
+  },
+  {
+   "row": 21,
+   "id": "M12080",
+   "link": "https://doi.org/10.1109/scisisis61014.2024.10760035",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M12080.txt"
+  },
+  {
+   "row": 22,
+   "id": "M13335",
+   "link": "https://doi.org/10.1109/ispa-bdcloud-socialcom-sustaincom59178.2023.00161",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13335.txt"
+  },
+  {
+   "row": 23,
+   "id": "M10607",
+   "link": "https://arxiv.org/pdf/2608.30427",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M10607.txt"
+  },
+  {
+   "row": 24,
+   "id": "M13801",
+   "link": "https://zenodo.org/api/records/19162001/files/paper.pdf/content",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13801.txt"
+  },
+  {
+   "row": 25,
+   "id": "M13933",
+   "link": "https://openreview.net/forum?id=71mqtQdKB9",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13933.txt"
+  },
+  {
+   "row": 26,
+   "id": "M15650",
+   "link": "https://openreview.net/forum?id=G5vfucMrrF",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M15650.txt"
+  },
+  {
+   "row": 27,
+   "id": "M15989",
+   "link": "https://openreview.net/forum?id=4mOyMTmTD4",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M15989.txt"
+  },
+  {
+   "row": 28,
+   "id": "M08294",
+   "link": "https://arxiv.org/pdf/2602.22417",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M08294.txt"
+  },
+  {
+   "row": 29,
+   "id": "M14971",
+   "link": "https://openreview.net/forum?id=DZrWlawBfT",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M14971.txt"
+  },
+  {
+   "row": 30,
+   "id": "M03048",
+   "link": "https://arxiv.org/pdf/2405.10631",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M03048.txt"
+  },
+  {
+   "row": 31,
+   "id": "M13313",
+   "link": "https://openreview.net/forum?id=GDxcnGBaWc",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13313.txt"
+  },
+  {
+   "row": 32,
+   "id": "M15719",
+   "link": "https://aclanthology.org/2025.emnlp-demos.8.pdf",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M15719.txt"
+  },
+  {
+   "row": 33,
+   "id": "U01304",
+   "link": "https://doi.org/10.1109/tai.2026.3671250",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\U01304.txt"
+  },
+  {
+   "row": 34,
+   "id": "M17219",
+   "link": "https://openreview.net/forum?id=FrXTQED0Nt",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M17219.txt"
+  },
+  {
+   "row": 35,
+   "id": "M04453",
+   "link": "https://arxiv.org/pdf/2412.18139",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M04453.txt"
+  },
+  {
+   "row": 36,
+   "id": "M08407",
+   "link": "https://arxiv.org/pdf/2603.06617",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M08407.txt"
+  },
+  {
+   "row": 37,
+   "id": "U00122",
+   "link": "https://doi.org/10.1109/jiot.2026.3735800",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\U00122.txt"
+  },
+  {
+   "row": 38,
+   "id": "M13333",
+   "link": "https://openreview.net/forum?id=n5IF2kyZrS",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13333.txt"
+  },
+  {
+   "row": 39,
+   "id": "M13723",
+   "link": "https://openreview.net/forum?id=EGb0wlKWVz",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M13723.txt"
+  },
+  {
+   "row": 40,
+   "id": "M14568",
+   "link": "https://openreview.net/forum?id=M0JxNfaIzz",
+   "link_source": "fetch-log",
+   "local_text": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\resume-dlm-discovery-exp-003-334706\\research\\sources\\md\\fulltext-pymupdf\\M14568.txt"
+  }
+ ],
+ "answers": {
+  "U04039": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "pipeline",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M08827": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "theory-no-text",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M13989": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M02145": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "nontext",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M03710": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "t2x",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M07267": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M16593": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M18853": {
+   "decision": "exclude",
+   "code": "X0",
+   "xsub": "",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M14023": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M16622": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M08662": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "t2x",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M14797": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "pipeline",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M15673": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M12741": {
+   "decision": "exclude",
+   "code": "X0",
+   "xsub": "",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "C",
+   "decision_rows": []
+  },
+  "M05262": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M15810": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M18977": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M15919": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "ar-text+nontext",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M16383": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M12862": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "nontext",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M12080": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "nontext",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M13335": {
+   "decision": "exclude",
+   "code": "X0",
+   "xsub": "",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "C",
+   "decision_rows": []
+  },
+  "M10607": {
+   "decision": "exclude",
+   "code": "X0",
+   "xsub": "",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "C",
+   "decision_rows": []
+  },
+  "M13801": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M13933": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M15650": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "ab",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M15989": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "pipeline",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M08294": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "nontext",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M14971": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M03048": {
+   "decision": "exclude",
+   "code": "X0",
+   "xsub": "",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M13313": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "ab",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M15719": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "U01304": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M17219": {
+   "decision": "exclude",
+   "code": "X1",
+   "xsub": "nontext",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M04453": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "pipeline",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M08407": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "U00122": {
+   "decision": "exclude",
+   "code": "X2",
+   "xsub": "nlp-label",
+   "i1": "",
+   "nonlang_only": false,
+   "source": "C",
+   "decision_rows": []
+  },
+  "M13333": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  },
+  "M13723": {
+   "decision": "exclude",
+   "code": "X7",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "C",
+   "decision_rows": []
+  },
+  "M14568": {
+   "decision": "include",
+   "code": "",
+   "xsub": "",
+   "i1": "a",
+   "nonlang_only": false,
+   "source": "A=B",
+   "decision_rows": []
+  }
+ }
+}

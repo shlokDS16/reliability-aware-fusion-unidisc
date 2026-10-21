@@ -1,6 +1,17 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 37 (2026-10-21; side session of 00fe9279; human check 2 of 3, blind screening sheet built, not yet
+  filled).** analysis/screening/human_check_screening_sheet.py draws 20 included + 20 excluded of the 885 final T1
+  decisions (t1-decisions-all 882 + D0058 3, D0059 code overrides; 608/277), seed 20261023, after leaving out 28
+  records the first author had already seen with a decision (CONFIRM-2026-10-20, AUTHOR-CHECKS Parts 1 and 3, the 12
+  extraction-check studies); frame 586/271. Sheet research/HUMAN-CHECK-SCREENING.xlsx ("check" with drop-downs,
+  "rules" = criteria v1.6 in plain language); model answers analysis/screening/human-check-screening-model-answers.json
+  (user must not open). All 40 have a link (33 respond 200; 6 IEEE DOIs need VIT access; 1 Zenodo link blocks
+  scripts) and a local text copy and PDF in this worktree only (git-ignored). Instructions: research/AUTHOR-CHECKS-
+  2026-10-21.md Part 4. **Next:** when the user returns the sheet, run
+  `python -E -P analysis/screening/human_check_screening_agreement.py` (tested on a dummy copy) and report kappa
+  with its bootstrap interval in the paper; the census check (3 of 3) is still to build.
 - **HANDOFF 36 (2026-10-21 ~14:30 IST; session bfefb6fe; fix D done, full D within the user's budget).** Landmark
   tranche L (D0061): the 44 design-space models whose papers are not among the 615 (41 unscreened S1243 seed records +
   3 D0026 string-filter drops; agrees with fix B's landmark-coverage.json). Full texts all retrieved (9 fetched,
