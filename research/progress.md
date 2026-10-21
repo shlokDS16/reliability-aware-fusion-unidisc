@@ -1,6 +1,18 @@
 # Progress ledger
 
 ## RESUME
+- **HANDOFF 44 (2026-10-21; revision lead session dc7ef7d8; professor's assessment, D0069; newest).** Commits b2ef278
+  to c68559c. AI model names only in the Declaration (rewritten positively); no repository paths in prose
+  (paper/review/scripts/final_checks.py: 0 problems in main.pdf, supplement.pdf, main.docx). New Section 8 "What the
+  evidence means for practice" (sections/075-practice.tex: exemplar table, decoding defaults, checklist); per-RQ
+  summary table in Section 5; Section 2 detail and census agreement table moved to supplement; verdict robustness
+  (analysis/extraction/d0052/revision_sensitivity.py) and census by year/venue (analysis/census/census_by_year_venue.py);
+  13 references verified via arXiv API (scripts/revision_refs.py); OP4 preregistrable design, OP5 bracketing V;
+  human-validation plan in Section 11. Response: research/RESPONSE-TO-PROFESSOR-2026-10-21.md. main.pdf 39 pp (text
+  to p34) against the 35-page target of D0068: author to choose what to move (EXP-003 section, Section 7 corollaries,
+  formalism figure). Not done: research-humanizer pass on new text; release rebuild/push; hostile-referee findings in
+  research/review/audits/2026-10-21-revision-redteam.md if present. Build order unchanged; make_docx.py now resolves
+  \csname @@input\endcsname table inputs. Heredocs collapse backslashes here: use Write/Edit for .tex edits.
 - **HANDOFF 43 (2026-10-21; orchestrator 00fe9279/0839c9f4 stopping at 95 percent context; newest).** State:
   branch claude/resume-dlm-discovery-exp-003-334706 at 5ecae26, all committed; release pushed to private
   shlokDS16/dlm-review-prisma at a667ce3; Zenodo 10.5281/zenodo.23524470 published v1.0.0 (its zip predates the
