@@ -1,0 +1,29 @@
+{
+ "role": "EA",
+ "model": "claude-opus-5-5",
+ "extractor": "EA-claude-opus-5-5",
+ "batch": "lmx014",
+ "form_version": "0.5",
+ "ft": "pymupdf-1.27.2.3 text of the PDF, page markers '=== page N ===' (retrieval route per id: research/review/fulltext/fetch-log.jsonl; analysis/screening/ft-t1/t1-provenance.jsonl)",
+ "ids": [
+  "R0039"
+ ],
+ "blocks": {
+  "R0039": [
+   "L",
+   "Q",
+   "H",
+   "K"
+  ]
+ },
+ "output_file": "EA-lmx014.jsonl",
+ "versions": {
+  "form_version": "0.5",
+  "brief_source": "extractor-brief-v0.5.md",
+  "brief_source_sha256": "d390f9664ca63d33cba5d939f3bb57c9780839d304c15dd9d06eb453a3c81c9b",
+  "brief_session_text_sha256": "6397a39beb802f025b09a85e87590a365de7d8cdf48f43e5715c1fc8b4e6c607",
+  "schema": "extraction-schema-v0.5.json",
+  "schema_sha256": "b021c041c26cf5482b22876ba68e8fcec331d0cd9e8e6ba33387bcb0ca0bbc1c",
+  "contract_sha256": "588a74ebaf1dfb19543053f8cd97c7e012792b0604b298f499219abfad4028a8"
+ }
+}
