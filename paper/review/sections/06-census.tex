@@ -16,7 +16,7 @@ The reported quality of a diffusion language model depends on how the committed 
 Table~\ref{tab:census-agree} gives agreement before any reconciliation, under codebook v1.1, on the 172 ranks that have a full text. % src: analysis/census/agreement-random.log; census-result-v2.md ("Agreement before reconciliation")
 Class-level agreement is good: kappa is 0.82 to 0.97 for the letters A, T, P, G and M among the 62 papers where both coders could determine a rule. The exception is S (sample-then-filter), with kappa 0.40, which is the confusion that led codebook v1.2 to add the code C for confidence-ranked or threshold unmasking whose token rule is not stated. % src: agreement-random.log (class rows); census-codebook-v1.2.md B-15; decision D0020(4) (the class-S kappa of 0.31 in the first log came from a parsing bug that read G+NS as containing S; the corrected log is used)
 Whether a value rule can be determined at all is the weaker point: the two coders agree on whether the rule is non-plain, unknown or plain for 149 papers with kappa 0.65, and on whether the rule is determinable with kappa 0.65. % src: agreement-random.log
-Eligibility has a kappa of 0.05 at raw agreement of 0.87. This is a prevalence effect, because nearly every record is eligible, compounded by tool failures: 20 of the 22 eligibility disagreements are coder~A yes and coder~B no, and 15 of those 20 are papers Codex could not read (placeholder codes, adjudicated from the paper). Without these 15 ranks, eligibility agreement is 0.96 with kappa 0.20. % src: census-result-v2.md ("Reading" paragraph, corrected per audit C2); analysis/census/agreement-random-excl-readfail.log
+Eligibility has a kappa of 0.05 at raw agreement of 0.87. This is a prevalence effect, because nearly every record is eligible, compounded by tool failures: 20 of the 22 eligibility disagreements are coder~A yes and coder~B no, and 15 of those 20 are papers coder~B could not read (placeholder codes, adjudicated from the paper). Without these 15 ranks, eligibility agreement is 0.96 with kappa 0.20. % src: census-result-v2.md ("Reading" paragraph, corrected per audit C2); analysis/census/agreement-random-excl-readfail.log
 F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for both coders. % src: census-result-v2.md (agreement table, F6 row)
 
 \begin{table}[t]
@@ -28,7 +28,7 @@ F6 agreement (0.97) is inflated: 141 of its 149 pairs are not applicable for bot
 Field & Raw & $\kappa$ & $n$ \\
 \midrule
 Eligible, all ranks with text & 0.87 & 0.05 & 172 \\ % src: agreement-random.log
-Eligible, without 15 Codex read failures & 0.96 & 0.20 & 157 \\ % src: agreement-random-excl-readfail.log
+Eligible, without 15 coder-B read failures & 0.96 & 0.20 & 157 \\ % src: agreement-random-excl-readfail.log
 Non-plain value rule (yes/no/unknown), both eligible & 0.81 & 0.65 & 149 \\
 Non-plain value rule, both determinable & 0.97 & 0.73 & 62 \\
 Value rule determinable (not NS or NA) & 0.83 & 0.65 & 149 \\
@@ -101,5 +101,5 @@ That reported quality depends on the sampling setting has been argued for other 
 
 \subsection{Limits of the census}
 \label{sec:census-limits}
-The frame is the 1106 seed records that passed title-and-abstract screening and have an arXiv identifier, not the field; no human coded the sample (a later blind author check of 24 papers, validated with ChatGPT, agrees on the value-rule class for 21, $\kappa=0.79$; Supplement~S9), and the coders, adjudicators and harmoniser are language models, mostly of one family; codebook v1.2 was written after agreement was computed; and only the text of each paper was coded, not its released code. The full list of limits is in the supplement (Section~S3.4). % src: census-result-v2.md ("Limits"); moved text in supplement.tex S3.4
+The frame is the 1106 seed records that passed title-and-abstract screening and have an arXiv identifier, not the field; no human coded the sample (a later blind author check of 24 papers agrees on the value-rule class for 21, $\kappa=0.79$; Supplement~S9), and the coders, adjudicators and harmoniser are automated tools, mostly of one model family; codebook v1.2 was written after agreement was computed; and only the text of each paper was coded, not its released code. The full list of limits is in the supplement (Section~S3.4). % src: census-result-v2.md ("Limits"); moved text in supplement.tex S3.4
 
