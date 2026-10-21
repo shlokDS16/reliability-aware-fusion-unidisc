@@ -140,7 +140,7 @@ Item & Topic & Location and note \\
   \item The estimator and its intervals were chosen after extraction. The protocol's promised comparability table for RQ2, dose--response curves for RQ4 and appraisal distributions by year and venue for RQ6 are not given.
 \end{enumerate}
 
-\subsection{Searches and automation filters in full (from Section~\Mref{sec:method-sources})}
+\subsection{Searches and string filters in full (from Section~\Mref{sec:method-sources})}
 \label{sec:s-sources}
 
 The search ran in three strands (Table~\Mref{tab:sources}; Figure~\Mref{fig:prisma}). The \emph{seed corpus} joined the curated list Awesome-DLMs at commit 194aa6bd (572 works) with two logged arXiv API searches of 2026-10-14, one for diffusion language models (S1) and one for unified multimodal models with a diffusion-type component (S2), restricted to cs.CL, cs.LG, cs.CV, cs.AI and stat.ML and to first submission from 2021-01-01. % src: corpus/search-log.jsonl (S1 1158, executed 20261014T074854Z; S2 173, 20261014T074905Z); corpus/awesome-dlms@194aa6bd.jsonl (572 lines)
@@ -298,6 +298,17 @@ F6, guidance held fixed & 0.97 & 0.68 & 149 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{The census results as a figure (from Section~\Mref{sec:census-results})}
+\label{sec:s-census-fig}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/fig04-census.pdf} % src: paper/review/scripts/fig04_census.py; counts asserted against analysis/census/summary-random.log
+\caption{Census of the random sample. (a) Value-rule classes among the 153 papers with a value-rule code, and the reporting fields F3, F4 and F5, as proportions (bars) with 95\% Wilson intervals (lines). Filled bars are the final adjudicated rows, hatched bars the sensitivity analysis; the printed fractions are the counts. ``Non-plain or not stated'' is the sum of the two classes below it. (b) Number of papers carrying each value-rule letter; a paper can carry several.}
+\label{fig:census}
+\Description{Two panels. Panel a: horizontal bars for seven proportions with Wilson intervals. 147 of 153 papers use a non-plain value rule or do not state one, 97 state a non-plain rule, 50 do not state it, 6 state plain sampling, 28 of 152 pair the headline with a diversity measure, 55 of 152 report two or more step settings, and 20 of 55 state that the value rule was held fixed. Panel b: horizontal bars of the number of papers per value-rule letter, from 33 for argmax down to 12 for top-p, sample-then-filter and sequence-level selection.}
+\end{figure}
 
 \subsection{Value-rule classes by year and venue}
 \label{sec:s-census-year}
