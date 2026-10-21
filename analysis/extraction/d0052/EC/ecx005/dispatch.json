@@ -1,0 +1,36 @@
+{
+ "role": "EC",
+ "model": "claude-fable-5-1",
+ "extractor": "EC-claude-fable-5-1",
+ "batch": "ecx005",
+ "form_version": "0.5",
+ "ft": "arXiv HTML text of the latest version at the census fetch (tools/census_sample.py, 2026-10-15), no page breaks: one marker '=== page 1 ===' at the top; locate by section, table or figure (D0054; provenance analysis/extraction/d0052/seed-sample.json)",
+ "ids": [
+  "R0738"
+ ],
+ "blocks": {
+  "R0738": [
+   "L",
+   "Q",
+   "H",
+   "K"
+  ]
+ },
+ "output_file": "EC-ecx005.jsonl",
+ "versions": {
+  "form_version": "0.5",
+  "brief_source": "extractor-brief-v0.5.md",
+  "brief_source_sha256": "d390f9664ca63d33cba5d939f3bb57c9780839d304c15dd9d06eb453a3c81c9b",
+  "brief_session_text_sha256": "80813f7a64d2afcda53f7b8ae1112f9dd85ad1124dad5e914186ca21e8b823a8",
+  "schema": "extraction-schema-v0.5.json",
+  "schema_sha256": "b021c041c26cf5482b22876ba68e8fcec331d0cd9e8e6ba33387bcb0ca0bbc1c",
+  "contract_sha256": "588a74ebaf1dfb19543053f8cd97c7e012792b0604b298f499219abfad4028a8",
+  "lookups_sha256": {
+   "benchmark-ids-v1.csv": "b3ab1f7d62b2a710c0d5fd6d098fcf605cfc8660dfbec2cabbfe971a39573dc8",
+   "metric-ids-v1.csv": "53e1e87946345235ca08e0b3379255b6eeddde63175033e6acec17e1fec88253"
+  }
+ },
+ "records_files": {
+  "R0738": "records-R0738.jsonl"
+ }
+}
