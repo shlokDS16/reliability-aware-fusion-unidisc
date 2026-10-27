@@ -63,3 +63,11 @@ def exact_sign_power(n_d: int, theta: float, alpha_prime: float) -> float:
         if p <= alpha_prime:
             pw += pmf[k]
     return float(pw)
+
+
+def exact_sign_min_n(theta: float, alpha_prime: float, power: float = 0.8, stay: int = 5, n_max: int = 1000) -> int:
+    """Smallest n_d at which the exact two-sided sign test has power >= `power` and keeps it for the next `stay` values (SAP 4.2 Table A: 35, 42, 43 for theta 0.75)."""
+    for n in range(2, n_max):
+        if all(exact_sign_power(m, theta, alpha_prime) >= power for m in range(n, n + stay + 1)):
+            return n
+    raise ValueError("no n_d up to n_max reaches the power")

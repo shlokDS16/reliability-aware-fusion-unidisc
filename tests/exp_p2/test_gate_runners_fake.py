@@ -98,7 +98,7 @@ def test_m3_rungs_clean_and_the_headroom_decision_runs_on_its_rows(env):
     assert rows[0]["clean"]["n"] == 16
     assert not any("gate" in k for k in rows[0])                              # blind to the method: no gate flags in M3
     res = headroom.decide(rows)
-    assert set(res) >= {"family", "excluded", "rungs", "endpoint_decision"} and len(res["family"]) + len(res["excluded"]) == 3
+    assert set(res) >= {"family", "excluded", "rungs", "n_rule", "endpoint"} and len(res["family"]) + len(res["excluded"]) == 3
     # per item: 2 caption-only passes (+ nothing else): measured on a warm call
     ctx = SimpleNamespace(run=env, fold=items)
     r0 = sc.rows
@@ -135,7 +135,7 @@ def _m4_prereqs(env, sc, family):
     (env / "P2-GATE-M2").mkdir(exist_ok=True)
     (env / "P2-GATE-M2" / "threshold.json").write_text(json.dumps(res))
     (env / "P2-GATE-M3").mkdir(exist_ok=True)
-    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(family=[dict(corruption=c, severity=s, key=f"{c}{s}") for c, s in family])))
+    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="d", family=[dict(corruption=c, severity=s, key=f"{c}{s}") for c, s in family])))
     return res
 
 
@@ -187,6 +187,16 @@ def test_m4_requires_its_prerequisites(env):
     (env / "P2-GATE-M2" / "threshold.json").write_text("{}")
     with pytest.raises(FileNotFoundError, match="headroom"):
         run_gate_m4.load_prereqs(env)
+    (env / "P2-GATE-M3").mkdir()
+    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="z", family=[])))
+    with pytest.raises(ValueError, match="endpoint"):                       # a family.json without endpoint d is invalid for the SAP (Addendum 1)
+        run_gate_m4.load_prereqs(env)
+
+
+def test_analysis_m4_main_refuses_a_family_json_without_endpoint_d(env):
+    (env / "P2-GATE-M3").mkdir()
+    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="z", family=[])))
+    assert analysis_m4.main(["--run-id", "P2-GATE-M4"]) == 2
 
 
 def test_m4_tbv_auto_follows_the_m1_verdict(env):
@@ -209,11 +219,26 @@ def test_m4_end_to_end_and_analysis_smoke(env):
     rc = runner.run_items(run_id="P2-GATE-M4", cfg=dict(run_gate_m4.CONFIG, n_items=6), load=lambda: sc, get_items=lambda s, r: items, process=run_gate_m4.process,
                           make_ctx=run_gate_m4.make_ctx_factory(a, env), duty=1.0, soft_minutes=30)
     assert rc == 0
-    res = analysis_m4.run(env / "P2-GATE-M4", ["jpeg10", "splice128"], n_boot=200)
-    assert res["n_items"] == 6 and set(res["primary"]["per_corruption"]) == {"jpeg10", "splice128"}
+    frozen = {"jpeg": dict(available=True, rival="plainB", base="plainB", sign=1), "noise": dict(available=True, rival="tex_neg", base="tex", sign=-1)}
+    fam = [dict(corruption="jpeg", severity=10, key="jpeg10"), dict(corruption="splice", severity=128, key="splice128")]
+    res = analysis_m4.run(env / "P2-GATE-M4", fam, n_boot=200, frozen=frozen)
+    assert res["n_items"] == 6 and res["endpoint"] == "d"
+    pp = res["primary"]["per_corruption"]
+    assert set(pp) == {"jpeg", "noise", "splice"} and res["primary"]["holm_m"] == 3             # SAP 2.4: m = 3 always
+    assert pp["noise"]["tested"] is False and pp["noise"]["p"] == 1.0 and pp["noise"]["p_holm"] == 1.0 and pp["jpeg"]["label"] == "P1"
+    for k in ("jpeg", "splice"):
+        assert {"b", "c", "p", "p_holm"} <= set(pp[k])
     for k in ("jpeg10", "splice128"):
-        assert {"b", "c", "p", "p_holm"} <= set(res["primary"]["per_corruption"][k])
         assert set(res["mechanism"][k]["y"]) >= {"gate_minus_none", "gate_minus_geo", "gate_minus_changed_code"}
+    assert res["s_dn"]["holm_m"] == 2 and set(res["s_dn"]["per_corruption"]) == {"jpeg", "noise"}      # S-DN: m = 2, splice has no denoise arm
+    assert res["s_dn"]["per_corruption"]["jpeg"]["tested"] and not res["s_dn"]["per_corruption"]["noise"]["tested"] and res["s_dn"]["per_corruption"]["noise"]["p"] == 1.0
+    sz = res["s_z"]
+    assert sz["holm_m"] == 3 and sz["endpoint"] == "d" and "z" in sz["per_corruption"]["jpeg"]["sensitivity_other_endpoint"] and not sz["per_corruption"]["noise"]["tested"]
+    d2 = res["s_d2"]
+    assert d2["holm_m"] == 2 and d2["per_corruption"]["noise"]["tested"] is False and d2["per_corruption"]["noise"]["p"] == 1.0           # no operating point: p = 1, stays in m = 2
+    assert d2["per_corruption"]["jpeg"]["rival"] == "plainB" and 0 <= d2["per_corruption"]["jpeg"]["p_holm"] <= 1
+    assert analysis_m4.run(env / "P2-GATE-M4", fam, n_boot=50)["s_d2"]["per_corruption"]["jpeg"]["p"] == 1.0    # no frozen file: p = 1
+    assert analysis_m4.run(env / "P2-GATE-M4", ["jpeg10", "splice128"], n_boot=50, endpoint="z")["endpoint"] == "z"
     assert set(res["calibration"]["realised_fap_clean"]) == {"0.05", "0.01", "0.1"}
     json.dumps(res, default=float)
 

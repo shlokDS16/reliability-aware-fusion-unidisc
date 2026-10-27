@@ -3,7 +3,7 @@ controls, the text-direction conditioning arms, the cheap baselines' inputs and 
 
 Prerequisites (the runner refuses to start without them; no defaults are invented):
     runs/P2-GATE-M2/threshold.json   from  python -m exp_p2.gate.fit_threshold --run-id P2-GATE-M2
-    runs/P2-GATE-M3/family.json      from  python -m exp_p2.gate.headroom --run-id P2-GATE-M3   (committed before the first test item is scored)
+    runs/P2-GATE-M3/family.json      from  python -m exp_p2.gate.headroom --run-id P2-GATE-M3 --endpoint d   (committed before the first test item is scored)
 
     python -m exp_p2.run_gate_m4 --resume --soft-minutes 12.5 [--limit N] [--tbv auto|on|off] [--run-id P2-GATE-M4]
 
@@ -17,6 +17,7 @@ Image-direction arms: none; GATE-M at alpha 0.05 / 0.01 / 0.10; geo (3 seeds) an
 changed-code gate (corrupted conditions); plain-B top-k and s3 top-k of equal size; denoised codes (no gate)."""
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -44,10 +45,12 @@ def load_prereqs(runs: Path | None = None) -> tuple[dict, list[tuple[str, object
     for p, cmd in ((tp, "python -m exp_p2.gate.fit_threshold --run-id P2-GATE-M2"), (fp, "python -m exp_p2.gate.headroom --run-id P2-GATE-M3")):
         if not p.exists():
             raise FileNotFoundError(f"{p} missing; create it with: {cmd}")
+    fam = pipeline.load_json(fp)
+    if fam.get("endpoint") != "d":
+        raise ValueError(f"{fp} does not record \"endpoint\": \"d\"; it is invalid for the SAP (Addendum 1). Re-run: python -m exp_p2.gate.headroom --run-id P2-GATE-M3 --endpoint d")
     t = pipeline.load_json(tp)
     thr = {float(k): cal.Threshold.from_json(v) for k, v in t["thresholds"].items()}
     assert len({round(v.eps0, 15) for v in thr.values()}) == 1, "thresholds must share one eps0 (one calibration set)"
-    fam = pipeline.load_json(fp)
     family = [(f["corruption"], f["severity"]) for f in fam["family"]]
     return thr, family, next(iter(thr.values())).eps0
 
@@ -64,9 +67,11 @@ def make_ctx_factory(a, runs: Path | None = None):
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
         thr, family, eps0 = load_prereqs(runs_)
         f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+        rep = folds.verify_tokens(f, lambda c: len(sc.caption_ids(c)))                      # runtime tokenizer vs the counts frozen in folds.json
+        (run / "folds_check.json").write_text(json.dumps(rep), encoding="utf8")
         cbp = runs_ / M1_RUN / "codebook.npy"
         checks.l10_once(sc, run)
-        return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=f["test"], grid=int(round(sc.L_I ** 0.5)),
+        return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, 500), grid=int(round(sc.L_I ** 0.5)),
                                patch=max(2, int(round(sc.L_I ** 0.5)) // 4), codebook=(np.load(cbp) if cbp.exists() else None), tbv=tbv_enabled(a.tbv, runs_),
                                denoise_for=tuple(a.denoise_for.split(",")) if a.denoise_for else ())
     return make_ctx
@@ -163,19 +168,11 @@ def main(argv=None):
         return sc.selfcheck(common.load_image(items[0]["image_id"]), items[0]["caption"])
 
     def get_items(sc, run):
-        tok = lambda c: len(sc.caption_ids(c))
-        f = folds.ensure_folds(tok)
-        if a.n and a.n > len(f["test"]):                                  # v2 section 9: 'raise the test fold to 500' (decision recorded before any test item is scored)
-            if common.read_jsonl(run / "items.jsonl"):
-                raise RuntimeError("the test fold cannot be extended after test items were scored")
-            from exp_p2.gate import data
-            try:
-                cats = data.load_instances()[1]
-            except FileNotFoundError:
-                cats = None
-            f = folds.extend_test_fold(f, a.n, common.load_captions(), tok, data.probe_image_ids(), cats)
-            folds.save_folds(f)
-        return f["test"][:a.n] if a.n else f["test"]
+        f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+        items = folds.test_items(f, a.n if a.n and a.n > len(f["test"]) else None)         # base 300; the extension (items 301-500) only if --n asks for it (SAP R2)
+        if a.n and a.n > len(items):
+            raise RuntimeError(f"folds.json holds {len(items)} test items, --n {a.n} asked for more")
+        return items[:a.n] if a.n else items
 
     return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=get_items, process=process, make_ctx=make_ctx_factory(a),
                             soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck)

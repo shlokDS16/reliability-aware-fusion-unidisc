@@ -82,28 +82,94 @@ def aggregate(per_item: list[dict], n_boot: int = 10000, seed: int = 0) -> dict:
     return out
 
 
-def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", cheap=CHEAP, n_boot: int = 10000, seed: int = 0) -> dict:
-    """Per-item AUROC of `target` minus that of the cheap baseline with the highest mean AUROC on this corruption; bootstrap CI over items.
-    Falsifier (v2 7.6): the CI does not exclude 0 on jpeg AND noise."""
-    rows = [p[corr] for p in per_item if corr in p]
+def bootstrap_p(boot_means: np.ndarray) -> float:
+    """Two-sided bootstrap p-value of H0: mean difference = 0, from bootstrap means of the difference: 2 * min(P(mean* <= 0), P(mean* >= 0)) with a +1 correction."""
+    b = np.asarray(boot_means, float)
+    k = min(int((b <= 0).sum()), int((b >= 0).sum()))
+    return float(min(1.0, 2.0 * (k + 1) / (len(b) + 1)))
+
+
+def _boot_diff(a: np.ndarray, b: np.ndarray, n_boot: int, seed: int):
+    d = a - b
+    d = d[~np.isnan(d)]
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, len(d), size=(n_boot, len(d)))
+    return d, d[idx].mean(axis=1)
+
+
+def candidate_means(rows, cheap=CHEAP) -> dict:
     cand = [c for c in cheap if any(not np.isnan(r.get(c, np.nan)) for r in rows)]
-    if not rows or not cand or not any(not np.isnan(r.get(target, np.nan)) for r in rows):
+    return {c: float(np.nanmean([r.get(c, np.nan) for r in rows])) for c in cand}
+
+
+def split_sign(name: str) -> tuple[str, int]:
+    return (name[:-4], -1) if name.endswith("_neg") else (name, 1)
+
+
+def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", cheap=CHEAP, n_boot: int = 10000, seed: int = 0, reselect: bool = False) -> dict:
+    """Per-item AUROC of `target` minus that of the cheap rival with the highest mean AUROC on this corruption (sign included: a sign oracle; SAP A1.2 rule 2); paired bootstrap
+    over items: two-sided bootstrap p, percentile CIs at 95 and 97.5 percent. reselect=True re-selects the rival inside every bootstrap resample (stricter sensitivity)."""
+    rows = [p[corr] for p in per_item if corr in p]
+    means = candidate_means(rows, cheap) if rows else {}
+    if not rows or not means or not any(not np.isnan(r.get(target, np.nan)) for r in rows):
         return dict(corr=corr, available=False)
-    means = {c: float(np.nanmean([r.get(c, np.nan) for r in rows])) for c in cand}
     best = max(means, key=means.get)
     a = np.array([r.get(target, np.nan) for r in rows])
-    b = np.array([r.get(best, np.nan) for r in rows])
-    m, lo, hi = core.bootstrap_mean_ci(a - b, n_boot, seed)
-    return dict(corr=corr, available=True, target=target, best_cheap=best, cheap_means=means, diff_mean=m, diff_lo=lo, diff_hi=hi, excludes_zero=bool(lo > 0 or hi < 0))
+    M = {c: np.array([r.get(c, np.nan) for r in rows]) for c in means}
+    if not reselect:
+        d, boots = _boot_diff(a, M[best], n_boot, seed)
+        diff = float(d.mean())
+    else:
+        names = list(M)
+        ok = ~np.isnan(a) & ~np.any(np.isnan(np.stack([M[c] for c in names])), axis=0)
+        A, R = a[ok], np.stack([M[c][ok] for c in names])
+        rng = np.random.default_rng(seed)
+        idx = rng.integers(0, len(A), size=(n_boot, len(A)))
+        rb = R[:, idx].mean(axis=2)                                   # [candidates, B]: mean AUROC of each rival in each resample
+        pick = rb.argmax(axis=0)
+        boots = A[idx].mean(axis=1) - rb[pick, np.arange(n_boot)]
+        diff = float(A.mean() - R[names.index(best)].mean())
+    ci95 = (float(np.quantile(boots, 0.025)), float(np.quantile(boots, 0.975)))
+    ci975 = (float(np.quantile(boots, 0.0125)), float(np.quantile(boots, 0.9875)))
+    base, sign = split_sign(best)
+    return dict(corr=corr, available=True, target=target, best_cheap=best, rival_base=base, rival_sign=sign, cheap_means=means, diff_mean=diff, p=bootstrap_p(boots),
+                ci95=list(ci95), ci975=list(ci975), diff_lo=ci95[0], diff_hi=ci95[1], excludes_zero=bool(ci95[0] > 0 or ci95[1] < 0), reselect=reselect, n_items=int(len(rows)))
 
 
-def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed: int = 0) -> dict:
-    """v2 7.6: falsified when the paired CI of (AUROC of q minus best cheap baseline) does not exclude 0 on jpeg AND on noise. Intent (v2 table M3: 'q must beat the
-    best cheap baseline'): a CI that excludes 0 on the NEGATIVE side also counts as falsified (the literal wording would not); both lists are reported."""
-    res = {c: paired_vs_best_cheap(per_item, c, target, n_boot=n_boot, seed=seed) for c in ("jpeg", "noise")}
-    if not all(r.get("available") for r in res.values()):
-        return dict(per_corruption=res, falsified=None, note="needs q (M1 post-hoc arrays) and a cheap baseline on both jpeg and noise")
-    return dict(per_corruption=res, falsified=bool(not any(r["excludes_zero"] and r["diff_mean"] > 0 for r in res.values())),
-                q_significantly_better_on=[c for c, r in res.items() if r["excludes_zero"] and r["diff_mean"] > 0],
-                q_significantly_worse_on=[c for c, r in res.items() if r["excludes_zero"] and r["diff_mean"] < 0],
-                rule="v2 7.6: falsified when the paired CI of (AUROC q minus best cheap) does not exclude 0 on jpeg and on noise")
+def holm_adjust(pvals: dict) -> dict:
+    from exp_p2.gate import stats
+    keys = list(pvals)
+    return dict(zip(keys, stats.holm([pvals[k] for k in keys])))
+
+
+def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed: int = 0, reselect: bool = False) -> dict:
+    """SAP 2.5 / A1.2: S-D over JPEG q10 and noise 0.10, Holm over m = 2. 'q beats the best cheap baseline' on a corruption iff the Holm-adjusted p <= 0.05 with a positive mean
+    difference; the falsifier (spec 7.6) is met if that holds for neither corruption (a significant difference on the negative side therefore also meets it). A corruption
+    without q gets p = 1 and stays in m = 2."""
+    res = {c: paired_vs_best_cheap(per_item, c, target, n_boot=n_boot, seed=seed, reselect=reselect) for c in ("jpeg", "noise")}
+    if not any(r.get("available") for r in res.values()):
+        return dict(per_corruption=res, falsified=None, note="needs q (M1 post-hoc arrays) and a cheap baseline on jpeg and noise")
+    adj = holm_adjust({c: (r["p"] if r.get("available") else 1.0) for c, r in res.items()})
+    for c, r in res.items():
+        r["p_holm"] = adj[c]
+    wins = [c for c, r in res.items() if r.get("available") and r["p_holm"] <= 0.05 and r["diff_mean"] > 0]
+    worse = [c for c, r in res.items() if r.get("available") and r["p_holm"] <= 0.05 and r["diff_mean"] < 0]
+    return dict(per_corruption=res, falsified=bool(not wins), q_significantly_better_on=wins, q_significantly_worse_on=worse, holm_m=2, reselect=reselect,
+                rule="SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise")
+
+
+def freeze_rivals(per_item: list[dict], corrs=("jpeg", "noise"), cheap=CHEAP) -> dict:
+    """detection_frozen.json content (SAP A1.2 rule 5): per corruption the selected rival, its base name, sign and mean AUROC on the M1 items. Frozen after M1 and before M3/M4,
+    tested on the M4 test items (family S-D2). Rarity for S-D2 uses the calibration codefreq (A1.3 N11), recorded here."""
+    out = {}
+    for c in corrs:
+        rows = [p[c] for p in per_item if c in p]
+        m = candidate_means(rows, cheap) if rows else {}
+        if not m:
+            out[c] = dict(available=False)
+            continue
+        best = max(m, key=m.get)
+        base, sign = split_sign(best)
+        out[c] = dict(available=True, rival=best, base=base, sign=sign, mean_auroc=m[best], n_items=len(rows), all_means=m,
+                      rarity_source="runs/P2-GATE-M2/codefreq.npy (calibration clean codes)" if base == "rarity" else None)
+    return out

@@ -1,7 +1,7 @@
 """M3 (v2 section 11.1, 7.3, Alg. 9): headroom check on 100 held-out items. NO gate flags are computed here (the decision is blind to the method).
 
     python -m exp_p2.run_gate_m3 --resume --soft-minutes 12.5 [--limit N] [--run-id P2-GATE-M3]
-    python -m exp_p2.gate.headroom --run-id P2-GATE-M3          # CPU: writes runs/P2-GATE-M3/family.json  (commit it before any M4 item is scored)
+    python -m exp_p2.gate.headroom --run-id P2-GATE-M3 --endpoint d   # CPU: writes runs/P2-GATE-M3/family.json  (commit it before any M4 item is scored)
 
 Per item (2 passes + 7 encodes): clean encode; every ladder rung encoded (jpeg q10, q5; noise 0.10, 0.20; splice 128, 192); Lambda^{c+}, Lambda^{c-}
 (caption-only, image fully masked); image-direction evidence for the 'none' arm on clean and on each rung, and for the changed-code gate on each rung."""
@@ -39,10 +39,11 @@ def rung_rng(gid: int, corr: str, rung: int) -> np.random.Generator:
 
 
 def donor_for(ctx, sc, it) -> object:
-    """Splice donor: a uniformly random OTHER item of the same fold (seeded by the item), preprocessed to 512 px."""
-    rng = np.random.default_rng([config.SEED_GATE, it["gid"], 150])
-    j = int(rng.integers(0, len(ctx.fold) - 1))
-    j = j + 1 if j >= it["idx"] else j
+    """Splice donor: a uniformly random OTHER item of the same block (seeded by the item), preprocessed to 512 px. Blocks are the base 300 and the extension 301-500, so
+    the donors of the base test items do not depend on whether the extension is used."""
+    lo = 300 * (it["idx"] // 300)
+    pool = [j for j in range(lo, min(len(ctx.fold), lo + 300)) if j != it["idx"]]
+    j = pool[int(np.random.default_rng([config.SEED_GATE, it["gid"], 150]).integers(0, len(pool)))]
     return sc.preprocess(common.load_image(ctx.fold[j]["image_id"]))
 
 

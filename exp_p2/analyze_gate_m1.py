@@ -18,7 +18,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import baselines, detect                                   # noqa: E402
+from exp_p2.gate import baselines, detect, jsonl                                   # noqa: E402
+
+
+DRY_RUN_N, N_M1 = 21, 200          # the first 21 probe-2 items were seen in the CPU dry run (SAP A1.2); the complete M1 set is 200
 
 
 def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, codebook: np.ndarray | None = None, n_boot: int = 10000) -> dict:
@@ -48,9 +51,13 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
             sus = detect.suspicions(a, corr, i, m1, extra)
             rec[corr] = detect.item_aurocs(sus, np.asarray(a[f"{corr}_z"], bool))
         per_item.append(rec)
-    out = dict(n_items=len(idxs), item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < 200 or not have_m1 else "M1 detection table",
+    late = [r for r, i in zip(per_item, idxs) if i >= DRY_RUN_N]                      # excludes the 21 dry-run items (179 of 200 when M1 is complete)
+    out = dict(n_items=len(idxs), item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < N_M1 or not have_m1 else "M1 detection table",
                table=detect.aggregate(per_item, n_boot=n_boot), paired_q_vs_best_cheap={c: detect.paired_vs_best_cheap(per_item, c, "q", n_boot=n_boot) for c in detect.P2_CORRS},
-               falsifier=detect.falsifier(per_item, "q", n_boot=n_boot))
+               falsifier=detect.falsifier(per_item, "q", n_boot=n_boot),
+               falsifier_rival_reselected_in_each_resample=detect.falsifier(per_item, "q", n_boot=n_boot, reselect=True),
+               falsifier_excluding_dry_run_items=dict(n_items=len(late), **detect.falsifier(late, "q", n_boot=n_boot)) if late else None,
+               frozen=detect.freeze_rivals(per_item), rows_report=jsonl.probe2_row_report(probe_dir, idxs))
     if m1_dir is not None and (m1_dir / "items.jsonl").exists():
         rows = [r for r in common.read_jsonl(m1_dir / "items.jsonl") if r.get("tbv")]
         if rows:
@@ -76,7 +83,13 @@ def main(argv=None) -> int:
     (out / "analysis.json").write_text(json.dumps(res, indent=1), encoding="utf8")
     if "tbv" in res:
         (out / "tbv_verdict.json").write_text(json.dumps(res["tbv"], indent=1), encoding="utf8")
+    if res["has_q"] and res["n_items"] >= N_M1:                                       # frozen only from a complete M1 (SAP A1.2 rule 5)
+        (out / "detection_frozen.json").write_text(json.dumps(dict(frozen=res["frozen"], n_items=res["n_items"], dry_run_items=DRY_RUN_N, source="analyze_gate_m1 on the complete M1 set"), indent=1), encoding="utf8")
+        print("wrote detection_frozen.json: commit it before M3/M4")
+    else:
+        print("detection_frozen.json NOT written (needs q and all 200 items)")
     print(json.dumps({k: res[k] for k in ("n_items", "has_q", "label")}, indent=1))
+    print("probe-2 rows report:", {k: v for k, v in res["rows_report"].items() if k != "rows_without_arrays"})
     for corr, t in res["table"].items():
         print(corr, {k: round(v["mean"], 3) for k, v in t.items() if not k.startswith("_")})
     return 0

@@ -289,6 +289,70 @@
    }
   },
   "falsified": null,
-  "note": "needs q (M1 post-hoc arrays) and a cheap baseline on both jpeg and noise"
+  "note": "needs q (M1 post-hoc arrays) and a cheap baseline on jpeg and noise"
+ },
+ "falsifier_rival_reselected_in_each_resample": {
+  "per_corruption": {
+   "jpeg": {
+    "corr": "jpeg",
+    "available": false
+   },
+   "noise": {
+    "corr": "noise",
+    "available": false
+   }
+  },
+  "falsified": null,
+  "note": "needs q (M1 post-hoc arrays) and a cheap baseline on jpeg and noise"
+ },
+ "falsifier_excluding_dry_run_items": null,
+ "frozen": {
+  "jpeg": {
+   "available": true,
+   "rival": "tex_neg",
+   "base": "tex",
+   "sign": -1,
+   "mean_auroc": 0.7555228605944392,
+   "n_items": 21,
+   "all_means": {
+    "tex": 0.2444771394055608,
+    "rarity": 0.522639848846636,
+    "s3": 0.4950845807079822,
+    "plainB": 0.5433655707976468,
+    "tex_neg": 0.7555228605944392,
+    "rarity_neg": 0.4773601511533642
+   },
+   "rarity_source": null
+  },
+  "noise": {
+   "available": true,
+   "rival": "tex_neg",
+   "base": "tex",
+   "sign": -1,
+   "mean_auroc": 0.7743237791305987,
+   "n_items": 21,
+   "all_means": {
+    "tex": 0.22567622086940137,
+    "rarity": 0.45270965683388276,
+    "s3": 0.4710929680304137,
+    "plainB": 0.5147176535948874,
+    "tex_neg": 0.7743237791305987,
+    "rarity_neg": 0.5472903431661172
+   },
+   "rarity_source": null
+  }
+ },
+ "rows_report": {
+  "n_lines": 21,
+  "n_clean_lines": 21,
+  "n_glued_lines": 0,
+  "n_recovered_rows": 0,
+  "n_unparseable_lines": 0,
+  "exists": true,
+  "n_rows": 21,
+  "n_array_items": 21,
+  "rows_lost_arrays_present": [],
+  "rows_without_arrays": [],
+  "n_duplicate_rows": 0
  }
 }

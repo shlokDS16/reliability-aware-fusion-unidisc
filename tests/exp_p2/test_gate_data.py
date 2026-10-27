@@ -177,14 +177,33 @@ def test_folds_file_roundtrip_and_ensure_does_not_rebuild(tmp_path):
     assert folds.ensure_folds(lambda c: (_ for _ in ()).throw(AssertionError("must not tokenize")), p) == f
 
 
-def test_extending_the_test_fold_keeps_the_other_folds_and_the_test_prefix():
-    caps = _fake_captions(900)
+def test_test300_equals_test500_prefix_including_negatives_and_blocks_are_closed():
+    """SAP Addendum 1 N13 / section 3: the base test fold is the first 300 of the ordered 500-list, with identical items AND negatives, so the optional
+    extension cannot change or select the base items."""
+    caps = _fake_captions(1200, seed=3)
     cats = _cats_for(caps)
-    f = folds.build_folds(caps, lambda c: len(c.split()), set(), sizes=(60, 20, 60), image_cats=cats)
-    g = folds.extend_test_fold(f, 100, caps, lambda c: len(c.split()), set(), cats)
-    assert g["cal"] == f["cal"] and g["head"] == f["head"] and len(g["test"]) == 100 and g["meta"]["test_extended_from"] == 60
-    assert [i["image_id"] for i in g["test"][:60]] == [i["image_id"] for i in f["test"]]
-    folds.check_folds(g, set())
+    tok = lambda c: len(c.split())
+    f300 = folds.build_folds(caps, tok, set(), sizes=(40, 20, 300), test_base=300, image_cats=cats)
+    f500 = folds.build_folds(caps, tok, set(), sizes=(40, 20, 500), test_base=300, image_cats=cats)
+    assert len(f300["test"]) == 300 and f300["test_ext"] == [] and len(f500["test"]) == 300 and len(f500["test_ext"]) == 200
+    assert f300["test"] == f500["test"]                                         # ids, captions, gids and negatives
+    assert f300["cal"] == f500["cal"] and f300["head"] == f500["head"]
+    assert [i["idx"] for i in f500["test_ext"]] == list(range(300, 500)) and f500["test_ext"][0]["gid"] == 2300
+    for it in f500["test"]:
+        assert 0 <= it["neg_idx"] < 300
+    for it in f500["test_ext"]:
+        assert 300 <= it["neg_idx"] < 500                                       # negatives never cross the block boundary
+    folds.check_folds(f500, set())
+    assert [i["image_id"] for i in folds.test_items(f500, 500)] == [i["image_id"] for i in f500["test"] + f500["test_ext"]]
+    assert folds.test_items(f500) == f500["test"] and len(folds.test_items(f500, 450)) == 450
+
+
+def test_verify_tokens_reports_mismatches():
+    caps = _fake_captions(200)
+    f = folds.build_folds(caps, lambda c: len(c.split()), set(), sizes=(10, 5, 10))
+    assert folds.verify_tokens(f, lambda c: len(c.split()))["n_mismatch"] == 0
+    rep = folds.verify_tokens(f, lambda c: len(c.split()) + 100)
+    assert rep["n_mismatch"] == 25 and rep["n_outside_range"] == 25
 
 
 def test_probe_ids_exclude_both_probes(tmp_path):
