@@ -64,13 +64,16 @@ def apply_token(name: str, clean: np.ndarray, rng: np.random.Generator, *, grid:
     raise ValueError(name)
 
 
-def denoise(pil512):
-    """Classical non-learned denoiser, one fixed setting for all corruptions (v2 4.3): OpenCV fastNlMeansDenoisingColored with the
-    library's default parameters (not passed here on purpose). Applied before tokenisation."""
+def denoise(pil512, params: dict | None = None):
+    """Classical non-learned denoiser, one fixed setting for all corruptions (v2 4.3): OpenCV fastNlMeansDenoisingColored with `config.DENOISE_PARAMS` (h = hColor = 25.5 = sigma in grey levels
+    of the preregistered noise, by the documented NLM rule of thumb; windows 7 and 21 are OpenCV defaults). The library default (h = 3) is NOT used: it removes a fraction of a percent of the
+    noise power at this level (denoise_check.py). Applied before tokenisation. params=None uses the fixed setting."""
     import cv2
     from PIL import Image
+    from exp_p2.gate import config
+    p = dict(config.DENOISE_PARAMS if params is None else params)
     a = np.asarray(pil512.convert("RGB"))
-    out = cv2.fastNlMeansDenoisingColored(cv2.cvtColor(a, cv2.COLOR_RGB2BGR))
+    out = cv2.fastNlMeansDenoisingColored(cv2.cvtColor(a, cv2.COLOR_RGB2BGR), None, p["h"], p["hColor"], p["templateWindowSize"], p["searchWindowSize"])
     return Image.fromarray(cv2.cvtColor(out, cv2.COLOR_BGR2RGB))
 
 

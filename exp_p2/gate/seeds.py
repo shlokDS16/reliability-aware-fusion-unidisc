@@ -7,7 +7,7 @@ import numpy as np
 
 ROOT_SEED = 20261028
 ANALYSES = ("load_items", "completeness_report", "arm_y_z", "exact_mcnemar", "paired_boot_diff", "primary", "s_m", "s_z", "s_dn", "s_d", "s_d2", "s_c", "headroom_check",
-            "fap_check", "split_replication", "auroc", "detection_contrast", "wilcoxon_z", "fusion", "prop4_plugin", "mechanism", "calibration", "equivalence", "selftest")
+            "fap_check", "split_replication", "auroc", "detection_contrast", "wilcoxon_z", "fusion", "prop4_plugin", "mechanism", "calibration", "equivalence", "selftest", "denoise_check")
 
 
 def seed_for(name: str) -> np.random.SeedSequence:

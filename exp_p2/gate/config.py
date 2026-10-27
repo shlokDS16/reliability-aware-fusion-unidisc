@@ -20,3 +20,9 @@ FOLDS_RUN_ID = "P2-GATE-FOLDS"
 DCACHE_RUN_ID = "P2-GATE-DCACHE"      # shared disk cache of the layout-only null matrices (about 1.8 GB for all 28 caption lengths)
 STAT_NAME = "q"               # u_j = -(B_j - D_j); v2 4.1
 GLOBAL_HOLD = ("P2-PROBE-02", "HOLD.txt")      # v2 11 / v1 13: every GPU item is blocked by this file
+
+# Pixel-domain denoise arm (spec v2 4.3, red team N6 / C5). The OpenCV library default (h = hColor = 3) barely acts on sigma = 0.10 x 255 = 25.5 grey-level noise (exp_p2/gate/denoise_check.py,
+# runs/P2-GATE-CPU/denoise_check/). Fixed a priori from the scikit-image `denoise_nl_means` documentation, "for a Gaussian noise of standard deviation sigma, a rule of thumb is to choose the
+# value of h to be sigma of slightly less": h = hColor = sigma in grey levels = 0.10 * 255 = 25.5; patch 7 and search window 21 are the OpenCV defaults. One setting for all corruptions.
+DENOISE_NOISE_SIGMA = 0.10
+DENOISE_PARAMS = dict(h=DENOISE_NOISE_SIGMA * 255, hColor=DENOISE_NOISE_SIGMA * 255, templateWindowSize=7, searchWindowSize=21)

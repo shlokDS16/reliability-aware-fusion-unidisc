@@ -1,0 +1,59 @@
+{
+ "purpose": "check that the denoise arm denoises at the preregistered noise level (red team N6 / C5)",
+ "image_ids": [
+  564127,
+  450100,
+  283785,
+  304365,
+  408120,
+  407518,
+  549220,
+  15272,
+  215114,
+  118367,
+  575970,
+  278353,
+  377635,
+  186282,
+  119233,
+  338304,
+  527029,
+  156372,
+  223188,
+  294855
+ ],
+ "n": 20,
+ "noise_sigma": 0.1,
+ "jpeg_quality": 10,
+ "image_source": "first 20 items of runs/P2-PROBE-01/selection.json (excluded from all new folds); COCO val2017 from common.load_image",
+ "preprocessing": "detect.preprocess512 (centre crop, bicubic 512), as UniScorer.preprocess",
+ "corruption_code": "exp_p2.gate.corruptions.gaussian_noise / jpeg (identical to the experiment)",
+ "rng": "default_rng([20261028, 77, i]) per image for the noise draw",
+ "opencv": "4.13.0",
+ "chosen_params": {
+  "h": 25.5,
+  "hColor": 25.5,
+  "templateWindowSize": 7,
+  "searchWindowSize": 21
+ },
+ "library_defaults": {
+  "h": 3,
+  "hColor": 3,
+  "templateWindowSize": 7,
+  "searchWindowSize": 21
+ },
+ "tutorial_alternative": {
+  "h": 10,
+  "hColor": 10,
+  "note": "OpenCV tutorial value, reported, not chosen"
+ },
+ "rationale": "CPU check that the pixel-domain denoise arm actually denoises at the preregistered noise level (red team N6 / condition C5). Classical denoiser, no model, no weights, no GATE flag.\n\n    python -m exp_p2.gate.denoise_check [--n 20]          # writes the run directory runs/P2-GATE-CPU/denoise_check/\n\n~20 COCO images (the first 20 of probe 1's selection; those ids are excluded from every new fold) are preprocessed exactly as the model sees them (centre crop, 512 px), corrupted with\nthe SAME code as the experiment (Gaussian noise sigma = 0.10 on [0,1], and JPEG q10), then denoised by (a) OpenCV `fastNlMeansDenoisingColored` with LIBRARY DEFAULTS (h = hColor = 3),\n(b) the setting fixed for the experiment (config.DENOISE_PARAMS) and (c) h = 10, the value used in OpenCV's own tutorial, reported for transparency and NOT chosen. PSNR and SSIM of\nnoisy-vs-clean and denoised-vs-clean are written per image and summarised with paired bootstrap CIs.\n\nWhy the setting is not the library default: the default h = 3 is small against noise of sigma = 0.10 x 255 = 25.5 grey levels (measured below: it removes a fraction of a percent of the noise power).\nThe replacement is NOT tuned on our data: it is the rule of thumb documented in scikit-image's `denoise_nl_means` docstring, \"for a Gaussian noise of standard deviation sigma, a rule of thumb is to choose\nthe value of h to be sigma of slightly less\", with sigma = 25.5, so h = hColor = 25.5; the patch and search window sizes stay at the OpenCV defaults 7 and 21. Disclosure: the library-default gain, h = 10 and\nh = 25.5 were all evaluated once on these 20 images in an exploratory run before the setting was written down; there was no grid and no later adjustment.",
+ "run_id": "P2-GATE-CPU/denoise_check",
+ "git_sha": "21067fe7c77677df2e4d7b07a2867db4c6a95b4c",
+ "created": "2026-10-28T03:06:20",
+ "python": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 8.8,
+  "free_commit_gb": 62.5
+ }
+}
