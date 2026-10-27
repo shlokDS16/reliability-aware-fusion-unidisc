@@ -40,13 +40,17 @@ def main(argv=None) -> int:
     ap.add_argument("--run-id", default="P2-M0-STAGE1")
     ap.add_argument("--idle-minutes", type=float, default=5.0)
     ap.add_argument("--mem-frac", type=float, default=0.75)
+    ap.add_argument("--no-eventlog-check", action="store_true")
     a = ap.parse_args(argv)
     try:
         hold.require_clear(a.run_id)
     except hold.HoldActive as e:
         print("STOP:", e, file=sys.stderr)
         return hold.EXIT_HOLD
-    from exp_p2.gate import guards
+    from datetime import datetime, timedelta
+    from exp_p2.gate import eventlog, guards
+    if not a.no_eventlog_check:
+        print(eventlog.summary_line(eventlog.new_events(datetime.now() - timedelta(hours=12)), 12), flush=True)       # hand-launched stage: one-line event-log check
     if guards.on_ac() is False:                                           # audit F3: power state is checked before CUDA or the model is touched
         print("STOP: running on battery; plug in the AC adapter first", file=sys.stderr)
         return 76

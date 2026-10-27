@@ -147,7 +147,7 @@ def test_ac_is_checked_before_the_model_load(env):
 def test_m0_stage1_refuses_on_battery(env, monkeypatch):
     from exp_p2 import run_gate_m0
     monkeypatch.setattr(guards, "on_ac", lambda: False)
-    assert run_gate_m0.main(["--run-id", "P2-M0-STAGE1"]) == 76 and not (env / "P2-M0-STAGE1").exists()
+    assert run_gate_m0.main(["--run-id", "P2-M0-STAGE1", "--no-eventlog-check"]) == 76 and not (env / "P2-M0-STAGE1").exists()
 
 
 CANNED = json.dumps([
@@ -294,7 +294,7 @@ def _guarded(env, monkeypatch, used, seconds, ac=lambda: True, argv=(), calls=No
     orig = (cuda.mem_get_info, common.append_jsonl, common.load_net)      # bound method objects compare equal when restored
     noop = SimpleNamespace(start=lambda: None, stop=lambda: None)
     rc = probe2_guarded.run_guarded(["--run-id", "P2-PROBE-X", "--n", "5", "--resume", *argv], probe_main=_probe_main(cuda, "P2-PROBE-X", seconds, calls), cuda=cuda,
-                                    watchdog_factory=lambda g, run: noop, ac_fn=ac)
+                                    watchdog_factory=lambda g, run: noop, ac_fn=ac, events_fn=lambda since: dict(ok=True, events=[], error=None))
     assert (cuda.mem_get_info, common.append_jsonl, common.load_net) == orig         # the hooks are removed again, also after an abort
     return rc, cuda
 
@@ -339,7 +339,7 @@ def test_guarded_probe2_respects_hold_files(env, monkeypatch):
     (env / "P2-PROBE-02").mkdir()
     (env / "P2-PROBE-02" / "HOLD.txt").write_text("on hold")
     called = []
-    rc = probe2_guarded.run_guarded(["--run-id", "P2-PROBE-02"], probe_main=lambda: called.append(1), cuda=Cuda([0.0]))
+    rc = probe2_guarded.run_guarded(["--run-id", "P2-PROBE-02"], probe_main=lambda: called.append(1), cuda=Cuda([0.0]), events_fn=lambda since: dict(ok=True, events=[], error=None))
     assert rc == 7 and called == []
     (env / "P2-PROBE-02" / "HOLD.txt").unlink()
 
@@ -355,7 +355,7 @@ def test_guarded_probe2_respects_hold_files(env, monkeypatch):
         return main
     cuda = Cuda([100.0] * 10)
     rc = probe2_guarded.run_guarded(["--run-id", "P2-PROBE-Y"], probe_main=sneaky(cuda), cuda=cuda, watchdog_factory=lambda g, run: SimpleNamespace(start=lambda: None, stop=lambda: None),
-                                    ac_fn=lambda: True)
+                                    ac_fn=lambda: True, events_fn=lambda since: dict(ok=True, events=[], error=None))
     assert rc == 7 and len(common.read_jsonl(env / "P2-PROBE-Y" / "items.jsonl")) == 2
 
 
@@ -364,6 +364,104 @@ def test_run_probe2_file_is_not_modified_by_this_work():
     out = subprocess.run(["git", "-C", str(ROOT), "diff", "--stat", "HEAD", "--", "exp_p2/run_probe2.py", "exp_p2/run_probe1.py", "exp_p2/scoring.py", "exp_p2/driver.py", "tools/gpu_guard.py"],
                          capture_output=True, text=True).stdout
     assert out.strip() == ""
+
+
+# ------------------------------------------------------------------------------------------------ probe-1 wrapper (M0 stage 2) and the event-log line
+class Cuda1(Cuda):
+    """Probe 1 does not call mem_get_info per item; it calls reset_peak_memory_stats at the start of every item."""
+
+    def __init__(self, used_seq):
+        super().__init__(used_seq)
+        self.cap = None
+        self.resets = 0
+
+    def reset_peak_memory_stats(self):
+        self.resets += 1
+
+    def set_per_process_memory_fraction(self, f):
+        self.cap = f
+
+
+def _probe1_main(cuda, run_id, seconds, calls=None):
+    def main():
+        if calls is not None:
+            calls.append(("argv", sys.argv[:]))
+        run = Path(common.RUNS) / run_id
+        run.mkdir(parents=True, exist_ok=True)
+        for i, sec in enumerate(seconds):
+            cuda.reset_peak_memory_stats()
+            common.append_jsonl(run / "items.jsonl", dict(idx=i, seconds=sec))
+        return 0
+    return main
+
+
+def _guarded1(env, used, seconds, ac=lambda: True, argv=(), calls=None, events=None):
+    from exp_p2.gate import probe1_guarded
+    cuda = Cuda1(used)
+    orig = (cuda.reset_peak_memory_stats, cuda.mem_get_info, common.append_jsonl)
+    rc = probe1_guarded.run_guarded(["--run-id", "P2-M0-STAGE2", "--n", "10", "--limit", "10", *argv], probe_main=_probe1_main(cuda, "P2-M0-STAGE2", seconds, calls), cuda=cuda,
+                                    watchdog_factory=lambda g, run: SimpleNamespace(start=lambda: None, stop=lambda: None), ac_fn=ac,
+                                    events_fn=events or (lambda since: dict(ok=True, events=[], error=None)))
+    assert (cuda.reset_peak_memory_stats, cuda.mem_get_info, common.append_jsonl) == orig
+    return rc, cuda
+
+
+def test_probe1_wrapper_passes_a_healthy_run_sets_the_cap_and_strips_its_flags(env):
+    calls = []
+    rc, cuda = _guarded1(env, [3000.0] * 6, [2.0] * 4, calls=calls, argv=("--mem-frac", "0.6"))
+    assert rc == 0 and cuda.cap == 0.6 and cuda.resets == 4                 # probe 1 has no cap of its own: the wrapper sets it; the per-item hook still calls the real function
+    assert len(common.read_jsonl(env / "P2-M0-STAGE2" / "items.jsonl")) == 4
+    assert calls[0][1] == ["run_probe1", "--run-id", "P2-M0-STAGE2", "--n", "10", "--limit", "10"]      # '--n' is not read as '--no-ac-check'; probe 1 sees only its own flags
+
+
+def test_probe1_wrapper_memory_rise_slow_item_battery_and_hold(env):
+    rc, _ = _guarded1(env, [9500.0, 9500.0, 9500.0], [2.0] * 4)
+    assert rc == 76 and [r["idx"] for r in common.read_jsonl(env / "P2-M0-STAGE2" / "items.jsonl")] == [0]          # 10,000 first item, 9,000 later
+    e = common.read_jsonl(env / "P2-M0-STAGE2" / "chunks.jsonl")[-1]
+    assert e["event"] == "guard_stop" and e["source"] == "probe1_guarded" and "gpu_memory" in e["reason"]
+    (env / "P2-M0-STAGE2" / "items.jsonl").unlink()
+    rc, _ = _guarded1(env, [3000.0, 5000.0], [2.0] * 4)
+    assert rc == 76 and "rise" in common.read_jsonl(env / "P2-M0-STAGE2" / "chunks.jsonl")[-1]["reason"]
+    (env / "P2-M0-STAGE2" / "items.jsonl").unlink()
+    rc, _ = _guarded1(env, [3000.0] * 6, [2.0, 2.0, 2.0, 9.0, 2.0])
+    assert rc == 76 and [r["idx"] for r in common.read_jsonl(env / "P2-M0-STAGE2" / "items.jsonl")] == [0, 1, 2, 3]
+    (env / "P2-M0-STAGE2" / "items.jsonl").unlink()
+    rc, cuda = _guarded1(env, [3000.0] * 6, [2.0] * 4, ac=lambda: False)
+    assert rc == 76 and cuda.cap is None and not (env / "P2-M0-STAGE2" / "items.jsonl").exists()                    # battery: nothing ran, not even the cap
+    (env / "GATE-HOLD.txt").write_text("hold")
+    rc, _ = _guarded1(env, [3000.0] * 6, [2.0] * 4)
+    assert rc == 7
+
+
+def test_probe1_wrapper_does_not_touch_run_probe1():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "diff", "--stat", "HEAD", "--", "exp_p2/run_probe1.py"], capture_output=True, text=True).stdout
+    assert out.strip() == ""
+    from exp_p2.gate import probe1_guarded
+    assert probe1_guarded._g.PROBE1_SPEC["module"] == "run_probe1" and probe1_guarded._g.PROBE1_SPEC["default_run"] == "P2-PROBE-01"
+
+
+def test_event_log_line_is_printed_at_the_start_of_every_hand_launched_stage(env, capsys, monkeypatch):
+    ev = dict(ok=True, events=[dict(id=41, log="System", time="2026-10-27T23:25:29+05:30", message="The system has rebooted without cleanly shutting down first")], error=None)
+    _guarded1(env, [3000.0] * 3, [2.0], events=lambda since: ev)
+    out = capsys.readouterr().out
+    assert out.splitlines()[0].startswith("event-log check (last 12 h): 1 crash-signature event(s), latest Id 41 System at 2026-10-27T23:25:29") and "review before launching" in out
+    assert eventlog.summary_line(dict(ok=True, events=[], error=None), 12).endswith("Application 1001 GPU)") and "no crash-signature" in eventlog.summary_line(dict(ok=True, events=[], error=None), 12)
+    assert "UNREADABLE" in eventlog.summary_line(dict(ok=False, events=[], error="boom"), 6)
+    seen = []
+    _guarded1(env, [3000.0] * 3, [2.0], argv=("--eventlog-hours", "3"), events=lambda since: seen.append(since) or dict(ok=True, events=[], error=None))
+    assert len(seen) == 1 and (datetime.now() - seen[0]).total_seconds() == pytest.approx(3 * 3600, abs=30)
+    capsys.readouterr()
+    _guarded1(env, [3000.0] * 3, [2.0], argv=("--no-eventlog-check",), events=lambda since: (_ for _ in ()).throw(AssertionError("must not query")))
+    assert "event-log check" not in capsys.readouterr().out
+    # probe 2 wrapper and M0 stage 1 print it too
+    rc, _ = _guarded(env, monkeypatch, [3000.0] * 5, [2.0] * 5)
+    from exp_p2 import run_gate_m0
+    monkeypatch.setattr(eventlog, "new_events", lambda since: ev)
+    monkeypatch.setattr(guards, "on_ac", lambda: False)
+    capsys.readouterr()
+    assert run_gate_m0.main(["--run-id", "P2-M0-STAGE1"]) == 76
+    assert capsys.readouterr().out.startswith("event-log check (last 12 h): 1 crash-signature event(s)")
 
 
 if __name__ == "__main__":

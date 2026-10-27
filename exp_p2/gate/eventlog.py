@@ -54,3 +54,15 @@ def new_events(since: datetime, run=_run_powershell) -> dict:
         return dict(ok=True, events=relevant(parse(run(ps_script(since)))), error=None)
     except Exception as e:                                   # noqa: BLE001 - any failure to read is reported, never swallowed
         return dict(ok=False, events=[], error=repr(e))
+
+
+def summary_line(result: dict, hours: float) -> str:
+    """One printable line for the start of a hand-launched stage (informational; the driver, not this line, is what refuses to relaunch)."""
+    if not result["ok"]:
+        return f"event-log check (last {hours:g} h): UNREADABLE ({result['error']}); check the System log by hand before continuing"
+    ev = result["events"]
+    if not ev:
+        return f"event-log check (last {hours:g} h): no crash-signature events (System 41/105/117/141/4101, Application 1001 GPU)"
+    last = max(ev, key=lambda e: e.get("time") or "")
+    return (f"event-log check (last {hours:g} h): {len(ev)} crash-signature event(s), latest Id {last['id']} {last['log']} at {last['time']}: {last['message'][:60]} "
+            "- review before launching (events from an earlier crash are expected right after one)")

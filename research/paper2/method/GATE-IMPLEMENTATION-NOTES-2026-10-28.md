@@ -62,8 +62,8 @@ set CUDA_VISIBLE_DEVICES=
 python -m pytest tests/exp_p2            (the .venv has no pytest; see section 5)
 :: stage 1: load, one batch-4 forward, 5 min idle  (refuses while any hold file exists)
 PY tools/gpu_guard.py --log runs/P2-M0-STAGE1/telemetry.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.run_gate_m0 --run-id P2-M0-STAGE1 --idle-minutes 5
-:: stage 2: probe 1 control, 10 items into a NEW run dir (this module does not look at hold files)
-PY tools/gpu_guard.py --log runs/P2-M0-STAGE2/telemetry.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.run_probe1 --run-id P2-M0-STAGE2 --n 10 --limit 10 --soft-minutes 10
+:: stage 2: probe 1 control, 10 items into a NEW run dir; run_probe1 unchanged, wrapped by the new guards (hold, AC before load, memory/rise/slow-item rules, 1 s watchdog, cap 0.75, exit 76 on abort)
+PY tools/gpu_guard.py --log runs/P2-M0-STAGE2/telemetry.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.gate.probe1_guarded --run-id P2-M0-STAGE2 --n 10 --limit 10 --soft-minutes 10
 :: stage 3: probe 2 items 21-25 (run_probe2 unchanged, wrapped by the new guards: memory cap, AC, memory/rise/slow-item rules, 1 s watchdog; audit F2)
 PY tools/gpu_guard.py --log runs/P2-PROBE-02/telemetry-m0s3.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.gate.probe2_guarded --run-id P2-PROBE-02 --n 200 --resume --limit 5 --soft-minutes 10
 ```
@@ -210,5 +210,5 @@ Commits: SAFE = 5cee34a9, ANA = e03d76a3, MIN = 8704dd2f, plus the notes commit 
 Not fixed, by design or by limit:
 - **M2** (memory cap and guard thresholds are proposals): needs Shlok's yes; defaults unchanged (0.75, 9,000 / 10,000 / 1,500 MiB, 2x).
 - **M1 residual**: the throttle-reason rule and the "nvidia-smi returns NA or takes longer than 3 s" rule of the diagnosis are not enforced (they need nvidia-smi calls from a second process every second; `gpu_guard.py` still logs the throttle bits). **M10** (chunk-lengthening rule, busy threshold 2,500 MiB) is unchanged.
-- The event-log check runs in `gate_driver` only; a stage launched by hand (including M0 stages 1 and 2) is not covered. M0 stage 2 (`run_probe1` control) still runs the old probe-1 code unguarded; the brief did not cover it.
+- The event-log check that can REFUSE to relaunch runs in `gate_driver` only. Hand-launched stages (M0 stage 1 `run_gate_m0`, stage 2 `probe1_guarded`, stage 3 `probe2_guarded`) print a one-line event-log summary of the last 12 hours at their start (`--eventlog-hours`, `--no-eventlog-check`); it is informational and does not stop the stage. M0 stage 2 now runs `run_probe1.main()` unchanged inside `gate/probe1_guarded.py` (same wrapper as probe 2; because probe 1 has no memory query per item the before-item check hooks its per-item `torch.cuda.reset_peak_memory_stats()` call, and the memory cap is set by the wrapper), covered by `test_gate_safety.py`.
 - Everything that touches a real GPU is still untested: the monkeypatched hooks on the real `run_probe2` (checked by reading it: one `torch.cuda.mem_get_info()` per item, `common.append_jsonl(rows_path, row)` per row, `common.load_net()` once), the watchdog's real kill, the memory-fraction call.
