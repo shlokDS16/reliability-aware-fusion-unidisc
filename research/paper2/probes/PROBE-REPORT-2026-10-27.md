@@ -35,7 +35,7 @@ Readings, flagged as exploratory:
 - Masking everything in one pass (a_full, b_full) beat 8 complementary masks here. The K-mask design in ideas A and C should be
   re-checked rather than assumed.
 
-Cost: median 7.0 s per item (mean 9.7 s; one item took 635 s, which looks like a stall), 0.80 GPU-hours of item time for 300
+Cost: median 7.0 s per item (mean 9.7 s; one item took 635 s; the crash diagnosis traced it to a system sleep at 18:44:40, not a GPU stall), 0.80 GPU-hours of item time for 300
 items. Peak PyTorch allocation 8.2 GB. Highest whole-GPU memory in telemetry: 8,788 MiB (chunk 4). Highest temperature: 67 C.
 
 ## Probe 2: token-reliability AUROC under corruption (P2-PROBE-02, stopped at 20 of 200 items by a system crash)
@@ -64,6 +64,12 @@ memory that filled the card was outside PyTorch's caching allocator, or was the 
 Probe 1 ran 300 items on the same model without this. Probe 2 is on hold (`runs/P2-PROBE-02/HOLD.txt`; exp_p2/driver.py refuses
 to run while it exists). Next steps need Shlok: a clean NVIDIA driver reinstall (his call), and/or a CPU-side diagnosis of what
 probe 2 does differently from probe 1 before any GPU retry.
+
+### Crash diagnosis (2026-10-28)
+See `PROBE2-CRASH-DIAGNOSIS-2026-10-28.md`. Leading hypothesis (not confirmed; the minidumps need an elevated debugger): an NVIDIA
+driver TDR (driver 595.71, Blackwell), not a probe 2 allocation. Both crashes share one Windows error bucket and each followed a
+watchdog event (117). The first came 106 s after the laptop switched from AC to battery. Probe 2's per-item GPU work is close to
+probe 1's. The proposed staged GPU test (with Shlok present, on AC) starts with a probe 1 control to separate environment from code.
 
 ## What this means for the ideas
 Probe 1 supports the premise shared by A (GATE) and C: UniDisc's masked likelihood carries a usable, image-grounded signal in
