@@ -116,6 +116,69 @@ def test_clopper_pearson_and_midp_known_values():
     assert math.isnan(stats.clopper_pearson(0, 0)[0])
 
 
+# ------------------------------------------------------------------------------------------------ rule R3 routing (audit F8, card D15) and the outcome reading
+def test_rule_record_in_family_json_content():
+    from exp_p2.gate import headroom
+    r = {d: headroom.sample_size_rule(d, 100) for d in (29, 18, 17)}
+    assert (r[29]["rule"], r[29]["primary_endpoint_code"], r[29]["negative_reading_available"]) == ("R1", "Y", True)
+    assert (r[18]["rule"], r[18]["test_fold"], r[18]["negative_reading_available"]) == ("R2", 500, True)
+    assert (r[17]["rule"], r[17]["primary_endpoint_code"], r[17]["negative_reading_available"], r[17]["test_fold"]) == ("R3", "d", False, 300)
+    assert "negative" in r[17]["note"] and headroom.sample_size_rule(None, 100)["negative_reading_available"] is False
+
+
+def test_r3_makes_wilcoxon_on_d_primary_with_the_same_labels_and_m3_and_moves_y_to_secondary(tmp_path):
+    n = 120
+    g, o = flips(n, 6, 6)                                                        # Y: no difference at all
+    d = {("jpeg10", "gate0.05"): 0.30 + 0.002 * np.arange(n) / n, ("jpeg10", "none"): np.full(n, 0.1)}      # d: GATE-M clearly higher in every item
+    run, rows = build(tmp_path, n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o}, d)
+    res = A.run(run, FAM, n_boot=300, rule="R3")
+    p = res["primary"]
+    assert res["rule"] == "R3" and p["rule"] == "R3" and p["endpoint"] == "d" and p["holm_m"] == 3 and res["negative_available"] is False and p["negative_available"] is False
+    j = p["per_corruption"]["jpeg"]
+    assert j["label"] == "P1" and j["tested"] and j["p"] < 1e-10 and j["p_holm"] == pytest.approx(min(1.0, 3 * j["p"])) and j["mean_diff"] == pytest.approx(0.2, abs=0.01) and j["gate_better"]
+    assert p["per_corruption"]["noise"]["tested"] is False and p["per_corruption"]["noise"]["p"] == 1.0 and p["per_corruption"]["noise"]["p_holm"] == 1.0
+    assert p["claim_survives"] and res["outcome"]["label"] == "positive"
+    sec = res["secondary_y"]["per_corruption"]["jpeg"]                          # Y is secondary: no difference there
+    assert (sec["b"], sec["c"]) == (6, 6) and sec["p"] == 1.0 and not sec["gate_better"] and res["primary_endpoint"].startswith("d")
+    r1 = A.run(run, FAM, n_boot=300, rule="R1")                                 # the same data under R1: the primary is Y and finds nothing
+    assert r1["primary"]["per_corruption"]["jpeg"]["p"] == 1.0 and not r1["primary"]["claim_survives"] and r1["secondary_y"] is None and r1["negative_available"] is True
+
+
+def test_r3_rejection_needs_a_positive_difference_and_negative_is_unavailable(tmp_path):
+    n = 300
+    g, o = flips(n, 0, 0)
+    worse = {("jpeg10", "gate0.05"): np.full(n, 0.1) - 0.002 * np.arange(n) / n, ("jpeg10", "none"): np.full(n, 0.3)}   # GATE-M clearly LOWER in d
+    run, rows = build(tmp_path / "w", n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o}, worse)
+    r3 = A.run(run, FAM, n_boot=200, rule="R3")
+    j = r3["primary"]["per_corruption"]["jpeg"]
+    assert j["p_holm"] < 0.05 and j["mean_diff"] < 0 and not j["gate_better"] and not r3["primary"]["claim_survives"]     # rejected, wrong sign: does not count toward the claim
+    assert r3["outcome"]["label"] == "inconclusive" and any("R3" in x for x in r3["outcome"]["reasons"])
+    same = {("jpeg10", "gate0.05"): np.full(n, 0.1), ("jpeg10", "none"): np.full(n, 0.1)}
+    run, rows = build(tmp_path / "s", n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o}, same)
+    r1 = A.run(run, FAM, n_boot=300, rule="R1")
+    assert r1["outcome"]["label"] == "negative" and "loss larger than 0.05 is excluded" in r1["outcome"]["sentence"]          # tight CI, n = 300 >= 240, no rejection
+    r3 = A.run(run, FAM, n_boot=300, rule="R3")
+    assert r3["outcome"]["label"] == "inconclusive" and not r3["negative_available"]        # identical data, but under R3 'negative' can never be printed
+    nogo = A.run(run, [], n_boot=100, rule="NO-GO")
+    assert nogo["outcome"]["label"] == "inconclusive" and any("K1" in x for x in nogo["outcome"]["reasons"])
+
+
+def test_outcome_reading_requires_n_240_and_a_tight_ci_for_every_corruption_with_an_operating_point(tmp_path):
+    n = 200
+    g, o = flips(n, 0, 0)
+    run, rows = build(tmp_path, n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o})
+    assert A.run(run, FAM, n_boot=200, rule="R1")["outcome"]["label"] == "inconclusive"          # n = 200 < 240
+    n = 300
+    g, o = flips(n, 40, 40)                                                      # discordance 27 percent: 90 percent half-width about 0.047 + noise: wider than the margin or not
+    run, rows = build(tmp_path / "wide", n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o})
+    res = A.run(run, FAM, n_boot=2000, rule="R1")
+    ci = res["primary"]["per_corruption"]["jpeg"]["ci90"]
+    assert res["outcome"]["label"] == ("negative" if (ci[0] > -0.05 and ci[1] < 0.05) else "inconclusive")
+    g, o = flips(n, 120, 0)                                                      # large discordance with a clear win: positive
+    run, rows = build(tmp_path / "pos", n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o})
+    assert A.run(run, FAM, n_boot=200, rule="R1")["outcome"]["label"] == "positive"
+
+
 # ------------------------------------------------------------------------------------------------ S-M, S-C, K5, K6
 def test_s_m_uses_seed_one_gatekeeps_and_flags_k5_k6(tmp_path):
     n = 100

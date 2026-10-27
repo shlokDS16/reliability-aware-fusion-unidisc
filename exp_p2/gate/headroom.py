@@ -74,14 +74,15 @@ def evaluate_rung(rows: list[dict], key: str, endpoint: str = "d") -> dict:
 def sample_size_rule(D_star: int | None, n_headroom: int, kappa: float = KAPPA, n_star: int = N_STAR) -> dict:
     """SAP 4.6 R1/R2/R3. Counts scale from the headroom fold to 300 and 500 test items."""
     if D_star is None:
-        return dict(rule="NO-GO", test_fold=300, primary_endpoint="none (downstream claim withdrawn)", D_star=None, N_star=n_star, kappa=kappa)
+        return dict(rule="NO-GO", test_fold=300, primary_endpoint="none (downstream claim withdrawn)", primary_endpoint_code=None, negative_reading_available=False, D_star=None, N_star=n_star, kappa=kappa)
     s3, s5 = SCALE_BASE / n_headroom, SCALE_EXT / n_headroom
     base = dict(D_star=D_star, N_star=n_star, kappa=kappa, expected_discordant_300=kappa * s3 * D_star, expected_discordant_500=kappa * s5 * D_star)
     if kappa * s3 * D_star >= n_star:
-        return dict(base, rule="R1", test_fold=300, primary_endpoint="Y")
+        return dict(base, rule="R1", test_fold=300, primary_endpoint="Y", primary_endpoint_code="Y", negative_reading_available=True)
     if kappa * s5 * D_star >= n_star:
-        return dict(base, rule="R2", test_fold=500, primary_endpoint="Y")
-    return dict(base, rule="R3", test_fold=300, primary_endpoint="paired evidence change d (z*), Wilcoxon; Y becomes secondary")
+        return dict(base, rule="R2", test_fold=500, primary_endpoint="Y", primary_endpoint_code="Y", negative_reading_available=True)
+    return dict(base, rule="R3", test_fold=300, primary_endpoint="paired evidence change d (z*), Wilcoxon; Y becomes secondary", primary_endpoint_code="d",
+                negative_reading_available=False, note="under R3 the outcome label 'negative' is unavailable (SAP A2.2); a P rejection needs a positive mean difference of d")
 
 
 def decide(rows: list[dict], endpoint: str = "d") -> dict:

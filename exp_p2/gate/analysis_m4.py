@@ -101,6 +101,72 @@ def primary(rows: list[dict], family, n_boot=10000) -> dict:
                 rule="SAP 2.4: m = 3 always; supported iff at least one rejection after Holm with b > c")
 
 
+def _wilcoxon_gate_vs_none(rows, key: str, endpoint: str, n_boot: int, seed) -> dict:
+    from scipy.stats import wilcoxon
+    g, n = _arm(rows, key, A0, endpoint), _arm(rows, key, "none", endpoint)
+    ok = np.isfinite(g) & np.isfinite(n)
+    diff = (g - n)[ok]
+    try:
+        p = float(wilcoxon(diff).pvalue) if diff.size and np.any(diff != 0) else 1.0
+    except ValueError:
+        p = 1.0
+    m, lo, hi = core.bootstrap_mean_ci(diff, n_boot, seed) if diff.size else (float("nan"),) * 3
+    ci9833 = [float(np.quantile(diff[np.random.default_rng(seed).integers(0, diff.size, size=(n_boot, diff.size))].mean(axis=1), q)) for q in (0.00835, 0.99165)] if diff.size > 1 else [float("nan")] * 2
+    return dict(p=p, n=int(ok.sum()), n_dropped=int((~ok).sum()), mean_diff=float(m), ci95=[lo, hi], ci9833=ci9833, median_diff=float(np.median(diff)) if diff.size else float("nan"))
+
+
+def primary_d(rows: list[dict], family, n_boot=10000) -> dict:
+    """Family P under rule R3 (SAP 4.6, Addendum 2 A2.2): the primary endpoint becomes the paired change of the evidence d (z* = 32 d), Wilcoxon signed-rank on gate - none, same labels
+    P1-P3 and m = 3, a corruption without an operating point is not tested (p = 1, stays in m = 3). Rejection counts toward the claim only with a POSITIVE mean difference. Y moves to
+    secondary. The outcome label 'negative' is unavailable under R3 (the +/-0.05 margin is defined for accuracy, not for d)."""
+    fm = _family_map(family)
+    res = {}
+    for label, corr in zip(("P1", "P2", "P3"), config.REALISTIC):
+        if corr in fm:
+            res[corr] = dict(_wilcoxon_gate_vs_none(rows, fm[corr], "d", n_boot, seeds.seed_for("primary")), label=label, key=fm[corr], tested=True, endpoint="d")
+        else:
+            res[corr] = dict(label=label, key=None, tested=False, p=1.0)
+    adj = stats.holm([res[c]["p"] for c in config.REALISTIC])
+    for c, p in zip(config.REALISTIC, adj):
+        res[c]["p_holm"] = p
+        res[c]["gate_better"] = bool(res[c]["tested"] and res[c]["mean_diff"] > 0 and p < 0.05)
+    return dict(per_corruption=res, holm_m=3, endpoint="d", rule="R3", claim_survives=bool(any(res[c]["gate_better"] for c in config.REALISTIC)), negative_available=False,
+                z_star_scale="z* = sqrt(m) * d", note="R3 (SAP 4.6): primary = Wilcoxon on the paired change of d; Y is secondary; the 'negative' reading is unavailable")
+
+
+NEGATIVE_MARGIN, N_MIN = 0.05, 240
+
+
+def outcome_reading(prim: dict, rule: str, family, n_operating_points: int | None = None) -> dict:
+    """SAP A2.2 three-way reading. positive = at least one P rejection after Holm with the right sign. negative = no P rejection AND for EVERY corruption with an operating point the
+    90 percent paired-bootstrap CI of the net accuracy difference lies inside (-0.05, +0.05) AND completed n >= 240 for it; unavailable under R3 (and under NO-GO). inconclusive =
+    everything else (including K1, n < 240, any CI wider than the margin)."""
+    fm = _family_map(family)
+    n_op = len(fm) if n_operating_points is None else n_operating_points
+    if prim["claim_survives"]:
+        pos = [c for c in config.REALISTIC if prim["per_corruption"][c]["gate_better"]]
+        return dict(label="positive", corruptions=pos, rule=rule, reasons=[],
+                    sentence="GATE-M improved image-direction verification over no gate on " + ", ".join(pos) + " (one model, one severity per corruption); attributing the gain to detection needs S-M")
+    reasons = []
+    if rule == "R3":
+        reasons.append("rule R3: the negative reading is not available (the margin is defined for accuracy, not for d)")
+    if rule == "NO-GO" or n_op == 0:
+        reasons.append("K1: no corruption has an operating point")
+    if rule in ("R1", "R2") and n_op:
+        for c in config.REALISTIC:
+            if c not in fm:
+                continue
+            e = prim["per_corruption"][c]
+            ci = e.get("ci90")
+            if e.get("n", 0) < N_MIN:
+                reasons.append(f"{c}: completed n {e.get('n', 0)} < {N_MIN}")
+            if ci is None or not (ci[0] > -NEGATIVE_MARGIN and ci[1] < NEGATIVE_MARGIN):
+                reasons.append(f"{c}: 90 percent CI {ci} is not inside (-0.05, 0.05)")
+    if not reasons:
+        return dict(label="negative", rule=rule, reasons=[], sentence="no improvement was detected; an improvement larger than 0.05 is excluded and a loss larger than 0.05 is excluded (90 percent CI inside (-0.05, 0.05) for every corruption with an operating point). This is not 'GATE-M has no effect'")
+    return dict(label="inconclusive", rule=rule, reasons=reasons, sentence="no improvement was detected; the data are compatible with a net accuracy change as wide as the reported 95 percent CI. Not 'GATE-M has no effect'")
+
+
 def s_m(rows: list[dict], family, prim: dict, n_boot=10000) -> dict:
     """S-M: exact McNemar GATE-M versus the geometry-matched random gate, seed 1 (arm geo0), gatekept by P (only corruptions with gate_better are tested, the others get p = 1 and stay
     in m = 3). Seeds 2 and 3 (geo1, geo2) are replications, each with its own unadjusted p, never combined. K5: for a P-rejected corruption S-M is not rejected. K6: |b - c| <= 2 on
@@ -154,18 +220,11 @@ def s_dn(rows: list[dict], family, n_boot=10000) -> dict:
 def s_z(rows: list[dict], family, endpoint: str = "d", n_boot: int = 10000) -> dict:
     """S-Z (Addendum 1 A1.1): Wilcoxon signed-rank on gate - none of the evidence endpoint (default d, reported as z* = sqrt(m) d), Holm over m = 3, plus the paired bootstrap CI of the
     mean difference. The other endpoint (z) is a sensitivity row. Items with a non-finite value are dropped per test and counted."""
-    from scipy.stats import wilcoxon
     fm = _family_map(family)
 
     def one(k, ep):
-        g, n = _arm(rows, k, A0, ep), _arm(rows, k, "none", ep)
-        ok = np.isfinite(g) & np.isfinite(n)
-        diff = (g - n)[ok]
-        try:
-            p = float(wilcoxon(diff).pvalue) if diff.size and np.any(diff != 0) else 1.0
-        except ValueError:
-            p = 1.0
-        return dict(p=p, n=int(ok.sum()), n_dropped=int((~ok).sum()), ci=paired_boot(g, n, n_boot, seeds.seed_for("s_z")))
+        w = _wilcoxon_gate_vs_none(rows, k, ep, n_boot, seeds.seed_for("s_z"))
+        return dict(p=w["p"], n=w["n"], n_dropped=w["n_dropped"], ci=paired_boot(_arm(rows, k, A0, ep), _arm(rows, k, "none", ep), n_boot, seeds.seed_for("s_z")))
 
     out = {}
     for corr in config.REALISTIC:
@@ -410,7 +469,7 @@ def selftest(n_sim: int = 20000, seed: int = 1) -> dict:
 
 # ------------------------------------------------------------------------------------------------ driver
 def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict | None = None, codefreq=None, *, planned: list[dict] | None = None, m2_dir: Path | None = None,
-        split_reps: int = 0, allow_partial: bool = False) -> dict:
+        split_reps: int = 0, allow_partial: bool = False, rule: str = "R1") -> dict:
     """family: list of family.json entries (or of condition keys). endpoint: 'd' (SAP default, Addendum 1) or 'z'. planned: the committed ordered list of test items (SAP 8.1/8.2)."""
     run_dir = Path(run_dir)
     rows, n_dup = load_items(run_dir)
@@ -422,8 +481,11 @@ def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict |
             raise PipelineDefect(f"K7: more than 5 percent NaN or empty-R in {comp['K7_arms_over_5_percent']}; stop and diagnose (no look at Y)")
         if comp["completed_n"] < comp["planned_n"] and not allow_partial:
             raise PartialRun(f"{comp['completed_n']} of {comp['planned_n']} planned items completed; the outcome analysis waits for the planned fold or the freeze (SAP 8.2); --allow-partial overrides and is logged")
-    prim = primary(rows, family, n_boot)
-    res = dict(meta=dict(seeds.meta(), allow_partial=bool(allow_partial)), n_items=len(rows), family=keys, endpoint=endpoint, completeness=comp, primary=prim, s_m=s_m(rows, family, prim, n_boot),
+    y_family = primary(rows, family, n_boot)                       # McNemar on Y: primary under R1/R2, secondary under R3
+    prim = primary_d(rows, family, n_boot) if rule == "R3" else y_family
+    res = dict(meta=dict(seeds.meta(), allow_partial=bool(allow_partial)), rule=rule, primary_endpoint="d (z*), Wilcoxon" if rule == "R3" else "Y, exact McNemar",
+               negative_available=bool(rule in ("R1", "R2")), n_items=len(rows), family=keys, endpoint=endpoint, completeness=comp, primary=prim,
+               secondary_y=(dict(y_family, label="secondary under R3") if rule == "R3" else None), outcome=outcome_reading(prim, rule, family), s_m=s_m(rows, family, prim, n_boot),
                s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot),
                mechanism={k: mechanism(rows, k, n_boot) for k in keys + ["patch"]}, calibration=calibration(run_dir, rows, keys, n_boot, m2_dir=m2_dir, split_reps=split_reps))
     for k in keys:                                                                                      # Prop. 4 refutation check (5.3)
@@ -446,6 +508,7 @@ def main(argv=None) -> int:
     ap.add_argument("--split-reps", type=int, default=2000, help="exploratory 300/300 split replication of the CRC check (0 = skip)")
     ap.add_argument("--allow-partial", action="store_true", help="run on an incomplete fold (logged in the output; SAP 8.2 otherwise forbids it)")
     ap.add_argument("--skip-selftest", action="store_true")
+    ap.add_argument("--rule", choices=["R1", "R2", "R3", "NO-GO"], default=None, help="default: the rule recorded in family.json (n_rule.rule)")
     a = ap.parse_args(argv)
     fam = json.loads((Path(common.RUNS) / a.family_run / "family.json").read_text(encoding="utf8"))
     if fam.get("endpoint") != "d":
@@ -467,8 +530,12 @@ def main(argv=None) -> int:
     test_fold = int(fam.get("n_rule", {}).get("test_fold", 300))
     planned = folds.test_items(json.loads(folds.folds_path().read_text(encoding="utf8")), test_fold if test_fold > 300 else None)[:test_fold]
     try:
+        rule = fam.get("n_rule", {}).get("rule", "R1")
+        if a.rule and a.rule != rule:
+            print(f"--rule {a.rule} contradicts family.json ({rule}); the rule is fixed by the committed family.json", file=sys.stderr)
+            return 2
         res = run(Path(common.RUNS) / a.run_id, fam["family"], a.boot, a.endpoint, frozen, codefreq, planned=planned, m2_dir=Path(common.RUNS) / a.m2_run,
-                  split_reps=a.split_reps, allow_partial=a.allow_partial)
+                  split_reps=a.split_reps, allow_partial=a.allow_partial, rule=rule)
     except (PartialRun, PipelineDefect) as e:
         print("STOP:", e, file=sys.stderr)
         return 3
