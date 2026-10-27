@@ -120,6 +120,29 @@ def verify_tokens(folds: dict, n_tok_fn) -> dict:
                 n_outside_range=sum(1 for _, _, _, m in bad if not (config.TOK_RANGE[0] <= m <= config.TOK_RANGE[1])))
 
 
+MAX_FAIL_FRACTION = 0.10         # SAP Addendum 2 A2.1 item 2: more than 10 percent of any one fold failing the real-tokenizer check is a fold-construction defect
+
+
+def token_check(folds: dict, n_tok_fn) -> dict:
+    """SAP A2.1 item 2. Compare the frozen counts with the runtime tokenizer path. An item whose RUNTIME count falls outside 5-32 is EXCLUDED from every analysis, counted, and NOT
+    replaced (the order of the remaining ids is unchanged, so the test300 == test500[:300] prefix property holds as far as possible); the exclusion depends on caption text only.
+    A count that differs from the frozen one but stays inside 5-32 is reported (it does not exclude). If more than 10 percent of any one fold is excluded, or differs, `defect` is
+    True and the run must stop and report (no refolding without a new card version)."""
+    lo, hi = config.TOK_RANGE
+    per, excluded = {}, {}
+    for k in ("cal", "head", "test", "test_ext"):
+        items = folds.get(k, [])
+        counts = [(it["idx"], it["n_tok"], n_tok_fn(it["caption"])) for it in items]
+        out = [i for i, _, m in counts if not (lo <= m <= hi)]
+        mism = [i for i, st, m in counts if m != st and lo <= m <= hi]
+        n = len(items)
+        per[k] = dict(n=n, n_excluded=len(out), excluded_idx=out, n_mismatch_in_range=len(mism), fraction_excluded=len(out) / n if n else 0.0, fraction_mismatch=len(mism) / n if n else 0.0)
+        excluded[k] = out
+    defect = [k for k, v in per.items() if v["fraction_excluded"] > MAX_FAIL_FRACTION or v["fraction_mismatch"] > MAX_FAIL_FRACTION]
+    return dict(per_fold=per, excluded=excluded, n_excluded_total=sum(len(v) for v in excluded.values()), defect=bool(defect), defect_folds=defect, max_fail_fraction=MAX_FAIL_FRACTION,
+                rule="excluded, counted, not replaced (SAP A2.1 item 2)")
+
+
 def ensure_folds(n_tok_fn, path: Path | None = None) -> dict:
     """Load the folds file if it exists, else build it (needs a token counter and the local COCO files) and write it."""
     path = Path(path) if path else folds_path()

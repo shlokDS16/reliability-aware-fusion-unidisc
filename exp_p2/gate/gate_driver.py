@@ -94,8 +94,10 @@ def main(argv=None) -> int:
             say("STOP: running on battery; not launching a chunk")
             return EXIT_GUARD_STOP
         done = len(common.read_jsonl(run / "items.jsonl"))
-        say(f"chunk {ch}: {done}/{n} done")
-        if n and done >= n:
+        eff = run / "effective_n.json"
+        n_eff = min(n, json.loads(eff.read_text(encoding="utf8"))["effective"]) if (n and eff.exists()) else n          # items excluded by the real-tokenizer rule are not replaced
+        say(f"chunk {ch}: {done}/{n_eff} done" + (f" (planned {n}, excluded {n - n_eff})" if n_eff != n else ""))
+        if n_eff and done >= n_eff:
             say("COMPLETE")
             return 0
         t0 = time.time()

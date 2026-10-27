@@ -75,13 +75,25 @@ def require_frozen(runs: Path | None = None) -> Path:
     return p
 
 
+class FoldDefect(RuntimeError):
+    """More than 10 percent of one fold fails the real-tokenizer check: a fold-construction defect (SAP A2.1 item 2); stop and report."""
+
+
 def check_fold_tokens(sc, folds_dict: dict, run: Path) -> dict:
-    """Frozen token counts in folds.json versus the runtime tokenizer path (UniScorer.caption_ids). Writes folds_check.json and RAISES on any mismatch or any caption that falls
-    outside 5-32 tokens under the runtime tokenizer (audit M9): the folds are frozen, so the run must stop instead of silently using a different population."""
+    """Frozen token counts in folds.json versus the runtime tokenizer path (UniScorer.caption_ids). Per SAP Addendum 2 (A2.1 item 2) an item whose runtime count is outside 5-32 is
+    EXCLUDED, counted and not replaced; the report is written to folds_check.json and token_exclusions.json in the run directory and returned. Raises FoldDefect when more than
+    10 percent of any one fold is excluded (or differs from the frozen count): no refolding without a new card version."""
     from exp_p2.gate import folds as folds_mod
-    rep = folds_mod.verify_tokens(folds_dict, lambda c: len(sc.caption_ids(c)))
+    rep = folds_mod.token_check(folds_dict, lambda c: len(sc.caption_ids(c)))
     Path(run).mkdir(parents=True, exist_ok=True)
     (Path(run) / "folds_check.json").write_text(json.dumps(rep), encoding="utf8")
-    if rep["n_mismatch"] > 0 or rep["n_outside_range"] > 0:
-        raise RuntimeError(f"folds.json token counts disagree with the runtime tokenizer: {rep}")
+    (Path(run) / "token_exclusions.json").write_text(json.dumps(dict(excluded=rep["excluded"], n_excluded_total=rep["n_excluded_total"])), encoding="utf8")
+    if rep["defect"]:
+        raise FoldDefect(f"fold-construction defect: more than {rep['max_fail_fraction']:.0%} of {rep['defect_folds']} fails the runtime tokenizer check; stop and report ({rep['per_fold']})")
     return rep
+
+
+def drop_excluded(items: list[dict], rep: dict, fold: str) -> list[dict]:
+    """Remove the excluded items of `fold` from an ordered item list, without replacement and without reordering."""
+    bad = set(rep["excluded"].get(fold, []))
+    return [it for it in items if it["idx"] not in bad]

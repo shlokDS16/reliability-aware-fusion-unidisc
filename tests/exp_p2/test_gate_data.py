@@ -198,6 +198,21 @@ def test_test300_equals_test500_prefix_including_negatives_and_blocks_are_closed
     assert folds.test_items(f500) == f500["test"] and len(folds.test_items(f500, 450)) == 450
 
 
+def test_token_check_excludes_out_of_range_and_flags_fold_defects():
+    caps = _fake_captions(200)
+    f = folds.build_folds(caps, lambda c: len(c.split()), set(), sizes=(40, 10, 40), test_base=300)
+    ok = folds.token_check(f, lambda c: len(c.split()))
+    assert ok["n_excluded_total"] == 0 and not ok["defect"]
+    bad = lambda c: 3 if c == f["cal"][5]["caption"] else len(c.split())
+    r = folds.token_check(f, bad)
+    assert r["excluded"]["cal"] == [5] and r["per_fold"]["cal"]["fraction_excluded"] == pytest.approx(1 / 40) and not r["defect"]
+    heads = {it["caption"] for it in f["head"][:2]}
+    r = folds.token_check(f, lambda c: 40 if c in heads else len(c.split()))
+    assert r["defect"] and r["defect_folds"] == ["head"]                        # 2 of 10 = 20 percent
+    shifted = folds.token_check(f, lambda c: len(c.split()) + (1 if len(c.split()) < 30 else 0))
+    assert shifted["per_fold"]["cal"]["n_mismatch_in_range"] > 0 and shifted["defect"]      # a systematic off-by-one is reported as a defect
+
+
 def test_verify_tokens_reports_mismatches():
     caps = _fake_captions(200)
     f = folds.build_folds(caps, lambda c: len(c.split()), set(), sizes=(10, 5, 10))

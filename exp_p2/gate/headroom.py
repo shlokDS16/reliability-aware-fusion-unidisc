@@ -115,13 +115,15 @@ def main(argv=None) -> int:
     ap.add_argument("--run-id", default="P2-GATE-M3")
     ap.add_argument("--endpoint", choices=["d", "z"], default="d", help="d is the SAP endpoint (Addendum 1); z is a sensitivity analysis only")
     ap.add_argument("--out", default="family.json")
-    ap.add_argument("--min-items", type=int, default=config.N_HEAD)
+    ap.add_argument("--min-items", type=int, default=None, help="default: 100, or the effective n after real-tokenizer exclusions")
     ap.add_argument("--force", action="store_true", help="overwrite an existing family.json (it is write-once; the old file is kept and an amendment is logged)")
     a = ap.parse_args(argv)
     run = Path(common.RUNS) / a.run_id
     rows = common.read_jsonl(run / "items.jsonl")
-    if len(rows) < a.min_items:
-        print(f"only {len(rows)} headroom items in {run}; the rule needs the full {a.min_items}", file=sys.stderr)
+    eff = run / "effective_n.json"
+    min_items = a.min_items if a.min_items is not None else (json.loads(eff.read_text(encoding="utf8"))["effective"] if eff.exists() else config.N_HEAD)
+    if len(rows) < min_items:
+        print(f"only {len(rows)} headroom items in {run}; the rule needs the full {min_items}", file=sys.stderr)
         return 2
     res = decide(rows, a.endpoint)
     try:

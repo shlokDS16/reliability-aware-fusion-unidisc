@@ -78,7 +78,7 @@ def make_ctx_factory(a, runs: Path | None = None):
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
         thr, family, eps0 = load_prereqs(runs_)
         f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
-        pipeline.check_fold_tokens(sc, f, run)                                              # runtime tokenizer vs the counts frozen in folds.json; stops on any mismatch (audit M9)
+        pipeline.check_fold_tokens(sc, f, run)                                              # exclusions were applied in get_items; this repeats the check for the record
         pipeline.require_frozen(runs_)
         cbp = runs_ / M1_RUN / "codebook.npy"
         checks.l10_once(sc, run)
@@ -187,10 +187,13 @@ def main(argv=None):
 
     def get_items(sc, run):
         f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+        rep = pipeline.check_fold_tokens(sc, f, run)                                        # SAP A2.1: out-of-range captions are excluded, counted, not replaced
         items = folds.test_items(f, a.n if a.n and a.n > len(f["test"]) else None)         # base 300; the extension (items 301-500) only if --n asks for it (SAP R2)
         if a.n and a.n > len(items):
             raise RuntimeError(f"folds.json holds {len(items)} test items, --n {a.n} asked for more")
-        return items[:a.n] if a.n else items
+        items = items[:a.n] if a.n else items
+        bad = set(rep["excluded"].get("test", [])) | set(rep["excluded"].get("test_ext", []))
+        return [it for it in items if it["idx"] not in bad]
 
     return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=get_items, process=process, make_ctx=make_ctx_factory(a),
                             soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck, watchdog_factory=runner.default_watchdog)

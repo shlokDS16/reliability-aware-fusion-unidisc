@@ -415,8 +415,11 @@ def calibration(run: Path, rows: list[dict], family_keys: list[str], n_boot=1000
 
 
 # ------------------------------------------------------------------------------------------------ completeness (SAP 8.1) and K7
-def completeness_report(rows: list[dict], planned: list[dict], family, n_dup: int = 0) -> dict:
+def completeness_report(rows: list[dict], planned: list[dict], family, n_dup: int = 0, excluded_idx=()) -> dict:
+    """planned is the committed ordered list; items excluded by the real-tokenizer rule (SAP A2.1 item 2: excluded, counted, not replaced) are removed from it and counted separately."""
     fm = _family_map(family)
+    excl = sorted(set(excluded_idx) & {p["idx"] for p in planned})
+    planned = [p for p in planned if p["idx"] not in set(excl)]
     done_idx = {r["idx"] for r in rows}
     plan_idx = [p["idx"] for p in planned]
     missing = [p for p in planned if p["idx"] not in done_idx]
@@ -440,7 +443,7 @@ def completeness_report(rows: list[dict], planned: list[dict], family, n_dup: in
         c = int(((_arm(rows, key, A0, "y") == 0) & (_arm(rows, key, "none", "y") == 1)).sum())
         worst[corr] = dict(p_observed=stats.mcnemar_exact([1] * b + [0] * c + [0], [0] * b + [1] * c + [0])["p"] if (b + c) else 1.0,
                            p_worst_case_all_missing_favour_none=stats.mcnemar_exact([1] * b + [0] * (c + len(missing)), [0] * b + [1] * (c + len(missing)))["p"] if (b + c + len(missing)) else 1.0)
-    return dict(planned_n=len(planned), completed_n=k, n_missing=len(missing), n_duplicates_removed=n_dup, prefix_ok=prefix, below_80_percent=bool(len(planned) and k < 0.8 * len(planned)),
+    return dict(planned_n=len(planned), n_excluded_token_rule=len(excl), excluded_idx=excl, planned_before_exclusion=len(planned) + len(excl), completed_n=k, n_missing=len(missing), n_duplicates_removed=n_dup, prefix_ok=prefix, below_80_percent=bool(len(planned) and k < 0.8 * len(planned)),
                 covariates=dict(mean_n_tok_completed=cov(comp, lambda p: p.get("n_tok", float("nan"))), mean_n_tok_missing=cov(missing, lambda p: p.get("n_tok", float("nan"))),
                                 mean_order_completed=cov(comp, lambda p: p["idx"]), mean_order_missing=cov(missing, lambda p: p["idx"])),
                 arms=arms_checked, K7_arms_over_5_percent=k7, K7=bool(k7), worst_case_first_holm_step=worst,
@@ -469,13 +472,13 @@ def selftest(n_sim: int = 20000, seed: int = 1) -> dict:
 
 # ------------------------------------------------------------------------------------------------ driver
 def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict | None = None, codefreq=None, *, planned: list[dict] | None = None, m2_dir: Path | None = None,
-        split_reps: int = 0, allow_partial: bool = False, rule: str = "R1") -> dict:
+        split_reps: int = 0, allow_partial: bool = False, rule: str = "R1", excluded_idx=()) -> dict:
     """family: list of family.json entries (or of condition keys). endpoint: 'd' (SAP default, Addendum 1) or 'z'. planned: the committed ordered list of test items (SAP 8.1/8.2)."""
     run_dir = Path(run_dir)
     rows, n_dup = load_items(run_dir)
     fm = _family_map(family)
     keys = list(fm.values())
-    comp = completeness_report(rows, planned, family, n_dup) if planned is not None else None
+    comp = completeness_report(rows, planned, family, n_dup, excluded_idx) if planned is not None else None
     if comp is not None:
         if comp["K7"]:
             raise PipelineDefect(f"K7: more than 5 percent NaN or empty-R in {comp['K7_arms_over_5_percent']}; stop and diagnose (no look at Y)")
@@ -534,8 +537,10 @@ def main(argv=None) -> int:
         if a.rule and a.rule != rule:
             print(f"--rule {a.rule} contradicts family.json ({rule}); the rule is fixed by the committed family.json", file=sys.stderr)
             return 2
+        xp = Path(common.RUNS) / a.run_id / "token_exclusions.json"
+        ex = json.loads(xp.read_text(encoding="utf8"))["excluded"] if xp.exists() else {}
         res = run(Path(common.RUNS) / a.run_id, fam["family"], a.boot, a.endpoint, frozen, codefreq, planned=planned, m2_dir=Path(common.RUNS) / a.m2_run,
-                  split_reps=a.split_reps, allow_partial=a.allow_partial, rule=rule)
+                  split_reps=a.split_reps, allow_partial=a.allow_partial, rule=rule, excluded_idx=list(ex.get("test", [])) + list(ex.get("test_ext", [])))
     except (PartialRun, PipelineDefect) as e:
         print("STOP:", e, file=sys.stderr)
         return 3

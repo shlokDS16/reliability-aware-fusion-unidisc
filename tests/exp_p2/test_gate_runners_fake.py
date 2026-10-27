@@ -235,18 +235,80 @@ def test_m3_and_m4_mains_refuse_before_touching_any_model(env, monkeypatch):
     assert run_gate_m3.main([]) == 2
 
 
-def test_fold_token_check_stops_on_a_disagreeing_tokenizer(env):
+def _tok_folds(n=30):
+    return dict(cal=_fold(n), head=_fold(n, 1000), test=_fold(n, 2000), test_ext=[])
+
+
+def test_out_of_range_captions_are_excluded_counted_and_not_replaced(env):
     sc = _sc()
-    f = dict(cal=_fold(3), head=[], test=[], test_ext=[])
-    assert pipeline.check_fold_tokens(sc, f, env / "chk")["n_mismatch"] == 0
-    assert json.loads((env / "chk" / "folds_check.json").read_text())["n_mismatch"] == 0
-    f["cal"][1]["n_tok"] = 7
-    with pytest.raises(RuntimeError, match="disagree"):
+    f = _tok_folds(30)
+    rep = pipeline.check_fold_tokens(sc, f, env / "chk")
+    assert rep["n_excluded_total"] == 0 and not rep["defect"] and json.loads((env / "chk" / "token_exclusions.json").read_text())["n_excluded_total"] == 0
+    f["cal"][4]["caption"] = "one two"                                          # runtime count 2 < 5 (frozen count 6)
+    f["test"][7]["caption"] = " ".join(["w"] * 40)                              # runtime count 40 > 32
+    rep = pipeline.check_fold_tokens(sc, f, env / "chk")
+    assert rep["excluded"] == {"cal": [4], "head": [], "test": [7], "test_ext": []} and rep["n_excluded_total"] == 2 and not rep["defect"]
+    kept = pipeline.drop_excluded(f["cal"], rep, "cal")
+    assert [it["idx"] for it in kept] == [i for i in range(30) if i != 4]        # not replaced, order unchanged
+    assert len(pipeline.drop_excluded(f["test"], rep, "test")) == 29 and len(pipeline.drop_excluded(f["head"], rep, "head")) == 30
+    on_disk = json.loads((env / "chk" / "token_exclusions.json").read_text())
+    assert on_disk["excluded"]["cal"] == [4] and json.loads((env / "chk" / "folds_check.json").read_text())["per_fold"]["cal"]["fraction_excluded"] == pytest.approx(1 / 30)
+
+
+def test_a_count_that_differs_but_stays_in_range_is_reported_not_excluded_and_over_10_percent_is_a_defect(env):
+    sc = _sc()
+    f = _tok_folds(30)
+    f["cal"][1]["n_tok"] = 7                                                    # frozen 7, runtime 6: both inside 5-32
+    rep = pipeline.check_fold_tokens(sc, f, env / "chk")
+    assert rep["per_fold"]["cal"]["n_mismatch_in_range"] == 1 and rep["excluded"]["cal"] == []
+    for i in range(4):                                                          # 4 of 30 = 13 percent excluded: a fold-construction defect
+        f["head"][i]["caption"] = "a b"
+    with pytest.raises(pipeline.FoldDefect, match="stop and report"):
         pipeline.check_fold_tokens(sc, f, env / "chk")
-    f["cal"][1]["n_tok"] = 6
-    f["cal"][2]["caption"] = "one two"                                         # runtime count 2 < 5 and != stored 6
-    with pytest.raises(RuntimeError):
-        pipeline.check_fold_tokens(sc, f, env / "chk")
+    assert json.loads((env / "chk" / "folds_check.json").read_text())["defect_folds"] == ["head"]      # the report is on disk before the stop
+    g = _tok_folds(30)
+    for i in range(3):                                                          # 3 of 30 = exactly 10 percent: allowed
+        g["cal"][i]["caption"] = "a b"
+    assert pipeline.check_fold_tokens(sc, g, env / "chk2")["n_excluded_total"] == 3
+
+
+def test_effective_n_after_exclusions_lets_the_run_and_the_driver_finish(env, monkeypatch):
+    items = _fold(30)
+    kept = [it for it in items if it["idx"] != 4]
+    sc = _sc()
+    rc = runner.run_items(run_id="P2-GATE-EX", cfg=dict(n_items=30), load=lambda: sc, get_items=lambda s, r: kept, process=lambda s, it, c: (dict(v=1), {}), duty=1.0, soft_minutes=30)
+    assert rc == 0 and len(common.read_jsonl(env / "P2-GATE-EX" / "items.jsonl")) == 29
+    e = json.loads((env / "P2-GATE-EX" / "effective_n.json").read_text())
+    assert (e["planned"], e["effective"]) == (30, 29)
+    called = []
+    rc = runner.run_items(run_id="P2-GATE-EX", cfg=dict(n_items=30), load=lambda: called.append(1), get_items=lambda s, r: kept, process=None, duty=1.0, soft_minutes=30)
+    assert rc == 0 and called == []                                              # complete at 29: returns before loading the model
+    from exp_p2.gate import gate_driver
+    monkeypatch.setattr(gate_driver.driver, "gates_ok", lambda: (True, "ok"))
+    monkeypatch.setattr(gate_driver, "EVENTS_FN", lambda since: dict(ok=True, events=[], error=None))
+    monkeypatch.setattr(gate_driver, "AC_FN", lambda: True)
+    monkeypatch.setattr(gate_driver.subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(AssertionError("must not launch: already complete")))
+    (env / "P2-GATE-M2").mkdir()
+    (env / "P2-GATE-M2" / "effective_n.json").write_text(json.dumps(dict(planned=30, effective=2)))
+    (env / "P2-GATE-M2" / "items.jsonl").write_text(json.dumps(dict(idx=0)) + "\n" + json.dumps(dict(idx=1)) + "\n")
+    assert gate_driver.main(["--stage", "m2", "--n", "30"]) == 0
+
+
+def test_completeness_report_counts_the_exclusions_and_fit_threshold_uses_the_effective_n(env):
+    from exp_p2.gate import analysis_m4 as A
+    rows = [dict(idx=i, n_tok=6, conds={"jpeg10": dict(img={"none": dict(d=0.1, n=64, y=1), "gate0.05": dict(d=0.1, n=60, y=1)})}) for i in range(10) if i != 3]
+    comp = A.completeness_report(rows, [dict(idx=i, n_tok=6) for i in range(10)], ["jpeg10"], excluded_idx=[3])
+    assert comp["planned_n"] == 9 and comp["n_excluded_token_rule"] == 1 and comp["excluded_idx"] == [3] and comp["planned_before_exclusion"] == 10
+    assert comp["completed_n"] == 9 and comp["n_missing"] == 0 and comp["prefix_ok"]
+    from exp_p2.gate import fit_threshold
+    m2 = env / "P2-GATE-M2x"
+    (m2 / "arrays").mkdir(parents=True)
+    rng = np.random.default_rng(0)
+    for i in range(20):
+        np.savez(m2 / "arrays" / f"item{i:04d}.npz", B=rng.normal(-3, 1, 8).astype(np.float32), D=rng.normal(-2, .2, 8).astype(np.float32), codes=rng.integers(0, 50, 8))
+    (m2 / "items.jsonl").write_text("\n".join(json.dumps(dict(idx=i, gid=i)) for i in range(20)) + "\n")
+    (m2 / "effective_n.json").write_text(json.dumps(dict(planned=300, effective=20)))
+    assert fit_threshold.main(["--run-id", "P2-GATE-M2x"]) == 0                  # 20 items, not the fixed 300, because the effective n is 20
 
 
 def test_m4_tbv_auto_follows_the_m1_verdict(env):

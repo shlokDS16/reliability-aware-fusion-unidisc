@@ -43,12 +43,14 @@ def main(argv=None) -> int:
     ap.add_argument("--run-id", default="P2-GATE-M2")
     ap.add_argument("--statistic", choices=["q", "plainB"], default=config.STAT_NAME)
     ap.add_argument("--force", action="store_true", help="overwrite an existing threshold file (write-once; the old file is kept and an amendment is logged)")
-    ap.add_argument("--min-items", type=int, default=config.N_CAL, help="refuse to fit on fewer items (the spec fixes 300)")
+    ap.add_argument("--min-items", type=int, default=None, help="refuse to fit on fewer items (default: 300, or the effective n after real-tokenizer exclusions)")
     a = ap.parse_args(argv)
     run = Path(common.RUNS) / a.run_id
     rows = common.read_jsonl(run / "items.jsonl")
-    if len(rows) < a.min_items:
-        print(f"{len(rows)} calibration items < {a.min_items}; finish M2 first (or lower --min-items for a labelled smoke fit)", file=sys.stderr)
+    eff = run / "effective_n.json"
+    min_items = a.min_items if a.min_items is not None else (json.loads(eff.read_text(encoding="utf8"))["effective"] if eff.exists() else config.N_CAL)
+    if len(rows) < min_items:
+        print(f"{len(rows)} calibration items < {min_items}; finish M2 first (or lower --min-items for a labelled smoke fit)", file=sys.stderr)
         return 2
     U, ids, codes = [], [], []
     for r in sorted(rows, key=lambda r: r["idx"]):

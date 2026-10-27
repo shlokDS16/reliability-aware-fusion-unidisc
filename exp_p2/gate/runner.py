@@ -7,6 +7,7 @@ The loop never imports a model: `load()` returns the scorer (UniScorer in produc
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 import traceback
@@ -104,6 +105,9 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
     repair_torn_tail(rows_path)
     done = {r["idx"] for r in common.read_jsonl(rows_path)}
     n_items = cfg.get("n_items")
+    eff = run / "effective_n.json"
+    if n_items is not None and eff.exists():                                  # items excluded by the real-tokenizer rule are not replaced: the run is complete at the smaller n
+        n_items = min(n_items, json.loads(eff.read_text(encoding="utf8"))["effective"])
     if n_items is not None and len(done) >= n_items:
         print("complete")
         return EXIT_DONE
@@ -120,6 +124,8 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
     load_s = time.perf_counter() - t_load
     items = get_items(sc, run)
     if n_items is not None:
+        if len(items) < n_items:
+            (run / "effective_n.json").write_text(json.dumps(dict(planned=n_items, effective=len(items), reason="items excluded by the real-tokenizer rule (SAP A2.1), not replaced")), encoding="utf8")
         items = items[:n_items]
     if selfcheck is not None and not (run / "selfcheck.json").exists():
         chk = selfcheck(sc, items)

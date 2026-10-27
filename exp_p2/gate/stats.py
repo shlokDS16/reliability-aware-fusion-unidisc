@@ -93,3 +93,15 @@ def clopper_pearson(k: int, n: int, level: float = 0.95) -> tuple[float, float]:
     lo = 0.0 if k == 0 else float(beta.ppf(a, k, n - k + 1))
     hi = 1.0 if k == n else float(beta.ppf(1 - a, k + 1, n - k))
     return lo, hi
+
+
+def wilson_ci(k: int, n: int, level: float = 0.95) -> tuple[float, float]:
+    """Wilson score interval of a binomial proportion."""
+    if n == 0:
+        return float("nan"), float("nan")
+    z = NormalDist().inv_cdf(1 - (1 - level) / 2)
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return max(0.0, c - h), min(1.0, c + h)
