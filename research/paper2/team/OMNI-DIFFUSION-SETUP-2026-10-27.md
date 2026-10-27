@@ -166,3 +166,23 @@ The README expects local paths under `../models/...`; our snapshot is in the HF 
 4. First GPU step, only with Shlok's go-ahead and `tools/gpu_guard.py`: one 4-bit load of the LM with a memory cap well below 12 GB and no other GPU job running, one forward pass, record peak memory. Then 8-bit.
 5. Read `generation_utils.py` (`DreamGenerationMixin`, the sampler around lines 440-560 of the repo copy: classifier-free guidance with an unconditional mask, `transfer_index_t_s`, block mask) as the target of the Paper 2 sampler work before any experiment card.
 6. Optional: ask whether to keep the two extra submodule clones or delete them.
+
+## Addendum 2026-10-28 00:40 IST (lead): SenseVoiceSmall security read
+Snapshot `FunAudioLLM/SenseVoiceSmall` 3847d57b6bdf2dd8875cb1508d2af43d80a16bf7 (downloaded 2026-10-27 23:48): no Python model
+code (only `demo.py`), `config.yaml`, `model.pt` (936 MB pickle), BPE model, `am.mvn`, `requirements.txt`.
+
+**Blocking finding.** Omni-Diffusion builds it with `AutoModel.build_model(model=..., trust_remote_code=True)`
+(`omni_diffusion/models/dream/modeling_sensevoice.py:731` and `:1082`). In funasr 1.4.16, `trust_remote_code=True` does two things
+(`funasr/download/download_model_from_hub.py:103-115`):
+1. If the snapshot has a `requirements.txt`, it **pip-installs it** (`install_model_requirements.install_requirements`). This one asks
+   for `numpy<=1.26.4`, `gradio`, `modelscope`, `torch>=1.13` and `torchaudio`. That would downgrade numpy and add packages inside
+   `.venv-omni` at model-build time.
+2. It runs `import_module_from_path("model")`, so a module named `model` is imported from wherever Python looks (the snapshot has none).
+
+`model.pt` is read with `torch.load(path, map_location=...)` (`funasr/train_utils/load_pretrained_model.py:39`) without an explicit
+`weights_only`. torch 2.11 defaults to `weights_only=True`, so a pickle with arbitrary objects fails instead of executing.
+
+**Required before the first load:** build SenseVoice with `trust_remote_code=False` (funasr registers `SenseVoiceEncoderSmall`
+itself), pass the local snapshot path instead of calling `snapshot_download`, and set `HF_HUB_OFFLINE=1`. Do it as a small local
+patch to the two lines above in the clone (recorded with `git diff`), or as a monkeypatch in our loader. Run from a clean working
+directory. After the first load, check with `uv pip freeze` that `.venv-omni` is unchanged against `freeze-2026-10-27.txt`.
