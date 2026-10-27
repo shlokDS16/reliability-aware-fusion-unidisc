@@ -123,7 +123,7 @@ def test_soft_deadline_returns_more_work_before_any_item(env):
 def test_guard_stop_leaves_no_row_and_is_logged(env):
     g = guards.Guards(used_fn=lambda: 99999.0, ac_fn=lambda: True)
     rc, _ = _run(env, guards=g)
-    assert rc == runner.EXIT_MORE_WORK and _rows(env) == []
+    assert rc == runner.EXIT_GUARD == 76 and _rows(env) == []
     assert common.read_jsonl(env / "P2-GATE-T" / "chunks.jsonl")[-1]["event"] == "guard_stop"
 
 
@@ -133,7 +133,7 @@ def test_slow_item_guard_stops_after_the_item_is_committed(env):
     orig = g.after_item
     g.after_item = lambda busy: orig(next(times))
     rc, _ = _run(env, guards=g)
-    assert rc == runner.EXIT_MORE_WORK and len(_rows(env)) == 4              # the slow item itself is kept; the run stops after it
+    assert rc == runner.EXIT_GUARD and len(_rows(env)) == 4                  # the slow item itself is kept; the run stops after it
     assert "slow_item" in common.read_jsonl(env / "P2-GATE-T" / "chunks.jsonl")[-1]["reason"]
 
 
@@ -197,9 +197,9 @@ def test_stage_table_matches_the_modules_and_run_ids():
         m = importlib.import_module(mod)
         if st != "p2":                                                          # run_probe2 predates RUN_ID; its default run id is the argparse default
             assert m.RUN_ID == rid
-        if n:
+        if n and hasattr(m, "CONFIG"):
             assert m.CONFIG["n_items"] == n
-    import exp_p2.run_probe2 as rp2
+    import exp_p2.run_probe2 as rp2                                             # the wrapped module, whose item count the p2 stage uses
     assert rp2.CONFIG["n_items"] == 200 and gate_driver.STAGES["p2"][1] == "P2-PROBE-02"
 
 

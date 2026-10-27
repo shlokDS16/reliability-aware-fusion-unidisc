@@ -17,7 +17,9 @@ from exp_p2 import common
 from exp_p2.gate import hold
 from exp_p2.gate.guards import Guards
 
-EXIT_DONE, EXIT_MORE_WORK, EXIT_SELFCHECK = 0, 75, 2
+from exp_p2.gate.watchdog import EXIT_GUARD, Watchdog, kill_process_on_trip     # noqa: E402
+
+EXIT_DONE, EXIT_MORE_WORK, EXIT_SELFCHECK = 0, 75, 2      # 75 = soft deadline (relaunch is fine); EXIT_GUARD = 76 = a guard abort (never relaunched automatically)
 
 
 def base_parser(default_run_id: str, default_n: int | None = None) -> argparse.ArgumentParser:
@@ -34,6 +36,11 @@ def base_parser(default_run_id: str, default_n: int | None = None) -> argparse.A
     ap.add_argument("--max-rise-mib", type=float, default=Guards.max_rise_mib)
     ap.add_argument("--no-ac-check", action="store_true")
     return ap
+
+
+def default_watchdog(guards, run):
+    """Production watchdog: 1 s sampling of whole-GPU memory and AC power; ends the process with EXIT_GUARD on a trip."""
+    return Watchdog(guards, on_trip=kill_process_on_trip(Path(run) / "chunks.jsonl"))
 
 
 def guards_from_args(a) -> Guards:
@@ -82,7 +89,7 @@ def _cuda():
 
 
 def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None, soft_minutes: float = 12.5, duty: float = 0.5, limit: int | None = None,
-              guards: Guards | None = None, mem_frac: float | None = None, selfcheck=None) -> int:
+              guards: Guards | None = None, mem_frac: float | None = None, selfcheck=None, watchdog_factory=None) -> int:
     """load() -> scorer; get_items(sc, run) -> list of dicts with a unique integer 'idx'; process(sc, item, ctx) -> (row dict, arrays dict);
     make_ctx(sc, run) -> context object; selfcheck(sc, items) -> dict or None (production: the UniScorer layout self-check, as probes 1 and 2)."""
     from exp001.runtools import Duty, Deadline, atomic_save_npz, atomic_write_json
@@ -104,6 +111,10 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
     torch = _cuda()
     if torch is not None and mem_frac:
         torch.cuda.set_per_process_memory_fraction(mem_frac)
+    if guards is not None and guards.require_ac and guards.ac_fn() is False:           # audit F3: before the model load, not only before the first item
+        common.append_jsonl(run / "chunks.jsonl", dict(event="guard_stop", t=time.time(), reason="ac_lost_before_load"))
+        print("STOP: running on battery (checked before the model load)", file=sys.stderr)
+        return EXIT_GUARD
     t_load = time.perf_counter()
     sc = load()
     load_s = time.perf_counter() - t_load
@@ -120,6 +131,18 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
                 return EXIT_SELFCHECK
     ctx = make_ctx(sc, run) if make_ctx else SimpleNamespace(run=run, cfg=cfg)
     common.append_jsonl(run / "chunks.jsonl", dict(event="chunk_start", t=time.time(), load_s=load_s, done=len(done), mem=_mem(), gpu=_gpu()))
+    wd = watchdog_factory(guards, run) if (watchdog_factory is not None and guards is not None) else None
+    if wd is not None:
+        wd.start()
+    try:
+        return _loop(run, run_id, items, done, process, sc, ctx, dl, dty, guards, limit, torch, rows_path)
+    finally:
+        if wd is not None:
+            wd.stop()
+
+
+def _loop(run, run_id, items, done, process, sc, ctx, dl, dty, guards, limit, torch, rows_path) -> int:
+    from exp001.runtools import atomic_save_npz
     n_new = 0
     for it in items:
         idx = it["idx"]
@@ -128,12 +151,17 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
         if dl.reached(margin_s=45):
             common.append_jsonl(run / "chunks.jsonl", dict(event="soft_deadline", t=time.time(), remaining=len(items) - len(done) - n_new))
             return EXIT_MORE_WORK
+        held = hold.active_holds(run_id)                         # audit M11: a hold file created mid-chunk stops before the next item
+        if held:
+            common.append_jsonl(run / "chunks.jsonl", dict(event="hold_stop", t=time.time(), files=[str(h) for h in held], idx=idx))
+            print("STOP: hold file appeared:", held, file=sys.stderr)
+            return hold.EXIT_HOLD
         if guards is not None:
             why = guards.before_item(n_new)
             if why:
                 common.append_jsonl(run / "chunks.jsonl", dict(event="guard_stop", t=time.time(), reason=why, idx=idx))
                 print("STOP:", why, file=sys.stderr)
-                return EXIT_MORE_WORK
+                return EXIT_GUARD
         t0 = time.perf_counter()
         if torch is not None:
             torch.cuda.reset_peak_memory_stats()
@@ -158,7 +186,7 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
             if why:
                 common.append_jsonl(run / "chunks.jsonl", dict(event="guard_stop", t=time.time(), reason=why, idx=idx))
                 print("STOP:", why, file=sys.stderr)
-                return EXIT_MORE_WORK
+                return EXIT_GUARD
         if limit and n_new >= limit:
             return EXIT_DONE if len(done) + n_new >= len(items) else EXIT_MORE_WORK
     common.append_jsonl(run / "chunks.jsonl", dict(event="complete", t=time.time()))

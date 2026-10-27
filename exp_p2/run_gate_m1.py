@@ -83,7 +83,7 @@ def main(argv=None):
         return runner.Counting(UniScorer(common.load_net()))
 
     return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=lambda sc, run: get_items(sc, run, a.n), process=process, make_ctx=make_ctx_factory(a.tbv),
-                            soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=None)
+                            soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=None, watchdog_factory=runner.default_watchdog)
 
 
 if __name__ == "__main__":

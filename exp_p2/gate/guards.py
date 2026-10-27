@@ -39,6 +39,7 @@ class Guards:
     require_ac: bool = True
     used_fn: object = gpu_used_mib
     ac_fn: object = on_ac
+    first_item_active: bool = True                 # read by the watchdog thread: the first item of a chunk gets the higher memory allowance
     _last_used: float | None = field(default=None, repr=False)
     _times: list = field(default_factory=list, repr=False)
 
@@ -47,6 +48,7 @@ class Guards:
         if self.require_ac and self.ac_fn() is False:
             return "ac_lost"
         used = float(self.used_fn())
+        self.first_item_active = n_done_in_chunk == 0
         lim = self.max_used_first_mib if n_done_in_chunk == 0 else self.max_used_mib
         if used > lim:
             return f"gpu_memory {used:.0f} MiB > {lim:.0f}"

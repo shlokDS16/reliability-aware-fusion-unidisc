@@ -46,6 +46,10 @@ def main(argv=None) -> int:
     except hold.HoldActive as e:
         print("STOP:", e, file=sys.stderr)
         return hold.EXIT_HOLD
+    from exp_p2.gate import guards
+    if guards.on_ac() is False:                                           # audit F3: power state is checked before CUDA or the model is touched
+        print("STOP: running on battery; plug in the AC adapter first", file=sys.stderr)
+        return 76
     import torch
     run = common.RUNS / a.run_id
     run.mkdir(parents=True, exist_ok=True)

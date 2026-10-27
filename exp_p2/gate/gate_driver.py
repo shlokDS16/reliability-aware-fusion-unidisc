@@ -5,25 +5,32 @@ lower temperature limit). It never creates or deletes a hold file and never laun
     python -m exp_p2.gate.gate_driver --stage m2 [--run-id P2-GATE-M2] [--n 300]
 
 Completion is read from the row count, never from the exit code. Exit codes: 0 complete, 3 gate not open, 4 three temperature stops, 5 two chunks
-without progress, 6 max chunks, 7 on hold."""
+without progress, 6 max chunks, 7 on hold, 8 guard abort or battery (never relaunched), 9 new crash-signature events in the Windows logs (or the log unreadable)."""
 from __future__ import annotations
 
 import argparse
+import json
 import shlex
 import subprocess
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common, driver                                           # noqa: E402
-from exp_p2.gate import hold                                                # noqa: E402
+from exp_p2.gate import eventlog, guards, hold                              # noqa: E402
+from exp_p2.gate.watchdog import EXIT_GUARD                                 # noqa: E402
+
+EXIT_GUARD_STOP, EXIT_EVENTS = 8, 9      # driver exit codes: a guard abort (never relaunched), new crash-signature events in the Windows logs
+EVENTS_FN = eventlog.new_events          # replaceable in tests
+AC_FN = guards.on_ac
 
 # stage -> (module, default run id, default item count; 0 = number of probe-2 arrays on disk). Static on purpose: the driver stays torch-free.
-# 'p2' runs the existing run_probe2 module unchanged (probe behaviour and run directory untouched); its items.jsonl rows are the completion count.
-STAGES = {"p2": ("exp_p2.run_probe2", "P2-PROBE-02", 200),      # M1 part 1: complete probe 2 UNCHANGED (same module, same CLI), now under the project-wide hold check and 1 s telemetry
+# 'p2' runs run_probe2.main() unchanged inside gate/probe2_guarded.py (memory cap, AC, memory/rise/slow-item rules, watchdog); its items.jsonl rows are the completion count.
+STAGES = {"p2": ("exp_p2.gate.probe2_guarded", "P2-PROBE-02", 200),      # M1 part 1: complete probe 2 with run_probe2 UNCHANGED, wrapped by the new guards (audit F2)
           "m1": ("exp_p2.run_gate_m1", "P2-GATE-M1", 0), "m2": ("exp_p2.run_gate_m2", "P2-GATE-M2", 300), "m3": ("exp_p2.run_gate_m3", "P2-GATE-M3", 100),
           "m4": ("exp_p2.run_gate_m4", "P2-GATE-M4", 300), "m5": ("exp_p2.run_gate_m5", "P2-GATE-M5", 100)}
 MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0       # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
@@ -46,6 +53,7 @@ def main(argv=None) -> int:
     ap.add_argument("--wait-minutes", type=float, default=20.0)
     ap.add_argument("--max-chunks", type=int, default=12)
     ap.add_argument("--max-temp", type=float, default=MAX_TEMP_DEFAULT)
+    ap.add_argument("--no-eventlog-check", action="store_true", help="skip the read-only Windows event-log check between chunks (not recommended)")
     ap.add_argument("--extra", default="", help="extra flags forwarded to the stage module, e.g. --extra \"--tbv\" for m1 or --extra \"--tbv on\" for m4")
     a = ap.parse_args(argv)
     stage_mod, default_run, default_n = STAGES[a.stage]
@@ -68,11 +76,23 @@ def main(argv=None) -> int:
         say("STOP: hold file(s) exist: " + "; ".join(str(h) for h in holds) + " (GPU run on hold; delete only with Shlok's go-ahead)")
         return hold.EXIT_HOLD
     n_stop, fails, pause = 0, 0, 30.0
+    started = datetime.now()                                              # "since the run started" for the event-log check
     for ch in range(a.max_chunks):
         holds = hold.active_holds(run_id)                                 # re-check before every chunk: a hold can appear mid-campaign
         if holds:
             say("STOP: hold file appeared: " + "; ".join(str(h) for h in holds))
             return hold.EXIT_HOLD
+        if not a.no_eventlog_check:                                           # audit F3: refuse to (re)launch after a crash signature appears in the logs
+            ev = EVENTS_FN(started)
+            if not ev["ok"]:
+                say(f"STOP: could not read the Windows event log ({ev['error']}); fail closed (override: --no-eventlog-check)")
+                return EXIT_EVENTS
+            if ev["events"]:
+                say("STOP: new crash-signature events since the run started: " + json.dumps(ev["events"][:5]))
+                return EXIT_EVENTS
+        if AC_FN() is False:
+            say("STOP: running on battery; not launching a chunk")
+            return EXIT_GUARD_STOP
         done = len(common.read_jsonl(run / "items.jsonl"))
         say(f"chunk {ch}: {done}/{n} done")
         if n and done >= n:
@@ -92,6 +112,7 @@ def main(argv=None) -> int:
         if n_stop:
             mins = min(mins, 10.0)
         cmd = build_cmd(stage_mod, run_id, n, mins, max(1.0, mins - 2.5), a.duty if not n_stop else min(a.duty, 1 / 3), ch, run, a.max_temp, shlex.split(a.extra))
+        n_guard_before = sum(1 for e in common.read_jsonl(run / "chunks.jsonl") if e.get("event") == "guard_stop")
         say("launch " + " ".join(cmd[-12:]))
         with open(run / f"stdout-chunk{ch:02d}.log", "w", encoding="utf8") as fh:
             r = subprocess.run(cmd, cwd=str(ROOT), stdout=fh, stderr=subprocess.STDOUT)
@@ -99,6 +120,10 @@ def main(argv=None) -> int:
         say(f"chunk {ch} exit {r.returncode}; rows {done} -> {new_done}")
         if r.returncode == hold.EXIT_HOLD:
             return hold.EXIT_HOLD
+        n_guard_after = sum(1 for e in common.read_jsonl(run / "chunks.jsonl") if e.get("event") == "guard_stop")
+        if r.returncode == EXIT_GUARD or n_guard_after > n_guard_before:        # audit F1: a guard abort is reviewed by a person, never retried here
+            say("STOP: guard abort (exit %d, see chunks.jsonl); not relaunching" % r.returncode)
+            return EXIT_GUARD_STOP
         if r.returncode == 90:
             n_stop += 1
             pause = 60.0 * (2 ** (n_stop - 1))
