@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from exp_p2 import common                                                  # noqa: E402
 
-READY_TEMP, MAX_TEMP, MIN_RAM_GB = 65.0, 85.0, 4.0
+READY_TEMP, MAX_TEMP, MIN_RAM_GB = 65.0, 85.0, 3.5   # 3.5 GB accepted by the coordinator after the 2026-10-27 restart (was 4.0)
 MEM_BUSY_MIB, UTIL_BUSY = 1500.0, 30.0
 
 
