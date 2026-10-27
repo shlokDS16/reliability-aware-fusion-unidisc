@@ -101,7 +101,7 @@ def process(sc, it, ctx):
     lam_pos, lam_neg = pipeline.caption_lambdas(sc, cap_tok, neg_tok, clean)                          # 2 passes
     groups = pipeline.item_groups(sc, gid, K)
     a0 = config.ALPHA_PRIMARY
-    row, arrays = dict(gid=gid, image_id=it["image_id"], caption=it["caption"], neg_caption=it["neg_caption"], n_tok=len(cap_tok), conds={}), {}
+    row, arrays = dict(gid=gid, image_id=it["image_id"], caption=it["caption"], neg_caption=it["neg_caption"], n_tok=len(cap_tok), n_tok_neg=len(neg_tok), conds={}), {}
     G_of: dict[str, np.ndarray] = {}
     for ci, c in enumerate(conds):
         name, codes = c["name"], c["codes"]
@@ -163,7 +163,18 @@ def main(argv=None):
         return sc.selfcheck(common.load_image(items[0]["image_id"]), items[0]["caption"])
 
     def get_items(sc, run):
-        f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+        tok = lambda c: len(sc.caption_ids(c))
+        f = folds.ensure_folds(tok)
+        if a.n and a.n > len(f["test"]):                                  # v2 section 9: 'raise the test fold to 500' (decision recorded before any test item is scored)
+            if common.read_jsonl(run / "items.jsonl"):
+                raise RuntimeError("the test fold cannot be extended after test items were scored")
+            from exp_p2.gate import data
+            try:
+                cats = data.load_instances()[1]
+            except FileNotFoundError:
+                cats = None
+            f = folds.extend_test_fold(f, a.n, common.load_captions(), tok, data.probe_image_ids(), cats)
+            folds.save_folds(f)
         return f["test"][:a.n] if a.n else f["test"]
 
     return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=get_items, process=process, make_ctx=make_ctx_factory(a),

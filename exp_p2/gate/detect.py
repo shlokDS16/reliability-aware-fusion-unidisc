@@ -17,7 +17,9 @@ from exp_p2.gate import baselines, corruptions
 
 P2_SEED = 20261028
 P2_CORRS = ("swap", "patch", "jpeg", "noise")
-CHEAP = ("tex", "nbr", "rarity", "s3", "plainB", "tbv")          # candidates for 'best cheap baseline' (random and r_original are controls, not rivals)
+CHEAP = ("tex", "nbr", "rarity", "s3", "plainB", "tbv", "tex_neg", "nbr_neg", "rarity_neg")
+# candidates for 'best cheap baseline' (random and r_original are controls, not rivals). The *_neg entries are the same baselines with the opposite sign: the analysis
+# gives the non-generative rivals the better of both orientations (a sign oracle), so q must beat even that; this is deliberately generous to the rivals.
 GRID, PATCH_PX = 32, 16
 
 

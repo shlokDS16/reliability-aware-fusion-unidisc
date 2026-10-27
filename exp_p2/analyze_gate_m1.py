@@ -44,6 +44,7 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
             extra = dict(rarity=freq.rarity(codes), nbr=baselines.neighbour_codebook_distance(codes, codebook, detect.GRID),
                          tex=baselines.patch_texture(detect.regen_pixels(raw, i, corr) if pixels else None, detect.GRID))
             extra = {k: v for k, v in extra.items() if not np.isnan(v).any()}
+            extra |= {k + "_neg": -v for k, v in list(extra.items())}          # sign-oracle rivals: the cheap baselines get the better of both orientations
             sus = detect.suspicions(a, corr, i, m1, extra)
             rec[corr] = detect.item_aurocs(sus, np.asarray(a[f"{corr}_z"], bool))
         per_item.append(rec)

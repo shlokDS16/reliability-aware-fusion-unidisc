@@ -177,6 +177,16 @@ def test_folds_file_roundtrip_and_ensure_does_not_rebuild(tmp_path):
     assert folds.ensure_folds(lambda c: (_ for _ in ()).throw(AssertionError("must not tokenize")), p) == f
 
 
+def test_extending_the_test_fold_keeps_the_other_folds_and_the_test_prefix():
+    caps = _fake_captions(900)
+    cats = _cats_for(caps)
+    f = folds.build_folds(caps, lambda c: len(c.split()), set(), sizes=(60, 20, 60), image_cats=cats)
+    g = folds.extend_test_fold(f, 100, caps, lambda c: len(c.split()), set(), cats)
+    assert g["cal"] == f["cal"] and g["head"] == f["head"] and len(g["test"]) == 100 and g["meta"]["test_extended_from"] == 60
+    assert [i["image_id"] for i in g["test"][:60]] == [i["image_id"] for i in f["test"]]
+    folds.check_folds(g, set())
+
+
 def test_probe_ids_exclude_both_probes(tmp_path):
     import json
     for rid, ids in (("P2-PROBE-01", [1, 2]), ("P2-PROBE-02", [2, 3])):

@@ -84,6 +84,19 @@ def save_folds(folds: dict, path: Path | None = None) -> Path:
     return path
 
 
+def extend_test_fold(folds: dict, n_test: int, captions: dict[int, list[str]], n_tok_fn, exclude_ids: set[int], image_cats=None) -> dict:
+    """Enlarge the test fold (v2 section 9: 'raise the test fold to 500 items') without touching the calibration and headroom folds. The walk is sequential, so
+    the first folds are regenerated identically (asserted); the test fold's negatives are re-drawn for the larger fold, so this must happen BEFORE any test item is
+    scored. Returns a new folds dict; the caller saves it."""
+    meta = folds["meta"]
+    new = build_folds(captions, n_tok_fn, exclude_ids, seed=meta["seed"], sizes=(meta["sizes"][0], meta["sizes"][1], n_test), tok_range=tuple(meta["tok_range"]), image_cats=image_cats)
+    for k in ("cal", "head"):
+        assert new[k] == folds[k], f"fold {k} changed while extending the test fold"
+    assert [it["image_id"] for it in new["test"][:len(folds["test"])]] == [it["image_id"] for it in folds["test"]]
+    new["meta"]["test_extended_from"] = len(folds["test"])
+    return new
+
+
 def ensure_folds(n_tok_fn, path: Path | None = None) -> dict:
     """Load the folds file if it exists, else build it (needs the tokenizer via n_tok_fn and the local COCO files) and write it."""
     path = Path(path) if path else folds_path()

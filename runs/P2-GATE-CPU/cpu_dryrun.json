@@ -1,0 +1,204 @@
+{
+ "note": "dry run: caption length approximated by ceil(1.3 * words); not the real folds",
+ "n_categories": 80,
+ "n_images_with_annotations": 4952,
+ "n_excluded_probe_ids": 494,
+ "fold_sizes": {
+  "cal": 300,
+  "head": 100,
+  "test": 300
+ },
+ "fold_sha1": "994b0ee3f9f24529",
+ "frac_negatives_restricted": {
+  "cal": 1.0,
+  "head": 1.0,
+  "test": 1.0
+ },
+ "table_categories_equal_instances_file": true,
+ "hard_negatives": {
+  "head": {
+   "n_items": 100,
+   "n_built": 74,
+   "yield_": 0.74,
+   "skipped": {
+    "noun_not_annotated": 2,
+    "no_same_supercategory_alternative": 14,
+    "no_known_noun": 10
+   },
+   "examples": [
+    {
+     "gid": 1000,
+     "idx": 0,
+     "image_id": 172617,
+     "caption": "A woman reads a book while sitting on steps near a suitcase full of books.",
+     "negative": "A woman reads a clock while sitting on steps near a suitcase full of books.",
+     "old_cat": "book",
+     "new_cat": "clock",
+     "replaced": "book"
+    },
+    {
+     "gid": 1002,
+     "idx": 2,
+     "image_id": 164637,
+     "caption": "An old fashion sink with the cover painted pink near the mirror.",
+     "negative": "An old fashion refrigerator with the cover painted pink near the mirror.",
+     "old_cat": "sink",
+     "new_cat": "refrigerator",
+     "replaced": "sink"
+    },
+    {
+     "gid": 1004,
+     "idx": 4,
+     "image_id": 40036,
+     "caption": "A person jumping a horse over a wooden obstacle.",
+     "negative": "A person jumping a cow over a wooden obstacle.",
+     "old_cat": "horse",
+     "new_cat": "cow",
+     "replaced": "horse"
+    },
+    {
+     "gid": 1005,
+     "idx": 5,
+     "image_id": 400161,
+     "caption": "A remote control storage pouch attached to a couch.",
+     "negative": "A computer mouse storage pouch attached to a couch.",
+     "old_cat": "remote",
+     "new_cat": "mouse",
+     "replaced": "remote control"
+    },
+    {
+     "gid": 1006,
+     "idx": 6,
+     "image_id": 235057,
+     "caption": "A giraffe leaning down to take a drink of water.",
+     "negative": "A horse leaning down to take a drink of water.",
+     "old_cat": "giraffe",
+     "new_cat": "horse",
+     "replaced": "giraffe"
+    },
+    {
+     "gid": 1007,
+     "idx": 7,
+     "image_id": 385205,
+     "caption": "a cat scratching his ear while holding a carrot",
+     "negative": "a bear scratching his ear while holding a carrot",
+     "old_cat": "cat",
+     "new_cat": "bear",
+     "replaced": "cat"
+    },
+    {
+     "gid": 1009,
+     "idx": 9,
+     "image_id": 479953,
+     "caption": "A female soccer player about to kick the ball.",
+     "negative": "A female soccer player about to kick the pair of skis.",
+     "old_cat": "sports ball",
+     "new_cat": "skis",
+     "replaced": "ball"
+    },
+    {
+     "gid": 1011,
+     "idx": 11,
+     "image_id": 398377,
+     "caption": "There are women that are talking on the cell phone",
+     "negative": "There are women that are talking on the keyboard",
+     "old_cat": "cell phone",
+     "new_cat": "keyboard",
+     "replaced": "cell phone"
+    }
+   ]
+  },
+  "test": {
+   "n_items": 300,
+   "n_built": 228,
+   "yield_": 0.76,
+   "skipped": {
+    "no_same_supercategory_alternative": 29,
+    "no_known_noun": 37,
+    "noun_not_annotated": 6
+   },
+   "examples": [
+    {
+     "gid": 2001,
+     "idx": 1,
+     "image_id": 239537,
+     "caption": "A man holding a tennis racket getting ready to hit a tennis ball.",
+     "negative": "A man holding a frisbee getting ready to hit a tennis ball.",
+     "old_cat": "tennis racket",
+     "new_cat": "frisbee",
+     "replaced": "tennis racket"
+    },
+    {
+     "gid": 2002,
+     "idx": 2,
+     "image_id": 483050,
+     "caption": "A large bed with two lamps on either side lighting the room.",
+     "negative": "A large toilet with two lamps on either side lighting the room.",
+     "old_cat": "bed",
+     "new_cat": "toilet",
+     "replaced": "bed"
+    },
+    {
+     "gid": 2004,
+     "idx": 4,
+     "image_id": 197796,
+     "caption": "Cluttered bathroom with sink in foreground and towel on a rack.",
+     "negative": "Cluttered bathroom with refrigerator in foreground and towel on a rack.",
+     "old_cat": "sink",
+     "new_cat": "refrigerator",
+     "replaced": "sink"
+    },
+    {
+     "gid": 2005,
+     "idx": 5,
+     "image_id": 519208,
+     "caption": "A man in a green shirt is standing next to an elephant.",
+     "negative": "A man in a green shirt is standing next to a zebra.",
+     "old_cat": "elephant",
+     "new_cat": "zebra",
+     "replaced": "elephant"
+    },
+    {
+     "gid": 2006,
+     "idx": 6,
+     "image_id": 257566,
+     "caption": "A narrow boat coming down a small water way next to a sidewalk.",
+     "negative": "A narrow bus coming down a small water way next to a sidewalk.",
+     "old_cat": "boat",
+     "new_cat": "bus",
+     "replaced": "boat"
+    },
+    {
+     "gid": 2007,
+     "idx": 7,
+     "image_id": 69138,
+     "caption": "A red stoplight with a street in the background.",
+     "negative": "A red bench with a street in the background.",
+     "old_cat": "traffic light",
+     "new_cat": "bench",
+     "replaced": "stoplight"
+    },
+    {
+     "gid": 2009,
+     "idx": 9,
+     "image_id": 401446,
+     "caption": "A woman wearing a dress and holding an umbrella.",
+     "negative": "A woman wearing a dress and holding a tie.",
+     "old_cat": "umbrella",
+     "new_cat": "tie",
+     "replaced": "umbrella"
+    },
+    {
+     "gid": 2010,
+     "idx": 10,
+     "image_id": 90108,
+     "caption": "A white bathroom sink sitting under a bathroom window.",
+     "negative": "A white bathroom refrigerator sitting under a bathroom window.",
+     "old_cat": "sink",
+     "new_cat": "refrigerator",
+     "replaced": "sink"
+    }
+   ]
+  }
+ }
+}
