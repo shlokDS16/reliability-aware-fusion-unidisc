@@ -97,7 +97,7 @@ def primary(rows: list[dict], family, n_boot=10000) -> dict:
     for c, p in zip(config.REALISTIC, adj):
         res[c]["p_holm"] = p
         res[c]["gate_better"] = bool(res[c]["tested"] and res[c]["b"] > res[c]["c"] and p < 0.05)
-    return dict(per_corruption=res, holm_m=3, claim_survives=bool(any(res[c]["gate_better"] for c in config.REALISTIC)),
+    return dict(per_corruption=res, holm_m=3, claim_survives=bool(any(res[c]["gate_better"] for c in config.REALISTIC)), tested=WORDING_Y,
                 rule="SAP 2.4: m = 3 always; supported iff at least one rejection after Holm with b > c")
 
 
@@ -131,10 +131,22 @@ def primary_d(rows: list[dict], family, n_boot=10000) -> dict:
         res[c]["p_holm"] = p
         res[c]["gate_better"] = bool(res[c]["tested"] and res[c]["mean_diff"] > 0 and p < 0.05)
     return dict(per_corruption=res, holm_m=3, endpoint="d", rule="R3", claim_survives=bool(any(res[c]["gate_better"] for c in config.REALISTIC)), negative_available=False,
-                z_star_scale="z* = sqrt(m) * d", note="R3 (SAP 4.6): primary = Wilcoxon on the paired change of d; Y is secondary; the 'negative' reading is unavailable")
+                tested=WORDING_D, z_star_scale="z* = sqrt(m) * d", note="R3 (SAP 4.6): primary = Wilcoxon on the paired change of d; Y is secondary; the 'negative' reading is unavailable", caveat=CAVEAT_D)
 
 
 NEGATIVE_MARGIN, N_MIN = 0.05, 240
+
+# Wording is part of the result (red team N2 / C2): every printed or recorded label says exactly what was tested.
+WORDING_Y = "higher matching accuracy (McNemar on Y)"
+WORDING_D = "higher per-item mean/sd evidence ratio d (R3 primary)"
+CAVEAT_D = ("d = mean/sd of the per-token evidence over the retained tokens can rise by trimming heavy-tailed tokens, whatever their reason; the geometry-matched and scattered random gates "
+            "keep the moments of d roughly unchanged, so they do not separate detecting corruption from trimming heavy tails. The controls that could (plain-B top-k, s3 top-k) are Tier 3, "
+            "reported beside the P result, with no p-value (red team N2).")
+CAVEAT_SM_R3 = "S-M under R3 is an accuracy McNemar with too few discordant items to say anything: stated as uninformative in advance (red team N2)."
+
+
+def wording(rule: str) -> str:
+    return WORDING_D if rule == "R3" else WORDING_Y
 
 
 def outcome_reading(prim: dict, rule: str, family, n_operating_points: int | None = None) -> dict:
@@ -143,10 +155,13 @@ def outcome_reading(prim: dict, rule: str, family, n_operating_points: int | Non
     everything else (including K1, n < 240, any CI wider than the margin)."""
     fm = _family_map(family)
     n_op = len(fm) if n_operating_points is None else n_operating_points
+    w = wording(rule)
     if prim["claim_survives"]:
         pos = [c for c in config.REALISTIC if prim["per_corruption"][c]["gate_better"]]
-        return dict(label="positive", corruptions=pos, rule=rule, reasons=[],
-                    sentence="GATE-M improved image-direction verification over no gate on " + ", ".join(pos) + " (one model, one severity per corruption); attributing the gain to detection needs S-M")
+        tail = ("; this tests the evidence ratio d only, not matching accuracy, and a rise in d can come from trimming heavy-tailed tokens" if rule == "R3"
+                else "; attributing the gain to detection needs S-M")
+        return dict(label="positive", corruptions=pos, rule=rule, reasons=[], tested=w,
+                    sentence=f"GATE-M had a {w} than no gate on " + ", ".join(pos) + " (one model, one severity per corruption)" + tail)
     reasons = []
     if rule == "R3":
         reasons.append("rule R3: the negative reading is not available (the margin is defined for accuracy, not for d)")
@@ -163,8 +178,10 @@ def outcome_reading(prim: dict, rule: str, family, n_operating_points: int | Non
             if ci is None or not (ci[0] > -NEGATIVE_MARGIN and ci[1] < NEGATIVE_MARGIN):
                 reasons.append(f"{c}: 90 percent CI {ci} is not inside (-0.05, 0.05)")
     if not reasons:
-        return dict(label="negative", rule=rule, reasons=[], sentence="no improvement was detected; an improvement larger than 0.05 is excluded and a loss larger than 0.05 is excluded (90 percent CI inside (-0.05, 0.05) for every corruption with an operating point). This is not 'GATE-M has no effect'")
-    return dict(label="inconclusive", rule=rule, reasons=reasons, sentence="no improvement was detected; the data are compatible with a net accuracy change as wide as the reported 95 percent CI. Not 'GATE-M has no effect'")
+        return dict(label="negative", rule=rule, reasons=[], tested=w, sentence="no higher matching accuracy (McNemar on Y) was detected; a gain larger than 0.05 is excluded and a loss larger than 0.05 is excluded (90 percent CI inside (-0.05, 0.05) for every corruption with an operating point). This is not 'GATE-M has no effect'")
+    if rule == "R3":
+        return dict(label="inconclusive", rule=rule, reasons=reasons, tested=w, sentence="no higher per-item mean/sd evidence ratio d (R3 primary) was detected; this tested d, not matching accuracy. Not 'GATE-M has no effect'")
+    return dict(label="inconclusive", rule=rule, reasons=reasons, tested=w, sentence="no higher matching accuracy (McNemar on Y) was detected; the data are compatible with a net accuracy change as wide as the reported 95 percent CI. Not 'GATE-M has no effect'")
 
 
 def s_m(rows: list[dict], family, prim: dict, n_boot=10000) -> dict:
@@ -486,11 +503,17 @@ def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict |
             raise PartialRun(f"{comp['completed_n']} of {comp['planned_n']} planned items completed; the outcome analysis waits for the planned fold or the freeze (SAP 8.2); --allow-partial overrides and is logged")
     y_family = primary(rows, family, n_boot)                       # McNemar on Y: primary under R1/R2, secondary under R3
     prim = primary_d(rows, family, n_boot) if rule == "R3" else y_family
-    res = dict(meta=dict(seeds.meta(), allow_partial=bool(allow_partial)), rule=rule, primary_endpoint="d (z*), Wilcoxon" if rule == "R3" else "Y, exact McNemar",
+    caveats = [CAVEAT_D] if (rule == "R3" or endpoint == "d") else []
+    if rule == "R3":
+        caveats.append(CAVEAT_SM_R3)
+    res = dict(meta=dict(seeds.meta(), allow_partial=bool(allow_partial)), tested_by_primary=wording(rule), caveats=caveats, rule=rule, primary_endpoint="d (z*), Wilcoxon" if rule == "R3" else "Y, exact McNemar",
                negative_available=bool(rule in ("R1", "R2")), n_items=len(rows), family=keys, endpoint=endpoint, completeness=comp, primary=prim,
                secondary_y=(dict(y_family, label="secondary under R3") if rule == "R3" else None), outcome=outcome_reading(prim, rule, family), s_m=s_m(rows, family, prim, n_boot),
                c1_test=c1mod.c1(c1mod.ys_from_rows(rows, "test"), "test (look 3, analysis step)"), s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot),
                mechanism={k: mechanism(rows, k, n_boot) for k in keys + ["patch"]}, calibration=calibration(run_dir, rows, keys, n_boot, m2_dir=m2_dir, split_reps=split_reps))
+    if rule == "R3":
+        res["s_m"]["uninformative_under_R3"] = True                                                  # stated in advance (red team N2)
+        res["s_z"]["duplicate_of_primary_under_R3"] = True
     for k in keys:                                                                                      # Prop. 4 refutation check (5.3)
         obs = res["mechanism"][k][endpoint]["gate_minus_none"]
         pred = res["calibration"]["per_condition"][k]["prop4"].get("predicted_helps")

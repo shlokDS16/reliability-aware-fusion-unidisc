@@ -181,6 +181,32 @@ def test_outcome_reading_requires_n_240_and_a_tight_ci_for_every_corruption_with
     assert A.run(run, FAM, n_boot=200, rule="R1")["outcome"]["label"] == "positive"
 
 
+def test_wording_says_exactly_what_was_tested_and_r3_output_has_no_verification_claim(tmp_path):
+    n = 120
+    g, o = flips(n, 6, 6)
+    d = {("jpeg10", "gate0.05"): 0.30 + 0.002 * np.arange(n) / n, ("jpeg10", "none"): np.full(n, 0.1)}
+    run, rows = build(tmp_path, n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o}, d)
+    r3 = A.run(run, FAM, n_boot=200, rule="R3")
+    text = json.dumps(r3, default=float).lower()
+    assert "verification" not in text and "improved" not in text                                         # nothing in the R3 output claims verification or an improvement of it
+    assert r3["outcome"]["label"] == "positive" and r3["outcome"]["tested"] == "higher per-item mean/sd evidence ratio d (R3 primary)"
+    assert r3["outcome"]["sentence"].startswith("GATE-M had a higher per-item mean/sd evidence ratio d (R3 primary) than no gate on jpeg")
+    assert "not matching accuracy" in r3["outcome"]["sentence"] and "trimming heavy-tailed tokens" in r3["outcome"]["sentence"]
+    assert r3["tested_by_primary"] == A.WORDING_D and r3["primary"]["tested"] == A.WORDING_D
+    assert any("trimming heavy-tailed tokens" in c and "plain-B top-k" in c for c in r3["caveats"]) and any("S-M under R3" in c and "uninformative" in c for c in r3["caveats"])
+    assert r3["s_m"]["uninformative_under_R3"] is True
+    flat_d = {("jpeg10", "gate0.05"): np.full(n, 0.1), ("jpeg10", "none"): np.full(n, 0.1)}
+    run, rows = build(tmp_path / "null", n, {("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o}, flat_d)
+    nul = A.run(run, FAM, n_boot=200, rule="R3")
+    assert nul["outcome"]["label"] == "inconclusive" and "verification" not in json.dumps(nul, default=float).lower() and nul["outcome"]["sentence"].startswith("no higher per-item mean/sd evidence ratio d (R3 primary)")
+    g2, o2 = flips(n, 30, 2)
+    run, rows = build(tmp_path / "y", n, {("jpeg10", "gate0.05"): g2, ("jpeg10", "none"): o2})
+    r1 = A.run(run, FAM, n_boot=200, rule="R1")
+    assert r1["outcome"]["sentence"].startswith("GATE-M had a higher matching accuracy (McNemar on Y) than no gate on jpeg") and r1["primary"]["tested"] == A.WORDING_Y
+    assert "verification" not in r1["outcome"]["sentence"].lower() and r1["caveats"] == [A.CAVEAT_D]       # the d caveat is recorded whenever d is reported (S-Z), not only under R3
+    assert A.wording("R1") == A.wording("R2") == "higher matching accuracy (McNemar on Y)"
+
+
 # ------------------------------------------------------------------------------------------------ S-M, S-C, K5, K6
 def test_s_m_uses_seed_one_gatekeeps_and_flags_k5_k6(tmp_path):
     n = 100
