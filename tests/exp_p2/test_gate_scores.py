@@ -164,7 +164,10 @@ def test_with_coupling_captions_differ():
 def test_L2_all_gated_gives_exactly_zero_evidence():
     d = np.random.default_rng(0).normal(size=16)
     ev = evidence.arm_summary(d, np.ones(16, bool))
-    assert ev["n"] == 0 and ev["sum"] == 0.0 and ev["mean"] == 0.0 and ev["z"] == 0.0 and ev["y"] == 0
+    assert ev["n"] == 0 and ev["sum"] == 0.0 and ev["mean"] == 0.0 and ev["y"] == 0
+    assert np.isnan(ev["z"]) and np.isnan(ev["d"])                              # undefined, not a finite zero (audit M7)
+    one = evidence.evidence_from_delta(np.array([0.3]))
+    assert one["n"] == 1 and np.isnan(one["z"]) and np.isnan(one["d"]) and one["y"] == 1
     sc, codes, st = _setup()
     n = len(CAP)
     Dt = sc.build(CAP, codes)

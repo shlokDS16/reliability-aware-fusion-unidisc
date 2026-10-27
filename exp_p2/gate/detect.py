@@ -13,7 +13,7 @@ from __future__ import annotations
 import numpy as np
 
 from exp_p2 import core
-from exp_p2.gate import baselines, corruptions
+from exp_p2.gate import baselines, corruptions, seeds
 
 P2_SEED = 20261028
 P2_CORRS = ("swap", "patch", "jpeg", "noise")
@@ -67,8 +67,9 @@ def item_aurocs(sus: dict, z: np.ndarray, min_class: int = 5) -> dict:
     return {k: (core.auroc(v, z) if ok and not np.isnan(v).any() else float("nan")) for k, v in sus.items()} | {"_eligible": float(ok), "_n_corrupted": float(n_c)}
 
 
-def aggregate(per_item: list[dict], n_boot: int = 10000, seed: int = 0) -> dict:
+def aggregate(per_item: list[dict], n_boot: int = 10000, seed=None) -> dict:
     """per_item: list of {corr: {score: auroc, _eligible, _n_corrupted}}. -> {corr: {score: dict(mean, lo, hi, n)}, _excluded: ...}."""
+    seed = seed if seed is not None else seeds.seed_for("auroc")
     out: dict = {}
     for corr in P2_CORRS:
         rows = [p[corr] for p in per_item if corr in p]
@@ -106,9 +107,10 @@ def split_sign(name: str) -> tuple[str, int]:
     return (name[:-4], -1) if name.endswith("_neg") else (name, 1)
 
 
-def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", cheap=CHEAP, n_boot: int = 10000, seed: int = 0, reselect: bool = False) -> dict:
+def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", cheap=CHEAP, n_boot: int = 10000, seed=None, reselect: bool = False) -> dict:
     """Per-item AUROC of `target` minus that of the cheap rival with the highest mean AUROC on this corruption (sign included: a sign oracle; SAP A1.2 rule 2); paired bootstrap
     over items: two-sided bootstrap p, percentile CIs at 95 and 97.5 percent. reselect=True re-selects the rival inside every bootstrap resample (stricter sensitivity)."""
+    seed = seed if seed is not None else seeds.seed_for("detection_contrast")
     rows = [p[corr] for p in per_item if corr in p]
     means = candidate_means(rows, cheap) if rows else {}
     if not rows or not means or not any(not np.isnan(r.get(target, np.nan)) for r in rows):
@@ -142,7 +144,7 @@ def holm_adjust(pvals: dict) -> dict:
     return dict(zip(keys, stats.holm([pvals[k] for k in keys])))
 
 
-def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed: int = 0, reselect: bool = False) -> dict:
+def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed=None, reselect: bool = False) -> dict:
     """SAP 2.5 / A1.2: S-D over JPEG q10 and noise 0.10, Holm over m = 2. 'q beats the best cheap baseline' on a corruption iff the Holm-adjusted p <= 0.05 with a positive mean
     difference; the falsifier (spec 7.6) is met if that holds for neither corruption (a significant difference on the negative side therefore also meets it). A corruption
     without q gets p = 1 and stays in m = 2."""

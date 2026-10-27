@@ -4,7 +4,8 @@ Image direction: Lambda^c = log-probs at all image tokens with the image fully m
 sees the image). For observed codes v and an arm's included set R:
     Delta_j = Lambda^{c+}_j[v_j] - Lambda^{c-}_j[v_j]   (the null D_j cancels for a fixed image)
     Y = 1[mean_R Delta > 0]  (ties count wrong, as Appendix A of the spec), z_R = mean / (sd / sqrt(|R|)).
-Empty R (L2, all gated): the evidence is exactly 0, Y = 0, z = 0, n = 0.
+Empty R (L2, all gated): the evidence sum and mean are exactly 0 and Y = 0 (ties and empty sets count as wrong), n = 0; z and d are NaN (SAP N5: undefined when |R| < 2),
+so such an item leaves S-Z and the headroom rule and is counted, instead of entering them as a finite zero.
 NOTE (spec inconsistency, see implementation notes): z_R scales with sqrt(|R|), so a RANDOM gate lowers z by sqrt(1 - g) in expectation; the spec says
 'unchanged'. The size-invariant effect size d = mean / sd is therefore recorded as well; the headroom check can use either.
 Text direction: E_{T<-I}(c) = mean over caption tokens of [log p(t_j | image minus gated tokens) - log p(t_j | all masked)]  (the probe-1
@@ -32,7 +33,7 @@ def evidence_from_delta(delta: np.ndarray, included: np.ndarray | None = None) -
         d = d[np.asarray(included, bool)]
     n = int(d.size)
     if n == 0:
-        return dict(n=0, sum=0.0, mean=0.0, sd=float("nan"), z=0.0, d=0.0, y=0)
+        return dict(n=0, sum=0.0, mean=0.0, sd=float("nan"), z=float("nan"), d=float("nan"), y=0)
     mean = float(d.mean())
     sd = float(d.std(ddof=1)) if n > 1 else float("nan")
     z = mean / (sd / np.sqrt(n)) if (n > 1 and sd > 0) else float("nan")

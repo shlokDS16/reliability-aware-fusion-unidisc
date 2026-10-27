@@ -71,3 +71,25 @@ def exact_sign_min_n(theta: float, alpha_prime: float, power: float = 0.8, stay:
         if all(exact_sign_power(m, theta, alpha_prime) >= power for m in range(n, n + stay + 1)):
             return n
     raise ValueError("no n_d up to n_max reaches the power")
+
+
+def mcnemar_midp(b: int, c: int) -> float:
+    """Mid-p version of the exact two-sided McNemar test (sensitivity only; it does not guarantee size): 2 * (P(X < k) + 0.5 P(X = k)), k = min(b, c), X ~ Bin(b + c, 1/2)."""
+    n = b + c
+    if n == 0:
+        return 1.0
+    k = min(b, c)
+    below = sum(math.comb(n, i) for i in range(k)) / 2.0 ** n
+    at = math.comb(n, k) / 2.0 ** n
+    return float(min(1.0, 2.0 * (below + 0.5 * at)))
+
+
+def clopper_pearson(k: int, n: int, level: float = 0.95) -> tuple[float, float]:
+    """Exact (Clopper-Pearson) interval of a binomial proportion k/n."""
+    if n == 0:
+        return float("nan"), float("nan")
+    from scipy.stats import beta
+    a = (1 - level) / 2
+    lo = 0.0 if k == 0 else float(beta.ppf(a, k, n - k + 1))
+    hi = 1.0 if k == n else float(beta.ppf(1 - a, k + 1, n - k))
+    return lo, hi
