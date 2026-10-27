@@ -35,6 +35,7 @@ SEED = 20261028
 K = 8
 GRID, PATCH, SWAP_FRAC = 32, 8, 0.15
 JPEG_Q, NOISE_SIGMA = 10, 0.1
+MEM_FRAC, MAX_GPU_USED_MIB = 0.75, 10750.0    # safeguards after the 2026-10-27 crash (see main)
 CORRS = ("swap", "patch", "jpeg", "noise")
 SCORES = ("s1", "s2", "s3", "r_original", "random")
 EXAMPLE_CORR = ("swap", "patch", "jpeg", "noise", "swap", "patch")      # fixed before the run: example j uses item j and this corruption
@@ -115,6 +116,9 @@ def main():
     (run / "arrays").mkdir(exist_ok=True)
     (run / "examples").mkdir(exist_ok=True)
 
+    # Safeguards added after the 2026-10-27 20:20 crash (bugcheck 0x116 with GPU memory full; approved by Shlok 21:20):
+    # cap this process at 75% of GPU memory so an over-allocation raises OutOfMemoryError instead of filling the card.
+    torch.cuda.set_per_process_memory_fraction(MEM_FRAC)
     t_load = time.perf_counter()
     net = common.load_net()
     sc = UniScorer(net)
@@ -141,6 +145,11 @@ def main():
             continue
         if dl.reached(margin_s=45):
             common.append_jsonl(run / "chunks.jsonl", dict(event="soft_deadline", t=time.time(), remaining=a.n - len(done) - n_new))
+            return EXIT_MORE_WORK
+        free_b, total_b = torch.cuda.mem_get_info()                     # whole-GPU, all processes
+        if (total_b - free_b) / 2**20 > MAX_GPU_USED_MIB:
+            common.append_jsonl(run / "chunks.jsonl", dict(event="gpu_memory_stop", t=time.time(), used_mib=(total_b - free_b) / 2**20))
+            print(f"STOP: whole-GPU memory {(total_b - free_b) / 2**20:.0f} MiB > {MAX_GPU_USED_MIB}", file=sys.stderr)
             return EXIT_MORE_WORK
         t0 = time.perf_counter()
         torch.cuda.reset_peak_memory_stats()

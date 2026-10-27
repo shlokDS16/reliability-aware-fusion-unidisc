@@ -75,3 +75,12 @@ Full report: `probes/PROBE-REPORT-2026-10-27.md`. Numbers come from `runs/P2-PRO
   added first. GATE's core claim, that per-token scores find corrupted tokens, is therefore still untested.
 - Omni-Diffusion 8B weights: download complete (Hugging Face cache, snapshot 2233ee1a). The code install is still blocked
   (decision 2).
+
+## Decisions taken by Shlok (2026-10-27 ~21:20 IST, in the lead session)
+1. Idea: **A (GATE)**, with C's two-way scoring machinery inside it.
+2. Omni-Diffusion code: **approved** ("Do it as it might improve our results I believe."). Clone, security-review first, then
+   install into an isolated `.venv-omni`.
+3. AI disclosure: **Declaration only** (Elsevier's "Declaration of generative AI and AI-assisted technologies" section).
+4. Scope enquiry and the 50-reference limit: no change asked; plan to 50 references.
+6. Probe 2 restart: **approved with safeguards**: 75% PyTorch memory cap, per-item stop above 10,750 MiB whole-GPU memory
+   (both in exp_p2/run_probe2.py), and Ollama and the ChatGPT/Codex app closed during the run.
