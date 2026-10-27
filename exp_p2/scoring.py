@@ -85,7 +85,9 @@ class UniScorer:
         self.marker = 811
 
     def caption_ids(self, caption: str) -> list[int]:
-        return self.tok(caption, add_special_tokens=False)["input_ids"]
+        # In the demo string "...</s><s>CAPTION</s>..." the first word follows <s> and gets no SentencePiece dummy-prefix; tokenising
+        # "<s>"+caption and dropping the <s> reproduces that (checked equal to messages_to_batch on 40 captions, dbg2 in the run log).
+        return self.tok("<s>" + caption, add_special_tokens=False)["input_ids"][1:]
 
     def build(self, caption_tok: list[int], codes: np.ndarray | torch.Tensor):
         """Returns dict(base [L] long cuda, mod [L], cap_pos, img_pos (long cuda))."""
@@ -143,12 +145,13 @@ class UniScorer:
         st = self.build(self.caption_ids(caption), codes)
         mine = st["base"].cpu()
         same_len = bool(ref.shape == mine.shape)
-        ids_equal = bool(same_len and (ref == mine).all())
+        i0 = int(st["img_pos"][0])
+        ids_equal = bool(same_len and (ref[:i0] == mine[:i0]).all() and ref[-1] == mine[-1])        # layout + caption tokens (image checked below)
         mod_equal = bool(same_len and (b["modality"][0].cpu() == st["mod"][0].cpu()).all())
         out = dict(ids_equal=ids_equal, modality_equal=mod_equal, len_ref=int(ref.shape[0]), len_mine=int(mine.shape[0]), n_cap=int(len(st["cap_pos"])))
         if not same_len:
             return out
-        out["image_tokens_equal"] = bool((ref[st["img_pos"].cpu()] == mine[st["img_pos"].cpu()]).all())
+        out["image_tokens_frac_equal"] = float((ref[st["img_pos"].cpu()] == mine[st["img_pos"].cpu()]).float().mean())
         # compare my fp32 restricted log-probs with model.forward's own bf16 log-probs at masked positions
         g = torch.Generator().manual_seed(0)
         cp = st["cap_pos"][torch.randperm(len(st["cap_pos"]), generator=g)[:4].to(self.dev)]

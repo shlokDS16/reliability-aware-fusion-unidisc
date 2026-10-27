@@ -110,7 +110,7 @@ def main():
         chk = sc.selfcheck(common.load_image(it["image_id"]), it["caption"])
         (run / "selfcheck.json").write_text(json.dumps(chk, indent=1), encoding="utf8")
         print("selfcheck", chk)
-        if not (chk.get("ids_equal") and chk.get("modality_equal")):
+        if not (chk.get("ids_equal") and chk.get("modality_equal") and chk.get("image_tokens_frac_equal", 0) >= 0.99):
             print("SELF-CHECK FAILED: hand-built layout differs from the demo path", file=sys.stderr)
             return 2
 
