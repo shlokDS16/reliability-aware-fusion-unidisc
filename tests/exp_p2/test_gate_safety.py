@@ -136,11 +136,11 @@ def test_p2_stage_runs_the_guarded_wrapper_not_run_probe2_directly():
 
 # ------------------------------------------------------------------------------------------------ F3: AC before load, event log
 def test_ac_is_checked_before_the_model_load(env):
-    rc, called = _run(env, guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: False))
+    rc, called = _run(env, guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: False, slow_factor=1e9))   # slow-item rule off: fake items take microseconds, jitter tripped it (flaky 2026-10-28)
     assert rc == 76 and called == []                                         # load() was never called
     ev = common.read_jsonl(env / "P2-GATE-S" / "chunks.jsonl")
     assert ev[-1]["event"] == "guard_stop" and ev[-1]["reason"] == "ac_lost_before_load"
-    rc, called = _run(env, guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: None))      # unknown power state does not stop
+    rc, called = _run(env, guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: None, slow_factor=1e9))      # unknown power state does not stop
     assert rc == 0 and called == ["load"]
 
 
