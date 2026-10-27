@@ -96,12 +96,12 @@ def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", che
 
 
 def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed: int = 0) -> dict:
-    """v2 7.6 read literally: falsified when the paired CI of (AUROC of q minus best cheap baseline) does not exclude 0 on jpeg AND on noise.
-    `q_significantly_better_on` and `q_significantly_worse_on` are reported so a CI that excludes 0 on the wrong side is not hidden."""
+    """v2 7.6: falsified when the paired CI of (AUROC of q minus best cheap baseline) does not exclude 0 on jpeg AND on noise. Intent (v2 table M3: 'q must beat the
+    best cheap baseline'): a CI that excludes 0 on the NEGATIVE side also counts as falsified (the literal wording would not); both lists are reported."""
     res = {c: paired_vs_best_cheap(per_item, c, target, n_boot=n_boot, seed=seed) for c in ("jpeg", "noise")}
     if not all(r.get("available") for r in res.values()):
         return dict(per_corruption=res, falsified=None, note="needs q (M1 post-hoc arrays) and a cheap baseline on both jpeg and noise")
-    return dict(per_corruption=res, falsified=bool(not any(r["excludes_zero"] for r in res.values())),
+    return dict(per_corruption=res, falsified=bool(not any(r["excludes_zero"] and r["diff_mean"] > 0 for r in res.values())),
                 q_significantly_better_on=[c for c, r in res.items() if r["excludes_zero"] and r["diff_mean"] > 0],
                 q_significantly_worse_on=[c for c, r in res.items() if r["excludes_zero"] and r["diff_mean"] < 0],
                 rule="v2 7.6: falsified when the paired CI of (AUROC q minus best cheap) does not exclude 0 on jpeg and on noise")
