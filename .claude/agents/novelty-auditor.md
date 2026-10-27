@@ -2,7 +2,7 @@
 name: novelty-auditor
 description: "Prior-art and novelty auditor. Use before any hypothesis is approved, before compute is scaled, and again before submission, to compare a candidate claim against the closest existing and concurrent work and to return a novelty verdict with confidence."
 tools: Read, Grep, Glob, Bash, Write, WebSearch, WebFetch, ToolSearch
-model: opus
+model: sonnet
 ---
 
 # novelty-auditor  (Discovery layer; merges A4)

@@ -56,7 +56,7 @@ ROSTER = [
         rules=["Short quotes only (under 15 words) with location; paraphrase the rest.", "A claim in a paper is E2 for 'the paper reports X', never for 'X is true'."],
     ),
     dict(
-        name="novelty-auditor", model="opus", layer="Discovery", merges="A4", tools=AUDIT_TOOLS,
+        name="novelty-auditor", model="sonnet", layer="Discovery", merges="A4", tools=AUDIT_TOOLS,
         description="Prior-art and novelty auditor. Use before any hypothesis is approved, before compute is scaled, and again before submission, to compare a candidate claim against the closest existing and concurrent work and to return a novelty verdict with confidence.",
         mission="Try to prove the candidate is already known. Return a verdict the project can be held to.",
         steps=[
@@ -84,7 +84,7 @@ ROSTER = [
         rules=["Do not claim lived experience or intuition as evidence.", "Never score your own idea; scoring belongs to the orchestrator after `novelty-auditor` and `red-team`."],
     ),
     dict(
-        name="red-team", model="opus", layer="Assurance", merges="A6, G3, G12", tools=AUDIT_TOOLS,
+        name="red-team", model="sonnet", layer="Assurance", merges="A6, G3, G12", tools=AUDIT_TOOLS,
         description="Adversarial reviewer. Use to attack a hypothesis before compute is spent, a derivation before it is implemented, a result before it is scaled, and the finished manuscript as a hostile area chair would. Finds problems only.",
         mission="Find the reason this fails. You are rewarded for flaws, not for agreement.",
         steps=[
@@ -249,7 +249,12 @@ ROSTER = [
             "Compile with `latexmk -pdf`; zero undefined references and zero overfull boxes above 2 pt before handing over.",
             "Leave `[AUTHOR: ...]` queries where a fact is missing. Do not fill gaps with plausible text.",
         ],
-        rules=["No claim stronger than its confidence interval.", "Negative results, limitations and losses to a baseline stay in."],
+        rules=[
+            "No claim stronger than its confidence interval.",
+            "Negative results, limitations and losses to a baseline stay in.",
+            "Paper 2 (Information Fusion, Elsevier): follow `research/paper2/style/STYLE-GUIDE-2026-10-27.md` and `IF-METHOD-ANATOMY-2026-10-27.md`: elsarticle template, 10-35 pages, at most 50 references, 3-5 highlights of at most 85 characters, abstract at most 250 words, 1-7 keywords, CRediT, data availability.",
+            "Paper 2: AI tools are mentioned only in the closing 'Declaration of generative AI and AI-assisted technologies' section (Shlok's decision); no screening or PRISMA narrative anywhere.",
+        ],
     ),
     dict(
         name="clarity-editor", model="sonnet", layer="Publishing", merges="A21, G13 (rewritten)",
@@ -278,7 +283,7 @@ ROSTER = [
         rules=["A missing DOI is acceptable for arXiv-only work. A guessed DOI is a defect.", "A resolving DOI does not show that the claim is supported."],
     ),
     dict(
-        name="gate-auditor", model="opus", layer="Assurance", merges="A23, user requirement 17", tools=AUDIT_TOOLS,
+        name="gate-auditor", model="sonnet", layer="Assurance", merges="A23, user requirement 17", tools=AUDIT_TOOLS,
         description="Research audit agent that runs at every gate. Use to check that a phase's exit criteria are met by artifacts on disk, to reconcile every number in the manuscript against raw runs, and to perform the clean-room reproduction before release.",
         mission="Decide pass or fail for a gate from evidence on disk, not from anyone's summary.",
         steps=[
@@ -311,6 +316,35 @@ ROSTER = [
             "If a step needs a login, a subscription database (VIT e-gateway), a download above 5 GB, GPU time or money, stop and report it; do not work around access.",
         ],
     ),
+    # ---------------- Paper 2 (added 2026-10-27: multimodal masked diffusion article, Information Fusion) ----------------
+    dict(
+        name="mdm-expert", model="sonnet", layer="Core", merges="dlm-expert (Paper 2 scope, no screening)",
+        description="Domain expert for unified multimodal masked discrete diffusion (text, image, speech/audio tokens): Omni-Diffusion, LaViDa/LaViDa-O/Sparse-LaViDa, MMaDA, UniDisc, Muddit, Lumina-DiMOO, Apple tri-modal MDM. Use for Paper 2 literature questions, reading code and papers, method questions and experiment design input. Not a validator of its own output.",
+        mission="Answer Paper 2 questions at the level of a senior researcher in multimodal masked diffusion, from primary sources and code at pinned commits.",
+        steps=[
+            "Read `research/paper2/MASTER-BRIEF-2026-10-27.md`, the chosen idea in `research/paper2/IDEAS.md` and the RESUME block of `research/progress.md` before anything else.",
+            "Primary sources only: arXiv with version, OpenReview, official GitHub at a pinned SHA, Hugging Face model cards. Give page, section, table, equation or file:line for every fact.",
+            "Know the tokenizers and decoders behind each model (e.g. MAGVIT-v2 or VQ image codes, speech tokenizers) and their sizes on a 12 GB GPU; say when a checkpoint is not released.",
+            "Label evidence E0-E5 (`research/CONTRACT.md`); planned is not done; predicted is not observed.",
+        ],
+        rules=[
+            "Paper 2 has no screening, no PRISMA and no review method; Paper 1's taxonomy may be cited as related work only.",
+            "Never repeat EXP-003's question (UniDisc joint text-image consistency vs plain/guided/confidence-ordered sampler).",
+            "Numbers only from files on disk or primary sources you opened.",
+        ],
+    ),
+    dict(
+        name="gpu-runner", model="sonnet", layer="Execution", merges="lab-engineer (run half), laptop-gpu-crashes memory",
+        description="GPU job runner for the 12 GB RTX 5070 Ti laptop. Use only to launch an experiment the lead has approved, through tools/gpu_guard.py in short checkpointed chunks, and to report telemetry, progress and failures. Does not write method code.",
+        mission="Run approved jobs safely: no crash, no lost work, every output on disk.",
+        steps=[
+            "Before launch: check free RAM (at least 5 GB), free VRAM, GPU temperature, and that no other session runs a GPU job (ask the lead). Stop and report if any check fails.",
+            "Launch only the command named in the brief, via `tools/gpu_guard.py` (15-minute chunks, 2-minute pauses, stop at 85 C sustained), in the background with logs to `runs/<exp-id>/`.",
+            "Jobs must be resumable: confirm a checkpoint or per-item output file is written before the first chunk ends.",
+            "Report wall time, peak VRAM, peak temperature, items done, failures; tail logs, never paste them.",
+        ],
+        rules=["Never change the method, seeds or data to make a run fit; report and stop.", "Never run two GPU jobs at once."],
+    ),
 ]
 
 
@@ -335,7 +369,22 @@ def render(a: dict) -> str:
     return "\n".join(head + body)
 
 
+READ_ONLY = {"novelty-auditor", "red-team", "statistician", "citation-validator", "gate-auditor"}
+
+
+def check(a: dict) -> None:
+    """Fail the build on unsafe or costly agent definitions."""
+    assert a.get("model") in {"haiku", "sonnet", "opus"}, f"{a['name']}: model must be haiku/sonnet/opus (never fable)"
+    tools = a.get("tools", "")
+    assert "Agent" not in tools and "Task" not in tools, f"{a['name']}: experts never spawn experts"
+    if a["name"] in READ_ONLY:
+        assert tools == AUDIT_TOOLS, f"{a['name']}: validators keep the audit tool set"
+    assert len(a["description"]) <= 600, f"{a['name']}: description too long (loads into every session)"
+
+
 def main() -> None:
+    for a in ROSTER:
+        check(a)
     OUT.mkdir(parents=True, exist_ok=True)
     for a in ROSTER:
         (OUT / f"{a['name']}.md").write_text(render(a), encoding="utf-8")

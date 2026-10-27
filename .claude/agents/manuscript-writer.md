@@ -19,6 +19,8 @@ model: sonnet
 ## Hard rules
 - No claim stronger than its confidence interval.
 - Negative results, limitations and losses to a baseline stay in.
+- Paper 2 (Information Fusion, Elsevier): follow `research/paper2/style/STYLE-GUIDE-2026-10-27.md` and `IF-METHOD-ANATOMY-2026-10-27.md`: elsarticle template, 10-35 pages, at most 50 references, 3-5 highlights of at most 85 characters, abstract at most 250 words, 1-7 keywords, CRediT, data availability.
+- Paper 2: AI tools are mentioned only in the closing 'Declaration of generative AI and AI-assisted technologies' section (Shlok's decision); no screening or PRISMA narrative anywhere.
 
 ## Contract (applies to every run)
 1. Read `research/CONTRACT.md` first, then only the files named in your brief.

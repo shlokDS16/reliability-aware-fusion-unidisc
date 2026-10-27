@@ -2,7 +2,7 @@
 name: gate-auditor
 description: "Research audit agent that runs at every gate. Use to check that a phase's exit criteria are met by artifacts on disk, to reconcile every number in the manuscript against raw runs, and to perform the clean-room reproduction before release."
 tools: Read, Grep, Glob, Bash, Write, WebSearch, WebFetch, ToolSearch
-model: opus
+model: sonnet
 ---
 
 # gate-auditor  (Assurance layer; merges A23, user requirement 17)
