@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import config, corruptions, stats                          # noqa: E402
+from exp_p2.gate import artifacts, config, corruptions, stats                          # noqa: E402
 
 N_STAR, KAPPA, MIN_NV, T_MIN = 43, 0.5, 90, 2.0      # SAP 4.6 and 5 (design, fixed)
 SCALE_BASE, SCALE_EXT = 300, 500
@@ -115,6 +115,7 @@ def main(argv=None) -> int:
     ap.add_argument("--endpoint", choices=["d", "z"], default="d", help="d is the SAP endpoint (Addendum 1); z is a sensitivity analysis only")
     ap.add_argument("--out", default="family.json")
     ap.add_argument("--min-items", type=int, default=config.N_HEAD)
+    ap.add_argument("--force", action="store_true", help="overwrite an existing family.json (it is write-once; the old file is kept and an amendment is logged)")
     a = ap.parse_args(argv)
     run = Path(common.RUNS) / a.run_id
     rows = common.read_jsonl(run / "items.jsonl")
@@ -122,7 +123,11 @@ def main(argv=None) -> int:
         print(f"only {len(rows)} headroom items in {run}; the rule needs the full {a.min_items}", file=sys.stderr)
         return 2
     res = decide(rows, a.endpoint)
-    (run / a.out).write_text(json.dumps(res, indent=1), encoding="utf8")
+    try:
+        artifacts.write_once(run / a.out, json.dumps(res, indent=1), a.force)
+    except artifacts.WriteOnceError as e:
+        print("STOP:", e, file=sys.stderr)
+        return 2
     print(json.dumps(dict(endpoint=res["endpoint"], family=[f["key"] for f in res["family"]], excluded=[e["corruption"] for e in res["excluded"]], n_rule=res["n_rule"]), indent=1))
     return 0
 

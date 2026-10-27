@@ -319,6 +319,58 @@ def test_run_analysis_reports_lost_probe2_rows(tmp_path):
     assert res["n_items"] == 6 and rr["rows_lost_arrays_present"] == [1, 5] and rr["n_glued_lines"] == 1 and rr["n_rows"] == 4
 
 
+# ------------------------------------------------------------------------------------------------ write-once artifacts (audit M6) and freezing only from a complete q (M8)
+def test_write_once_refuses_then_amends_with_a_log(tmp_path):
+    from exp_p2.gate import artifacts
+    f = tmp_path / "family.json"
+    artifacts.write_once(f, "v1")
+    with pytest.raises(artifacts.WriteOnceError, match="--force"):
+        artifacts.write_once(f, "v2")
+    assert f.read_text() == "v1"
+    artifacts.write_once(f, "v2", force=True)
+    assert f.read_text() == "v2"
+    assert len(list(tmp_path.glob("family.json.prev-*"))) == 1 and list(tmp_path.glob("family.json.prev-*"))[0].read_text() == "v1"
+    line = json.loads((tmp_path / "amendments.jsonl").read_text().splitlines()[-1])
+    assert line["file"] == "family.json" and line["old_sha1"] != line["new_sha1"]
+
+
+def test_headroom_fit_threshold_and_freeze_are_write_once(tmp_path, monkeypatch):
+    monkeypatch.setattr(common, "RUNS", tmp_path)
+    (tmp_path / "P2-GATE-M3").mkdir()
+    (tmp_path / "P2-GATE-M3" / "items.jsonl").write_text("\n".join(json.dumps(r) for r in _rows(SPEC)) + "\n")
+    assert headroom.main(["--run-id", "P2-GATE-M3"]) == 0
+    first = (tmp_path / "P2-GATE-M3" / "family.json").read_text()
+    assert headroom.main(["--run-id", "P2-GATE-M3"]) == 2 and (tmp_path / "P2-GATE-M3" / "family.json").read_text() == first
+    assert headroom.main(["--run-id", "P2-GATE-M3", "--force"]) == 0 and (tmp_path / "P2-GATE-M3" / "amendments.jsonl").exists()
+    # threshold
+    from exp_p2.gate import fit_threshold
+    m2 = tmp_path / "P2-GATE-M2"
+    (m2 / "arrays").mkdir(parents=True)
+    rng = np.random.default_rng(0)
+    rows = []
+    for i in range(24):
+        np.savez(m2 / "arrays" / f"item{i:04d}.npz", B=rng.normal(-3, 1, 16).astype(np.float32), D=rng.normal(-2, .2, 16).astype(np.float32), codes=rng.integers(0, 50, 16))
+        rows.append(dict(idx=i, gid=i))
+    (m2 / "items.jsonl").write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    assert fit_threshold.main(["--run-id", "P2-GATE-M2", "--min-items", "24"]) == 0
+    assert fit_threshold.main(["--run-id", "P2-GATE-M2", "--min-items", "24"]) == 2
+    assert fit_threshold.main(["--run-id", "P2-GATE-M2", "--min-items", "24", "--force"]) == 0
+    # freeze needs q for ALL items
+    p2, m1 = _synth_probe(tmp_path / "x", n_items=12, q_better=True)
+    monkeypatch.setattr(common, "RUNS", tmp_path / "x")
+    monkeypatch.setattr(analyze_gate_m1, "N_M1", 12)
+    f = dict(np.load(m1 / "arrays" / "item0005.npz"))
+    np.savez(m1 / "arrays" / "item0005.npz", **{k: v for k, v in f.items() if not k.startswith("swap")})            # one item loses its q for one corruption
+    assert analyze_gate_m1.main(["--no-pixels", "--boot", "50"]) == 0
+    assert not (m1 / "detection_frozen.json").exists()                          # 11 of 12 items with a complete q
+    np.savez(m1 / "arrays" / "item0005.npz", **f)
+    assert analyze_gate_m1.main(["--no-pixels", "--boot", "50"]) == 0 and (m1 / "detection_frozen.json").exists()
+    z = json.loads((m1 / "detection_frozen.json").read_text())
+    assert z["meta"]["root_seed"] == 20261028 and "numpy_version" in z["meta"]
+    assert analyze_gate_m1.main(["--no-pixels", "--boot", "50"]) == 2           # write-once
+    assert analyze_gate_m1.main(["--no-pixels", "--boot", "50", "--force"]) == 0
+
+
 # ------------------------------------------------------------------------------------------------ fusion
 def test_L3_uninformative_direction_gets_zero_lda_weight_and_stouffer_is_symmetric():
     rng = np.random.default_rng(0)

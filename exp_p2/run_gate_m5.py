@@ -28,6 +28,7 @@ CONFIG = dict(stage="M5", fold="cal[:100]", n_items=N_ITEMS, seed=config.SEED_GA
 
 def get_items(sc, run, n=None):
     f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+    pipeline.check_fold_tokens(sc, f, run)                                       # audit M9: stop if the runtime tokenizer disagrees with the frozen counts
     return f["cal"][:(n or N_ITEMS)]
 
 

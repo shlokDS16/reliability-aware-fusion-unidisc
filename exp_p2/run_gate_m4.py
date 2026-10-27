@@ -55,6 +55,17 @@ def load_prereqs(runs: Path | None = None) -> tuple[dict, list[tuple[str, object
     return thr, family, next(iter(thr.values())).eps0
 
 
+def check_n_against_rule(n: int | None, runs: Path | None = None) -> int:
+    """--n must equal the committed n-rule (family.json n_rule.test_fold: R1 and R3 300, R2 500, NO-GO 300); a forgotten --n 500 under R2 would run a test fold that SAP 4.6 says is too
+    small (audit M3). Returns the effective n."""
+    fam = pipeline.load_json(Path(runs if runs is not None else common.RUNS) / M3_RUN / "family.json")
+    want = int(fam.get("n_rule", {}).get("test_fold", 300))
+    eff = n if n is not None else CONFIG["n_items"]
+    if eff != want:
+        raise ValueError(f"--n {eff} does not match the committed n-rule ({fam.get('n_rule', {}).get('rule')}: test fold {want}); run with --n {want}")
+    return eff
+
+
 def tbv_enabled(mode: str, runs: Path | None = None) -> bool:
     if mode in ("on", "off"):
         return mode == "on"
@@ -67,8 +78,8 @@ def make_ctx_factory(a, runs: Path | None = None):
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
         thr, family, eps0 = load_prereqs(runs_)
         f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
-        rep = folds.verify_tokens(f, lambda c: len(sc.caption_ids(c)))                      # runtime tokenizer vs the counts frozen in folds.json
-        (run / "folds_check.json").write_text(json.dumps(rep), encoding="utf8")
+        pipeline.check_fold_tokens(sc, f, run)                                              # runtime tokenizer vs the counts frozen in folds.json; stops on any mismatch (audit M9)
+        pipeline.require_frozen(runs_)
         cbp = runs_ / M1_RUN / "codebook.npy"
         checks.l10_once(sc, run)
         return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, 500), grid=int(round(sc.L_I ** 0.5)),
@@ -158,6 +169,13 @@ def main(argv=None):
     ap.add_argument("--tbv", choices=["auto", "on", "off"], default="auto", help="Trust-but-Verify-style pass; auto = on only if M1 found no copy-through (U7)")
     ap.add_argument("--denoise-for", default=",".join(config.DENOISE_FOR), help="comma list of family corruptions that get a denoised copy ('' = none)")
     a = ap.parse_args(argv)
+    try:                                                                  # all prerequisites are checked BEFORE the model is touched
+        load_prereqs()
+        pipeline.require_frozen()
+        check_n_against_rule(a.n)
+    except (FileNotFoundError, ValueError) as e:
+        print("STOP:", e, file=sys.stderr)
+        return 2
     cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv, denoise_for=a.denoise_for.split(",") if a.denoise_for else [])
 
     def load():

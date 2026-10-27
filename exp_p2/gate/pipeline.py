@@ -65,3 +65,23 @@ def load_json(path: Path):
 def compact(ev: dict) -> dict:
     """Row-sized view of an evidence dict (drops the sum)."""
     return {k: ev[k] for k in ("n", "mean", "sd", "z", "d", "y")}
+
+
+def require_frozen(runs: Path | None = None) -> Path:
+    """detection_frozen.json (rival and sign, SAP A1.2 rule 5) must exist, committed, before M3 and M4 run (audit M4)."""
+    p = Path(runs if runs is not None else common.RUNS) / "P2-GATE-M1" / "detection_frozen.json"
+    if not p.exists():
+        raise FileNotFoundError(f"{p} missing: complete M1, run python -m exp_p2.analyze_gate_m1 and commit detection_frozen.json first (required before M3 and M4, SAP A1.2 rule 5)")
+    return p
+
+
+def check_fold_tokens(sc, folds_dict: dict, run: Path) -> dict:
+    """Frozen token counts in folds.json versus the runtime tokenizer path (UniScorer.caption_ids). Writes folds_check.json and RAISES on any mismatch or any caption that falls
+    outside 5-32 tokens under the runtime tokenizer (audit M9): the folds are frozen, so the run must stop instead of silently using a different population."""
+    from exp_p2.gate import folds as folds_mod
+    rep = folds_mod.verify_tokens(folds_dict, lambda c: len(sc.caption_ids(c)))
+    Path(run).mkdir(parents=True, exist_ok=True)
+    (Path(run) / "folds_check.json").write_text(json.dumps(rep), encoding="utf8")
+    if rep["n_mismatch"] > 0 or rep["n_outside_range"] > 0:
+        raise RuntimeError(f"folds.json token counts disagree with the runtime tokenizer: {rep}")
+    return rep

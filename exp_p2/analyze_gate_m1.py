@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import baselines, detect, jsonl                                   # noqa: E402
+from exp_p2.gate import artifacts, baselines, detect, jsonl, seeds                                   # noqa: E402
 
 
 DRY_RUN_N, N_M1 = 21, 200          # the first 21 probe-2 items were seen in the CPU dry run (SAP A1.2); the complete M1 set is 200
@@ -33,12 +33,13 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
     total = np.zeros(16384)
     for c in clean_codes.values():
         total += np.bincount(c, minlength=16384)
-    per_item, have_m1 = [], False
+    per_item, have_m1, n_with_q = [], False, 0
     for i in idxs:
         a = arrs[i]
         mp = (m1_dir / "arrays" / f"item{i:04d}.npz") if m1_dir is not None else None
         m1 = np.load(mp) if mp is not None and mp.exists() else None
         have_m1 = have_m1 or m1 is not None
+        n_with_q += int(m1 is not None and all(f"{c}_D" in m1 for c in detect.P2_CORRS))
         freq = baselines.CodeFreq(total - np.bincount(clean_codes[i], minlength=16384))          # leave-one-item-out clean-code frequencies
         raw = common.load_image(sel[i]["image_id"]) if pixels else None
         rec = {}
@@ -52,7 +53,7 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
             rec[corr] = detect.item_aurocs(sus, np.asarray(a[f"{corr}_z"], bool))
         per_item.append(rec)
     late = [r for r, i in zip(per_item, idxs) if i >= DRY_RUN_N]                      # excludes the 21 dry-run items (179 of 200 when M1 is complete)
-    out = dict(n_items=len(idxs), item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < N_M1 or not have_m1 else "M1 detection table",
+    out = dict(meta=seeds.meta(), n_items=len(idxs), n_items_with_q=n_with_q, item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < N_M1 or not have_m1 else "M1 detection table",
                table=detect.aggregate(per_item, n_boot=n_boot), paired_q_vs_best_cheap={c: detect.paired_vs_best_cheap(per_item, c, "q", n_boot=n_boot) for c in detect.P2_CORRS},
                falsifier=detect.falsifier(per_item, "q", n_boot=n_boot),
                falsifier_rival_reselected_in_each_resample=detect.falsifier(per_item, "q", n_boot=n_boot, reselect=True),
@@ -73,6 +74,7 @@ def main(argv=None) -> int:
     ap.add_argument("--no-pixels", action="store_true", help="skip regenerating jpeg/noise pixels (texture baseline becomes NaN and is dropped)")
     ap.add_argument("--codebook", default=None)
     ap.add_argument("--boot", type=int, default=10000)
+    ap.add_argument("--force", action="store_true", help="overwrite an existing detection_frozen.json / analysis.json (kept as .prev-<time>, logged as an amendment)")
     ap.add_argument("--out-dir", default=None, help="where to write analysis.json (default: the M1 run dir); use runs/P2-GATE-CPU for the partial-data fallback")
     a = ap.parse_args(argv)
     probe, m1 = Path(common.RUNS) / a.probe_run, Path(common.RUNS) / a.m1_run
@@ -83,11 +85,16 @@ def main(argv=None) -> int:
     (out / "analysis.json").write_text(json.dumps(res, indent=1), encoding="utf8")
     if "tbv" in res:
         (out / "tbv_verdict.json").write_text(json.dumps(res["tbv"], indent=1), encoding="utf8")
-    if res["has_q"] and res["n_items"] >= N_M1:                                       # frozen only from a complete M1 (SAP A1.2 rule 5)
-        (out / "detection_frozen.json").write_text(json.dumps(dict(frozen=res["frozen"], n_items=res["n_items"], dry_run_items=DRY_RUN_N, source="analyze_gate_m1 on the complete M1 set"), indent=1), encoding="utf8")
+    if res["n_items_with_q"] >= N_M1 and res["n_items"] >= N_M1:                      # frozen only when q exists for ALL 200 items (SAP A1.2 rule 5; audit M8)
+        try:
+            artifacts.write_once(out / "detection_frozen.json", json.dumps(dict(meta=res["meta"], frozen=res["frozen"], n_items=res["n_items"], dry_run_items=DRY_RUN_N,
+                                                                                  source="analyze_gate_m1 on the complete M1 set"), indent=1), a.force)
+        except artifacts.WriteOnceError as e:
+            print("STOP:", e, file=sys.stderr)
+            return 2
         print("wrote detection_frozen.json: commit it before M3/M4")
     else:
-        print("detection_frozen.json NOT written (needs q and all 200 items)")
+        print(f"detection_frozen.json NOT written (needs q for all {N_M1} items; have {res['n_items_with_q']} of {res['n_items']})")
     print(json.dumps({k: res[k] for k in ("n_items", "has_q", "label")}, indent=1))
     print("probe-2 rows report:", {k: v for k, v in res["rows_report"].items() if k != "rows_without_arrays"})
     for corr, t in res["table"].items():

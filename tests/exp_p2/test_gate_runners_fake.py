@@ -134,8 +134,10 @@ def _m4_prereqs(env, sc, family):
     res = fit_threshold.fit_from_arrays(U, list(range(30)), "q")
     (env / "P2-GATE-M2").mkdir(exist_ok=True)
     (env / "P2-GATE-M2" / "threshold.json").write_text(json.dumps(res))
+    (env / "P2-GATE-M1").mkdir(exist_ok=True)
+    (env / "P2-GATE-M1" / "detection_frozen.json").write_text(json.dumps(dict(frozen={})))
     (env / "P2-GATE-M3").mkdir(exist_ok=True)
-    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="d", family=[dict(corruption=c, severity=s, key=f"{c}{s}") for c, s in family])))
+    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="d", n_rule=dict(rule="R1", test_fold=300), family=[dict(corruption=c, severity=s, key=f"{c}{s}") for c, s in family])))
     return res
 
 
@@ -197,6 +199,54 @@ def test_analysis_m4_main_refuses_a_family_json_without_endpoint_d(env):
     (env / "P2-GATE-M3").mkdir()
     (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="z", family=[])))
     assert analysis_m4.main(["--run-id", "P2-GATE-M4"]) == 2
+
+
+def test_m4_n_must_match_the_committed_n_rule_and_frozen_file_is_required(env, monkeypatch):
+    (env / "P2-GATE-M3").mkdir()
+    fj = env / "P2-GATE-M3" / "family.json"
+    fj.write_text(json.dumps(dict(endpoint="d", family=[], n_rule=dict(rule="R2", test_fold=500))))
+    assert run_gate_m4.check_n_against_rule(500, env) == 500
+    with pytest.raises(ValueError, match="--n 500"):
+        run_gate_m4.check_n_against_rule(None, env)                                # forgetting --n under R2 would run a 300-item fold
+    with pytest.raises(ValueError):
+        run_gate_m4.check_n_against_rule(300, env)
+    fj.write_text(json.dumps(dict(endpoint="d", family=[], n_rule=dict(rule="R3", test_fold=300))))
+    assert run_gate_m4.check_n_against_rule(None, env) == 300
+    fj.write_text(json.dumps(dict(endpoint="d", family=[], n_rule=dict(rule="NO-GO", test_fold=300))))
+    assert run_gate_m4.check_n_against_rule(300, env) == 300
+    with pytest.raises(FileNotFoundError, match="detection_frozen"):
+        pipeline.require_frozen(env)
+    (env / "P2-GATE-M1").mkdir()
+    (env / "P2-GATE-M1" / "detection_frozen.json").write_text("{}")
+    assert pipeline.require_frozen(env).name == "detection_frozen.json"
+
+
+def test_m3_and_m4_mains_refuse_before_touching_any_model(env, monkeypatch):
+    def boom(*a, **k):
+        raise AssertionError("must not load a model or start the loop")
+    monkeypatch.setattr(runner, "run_items", boom)
+    assert run_gate_m3.main([]) == 2                                           # no detection_frozen.json
+    assert run_gate_m4.main([]) == 2                                           # no threshold / family / frozen
+    sc = _sc()
+    _m4_prereqs(env, sc, [("jpeg", 10)])
+    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="d", n_rule=dict(rule="R2", test_fold=500), family=[dict(corruption="jpeg", severity=10, key="jpeg10")])))
+    assert run_gate_m4.main([]) == 2                                           # --n 300 (default) does not match R2
+    (env / "P2-GATE-M1" / "detection_frozen.json").unlink()
+    assert run_gate_m3.main([]) == 2
+
+
+def test_fold_token_check_stops_on_a_disagreeing_tokenizer(env):
+    sc = _sc()
+    f = dict(cal=_fold(3), head=[], test=[], test_ext=[])
+    assert pipeline.check_fold_tokens(sc, f, env / "chk")["n_mismatch"] == 0
+    assert json.loads((env / "chk" / "folds_check.json").read_text())["n_mismatch"] == 0
+    f["cal"][1]["n_tok"] = 7
+    with pytest.raises(RuntimeError, match="disagree"):
+        pipeline.check_fold_tokens(sc, f, env / "chk")
+    f["cal"][1]["n_tok"] = 6
+    f["cal"][2]["caption"] = "one two"                                         # runtime count 2 < 5 and != stored 6
+    with pytest.raises(RuntimeError):
+        pipeline.check_fold_tokens(sc, f, env / "chk")
 
 
 def test_m4_tbv_auto_follows_the_m1_verdict(env):

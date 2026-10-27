@@ -26,6 +26,7 @@ CONFIG = dict(stage="M3", fold="head", n_items=config.N_HEAD, seed=config.SEED_G
 
 def get_items(sc, run, n=None):
     f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+    pipeline.check_fold_tokens(sc, f, run)                                       # audit M9: stop if the runtime tokenizer disagrees with the frozen counts
     return f["head"][:n] if n else f["head"]
 
 
@@ -73,6 +74,11 @@ def process(sc, it, ctx):
 def main(argv=None):
     ap = runner.base_parser(RUN_ID, CONFIG["n_items"])
     a = ap.parse_args(argv)
+    try:
+        pipeline.require_frozen()                                          # the frozen rival must exist before M3 (SAP A1.2 rule 5); checked before the model is touched
+    except FileNotFoundError as e:
+        print("STOP:", e, file=sys.stderr)
+        return 2
     cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac)
 
     def load():

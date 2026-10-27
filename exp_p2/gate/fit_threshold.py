@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import baselines, calibrate as cal, config, scores         # noqa: E402
+from exp_p2.gate import artifacts, baselines, calibrate as cal, config, scores         # noqa: E402
 
 
 def suspicion_from_arrays(arr, statistic: str) -> np.ndarray:
@@ -42,6 +42,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", default="P2-GATE-M2")
     ap.add_argument("--statistic", choices=["q", "plainB"], default=config.STAT_NAME)
+    ap.add_argument("--force", action="store_true", help="overwrite an existing threshold file (write-once; the old file is kept and an amendment is logged)")
     ap.add_argument("--min-items", type=int, default=config.N_CAL, help="refuse to fit on fewer items (the spec fixes 300)")
     a = ap.parse_args(argv)
     run = Path(common.RUNS) / a.run_id
@@ -57,7 +58,11 @@ def main(argv=None) -> int:
         codes.append(arr["codes"])
     res = fit_from_arrays(U, ids, a.statistic)
     out = run / ("threshold.json" if a.statistic == config.STAT_NAME else f"threshold_{a.statistic}.json")
-    out.write_text(json.dumps(res, indent=1), encoding="utf8")
+    try:
+        artifacts.write_once(out, json.dumps(res, indent=1), a.force)
+    except artifacts.WriteOnceError as e:
+        print("STOP:", e, file=sys.stderr)
+        return 2
     np.save(run / "codefreq.npy", baselines.CodeFreq.fit(codes, 16384).counts)
     print(json.dumps({k: res[k] for k in ("statistic", "n_cal", "eps0", "ids_hash")} | {a_: v["tau"] for a_, v in res["thresholds"].items()}, indent=1))
     return 0
