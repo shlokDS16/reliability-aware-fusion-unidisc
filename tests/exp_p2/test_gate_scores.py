@@ -243,7 +243,7 @@ def test_text_B_masks_image_and_one_group():
 def test_observed_unmasked_logprob_masks_only_the_caption():
     sc, codes, st = _setup()
     sc.rows.clear()
-    v = scores.observed_unmasked_logprob(sc, st)
+    v = scores.tbv_score_raw_logits(sc, st)
     (row,) = sc.rows
     assert (row[st["cap_pos"]] == MASK_ID).all() and (row[st["img_pos"]] != MASK_ID).all()
     assert v.shape == (sc.L_I,) and (v <= 0).all()

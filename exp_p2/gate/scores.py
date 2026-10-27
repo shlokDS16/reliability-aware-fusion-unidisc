@@ -79,17 +79,30 @@ def text_B(sc, st: dict, groups: np.ndarray, K_T: int, *, bs: int = SDPA_BS) -> 
 
 
 @torch.no_grad()
-def observed_unmasked_logprob(sc, st: dict) -> np.ndarray:
-    """Trust-but-Verify-style score (v2 4.2): log p(observed code | NOTHING masked in the image, caption masked), read at the observed
-    (visible) position. One pass. Meaningful only if the network does not simply copy visible inputs (U7); the caller checks the
-    copy statistic from the returned values (mean of exp(.) near 1 on every token means a copy-through parameterisation)."""
+def tbv_score_raw_logits(sc, st: dict) -> np.ndarray:
+    """TbV-score (non-finetuned), U7: log p(observed code | nothing masked in the image, caption masked) read at the observed (visible) image positions. One pass.
+
+    It is the arm-B analogue of Trust but Verify (arXiv 2610.22380), whose score is informative only after their finetune; on UniDisc it is a measurement, never 'the Trust but Verify
+    baseline'. IT MUST USE THE RAW LOGITS: UniDisc's SUBS parameterisation (model.py `_subs_parameterization`) sets every unmasked position to log-prob 0 on the observed token and -inf
+    elsewhere, so any score taken from the SUBS output (what `forward(...)` returns without `return_logits`, and what exp001/unidisc_net.py:134 slices) is exactly 0 at every
+    observed token and says nothing. `sc.logits_fn` is `forward(..., return_logits=True)`, which returns the backbone logits before SUBS (model.py: `if return_logits: return logits`);
+    the normalisation is the same as for GATE: fp32 log-softmax restricted to the image vocabulary. A result that is exactly 0 at every token is rejected as a SUBS-style output.
+
+    Not built (not allowed by spec v2 4.2 / the SAP, so noted only): a caption-observed variant (literal TbV context, more information than GATE's flag) and a TbV-rule variant
+    (flag s_i < tau with budget ceil(0.15 |K|) at a matched edit count). Either would be an addition to the preregistered baseline list and needs a dated amendment first."""
     base, cap, img = st["base"], st["cap_pos"], st["img_pos"]
     x = base.clone()
     x[cap] = MASK_ID
     logits = sc.logits_fn(st)(x[None])
     lp = torch.log_softmax(logits[0, img, IMG_LO:IMG_HI].float(), dim=-1)
     tgt = base[img] - IMG_LO
-    return lp.gather(1, tgt[:, None])[:, 0].cpu().numpy().astype(np.float32)
+    out = lp.gather(1, tgt[:, None])[:, 0].cpu().numpy().astype(np.float32)
+    if out.size and bool(np.all(out == 0.0)):
+        raise RuntimeError("TbV-score is exactly 0 at every observed token: this is the SUBS output (p = 1 at observed positions), not the raw logits; check that logits_fn uses return_logits=True")
+    return out
+
+
+observed_unmasked_logprob = tbv_score_raw_logits           # old name kept so stored scripts and arrays keep working
 
 
 def suspicion_q(B: np.ndarray, D: np.ndarray) -> np.ndarray:

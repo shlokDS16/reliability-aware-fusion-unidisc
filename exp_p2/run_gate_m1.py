@@ -5,7 +5,7 @@
 
 For every probe-2 item that has arrays on disk (it reads runs/P2-PROBE-02/arrays/itemNNNN.npz and selection.json, writes nothing there):
   D at the stored codes of clean / swap / patch / jpeg / noise  (one null pass per caption length, cached on disk under runs/P2-GATE-DCACHE; at most 28 passes)
-  with --tbv: the Trust-but-Verify-style observed-position log-probability for each of the 4 corrupted images (1 pass each; U7)
+  with --tbv: the TbV-score (non-finetuned), from raw logits, for each of the 4 corrupted images (1 pass each; U7)
   once: the VQ codebook (best effort, runs/P2-GATE-M1/codebook.npy) for the neighbour-codebook-distance baseline.
 q = B - D is then B (= s1 - r_original from probe 2, same masks, caption masked) minus D; the analysis assembles it."""
 from __future__ import annotations
@@ -65,7 +65,7 @@ def process(sc, it, ctx):
         st = sc.build(cap_tok, codes)
         arrays[f"{name}_D"] = ctx.dcache.image_logp(sc, st, len(cap_tok), codes)
         if ctx.tbv and name != "clean":
-            tb = scores.observed_unmasked_logprob(sc, st)
+            tb = scores.tbv_score_raw_logits(sc, st)
             arrays[f"{name}_tbv"] = tb
             row["tbv"][name] = baselines.copy_through_stat(tb)
     return row, arrays
@@ -73,7 +73,7 @@ def process(sc, it, ctx):
 
 def main(argv=None):
     ap = runner.base_parser(RUN_ID)
-    ap.add_argument("--tbv", action="store_true", help="also run the Trust-but-Verify-style pass on the 4 corrupted images per item")
+    ap.add_argument("--tbv", action="store_true", help="also run the TbV-score (non-finetuned) pass, from raw logits, on the 4 corrupted images per item")
     a = ap.parse_args(argv)
     n_avail = len(list(probe_arrays_dir().glob("item*.npz"))) if probe_arrays_dir().exists() else 0
     cfg = dict(CONFIG, n_items=a.n or n_avail, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv)

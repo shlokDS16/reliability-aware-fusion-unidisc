@@ -196,6 +196,6 @@ def freeze_rivals(per_item: list[dict], corrs=("jpeg", "noise"), cheap=CHEAP) ->
             continue
         best = max(m, key=m.get)
         base, sign = split_sign(best)
-        out[c] = dict(available=True, rival=best, base=base, sign=sign, mean_auroc=m[best], n_items=len(rows), all_means=m,
+        out[c] = dict(available=True, rival=best, base=base, sign=sign, mean_auroc=m[best], n_items=len(rows), all_means=m, label=(baselines.TBV_LABEL if base == "tbv" else None),
                       rarity_source="runs/P2-GATE-M2/codefreq.npy (calibration clean codes)" if base == "rarity" else None)
     return out

@@ -140,7 +140,7 @@ def process(sc, it, ctx):
             arrays[f"{name}_flag{al:g}"] = f
             cr["gate"][f"{al:g}"] = dict(n_flag=int(f.sum()), n_tp=int((f & z).sum()), n_corrupted=int(z.sum()), n_fp_on_clean_tokens=int((f & ~z).sum()))
         if ctx.tbv:                                                                                     # 1 pass
-            tb = scores.observed_unmasked_logprob(sc, sc.build(cap_tok, codes))
+            tb = scores.tbv_score_raw_logits(sc, sc.build(cap_tok, codes))
             arrays[f"{name}_tbv"] = tb
             cr["tbv"] = baselines.copy_through_stat(tb)
         k = int(G.sum())
@@ -166,7 +166,7 @@ def process(sc, it, ctx):
 
 def main(argv=None):
     ap = runner.base_parser(RUN_ID, CONFIG["n_items"])
-    ap.add_argument("--tbv", choices=["auto", "on", "off"], default="auto", help="Trust-but-Verify-style pass; auto = on only if M1 found no copy-through (U7)")
+    ap.add_argument("--tbv", choices=["auto", "on", "off"], default="auto", help="TbV-score (non-finetuned) pass, raw logits; auto = on only if M1 found no copy-through (U7)")
     ap.add_argument("--denoise-for", default=",".join(config.DENOISE_FOR), help="comma list of family corruptions that get a denoised copy ('' = none)")
     a = ap.parse_args(argv)
     try:                                                                  # all prerequisites are checked BEFORE the model is touched

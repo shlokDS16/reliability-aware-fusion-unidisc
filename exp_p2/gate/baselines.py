@@ -5,7 +5,7 @@
   code rarity        -log frequency of the observed code among the calibration fold's clean codes (Laplace smoothed)    [CPU]
   s3                 1 - max_y p(y) from the B passes (Dropout-Decoding-inspired only; not called Dropout Decoding)       [from B passes]
   plain-B top-k      -B_j, flag the top |G| (GATE without calibration, equal size)                                        [from B passes]
-  Trust-but-Verify-style  -log p(observed code | nothing masked in the image, caption masked)                            [1 pass; see scores]
+  TbV-score (non-finetuned)  -log p(observed code | nothing masked in the image, caption masked), from the RAW logits  [1 pass; scores.tbv_score_raw_logits]
   random             uniform noise (floor)
 For token-level corruptions (patch, swap) there is no observed pixel image; callers pass pix=None and get NaN for the texture baseline.
 """
@@ -76,10 +76,13 @@ def tbv_suspicion(obs_logp: np.ndarray | None, m: int) -> np.ndarray:
     return np.full(m, np.nan) if obs_logp is None else -np.asarray(obs_logp, np.float64)
 
 
+TBV_LABEL = "TbV-score (non-finetuned)"          # the only name this arm may carry in outputs; never 'the Trust but Verify baseline' (TbV needs its own finetune)
+
+
 def copy_through_stat(obs_logp: np.ndarray) -> dict:
-    """U7 diagnostic for the Trust-but-Verify-style baseline: if the network copies visible inputs, exp(obs_logp) is near 1 for (almost) every token."""
+    """U7 diagnostic for the TbV-score (non-finetuned): if the network copies visible inputs, exp(obs_logp) is near 1 for (almost) every token."""
     p = np.exp(np.asarray(obs_logp, np.float64))
-    return dict(mean_p_obs=float(p.mean()), frac_p_obs_gt_0p99=float((p > 0.99).mean()), copy_suspected=bool((p > 0.99).mean() > 0.9))
+    return dict(label=TBV_LABEL, mean_p_obs=float(p.mean()), frac_p_obs_gt_0p99=float((p > 0.99).mean()), copy_suspected=bool((p > 0.99).mean() > 0.9))
 
 
 def extract_codebook(vae) -> np.ndarray | None:

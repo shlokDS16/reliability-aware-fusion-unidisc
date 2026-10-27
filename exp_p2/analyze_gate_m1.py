@@ -53,7 +53,7 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
             rec[corr] = detect.item_aurocs(sus, np.asarray(a[f"{corr}_z"], bool))
         per_item.append(rec)
     late = [r for r, i in zip(per_item, idxs) if i >= DRY_RUN_N]                      # excludes the 21 dry-run items (179 of 200 when M1 is complete)
-    out = dict(meta=seeds.meta(), n_items=len(idxs), n_items_with_q=n_with_q, item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < N_M1 or not have_m1 else "M1 detection table",
+    out = dict(labels=dict(tbv=baselines.TBV_LABEL), meta=seeds.meta(), n_items=len(idxs), n_items_with_q=n_with_q, item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < N_M1 or not have_m1 else "M1 detection table",
                table=detect.aggregate(per_item, n_boot=n_boot), paired_q_vs_best_cheap={c: detect.paired_vs_best_cheap(per_item, c, "q", n_boot=n_boot) for c in detect.P2_CORRS},
                falsifier=detect.falsifier(per_item, "q", n_boot=n_boot),
                falsifier_rival_reselected_in_each_resample=detect.falsifier(per_item, "q", n_boot=n_boot, reselect=True),
@@ -63,7 +63,7 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
         rows = [r for r in common.read_jsonl(m1_dir / "items.jsonl") if r.get("tbv")]
         if rows:
             frac = float(np.mean([np.mean([v["copy_suspected"] for v in r["tbv"].values()]) for r in rows]))
-            out["tbv"] = dict(n_items=len(rows), frac_items_copy_suspected=frac, copy_suspected=bool(frac > 0.5))
+            out["tbv"] = dict(label=baselines.TBV_LABEL, n_items=len(rows), frac_items_copy_suspected=frac, copy_suspected=bool(frac > 0.5))
     return out
 
 
