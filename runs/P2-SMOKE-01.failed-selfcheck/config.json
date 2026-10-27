@@ -1,0 +1,24 @@
+{
+ "probe": "probe1",
+ "n_items": 300,
+ "seed": 20261027,
+ "mismatch_seed": 1303,
+ "K": 8,
+ "k_alt": 2,
+ "tok_range": [
+  5,
+  32
+ ],
+ "resolution": 512,
+ "scoring": "fp32 log-softmax of bf16 logits restricted to the modality vocabulary; batch 4; backbone eval bf16",
+ "duty": 1.0,
+ "kill_criterion": "both directions (a8, b8) <= 55 percent matching accuracy",
+ "run_id": "P2-SMOKE-01",
+ "git_sha": "6aae99f8db2801af39f95be0028a3beae26f883f",
+ "created": "2026-10-27T16:25:32",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 11.4,
+  "free_commit_gb": 46.97
+ }
+}

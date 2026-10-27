@@ -1,0 +1,8 @@
+time,elapsed_s,temperature.gpu,power.draw,clocks.sm,clocks.mem,utilization.gpu,memory.used,pstate,clocks_throttle_reasons.active,event
+2026-10-27T16:25:30,0,46,4.52,180,405,0,138,P8,0x0000000000000000,start C:/Users/Shlok/Downloads/Multi-Modality Language model/.venv/Scripts/python.exe -m exp_p2.run_probe1 --run-id P2-SMOKE-01 --limit 3 --duty 1.0 --soft-minutes 8
+2026-10-27T16:25:35,5.1,46,3.89,180,405,0,138,P8,0x0000000000000000,
+2026-10-27T16:25:40,10.2,46,5.26,180,405,0,138,P8,0x0000000000000000,
+2026-10-27T16:25:45,15.2,46,3.69,180,405,0,138,P8,0x0000000000000000,
+2026-10-27T16:25:50,20.3,46,14.49,1680,9001,0,5719,P4,0x0000000000000000,
+2026-10-27T16:25:55,25.3,49,62.55,2017,14001,54,7163,P0,0x0000000000000004,
+2026-10-27T16:26:00,30.4,46,10.61,180,9001,0,138,P4,0x0000000000000000,child exited 2
