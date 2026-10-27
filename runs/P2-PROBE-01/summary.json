@@ -1,0 +1,187 @@
+{
+ "run_id": "P2-PROBE-01",
+ "n_items": 300,
+ "source": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-PROBE-01\\items.jsonl",
+ "config": {
+  "probe": "probe1",
+  "n_items": 300,
+  "seed": 20261027,
+  "mismatch_seed": 1303,
+  "K": 8,
+  "k_alt": 2,
+  "tok_range": [
+   5,
+   32
+  ],
+  "resolution": 512,
+  "scoring": "fp32 log-softmax of bf16 logits restricted to the modality vocabulary; batch 4; backbone eval bf16",
+  "duty": 0.5,
+  "kill_criterion": "both directions (a8, b8) <= 55 percent matching accuracy",
+  "run_id": "P2-PROBE-01",
+  "git_sha": "c22d08386141e3e456306c8269fa1d8204daadc5",
+  "created": "2026-10-27T16:29:45",
+  "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+  "host_free": {
+   "free_ram_gb": 11.47,
+   "free_commit_gb": 47.18
+  }
+ },
+ "results": {
+  "primary": {
+   "a_text": {
+    "label": "mean log p(caption tokens | image), K=8 complementary masks, image visible",
+    "accuracy": 0.73,
+    "ci95": [
+     0.68,
+     0.7766666666666666
+    ],
+    "mean_diff": 0.6364779629680468,
+    "median_diff": 0.5874848807928448,
+    "n_true_greater": 219,
+    "n": 300
+   },
+   "b_image": {
+    "label": "mean log p(image tokens | caption), K=8 complementary masks, caption visible",
+    "accuracy": 0.7833333333333333,
+    "ci95": [
+     0.7366666666666667,
+     0.83
+    ],
+    "mean_diff": 0.004634567697842915,
+    "median_diff": 0.0036460161209106445,
+    "n_true_greater": 235,
+    "n": 300
+   },
+   "a_plus_b": {
+    "label": "sum of the two per-token mean log-likelihoods",
+    "accuracy": 0.7333333333333333,
+    "ci95": [
+     0.6833333333333333,
+     0.78
+    ],
+    "mean_diff": 0.6411125306658897,
+    "median_diff": 0.598902669227368,
+    "n_true_greater": 220,
+    "n": 300
+   }
+  },
+  "supplementary_exploratory": {
+   "ctrl_text_only": {
+    "label": "CONTROL: a_text with the whole image masked (caption prior only, no image information)",
+    "accuracy": 0.49666666666666665,
+    "ci95": [
+     0.44,
+     0.5533333333333333
+    ],
+    "mean_diff": 0.010954145350312961,
+    "median_diff": -0.0010473390255925086,
+    "n_true_greater": 149,
+    "n": 300
+   },
+   "a_pmi": {
+    "label": "text direction minus its image-masked null (same text masks)",
+    "accuracy": 0.94,
+    "ci95": [
+     0.91,
+     0.9666666666666667
+    ],
+    "mean_diff": 0.6255238176177338,
+    "median_diff": 0.5721334904955757,
+    "n_true_greater": 282,
+    "n": 300
+   },
+   "a_full": {
+    "label": "all caption tokens masked in one pass, image visible",
+    "accuracy": 0.9433333333333334,
+    "ci95": [
+     0.9166666666666666,
+     0.9666666666666667
+    ],
+    "mean_diff": 2.4029374807324837,
+    "median_diff": 2.416168613748236,
+    "n_true_greater": 283,
+    "n": 300
+   },
+   "a_full_pmi": {
+    "label": "a_full minus the same pass with the image masked",
+    "accuracy": 0.99,
+    "ci95": [
+     0.9766666666666667,
+     1.0
+    ],
+    "mean_diff": 2.402937480732484,
+    "median_diff": 2.3824499748247763,
+    "n_true_greater": 297,
+    "n": 300
+   },
+   "b_k2": {
+    "label": "image direction, K=2 complementary passes (50 percent masked)",
+    "accuracy": 0.8266666666666667,
+    "ci95": [
+     0.7833333333333333,
+     0.8666666666666667
+    ],
+    "mean_diff": 0.011535041332244873,
+    "median_diff": 0.0108262300491333,
+    "n_true_greater": 248,
+    "n": 300
+   },
+   "b_full": {
+    "label": "image direction, all 1024 image tokens masked in one pass",
+    "accuracy": 0.8433333333333334,
+    "ci95": [
+     0.8033333333333333,
+     0.8833333333333333
+    ],
+    "mean_diff": 0.18153181711832683,
+    "median_diff": 0.16639423370361328,
+    "n_true_greater": 253,
+    "n": 300
+   },
+   "a_pmi_plus_b": {
+    "label": "a_pmi + b_image",
+    "accuracy": 0.9466666666666667,
+    "ci95": [
+     0.92,
+     0.97
+    ],
+    "mean_diff": 0.6301583853155767,
+    "median_diff": 0.5794933101527731,
+    "n_true_greater": 284,
+    "n": 300
+   },
+   "a_full_pmi_plus_b_full": {
+    "label": "a_full_pmi + b_full",
+    "accuracy": 0.99,
+    "ci95": [
+     0.9766666666666667,
+     1.0
+    ],
+    "mean_diff": 2.5844692978508106,
+    "median_diff": 2.553341193076893,
+    "n_true_greater": 297,
+    "n": 300
+   }
+  }
+ },
+ "kill_criterion": {
+  "rule": "both directions <= 0.55",
+  "a_text": 0.73,
+  "b_image": 0.7833333333333333,
+  "met": false,
+  "upper_ci_a": 0.7766666666666666,
+  "upper_ci_b": 0.83
+ },
+ "cost": {
+  "seconds_per_item_mean": 9.653350909666235,
+  "seconds_per_item_median": 7.021918649959844,
+  "seconds_per_item_max": 635.0586042000214,
+  "passes_per_item": 58,
+  "peak_vram_gb_max": 8.20491008,
+  "gpu_busy_hours_items": 0.8044459091388529
+ },
+ "caption_tokens": {
+  "true_mean": 13.576666666666666,
+  "mismatched_mean": 13.576666666666666
+ }
+}

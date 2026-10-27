@@ -52,7 +52,7 @@ Main risks, stated plainly:
 ## Decisions needed from Shlok in the morning
 1. **Pick the idea** (A recommended; or A with B's commit maps as a second analysis if the 8B path works).
 2. **Omni-Diffusion code**: the permission check blocked cloning and installing the VITA-MLLM/Omni-Diffusion repository
-   (third-party code). The 8B weights (16 GB) are downloading to the Hugging Face cache. Approve or decline cloning and
+   (third-party code). The 8B weights finished downloading to the Hugging Face cache on 2026-10-27. Approve or decline cloning and
    installing its code in a separate environment (`.venv-omni`); it is needed for any 8B arm, for B and for audio (E).
 3. **AI declaration policy**: Elsevier's guide wants a "Declaration of generative AI and AI-assisted technologies"
    section before the references; an older Elsevier policy page says AI used *in the research process* may need to be
@@ -60,6 +60,18 @@ Main risks, stated plainly:
 4. **Scope risk**: the journal's scope names fusion, not generative modelling. One precedent exists (TransDLM, a
    diffusion language model, Information Fusion 2025). Optional presubmission enquiry to the editor.
 5. **Reference limit**: the guide says at most 50 references for research articles; plan to that.
+6. **GPU after tonight's crash (added 21:15)**: approve or decline restarting probe 2 with a 75% PyTorch memory cap, an
+   in-chunk GPU memory stop, and Ollama and the Codex/ChatGPT app closed during the run (see the probes section below).
 
 ## Feasibility probes run tonight
-(Filled in from `probes/PROBE-REPORT-2026-10-27.md` when the runs finish.)
+Full report: `probes/PROBE-REPORT-2026-10-27.md`. Numbers come from `runs/P2-PROBE-01/summary.json`.
+
+- **Probe 1 (complete, 300 COCO images, UniDisc 1.4B): true vs wrong caption.** Accuracy 0.730 (95% CI 0.680-0.777) for the
+  text direction and 0.783 (0.737-0.830) for the image direction, against chance 0.5. The kill rule (both at 0.55 or below) is
+  not met. A caption-only control is at chance (0.497). Exploratory: prior-normalised (PMI) scoring raises the text direction to
+  0.940, and to 0.990 with full masking. This supports the likelihood premise of A and C, and red-team change 1.
+- **Probe 2 (token-reliability AUROC): not done.** The laptop crashed at 20:20 (bugcheck 0x116 VIDEO_TDR_FAILURE) after 20 of
+  200 items, with GPU memory full (12.1 GB). This is the seventh crash or unexpected restart since 14 Oct. Restarting it needs your go-ahead, with a memory cap
+  added first. GATE's core claim, that per-token scores find corrupted tokens, is therefore still untested.
+- Omni-Diffusion 8B weights: download complete (Hugging Face cache, snapshot 2233ee1a). The code install is still blocked
+  (decision 2).

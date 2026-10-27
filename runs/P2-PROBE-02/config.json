@@ -1,0 +1,39 @@
+{
+ "probe": "probe2",
+ "n_items": 200,
+ "seed": 20261028,
+ "K": 8,
+ "corruptions": [
+  "swap",
+  "patch",
+  "jpeg",
+  "noise"
+ ],
+ "swap_frac": 0.15,
+ "patch": 8,
+ "jpeg_quality": 10,
+ "noise_sigma": 0.1,
+ "tok_range": [
+  5,
+  32
+ ],
+ "resolution": 512,
+ "duty": 0.5,
+ "example_rule": [
+  "swap",
+  "patch",
+  "jpeg",
+  "noise",
+  "swap",
+  "patch"
+ ],
+ "scoring": "fp32 log-softmax of bf16 logits restricted to the image vocabulary; batch 4; backbone eval bf16",
+ "run_id": "P2-PROBE-02",
+ "git_sha": "57f8979a202563b2338fbd1e08ba5eadc4a26f9e",
+ "created": "2026-10-27T20:12:35",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 7.45,
+  "free_commit_gb": 55.8
+ }
+}
