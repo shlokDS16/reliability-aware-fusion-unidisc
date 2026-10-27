@@ -35,10 +35,17 @@ def mem_status() -> dict:
 
 
 def gpu_state() -> dict:
-    r = subprocess.run(["nvidia-smi", "--query-gpu=temperature.gpu,memory.used,utilization.gpu", "--format=csv,noheader,nounits"],
-                       capture_output=True, text=True, timeout=30)
-    t, m, u = [float(x) for x in r.stdout.strip().split(",")]
-    return dict(temp_c=t, mem_used_mib=m, util_pct=u)
+    # nvidia-smi sometimes returns empty output (seen 2026-10-27 16:45, crashed the driver). Retry; if it keeps failing,
+    # report a reading that keeps the gate closed instead of raising.
+    for _ in range(5):
+        try:
+            r = subprocess.run(["nvidia-smi", "--query-gpu=temperature.gpu,memory.used,utilization.gpu", "--format=csv,noheader,nounits"],
+                               capture_output=True, text=True, timeout=30)
+            t, m, u = [float(x) for x in r.stdout.strip().split(",")]
+            return dict(temp_c=t, mem_used_mib=m, util_pct=u)
+        except (ValueError, subprocess.TimeoutExpired, OSError):
+            time.sleep(3)
+    return dict(temp_c=999.0, mem_used_mib=99999.0, util_pct=100.0)
 
 
 # ---------------------------------------------------------------------------------------------------------------- run dir

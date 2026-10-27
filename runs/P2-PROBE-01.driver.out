@@ -3,3 +3,23 @@
 2026-10-27 16:31:44 chunk 0 exit 75; rows 0 -> 7
 2026-10-27 16:32:14 chunk 1: 7/300 done
 2026-10-27 16:32:26 launch C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Scripts\python.exe -m exp_p2.run_probe1 --run-id P2-PROBE-01 --n 300 --resume --duty 0.5 --soft-minutes 12.5
+2026-10-27 16:44:32 chunk 1 exit 75; rows 7 -> 58
+2026-10-27 16:45:02 chunk 2: 58/300 done
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\driver.py", line 116, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\driver.py", line 74, in main
+    ok, why = gates_ok()
+              ^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\driver.py", line 28, in gates_ok
+    reads.append(common.gpu_state())
+                 ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\common.py", line 40, in gpu_state
+    t, m, u = [float(x) for x in r.stdout.strip().split(",")]
+               ^^^^^^^^
+ValueError: could not convert string to float: ''
+2026-10-27 18:21:11 chunk 0: 58/300 done
+2026-10-27 18:21:23 launch C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Scripts\python.exe -m exp_p2.run_probe1 --run-id P2-PROBE-01 --n 300 --resume --duty 0.5 --soft-minutes 2.5
