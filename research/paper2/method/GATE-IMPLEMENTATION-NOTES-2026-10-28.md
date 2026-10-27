@@ -64,8 +64,8 @@ python -m pytest tests/exp_p2            (the .venv has no pytest; see section 5
 PY tools/gpu_guard.py --log runs/P2-M0-STAGE1/telemetry.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.run_gate_m0 --run-id P2-M0-STAGE1 --idle-minutes 5
 :: stage 2: probe 1 control, 10 items into a NEW run dir (this module does not look at hold files)
 PY tools/gpu_guard.py --log runs/P2-M0-STAGE2/telemetry.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.run_probe1 --run-id P2-M0-STAGE2 --n 10 --limit 10 --soft-minutes 10
-:: stage 3: probe 2 items 21-25 (resumes the existing run unchanged)
-PY tools/gpu_guard.py --log runs/P2-PROBE-02/telemetry-m0s3.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.run_probe2 --resume --limit 5 --soft-minutes 10
+:: stage 3: probe 2 items 21-25 (run_probe2 unchanged, wrapped by the new guards: memory cap, AC, memory/rise/slow-item rules, 1 s watchdog; audit F2)
+PY tools/gpu_guard.py --log runs/P2-PROBE-02/telemetry-m0s3.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.gate.probe2_guarded --run-id P2-PROBE-02 --n 200 --resume --limit 5 --soft-minutes 10
 ```
 The diagnosis' source edits to `run_probe2.py` (first-item memory limit, power stop, `MEM_FRAC=0.60`) are NOT made: they change probe 2 and need Shlok's approval. The new
 runners carry equivalent guards (`gate/guards.py`). Open point: `MEM_FRAC=0.60` caps PyTorch at about 7.2 GB, below the 8.2 GB peak the probe report measured at
@@ -73,7 +73,7 @@ batch 4; I kept the runners' default at 0.75 (`--mem-frac`).
 
 **M1.**
 ```
-PY -m exp_p2.gate.gate_driver --stage p2                      :: completes probe 2 (run_probe2 unchanged) under the hold check, 1 s telemetry
+PY -m exp_p2.gate.gate_driver --stage p2                      :: completes probe 2 (run_probe2 unchanged) via gate/probe2_guarded.py: new guards, hold check, 1 s telemetry, event-log check between chunks
 PY -m exp_p2.gate.gate_driver --stage m1 --extra "--tbv"      :: D at stored codes (<= 28 null passes) + TbV-style pass on the 4 corrupted images; exports the VQ codebook if reachable
 python -m exp_p2.analyze_gate_m1 --probe-run P2-PROBE-02 --m1-run P2-GATE-M1      :: CPU: AUROC table, paired q vs best cheap, falsifier, tbv_verdict.json
 ```
@@ -180,3 +180,35 @@ python and under the project `.venv` with the pytest shim. CPU only; nothing was
 
 The CPU fallback output `runs/P2-GATE-CPU/m1_fallback/analysis.json` was regenerated with the new analysis (21 items, no q, so no frozen file; rows report: 21 clean lines, 0 lost).
 Run the M3 analysis as `python -m exp_p2.gate.headroom --run-id P2-GATE-M3 --endpoint d` (d is also the default now).
+
+
+## 7. Code-audit fixes (GATE-CODE-AUDIT-2026-10-28, verdict PASS WITH FIXES)
+
+Commits: SAFE = 5cee34a9, ANA = e03d76a3, MIN = 8704dd2f, plus the notes commit of this section. 166 tests in `tests/exp_p2` pass (144 after SAFE, 166 after MIN). `tools/gpu_guard.py`,
+`exp_p2/run_probe2.py`, `run_probe1.py`, `scoring.py` and `driver.py` are unchanged (a test asserts an empty `git diff` for them).
+
+| Finding | Fix | Commit | Tests |
+|---|---|---|---|
+| F1 guard abort = soft deadline | `runner.EXIT_GUARD = 76` for every guard stop (before-item, after-item, AC before load, watchdog); 75 stays the soft deadline. `gate_driver` stops with exit 8 after exit 76, or after any new `guard_stop` event in `chunks.jsonl` whatever the exit code, and never relaunches | SAFE | `test_gate_safety.py`: distinct codes; no relaunch after 76 even with progress; stop on a logged `guard_stop`; 75 still relaunches |
+| F2 probe-2 stage on the old guards | new `gate/probe2_guarded.py` runs `run_probe2.main()` unchanged and installs the guards from outside: hold and AC before the model load (hook on `common.load_net`), memory cap and first-item limit set on probe 2's module globals, a before-item check on probe 2's per-item `torch.cuda.mem_get_info` call (hold, AC, memory 9,000 / 10,000 first item, rise), the slow-item rule on each committed `items.jsonl` row, and the 1 s watchdog. The driver's `p2` stage and the M0 stage-3 command use it. A bug found on the way: argparse prefix matching read `--n` as `--no-ac-check` (it would have switched the AC check off); `allow_abbrev=False` on the wrapper's parsers, with a test | SAFE | healthy pass-through and flag stripping, memory limit after the first item, rise, slow item, AC, AC again before the load, hold mid-run, hooks restored, `run_probe2.py` unmodified |
+| F3 AC before the load; event log between chunks | AC checked before `load()` in `run_items`, in `run_gate_m0`, in `probe2_guarded` and before every chunk in the driver. `gate/eventlog.py` reads (read-only, `Get-WinEvent` through PowerShell) System Ids 41, 105, 117, 141, 4101 and Application 1001 only when its text names LiveKernelEvent / nvlddmkm / Bugcheck / BlueScreen, since the run started; the driver checks before every chunk and exits 9 on a hit or when the log cannot be read (fail closed; `--no-eventlog-check` overrides). The query was run once against this machine's real log for the last 3 days: it returned 38 events (the 2026-10-27 unclean reboots and power-source changes) and none since the query time | SAFE | parse and filter, script is read-only, failure reported, per-chunk check, battery refusal |
+| M1 gpu_guard cannot enforce memory/power | enforced in our own code, `gpu_guard.py` untouched: `gate/watchdog.py`, a thread sampling whole-GPU memory and AC every second inside every runner and in the probe-2 wrapper; it ends the process with 76 after logging when memory exceeds the limit, rises by more than 1.5 GB between samples, or AC is lost; an unreadable sensor also trips it | SAFE | rules, thread trip, stop, sensor error, default kill path with `os._exit` patched, start/stop also on the abort path |
+| M11 hold only at start | `hold.active_holds` before every item in `run_items` and in the probe-2 wrapper | SAFE | hold file created mid-chunk stops before the next item |
+| F4 S-M, S-C, K5/K6 | `s_m` (exact McNemar, GATE-M vs `geo0` = seed 1, gatekept by P, m = 3, p = 1 elsewhere; `geo1`, `geo2` as separate unadjusted replications; K5 and K6 flags), `s_c` (clean, m = 1) | ANA | known-outcome synthetic runs in `test_gate_m4_analysis.py` |
+| F5 Z_cal and K4 | `z_cal`, `fap_check` (pooled sigma_L over calibration and test items; the calibration losses are rebuilt from the stored jitter seed and reproduce the stored empirical risk exactly), violation iff Z_cal > 2.13 at any alpha, item-clustered CI, `split_replication` (2,000 splits by default, exploratory) | ANA | formula value, 2.13 rule, exact reproduction of the calibration risk, centring of the split replication |
+| F6 reporting | `report.report_test`: b, c, n_d, n, both accuracies, (b-c)/n with 95 and 98.33 percent CIs, Clopper-Pearson of theta (checked against scipy), mid-p, 90 percent equivalence check; `completeness_report` (planned vs completed, prefix, covariates, per-arm NaN/empty-R, worst-case first Holm step); K7 raises `PipelineDefect`; `load_items` de-duplicates; `selftest()` runs before the real analysis | ANA | same file |
+| M3 `--n` vs the n-rule | `check_n_against_rule`, called in `run_gate_m4.main` before anything is loaded | MIN | R1/R2/R3/NO-GO |
+| M4 frozen file required | `pipeline.require_frozen` in the M3 and M4 mains and in the M4 context; `analysis_m4` refuses without it | MIN | mains return 2 before touching a model |
+| M5 partial fold | `PartialRun` unless `--allow-partial` (recorded in the output meta) | ANA | tested |
+| M6 write-once | `artifacts.write_once` for `family.json`, `threshold.json`, `detection_frozen.json`; `--force` keeps the old file as `.prev-<time>` and logs `amendments.jsonl` | MIN | each of the three CLIs |
+| M7 empty R | `d` and `z` are NaN (y stays 0, sum 0) | ANA | `test_gate_scores.py` |
+| M8 freeze needs q for all items | `detection_frozen.json` is written only when every one of the 200 items has all four `_D` arrays | MIN | 11 of 12 refuses, 12 of 12 writes, a second write is refused |
+| M9 fold tokens | `check_fold_tokens` in M2, M3, M4 and M5; raises on any mismatch or any caption outside 5-32 tokens under the runtime tokenizer | MIN | tokenizer disagreement stops |
+| M12 seeds | `seeds.py`: `SeedSequence(20261028)` spawned by analysis name; seed, spawn order and numpy version in every analysis output | ANA | determinism and uniqueness |
+| Weak tests | the M4 analysis now has numeric assertions (b, c, p, Holm with p = 1 fill-in, direction, S-M gatekeeping, K5/K6, S-C, S-DN, S-Z, S-D2, completeness, K7); the driver chunk loop is tested with a fake child process | ANA, SAFE | |
+
+Not fixed, by design or by limit:
+- **M2** (memory cap and guard thresholds are proposals): needs Shlok's yes; defaults unchanged (0.75, 9,000 / 10,000 / 1,500 MiB, 2x).
+- **M1 residual**: the throttle-reason rule and the "nvidia-smi returns NA or takes longer than 3 s" rule of the diagnosis are not enforced (they need nvidia-smi calls from a second process every second; `gpu_guard.py` still logs the throttle bits). **M10** (chunk-lengthening rule, busy threshold 2,500 MiB) is unchanged.
+- The event-log check runs in `gate_driver` only; a stage launched by hand (including M0 stages 1 and 2) is not covered. M0 stage 2 (`run_probe1` control) still runs the old probe-1 code unguarded; the brief did not cover it.
+- Everything that touches a real GPU is still untested: the monkeypatched hooks on the real `run_probe2` (checked by reading it: one `torch.cuda.mem_get_info()` per item, `common.append_jsonl(rows_path, row)` per row, `common.load_net()` once), the watchdog's real kill, the memory-fraction call.
