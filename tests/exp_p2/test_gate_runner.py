@@ -179,7 +179,7 @@ def test_gate_driver_refuses_to_launch_while_on_hold(env, monkeypatch):
         raise AssertionError("must not launch or probe the GPU")
     monkeypatch.setattr(gate_driver.subprocess, "run", no)
     monkeypatch.setattr(gate_driver.driver, "gates_ok", no)
-    for st in ("m1", "m2", "m3", "m4", "m5"):
+    for st in ("p2", "m1", "m2", "m3", "m4", "m5"):
         assert gate_driver.main(["--stage", st]) == 7
     assert (env / "P2-PROBE-02" / "HOLD.txt").exists()
 
@@ -188,15 +188,19 @@ def test_gate_driver_command_uses_the_diagnosis_guard_settings(tmp_path):
     cmd = gate_driver.build_cmd("exp_p2.run_gate_m4", "P2-GATE-M4", 300, 5.0, 2.5, 0.5, 0, tmp_path, 80.0)
     s = " ".join(cmd)
     assert "gpu_guard.py" in s and "--every 1.0" in s and "--max-temp 80.0" in s and "-m exp_p2.run_gate_m4" in s and "--resume" in s
+    assert gate_driver.build_cmd("exp_p2.run_gate_m1", "P2-GATE-M1", 200, 5.0, 2.5, 0.5, 0, tmp_path, 80.0, ["--tbv"])[-1] == "--tbv"
 
 
 def test_stage_table_matches_the_modules_and_run_ids():
     import importlib
     for st, (mod, rid, n) in gate_driver.STAGES.items():
         m = importlib.import_module(mod)
-        assert m.RUN_ID == rid
+        if st != "p2":                                                          # run_probe2 predates RUN_ID; its default run id is the argparse default
+            assert m.RUN_ID == rid
         if n:
             assert m.CONFIG["n_items"] == n
+    import exp_p2.run_probe2 as rp2
+    assert rp2.CONFIG["n_items"] == 200 and gate_driver.STAGES["p2"][1] == "P2-PROBE-02"
 
 
 if __name__ == "__main__":

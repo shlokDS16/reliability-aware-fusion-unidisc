@@ -292,5 +292,14 @@ def test_m1_posthoc_reads_probe2_arrays_and_writes_nulls(env):
     assert np.array_equal(arrays["clean_D"], ref.astype(np.float32))
 
 
+def test_m0_stage1_forward_and_hold(env):
+    from exp_p2 import run_gate_m0
+    assert run_gate_m0.one_batch(FakeScorer(grid=4)) >= 0
+    (env / "P2-PROBE-02").mkdir()
+    (env / "P2-PROBE-02" / "HOLD.txt").write_text("hold")
+    assert run_gate_m0.main(["--run-id", "P2-M0-STAGE1"]) == 7                   # returns before importing a model or touching CUDA
+    assert not (env / "P2-M0-STAGE1").exists()
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q"]))

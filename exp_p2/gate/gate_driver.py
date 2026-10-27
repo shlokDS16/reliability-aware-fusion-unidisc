@@ -9,6 +9,7 @@ without progress, 6 max chunks, 7 on hold."""
 from __future__ import annotations
 
 import argparse
+import shlex
 import subprocess
 import sys
 import time
@@ -21,15 +22,17 @@ from exp_p2 import common, driver                                           # no
 from exp_p2.gate import hold                                                # noqa: E402
 
 # stage -> (module, default run id, default item count; 0 = number of probe-2 arrays on disk). Static on purpose: the driver stays torch-free.
-STAGES = {"m1": ("exp_p2.run_gate_m1", "P2-GATE-M1", 0), "m2": ("exp_p2.run_gate_m2", "P2-GATE-M2", 300), "m3": ("exp_p2.run_gate_m3", "P2-GATE-M3", 100),
+# 'p2' runs the existing run_probe2 module unchanged (probe behaviour and run directory untouched); its items.jsonl rows are the completion count.
+STAGES = {"p2": ("exp_p2.run_probe2", "P2-PROBE-02", 200),      # M1 part 1: complete probe 2 UNCHANGED (same module, same CLI), now under the project-wide hold check and 1 s telemetry
+          "m1": ("exp_p2.run_gate_m1", "P2-GATE-M1", 0), "m2": ("exp_p2.run_gate_m2", "P2-GATE-M2", 300), "m3": ("exp_p2.run_gate_m3", "P2-GATE-M3", 100),
           "m4": ("exp_p2.run_gate_m4", "P2-GATE-M4", 300), "m5": ("exp_p2.run_gate_m5", "P2-GATE-M5", 100)}
 MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0       # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
 
 
-def build_cmd(stage_mod: str, run_id: str, n: int, mins: float, soft: float, duty: float, ch: int, log_dir: Path, max_temp: float) -> list[str]:
+def build_cmd(stage_mod: str, run_id: str, n: int, mins: float, soft: float, duty: float, ch: int, log_dir: Path, max_temp: float, extra: list[str] | None = None) -> list[str]:
     return [str(common.GEN_PY), str(ROOT / "tools" / "gpu_guard.py"), "--log", str(log_dir / f"telemetry-chunk{ch:02d}.csv"), "--max-temp", str(max_temp),
             "--max-minutes", str(mins), "--every", str(GUARD_EVERY_S), "--", str(common.GEN_PY), "-m", stage_mod, "--run-id", run_id, "--n", str(n), "--resume",
-            "--duty", str(duty), "--soft-minutes", str(soft)]
+            "--duty", str(duty), "--soft-minutes", str(soft)] + list(extra or [])
 
 
 def main(argv=None) -> int:
@@ -43,6 +46,7 @@ def main(argv=None) -> int:
     ap.add_argument("--wait-minutes", type=float, default=20.0)
     ap.add_argument("--max-chunks", type=int, default=12)
     ap.add_argument("--max-temp", type=float, default=MAX_TEMP_DEFAULT)
+    ap.add_argument("--extra", default="", help="extra flags forwarded to the stage module, e.g. --extra \"--tbv\" for m1 or --extra \"--tbv on\" for m4")
     a = ap.parse_args(argv)
     stage_mod, default_run, default_n = STAGES[a.stage]
     run_id = a.run_id or default_run
@@ -87,7 +91,7 @@ def main(argv=None) -> int:
         mins = a.first_chunk_min if ch == 0 else a.chunk_min
         if n_stop:
             mins = min(mins, 10.0)
-        cmd = build_cmd(stage_mod, run_id, n, mins, max(1.0, mins - 2.5), a.duty if not n_stop else min(a.duty, 1 / 3), ch, run, a.max_temp)
+        cmd = build_cmd(stage_mod, run_id, n, mins, max(1.0, mins - 2.5), a.duty if not n_stop else min(a.duty, 1 / 3), ch, run, a.max_temp, shlex.split(a.extra))
         say("launch " + " ".join(cmd[-12:]))
         with open(run / f"stdout-chunk{ch:02d}.log", "w", encoding="utf8") as fh:
             r = subprocess.run(cmd, cwd=str(ROOT), stdout=fh, stderr=subprocess.STDOUT)
