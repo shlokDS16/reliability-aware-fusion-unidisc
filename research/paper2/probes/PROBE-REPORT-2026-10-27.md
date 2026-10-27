@@ -55,6 +55,16 @@ Before probe 2 restarts (it needs Shlok's go-ahead):
 - add a gate on whole-GPU memory during the chunk (stop above about 10.5 GB), not only before it;
 - close GPU-using apps (Ollama, the ChatGPT/Codex app) during the run.
 
+### Second crash (2026-10-27 ~23:25 IST, after the safeguards)
+With Shlok's go-ahead, probe 2 restarted at 23:22:51 with the 75% PyTorch memory cap and the per-item GPU memory stop, and with
+Ollama closed (the ChatGPT/Codex app was still in the tray but held no GPU context). It finished item 20 (peak 8.2 GB), then
+whole-GPU memory jumped from 4,566 to 12,087 MiB between 23:24:53 and 23:24:58 (`runs/P2-PROBE-02/telemetry-chunk00.csv`).
+The laptop crashed with the same bugcheck, 0x116, status c000009a; reboot at 23:25:25. The PyTorch cap did not stop it, so the
+memory that filled the card was outside PyTorch's caching allocator, or was the driver's own reset. The root cause is unknown.
+Probe 1 ran 300 items on the same model without this. Probe 2 is on hold (`runs/P2-PROBE-02/HOLD.txt`; exp_p2/driver.py refuses
+to run while it exists). Next steps need Shlok: a clean NVIDIA driver reinstall (his call), and/or a CPU-side diagnosis of what
+probe 2 does differently from probe 1 before any GPU retry.
+
 ## What this means for the ideas
 Probe 1 supports the premise shared by A (GATE) and C: UniDisc's masked likelihood carries a usable, image-grounded signal in
 both directions. It does not yet test GATE's own claim, that per-token scores find corrupted input tokens. That was probe 2.

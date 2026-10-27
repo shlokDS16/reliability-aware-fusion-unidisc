@@ -63,6 +63,10 @@ def main() -> int:
 
     mod = f"exp_p2.run_probe{a.probe}"
     n_stop, fails, pause = 0, 0, 30.0
+    hold = run / "HOLD.txt"
+    if hold.exists():
+        say(f"STOP: {hold} exists (GPU run on hold; delete it only with Shlok's go-ahead)")
+        return 7
     for ch in range(a.max_chunks):
         done = len(common.read_jsonl(run / "items.jsonl"))
         say(f"chunk {ch}: {done}/{a.n} done")

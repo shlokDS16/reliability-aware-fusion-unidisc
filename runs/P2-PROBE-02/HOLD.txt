@@ -1,0 +1,4 @@
+P2-PROBE-02 is ON HOLD (2026-10-27 23:35 IST, Paper 2 lead).
+Probe 2 crashed the laptop twice tonight (20:20 and ~23:25, both bugcheck 0x116 VIDEO_TDR_FAILURE, status c000009a;
+whole-GPU memory jumped to 12,087 MiB within 5 s each time). The 75% PyTorch memory cap did not prevent the second crash.
+exp_p2/driver.py refuses to run while this file exists. Delete it only after Shlok says so and the cause is fixed.
