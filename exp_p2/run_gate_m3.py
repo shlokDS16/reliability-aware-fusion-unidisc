@@ -1,0 +1,89 @@
+"""M3 (v2 section 11.1, 7.3, Alg. 9): headroom check on 100 held-out items. NO gate flags are computed here (the decision is blind to the method).
+
+    python -m exp_p2.run_gate_m3 --resume --soft-minutes 12.5 [--limit N] [--run-id P2-GATE-M3]
+    python -m exp_p2.gate.headroom --run-id P2-GATE-M3          # CPU: writes runs/P2-GATE-M3/family.json  (commit it before any M4 item is scored)
+
+Per item (2 passes + 7 encodes): clean encode; every ladder rung encoded (jpeg q10, q5; noise 0.10, 0.20; splice 128, 192); Lambda^{c+}, Lambda^{c-}
+(caption-only, image fully masked); image-direction evidence for the 'none' arm on clean and on each rung, and for the changed-code gate on each rung."""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from exp_p2 import common                                                          # noqa: E402
+from exp_p2.gate import arms, config, corruptions, evidence, folds, pipeline, runner       # noqa: E402
+
+RUN_ID = "P2-GATE-M3"
+CONFIG = dict(stage="M3", fold="head", n_items=config.N_HEAD, seed=config.SEED_GATE, ladders={k: list(v) for k, v in config.LADDERS.items()}, duty=0.5,
+              spec="research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 7.3, 11.1 M3, Alg. 9")
+
+
+def get_items(sc, run, n=None):
+    f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+    return f["head"][:n] if n else f["head"]
+
+
+def make_ctx(sc, run):
+    f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+    return SimpleNamespace(run=run, fold=f["head"])
+
+
+def rung_rng(gid: int, corr: str, rung: int) -> np.random.Generator:
+    return np.random.default_rng([config.SEED_GATE, gid, 100 + 10 * list(config.LADDERS).index(corr) + rung])
+
+
+def donor_for(ctx, sc, it) -> object:
+    """Splice donor: a uniformly random OTHER item of the same fold (seeded by the item), preprocessed to 512 px."""
+    rng = np.random.default_rng([config.SEED_GATE, it["gid"], 150])
+    j = int(rng.integers(0, len(ctx.fold) - 1))
+    j = j + 1 if j >= it["idx"] else j
+    return sc.preprocess(common.load_image(ctx.fold[j]["image_id"]))
+
+
+def process(sc, it, ctx):
+    cap_tok, neg_tok = sc.caption_ids(it["caption"]), sc.caption_ids(it["neg_caption"])
+    pil, clean = pipeline.prep_image(sc, it["image_id"])
+    lam_pos, lam_neg = pipeline.caption_lambdas(sc, cap_tok, neg_tok, clean)                         # 2 passes
+    d_clean = pipeline.image_delta(lam_pos, lam_neg, clean)
+    row = dict(gid=it["gid"], image_id=it["image_id"], clean=pipeline.compact(evidence.evidence_from_delta(d_clean)), rungs={})
+    arrays = dict(clean=clean.astype(np.int16), delta_clean=d_clean)
+    donor = None
+    for corr, ladder in config.LADDERS.items():
+        if corr == "splice" and donor is None:
+            donor = donor_for(ctx, sc, it)
+        for r, sev in enumerate(ladder):
+            img = corruptions.apply_pixel(corr, sev, pil, rung_rng(it["gid"], corr, r), donor if corr == "splice" else None)
+            codes = sc.encode(img)
+            chg = arms.changed_code_gate(clean, codes)
+            d = pipeline.image_delta(lam_pos, lam_neg, codes)
+            key = corruptions.corruption_key(corr, sev)
+            row["rungs"][key] = dict(corruption=corr, severity=sev, n_changed=int(chg.sum()), none=pipeline.compact(evidence.evidence_from_delta(d)),
+                                     chg=pipeline.compact(evidence.arm_summary(d, chg)))
+            arrays[f"{key}_codes"], arrays[f"{key}_delta"] = codes.astype(np.int16), d
+    return row, arrays
+
+
+def main(argv=None):
+    ap = runner.base_parser(RUN_ID, CONFIG["n_items"])
+    a = ap.parse_args(argv)
+    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac)
+
+    def load():
+        from exp_p2.scoring import UniScorer
+        return runner.Counting(UniScorer(common.load_net()))
+
+    def selfcheck(sc, items):
+        return sc.selfcheck(common.load_image(items[0]["image_id"]), items[0]["caption"])
+
+    return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=lambda sc, run: get_items(sc, run, a.n), process=process, make_ctx=make_ctx,
+                            soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

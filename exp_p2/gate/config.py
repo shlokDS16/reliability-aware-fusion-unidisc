@@ -17,5 +17,6 @@ DENOISE_FOR = ("jpeg", "noise")   # v2 11.1 M4 counts 2 denoised encodes; one fl
 N_GEO_SEEDS = 3
 FOLD_GID_OFFSET = {"cal": 0, "head": 1000, "test": 2000}   # global item id = offset + idx; used in every seed so folds never share masks
 FOLDS_RUN_ID = "P2-GATE-FOLDS"
+DCACHE_RUN_ID = "P2-GATE-DCACHE"      # shared disk cache of the layout-only null matrices (about 1.8 GB for all 28 caption lengths)
 STAT_NAME = "q"               # u_j = -(B_j - D_j); v2 4.1
 GLOBAL_HOLD = ("P2-PROBE-02", "HOLD.txt")      # v2 11 / v1 13: every GPU item is blocked by this file
