@@ -9,11 +9,13 @@ import numpy as np
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+for _p in (ROOT, Path(__file__).resolve().parent):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 
-from exp_p2 import common                                                  # noqa: E402
+from exp_p2 import analyze_gate_m1, common                                  # noqa: E402
 from exp_p2.gate import analysis_m4 as A, config, fit_threshold, report, scores, seeds, stats   # noqa: E402
+from test_gate_analysis import _synth_probe                                 # noqa: E402
 
 M = 64            # tokens per synthetic image
 ARMS = ["none", "gate0.05", "gate0.01", "gate0.1", "geo0", "geo1", "geo2", "scat0", "scat1", "scat2", "topkB", "topks3", "chg"]
@@ -347,6 +349,79 @@ def test_s_d2_compares_q_with_the_frozen_rival_and_keeps_missing_corruptions_at_
     only = A.s_d2(run, rows, [fam[0]], frozen, None, 200)
     assert only["per_corruption"]["noise"]["tested"] is False and only["per_corruption"]["noise"]["p_holm"] == 1.0
     assert A.s_d2(run, rows, fam, None, None, 100)["per_corruption"]["jpeg"]["p"] == 1.0                          # no frozen file: p = 1 (main refuses this case)
+
+
+# ------------------------------------------------------------------------------------------------ C1 (clean-image recovery) and the chance bar (card D16)
+def test_c1_numbers_trigger_and_sentence():
+    from exp_p2.gate import c1
+    assert (c1.PROBE1_K, c1.PROBE1_N, c1.PROBE1_CI) == (253, 300, (0.798, 0.880))
+    same = c1.c1([1] * 253 + [0] * 47, "cal")
+    assert same["accuracy"] == pytest.approx(253 / 300) and same["wilson95"] == pytest.approx([0.7979, 0.8801], abs=1e-3) and same["overlaps_probe1_interval"] and not same["audit_trigger"]
+    assert same["sentence"] == "the clean none-arm accuracy was 0.843 (95 percent CI 0.798 to 0.880), against 0.843 (0.798 to 0.880) in probe 1"
+    near = c1.c1([1] * 230 + [0] * 70)                                          # 0.767, Wilson about 0.716-0.810: still overlaps 0.798
+    assert near["overlaps_probe1_interval"] and not near["audit_trigger"]
+    low = c1.c1([1] * 200 + [0] * 100)                                          # 0.667: interval ends below 0.798
+    assert low["audit_trigger"] and not low["overlaps_probe1_interval"] and not low["above_interval"] and "audit" in low["rule"]
+    high = c1.c1([1] * 298 + [0] * 2)                                           # above 0.88: flagged as non-overlap, but the SAP says a high value is not alarming by itself
+    assert high["audit_trigger"] and high["above_interval"]
+    assert c1.c1([float("nan")] * 3)["sentence"] == "no items"
+    assert "validat" not in same["sentence"] and "power" not in same["sentence"]
+
+
+def test_c1_looks_read_the_right_fields_and_each_look_is_recorded_once(tmp_path, monkeypatch):
+    from exp_p2.gate import c1
+    monkeypatch.setattr(common, "RUNS", tmp_path)
+    cal_rows = [dict(idx=i, img=dict(y=int(i % 5 != 0))) for i in range(300)]
+    head_rows = [dict(idx=i, clean=dict(y=int(i % 5 != 0))) for i in range(100)]
+    test_rows = [dict(idx=i, conds=dict(clean=dict(img={"none": dict(y=int(i % 5 != 0)), "gate0.05": dict(y=0)}))) for i in range(300)]
+    assert c1.ys_from_rows(cal_rows, "cal") == [r["img"]["y"] for r in cal_rows] and sum(c1.ys_from_rows(head_rows, "head")) == 80
+    assert c1.ys_from_rows(test_rows, "test") == [r["conds"]["clean"]["img"]["none"]["y"] for r in test_rows]
+    for rid, rows in (("P2-GATE-M2", cal_rows), ("P2-GATE-M3", head_rows), ("P2-GATE-M4", test_rows)):
+        (tmp_path / rid).mkdir()
+        (tmp_path / rid / "items.jsonl").write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    assert c1.main(["--look", "cal"]) == 0 and c1.main(["--look", "head"]) == 0 and c1.main(["--look", "test"]) == 0
+    got = json.loads((tmp_path / "P2-GATE-M2" / "c1_cal.json").read_text())
+    assert got["n"] == 300 and got["k"] == 240 and got["look"] == "calibration" and got["accuracy"] == 0.8 and not got["audit_trigger"]
+    assert c1.main(["--look", "cal"]) == 2                                      # looks are recorded once and never pooled
+
+
+def test_analysis_reports_c1_on_the_clean_test_items(tmp_path):
+    n = 60
+    g, o = flips(n, 5, 1)
+    run, rows = build(tmp_path, n, {("clean", "none"): o, ("jpeg10", "gate0.05"): g, ("jpeg10", "none"): o})
+    res = A.run(run, FAM, n_boot=100)
+    c = res["c1_test"]
+    assert c["n"] == 60 and c["k"] == int(o.sum()) and c["look"].startswith("test") and c["probe1"]["wilson95"] == [0.798, 0.88]
+
+
+def test_chance_bar_passes_fails_and_waits_for_q():
+    from exp_p2.gate import detect
+    def item(pb, q):
+        d = {c: {"plainB": pb, "_eligible": 1.0} | ({"q": q} if q is not None else {}) for c in ("patch", "swap")}
+        return d
+    rng = np.random.default_rng(0)
+    good = [item(0.95 + 0.01 * rng.standard_normal(), 0.96 + 0.01 * rng.standard_normal()) for _ in range(40)]
+    r = detect.chance_bar(good, n_boot=500)
+    assert r["passes"] is True and not r["failed"] and not r["audit_trigger"] and r["per_score"]["patch/q"]["lower95"] > 0.9 and set(r["per_score"]) == {"patch/plainB", "patch/q", "swap/plainB", "swap/q"}
+    no_q = [item(0.95 + 0.01 * rng.standard_normal(), None) for _ in range(40)]
+    r = detect.chance_bar(no_q, n_boot=500)
+    assert r["passes"] is None and r["n_unavailable"] == 2 and not r["failed"] and r["per_score"]["swap/q"]["available"] is False
+    chance = [item(0.5 + 0.05 * rng.standard_normal(), 0.96) for _ in range(40)]       # plain-B at chance on patch and swap: a pipeline defect
+    r = detect.chance_bar(chance, n_boot=500)
+    assert r["failed"] and r["audit_trigger"] and r["passes"] is False and not r["per_score"]["patch/plainB"]["passes"] and r["per_score"]["patch/q"]["passes"]
+    sign_flipped = [item(0.05, 0.05) for _ in range(40)]                              # reversed sign: far below 0.5, also a failure
+    assert detect.chance_bar(sign_flipped, n_boot=200)["failed"]
+    edge = [item(0.5 + 0.2 * (-1) ** i, 0.9) for i in range(40)]                      # mean 0.5, wide: lower bound below 0.5
+    assert detect.chance_bar(edge, n_boot=500)["per_score"]["patch/plainB"]["passes"] is False
+
+
+def test_m1_analysis_includes_the_chance_bar(tmp_path):
+    p2, m1 = _synth_probe(tmp_path, n_items=12, q_better=True)
+    res = analyze_gate_m1.run_analysis(p2, m1, pixels=False, n_boot=300)
+    cb = res["chance_bar"]
+    assert cb["passes"] is True and cb["per_score"]["patch/q"]["n"] == 12 and cb["per_score"]["swap/plainB"]["lower95"] > 0.5
+    res2 = analyze_gate_m1.run_analysis(p2, None, pixels=False, n_boot=300)             # no D yet (CPU fallback): q unavailable, plain-B still judged
+    assert res2["chance_bar"]["passes"] is None and res2["chance_bar"]["per_score"]["patch/plainB"]["passes"] is True
 
 
 # ------------------------------------------------------------------------------------------------ seeds, selftest

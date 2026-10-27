@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common, core                                            # noqa: E402
-from exp_p2.gate import calibrate as cal, config, report, scores, seeds, stats, theory     # noqa: E402
+from exp_p2.gate import c1 as c1mod, calibrate as cal, config, report, scores, seeds, stats, theory     # noqa: E402
 
 A0 = f"gate{config.ALPHA_PRIMARY:g}"
 Z_CAL_CRIT = 2.13           # z_{0.9833}: one-sided Bonferroni over three alpha levels (SAP section 6)
@@ -489,7 +489,7 @@ def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict |
     res = dict(meta=dict(seeds.meta(), allow_partial=bool(allow_partial)), rule=rule, primary_endpoint="d (z*), Wilcoxon" if rule == "R3" else "Y, exact McNemar",
                negative_available=bool(rule in ("R1", "R2")), n_items=len(rows), family=keys, endpoint=endpoint, completeness=comp, primary=prim,
                secondary_y=(dict(y_family, label="secondary under R3") if rule == "R3" else None), outcome=outcome_reading(prim, rule, family), s_m=s_m(rows, family, prim, n_boot),
-               s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot),
+               c1_test=c1mod.c1(c1mod.ys_from_rows(rows, "test"), "test (look 3, analysis step)"), s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot),
                mechanism={k: mechanism(rows, k, n_boot) for k in keys + ["patch"]}, calibration=calibration(run_dir, rows, keys, n_boot, m2_dir=m2_dir, split_reps=split_reps))
     for k in keys:                                                                                      # Prop. 4 refutation check (5.3)
         obs = res["mechanism"][k][endpoint]["gate_minus_none"]

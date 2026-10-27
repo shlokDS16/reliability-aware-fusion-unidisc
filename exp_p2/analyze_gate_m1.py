@@ -58,7 +58,7 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
                falsifier=detect.falsifier(per_item, "q", n_boot=n_boot),
                falsifier_rival_reselected_in_each_resample=detect.falsifier(per_item, "q", n_boot=n_boot, reselect=True),
                falsifier_excluding_dry_run_items=dict(n_items=len(late), **detect.falsifier(late, "q", n_boot=n_boot)) if late else None,
-               frozen=detect.freeze_rivals(per_item), rows_report=jsonl.probe2_row_report(probe_dir, idxs))
+               chance_bar=detect.chance_bar(per_item, n_boot=n_boot), frozen=detect.freeze_rivals(per_item), rows_report=jsonl.probe2_row_report(probe_dir, idxs))
     if m1_dir is not None and (m1_dir / "items.jsonl").exists():
         rows = [r for r in common.read_jsonl(m1_dir / "items.jsonl") if r.get("tbv")]
         if rows:
@@ -96,6 +96,9 @@ def main(argv=None) -> int:
     else:
         print(f"detection_frozen.json NOT written (needs q for all {N_M1} items; have {res['n_items_with_q']} of {res['n_items']})")
     print(json.dumps({k: res[k] for k in ("n_items", "has_q", "label")}, indent=1))
+    cb = res["chance_bar"]
+    print("chance bar (patch/swap, plain-B and q, lower 95% bound > 0.5):", {k: (round(v["lower95"], 3), v["passes"]) for k, v in cb["per_score"].items() if v["available"]},
+          "-> " + ("FAILED: run the pipeline audit (nothing is tuned)" if cb["failed"] else "pass" if cb["passes"] else "incomplete (q not yet available)"))
     print("probe-2 rows report:", {k: v for k, v in res["rows_report"].items() if k != "rows_without_arrays"})
     for corr, t in res["table"].items():
         print(corr, {k: round(v["mean"], 3) for k, v in t.items() if not k.startswith("_")})

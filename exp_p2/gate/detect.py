@@ -160,6 +160,30 @@ def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed
                 rule="SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise")
 
 
+def chance_bar(per_item: list[dict], scores=("plainB", "q"), corrs=("patch", "swap"), n_boot: int = 10000, seed=None) -> dict:
+    """Positive control (a) of the card / SAP A2.5, binding pass/fail: on the sanity corruptions patch and swap (uniform random codes, so a likelihood-based detector must beat chance), the
+    lower 95 percent bound of the mean per-item AUROC against the changed-code labels is above 0.5 for plain-B and for q (q only on items that have D). The level and the comparison
+    with the cheap rivals are descriptive. A failure triggers the pipeline audit of C1; nothing is tuned. Passing says nothing about JPEG, noise or splice."""
+    seed = seed if seed is not None else seeds.seed_for("auroc")
+    out, results = {}, []
+    for corr in corrs:
+        rows = [p[corr] for p in per_item if corr in p]
+        for sc in scores:
+            v = np.array([r.get(sc, np.nan) for r in rows], float)
+            v = v[~np.isnan(v)]
+            key = f"{corr}/{sc}"
+            if v.size < 2:
+                out[key] = dict(available=False, n=int(v.size), passes=None)
+                results.append(None)
+                continue
+            m, lo, hi = core.bootstrap_mean_ci(v, n_boot, seed)
+            out[key] = dict(available=True, n=int(v.size), mean=m, lower95=lo, upper95=hi, passes=bool(lo > 0.5))
+            results.append(bool(lo > 0.5))
+    failed = any(r is False for r in results)
+    return dict(per_score=out, passes=(False if failed else (None if (None in results or not results) else True)), failed=bool(failed), audit_trigger=bool(failed), n_unavailable=int(sum(r is None for r in results)),
+                rule="SAP A2.5: lower 95 percent bound of the mean per-item AUROC > 0.5 for plain-B and q on patch and swap (descriptive level); failure = pipeline audit, nothing tuned")
+
+
 def freeze_rivals(per_item: list[dict], corrs=("jpeg", "noise"), cheap=CHEAP) -> dict:
     """detection_frozen.json content (SAP A1.2 rule 5): per corruption the selected rival, its base name, sign and mean AUROC on the M1 items. Frozen after M1 and before M3/M4,
     tested on the M4 test items (family S-D2). Rarity for S-D2 uses the calibration codefreq (A1.3 N11), recorded here."""
