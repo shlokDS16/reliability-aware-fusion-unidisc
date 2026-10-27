@@ -104,3 +104,32 @@ def test_derangement_has_no_fixed_point():
     for n in (2, 3, 10, 300):
         p = C.derangement(n, rng)
         assert sorted(p.tolist()) == list(range(n)) and not np.any(p == np.arange(n))
+
+
+def test_pixel_corruptions_run_and_change_pixels():
+    """JPEG q10 and Gaussian noise sigma 0.1 as implemented in run_probe2.corrupt (stubbed tokeniser; needs torch, skipped otherwise)."""
+    try:
+        import torch  # noqa: F401
+    except ImportError:
+        return
+    from PIL import Image
+    from exp_p2 import run_probe2 as R
+
+    class Stub:
+        def encode(self, img):
+            a = np.asarray(img)
+            return (a.reshape(-1, 3).sum(1)[:1024] % 16384).astype(np.int64)
+
+    rng = np.random.default_rng(0)
+    a = (np.random.default_rng(1).random((512, 512, 3)) * 255).astype(np.uint8)
+    pil = Image.fromarray(a)
+    clean = Stub().encode(pil)
+    for name in ("jpeg", "noise"):
+        codes, pix = R.corrupt(name, Stub(), pil, clean, np.random.default_rng(2))
+        assert pix.size == (512, 512) and codes.shape == (1024,)
+        assert np.abs(np.asarray(pix).astype(float) - a).mean() > 1.0
+    _, pix = R.corrupt("noise", Stub(), pil, clean, np.random.default_rng(2))
+    d = np.asarray(pix).astype(float) / 255 - a.astype(float) / 255
+    assert 0.05 < d.std() < 0.11                                          # sigma 0.1 reduced by clipping at the 0/1 bounds and 8-bit rounding
+    c_sw, p_sw = R.corrupt("swap", Stub(), pil, clean, rng)
+    assert p_sw is None and 0.14 < (c_sw != clean).mean() <= 0.151
