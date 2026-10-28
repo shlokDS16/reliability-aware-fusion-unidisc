@@ -234,6 +234,13 @@ def test_default_trip_logs_and_ends_the_process_with_76(tmp_path, monkeypatch):
     assert e["event"] == "guard_stop" and e["source"] == "watchdog" and "9999" in e["reason"]
 
 
+def test_slow_item_rule_ignores_sub_second_jitter_but_not_a_real_slowdown():
+    g = guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: True)
+    assert [g.after_item(t) for t in (0.0004, 0.0004, 0.0004, 0.0031, 0.0009)] == [None] * 5          # this jitter made a runner test fail about once in 25 runs
+    g = guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: True)
+    assert [g.after_item(t) for t in (2.0, 2.0, 2.0)] == [None] * 3 and "slow_item" in g.after_item(9.0)
+
+
 def test_run_items_starts_and_stops_the_watchdog(env):
     log = []
 

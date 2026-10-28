@@ -36,6 +36,7 @@ class Guards:
     max_rise_mib: float = 1500.0          # ... or a rise of more than 1.5 GB between two consecutive readings
     slow_factor: float = 2.0              # ... or an item taking more than 2x the median of the earlier items of this chunk
     min_items_for_median: int = 3
+    slow_min_s: float = 1.0               # the slow-item rule needs an absolute floor too: sub-second items (tests, dry runs) jitter by more than 2x without meaning anything
     require_ac: bool = True
     used_fn: object = gpu_used_mib
     ac_fn: object = on_ac
@@ -65,6 +66,6 @@ class Guards:
             self._last_used = None
         prior = list(self._times)
         self._times.append(busy_s)
-        if len(prior) >= self.min_items_for_median and busy_s > self.slow_factor * statistics.median(prior):
+        if len(prior) >= self.min_items_for_median and busy_s >= self.slow_min_s and busy_s > self.slow_factor * statistics.median(prior):
             return f"slow_item {busy_s:.1f}s > {self.slow_factor}x median {statistics.median(prior):.1f}s"
         return None
