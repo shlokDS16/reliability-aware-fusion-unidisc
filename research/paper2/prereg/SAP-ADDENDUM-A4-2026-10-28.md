@@ -73,9 +73,15 @@ A3b > A3 > A2b > A2 > A1 > SAP body (card v4 "Precedence"), only on the points l
 | C4-10 (F13, F14) pins, seeds, FOIL rule | No `seeds.py` append (fallback seed only); the module and test file are committed only with a dated pin row moving the card's pin (card section 7) and an auditor delta check. FOIL rule: freeze fixed at Fri 30 Oct 2026 18:00 IST (a moved freeze never enters), W_S2 is a named constant, no smoke option, a stop during FOIL ends the FOIL-first order, inversion risk in the deviations box | A4.1.7, A4.1.11, A4.3.2 |
 | C4-11 (F11, F12, F15) minor | Highlights rebuilt with short names and a counted fallback (all at most 85 characters); NEG: summary figure shows the 90 percent interval that carries the claim, highlight states the bound as a bound; the printed multiplicity sentence replaced by a count with "no multiplicity adjustment (SAP 7)"; bootstrap index matrix fully specified; the "no Delta distribution looked at" sentence labelled as my assertion | A4.1.7, A4.2.3, A4.2.5 |
 | (not a condition) A4.3.1 limit (ii) | The non-strict load is now closed by `runs/P2-UNIDISC-KEYCHECK` (commit e954217e: 0 missing, 0 unexpected, 0 shape mismatches of 342 tensors) | A4.3.1 |
+| **r2** (2026-10-29, 00:00 IST; gate-auditor note N2 of `GATE-CODE-AUDIT-TIER3-2026-10-28.md`, commit 1b9f09d9; before any Tier-3 output exists, no M4 value seen by the author) | Reading for n_d = 0 and small n_d: below 10 discordant items the bootstrap MDD is not used and the exact Clopper-Pearson bound on the discordance rate replaces it; n_d = 0 is worded "same decision on all n items" with that bound. Plus r2 notes N1 (test file name) and N3 (stop file). Nothing else in A4 changes | A4.1.10 "r2 rule for few discordant items"; "r2 notes" below |
 
 I object to no condition. Two points where r1 goes beyond the letter: C4-7 (no "fusion" in any title, even if B is formal) and C4-8 (the
 clause is struck rather than reworded). Both are stricter readings; the red team may relax them by a dated row.
+
+**r2 notes (2026-10-29, gate-auditor notes N1 and N3; no rule changes).** N1: the test file is `tests/exp_p2/test_gate_tier3_fusion.py`, not
+the `tests/exp_p2/test_tier3_fusion.py` printed in A4.1.11; a naming deviation with no effect on content, recorded under the actual name in
+the dated pin row. N3: on a consistency-gate stop (A4.1.3; the module exits with code 3 and writes the reason to stderr only), the lead saves
+the stderr to `runs/P2-GATE-M4/tier3_fusion_stop.txt` before doing anything else; that file is the text of the "pipeline discrepancy" row.
 
 ## A4.0 Status, firewall, pins, binding
 
@@ -263,6 +269,23 @@ The same rule reads the $d$ contrasts of A4.1.8, with "higher evidence ratio d" 
 "not distinguishable" is a finding against the method's added value **only if MDD <= 0.05** (the SAP's design margin, section 4.3); with
 MDD > 0.05 it is reported as "uninformative at this n". For SOFT-G and SOFT-A: "above GM" is a finding against discarding (hard gating),
 never against the detector; "not distinguishable" reads "discarding and discounting (or weighting) were not distinguishable", with n_d and MDD.
+
+**r2 rule for few discordant items (2026-10-29, answers auditor note N2; replaces the MDD test above only when n_d < 10).** With n_d = 0
+every bootstrap resample gives a difference of 0, so the interval is [0, 0] and MDD = 0: degenerate, not informative. With fewer than about
+10 discordant items the resampled difference takes few values in steps of 1/n and its SD is unstable (the 10 is a design choice). Rule:
+1. For every Y contrast with **n_d < 10**, the MDD is printed but labelled "not used (n_d < 10)", and the exact bound $B$ = Clopper-Pearson
+   two-sided 95 percent upper limit of $n_d/n$ (`scipy.stats.beta.ppf(0.975, n_d + 1, n - n_d)`) is printed beside it. $B$ is a valid bound on
+   the net difference because $|A^{k}-A^{\rm GM}|\le\pi_d$, the discordance probability.
+2. **Against added value (MED, TM-G, TM20):** with n_d < 10, "not distinguishable" counts as a finding against the method's added value iff
+   $B\le0.05$, otherwise it is "uninformative at this n". (Derived: $B=0.0122$ for n_d = 0 at n = 300 and $0.0074$ at n = 500; $B\le0.05$ holds
+   for n_d up to 7 at n = 300 and up to 15 at n = 500, so at n = 300 an n_d of 8 or 9 is "uninformative".)
+3. **Wording for n_d = 0:** "{k} and the hard gate made the same decision on all {n} items (n_d = 0); the net difference in accuracy is at most
+   {B} (Clopper-Pearson 95% bound on the discordance rate; exploratory)". Never "equivalent". For SOFT-G and SOFT-A the same sentence is read
+   against discarding, not against the detector. For 0 < n_d < 10 the three-way sentence above is used with {B} in place of {MDD}.
+4. **$d$ contrasts (A4.1.8):** the against-method rule does not apply to them. If every paired difference is exactly 0, the output prints
+   "identical on every item", a description, not a finding.
+5. Where the module's `counts_against` field (MDD rule only) disagrees with this rule, this rule governs: the lead applies it from the printed
+   n_d and n in the results text, or adds it to the code with a gate-auditor delta check before the output is read.
 
 **Placement (one rule; C4-8, C4-9; consistent with AB.1 item 2 and A4.2.2 item 5).**
 1. Part 1 is reported in its own Results subsection, titled as exploratory, after the preregistered families; PS cells in their own table.
