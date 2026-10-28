@@ -24,6 +24,25 @@ from exp_p2.gate import artifacts, baselines, detect, jsonl, seeds              
 DRY_RUN_N, N_M1 = 21, 200          # the first 21 probe-2 items were seen in the CPU dry run (SAP A1.2); the complete M1 set is 200
 
 
+def combine_chance_bars(cb_all: dict, cb_late: dict | None, n_all: int, n_late: int) -> dict:
+    """SAP AB.7 item 3: the patch/swap chance bar is computed on all M1 items AND on the items after the 21 dry-run items (179 of 200 when M1 is complete) and PASSES ONLY IF the lower 95 percent
+    bound exceeds 0.5 in both pools. `cb_all` and `cb_late` are `detect.chance_bar` results (per_score table, passes True/False/None, failed). FAILED if either pool failed; PASSED only if both
+    passed; otherwise None (a pool is empty, or q is not yet available in one of them). Pure function of the two results: no data are read here."""
+    if cb_late is None:
+        return dict(passes=False if cb_all["failed"] else None, failed=bool(cb_all["failed"]), audit_trigger=bool(cb_all["failed"]), n_all=n_all, n_late=n_late,
+                    per_score={k: dict(all=v, late=None, passes_both=None) for k, v in cb_all["per_score"].items()}, incomplete="no items after the dry-run items",
+                    rule="SAP AB.7 item 3: pass only if the lower 95 percent bound exceeds 0.5 on all items and on items 21 to 199")
+    failed = bool(cb_all["failed"] or cb_late["failed"])
+    passes = False if failed else (True if (cb_all["passes"] is True and cb_late["passes"] is True) else None)
+    per = {}
+    for k in cb_all["per_score"]:
+        a, b = cb_all["per_score"][k], cb_late["per_score"].get(k, dict(available=False, passes=None))
+        pa, pb = a.get("passes"), b.get("passes")
+        per[k] = dict(all=a, late=b, passes_both=(False if (pa is False or pb is False) else (True if (pa is True and pb is True) else None)))
+    return dict(passes=passes, failed=failed, audit_trigger=failed, n_all=n_all, n_late=n_late, per_score=per,
+                rule="SAP AB.7 item 3: pass only if the lower 95 percent bound exceeds 0.5 on all items and on items 21 to 199 (the 21 dry-run items were seen); failure = pipeline audit, nothing tuned")
+
+
 def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, codebook: np.ndarray | None = None, n_boot: int = 10000) -> dict:
     sel = json.loads((probe_dir / "selection.json").read_text(encoding="utf8"))["items"]
     files = sorted((probe_dir / "arrays").glob("item*.npz"))
@@ -53,12 +72,15 @@ def run_analysis(probe_dir: Path, m1_dir: Path | None, *, pixels: bool = True, c
             rec[corr] = detect.item_aurocs(sus, np.asarray(a[f"{corr}_z"], bool))
         per_item.append(rec)
     late = [r for r, i in zip(per_item, idxs) if i >= DRY_RUN_N]                      # excludes the 21 dry-run items (179 of 200 when M1 is complete)
+    cb_all = detect.chance_bar(per_item, n_boot=n_boot)
+    cb_late = detect.chance_bar(late, n_boot=n_boot) if late else None                    # the pool without the 21 dry-run items (SAP AB.7 item 3)
     out = dict(labels=dict(tbv=baselines.TBV_LABEL), meta=seeds.meta(), n_items=len(idxs), n_items_with_q=n_with_q, item_idx=idxs, has_q=have_m1, label="exploratory (not preregistered)" if len(idxs) < N_M1 or not have_m1 else "M1 detection table",
                table=detect.aggregate(per_item, n_boot=n_boot), paired_q_vs_best_cheap={c: detect.paired_vs_best_cheap(per_item, c, "q", n_boot=n_boot) for c in detect.P2_CORRS},
                falsifier=detect.falsifier(per_item, "q", n_boot=n_boot),
                falsifier_rival_reselected_in_each_resample=detect.falsifier(per_item, "q", n_boot=n_boot, reselect=True),
                falsifier_excluding_dry_run_items=dict(n_items=len(late), **detect.falsifier(late, "q", n_boot=n_boot)) if late else None,
-               chance_bar=detect.chance_bar(per_item, n_boot=n_boot), frozen=detect.freeze_rivals(per_item), rows_report=jsonl.probe2_row_report(probe_dir, idxs))
+               chance_bar=cb_all, chance_bar_after_dry_run=cb_late, chance_bar_both=combine_chance_bars(cb_all, cb_late, len(per_item), len(late)),
+               frozen=detect.freeze_rivals(per_item), rows_report=jsonl.probe2_row_report(probe_dir, idxs))
     if m1_dir is not None and (m1_dir / "items.jsonl").exists():
         rows = [r for r in common.read_jsonl(m1_dir / "items.jsonl") if r.get("tbv")]
         if rows:
@@ -96,9 +118,10 @@ def main(argv=None) -> int:
     else:
         print(f"detection_frozen.json NOT written (needs q for all {N_M1} items; have {res['n_items_with_q']} of {res['n_items']})")
     print(json.dumps({k: res[k] for k in ("n_items", "has_q", "label")}, indent=1))
-    cb = res["chance_bar"]
-    print("chance bar (patch/swap, plain-B and q, lower 95% bound > 0.5):", {k: (round(v["lower95"], 3), v["passes"]) for k, v in cb["per_score"].items() if v["available"]},
-          "-> " + ("FAILED: run the pipeline audit (nothing is tuned)" if cb["failed"] else "pass" if cb["passes"] else "incomplete (q not yet available)"))
+    cb = res["chance_bar_both"]
+    print("chance bar (patch/swap, plain-B and q; lower 95% bound > 0.5 on ALL items and on items 21 and later):",
+          {k: (round(v["all"]["lower95"], 3) if v["all"].get("available") else None, round(v["late"]["lower95"], 3) if v["late"] and v["late"].get("available") else None, v["passes_both"]) for k, v in cb["per_score"].items()},
+          f"n_all={cb['n_all']} n_late={cb['n_late']}", "-> " + ("FAILED: run the pipeline audit (nothing is tuned)" if cb["failed"] else "pass in both pools" if cb["passes"] else "incomplete (q not yet available, or no items after the dry run)"))
     print("probe-2 rows report:", {k: v for k, v in res["rows_report"].items() if k != "rows_without_arrays"})
     for corr, t in res["table"].items():
         print(corr, {k: round(v["mean"], 3) for k, v in t.items() if not k.startswith("_")})
