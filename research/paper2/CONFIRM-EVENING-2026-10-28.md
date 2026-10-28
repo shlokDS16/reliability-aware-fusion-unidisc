@@ -136,3 +136,12 @@ f2f7b2e1, row A-1); M2's remaining 186 items are about 15 min of GPU and are sto
 inference path; a defect would need an audited fix before any stage that depends on the scores.
 
 Erratum (lead): the time of the answer above is about 22:05 IST, not ~22:40; the M2 relaunch logged 22:06:29 (`runs/P2-GATE-M2.driver.out`; earlier log kept as `P2-GATE-M2.driver.run2.out`). Card v4 rows A-1/A-2 say ~22:30; they were committed shortly before 22:05.
+
+## 12. D18 reading (SAP addendum A4.2.6, C4-2), before `analysis_m4`
+Question put (wrap-up box, 2026-10-29 ~00:05 IST): "Under a null main result, keep 'when does gating help' out of the headline (reading 1)?"
+**Shlok's answer (2026-10-29 ~00:10 IST, in this session, verbatim): "Done going to sleep continue. Choose whatever alleviate. We want the best paper till date proposed in any journal. Take all the experts researcher to another level of ascension."**
+Read as a delegation of the choice to the lead. Lead's choice under it: **reading 1** (the stricter, certainly inside AB.1, and the
+one the A4 outcome book is written to): under a P-null label the phrase "when does input gating help" stays out of the title,
+abstract, highlights, conclusion and the opening of 6.1, and is discussed only through the closed-form condition and the P table.
+D18's submission condition stands verbatim, with the **status-only definition of "informative"** of A4.2.6 adopted (S2, PS and
+FOIL each "informative" iff AD.11 status "run, formal"). No M4 value had been read (M4 at about 115 of 500, running).
