@@ -55,6 +55,8 @@ def run_guarded(argv: list[str], *, probe_main=None, cuda=None, watchdog_factory
     ap.add_argument("--max-used-mib", type=float, default=Guards.max_used_mib)
     ap.add_argument("--max-used-first-mib", type=float, default=Guards.max_used_first_mib)
     ap.add_argument("--max-rise-mib", type=float, default=Guards.max_rise_mib)
+    ap.add_argument("--slow-factor", type=float, default=Guards.slow_factor, help="slow-item rule: stop if an item takes more than this factor times the median of the earlier items of the chunk")
+    ap.add_argument("--slow-min-s", type=float, default=Guards.slow_min_s, help="slow-item rule: absolute floor in seconds below which an item is never slow")
     ap.add_argument("--no-ac-check", action="store_true")
     ap.add_argument("--no-eventlog-check", action="store_true")
     ap.add_argument("--allow-dirty", action="store_true")
@@ -78,7 +80,7 @@ def run_guarded(argv: list[str], *, probe_main=None, cuda=None, watchdog_factory
         d = Path(common.RUNS) / run_id
         d.mkdir(parents=True, exist_ok=True)
         common.append_jsonl(d / "chunks.jsonl", dict(event="dirty_allowed", t=time.time(), source=spec["name"], files=dirty))
-    g = Guards(max_used_mib=ga.max_used_mib, max_used_first_mib=ga.max_used_first_mib, max_rise_mib=ga.max_rise_mib, require_ac=not ga.no_ac_check, **({"ac_fn": ac_fn} if ac_fn else {}))
+    g = Guards(max_used_mib=ga.max_used_mib, max_used_first_mib=ga.max_used_first_mib, max_rise_mib=ga.max_rise_mib, slow_factor=ga.slow_factor, slow_min_s=ga.slow_min_s, require_ac=not ga.no_ac_check, **({"ac_fn": ac_fn} if ac_fn else {}))
     if g.require_ac and g.ac_fn() is False:
         _event(run_id, "ac_lost_before_load", spec["name"])
         print("STOP: running on battery (checked before the model load)", file=sys.stderr)

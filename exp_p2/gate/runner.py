@@ -35,6 +35,8 @@ def base_parser(default_run_id: str, default_n: int | None = None) -> argparse.A
     ap.add_argument("--max-used-mib", type=float, default=Guards.max_used_mib)
     ap.add_argument("--max-used-first-mib", type=float, default=Guards.max_used_first_mib)
     ap.add_argument("--max-rise-mib", type=float, default=Guards.max_rise_mib)
+    ap.add_argument("--slow-factor", type=float, default=Guards.slow_factor, help="slow-item rule: stop if an item takes more than this factor times the median of the earlier items of the chunk")
+    ap.add_argument("--slow-min-s", type=float, default=Guards.slow_min_s, help="slow-item rule: absolute floor in seconds below which an item is never slow")
     ap.add_argument("--no-ac-check", action="store_true")
     ap.add_argument("--allow-dirty", action="store_true", help="run although exp_p2/ or tools/ has uncommitted changes (recorded in the run config)")
     return ap
@@ -46,7 +48,7 @@ def default_watchdog(guards, run):
 
 
 def guards_from_args(a) -> Guards:
-    return Guards(max_used_mib=a.max_used_mib, max_used_first_mib=a.max_used_first_mib, max_rise_mib=a.max_rise_mib, require_ac=not a.no_ac_check)
+    return Guards(max_used_mib=a.max_used_mib, max_used_first_mib=a.max_used_first_mib, max_rise_mib=a.max_rise_mib, slow_factor=a.slow_factor, slow_min_s=a.slow_min_s, require_ac=not a.no_ac_check)
 
 
 class Counting:

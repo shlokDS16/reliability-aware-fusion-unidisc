@@ -79,7 +79,7 @@ def omni_parser(default_run_id: str, default_n: int | None):
 
 
 def omni_guards_from_args(a, peak_fn=None) -> OmniGuards:
-    return OmniGuards(max_used_mib=a.max_used_mib, max_used_first_mib=a.max_used_first_mib, max_rise_mib=a.max_rise_mib, require_ac=not a.no_ac_check,
+    return OmniGuards(max_used_mib=a.max_used_mib, max_used_first_mib=a.max_used_first_mib, max_rise_mib=a.max_rise_mib, slow_factor=a.slow_factor, slow_min_s=a.slow_min_s, require_ac=not a.no_ac_check,
                       max_peak_alloc_mib=a.max_peak_alloc_mib, peak_fn=peak_fn if peak_fn is not None else cuda_peak_mib)
 
 
