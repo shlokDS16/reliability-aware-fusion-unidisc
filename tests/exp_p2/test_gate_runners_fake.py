@@ -64,6 +64,7 @@ def test_m2_item_has_12_passes_and_the_documented_outputs(env):
     r0 = sc.rows
     row, arrays = run_gate_m2.process(sc, items[1], ctx)
     assert sc.rows - r0 == 12                                                 # B 8 + image direction 2 + text direction 2 (v2 11.1 M2), nulls cached
+    assert row["n_rows"] == 12                                                # logged per item, as M4 does (read by analysis_omni.pass_counts: SAP AD.7 "as logged")
     assert set(arrays) == {"codes", "B", "D", "s3", "delta"} and arrays["B"].shape == (16,) and arrays["D"].dtype == np.float32
     assert set(row["img"]) >= {"n", "mean", "z", "d", "y"} and set(row["txt"]) == {"pmi_pos", "pmi_neg", "d", "y"}
     assert (arrays["B"] <= 0).all() and (arrays["s3"] >= 0).all()

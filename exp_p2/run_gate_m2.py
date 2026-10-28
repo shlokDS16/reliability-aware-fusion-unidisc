@@ -4,7 +4,7 @@
 
 Per item (12 passes + 1 encode, plus the cached nulls): clean encode; B (K=8 masks, caption masked) = 8; image direction caption-only for c+ and c- = 2
 (Lambda matrices, 'none' arm of Alg. 5'); text direction full-mask for c+ and c- = 2 (image visible). c- is the item's deranged negative caption.
-Stores B, D (at the observed codes), s3 and the clean codes per item; the threshold is fitted afterwards on the CPU:
+Stores B, D (at the observed codes), s3 and the clean codes per item, and `n_rows` (rows through the network for the item; 12 once the nulls are cached; a cold item also counts the null fills); the threshold is fitted afterwards on the CPU:
 
     python -m exp_p2.gate.fit_threshold --run-id P2-GATE-M2
 
@@ -46,6 +46,7 @@ def make_ctx(sc, run):
 
 def process(sc, it, ctx):
     gid = it["gid"]
+    rows0 = getattr(sc, "rows", None)                                                                            # runner.Counting: rows pushed through the network (the 'passes' of the budgets)
     cap_tok, neg_tok = sc.caption_ids(it["caption"]), sc.caption_ids(it["neg_caption"])
     pil, codes = pipeline.prep_image(sc, it["image_id"])
     gs = pipeline.gate_scores(sc, cap_tok, codes, pipeline.item_groups(sc, gid), ctx.dcache)                    # 8 passes + cached null
@@ -54,6 +55,8 @@ def process(sc, it, ctx):
     txt = pipeline.text_direction(sc, cap_tok, neg_tok, codes, [None], ctx.dcache)[0]                            # 2 passes
     row = dict(gid=gid, image_id=it["image_id"], caption=it["caption"], neg_caption=it["neg_caption"], n_tok=len(cap_tok), n_tok_neg=len(neg_tok),
                img=pipeline.compact(evidence_from_delta(delta)), txt=txt)
+    if isinstance(rows0, int):
+        row["n_rows"] = int(sc.rows) - rows0                                                                     # as run_gate_m4 does; read by analysis_omni.pass_counts (p_cal, SAP AD.7 'as logged')
     arrays = dict(codes=codes.astype(np.int16), B=gs["B"], D=gs["D"].astype(np.float32), s3=gs["s3"], delta=delta)
     return row, arrays
 
