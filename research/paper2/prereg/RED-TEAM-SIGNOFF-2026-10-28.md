@@ -171,3 +171,100 @@ Before the first GPU stage / the first analysis:
 
 ## 5. Residual risks the signature does not cover
 Single 1.4B model with no stated licence (M9); contamination of COCO val2017 (U8); the IF scope question (M7), which only an editor can settle; the incremental novelty verdict (re-audit 0.50); the citation status.
+
+
+---
+
+# Red-team signature on A2 (SAP "Addendum A2 (2026-10-28, debate decisions, before outcomes)", sections AD.0 to AD.15)
+
+Date: 2026-10-28, after commit 3f998076 (10:06 IST), while M1 (probe-2 items 26 to 199) is running. No GPU. I opened nothing under `runs/P2-PROBE-02/`. I did open
+`runs/P2-GATE-CPU/m1_fallback/analysis.json` (21 dry-run items only; the AD.10 figures for patch and swap match it: plain-B 0.967 and 0.962), `exp_p2/run_probe2.py` and `exp_p2/gate/config.py` (constants only),
+the git history of `exp_p2/gate/corruptions.py`, and SAP sections 5, 8.1, 8.2, A1.2, A2.5. Not read: the gate code that implements AD.2 to AD.8 (it does not exist yet: `analysis/paper2/gate/` holds only `a2_power.py`),
+UniDisc App. G.1, the FOIL-COCO release, the Omni-Diffusion code.
+
+## Verdict: SIGN WITH CONDITIONS (confidence 0.6 that this is the right call)
+
+I sign that P is untouched (AD.1), that A2 is pre-outcome as far as the file shows, and that the secondary families are fenced from P by separate alpha and by the order of analysis (AD.12).
+I do **not** sign the sentences and clauses listed under Blockers; they are struck from the signature. No finding is `fatal`. The signature binds only when the conditions are recorded as dated rows
+in the amendment log and the gate-auditor has checked the code (AD "Binding condition"). Nothing here says any family will give a result; most are underpowered by the addendum's own figures (S2 power 0.30 at the middle
+assumption; B and R reach 0.8 only for net gains of 0.07 to 0.11).
+
+## Blockers (to be met before the first M4 item unless a family is named; all major)
+
+**B-1. Rescue by sentence.** AD.1 says PS, S2, B, R "never rescue P", but three permitted sentences together do exactly that when P is null.
+(a) AD.4 bars "the gate works where detection is easy" only when PS is not met, so it is **available whenever PS is met**. PS is met when random-code replacement is detected and helps. The dry run (AUROC 0.96 to 0.97 on items 0 to 20, seen) makes that the expected outcome, and the phrase defines "easy" by the property tested. It is circular.
+(b) AD.3 lets a P null be called "predicted by the independent-token model" if the committed s_c is "-", **without requiring o_c = "-"**, and with no test that separates a predicted null from a low-power null (a "-" prediction can only be refuted by a significant "+" at n = 300, power 0.19 to 0.59 under the SAP's own scenario map).
+(c) AD.2 allows "the estimated detection part was V (CI)".
+With S2-patch they give a P-null paper a narrative (works where easy, null predicted, shortfall is detection, repair beats random) built from secondary items. Signature condition: sentence (a) and the wording rule (b) are **not signed**; a P null is reported as "P not rejected; inconclusive at this n" with no causal clause drawn from PS, E-pred or E-dec in abstract, highlights or conclusion.
+
+**B-2. E-pred is not what the decision promised (falsifiable, out of sample).**
+- *Foregone cells.* PS1 and PS2 will almost surely have s_c = "+" and o_c = "+" (patch and swap are detected at 0.96 and the gate removes random codes). They are 2 of the 5 cells that make a formal test possible. The one-sided binomial with H0 = 0.5 is then false for those cells; the real information is in the three P cells, where K = 3 gives p >= 0.125 even at 3 of 3. AD.3's reachability argument treats cells as exchangeable coin flips.
+- *Cells where the theory predicts nothing.* If q is near chance on JPEG and noise, beta_obs is close to alpha_obs and the Prop. 4 sign is the sign of sampling noise in 100-item plug-in estimates; o_c = sign(b - c) at b near c is also noise. Agreement there is a coin for any model, true or false. The test can fail to confirm the model but cannot fail the model.
+- *Observed sign is not an effect.* o_c is taken whatever the p-value, so a non-significant cell counts as an observation. Prop. 4 predicts the sign of an evidence-SNR change; o_c is the sign of an accuracy count difference.
+- *R3 undefined.* Under rule R3 the primary is d with a Wilcoxon test (AD.4 says so), yet o_c and "positive control met" are defined by b > c_cnt on Y. Which observed sign applies under R3 is not stated.
+- *Trivial rival.* "Always +" is reported descriptively but the test is not against it.
+Signature condition: E-pred is signed **only as descriptive** (A of K_eval, Clopper-Pearson, rival rules beside it); the binomial p is not signed as evidence about Prop. 4; the observed sign under R3 is fixed before M4; no sentence says Prop. 4 "predicted", "explains" or "is supported".
+
+**B-3. The E-pred fit chunk is a look at GATE before M4.** AD.3 computes GATE flags on the 100 headroom items between `family.json` and M4. That is the first view of the method's behaviour (alpha_obs, beta_obs, hence whether detection works on JPEG and noise). SAP 5 forbids flags there only while operating points are chosen; A2 does not state that no later decision may depend on the chunk's output (n-rule, ordering, cuts, S2 cell, B/R go decisions, wording).
+Signature condition: (i) `epred_fit`, the sign function of spec 5.3 and its self-test are committed and gate-auditor-checked **before** the chunk runs and not edited after; (ii) `epred_frozen.json` is committed **before the first M4 item** ("preferably" in AD.3 is not signed; the analysis-script rule does not stop a reader of `items.jsonl`); (iii) a dated row states that no decision depends on the chunk's flags.
+
+**B-4. S2 comparator and claim.** (a) The decision asked for "the UniDisc G.1 recipe at an equal gate size". AD.5's I-G1 is the statistician's reading of spec v2 11.2, never checked against App. G.1 (E1, AD.5 says so). A homemade random-set comparator carrying the name of a published recipe is a strawman risk. Signature condition: until G.1 has been read in full (E2) and the code audited against it, the arm is called "random-set re-infill" and "G.1" is not used.
+(b) The confirmatory contrast answers only "is the flagged set better placed than a random set of equal size". Any detector with AUROC above 0.5 passes it for patch, and I-GATE can be **worse** than no repair and still reject. AD.5 says so in its lists; I hold it to that: no sentence in title, abstract or highlights says re-infill or re-masking "improves" verification, and I-GATE versus NONE (descriptive) sits beside every S2 result.
+(c) S2 covers patch and splice only; JPEG and noise, where the dry run was unfavourable, are excluded. AD.10 does not record that this choice was made after the dry run (B-6). If P3 has no operating point S2 reduces to S2-patch, which AD.5 itself calls a positive control; the "must" experiment then has no realistic cell and does not answer the rejection reason I gave in R1.
+(d) The kept draw is the best of 4 by the image's own likelihood, so figures show best-of-4 samples. Signature condition: captions say "best of 4 draws by own likelihood, caption masked; not typical samples". "Token recovery rate" is a restoration measure while the figures may not claim restoration; it is worded as a token-level descriptive. The harm-case panels (first 4 with Y(I-GATE)=0 and Y(NONE)=1) are signed; they select on outcome in the safe direction.
+
+**B-5. Omni family R: gatekeeping on P is sound; its own checks are not.** P-gating means R cannot rescue P (signed). But GO rule (b) is a run-card self-certification of the adapter (mask round trip, one-position logit shift, audio stub): the proposer validates the proposer. R also inherits P's selection (corruptions chosen because P rejected on these 300 items) and then tests on the first n_R of the **same** items, so item difficulty is shared and "replication" overstates independence. There is no headroom check and no positive control for Omni, so a non-rejection cannot be told from a broken 4-bit pipeline.
+Signature condition: the gate-auditor, not the run card's author, signs the three adapter checks before any Omni item enters R; wording adds "same test images, not independent items; 4-bit quantisation confounds a likelihood-based detector"; if P+ is empty R is not run (signed).
+
+**B-6. Disclosure AD.10 is accurate on what it lists and incomplete.** Signed with these additions as binding substance:
+(i) S2 is restricted to patch and splice and JPEG/noise are excluded, decided after the dry run;
+(ii) the patch and swap constants (patch 8, swap fraction 0.15 in `run_probe2.py` and `config.SWAP_FRAC`) were fixed at commit c8d8e923 (01:07 IST), before the dry run (analysis.json 01:45), and M4 reads the same swap constant; state this only after the auditor confirms the M4 patch size equals the probe-2 one (M4 derives it from the grid: `max(2, round(sqrt(L_I)) // 4)`, which I did not evaluate);
+(iii) the 21 dry-run items (0 to 20) lie inside the M1 pool on which the A2.5 chance bar is computed, so for patch and swap that "pre-registered pass/fail" is not fully blind;
+(iv) the post-dry-run additions came partly from Shlok's instruction (decision file, about 09:45); who decided what is recorded;
+(v) the last sentence ("items 26 onward ... had not informed any decision") is an assertion about other people's behaviour that the author says he cannot verify (AD.0). It must be conditional on a written attestation by the lead (and by Shlok if he looked) that nothing beyond item and health counts from M1 was seen before this signature. I cannot verify it and did not open the items.
+Also: the placeholders for the addendum commit SHA and the post-addendum file hash must be filled. The pin "b4e0bf57..." is the hash of the **CRLF working-tree** file; the git blob (LF) hash of the same text is `21a7fdf7...` (checked with `git show 2ab42a6e:... | sha256sum`; both 882 lines). The card must say which convention it uses or a checker will report a mismatch.
+
+**B-7. Cut decisions after P is visible.** AD.12 puts the analysis of P (step 3) right after M4 while S2, FOIL and Omni are still queued. AD.8's cut order is fixed, but the lead decides when each is "ready". Signature condition: a dated row states that cut and go decisions for S2, B, suite and R use time left and the fixed order, not the P or PS outcome; a cut family is "not run", never replaced.
+
+## Checks on the specific points of the brief
+
+**Forking paths, patch/swap family.** Not forking inside P: P is unchanged; PS is outside it, m fixed at 2, endpoint, test and Holm fixed, always tested, no headroom exclusion; disclosed as post-dry-run. That is the least bad treatment. Parameters pre-date the dry run (git evidence above). Residual: the family was chosen where the answer was seen to be easy, so its rejection says nothing about the method (the addendum says so). Remaining paths are B-1 (what PS may be used for) and B-6 (disclosure). Major until those are met, then minor.
+
+**E-dec.** Falsifiable? No hypothesis, no test; signed as descriptive. Fitted and tested on disjoint folds: nothing is fitted; it uses the M4 test fold only. The identity correction (three parts) is correct algebra (T = U + R + V). Problems: (i) U = d_clean - d_chg is called "treatment part" but the chg arm removes the changed positions, so U also contains a **composition effect** (the removed tokens, e.g. flat regions per the dry-run pixel-variance result, carry different evidence from the rest); no arm removes the same positions from the clean image; (ii) V = d_chg - d_GM mixes detection with variance trimming and gate shape, as AD.2 admits, yet the allowed wording says "detection part"; (iii) the labels are encoder-instability labels. Signed only with U named "residual loss under the oracle gate", V named "gap to the oracle gate", and no "detection" or "treatment" in the abstract.
+
+**E-pred.** See B-2 and B-3. Fit on the 100 headroom items, scored on the test fold; disjointness is asserted by a script that does not yet exist. The fit set is also the set on which the operating points were selected (rungs chosen for a large drop), so the fitted rates describe a corruption level chosen for large effects; harmless for the sign, noted. Falsifiable only at K_eval = 5, and then against the wrong null.
+
+**S2 comparator and repaired-image figures.** B-4. Equal gate size item by item is the fair part (signed). Not equal: scattered random positions and clustered flagged positions give the sampler different context, which helps the comparator at the infill step and helps the flagged set at hitting the corruption; the claim is correctly limited to location. Power 0.30 at (0.10, 0.75), n = 150, so S2-splice most likely ends inconclusive; an inconclusive S2 may not be described as supportive.
+
+**FOIL leakage and fit (family B).** The design is sensible (fit ids in "cal", test ids disjoint from "cal", "head" and probe ids, one pair per image, LDA weights frozen, ceiling rule, best direction chosen on fit pairs). Gaps: (i) L2 to L4 are disjointness assertions and **pass vacuously** if FOIL image ids and folds.json ids use different formats (zero-padded file names vs integers, 2014 vs 2017 numbering); nothing shows that a known id matches. Signature condition: a positive control on id matching (count of matched ids and a hand-checked named sample) is part of the logged leak check. (ii) All dataset facts (licence, release format, overlap with val2017, record order) are E0; B stays "not run" until the data-steward verifies them; "first record per image in file order" is content-neutral only if the file order is. (iii) Fit pairs are limited to cal ids that are in FOIL and in val2017, so n_fit >= 100 may fail; B is then "not estimable" (acceptable). (iv) The c+ captions are COCO captions, likely in UniDisc's training data (U8); the text direction may be memorised. Major until (i) is met.
+
+**Omni gatekeeping.** B-5. Gating on P is correct and R cannot rescue P. The timing thresholds (T <= 1.5 GPU-h, 2 x T before freeze) are ASSUMED but fixed before any Omni outcome, which is what matters. R is not reached if P+ is empty, the likely case.
+
+**Can any family rescue another?** Formally no: separate alphas, P first and committed. Narratively yes through the sentences in B-1 and through the imagecorruptions suite (AD.9): an E-pred sign agreement over 8 cells with a Clopper-Pearson interval is inference-shaped and offers "the sign prediction held" once the formal K = 5 test is unreachable. Signature condition: suite agreement is never combined with AD.3 and never appears in abstract or highlights; the four types and two severities (chosen "by kind" from a package of fifteen, no rationale recorded) are marked as researcher choice.
+
+## Signed and not signed
+
+Signed: AD.1; AD.2 as a descriptive decomposition with the label limits above; AD.4 as a positive-control family with no claim beyond "pipeline not broken"; AD.5 except the G.1 name; AD.6 and AD.7 with B-5 and the id-match control; AD.8; AD.9 as Tier 3; AD.11; AD.12; AD.13 as a list of functions.
+Not signed: the AD.4 sentence "the gate works where detection is easy"; the AD.3 binomial as evidence about Prop. 4 and its wording rule; the name "G.1" for I-G1; the last sentence of AD.10 as unconditional.
+
+## What would make me withdraw this signature
+
+- Any M1 outcome (AUROC, chance bar, q, pixel variance, timing) read by an author or the lead before the conditions are logged and then used in an edit to A2 (AD.0 firewall).
+- Any change to a cell set, corruption, endpoint, test or wording in A2 after the first M2 outcome that is not a dated new addendum.
+- `epred_frozen.json`, `ps_frozen.json` or `family.json` committed after the first M4 item exists, or any decision citing the E-pred fit chunk's flags.
+- A paper sentence that calls a P null "predicted", "explained" or "caused by detection", or that states PS, S2, B, R, E-dec, E-pred or suite results in the abstract without the family label.
+- Omni run before the gate-auditor signs its adapter checks; B run before its id-matching positive control.
+- Code for AD.2 to AD.8 that the gate-auditor has not matched to the text before the first item of that family.
+
+## Results that would force rejection of a claim made from A2
+
+- PS "not met" (either cell not rejected with b > c) with no defect found by the A2.3 audit: nothing from PS, E-pred or S2-patch may be used.
+- S2: I-GATE not better than NONE descriptively and S2-splice not rejected: no claim that repair helps; I-GATE worse than I-G1: the location claim is refuted.
+- E-pred: agreement on the three P cells no better than "always +"; a P cell with a significant result opposite to s_c.
+- E-dec: V negative with a CI excluding 0 (GATE-M beats the oracle): the "detection" reading is void and variance trimming is the live explanation.
+- B: rejection with b < c, n_fit < 100, or ceiling >= 0.95: no fusion claim.
+- R: no rejection means "not replicated, inconclusive"; a rejection with b < c refutes direction.
+
+## Residual risks the signature does not cover
+
+Twelve test families with no cross-family control (AD.11: 0.46 chance of at least one rejection if all were null); single UniDisc model; contamination (U8); mask-seed and corruption-seed variance outside every interval; the gate-auditor check of AD.2 to AD.8 code is still to come; I did not read the code, G.1, FOIL or Omni. Judgement, not measured: the A2 families add little to the chance of a defensible positive claim (about 0.05 to 0.08, unchanged); they raise the chance of a reportable, honestly worded measurement paper if M4 runs.
