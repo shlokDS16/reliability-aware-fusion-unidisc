@@ -124,6 +124,14 @@ def test_keep_best_takes_the_highest_own_likelihood_and_ties_go_to_the_lowest_dr
     assert reinfill.keep_best(np.array([-2.0, -2.0, -2.0, -2.0])) == 0
 
 
+def test_keep_best_refuses_a_non_finite_draw():
+    import pytest
+    for bad in ([-3.0, float("nan"), -1.0, -1.0], [-3.0, -1.0, float("inf"), -2.0], [float("-inf"), -1.0, -2.0, -2.0]):
+        with pytest.raises(reinfill.NonFiniteDrawError):
+            reinfill.keep_best(np.array(bad))
+    assert issubclass(reinfill.NonFiniteDrawError, ValueError)
+
+
 def test_token_agreement_is_over_changed_tokens_and_over_the_reinfilled_positions():
     clean = np.array([1, 2, 3, 4, 5, 6])
     corr = np.array([1, 9, 9, 4, 5, 9])                  # tokens 1, 2, 5 changed

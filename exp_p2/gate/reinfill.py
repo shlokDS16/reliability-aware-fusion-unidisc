@@ -99,9 +99,17 @@ def reinfill(sc, st: dict, codes: np.ndarray, sets: list[np.ndarray], orders: li
     return dict(codes=out, logp=logp, n_steps=len(ks), order=np.stack(perms))
 
 
+class NonFiniteDrawError(ValueError):
+    """A draw's chain log-likelihood is NaN or infinite; the item stops (runner `item_error`) instead of keeping a broken draw."""
+
+
 def keep_best(logp: np.ndarray) -> int:
-    """Index of the kept draw: highest own (caption-masked) chain likelihood, ties to the lowest index."""
-    return int(np.argmax(np.asarray(logp, np.float64)))
+    """Index of the kept draw: highest own (caption-masked) chain likelihood, ties to the lowest index.
+    Raises NonFiniteDrawError on any non-finite entry (re-audit A3 m1); otherwise unchanged."""
+    a = np.asarray(logp, np.float64)
+    if not np.all(np.isfinite(a)):
+        raise NonFiniteDrawError(f"non-finite draw log-likelihood: {a.tolist()}")
+    return int(np.argmax(a))
 
 
 def token_agreement(final_codes: np.ndarray, clean: np.ndarray, corrupted: np.ndarray, reinfilled: np.ndarray) -> dict:
