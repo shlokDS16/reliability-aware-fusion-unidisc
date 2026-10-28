@@ -132,3 +132,21 @@ None.
 5. HOLD.txt is still present (`runs/P2-PROBE-02/HOLD.txt`); I did not touch it.
 
 I changed no code. I did not edit `research/progress.md` and ticked no gate: this is a code re-audit, not the MUST gate. The re-audit covers the code at 857673b0 only; any later code commit (including the W1 fix) needs a short delta check.
+
+
+## Delta audit 164a18a5 (2026-10-28)
+
+Scope: commits 857673b0..164a18a5 (code in a2dda400; 164a18a5 is notes only). `git diff --stat 857673b0 164a18a5 -- exp_p2 tests tools` touches exactly 9 files: `exp_p2/gate/{c1,gate_driver,guards,pins,watchdog}.py` and four test files. Nothing else under `exp_p2`, `tools` or `tests` changed, so no other behaviour changed. `tools/gpu_guard.py` is still untouched. HEAD is now 38116efd (card v3 only; `git diff 164a18a5 HEAD` is that one file). Suite at HEAD, one run: **202 passed in 66 s** (`CUDA_VISIBLE_DEVICES=""`). Code directories have no uncommitted changes.
+
+| Fix | Correct? | Tested? |
+|---|---|---|
+| **W1 rise rule** | Yes. `Guards.rise_armed` starts False; `after_item` of the first item arms it and clears `_last_used`, so the first armed reading only sets the baseline; `Watchdog.check_once` does the same with `_armed_seen`. Until then only the absolute ceilings apply (10,000 MiB via `first_item_active`, which is True from construction, so the model load in the probe wrappers is under the first-item ceiling and AC is still checked). After item 1 both the 9,000 MiB ceiling and the 1.5 GB rise rule apply. The probe-wrapper path arms through the hooked `append_jsonl` row, the runner path through `after_item`. | Yes: a 0 -> 5.6 GB load jump and an 8.2 GB first-item spike do not trip; a +2 GB jump after a completed item does; an 11,000 MiB breach during load still trips; per-item guards and the runner share the rule; wrapper test with the watchdog started before the load does not trip. |
+| **N1 c1 `--look test`** | Yes. Refuses (exit 2) unless `done >= expected_test_n()`, i.e. the n-rule's `test_fold` from `family.json` (300 if absent) lowered to `effective_n.json` after real-tokenizer exclusions; it counts distinct `idx`. | Yes (`test_gate_m4_analysis.py`, +21 lines: partial refused, complete accepted). |
+| **N4 gpu_guard pin** | Partly. `pins.check_pin` passes if the committed blob OR the CRLF-normalised working copy matches; the driver stops with exit 10 on a mismatch. It fixes the false CRLF mismatch (the real file passes: blob 5ddf7d09...). **Hole:** because either side is enough, an uncommitted edit to the working-tree `gpu_guard.py` still passes (I reproduced it in a temporary repo: working copy edited, `ok = True via committed blob`). The test even records this ("the pin check reads the blob"). The docstring "a real content change fails both" is true only for committed changes. The card's pre-launch check has the same property: `git diff --quiet <pin> HEAD` compares commits, not the working tree. | The CRLF, blob and driver-exit-10 paths are tested; the working-tree-edit case is not. |
+
+### Verdict: PASS for freezing at 164a18a5
+
+W1 and N1 are fixed and tested. N4 solves the problem it was raised for (false mismatch on CRLF) and the freeze is clean today, so it does not block. Recommended before M0, none of which changes measurement code:
+- Operator step (or card line): run `git status --porcelain -- exp_p2 tools tests runs/P2-GATE-FOLDS` (or `git diff --quiet HEAD -- exp_p2 tools tests`) as a fifth pre-launch command, so that an uncommitted edit cannot run under the frozen SHA.
+- If `pins.py` is touched again: make `ok` depend on the normalised working copy matching the pin (the file that actually runs), and report the blob only as information. That is a new SHA and needs a card row.
+- Still open from the re-audit and not code: D2/D3 values as a change-log row (M2), N2 and N3 wording, N5 denoise wording in the card (the v3 card should carry it; I did not re-read v3 beyond sections 14 and 17).
