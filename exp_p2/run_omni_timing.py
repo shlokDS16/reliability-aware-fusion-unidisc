@@ -109,14 +109,21 @@ def adapter_selfcheck(sc, items, info: dict, a):
     summ = checks.summarize(results)
     out = dict(lay, layout_ids_equal=lay["ids_equal"], adapter=summ, ids_equal=bool(lay["ids_equal"] and summ["all_ok"]),
                note="ids_equal = layout equal AND all adapter checks ok; signed by the gate-auditor in adapter_signature.json (AB.5 item 1), not by the author")
+    out["quantisation"] = build.realised_quantisation(raw.model)                          # audit part 3, m-4
     if torch.cuda.is_available():
-        out["peak_alloc_mib_during_checks"] = torch.cuda.max_memory_allocated() / 2 ** 20
+        peak = torch.cuda.max_memory_allocated() / 2 ** 20                                # includes the load (the statistics are reset per item only)
+        limit = float(getattr(a, "max_peak_alloc_mib", build.PROPOSED["max_peak_alloc_mib"]))
+        out["peak_alloc_mib_during_checks"] = peak
+        out["peak_gate"] = dict(limit_mib=limit, ok=bool(peak <= limit), rule="lead decision T3: the load plus self-check peak is held to the per-item peak rule")
+        if peak > limit:                                                                  # T3 and audit part 3, m-2: stop, as a guard stop (never relaunched by the driver)
+            out["ids_equal"] = False
+            common.append_jsonl(Path(common.RUNS) / a.run_id / "chunks.jsonl", dict(event="guard_stop", t=time.time(), reason=f"load_and_selfcheck_peak_alloc {peak:.0f} MiB > {limit:.0f}"))
     return out
 
 
 def main(argv=None, *, scorer_factory=None, guards_factory=None):
     ap = build.omni_parser(RUN_ID, N_PASSES)
-    ap.add_argument("--skip-gpu-adapter-checks", action="store_true", help="debug only: skip A4-A7 (a timing result without them cannot reach GO)")
+    ap.add_argument("--skip-gpu-adapter-checks", action="store_true", help="debug only: skip A4-A7; omni_gate then finds A4-A7 missing in selfcheck.json and can never return GO (audit part 3, M-2)")
     a = ap.parse_args(argv)
     if scorer_factory is None:
         rc = build.preload_check(a)

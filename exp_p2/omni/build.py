@@ -36,6 +36,29 @@ class OmniGuards(Guards):
         return None
 
 
+EXPECTED_LINEAR4BIT = 196                      # loader.quantisation_plan on the real-size skeleton: the 196 decoder Linear layers become Linear4bit (tests/exp_p2/test_omni_stack.py)
+T2_VERSIONS = dict(transformers="4.51.3", bitsandbytes="0.50.2")      # lead decision T2: pins and versions are recorded in omni_env.json (audit part 3, S-4)
+
+
+def t2_record(env: dict) -> dict:
+    """The T2 block of omni_env.json: whether the pins, the skip list, the two library versions and the memory fraction are the audited ones. Recorded, not enforced here (the signing check and the auditor read it)."""
+    from exp_p2.omni import loader
+    pins = env.get("pins_match") or {}
+    ver = env.get("versions") or {}
+    rec = dict(pins_match_all=bool(pins) and all(v is True for v in pins.values()), versions_expected=dict(T2_VERSIONS), versions_found={k: ver.get(k) for k in T2_VERSIONS},
+               versions_ok=all(ver.get(k) == v for k, v in T2_VERSIONS.items()), skip_modules_ok=list(env.get("skip_modules") or []) == list(loader.SKIP_MODULES), mem_frac=env.get("mem_frac"),
+               mem_frac_expected=PROPOSED["mem_frac"], mem_frac_ok=env.get("mem_frac") == PROPOSED["mem_frac"], guard_cap_mib=env.get("guard_cap_mib"))
+    rec["all_ok"] = bool(rec["pins_match_all"] and rec["versions_ok"] and rec["skip_modules_ok"] and rec["mem_frac_ok"])
+    return rec
+
+
+def realised_quantisation(model) -> dict:
+    """Audit part 3, m-4: the number of Linear4bit modules the loaded model really has (the plan says 196); a silent partial or missing quantisation shows here."""
+    n4 = sum(1 for m in model.modules() if type(m).__name__ == "Linear4bit")
+    plain = sum(1 for m in model.modules() if type(m).__name__ == "Linear")
+    return dict(n_linear4bit=n4, n_plain_linear=plain, expected_linear4bit=EXPECTED_LINEAR4BIT, matches=bool(n4 == EXPECTED_LINEAR4BIT))
+
+
 def cuda_peak_mib() -> float:
     import torch
     return torch.cuda.max_memory_allocated() / 2 ** 20
@@ -127,6 +150,7 @@ def write_env(run: Path, sc, info: dict, a=None) -> dict:
                        allocated_after_load_mib=torch.cuda.memory_allocated() / 2 ** 20, reserved_after_load_mib=torch.cuda.memory_reserved() / 2 ** 20, gpu_used_after_load_mib=common.gpu_state().get("mem_used_mib"))
     except Exception as e:                                                                   # noqa: BLE001
         env["cuda_note"] = repr(e)
+    env["t2"] = t2_record(env)
     if path.exists():
         common.append_jsonl(Path(run) / "chunks.jsonl", dict(event="omni_env_chunk", t=time.time(), allocated_after_load_mib=env.get("allocated_after_load_mib"),
                                                              reserved_after_load_mib=env.get("reserved_after_load_mib"), gpu_used_after_load_mib=env.get("gpu_used_after_load_mib")))

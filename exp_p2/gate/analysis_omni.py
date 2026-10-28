@@ -36,6 +36,31 @@ M2_ITEMISED_PASSES = 12           # run_gate_m2 docstring: 8 (B) + 2 (image dire
 WORDING_REPLICATED = "directional replication on a second model, 4-bit quantised; quantisation confounds a likelihood-based detector"
 WORDING_NOT = "not replicated; inconclusive at this n"
 WORDING_R2_TAIL = "; same test images as P, not independent items"
+WORDING_R3_ACCOMPANIED = "the evidence-ratio effect found in P was accompanied by an accuracy change on Omni"      # SAP A3b.4 item 7 (under R3 "directional replication" is not available)
+WORDING_R3_NOT = "the evidence-ratio effect found in P was not accompanied by an accuracy change on Omni; not replicated, inconclusive at this n"
+WORDING_REFUTES = "a rejection with b < c_cnt on Omni refutes the direction (GATE-M was worse than no gate)"       # SAP A3b.4 item 9
+POSITIVE_CONTROL_WORDING = ("a pass proves only that the pipeline is not at chance on the patch corruption at code level, without the encode path; the control does not exercise the path most likely "
+                            "to break R (pixel corruptions at 512 px, two-stage preprocessing that changes about 40 percent of the codes relative to Omni's own path, JPEG and noise attenuated by the "
+                            "512 to 256 downsample, a 4-bit model, a masked caption Omni never saw in training)")                                  # SAP A3b.4 item 5
+CONFOUNDS = ["4-bit quantisation",
+             "about 40 percent of the codes differ between the two preprocessing paths (IMPL-C A8: 8 images, implementer's explore script, no run id, E3 at best)",
+             "JPEG and noise attenuated by the 512 to 256 downsample",
+             "the masked caption is out of distribution for Omni (training masks only assistant-turn tokens; A3.5 item 7)",
+             "the same test images as P under R2",
+             "the positive control is code-level patch without the encode path (A3b.4 item 5)"]                                                    # SAP A3b.4 item 8, with every R result
+REQUIRED_CHECKS = tuple(f"A{i}" for i in range(1, 8))      # AB.5 item 1: the adapter checks A1..A7 must ALL be present and ok (audit part 3, M-2)
+
+
+def selfcheck_ok(selfcheck: dict | None) -> bool:
+    """GO rule (b), self-check half: layout ids equal, adapter.all_ok, and the results hold each of A1..A7 exactly once, all ok. A self-check made with --skip-gpu-adapter-checks (A1-A3 only) is never ok."""
+    if not selfcheck or not selfcheck.get("ids_equal"):
+        return False
+    ad = selfcheck.get("adapter") or {}
+    res = ad.get("results")
+    if res is None:
+        return False
+    ids = [r.get("id") for r in res]
+    return bool(ad.get("all_ok") and sorted(ids) == sorted(REQUIRED_CHECKS) and all(r.get("ok") for r in res))
 
 
 def _seed(name: str):
@@ -117,8 +142,12 @@ def omni_gate(timing_log: list[dict], m2_log: list[dict], m4_log: list[dict], *,
     finite = all(r.get("finite", True) for r in rows)
     conds = {"a": _cond(tt["complete"] and not bad_events and not crash_events and finite, n_rows=tt["n_rows"], guard_or_error_events=bad_events[:3], crash_events=list(crash_events or [])[:3], all_finite=finite)}
     sig_ok = bool(adapter_signature and adapter_signature.get("signed_by") == "gate-auditor" and adapter_signature.get("verdict") == "PASS")
-    chk_ok = bool(selfcheck and selfcheck.get("ids_equal") and selfcheck.get("adapter", {}).get("all_ok"))
-    conds["b"] = _cond(sig_ok and chk_ok, signature_ok=sig_ok, selfcheck_all_ok=chk_ok, failed=(selfcheck or {}).get("adapter", {}).get("failed"))
+    from exp_p2.omni import signing                                    # json only, no torch
+    t1 = signing.t1_check(selfcheck)                                   # lead decision T1: A5 floors, a separate check on top of checks.py (SAP A3b.4 item 3 window)
+    chk_ok = bool(selfcheck_ok(selfcheck) and t1["ok"])
+    present = sorted(r.get("id") for r in ((selfcheck or {}).get("adapter") or {}).get("results") or [])
+    conds["b"] = _cond(sig_ok and chk_ok, signature_ok=sig_ok, selfcheck_all_ok=chk_ok, t1_a5_floors=t1, failed=(selfcheck or {}).get("adapter", {}).get("failed"), checks_present=present,
+                       checks_missing=[c for c in REQUIRED_CHECKS if c not in present])
     peaks = [float(r["peak_alloc_mib"]) if "peak_alloc_mib" in r else float(r["peak_gb"]) * 1e9 / 2 ** 20 for r in rows if ("peak_alloc_mib" in r or "peak_gb" in r)]
     conds["c"] = _cond(bool(peaks) and guard_cap_mib is not None and max(peaks) <= guard_cap_mib, max_peak_alloc_mib=max(peaks) if peaks else None, guard_cap_mib=guard_cap_mib)
     pc = pass_counts(m2_log, m4_log, p_cal=p_cal, p_test=p_test)
@@ -205,15 +234,17 @@ def omni_r(df, P_result: dict, *, rule: str = "R1", family=None, pos_control: di
     for c, p in zip(plus, adj):
         res[c]["p_holm"] = p
         res[c]["replicated"] = bool(res[c]["tested"] and res[c]["b"] > res[c]["c"] and p < 0.05)
+        res[c]["refutes_direction"] = bool(res[c]["tested"] and res[c]["b"] < res[c]["c"] and p < 0.05)             # A3b.4 item 9: a rejection with b < c_cnt refutes the direction
     formal = n_done >= N_FORMAL_MIN
     any_rep = any(res[c]["replicated"] for c in plus)
+    any_ref = any(res[c]["refutes_direction"] for c in plus)
     tail = WORDING_R2_TAIL if rule == "R2" else ""
     if not formal:
         wording = f"descriptive only (completed n = {n_done} < {N_FORMAL_MIN}); no test is reported as a result"
-    elif any_rep:
-        wording = WORDING_REPLICATED + tail
+    elif rule == "R3":                       # A3b.4 item 7: "directional replication" is not available under R3 (P is a Wilcoxon test on d, R a McNemar test on Y)
+        wording = (WORDING_R3_ACCOMPANIED if any_rep else WORDING_R3_NOT) + ("; " + WORDING_REFUTES if any_ref else "")
     else:
-        wording = WORDING_NOT + tail
+        wording = (WORDING_REPLICATED if any_rep else WORDING_NOT) + tail + ("; " + WORDING_REFUTES if any_ref else "")
     desc = {}
     for c in plus:
         if c not in fm:
@@ -224,8 +255,11 @@ def omni_r(df, P_result: dict, *, rule: str = "R1", family=None, pos_control: di
         desc[c] = dict(none_acc_clean=float(acc_clean), none_acc_corrupted=float(acc_c), none_accuracy_drop=float(acc_clean - acc_c), drop_paired_boot=analysis_m4.paired_boot(_y(rows, "clean", "none"), _y(rows, k, "none"), n_boot, seed=ss),
                        flagged_share_on_clean_test_items=float(np.mean(fl)) if fl else None)
     return dict(status="analysed", p_plus=plus, holm_m=len(plus), per_corruption=res, completed_n=n_done, formal=bool(formal), rule=rule, alpha=0.05,
-                replicated_any=bool(formal and any_rep), wording=wording, descriptive=desc, pos_control=pos_control, seed_note=note,
-                forbidden="no 'generalises'; no 'negative'; no pooling or heterogeneity estimate with UniDisc; a failed R does not weaken P (AD.7)")
+                replicated_any=(None if rule == "R3" else bool(formal and any_rep)), accompanied_any=(bool(formal and any_rep) if rule == "R3" else None), refutes_direction_any=bool(formal and any_ref),
+                directional_replication_available=bool(rule != "R3"), wording=wording, descriptive=desc, pos_control=pos_control, seed_note=note,
+                confounds=list(CONFOUNDS), positive_control_wording=POSITIVE_CONTROL_WORDING,
+                forbidden="no 'generalises'; no 'negative'; no pooling or heterogeneity estimate with UniDisc; a failed R does not weaken P (AD.7); no 'directional replication' under R3 (A3b.4 item 7); "
+                          "the adapter is never called 'independently verified' (A3b.4 item 1)")
 
 
 # ------------------------------------------------------------------------------------------------ CLI
@@ -263,7 +297,7 @@ def selftest(seed: int = 3) -> dict:
     m2 = [dict(idx=i, n_rows=12) for i in range(10)]
     m4 = [dict(idx=i, n_rows=75, conds={"clean": {"kind": "clean"}, "jpeg10": {"kind": "pixel"}, "jpeg10_dn": {"kind": "denoise"}, "patch": {"kind": "token"}}) for i in range(10)]
     sig = dict(signed_by="gate-auditor", verdict="PASS")
-    sel = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[]))
+    sel = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=c, ok=True, detail=(dict(per_shift={"1": dict(mean_logp=-3.0, top1=0.2)}) if c == "A5" else {})) for c in REQUIRED_CHECKS]))
     kw = dict(adapter_signature=sig, selfcheck=sel, guard_cap_mib=7500.0)
     g = omni_gate(base, m2, m4, n_plus=2, time_left_h=10.0, **kw)                                                       # T(150) = 0.3 (1200 + 11250 + 400) / 3600 = 1.071
     g120 = omni_gate([dict(r, fwd_s=(5.0 if r["idx"] < 5 else 0.6)) for r in base], m2, m4, n_plus=1, time_left_h=10.0, **kw)   # 0.6 x 9100 / 3600 = 1.517 > 1.5; n = 120: 1.267

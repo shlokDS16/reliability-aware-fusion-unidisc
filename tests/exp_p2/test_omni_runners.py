@@ -104,10 +104,13 @@ def test_omni_token_filter_excludes_counts_and_never_replaces():
 
 
 # ------------------------------------------------------------------------------------------------ family R
+PASSING_SELFCHECK = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=f"A{i}", ok=True) for i in range(1, 8)]))
+
+
 def _prereqs(env, n_R=6, go=True, sign=True, p_plus=("jpeg",)):
     t = env / "P2-OMNI-TIMING"
     t.mkdir(exist_ok=True)
-    (t / "selfcheck.json").write_text(json.dumps(dict(ids_equal=True)))
+    (t / "selfcheck.json").write_text(json.dumps(PASSING_SELFCHECK))
     (t / "omni_gate.json").write_text(json.dumps(dict(go=go, status="GO" if go else "NO-GO", n_R=n_R)))
     if sign:
         (t / "adapter_signature.json").write_text(json.dumps(dict(signed_by="gate-auditor", verdict="PASS", selfcheck_sha256=hashlib.sha256((t / "selfcheck.json").read_bytes()).hexdigest())))
@@ -130,8 +133,15 @@ def test_prerequisites_are_enforced_before_any_model_is_touched(env, capsys):
     _prereqs(env, go=False)
     assert R.main(["--stage", "cal"], scorer_factory=boom, runs=env, guards_factory=lambda a: None) == 2         # NO-GO: R is not run
     _prereqs(env)
-    (env / "P2-OMNI-TIMING" / "selfcheck.json").write_text(json.dumps(dict(ids_equal=True, changed=1)))        # the signature binds the file it was given
+    (env / "P2-OMNI-TIMING" / "selfcheck.json").write_text(json.dumps(dict(PASSING_SELFCHECK, changed=1)))      # the signature binds the file it was given
     assert R.main(["--stage", "cal"], scorer_factory=boom, runs=env, guards_factory=lambda a: None) == 2
+    partial = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=f"A{i}", ok=True) for i in range(1, 4)]))      # a --skip-gpu-adapter-checks self-check (A1-A3 only), even if signed
+    _prereqs(env)
+    t = env / "P2-OMNI-TIMING"
+    (t / "selfcheck.json").write_text(json.dumps(partial))
+    (t / "adapter_signature.json").write_text(json.dumps(dict(signed_by="gate-auditor", verdict="PASS", selfcheck_sha256=hashlib.sha256((t / "selfcheck.json").read_bytes()).hexdigest())))
+    assert R.main(["--stage", "cal"], scorer_factory=boom, runs=env, guards_factory=lambda a: None) == 2
+    assert "A1..A7" in capsys.readouterr().err
     _prereqs(env)
     assert R.main(["--stage", "pos"], scorer_factory=boom, runs=env, guards_factory=lambda a: None) == 2         # needs the calibration threshold
     assert R.main(["--stage", "test"], scorer_factory=boom, runs=env, guards_factory=lambda a: None) == 2        # needs threshold, positive control

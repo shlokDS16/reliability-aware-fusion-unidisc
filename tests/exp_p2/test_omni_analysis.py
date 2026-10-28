@@ -16,7 +16,7 @@ from exp_p2 import common                                                       
 from exp_p2.gate import analysis_omni as ao, stats                                  # noqa: E402
 
 SIG = dict(signed_by="gate-auditor", verdict="PASS")
-SEL = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[]))
+SEL = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=f"A{i}", ok=True, detail=(dict(per_shift={"1": dict(mean_logp=-3.0, top1=0.2)}) if i == 5 else {})) for i in range(1, 8)]))
 
 
 def timing(t=0.3, peak=6400.0, n=20):
@@ -185,3 +185,55 @@ def test_omni_r_descriptives_clean_flag_share_and_accuracy_drop():
 def test_selftest_function():
     s = ao.selftest()
     assert s["go_150"] and s["n120"] == 120 and s["nogo_slow"] and s["time_rule_n"] == 120
+
+
+# ------------------------------------------------------------------------------------------------ code audit part 3: M-1 (wording) and M-2 (A1..A7 required)
+def test_r3_never_says_directional_replication_and_uses_the_a3b4_item7_sentence():
+    rows = _rows(150, jpeg_b=14, jpeg_c=2, noise_b=3, noise_c=3)
+    r1 = ao.omni_r(rows, P_result(jpeg=True, noise=True), rule="R1", n_boot=300)
+    r3 = ao.omni_r(rows, P_result(jpeg=True, noise=True), rule="R3", n_boot=300)
+    assert r1["wording"] == ao.WORDING_REPLICATED and r1["directional_replication_available"] is True and r1["replicated_any"] is True
+    assert r3["wording"] == ao.WORDING_R3_ACCOMPANIED and "directional replication" not in r3["wording"] and r3["directional_replication_available"] is False
+    assert r3["replicated_any"] is None and r3["accompanied_any"] is True and "A3b.4 item 7" in r3["forbidden"]
+    r3n = ao.omni_r(_rows(150, jpeg_b=5, jpeg_c=4), P_result(jpeg=True), rule="R3", n_boot=200)
+    assert r3n["wording"].startswith(ao.WORDING_R3_NOT.split(";")[0]) and "was not accompanied" in r3n["wording"] and r3n["accompanied_any"] is False
+    r3d = ao.omni_r(_rows(100, jpeg_b=20, jpeg_c=0), P_result(jpeg=True), rule="R3", n_boot=200)       # n = 100 < 120: descriptive under R3 too
+    assert r3d["wording"].startswith("descriptive only")
+
+
+def test_a_rejection_with_b_below_c_refutes_the_direction():
+    rows = _rows(150, jpeg_b=2, jpeg_c=14)
+    r = ao.omni_r(rows, P_result(jpeg=True), rule="R1", n_boot=300)
+    j = r["per_corruption"]["jpeg"]
+    assert j["p_holm"] < 0.05 and j["refutes_direction"] and not j["replicated"] and r["refutes_direction_any"]
+    assert ao.WORDING_REFUTES in r["wording"] and r["wording"].startswith(ao.WORDING_NOT) and not r["replicated_any"]
+    r3 = ao.omni_r(rows, P_result(jpeg=True), rule="R3", n_boot=300)
+    assert ao.WORDING_REFUTES in r3["wording"]
+    ok = ao.omni_r(_rows(150, jpeg_b=14, jpeg_c=2), P_result(jpeg=True), rule="R1", n_boot=300)
+    assert not ok["refutes_direction_any"] and ao.WORDING_REFUTES not in ok["wording"]
+
+
+def test_every_r_result_carries_the_confound_list_and_the_positive_control_wording():
+    for rule in ("R1", "R2", "R3"):
+        r = ao.omni_r(_rows(150, jpeg_b=5, jpeg_c=4), P_result(jpeg=True), rule=rule, n_boot=200)
+        assert r["confounds"] == ao.CONFOUNDS and len(r["confounds"]) == 6 and "4-bit quantisation" in r["confounds"][0]
+        pcw = r["positive_control_wording"]
+        assert "not at chance on the patch corruption at code level, without the encode path" in pcw and "512 px" in pcw and "never saw in training" in pcw
+        assert "independently verified" in r["forbidden"]
+
+
+def test_go_rule_b_requires_a1_to_a7_present_and_ok():
+    ok = dict(timing=timing(0.3), m2_log=M2, m4_log=M4, n_plus=1, time_left_h=10.0)
+
+    def run(sel):
+        return ao.omni_gate(ok["timing"], ok["m2_log"], ok["m4_log"], n_plus=1, time_left_h=10.0, adapter_signature=SIG, selfcheck=sel, guard_cap_mib=7500.0)
+    assert run(SEL)["go"] and run(SEL)["conditions"]["b"]["checks_missing"] == []
+    only_123 = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=f"A{i}", ok=True) for i in (1, 2, 3)]))             # what --skip-gpu-adapter-checks produces
+    r = run(only_123)
+    assert not r["go"] and not r["conditions"]["b"]["ok"] and r["conditions"]["b"]["checks_missing"] == ["A4", "A5", "A6", "A7"]
+    assert not run(dict(ids_equal=True, adapter=dict(all_ok=True, failed=[])))["go"]                                                          # no results list at all
+    dup = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=f"A{i}", ok=True) for i in (1, 2, 3, 4, 5, 6, 7, 7)]))
+    assert not run(dup)["go"]
+    one_bad = dict(ids_equal=True, adapter=dict(all_ok=True, failed=[], results=[dict(id=f"A{i}", ok=(i != 5)) for i in range(1, 8)]))        # all_ok field lying
+    assert not run(one_bad)["go"]
+    assert ao.selfcheck_ok(SEL) and not ao.selfcheck_ok(None) and not ao.selfcheck_ok(dict(SEL, ids_equal=False))

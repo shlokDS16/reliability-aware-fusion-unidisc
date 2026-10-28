@@ -68,6 +68,11 @@ class Counting:
         return g
 
 
+def selfcheck_passed(chk: dict) -> bool:
+    """The predicate run_items applies to a self-check result (layout ids equal, modality map equal, at least 99 percent of image tokens equal)."""
+    return bool(chk.get("ids_equal") and chk.get("modality_equal") and chk.get("image_tokens_frac_equal", 0) >= 0.99)
+
+
 def repair_torn_tail(path: Path) -> bool:
     """After a hard kill the last JSONL line may be partial. common.append_jsonl would glue the next row onto it and lose that row, so end the file with a
     newline first (the partial line stays on disk, is skipped by common.read_jsonl, and its item is redone). Returns True if a repair was made."""
@@ -125,6 +130,15 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
         common.append_jsonl(run / "chunks.jsonl", dict(event="guard_stop", t=time.time(), reason="ac_lost_before_load"))
         print("STOP: running on battery (checked before the model load)", file=sys.stderr)
         return EXIT_GUARD
+    if selfcheck is not None and (run / "selfcheck.json").exists():                    # audit part 3, m-1: a self-check that failed in an earlier chunk stops this one before the model is loaded
+        try:
+            prior = json.loads((run / "selfcheck.json").read_text(encoding="utf8"))
+        except ValueError:
+            prior = {}
+        if not selfcheck_passed(prior):
+            common.append_jsonl(run / "chunks.jsonl", dict(event="selfcheck_failed_earlier", t=time.time()))
+            print("STOP: selfcheck.json from an earlier chunk records a failed self-check; no further chunk runs (audit part 3, m-1)", file=sys.stderr)
+            return EXIT_SELFCHECK
     t_load = time.perf_counter()
     sc = load()
     load_s = time.perf_counter() - t_load
@@ -138,7 +152,7 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
         if chk is not None:
             atomic_write_json(run / "selfcheck.json", chk)
             print("selfcheck", chk)
-            if not (chk.get("ids_equal") and chk.get("modality_equal") and chk.get("image_tokens_frac_equal", 0) >= 0.99):
+            if not selfcheck_passed(chk):
                 print("SELF-CHECK FAILED", file=sys.stderr)
                 return EXIT_SELFCHECK
     ctx = make_ctx(sc, run) if make_ctx else SimpleNamespace(run=run, cfg=cfg)

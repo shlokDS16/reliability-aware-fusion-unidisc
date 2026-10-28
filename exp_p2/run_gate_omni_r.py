@@ -73,6 +73,9 @@ def require_signature(runs: Path) -> dict:
         raise ValueError(f"{tdir / 'adapter_signature.json'} is not a PASS signed by the gate-auditor")
     if sig.get("selfcheck_sha256") != _sha256(_need(tdir / "selfcheck.json", "run_omni_timing")):
         raise ValueError("adapter_signature.json does not match the current selfcheck.json (hash differs)")
+    from exp_p2.gate import analysis_omni
+    if not analysis_omni.selfcheck_ok(json.loads((tdir / "selfcheck.json").read_text(encoding="utf8"))):                    # audit part 3, m-1 / M-2: a failed or partial self-check stops every later stage
+        raise ValueError("selfcheck.json does not record a passing self-check with A1..A7 all present and ok: no Omni stage runs")
     return sig
 
 

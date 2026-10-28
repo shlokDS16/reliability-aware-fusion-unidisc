@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shlex
 import subprocess
 import sys
@@ -54,6 +55,7 @@ STAGE_PY = {st: OMNI_PY for st in ("omni-timing", "omni-r-cal", "omni-r-pos", "o
 OMNI_FLAGS = ["--mem-frac", "0.62", "--max-used-first-mib", "9500", "--max-used-mib", "9000", "--max-rise-mib", "1500", "--max-peak-alloc-mib", "7000", "--max-used-before-load-mib", "2500"]
 STAGE_ARGS = {"foil-fit": ["--stage", "fit"], "foil-test": ["--stage", "test"], "omni-timing": list(OMNI_FLAGS),
               "omni-r-cal": ["--stage", "cal"] + OMNI_FLAGS, "omni-r-pos": ["--stage", "pos"] + OMNI_FLAGS, "omni-r-test": ["--stage", "test"] + OMNI_FLAGS}      # forwarded before --extra
+STAGE_ENV = {st: {"HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1"} for st in STAGE_PY}      # lead decision T2/PM 2: HF_HUB_OFFLINE=1 for every Omni stage (assigned, so a shell's HF_HUB_OFFLINE=0 cannot win)
 STAGE_CHUNK_MIN = {st: (25.0, 25.0) for st in STAGE_PY}      # (first chunk, later chunks) in minutes: the 4-bit load is the long part (IMPL-C used --max-minutes 25 --soft-minutes 22); others keep 5 / 15
 MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0       # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
 
@@ -184,7 +186,7 @@ def main(argv=None) -> int:
         n_guard_before = sum(1 for e in common.read_jsonl(run / "chunks.jsonl") if e.get("event") == "guard_stop")
         say("launch " + " ".join(cmd[-12:]))
         with open(run / f"stdout-chunk{ch:02d}.log", "w", encoding="utf8") as fh:
-            r = subprocess.run(cmd, cwd=str(ROOT), stdout=fh, stderr=subprocess.STDOUT)
+            r = subprocess.run(cmd, cwd=str(ROOT), stdout=fh, stderr=subprocess.STDOUT, **({"env": dict(os.environ, **STAGE_ENV[a.stage])} if a.stage in STAGE_ENV else {}))
         new_done = len(common.read_jsonl(run / "items.jsonl"))
         say(f"chunk {ch} exit {r.returncode}; rows {done} -> {new_done}")
         if r.returncode in REFUSAL_EXITS:                                      # a prerequisite / order / pin / dirty-tree refusal: say why now (the loop's stop rules are unchanged)
