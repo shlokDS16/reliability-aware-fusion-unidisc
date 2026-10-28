@@ -1,6 +1,6 @@
 """Tier-3 fusion comparators of Paper 2 / GATE (SAP Addendum A4 r1, section A4.1; red-team conditions C4-9 and C4-10). Exploratory, CPU only, no model.
 
-    python -m exp_p2.gate.tier3_fusion run --run-id P2-GATE-M4 --cal-run P2-GATE-M2 [--family-run P2-GATE-M3]
+    python -m exp_p2.gate.tier3_fusion --run-id P2-GATE-M4 --cal-run P2-GATE-M2 --family-run P2-GATE-M3
 
 Question (A4.1.1): on the same per-token evidence Delta_j and the same decision rule as family P, does the hard gate GATE-M give a different image-direction
 verification accuracy from (a) detector-free robust combiners (MED, TM-G, TM20), (b) discounting of the gate-flagged tokens (SOFT-G) and (c) reliability weighting of
@@ -480,11 +480,9 @@ def dumps(res: dict) -> str:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="python -m exp_p2.gate.tier3_fusion", description=__doc__.split("\n")[0])
-    sub = ap.add_subparsers(dest="cmd", required=True)
-    r = sub.add_parser("run", help="compute runs/<run-id>/tier3_fusion.json (write-once)")
-    r.add_argument("--run-id", default="P2-GATE-M4")
-    r.add_argument("--cal-run", default="P2-GATE-M2")
-    r.add_argument("--family-run", default="P2-GATE-M3")
+    ap.add_argument("--run-id", default="P2-GATE-M4")
+    ap.add_argument("--cal-run", default="P2-GATE-M2")
+    ap.add_argument("--family-run", default="P2-GATE-M3")
     a = ap.parse_args(argv)
     try:
         res = run(a.run_id, a.cal_run, a.family_run)

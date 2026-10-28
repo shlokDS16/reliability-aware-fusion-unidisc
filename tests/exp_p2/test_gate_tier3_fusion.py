@@ -309,7 +309,7 @@ def world(tmp_path, monkeypatch):
 
 
 def _run_cli(*extra):
-    return C.main(["run", "--run-id", "P2-GATE-M4", "--cal-run", "P2-GATE-M2", *extra])
+    return C.main(["--run-id", "P2-GATE-M4", "--cal-run", "P2-GATE-M2", *extra])
 
 
 def _walk_keys(o):
