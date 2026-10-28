@@ -5,10 +5,10 @@ scikit-image, data-steward note). Types (fixed by kind, researcher choice, AB.8)
 name is dropped, never replaced. The corruption seed is derived from the item id (8.3).
 
     python -m exp_p2.gate.suite smoke [--n 5]          # 5-image CPU smoke test -> runs/P2-SUITE-SMOKE/smoke.json (+ a determinism check of every cell)
-    python -m exp_p2.gate.suite analyze                # CPU: cell table from runs/P2-GATE-SUITE (after the GPU run)
+    python -m exp_p2.gate.suite analyze                # CPU: cell table and the E-pred suite block from runs/P2-GATE-SUITE (after the GPU run)
 
 Per cell the analysis reports (image direction): arms none, GATE-M, chg; b, c_cnt, net difference with a 95 percent paired-bootstrap CI; the E-dec split; and, if the plug-in signs are supplied, the E-pred
-sign agreement over the cells with a Clopper-Pearson interval, reported separately from AD.3 and never pooled with the P or PS cells."""
+sign agreement over the cells with a Clopper-Pearson interval, produced by `analyze` from the headroom items of the same run, reported separately from AD.3 and never pooled with the P or PS cells."""
 from __future__ import annotations
 
 import argparse
@@ -53,8 +53,35 @@ def corruption_seed(gid: int, cell_index: int) -> int:
 
 
 # ------------------------------------------------------------------------------------------------ application
+class PinnedCommitMismatch(ImportError):
+    """The installed imagecorruptions is not the pinned commit (an ImportError subclass so that every prerequisite check that stops on a missing package also stops on this)."""
+
+
+def installed_commit() -> str | None:
+    """The git commit the installed `imagecorruptions` distribution was built from, read at run time from its PEP 610 metadata (direct_url.json, vcs_info.commit_id); None if the package is not installed or
+    was not installed from a VCS URL (e.g. the broken PyPI 1.1.2, whose version string is the same)."""
+    import importlib.metadata as md
+    try:
+        raw = md.distribution(PACKAGE["name"]).read_text("direct_url.json")
+    except md.PackageNotFoundError:
+        return None
+    if raw is None:
+        return None
+    return json.loads(raw).get("vcs_info", {}).get("commit_id")
+
+
+def verify_pinned_commit() -> str:
+    """Stop (PinnedCommitMismatch) unless the installed package is the pinned commit; returns the commit read from the metadata. Called by `load_package`, so every run and every smoke checks it (audit m4)."""
+    got = installed_commit()
+    if got != PACKAGE["commit"]:
+        raise PinnedCommitMismatch(f"imagecorruptions was installed from commit {got!r}, not the pinned {PACKAGE['commit']} (PyPI 1.1.2 is broken on current scikit-image); reinstall: "
+                                   f"uv pip install --python <venv python> \"git+{PACKAGE['repo']}@{PACKAGE['commit']}\"")
+    return got
+
+
 def load_package():
-    """Import imagecorruptions (needs numba, scikit-image, opencv, scipy, setuptools' pkg_resources). Returns the module; raises ImportError with the install command."""
+    """Import imagecorruptions (needs numba, scikit-image, opencv, scipy, setuptools' pkg_resources). Returns the module; raises ImportError with the install command, and PinnedCommitMismatch (an ImportError)
+    if the installed distribution is not the pinned commit."""
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
@@ -62,6 +89,7 @@ def load_package():
     except ImportError as e:
         raise ImportError(f"imagecorruptions is not installed in this interpreter ({e}); install the pinned commit: uv pip install --python <venv python> \"git+{PACKAGE['repo']}@{PACKAGE['commit']}\" "
                           "plus numba and scikit-image") from e
+    verify_pinned_commit()
     return ic
 
 
@@ -167,6 +195,7 @@ def _versions() -> dict:
             out[p] = md.version(p)
         except md.PackageNotFoundError:
             pass
+    out["imagecorruptions_commit"] = installed_commit()               # read from the installed metadata, not the constant (the version string 1.1.2 is the same as the broken PyPI release)
     out["python"] = sys.version.split()[0]
     return out
 
@@ -201,6 +230,39 @@ def epred_signs(head_arrays: dict[str, list[dict]], *, n_boot: int = epred_fit.N
         fit = epred_fit.epred_fit({"P1": [dict(delta=x["delta"], z=x["z"]) for x in lst]}, {"P1": [x["flag"] for x in lst]}, n_boot=n_boot)
         out[cell] = dict(fit["cells"]["P1"], cell=cell)
     return out
+
+
+def load_head_arrays(run_dir: Path, rows: list[dict]) -> dict[str, list[dict]]:
+    """Per suite cell, the headroom items' per-token inputs of `epred_signs` (delta, z, flag), read from runs/<run>/arrays/itemNNNN.npz in the fixed item order of the rows (fold == 'head')."""
+    out: dict[str, list[dict]] = {}
+    for r in sorted((r for r in rows if r["fold"] == "head"), key=lambda r: r["idx"]):
+        path = Path(run_dir) / "arrays" / f"item{r['idx']:04d}.npz"
+        if not path.exists():
+            continue
+        a = np.load(path)
+        for k in r["cells"]:
+            out.setdefault(k, []).append(dict(delta=a[f"{k}_delta"].astype(float), z=a[f"{k}_z"].astype(bool), flag=a[f"{k}_flag"].astype(bool)))
+    return out
+
+
+def analyze_run(run_dir: Path, *, n_boot: int = 10000, n_boot_epred: int | None = None) -> dict:
+    """The CLI analysis: the cell table on the test items and, from the headroom items of the same run, the E-pred block (plug-in signs by the audited `epred_fit`, agreement by the audited `epred`;
+    AD.9, A3b.7 item 2). If no headroom array exists the block is declared 'not produced' with the reason, never silently absent."""
+    rows, seen = [], set()
+    for r in common.read_jsonl(Path(run_dir) / "items.jsonl"):
+        if r["idx"] not in seen:
+            seen.add(r["idx"])
+            rows.append(r)
+    df = suite_frame(rows)
+    head = load_head_arrays(run_dir, rows)
+    signs = epred_signs(head, n_boot=n_boot_epred or epred_fit.N_BOOT) if head else None
+    res = suite_cells(df, fold="test", n_boot=n_boot, s_c=signs)
+    if signs is None:
+        res["epred_suite"] = dict(produced=False, reason="no headroom arrays found under arrays/ for the head-fold rows: the plug-in signs cannot be computed (AD.9)")
+    else:
+        res["epred_suite_signs"] = {c: {k: v for k, v in sg.items() if k in ("sign", "sign_text", "n_items", "stability", "reason_no_sign")} for c, sg in signs.items()}
+        res["epred_suite"]["produced"] = True
+    return res
 
 
 def suite_cells(df, *, fold: str = "test", n_boot: int = 10000, seed=None, s_c: dict | None = None) -> dict:
@@ -246,17 +308,12 @@ def main(argv=None) -> int:
         s = r["summary"]
         return 0 if (s["all_uint8_same_shape"] and s["all_deterministic"] and s["random_types_vary_with_seed"] and s["all_change_the_image"] and not r["types_dropped"]) else 2
     run_dir = Path(common.RUNS) / a.run
-    rows = []
-    seen = set()
-    for r in common.read_jsonl(run_dir / "items.jsonl"):
-        if r["idx"] not in seen:
-            seen.add(r["idx"])
-            rows.append(r)
-    df = suite_frame(rows)
-    res = suite_cells(df, fold="test", n_boot=a.boot)
+    res = analyze_run(run_dir, n_boot=a.boot)
     (run_dir / "analysis.json").write_text(json.dumps(res, indent=1, default=str), encoding="utf8")
     for k, c in res["cells"].items():
         print(k, "n", c["n_items"], "b", c["gm_vs_none"]["b"], "c", c["gm_vs_none"]["c"], "net", round(c["net_difference"], 3), "ci95", [round(x, 3) for x in c["gm_vs_none"]["ci95"]])
+    e = res["epred_suite"]
+    print("E-pred (suite block):", f"A {e['A']} of K_eval {e['K_eval']}" if e.get("produced") else e["reason"])
     return 0
 
 

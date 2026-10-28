@@ -32,7 +32,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import artifacts, config, data, folds as folds_mod, fusion, report, seeds   # noqa: E402
+from exp_p2.gate import artifacts, config, data, folds as folds_mod, fusion, mde as mde_mod, report, seeds   # noqa: E402
 
 FOIL_RUN_ID = "P2-GATE-FOIL"                       # family directory: manifest, pool, leak check, fusion_frozen.json, analysis.json
 FIT_RUN_ID, TEST_RUN_ID = "P2-GATE-FOIL-FIT", "P2-GATE-FOIL-TEST"
@@ -43,6 +43,7 @@ FOIL_URL = "https://www.dropbox.com/s/u4ntgo73szg6yai/foilv1.0_test_2017.json"  
 SEED_POOL = 20261031                              # AD.6: fixed-seed permutation of the remaining eligible images
 N_TEST_PLANNED = 300                              # Shlok approved n = 300 (AD.6 planned 150); the pool is the first 300 eligible pairs
 N_FIT_MAX = 300                                   # fit pairs: FOIL pairs whose image is in folds.json "cal" (at most 300)
+N_SENS = 150                                      # A3.1 item 3 / A3b.3 item 8: the recorded sensitivity is the first 150 pool positions
 MIN_FIT, CEILING, MIN_COMPLETE, ALPHA = 100, 0.95, 120, 0.05           # AD.6 "rules before any B-test item", "completed n < 120 makes it descriptive", alpha 0.05
 GID_FIT, GID_TEST = 4000, 5000                    # global ids for seeds/dcache bookkeeping; the folds use 0 to 2499
 THRESHOLD_NOTE = "AD.6: rules (i) fit pairs >= 100, (ii) best single direction accuracy >= 0.95 on the fit pairs = untestable at ceiling, (iii) fusion_frozen.json committed"
@@ -374,11 +375,14 @@ def fit_b1(X_fit: np.ndarray) -> dict:
     if n >= 3:
         acc_T, acc_I = float(np.mean(X[:, 0] > 0)), float(np.mean(X[:, 1] > 0))
         w = fusion.lda_weights(X)
-        st = fusion.stouffer_weights(X)
+        with np.errstate(all="ignore"):                       # constant margins make the correlation 0/0: recorded as None, never as NaN (audit m8); the confirmatory path (LDA) does not use it
+            st = fusion.stouffer_weights(X)
+            corr = float(np.corrcoef(X[:, 0], X[:, 1])[0, 1])
+        fin = lambda v: float(v) if np.isfinite(v) else None            # noqa: E731
         best = "T" if acc_T >= acc_I else "I"
         out.update(acc_T=acc_T, acc_I=acc_I, best=best, best_acc=max(acc_T, acc_I), lda_w=[float(v) for v in w], acc_lda=fusion.fused_accuracy(X, w),
-                   stouffer_w=[float(v) for v in st["w"]], stouffer_r=float(st["r"]), stouffer_sd=[float(v) for v in st["sd"]], acc_stouffer=fusion.fused_accuracy(X, st["w"]),
-                   corr_T_I=float(np.corrcoef(X[:, 0], X[:, 1])[0, 1]))
+                   stouffer_w=[fin(v) for v in st["w"]], stouffer_r=fin(st["r"]), stouffer_sd=[float(v) for v in st["sd"]], acc_stouffer=fusion.fused_accuracy(X, st["w"]),
+                   corr_T_I=fin(corr))
     if n < MIN_FIT:
         out["status"] = "not_estimable"                      # rule (i): p = 1 reported
     elif out["best_acc"] >= CEILING:
@@ -389,34 +393,119 @@ def fit_b1(X_fit: np.ndarray) -> dict:
     return out
 
 
-def fusion_b1(X_fit: np.ndarray | None, X_test: np.ndarray, *, n_boot: int = 10000, seed=None, n_planned: int | None = None, frozen_fit: dict | None = None) -> dict:
+# ------------------------------------------------------------------------------------------------ B wording (A3.4 item 3, A3b.3 items 2, 3, 5 to 8): the only sentences B may emit
+# Numbers: runs/P2-GATE-FOIL-L7/l7_out.json (data-steward rule counts) and research/paper2/related/FOIL-L7-SIGNOFF-2026-10-28.md (one reader, thumbnails, E1); the ball-to-racket counts are read from pool.json
+# by `caveat_numbers_from_artifacts` (a test compares them with the constants below). No sentence says that FOIL tests, shows or supports fusion of image and text evidence (A3b.3 item 6).
+MIX_SENTENCE = "(ball to racket 11 of 300 test against 1 of 240 fit; a/an 15 of 300 against 7 of 240)"
+WEIGHTS_SENTENCE = "the combination weights were fitted on the same negative type but not the same mix of negatives"
+WORDING_CEILING = "the best single direction met the preregistered ceiling on the fit pairs; text-only cues are not excluded as a cause"                                  # A3.4 item 3 (signed), A3b.3 item 5
+WORDING_NOT_ESTIMABLE = "fewer than 100 usable fit pairs: B is not estimable (p = 1); there is no statement about the combination of the two scores"                    # AD.6 rule (i)
+WORDING_REJECT = ("the combination of the two UniDisc scores beat the better single score on these FOIL pairs; part of the gain may come from text-only cues; no text-only baseline was run; "
+                  + MIX_SENTENCE + "; " + WEIGHTS_SENTENCE)                                                                                                           # A3b.3 item 6
+WORDING_NOT_REJECT = "the combination did not beat the better single score; {mde}"                                                                                  # A3b.3 item 6
+WORDING_DESCRIPTIVE = "completed n {n} is below 120: descriptive only, no test statement; {mde}"                                                                    # AD.6, A3.1 item 2
+LABEL_NOISE_STATEMENTS = [
+    "(i) 26 of 300 test pairs (8.7 percent) are flagged by the COCO-instance rule (the foil's category is present in the image's COCO instances); this is a flag rate, not an error rate and not a bound",
+    "(ii) of those, 12 of 300 (4.0 percent; 5 plausibly true, 7 ambiguous) were judged questionable by one reader (thumbnails, E1), and the other 14 of the 26 were judged wrong by role",
+    "(iii) the rule fails to find the category of the original true noun in 26 of 300 test pairs (33 of 240 fit pairs); the rate of plausibly-true foils is not bounded by these data",
+    "no judgement exists for the 240 fit pairs beyond the rule's own count (18 of 240 flagged); the ceiling rule and the choice of the best direction are decided on those pairs",
+]
+B_LIMITS = [
+    "not a corruption test: a within-modality gate cannot see a fluent foil word (derivation, E0, untested)",
+    "text-only cues (an a/an mismatch, a swap inside a compound noun, a duplicated word) can drive the text direction; no text-only baseline was run in this plan (adding one needs a dated addendum and is exploratory)",
+    "the negative mix differs between the fit pairs and the test pairs " + MIX_SENTENCE + "; " + WEIGHTS_SENTENCE,
+    *LABEL_NOISE_STATEMENTS,
+    "no pair is excluded, relabelled or reweighted for foil validity in the confirmatory analysis; the descriptive recomputation without the 26 flagged pairs is exploratory and no p-value of it enters a claim",
+    "label noise caps the attainable gain: the attainable net gain is at most 1 minus the better single accuracy minus the label-noise share, and the A3.1 power table does not include this cap; "
+    "the sign of any bias on Delta_B is not established",
+    "all test images are in folds.json test/test_ext, so P and B are dependent in their data (separate families, separate alpha)",
+    "the COCO captions c+ are probably in UniDisc's training data (U8) and the text direction may be memorised; contamination of FOIL images (U8) is unmeasured",
+    "a rejection needs b > c_cnt; the label 'negative' is not available at these n",
+    "foil captions are lower-cased on both sides because of the case leak; the FOIL file revision (July 2017 vs Oct 2018) is unverified",
+]
+
+
+def caveat_numbers_from_artifacts(pool: dict | None = None) -> dict:
+    """The ball-to-racket counts of MIX_SENTENCE recomputed from the committed pool (test and fit); a test compares them with the constants."""
+    pool = pool or load_pool()
+    cnt = lambda s: sum(1 for x in pool[s] if x.get("target_word") == "ball" and x.get("foil_word") == "racket")          # noqa: E731
+    return dict(ball_to_racket_test=cnt("test"), n_test=len(pool["test"]), ball_to_racket_fit=cnt("fit"), n_fit=len(pool["fit"]))
+
+
+def _partial_prefix(n_completed: int, n_nominal: int, fold_complete: bool) -> dict | None:
+    """A3.1 item 2 / A3b.6 item 5 for B: a completed n from 120 to 239 of an unfinished plan is labelled 'partial prefix (under 80 percent of plan)' with the minimum detectable effect of the A3 table."""
+    if fold_complete or n_completed < MIN_COMPLETE or n_completed >= 0.8 * n_nominal:
+        return None
+    return dict(label="partial prefix (under 80 percent of plan)", completed_n=int(n_completed), planned_n=int(n_nominal), mde=mde_mod.mde_table(int(n_completed), ALPHA),
+                note=f"a prefix-based result is not described as an n = {n_nominal} result (A3b.6 item 5)")
+
+
+def _sensitivity_first150(y_fus: np.ndarray, y_best: np.ndarray, pool_idx: np.ndarray | None, tested: bool, primary_rejects: bool, n_boot: int, seed) -> dict:
+    """A3b.3 item 8: the first 150 POOL POSITIONS (the AD.6 pool order, `idx` of every row), the completed pairs among them (about 148 after the token rule), tested with the same exact McNemar and the same
+    direction rule if the overall completed n is at least 120; its own completed count is printed; labelled 'sensitivity (first 150 pool positions), not confirmatory, not in the Holm set'. If the completed
+    prefix covers fewer than 150 pool positions it coincides with the primary and is not shown separately. It can neither reject nor rescue the family hypothesis (A3.1 item 3)."""
+    label = "sensitivity (first 150 pool positions), not confirmatory, not in the Holm set"
+    if pool_idx is None:
+        return dict(exists=False, label=label, reason="pool positions (idx) were not supplied")
+    if not tested:
+        return dict(exists=False, label=label, reason="the overall completed n is below 120: nothing is tested, so the sensitivity is not shown")
+    pool_idx = np.asarray(pool_idx)
+    if len(pool_idx) == 0 or int(pool_idx.max()) + 1 < N_SENS:
+        return dict(exists=False, label=label, reason=f"the completed prefix covers fewer than {N_SENS} pool positions: the sensitivity coincides with the primary and is not shown separately")
+    sel = pool_idx < N_SENS
+    rep = report.report_test(y_fus[sel], y_best[sel], n_boot=n_boot, seed=seed)
+    sens_rejects = bool(rep["p"] < ALPHA and rep["b"] > rep["c"])
+    out = dict(exists=True, label=label, n_completed_in_prefix=int(sel.sum()), tested=True, b=rep["b"], c=rep["c"], n_d=rep["n_d"], p=rep["p"], delta=rep["delta"], ci95=rep["ci95"],
+               sens_rejects=sens_rejects, primary_rejects=bool(primary_rejects), sensitive_to_n=bool(sens_rejects != bool(primary_rejects)),
+               mde_at_this_n=mde_mod.mde_table(int(sel.sum()), ALPHA)["by_pi_d"])
+    if out["sensitive_to_n"]:
+        out["statement"] = "the primary and the sensitivity are on opposite sides of rejection: both are shown and the conclusion is sensitive to n (A3.1 item 3)"
+    return out
+
+
+def fusion_b1(X_fit: np.ndarray | None, X_test: np.ndarray, *, n_boot: int = 10000, seed=None, n_planned: int | None = None, frozen_fit: dict | None = None,
+              pool_idx: np.ndarray | None = None, n_nominal: int = N_TEST_PLANNED) -> dict:
     """B1: Delta_B = Pr(Y_fus = 1) - Pr(Y_best = 1), exact two-sided McNemar of Y_fus against Y_best (alpha 0.05, m = 1), effect size and paired percentile bootstrap CI as in section 2.3
-    (`report.report_test`). Y_fus = 1[w . (T, I) > 0] with the frozen LDA weights; Y_best = 1[margin of the best single direction > 0]; ties count wrong. Supports 'fusion helps' only with
-    b > c_cnt and p < 0.05 and completed n >= 120 (a smaller completed n is descriptive). Statuses not_estimable / untestable_at_ceiling return p = 1 and no test."""
+    (`report.report_test`). Y_fus = 1[w . (T, I) > 0] with the frozen LDA weights; Y_best = 1[margin of the best single direction > 0]; ties count wrong. `combination_beat_best_single` is true only with
+    b > c_cnt and p < 0.05 and completed n >= 120 (a smaller completed n is descriptive). Statuses not_estimable / untestable_at_ceiling return p = 1, no test and their A3.4 / AD.6 wording (X_test may be empty:
+    the runner never ran the test stage). The sentences are those of A3b.3 item 6 (`WORDING_*`): none says that FOIL tests, shows or supports fusion. `pool_idx` = the pool position (`idx`) of each row of X_test, in
+    the same order; it feeds the first-150-pool-positions sensitivity (A3b.3 item 8)."""
     fit = frozen_fit if frozen_fit is not None else fit_b1(X_fit)            # the analysis passes the COMMITTED fusion_frozen.json fit, never a refit
     res = dict(fit=fit, family="B", m=1, alpha=ALPHA, estimand="Delta_B = Pr(Y_fus = 1) - Pr(Y_best = 1) on FOIL-COCO pairs, clean images, UniDisc")
-    X = finite_rows(np.asarray(X_test, float).reshape(-1, 2))
-    n_all = int(np.asarray(X_test).reshape(-1, 2).shape[0])
+    X_all = np.asarray(X_test, float).reshape(-1, 2)
+    ok = np.isfinite(X_all).all(axis=1)
+    X = X_all[ok]
+    idx_ok = np.asarray(pool_idx)[ok] if pool_idx is not None else None
+    n_all = int(X_all.shape[0])
     res.update(n_test_completed=int(len(X)), n_test_dropped_nonfinite=n_all - int(len(X)), n_test_planned=n_planned, weights_source=("fusion_frozen.json" if frozen_fit is not None else "fit on X_fit"))
     if frozen_fit is not None and X_fit is not None:
         refit = fit_b1(X_fit)
         res["refit_matches_frozen"] = bool(refit.get("status") == frozen_fit.get("status") and np.allclose(refit.get("lda_w", [0, 0]), frozen_fit.get("lda_w", [0, 0]), rtol=1e-6, atol=1e-12))
     if fit["status"] != "ok":
-        res.update(status=fit["status"], tested=False, p=1.0, supports_fusion_helps=False, reason="AD.6 rule before any B-test item: " + fit["status"].replace("_", " "))
+        wording = WORDING_CEILING if fit["status"] == "untestable_at_ceiling" else WORDING_NOT_ESTIMABLE
+        res.update(status=fit["status"], tested=False, p=1.0, combination_beat_best_single=False, wording=wording, reason="AD.6 rule before any B-test item: " + fit["status"].replace("_", " "))
         return res
     w = np.array(fit["lda_w"], float)
     ix = 0 if fit["best"] == "T" else 1
     y_fus, y_best = (X @ w > 0).astype(float), (X[:, ix] > 0).astype(float)
     rep = report.report_test(y_fus, y_best, n_boot=n_boot, seed=seed if seed is not None else seeds.seed_for("fusion"))
     descriptive = bool(len(X) < MIN_COMPLETE)
-    res.update(tested=not descriptive, descriptive_only=descriptive, test=rep, p=rep["p"], best_direction=fit["best"], supports_fusion_helps=bool((not descriptive) and rep["p"] < ALPHA and rep["b"] > rep["c"]),
-               status="descriptive_n_below_120" if descriptive else "tested",
-               wording=("supports 'fusion helps' (b > c_cnt, exact McNemar p < 0.05, n >= 120)" if (not descriptive and rep["p"] < ALPHA and rep["b"] > rep["c"]) else "does not support 'fusion helps'; no 'negative' label at these n"))
+    rejects = bool((not descriptive) and rep["p"] < ALPHA and rep["b"] > rep["c"])
+    mde_here = mde_mod.mde_table(int(len(X)), ALPHA) if len(X) else None
+    mde_text = mde_mod.mde_sentence(int(len(X)), ALPHA) if len(X) else "no pair completed"
+    wording = (WORDING_REJECT if rejects else WORDING_DESCRIPTIVE.format(n=len(X), mde=mde_text) if descriptive else WORDING_NOT_REJECT.format(mde=mde_text))
+    fold_complete = bool(n_planned is not None and len(X) >= n_planned)
+    res.update(tested=not descriptive, descriptive_only=descriptive, test=rep, p=rep["p"], best_direction=fit["best"], combination_beat_best_single=rejects,
+               status="descriptive_n_below_120" if descriptive else "tested", wording=wording, mde_at_achieved_n=mde_here,
+               partial_prefix=_partial_prefix(int(len(X)), n_nominal, fold_complete) if not descriptive else None,
+               sensitivity_first150_pool_positions=_sensitivity_first150(y_fus, y_best, idx_ok, not descriptive, rejects, n_boot, seed if seed is not None else seeds.seed_for("fusion")),
+               max_net_gain_before_label_noise=float(1.0 - np.mean(y_best)), max_net_gain_note="1 minus the better single accuracy on the test pairs; the attainable gain is smaller by the label-noise share (A3b.3 item 7)")
     ys = (X @ np.array(fit["stouffer_w"], float) > 0).astype(float)
     res["descriptive"] = dict(acc_text_alone=float(np.mean(X[:, 0] > 0)), acc_image_alone=float(np.mean(X[:, 1] > 0)), acc_stouffer_unfitted=float(ys.mean()),
                               acc_lda=float(y_fus.mean()), stouffer_vs_best=report.report_test(ys, y_best, n_boot=2000, seed=seed if seed is not None else seeds.seed_for("fusion")) | dict(label="descriptive, no p enters a claim"),
                               note="the unfitted Stouffer statistic is reported first (spec 8) and is descriptive")
     return res
+
 
 
 # ------------------------------------------------------------------------------------------------ git helpers (rule iii)
@@ -495,10 +584,11 @@ def main(argv=None) -> int:
             artifacts.write_once(out / "pool.json", json.dumps(pool, indent=1), a.force)
             log = check_pool(pool, inp)
     except LeakCheckFailed as e:
-        (out / "leak_check.json").write_text(json.dumps(e.log, indent=1, default=str), encoding="utf8")
+        (out / ("leak_check_recheck.json" if a.cmd == "check" else "leak_check.json")).write_text(json.dumps(e.log, indent=1, default=str), encoding="utf8")
         print("STOP (leak check failed):", e, file=sys.stderr)
         return 2
-    (out / "leak_check.json").write_text(json.dumps(log, indent=1, default=str), encoding="utf8")
+    # build-pool writes the committed pre-GPU evidence; `check` re-runs on the committed pool and writes a separate file so that evidence is not overwritten (audit m7)
+    (out / ("leak_check_recheck.json" if a.cmd == "check" else "leak_check.json")).write_text(json.dumps(log, indent=1, default=str), encoding="utf8")
     print(json.dumps({k: log[k] for k in ("ok", "pool_sha256", "test_images_also_in_P_test_fold")}, indent=1))
     print("counts:", json.dumps(log["counts"]))
     return 0

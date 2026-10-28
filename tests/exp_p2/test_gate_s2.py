@@ -16,7 +16,7 @@ for _p in (ROOT, Path(__file__).resolve().parent):
 
 import torch                                                                   # noqa: E402
 from exp_p2 import common, run_gate_s2                                         # noqa: E402
-from exp_p2.gate import analysis_s2 as S, arms, config, evidence, pipeline, reinfill, runner, seeds, stats    # noqa: E402
+from exp_p2.gate import analysis_s2 as S, arms, config, evidence, mde, pipeline, reinfill, runner, seeds, stats    # noqa: E402
 from exp_p2.scoring import IMG_HI, IMG_LO, IMG_OFFSET, MASK_ID                 # noqa: E402
 from fake_gate import FakeScorer, fake_image                                    # noqa: E402
 from test_gate_runners_fake import _fold, _sc, _write_folds, env                # noqa: E402,F401  (env: the shared fixture)
@@ -379,7 +379,8 @@ def test_s2_family_counts_p_holm_and_g_zero_items_stay_in_n():
     sp = out["per_cell"]["splice"]
     assert not sp["tested"] and sp["p"] == 1.0 and sp["p_holm"] == 1.0 and sp["reading"] == "not run"                  # no splice rows: p = 1, m stays 2
     assert e["p_holm"] == pytest.approx(min(1.0, 2 * e["p"])) and e["location_supported"] and out["holm_m"] == 2
-    assert out["comparator"] == "random-gate best-of-4 re-infill (G.1-inspired)" and "G.1 comparator" in " ".join(out["forbidden_wording"])
+    assert out["comparator"] == "random-gate best-of-4 re-infill" and "G.1" not in out["comparator"] and "G.1" not in run_gate_s2.CONFIG["comparator"]     # A3b.2 item 1
+    assert "G.1" not in json.dumps({k: v for k, v in out.items() if k not in ("forbidden_wording", "sampler_note")}, default=float)                      # no 'G.1' in any emitted table text
     assert "improves" not in e["sentence"].replace("improvement of verification over no repair", "")
 
 
@@ -414,7 +415,7 @@ def test_s2_draw_level_and_all_four_contrasts_use_the_four_draws():
 def test_s2_no_repair_claim_when_not_better_than_none_and_not_rejected():
     rows = [_row(i, 3, 1, 1, yn=1) for i in range(150)]
     e = S.s2_family(rows, n_boot=200)["per_cell"]["patch"]
-    assert e["reading"] == "inconclusive" and not e["repair_helps_claim"] and "no claim that repair helps" in e["note_v"] and "not shown to be better or worse" in e["sentence"]
+    assert e["reading"] == "inconclusive" and not e["repair_helps_claim"] and "no claim that repair helps" in e["note_v"] and e["sentence"] == S.SENT_NO_EVIDENCE
 
 
 def test_s2_splice_cell_uses_the_splice_key_and_holm_covers_both_cells():
@@ -450,3 +451,136 @@ def test_analysis_main_waits_for_the_planned_fold_and_writes_analysis_json(s2env
     assert S.main(["--n", "4", "--boot", "100"]) == 0
     res = json.loads((env / "P2-GATE-S2" / "analysis.json").read_text())
     assert res["family"] == "S2" and res["holm_m"] == 2 and res["completeness"]["prefix_ok"] and res["per_cell"]["splice"]["key"] == "splice128" and res["meta"]["root_seed"] == 20261028
+
+
+# ------------------------------------------------------------------------------------------------ audit fixes (GATE-CODE-AUDIT-A3-PART2): M1, M2, M5, m5
+def _rows_draws(n_b, n_conc, dg_b, dr_b, n_c=0):
+    """n_b items where the kept draw favours I-GATE (yg = 1, yr = 0) with the given draw lists, n_c items that favour I-RAND4, n_conc concordant items with all draws correct."""
+    rows = [_row(i, 3, 1, 0, dg=dg_b, dr=dr_b) for i in range(n_b)]
+    rows += [_row(n_b + i, 3, 0, 1, dg=[0, 0, 0, 0], dr=[1, 1, 1, 1]) for i in range(n_c)]
+    rows += [_row(n_b + n_c + i, 3, 1, 1) for i in range(n_conc)]
+    return rows
+
+
+def test_m1_kept_draw_rejection_with_a_draw_level_interval_that_includes_0_carries_no_location_claim():
+    rows = _rows_draws(30, 102, [1, 0, 0, 0], [0, 1, 0, 0], n_c=2)                  # kept draw: 30 vs 2; draw-level mean difference is exactly 0 on the b items
+    e = S.s2_family(rows, n_boot=300)["per_cell"]["patch"]
+    assert e["tested"] and e["kept_draw_rejects"] and e["p_holm"] < 0.05
+    assert not e["location_claim_eligible"] and not e["location_supported"] and not e["location_refuted"]
+    assert e["sentence"] == S.SENT_NO_LOCATION and e["reading"].startswith("kept-draw contrast rejected") and "no location claim" in e["reading"]
+    assert "better placed" not in e["sentence"] and "location" not in e["sentence"] and not e["repair_helps_claim"]
+    assert "A3b.1 item 2" in e["note_location"]
+
+
+def test_m1_eligible_only_when_the_draw_level_interval_excludes_0_on_the_same_side():
+    e = S.s2_family(_rows_draws(30, 102, [1, 1, 1, 1], [0, 0, 0, 0], n_c=2), n_boot=300)["per_cell"]["patch"]
+    assert e["kept_draw_rejects"] and e["location_claim_eligible"] and e["location_supported"] and e["draw_level_excludes_0_same_side"]
+    assert e["sentence"].startswith(S.SENT_MAY_CLAIM) and "location-claim-eligible" in e["sentence"] and e["reading"] == "supported (location only)"
+    assert "G.1" not in e["sentence"] and set(e["may_not_claim"]) >= {"re-masking as a mechanism", "anything about UniDisc's own re-infill"}
+
+
+def test_m1_refuted_by_the_draw_level_interval_alone_and_by_a_draw_level_interval_on_the_other_side():
+    rows = [_row(i, 3, 1, 1, dg=[0, 0, 0, 1], dr=[1, 1, 1, 1]) for i in range(150)]          # kept-draw contrast is 0; draw-level mean difference is -0.75
+    e = S.s2_family(rows, n_boot=300)["per_cell"]["patch"]
+    assert e["p"] == 1.0 and not e["kept_draw_rejects"] and e["location_refuted"] and not e["location_claim_eligible"] and e["sentence"] == S.SENT_REFUTED and e["reading"].startswith("refuted")
+    mixed = S.s2_family(_rows_draws(30, 102, [0, 0, 0, 1], [1, 1, 1, 1], n_c=2), n_boot=300)["per_cell"]["patch"]     # kept draw rejects in favour, draw level is clearly below
+    assert mixed["kept_draw_rejects"] and mixed["location_refuted"] and not mixed["location_claim_eligible"] and mixed["sentence"] == S.SENT_REFUTED
+
+
+def test_m1_disclosure_and_the_clean_token_note_sit_in_every_cell_and_the_inconclusive_sentence_is_the_permitted_reading():
+    out = S.s2_family(_table(5, 5, n_conc=140), n_boot=200)
+    e = out["per_cell"]["patch"]
+    assert e["sentence"] == S.SENT_NO_EVIDENCE == "no evidence that the flagged set is better placed than a random one under this sampler"
+    assert S.DISCLOSURE in e["table_note"] and S.DISCLOSURE == out["disclosure"] and S.DISCLOSURE.startswith("In I-GATE the four draws share one position set; in I-RAND4 each draw has its own random set;")
+    assert S.DISCLOSURE.endswith("the direction of the net bias is not established.")
+    assert any("I-RAND4 may be worse than NONE" in t for t in e["table_note"]) and any("chain log-likelihood, caption masked" in t for t in e["table_note"])
+    assert "G.1" not in S.COMPARATOR and S.SAMPLER_NOTE == "the sampler differs from UniDisc's in order, schedule and guidance"
+
+
+def test_m2_sensitivity_is_the_same_test_on_the_first_150_list_items_and_exists_only_from_150_completed():
+    rows = _table(30, 2, n_conc=168)                                                   # 200 completed; b = 30, c = 2 all inside the first 150 positions
+    planned = [dict(idx=i) for i in range(300)]
+    e = S.s2_family(rows, planned, n_boot=200)["per_cell"]["patch"]
+    s1 = e["sensitivity_first150"]
+    assert s1["exists"] and s1["n_completed_in_prefix"] == 150 and (s1["b"], s1["c"]) == (30, 2)
+    assert s1["p"] == pytest.approx(stats.mcnemar_exact([1] * 30 + [0] * 2 + [1] * 118, [0] * 30 + [1] * 2 + [1] * 118)["p"])
+    assert s1["label"] == "sensitivity (SAP n = 150), not confirmatory, not in the Holm set" and s1["sens_rejects"] and s1["primary_rejects"] and not s1["sensitive_to_n"]
+    assert e["p_holm"] == pytest.approx(min(1.0, 2 * e["p"]))                          # the sensitivity does not enter the Holm correction
+    few = S.s2_family(_table(30, 2, n_conc=100), [dict(idx=i) for i in range(300)], n_boot=200)["per_cell"]["patch"]["sensitivity_first150"]     # 132 completed
+    assert not few["exists"] and "at least 150" in few["reason"]
+
+
+def test_m2_the_sensitivity_prefix_follows_the_planned_list_order_and_reports_sensitivity_to_n():
+    rows = [_row(i, 3, 1, 1) for i in range(150)] + [_row(150 + i, 3, 1, 0) for i in range(50)]      # the 50 items that favour I-GATE are all beyond position 150
+    planned = [dict(idx=i) for i in range(300)]
+    for order in (rows, rows[::-1]):                                                   # file order must not matter once the planned list is given
+        e = S.s2_family(order, planned, n_boot=200)["per_cell"]["patch"]
+        s1 = e["sensitivity_first150"]
+        assert e["kept_draw_rejects"] and s1["exists"] and (s1["b"], s1["c"]) == (0, 0) and not s1["sens_rejects"] and s1["sensitive_to_n"]
+        assert "sensitive to n" in s1["statement"] and "opposite sides of rejection" in s1["statement"]
+
+
+def test_m2_partial_prefix_label_with_the_mde_of_the_a3_table_only_for_120_to_239_of_an_unfinished_plan():
+    planned = [dict(idx=i) for i in range(300)]
+    e = S.s2_family(_table(30, 2, n_conc=168), planned, n_boot=100)["per_cell"]["patch"]          # 200 completed
+    pp = e["partial_prefix"]
+    assert pp["label"] == "partial prefix (under 80 percent of plan)" and pp["completed_n"] == 200 and pp["planned_n"] == 300
+    assert pp["mde"]["by_pi_d"] == mde.mde_table(200, 0.025)["by_pi_d"] and pp["mde"]["alpha_prime"] == 0.025 and "not described as an n = 300 result" in pp["note"]
+    assert S.s2_family(_table(30, 2, n_conc=208), planned, n_boot=100)["per_cell"]["patch"]["partial_prefix"] is None              # 240 completed: not a partial prefix
+    done = S.s2_family(_table(30, 2, n_conc=100), [dict(idx=i) for i in range(132)], n_boot=100)["per_cell"]["patch"]
+    assert done["partial_prefix"] is None                                                           # the planned fold is complete: nothing partial about it
+    assert S.s2_family(_table(10, 1, n_conc=50), planned, n_boot=100)["per_cell"]["patch"]["partial_prefix"] is None   # below 120: descriptive, not a labelled prefix
+    assert mde.reproduces_a3_table() and mde.mde_table(300, 0.025)["by_pi_d"]["0.1"] == 0.057 and mde.mde_table(150, 0.025)["by_pi_d"]["0.05"] is None
+
+
+def test_minor_m6_a_gap_in_the_prefix_makes_the_cells_descriptive():
+    rows = _table(30, 2, n_conc=168)
+    planned = [dict(idx=i) for i in range(300)]
+    out = S.s2_family(rows[:5] + rows[6:], planned, n_boot=100)
+    e = out["per_cell"]["patch"]
+    assert not out["completeness"]["prefix_ok"] and not e["tested"] and e["p_used"] == 1.0 and "not a prefix" in e["note"] and not e["kept_draw_rejects"]
+
+
+def test_minor_m5_the_ichg_cut_leaves_igate_and_irand_bit_identical(s2env):
+    """A3b.2 item 6 (auditor's one-item test): arm random streams are indexed by the fixed ARM_ID, so dropping I-CHG changes no draw of I-GATE or I-RAND4."""
+    env, sc, items = s2env
+    outs = {}
+    for name, arms_ in (("full", "igate,irand,ichg"), ("cut", "igate,irand")):
+        ctx = run_gate_s2.make_ctx_factory(_ns(arms=arms_), env)(sc, env / "P2-GATE-S2")
+        outs[name] = run_gate_s2.process(sc, items[0], ctx)
+    for cond in CONDS:
+        for arm in ("igate", "irand"):
+            a, b = (json.dumps(outs[k][0]["conds"][cond]["arms"][arm], sort_keys=True) for k in ("full", "cut"))
+            assert a == b
+            for suffix in ("codes", "set", "logp"):
+                assert np.array_equal(outs["full"][1][f"{cond}_{suffix}_{arm}"], outs["cut"][1][f"{cond}_{suffix}_{arm}"])
+    assert "ichg" in outs["full"][0]["conds"]["patch"]["arms"] and "ichg" not in outs["cut"][0]["conds"]["patch"]["arms"]
+
+
+def test_M5_smoke_prints_and_stores_only_peak_gb_seconds_and_n_rows_and_never_a_y(s2env, monkeypatch, capsys):
+    from exp_p2 import run_gate_s2_smoke as smoke
+    env, sc, items = s2env
+    sc.selfcheck = lambda img, cap: dict(ids_equal=True, modality_equal=True, image_tokens_frac_equal=1.0)
+    monkeypatch.setattr(runner, "guards_from_args", lambda a: None)
+    monkeypatch.setattr(runner, "default_watchdog", lambda g, r: None)
+    code = smoke.main(["--limit", "2", "--n", "4", "--allow-dirty"], load=lambda: sc)
+    out = capsys.readouterr().out
+    assert code == runner.EXIT_MORE_WORK
+    printed = json.loads(out.strip())                                                   # exactly one JSON object on stdout and nothing else
+    assert list(printed) == ["peak_gb", "seconds", "n_rows"] and all(len(v) == 2 for v in printed.values())
+    assert all(s > 0 for s in printed["seconds"]) and all(isinstance(n, int) and n > 0 for n in printed["n_rows"]) and printed["peak_gb"] == [None, None]     # no CUDA in the test
+    run = env / "P2-GATE-S2-SMOKE"
+    rows = common.read_jsonl(run / "items.jsonl")
+    assert len(rows) == 2 and all(set(r) <= smoke.ROW_KEYS_ALLOWED for r in rows)       # no conds, no arms, no y, no logp, no caption
+    assert list((run / "arrays").glob("*")) == [] and json.loads((run / "smoke_summary.json").read_text()) == printed
+    blob = out + (run / "items.jsonl").read_text() + (run / "smoke_summary.json").read_text()
+    assert not [w for w in ('"y"', "y_draws", "igate", "irand", "logp", "\"conds\"", "kept") if w in blob]
+    assert not (env / "P2-GATE-S2").exists()                                            # the real run directory is never touched
+    wrapped = smoke.firewall(run_gate_s2.process)(sc, items[0], run_gate_s2.make_ctx_factory(_ns(), env)(sc, run))
+    assert set(wrapped[0]) == {"n_rows"} and wrapped[1] == {}
+
+
+def test_M5_smoke_refuses_the_real_run_id_and_figures(env, capsys):
+    from exp_p2 import run_gate_s2_smoke as smoke
+    assert smoke.main(["--run-id", "P2-GATE-S2"]) == 2 and smoke.main(["--run-id", "P2-GATE-S2-FIG"]) == 2 and smoke.main(["--figures"]) == 2
+    assert not (env / "P2-GATE-S2").exists() and not (env / "P2-GATE-S2-SMOKE").exists()

@@ -244,14 +244,14 @@ def test_non_finite_margins_are_dropped_and_counted():
 def test_fusion_helps_when_the_directions_carry_independent_information():
     fit, test = _margins(240, 0.7, 0.7, seed=5), _margins(300, 0.7, 0.7, seed=6)
     r = foil.fusion_b1(fit, test, n_boot=500)
-    assert r["status"] == "tested" and r["tested"] and r["supports_fusion_helps"] and r["p"] < 0.05 and r["test"]["b"] > r["test"]["c"]
-    assert r["test"]["acc_a"] > r["test"]["acc_b"] and r["descriptive"]["acc_stouffer_unfitted"] > r["descriptive"]["acc_text_alone"] and "supports" in r["wording"]
+    assert r["status"] == "tested" and r["tested"] and r["combination_beat_best_single"] and r["p"] < 0.05 and r["test"]["b"] > r["test"]["c"]
+    assert r["test"]["acc_a"] > r["test"]["acc_b"] and r["descriptive"]["acc_stouffer_unfitted"] > r["descriptive"]["acc_text_alone"] and r["wording"].startswith("the combination of the two UniDisc scores beat the better single score")
 
 
 def test_fusion_does_not_help_when_one_direction_is_noise():
     fit, test = _margins(240, 0.9, 0.0, seed=7), _margins(300, 0.9, 0.0, seed=8)
     r = foil.fusion_b1(fit, test, n_boot=200)
-    assert not r["supports_fusion_helps"] or r["test"]["b"] > r["test"]["c"]            # never true with b <= c
+    assert not r["combination_beat_best_single"] or r["test"]["b"] > r["test"]["c"]            # never true with b <= c
     assert r["best_direction"] == "T" and r["descriptive"]["acc_image_alone"] < 0.6        # the image margin alone is near chance here
     assert abs(r["test"]["delta"]) < 0.1                                                    # fusion neither helps nor hurts much
 
@@ -259,23 +259,23 @@ def test_fusion_does_not_help_when_one_direction_is_noise():
 def test_supports_requires_b_greater_than_c():
     fit = _margins(240, 0.7, 0.7, seed=9)
     r = foil.fusion_b1(fit, _margins(300, 0.7, 0.7, seed=10), n_boot=100)
-    assert r["supports_fusion_helps"] is (r["test"]["p"] < 0.05 and r["test"]["b"] > r["test"]["c"])
+    assert r["combination_beat_best_single"] is (r["test"]["p"] < 0.05 and r["test"]["b"] > r["test"]["c"])
     # force a significant c > b: test pairs where the image margin carries the sign against the fitted weights
     fw = dict(r["fit"], lda_w=[1.0, -1.0])
     flipped = foil.fusion_b1(None, _margins(300, 0.7, 0.7, seed=11), n_boot=100, frozen_fit=fw)
-    assert flipped["test"]["c"] > flipped["test"]["b"] and flipped["supports_fusion_helps"] is False
+    assert flipped["test"]["c"] > flipped["test"]["b"] and flipped["combination_beat_best_single"] is False
 
 
 def test_p_is_one_and_no_test_when_not_estimable_or_at_ceiling():
     r = foil.fusion_b1(_margins(60, 1.0, 0.5), _margins(300, 1.0, 0.5), n_boot=100)
-    assert r["status"] == "not_estimable" and r["p"] == 1.0 and r["tested"] is False and "test" not in r and not r["supports_fusion_helps"]
+    assert r["status"] == "not_estimable" and r["p"] == 1.0 and r["tested"] is False and "test" not in r and not r["combination_beat_best_single"]
     r = foil.fusion_b1(_margins(240, 3.5, 0.5, seed=1), _margins(300, 3.5, 0.5), n_boot=100)
     assert r["status"] == "untestable_at_ceiling" and r["p"] == 1.0 and "test" not in r
 
 
 def test_completed_n_below_120_is_descriptive():
     r = foil.fusion_b1(_margins(240, 0.7, 0.7, seed=5), _margins(119, 0.7, 0.7, seed=6), n_boot=100)
-    assert r["status"] == "descriptive_n_below_120" and r["descriptive_only"] and r["supports_fusion_helps"] is False and "test" in r
+    assert r["status"] == "descriptive_n_below_120" and r["descriptive_only"] and r["combination_beat_best_single"] is False and "test" in r
     assert foil.fusion_b1(_margins(240, 0.7, 0.7, seed=5), _margins(120, 0.7, 0.7, seed=6), n_boot=100)["status"] == "tested"
 
 
@@ -350,7 +350,7 @@ def test_freeze_then_analyze_end_to_end(foil_env):
         analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
     _write_rows(foil_env / foil.TEST_RUN_ID, _margins(300, 0.7, 0.7, seed=6), pair0=5000)
     res = analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", foil_env / foil.FIT_RUN_ID, fam / "analysis.json", n_boot=200, check_commit=False)
-    assert res["supports_fusion_helps"] and res["completed_vs_expected"] == [300, 300] and res["refit_matches_frozen"] and not res["partial"] and len(res["limits"]) == 5
+    assert res["combination_beat_best_single"] and res["completed_vs_expected"] == [300, 300] and res["refit_matches_frozen"] and not res["partial"] and res["limits"] == foil.B_LIMITS
     assert json.loads((fam / "analysis.json").read_text())["test"]["b"] == res["test"]["b"]
 
 
@@ -506,3 +506,173 @@ def test_real_pool_is_reproducible_from_the_committed_inputs():
     assert [p["image_id"] for p in pool["test"]] == [p["image_id"] for p in committed["test"]]
     assert [p["image_id"] for p in pool["fit"]] == [p["image_id"] for p in committed["fit"]]
     assert [(p["c_pos"], p["c_neg"]) for p in pool["test"]] == [(p["c_pos"], p["c_neg"]) for p in committed["test"]]
+
+
+# ------------------------------------------------------------------------------------------------ audit fixes (GATE-CODE-AUDIT-A3-PART2): M2, M3, M4, m7, m8
+def test_m3_analyze_handles_untestable_at_ceiling_with_no_test_rows(foil_env):
+    """The auditor's failure: after the runner refuses the test stage there are no test rows, and analyze raised FileNotFoundError before writing the p = 1 record."""
+    fam = foil_env / foil.FOIL_RUN_ID
+    _write_rows(foil_env / foil.FIT_RUN_ID, _margins(240, 3.5, 0.3, seed=1))
+    p = analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
+    assert p["fit"]["status"] == "untestable_at_ceiling"
+    assert not (foil_env / foil.TEST_RUN_ID).exists()                                                    # the runner never ran the test stage
+    res = analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", foil_env / foil.FIT_RUN_ID, fam / "analysis.json", n_boot=50, check_commit=False)
+    assert res["status"] == "untestable_at_ceiling" and res["p"] == 1.0 and res["tested"] is False and "test" not in res
+    assert res["wording"] == "the best single direction met the preregistered ceiling on the fit pairs; text-only cues are not excluded as a cause"
+    on_disk = json.loads((fam / "analysis.json").read_text())
+    assert on_disk["p"] == 1.0 and on_disk["wording"] == res["wording"] and on_disk["limits"] and on_disk["label"]
+
+
+def test_m3_analyze_handles_not_estimable_with_no_test_rows(foil_env):
+    fam = foil_env / foil.FOIL_RUN_ID
+    _write_rows(foil_env / foil.FIT_RUN_ID, _margins(60, 0.7, 0.7, seed=5))
+    analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
+    res = analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", None, fam / "analysis.json", n_boot=50, check_commit=False)
+    assert res["status"] == "not_estimable" and res["p"] == 1.0 and not res["tested"] and "not estimable" in res["wording"] and "100" in res["wording"]
+    assert "fusion" not in res["wording"]
+
+
+def test_m3_test_rows_under_a_non_ok_status_are_ignored_and_flagged(foil_env):
+    fam = foil_env / foil.FOIL_RUN_ID
+    _write_rows(foil_env / foil.FIT_RUN_ID, _margins(240, 3.5, 0.3, seed=1))
+    analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
+    _write_rows(foil_env / foil.TEST_RUN_ID, _margins(5, 0.7, 0.7))
+    res = analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", None, fam / "analysis.json", n_boot=50, check_commit=False)
+    assert res["p"] == 1.0 and "test" not in res and res["unexpected_test_rows_ignored"] == 5
+
+
+def test_m4_no_sentence_says_that_foil_tests_shows_or_supports_fusion():
+    fit, test = _margins(240, 0.7, 0.7, seed=5), _margins(300, 0.7, 0.7, seed=6)
+    r = foil.fusion_b1(fit, test, n_boot=300, n_planned=298)
+    assert r["tested"] and r["combination_beat_best_single"] and "supports_fusion_helps" not in r
+    w = r["wording"]
+    assert w.startswith("the combination of the two UniDisc scores beat the better single score on these FOIL pairs; part of the gain may come from text-only cues; no text-only baseline was run")
+    assert "ball to racket 11 of 300 test against 1 of 240 fit" in w and "a/an 15 of 300 against 7 of 240" in w
+    assert "the combination weights were fitted on the same negative type but not the same mix of negatives" in w
+    for bad in ("supports", "shows", "tests fusion", "fusion helps"):
+        assert bad not in w
+
+
+def test_m4_non_rejecting_sentence_carries_the_mde_and_no_fusion_sentence():
+    from exp_p2.gate import mde
+    fit, test = _margins(240, 0.9, 0.0, seed=7), _margins(238, 0.9, 0.0, seed=8)
+    r = foil.fusion_b1(fit, test, n_boot=200, n_planned=238)
+    assert not r["combination_beat_best_single"]
+    assert r["wording"].startswith("the combination did not beat the better single score; minimum detectable net gain at the achieved n = 238 is ")
+    assert mde.mde_sentence(238, 0.05) in r["wording"] and "fusion" not in r["wording"] and "supports" not in r["wording"]
+    assert r["mde_at_achieved_n"]["by_pi_d"] == mde.mde_table(238, 0.05)["by_pi_d"]
+    d = foil.fusion_b1(fit, _margins(100, 0.9, 0.0, seed=8), n_boot=100)
+    assert d["descriptive_only"] and d["wording"].startswith("completed n 100 is below 120: descriptive only, no test statement; minimum detectable net gain")
+
+
+def test_m4_limits_carry_the_text_only_cue_mix_label_noise_and_cap_statements(foil_env):
+    fam = foil_env / foil.FOIL_RUN_ID
+    _write_rows(foil_env / foil.FIT_RUN_ID, _margins(240, 0.7, 0.7, seed=5))
+    analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
+    _write_rows(foil_env / foil.TEST_RUN_ID, _margins(300, 0.7, 0.7, seed=6), pair0=5000)
+    res = analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", None, fam / "analysis.json", n_boot=100, check_commit=False)
+    blob = " ".join(res["limits"])
+    for need in ("text-only cues", "no text-only baseline was run", "ball to racket 11 of 300 test against 1 of 240 fit", "a/an 15 of 300 against 7 of 240",
+                 "26 of 300 test pairs (8.7 percent) are flagged", "this is a flag rate, not an error rate and not a bound", "12 of 300 (4.0 percent; 5 plausibly true, 7 ambiguous)",
+                 "other 14 of the 26", "33 of 240 fit pairs", "not bounded by these data", "no judgement exists for the 240 fit pairs", "attainable net gain is at most 1 minus the better single accuracy minus the label-noise share",
+                 "does not include this cap", "sign of any bias on Delta_B is not established"):
+        assert need in blob, need
+    assert "up to" not in blob and "supports 'fusion helps'" not in blob and "plausibly lowers" not in blob
+    acc_best = res["descriptive"]["acc_text_alone"] if res["best_direction"] == "T" else res["descriptive"]["acc_image_alone"]
+    assert res["max_net_gain_before_label_noise"] == pytest.approx(1 - acc_best)
+
+
+def test_the_caveat_numbers_match_the_committed_artifacts():
+    pool_p = ROOT / "runs" / "P2-GATE-FOIL" / "pool.json"
+    l7_p = ROOT / "runs" / "P2-GATE-FOIL-L7" / "l7_out.json"
+    if not (pool_p.exists() and l7_p.exists()):
+        pytest.skip("committed FOIL artifacts not present")
+    n = foil.caveat_numbers_from_artifacts(json.loads(pool_p.read_text(encoding="utf8")))
+    assert (n["ball_to_racket_test"], n["n_test"], n["ball_to_racket_fit"], n["n_fit"]) == (11, 300, 1, 240) and "11 of 300 test against 1 of 240 fit" in foil.MIX_SENTENCE
+    o = json.loads(l7_p.read_text(encoding="utf8"))["out"]
+    assert (o["test"]["foil_cat_present"], o["test"]["n"], o["fit"]["foil_cat_present"], o["fit"]["n"]) == (26, 300, 18, 240)
+    assert (len(o["test"]["target_mapped_but_absent"]), len(o["fit"]["target_mapped_but_absent"])) == (26, 33)
+    blob = " ".join(foil.LABEL_NOISE_STATEMENTS)
+    assert "26 of 300" in blob and "18 of 240" in blob and "33 of 240" in blob and "12 of 300" in blob
+
+
+def test_m2_b_sensitivity_is_the_first_150_pool_positions_and_labelled():
+    fit = _margins(240, 0.7, 0.7, seed=5)
+    X = _margins(298, 0.7, 0.7, seed=6)
+    idx = np.arange(298) + 2                                                      # pool positions 0 and 1 and a few more were excluded by the token rule
+    r = foil.fusion_b1(fit, X, n_boot=100, n_planned=298, pool_idx=idx)
+    s = r["sensitivity_first150_pool_positions"]
+    assert s["exists"] and s["label"] == "sensitivity (first 150 pool positions), not confirmatory, not in the Holm set" and s["n_completed_in_prefix"] == 148 and s["tested"]
+    w = np.array(r["fit"]["lda_w"])
+    top = foil.report.report_test((X[:148] @ w > 0).astype(float), (X[:148, 0 if r["fit"]["best"] == "T" else 1] > 0).astype(float), n_boot=50, seed=1)
+    assert (s["b"], s["c"]) == (top["b"], top["c"]) and s["p"] == pytest.approx(top["p"])
+    assert s["primary_rejects"] is r["combination_beat_best_single"]
+
+
+def test_m2_b_sensitivity_coincides_with_the_primary_when_fewer_than_150_positions_are_covered():
+    fit = _margins(240, 0.7, 0.7, seed=5)
+    r = foil.fusion_b1(fit, _margins(140, 0.7, 0.7, seed=6), n_boot=100, n_planned=298, pool_idx=np.arange(140))
+    s = r["sensitivity_first150_pool_positions"]
+    assert not s["exists"] and "coincides with the primary" in s["reason"]
+    d = foil.fusion_b1(fit, _margins(100, 0.7, 0.7, seed=6), n_boot=100, n_planned=298, pool_idx=np.arange(100))
+    assert d["descriptive_only"] and not d["sensitivity_first150_pool_positions"]["exists"]
+
+
+def test_m2_b_sensitivity_reports_sensitivity_to_n():
+    y_best = np.r_[np.ones(150), np.zeros(148)]
+    y_fus = np.r_[np.ones(150), np.ones(30), np.zeros(118)]                         # b = c = 0 in the first 150 positions; b = 30, c = 0 beyond them
+    pos = np.arange(298)
+    s = foil._sensitivity_first150(y_fus, y_best, pos, True, True, 100, 1)
+    assert s["exists"] and s["n_completed_in_prefix"] == 150 and (s["b"], s["c"]) == (0, 0) and not s["sens_rejects"] and s["primary_rejects"] and s["sensitive_to_n"]
+    assert "sensitive to n" in s["statement"] and "opposite sides of rejection" in s["statement"]
+    agree = foil._sensitivity_first150(np.r_[np.ones(30), np.zeros(268)], np.zeros(298), pos, True, True, 100, 1)          # b = 30, c = 0 inside the first 150 positions
+    assert agree["sens_rejects"] and not agree["sensitive_to_n"] and "statement" not in agree
+    assert not foil._sensitivity_first150(y_fus, y_best, pos, False, False, 100, 1)["exists"] and not foil._sensitivity_first150(y_fus, y_best, None, True, True, 100, 1)["exists"]
+
+
+def test_m2_b_partial_prefix_label_and_mde():
+    from exp_p2.gate import mde
+    fit = _margins(240, 0.7, 0.7, seed=5)
+    r = foil.fusion_b1(fit, _margins(200, 0.7, 0.7, seed=6), n_boot=100, n_planned=298, pool_idx=np.arange(200))
+    pp = r["partial_prefix"]
+    assert pp["label"] == "partial prefix (under 80 percent of plan)" and pp["completed_n"] == 200 and pp["mde"]["by_pi_d"] == mde.mde_table(200, 0.05)["by_pi_d"] and "not described as an n = 300 result" in pp["note"]
+    assert foil.fusion_b1(fit, _margins(240, 0.7, 0.7, seed=6), n_boot=100, n_planned=298, pool_idx=np.arange(240))["partial_prefix"] is None
+    assert foil.fusion_b1(fit, _margins(298, 0.7, 0.7, seed=6), n_boot=100, n_planned=298, pool_idx=np.arange(298))["partial_prefix"] is None
+    assert foil.fusion_b1(fit, _margins(130, 0.7, 0.7, seed=6), n_boot=100, n_planned=130, pool_idx=np.arange(130))["partial_prefix"] is None        # the planned fold is complete
+
+
+def test_m7_analyze_refuses_a_pool_that_differs_from_the_frozen_one(foil_env):
+    fam = foil_env / foil.FOIL_RUN_ID
+    _write_rows(foil_env / foil.FIT_RUN_ID, _margins(240, 0.7, 0.7, seed=5))
+    analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
+    _write_rows(foil_env / foil.TEST_RUN_ID, _margins(300, 0.7, 0.7, seed=6), pair0=5000)
+    pool = json.loads((fam / "pool.json").read_text())
+    pool["fit"][0]["c_pos"] = "changed"
+    (fam / "pool.json").write_text(json.dumps(pool))
+    with pytest.raises(RuntimeError, match="pool"):
+        analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", None, fam / "analysis.json", n_boot=50, check_commit=False)
+
+
+def test_m7_the_runner_writes_its_leak_check_into_the_run_dir_and_never_rewrites_the_committed_one(foil_env, monkeypatch):
+    fam = foil_env / foil.FOIL_RUN_ID
+    committed = dict(ok=True, pool_sha256="x", counts={"a": 1}, created="2026-10-28T13:50:02", test_images_also_in_P_test_fold=300, checks=[dict(name="L1", ok=True, detail="d1")])
+    (fam / "leak_check.json").write_text(json.dumps(committed))
+    before = (fam / "leak_check.json").read_text()
+    monkeypatch.setattr(foil, "verify_file", lambda *a, **k: {})
+    monkeypatch.setattr(foil, "require_committed", lambda p, repo=foil.ROOT: None)
+    rerun = dict(committed, created="2026-10-29T09:00:00", checks=[dict(name="L1", ok=True, detail="other detail")])            # only timestamp and detail differ
+    monkeypatch.setattr(foil, "check_pool", lambda pool=None, inp=None: rerun)
+    info = run_gate_foil.check_prereqs("fit")
+    assert info["leak_check_matches_committed"] is True and (fam / "leak_check.json").read_text() == before
+    assert json.loads((foil_env / foil.FIT_RUN_ID / "leak_check.json").read_text())["created"] == "2026-10-29T09:00:00"
+    monkeypatch.setattr(foil, "check_pool", lambda pool=None, inp=None: dict(rerun, counts={"a": 2}))
+    with pytest.raises(RuntimeError, match="differs from the committed"):
+        run_gate_foil.check_prereqs("fit")
+    assert (fam / "leak_check.json").read_text() == before
+
+
+def test_m8_constant_margins_do_not_put_nan_into_the_frozen_record():
+    X = np.array([[1.0, 2.0]] * 120)                                              # constant columns: the correlation is 0/0
+    f = foil.fit_b1(X)
+    assert f["stouffer_r"] is None and f["corr_T_I"] is None and f["status"] in ("ok", "untestable_at_ceiling")
+    assert "NaN" not in json.dumps(f, allow_nan=True)

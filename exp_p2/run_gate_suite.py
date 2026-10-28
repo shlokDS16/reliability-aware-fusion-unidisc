@@ -86,7 +86,7 @@ def make_ctx_factory(runs: Path | None = None):
         ic = suite.load_package()
         cells = [(ci, t, s) for ci, (t, s) in enumerate(suite.CELLS) if t in types]
         Path(run).mkdir(parents=True, exist_ok=True)
-        (Path(run) / "suite_types.json").write_text(json.dumps(dict(package=suite.PACKAGE, versions=suite._versions(), types_requested=list(suite.TYPES), types_available=types,
+        (Path(run) / "suite_types.json").write_text(json.dumps(dict(package=suite.PACKAGE, installed_commit=suite.verify_pinned_commit(), versions=suite._versions(), types_requested=list(suite.TYPES), types_available=types,
                                                                     types_dropped=[t for t in suite.TYPES if t not in types], cells_run=[suite.cell_key(t, s) for _, t, s in cells],
                                                                     rule="a type absent under its name is dropped, not replaced (AD.9)")), encoding="utf8")
         checks.l10_once(sc, run)
@@ -132,7 +132,7 @@ def main(argv=None) -> int:
     except (FileNotFoundError, ValueError, RuntimeError, ImportError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2
-    cfg = dict(CONFIG, n_items=a.n or N_ITEMS, duty=a.duty, mem_frac=a.mem_frac)
+    cfg = dict(CONFIG, n_items=a.n or N_ITEMS, duty=a.duty, mem_frac=a.mem_frac, installed_commit=suite.installed_commit())      # read from the installed metadata at run time (audit m4)
 
     def load():
         from exp_p2.scoring import UniScorer

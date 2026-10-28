@@ -12,7 +12,7 @@ Prerequisites (checked before the model is touched; nothing is defaulted):
 Per item (S2 list = the first n items of the ordered test list; M4 order and token-rule exclusions, SAP AD.5 prefix rule):
     2 passes       Lambda^{c+}, Lambda^{c-} (caption-only tables, every arm below is a gather; same two passes M4 uses)
     per condition  I-GATE   n_draw = 4 draws re-infilling G (GATE-M flags, alpha 0.05)          } the kept draw = highest own caption-masked chain likelihood
-                   I-RAND4  4 draws, each a NEW uniformly random set of g_i = |G| positions    }   (comparator "random-gate best-of-4 re-infill (G.1-inspired)", AB.4)
+                   I-RAND4  4 draws, each a NEW uniformly random set of g_i = |G| positions    }   (comparator "random-gate best-of-4 re-infill", AB.4, A3b.2 item 1)
                    I-CHG    4 draws re-infilling the truly changed positions (oracle, descriptive)
                    [ I-LEAK 1 draw, G re-infilled with the true caption VISIBLE (leakage demonstration, off unless --leak) ]
                    NONE and M (GATE-M drop) are gathers on the corrupted codes
@@ -49,7 +49,7 @@ COND_INDEX = dict(patch=0, splice=1)      # fixed numbers (not list positions) s
 FIG_FIRST, FIG_HARM = 8, 4
 CONFIG = dict(stage="S2", fold="test", n_items=N_S2, n_sap_text=N_SAP_TEXT, seed=config.SEED_GATE, S_r=reinfill.S_R, n_draw=reinfill.N_DRAW, alpha=ALPHA, arms=list(ARMS_ALL), leak=False,
               m4_run=M4_RUN, duty=0.5, spec="research/paper2/prereg/SAP-GATE-2026-10-28.md AD.5, AB.4; research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md 11.2 S2, v1 Algorithm 6",
-              comparator="I-RAND4: random-gate best-of-4 re-infill (G.1-inspired)", selection="highest own caption-masked chain log-likelihood (sum of log pi_j(y_j)); ties to the lowest draw",
+              comparator="I-RAND4: random-gate best-of-4 re-infill", selection="highest own caption-masked chain log-likelihood (sum of log pi_j(y_j)); ties to the lowest draw",
               sampler="S_r unmask steps in a fixed random order, unguided, temperature 1, image vocabulary, caption masked (R1)")
 
 
@@ -271,7 +271,8 @@ def process_fig(sc, it, ctx):
 
 
 # ------------------------------------------------------------------------------------------------ main
-def main(argv=None):
+def main(argv=None, *, process_wrap=None, load=None):
+    """`process_wrap(process) -> process` and `load` are hooks for `run_gate_s2_smoke` (the firewalled smoke strips every outcome from the row) and for tests; production passes neither."""
     ap = runner.base_parser(RUN_ID, N_S2)
     ap.add_argument("--m4-run", default=M4_RUN)
     ap.add_argument("--arms", default=",".join(ARMS_ALL), help="re-infill arms; igate and irand are required (the confirmatory contrast); ichg is the descriptive oracle and the first thing to cut")
@@ -315,9 +316,10 @@ def main(argv=None):
     cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, arms=list(arms_), leak=bool(a.leak), m4_run=a.m4_run, conds=conds, figures=bool(a.figures),
                n_vs_sap_text=dict(n=a.n, sap_ad5=N_SAP_TEXT))
 
-    def load():
-        from exp_p2.scoring import UniScorer
-        return runner.Counting(UniScorer(common.load_net()))
+    if load is None:
+        def load():
+            from exp_p2.scoring import UniScorer
+            return runner.Counting(UniScorer(common.load_net()))
 
     if a.figures:
         def make_fig_ctx(sc, run):
@@ -328,7 +330,7 @@ def main(argv=None):
     def selfcheck(sc, items_):
         return sc.selfcheck(common.load_image(items_[0]["image_id"]), items_[0]["caption"])
 
-    return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=lambda sc, run: items, process=process, make_ctx=make_ctx_factory(a), soft_minutes=a.soft_minutes, duty=a.duty,
+    return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=lambda sc, run: items, process=(process_wrap(process) if process_wrap else process), make_ctx=make_ctx_factory(a), soft_minutes=a.soft_minutes, duty=a.duty,
                             limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck, watchdog_factory=runner.default_watchdog, allow_dirty=a.allow_dirty)
 
 

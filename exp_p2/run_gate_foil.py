@@ -5,7 +5,7 @@
     python -m exp_p2.run_gate_foil --stage test --resume --soft-minutes 12.5 [--limit N]     # run id P2-GATE-FOIL-TEST: the test pairs; refuses unless fusion_frozen.json is committed with status ok
     python -m exp_p2.gate.analysis_foil analyze                                            # CPU: B1 (exact McNemar of Y_fus against Y_best)
 
-Before the model is touched (CPU): the FOIL file SHA-256, the committed pool, and the leak check L0 to L8 (stops with exit code 2 on any failure; log in runs/P2-GATE-FOIL/leak_check.json).
+Before the model is touched (CPU): the FOIL file SHA-256, the committed pool, and the leak check L0 to L8 (stops with exit code 2 on any failure; per-run log in runs/<run-id>/leak_check.json, compared with the committed runs/P2-GATE-FOIL/leak_check.json, which is never rewritten).
 Per pair (4 passes + 1 encode, plus the cached text null): clean encode; image direction caption-only for c+ and c- (2 passes, the 'none' arm of Alg. 5'); text direction full caption mask with the image
 visible for c+ and c- (2 passes). Nothing is gated and no corruption is applied: B is a clean-image hard-negative test. The caption token rule (5 to 32, runtime tokenizer) EXCLUDES a pair, it is never replaced.
 Margins stored per pair: T = pmi(c+) - pmi(c-), I = mean over the 1,024 image tokens of the paired evidence Delta_j = Lambda^{c+}_j[v_j] - Lambda^{c-}_j[v_j]. Captions are lower-cased on both sides (case leak).
@@ -35,6 +35,12 @@ def frozen_path() -> Path:
     return foil.pool_dir() / "fusion_frozen.json"
 
 
+def comparable_leak_check(log: dict) -> dict:
+    """The deterministic part of a leak-check log (no timestamp): verdict, pool hash, counts and every check's name and result."""
+    return dict(ok=log.get("ok"), pool_sha256=log.get("pool_sha256"), counts=log.get("counts"), test_images_also_in_P_test_fold=log.get("test_images_also_in_P_test_fold"),
+                checks=[(c.get("name"), c.get("ok")) for c in log.get("checks", [])])
+
+
 def check_prereqs(stage: str) -> dict:
     """CPU checks before any model load. Raises FileNotFoundError / RuntimeError / foil.LeakCheckFailed (the caller turns them into exit code 2)."""
     foil.verify_file()
@@ -42,8 +48,16 @@ def check_prereqs(stage: str) -> dict:
     foil.require_committed(pool_path)                                       # AD.6: 'the pool list is committed before any GPU use'
     pool = foil.load_pool(pool_path)
     log = foil.check_pool(pool)                                              # L0 to L8; raises on failure
-    (foil.pool_dir() / "leak_check.json").write_text(json.dumps(log, indent=1, default=str), encoding="utf8")
-    info = dict(pool_sha256=log["pool_sha256"], foil_sha256=foil.FOIL_SHA256, leak_check="passed")
+    run_dir = Path(common.RUNS) / STAGES[stage]                              # the per-run check goes into the run directory; the committed pre-GPU evidence runs/P2-GATE-FOIL/leak_check.json is never rewritten (audit m7)
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / "leak_check.json").write_text(json.dumps(log, indent=1, default=str), encoding="utf8")
+    committed = foil.pool_dir() / "leak_check.json"
+    same = None
+    if committed.exists():
+        same = comparable_leak_check(json.loads(committed.read_text(encoding="utf8"))) == comparable_leak_check(log)
+        if not same:
+            raise RuntimeError(f"the leak check re-run at start-up differs from the committed {committed.name} (ok, pool SHA-256, counts or the per-check results changed): stop and investigate before any GPU use")
+    info = dict(pool_sha256=log["pool_sha256"], foil_sha256=foil.FOIL_SHA256, leak_check="passed", leak_check_matches_committed=same)
     if stage == "test":
         fp = frozen_path()
         foil.require_committed(fp)                                          # rule (iii)

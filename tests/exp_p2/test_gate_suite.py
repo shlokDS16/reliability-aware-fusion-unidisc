@@ -318,3 +318,96 @@ def test_runner_loop_resumes(renv):
     assert runner.run_items(limit=2, **kw) == runner.EXIT_MORE_WORK and runner.run_items(**kw) == runner.EXIT_DONE
     rows = common.read_jsonl(renv / "P2-GATE-SUITEy" / "items.jsonl")
     assert [r["idx"] for r in rows] == [0, 1, 2] and set(rows[0]["cells"]) == {"pixelate2", "fog2"} and "peak_gb" not in rows[0]
+
+
+# ------------------------------------------------------------------------------------------------ audit fixes (GATE-CODE-AUDIT-A3-PART2): m3 (E-pred block from the CLI), m4 (pinned commit at run time)
+class _FakeDist:
+    version = "1.1.2"
+
+    def __init__(self, raw):
+        self._raw = raw
+
+    def read_text(self, name):
+        return self._raw if name == "direct_url.json" else None
+
+
+def _patch_dist(monkeypatch, raw):
+    import importlib.metadata as md
+    monkeypatch.setattr(md, "distribution", lambda name: _FakeDist(raw))
+
+
+def test_minor_m4_the_pinned_commit_is_verified_at_run_time_from_the_installed_metadata(monkeypatch):
+    good = json.dumps({"url": suite.PACKAGE["repo"], "vcs_info": {"vcs": "git", "commit_id": suite.PACKAGE["commit"]}})
+    _patch_dist(monkeypatch, good)
+    assert suite.installed_commit() == suite.PACKAGE["commit"] and suite.verify_pinned_commit() == suite.PACKAGE["commit"]
+    assert suite._versions()["imagecorruptions_commit"] == suite.PACKAGE["commit"]
+    _patch_dist(monkeypatch, json.dumps({"vcs_info": {"vcs": "git", "commit_id": "0" * 40}}))
+    with pytest.raises(suite.PinnedCommitMismatch, match="not the pinned"):
+        suite.verify_pinned_commit()
+    _patch_dist(monkeypatch, None)                                                  # installed from an index (the broken PyPI 1.1.2): no VCS metadata at all
+    with pytest.raises(suite.PinnedCommitMismatch):
+        suite.verify_pinned_commit()
+
+
+@needs_ic
+def test_minor_m4_load_package_and_the_runner_prereqs_stop_on_a_different_commit(monkeypatch, renv):
+    _patch_dist(monkeypatch, json.dumps({"vcs_info": {"commit_id": "f" * 40}}))
+    with pytest.raises(ImportError, match="not the pinned"):                        # PinnedCommitMismatch is an ImportError: the runner's prerequisite handler (exit 2) catches it
+        suite.load_package()
+    assert issubclass(suite.PinnedCommitMismatch, ImportError)
+    with pytest.raises(ImportError):
+        suite.available_types()
+
+
+def _suite_rows_and_arrays(run, rng, cells=("fog4", "pixelate2"), n_head=12, n_test=40):
+    """A synthetic runs/<run>/ (items.jsonl + arrays) in the shape run_gate_suite writes: head items carry the per-token delta, z and flag of every cell."""
+    (run / "arrays").mkdir(parents=True)
+    rows = []
+    for k in range(n_head + n_test):
+        fold, idx = ("head", k) if k < n_head else ("test", k)
+        r = dict(idx=idx, fold=fold, clean=dict(y=1, d=0.5), cells={})
+        arrays = {}
+        for c in cells:
+            z = np.zeros(64, bool)
+            z[rng.choice(64, 8, replace=False)] = True
+            flag = z.copy() if c == "fog4" else np.zeros(64, bool)
+            if c != "fog4":
+                flag[rng.choice(64, 8, replace=False)] = True
+            delta = np.where(z, rng.normal(-1.0, 0.5, 64), rng.normal(0.3, 0.5, 64))
+            y_none = int(rng.random() < 0.55)
+            y_gm = int(rng.random() < (0.8 if c == "fog4" else 0.4))
+            r["cells"][c] = dict(n_changed=int(z.sum()), n_flag=int(flag.sum()), n_tp=int((flag & z).sum()), img={a: dict(y=y, d=float(rng.normal())) for a, y in (("none", y_none), ("gm", y_gm), ("chg", 1))})
+            arrays.update({f"{c}_delta": delta.astype(np.float32), f"{c}_z": z, f"{c}_flag": flag})
+        np.savez(run / "arrays" / f"item{idx:04d}.npz", **arrays)
+        rows.append(r)
+    (run / "items.jsonl").write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    return rows
+
+
+def test_minor_m3_analyze_produces_the_epred_block_from_the_headroom_arrays_via_the_audited_functions(renv, monkeypatch, capsys):
+    run = renv / suite.SUITE_RUN_ID
+    _suite_rows_and_arrays(run, np.random.default_rng(1))
+    calls = []
+    real_fit, real_agree = epred_fit.epred_fit, epred.epred_agreement
+    monkeypatch.setattr(epred_fit, "epred_fit", lambda *a, **k: (calls.append("fit"), real_fit(*a, **k))[1])
+    monkeypatch.setattr(epred, "epred_agreement", lambda *a, **k: (calls.append("agree"), real_agree(*a, **k))[1])
+    res = suite.analyze_run(run, n_boot=100, n_boot_epred=100)
+    assert calls.count("fit") == 2 and calls.count("agree") == 1                    # one audited fit per cell, one audited agreement table
+    e = res["epred_suite"]
+    assert e["produced"] and e["K_eval"] >= 1 and "A" in e and "never pooled" in e["label"] and e["formal_test"] is None and "p" not in e
+    assert set(res["epred_suite_signs"]) == {"fog4", "pixelate2"} and res["epred_suite_signs"]["fog4"]["n_items"] == 12
+    assert suite.main(["analyze", "--boot", "100"]) == 0
+    out = capsys.readouterr().out
+    assert "E-pred (suite block): A " in out
+    on_disk = json.loads((run / "analysis.json").read_text())
+    assert on_disk["epred_suite"]["produced"] and on_disk["cells"]["fog4"]["n_items"] == 40
+
+
+def test_minor_m3_analyze_declares_the_block_not_produced_without_headroom_arrays(renv):
+    run = renv / suite.SUITE_RUN_ID
+    _suite_rows_and_arrays(run, np.random.default_rng(2))
+    for f in (run / "arrays").glob("*.npz"):                                         # delete the headroom items' arrays (idx 0 to 11)
+        if int(f.stem[4:]) < 12:
+            f.unlink()
+    res = suite.analyze_run(run, n_boot=100)
+    assert res["epred_suite"]["produced"] is False and "headroom" in res["epred_suite"]["reason"] and "cells" in res

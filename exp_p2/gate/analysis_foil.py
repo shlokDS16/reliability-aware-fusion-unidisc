@@ -4,7 +4,9 @@
     python -m exp_p2.gate.analysis_foil analyze [--test-run P2-GATE-FOIL-TEST] [--allow-partial] [--boot N]   -> runs/P2-GATE-FOIL/analysis.json
 
 `freeze` reads only the fit run (FOIL pairs on calibration-fold images). `analyze` uses the COMMITTED weights, never a refit (it also records whether a refit would agree), refuses a partial test run
-unless --allow-partial (SAP 8.2: no look at an outcome before the planned fold is complete), and labels a completed n below 120 descriptive. Wording limits are written into the output."""
+unless --allow-partial (SAP 8.2: no look at an outcome before the planned fold is complete), and labels a completed n below 120 descriptive. When the frozen status is not_estimable or untestable_at_ceiling
+there are no test rows by design and `analyze` writes the p = 1 record with the A3.4 item 3 wording. The only sentences B may emit are the `WORDING_*` constants of foil.py (A3b.3 item 6); the limits of
+A3.4 and A3b.3 are written into the output."""
 from __future__ import annotations
 
 import argparse
@@ -78,29 +80,43 @@ def freeze(fit_dir: Path, out: Path, *, allow_partial: bool = False, force: bool
     return payload
 
 
+def _check_pool(frozen: dict) -> None:
+    """The pool the frozen weights were fitted against must be the pool on disk now (audit m7): same SHA-256 as recorded in fusion_frozen.json."""
+    want = frozen.get("pool_sha256")
+    if want is None:
+        return
+    got = foil.pool_sha256(foil.load_pool())
+    if got != want:
+        raise RuntimeError(f"the pool on disk (sha256 {got[:16]}...) is not the pool recorded in fusion_frozen.json ({want[:16]}...): the analysis refuses a changed pool")
+
+
 def analyze(test_dir: Path, frozen_path: Path, fit_dir: Path | None, out: Path, *, allow_partial: bool = False, n_boot: int = 10000, check_commit: bool = True) -> dict:
+    """B1 on the test pairs with the COMMITTED weights. If the frozen status is not_estimable or untestable_at_ceiling the runner never ran the test stage (AD.6 rules (i), (ii)): there are no test rows, and the
+    record is p = 1 with the A3.4 item 3 / AD.6 wording (audit M3); test rows found under such a status are ignored and counted."""
     if check_commit:
         foil.require_committed(frozen_path)
     frozen = json.loads(Path(frozen_path).read_text(encoding="utf8"))
+    _check_pool(frozen)
     rows, ndup = load_rows(test_dir)
-    exp = expected_n(test_dir)
-    if not rows:
-        raise FileNotFoundError(f"no test rows under {test_dir}: run `python -m exp_p2.run_gate_foil --stage test` first")
-    if exp is not None and len(rows) < exp and not allow_partial:
-        raise PartialRun(f"test run has {len(rows)} of {exp} pairs; the outcome analysis waits for the planned fold (SAP 8.2) or runs with --allow-partial and is then descriptive")
-    X_test = foil.margins_from_rows(rows)
-    X_fit = foil.margins_from_rows(load_rows(fit_dir)[0]) if fit_dir is not None and Path(fit_dir, "items.jsonl").exists() else None
-    res = foil.fusion_b1(X_fit, X_test, n_boot=n_boot, seed=seeds.seed_for("fusion"), n_planned=exp, frozen_fit=frozen["fit"])
-    res.update(n_duplicate_rows_removed=ndup, partial=bool(exp is not None and len(rows) < exp), frozen_file_sha256_of_fit_rows=frozen.get("sha256_of_fit_run_rows"),
-               meta=seeds.meta(), label="family B, m = 1, alpha 0.05 (own family, no cross-family adjustment)",
-               limits=["not a corruption test: a within-modality gate cannot see a fluent foil word (derivation, E0, untested)",
-                       "all test images are in folds.json test/test_ext, so P and B are dependent in their data (separate families, separate alpha)",
-                       "the COCO captions c+ are probably in UniDisc's training data (U8) and the text direction may be memorised; contamination of FOIL images (U8) is unmeasured",
-                       "supports 'fusion helps' only with b > c_cnt; the label 'negative' is not available at these n",
-                       "foil captions are lower-cased on both sides because of the case leak; the FOIL file revision (July 2017 vs Oct 2018) is unverified"],
-               created=time.strftime("%Y-%m-%dT%H:%M:%S"), code_git_sha=git_sha())
-    if exp is not None:
-        res["completed_vs_expected"] = [len(rows), exp]
+    common_fields = dict(n_duplicate_rows_removed=ndup, frozen_file_sha256_of_fit_rows=frozen.get("sha256_of_fit_run_rows"), meta=seeds.meta(),
+                         label="family B, m = 1, alpha 0.05 (own family, no cross-family adjustment)", limits=list(foil.B_LIMITS), created=time.strftime("%Y-%m-%dT%H:%M:%S"), code_git_sha=git_sha())
+    if frozen["fit"]["status"] != "ok":
+        res = foil.fusion_b1(None, np.empty((0, 2)), n_boot=n_boot, seed=seeds.seed_for("fusion"), frozen_fit=frozen["fit"])
+        res.update(partial=False, **common_fields)
+        if rows:
+            res["unexpected_test_rows_ignored"] = len(rows)
+    else:
+        exp = expected_n(test_dir)
+        if not rows:
+            raise FileNotFoundError(f"no test rows under {test_dir}: run `python -m exp_p2.run_gate_foil --stage test` first")
+        if exp is not None and len(rows) < exp and not allow_partial:
+            raise PartialRun(f"test run has {len(rows)} of {exp} pairs; the outcome analysis waits for the planned fold (SAP 8.2) or runs with --allow-partial and is then descriptive")
+        X_test = foil.margins_from_rows(rows)
+        X_fit = foil.margins_from_rows(load_rows(fit_dir)[0]) if fit_dir is not None and Path(fit_dir, "items.jsonl").exists() else None
+        res = foil.fusion_b1(X_fit, X_test, n_boot=n_boot, seed=seeds.seed_for("fusion"), n_planned=exp, frozen_fit=frozen["fit"], pool_idx=np.array([r["idx"] for r in rows]))
+        res.update(partial=bool(exp is not None and len(rows) < exp), **common_fields)
+        if exp is not None:
+            res["completed_vs_expected"] = [len(rows), exp]
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     Path(out).write_text(json.dumps(res, indent=1, default=lambda o: o.tolist() if hasattr(o, "tolist") else str(o)), encoding="utf8")
     return res
@@ -122,9 +138,8 @@ def main(argv=None) -> int:
             print(json.dumps({k: p["fit"].get(k) for k in ("n_fit", "acc_T", "acc_I", "best", "best_acc", "acc_lda", "acc_stouffer", "status", "test_pairs_may_run")}, indent=1))
             print("wrote fusion_frozen.json: COMMIT it before the test stage" if p["fit"]["status"] == "ok" else f"status {p['fit']['status']}: the test pairs are not run (AD.6 rules i, ii); commit this file anyway")
         else:
-            r = foil.fusion_b1  # noqa: F841  (import check)
             res = analyze(Path(common.RUNS) / a.test_run, fam / "fusion_frozen.json", Path(common.RUNS) / a.fit_run, fam / "analysis.json", allow_partial=a.allow_partial, n_boot=a.boot)
-            print(json.dumps({k: res.get(k) for k in ("status", "tested", "p", "supports_fusion_helps", "n_test_completed", "best_direction", "wording")}, indent=1, default=str))
+            print(json.dumps({k: res.get(k) for k in ("status", "tested", "p", "combination_beat_best_single", "n_test_completed", "best_direction", "wording")}, indent=1, default=str))
             if "test" in res:
                 print({k: res["test"][k] for k in ("b", "c", "n_d", "p", "acc_a", "acc_b", "delta", "ci95")})
     except (PartialRun, artifacts.WriteOnceError, RuntimeError, FileNotFoundError) as e:
