@@ -7,14 +7,13 @@
     python -m exp_p2.gate.analysis_omni selftest
 
 Functions named in SAP AD.13: `omni_gate(timing_log, m2_log, m4_log, ...)` (the GO rule and the n_R rule) and `omni_r(df, P_result, ...)` (eligibility from P, one McNemar per corruption of
-P+, Holm over m_R = |P+|). Seeds: the SAP's registry (`seeds.ANALYSES`) has no entries for these two names; until the owner of seeds.py appends them (appending leaves earlier children unchanged)
-a name-derived SeedSequence is used and written into the output (`seed_note`)."""
+P+, Holm over m_R = |P+|). Seeds: `omni_gate` and `omni_r` were appended to `seeds.ANALYSES` on 2026-10-28 (positions 29 and 30; appending leaves earlier children unchanged); `omni_r` is used here, `seed_note` is
+kept in the output (always None now) for compatibility."""
 from __future__ import annotations
 
 import argparse
 import json
 import sys
-import zlib
 from pathlib import Path
 
 import numpy as np
@@ -40,9 +39,7 @@ WORDING_R2_TAIL = "; same test images as P, not independent items"
 
 
 def _seed(name: str):
-    if name in seeds.ANALYSES:
-        return seeds.seed_for(name), None
-    return np.random.SeedSequence([seeds.ROOT_SEED, zlib.crc32(name.encode())]), f"'{name}' is not in seeds.ANALYSES; name-derived SeedSequence([{seeds.ROOT_SEED}, crc32]) used (append the name to the registry)"
+    return seeds.seed_for(name), None          # 'omni_gate' and 'omni_r' were appended to seeds.ANALYSES on 2026-10-28; an unknown name raises KeyError (no name-derived fallback any more)
 
 
 # ------------------------------------------------------------------------------------------------ the go/no-go

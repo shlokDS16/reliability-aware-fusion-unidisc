@@ -53,11 +53,8 @@ class IdentityError(AssertionError):
 
 
 def edec_seed() -> np.random.SeedSequence:
-    """The bootstrap seed. If `seeds.ANALYSES` has a name "edec" its child is used; otherwise the child that APPENDING "edec" after the existing names would give, i.e. the SeedSequence(20261028)
-    child at spawn position 28 (a SeedSequence spawn child i has spawn_key (i,)), so seeds.py need not be edited and the later append changes nothing."""
-    if EDEC_SEED_NAME in seeds.ANALYSES:
-        return seeds.seed_for(EDEC_SEED_NAME)
-    return np.random.SeedSequence(seeds.ROOT_SEED, spawn_key=(EDEC_SEED_POSITION,))
+    """The bootstrap seed: the child of `seeds.ANALYSES` named "edec" (appended 2026-10-28 at spawn position 28, the value this module computed before the append; asserted by the tests)."""
+    return seeds.seed_for(EDEC_SEED_NAME)
 
 
 # ------------------------------------------------------------------------------------------------ rows -> long cell records

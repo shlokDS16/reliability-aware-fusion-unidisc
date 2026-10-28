@@ -8,7 +8,9 @@ import numpy as np
 ROOT_SEED = 20261028
 ANALYSES = ("load_items", "completeness_report", "arm_y_z", "exact_mcnemar", "paired_boot_diff", "primary", "s_m", "s_z", "s_dn", "s_d", "s_d2", "s_c", "headroom_check",
             "fap_check", "split_replication", "auroc", "detection_contrast", "wilcoxon_z", "fusion", "prop4_plugin", "mechanism", "calibration", "equivalence", "selftest", "denoise_check",
-            "ps_family", "s2_family", "s2_descriptive")        # the last three are appended for family PS and S2 (SAP AD.13); appending leaves every earlier child seed unchanged
+            "ps_family", "s2_family", "s2_descriptive",        # appended for family PS and S2 (SAP AD.13)
+            "edec", "omni_gate", "omni_r", "suite")   # appended 2026-10-28 (integration); SAP A3.7 names edec, omni_gate, omni_r, then the integration engineer's further names; family B keeps the existing name "fusion" (A3.7);
+#                                                                     appending leaves every earlier child seed unchanged (spawn child i has spawn_key (i,)); tests/exp_p2/test_gate_swap.py pins the first 28 states; positions: edec 28, omni_gate 29, omni_r 30, suite 31
 
 
 def seed_for(name: str) -> np.random.SeedSequence:

@@ -47,12 +47,33 @@ def test_swap_stream_is_its_own_and_patch_is_bit_identical_to_the_old_formula():
 def test_appending_analyses_and_arm_tags_leaves_every_existing_stream_unchanged():
     old = ("load_items", "completeness_report", "arm_y_z", "exact_mcnemar", "paired_boot_diff", "primary", "s_m", "s_z", "s_dn", "s_d", "s_d2", "s_c", "headroom_check", "fap_check",
            "split_replication", "auroc", "detection_contrast", "wilcoxon_z", "fusion", "prop4_plugin", "mechanism", "calibration", "equivalence", "selftest", "denoise_check")
-    assert seeds.ANALYSES[:len(old)] == old and seeds.ANALYSES[len(old):] == ("ps_family", "s2_family", "s2_descriptive")
+    assert seeds.ANALYSES[:len(old)] == old and seeds.ANALYSES[len(old):] == ("ps_family", "s2_family", "s2_descriptive", "edec", "omni_gate", "omni_r", "suite")
     for i, name in enumerate(old):
         ref = np.random.SeedSequence(seeds.ROOT_SEED).spawn(len(old))[i]
         assert np.array_equal(seeds.seed_for(name).generate_state(4), ref.generate_state(4)), name
     assert {k: v for k, v in arms.ARM_TAG.items() if v <= 5} == dict(jitter=1, geo=2, scattered=3, tbv=4, rand=5)
     assert len(set(arms.ARM_TAG.values())) == len(arms.ARM_TAG)
+
+
+# generate_state(2) of every child seed that existed before the 2026-10-28 integration append, taken from the committed code BEFORE the append (positions 0 to 27)
+PINNED_CHILD_STATES = {
+    "load_items": [3458662461, 120824907], "completeness_report": [1334675065, 4289651540], "arm_y_z": [3661117191, 2747377106], "exact_mcnemar": [1350303508, 1030060],
+    "paired_boot_diff": [3870639956, 85204196], "primary": [8877476, 2339256909], "s_m": [968133149, 17037775], "s_z": [1411562759, 3877490036], "s_dn": [3992135531, 1369830523],
+    "s_d": [2375801364, 3347953186], "s_d2": [3676282196, 533490309], "s_c": [3683846524, 2116412728], "headroom_check": [2064910752, 1315251617], "fap_check": [2776190707, 183230860],
+    "split_replication": [1763477818, 341304458], "auroc": [657830656, 3022808854], "detection_contrast": [2797472673, 2842381725], "wilcoxon_z": [643057741, 1858764172],
+    "fusion": [669159009, 1290250544], "prop4_plugin": [1783527896, 1966023535], "mechanism": [120622869, 227623426], "calibration": [2766538161, 164287317],
+    "equivalence": [35810075, 1970453583], "selftest": [3929955576, 3847895947], "denoise_check": [2674509556, 2360531449], "ps_family": [50047534, 2999836831],
+    "s2_family": [3407153610, 628317643], "s2_descriptive": [2600813101, 738724086]}
+
+
+def test_every_pre_existing_child_seed_is_unchanged_by_the_integration_append():
+    assert list(PINNED_CHILD_STATES) == list(seeds.ANALYSES[:28])                                   # same names in the same positions
+    for name, state in PINNED_CHILD_STATES.items():
+        assert [int(x) for x in seeds.seed_for(name).generate_state(2)] == state, name
+    for i, name in enumerate(seeds.ANALYSES[28:], start=28):                                      # the appended names sit at their spawn positions and are distinct streams
+        assert np.array_equal(seeds.seed_for(name).generate_state(4), np.random.SeedSequence(seeds.ROOT_SEED, spawn_key=(i,)).generate_state(4)), name
+    assert [seeds.ANALYSES.index(n) for n in ("edec", "omni_gate", "omni_r", "suite")] == [28, 29, 30, 31]
+    assert len({tuple(seeds.seed_for(n).generate_state(2)) for n in seeds.ANALYSES}) == len(seeds.ANALYSES) == len(set(seeds.ANALYSES))
 
 
 # ------------------------------------------------------------------------------------------------ swap inside M4 (fake network, 4 x 4 token grid)
