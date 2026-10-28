@@ -158,7 +158,8 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
                 print("SELF-CHECK FAILED", file=sys.stderr)
                 return EXIT_SELFCHECK
     ctx = make_ctx(sc, run) if make_ctx else SimpleNamespace(run=run, cfg=cfg)
-    common.append_jsonl(run / "chunks.jsonl", dict(event="chunk_start", t=time.time(), load_s=load_s, done=len(done), mem=_mem(), gpu=_gpu()))
+    gcfg = None if guards is None else {k: getattr(guards, k, None) for k in ("max_used_first_mib", "max_used_mib", "max_rise_mib", "slow_factor", "slow_min_s", "require_ac")}
+    common.append_jsonl(run / "chunks.jsonl", dict(event="chunk_start", t=time.time(), load_s=load_s, done=len(done), mem=_mem(), gpu=_gpu(), guards=gcfg))   # guard settings in force (a relaxed run is visible in its own record)
     wd = watchdog_factory(guards, run) if (watchdog_factory is not None and guards is not None) else None
     if wd is not None:
         wd.start()

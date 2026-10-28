@@ -205,3 +205,14 @@ def test_stage_table_matches_the_modules_and_run_ids():
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q"]))
+
+
+def test_chunk_start_records_guard_settings(env):
+    """The chunk_start event carries the guard settings in force, so a run with a relaxed slow-item rule is visible in its own record (lead, 2026-10-28)."""
+    g = guards.Guards(slow_factor=3.0, slow_min_s=2.0, require_ac=False)
+    rc, _ = _run(env, limit=2, guards=g)
+    ev = [e for e in common.read_jsonl(env / "P2-GATE-T" / "chunks.jsonl") if e["event"] == "chunk_start"]
+    assert ev[0]["guards"]["slow_factor"] == 3.0 and ev[0]["guards"]["slow_min_s"] == 2.0 and ev[0]["guards"]["require_ac"] is False
+    rc, _ = _run(env, limit=1)
+    ev = [e for e in common.read_jsonl(env / "P2-GATE-T" / "chunks.jsonl") if e["event"] == "chunk_start"]
+    assert ev[-1]["guards"] is None                                           # no guards object: recorded as None
