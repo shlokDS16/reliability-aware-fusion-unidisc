@@ -48,6 +48,14 @@ def auroc_discrete(scores: np.ndarray, q1: np.ndarray, q0: np.ndarray) -> float:
     return float(q1 @ (gt + 0.5 * eq) @ q0)
 
 
+def exact_auroc_atoms(score: np.ndarray, w1: np.ndarray, w0: np.ndarray) -> float:
+    """Exact mid-rank AUROC for weighted atoms: positives with weights w1, negatives with weights w0 (each normalised)."""
+    w1 = w1 / w1.sum(); w0 = w0 / w0.sum()
+    uniq, inv = np.unique(score, return_inverse=True)
+    a1 = np.bincount(inv, w1, minlength=uniq.size); a0 = np.bincount(inv, w0, minlength=uniq.size)
+    return float((a1 * (np.cumsum(a0) - a0)).sum() + 0.5 * (a1 * a0).sum())
+
+
 def auroc_empirical(score: np.ndarray, label: np.ndarray) -> float:
     from scipy.stats import rankdata
     r = rankdata(score)  # mid-ranks
@@ -233,6 +241,15 @@ def section_A() -> None:
     a_hit = auroc_empirical(s_mc.reshape(-1), hits1.reshape(-1).astype(int))
     check("A4 same corruption, hit label: AUROC 1/2", abs(a_hit - 0.5) < 4 / math.sqrt(12 * n_items), f"{a_hit:.4f}")
 
+    # A6 (r1, red-team M2): exact TV under the changed-code label (the triangle step is tight), and the context alone detects
+    T_ = float((pr * np.abs(pi - sbar)).sum() / L)
+    tv_exact_formula = 0.5 * T_ * (1 / (1 - sbar) + hh / (1 - hh + hh * sbar))
+    check("A6 changed-code label: TV = (1/2) E sum pi|pi - sbar| [1/(1-sbar) + h/(1-h+h sbar)] (exact)", abs(tv_exact_formula - vv) < 1e-12,
+          f"{tv_exact_formula:.6f} vs enumerated {vv:.6f}")
+    a_ctx = exact_auroc_atoms(-s_pos.reshape(-1), Q1.reshape(-1), Q0.reshape(-1))
+    print(f"  changed-code label: context-only score -s(o) (never reads the token value) has exact pooled AUROC {a_ctx:.4f} (toy)")
+    check("A6 under the changed-code label the context law depends on Z: a context-only score has AUROC > 1/2", a_ctx > 0.5 + 1e-3)
+
     # A5: cross-modal corollary. Items (c, v) from the joint; corruption = caption-blind Gibbs w.r.t. the image marginal P_a.
     caps = rng.integers(0, 2, n_items)
     flat_c = P_c.reshape(2, -1)
@@ -366,7 +383,8 @@ def section_B() -> None:
     check("B2 Lemma 1 at gamma=0 equals theory.mean_var", md < 1e-9, f"max rel diff {md:.1e}")
     check("B2 closed form at gamma=0 equals theory.special_case_inequality", mm == 0, f"{mm} mismatches in 20000")
 
-    # B3 closed form (mu_c = 0) agrees with the direct SNR comparison, over random valid correlations
+    # B3 closed form (mu_c = 0) agrees with the direct SNR comparison (same Lemma-1 code: an algebra check, not a check of Lemma 1;
+    # PSD is not enforced for every draw; r1 adds the symbolic check D3)
     mism, n_eval = 0, 0
     for _ in range(40000):
         m = int(rng.integers(20, 3000)); rho = rng.uniform(0.01, 0.6)
@@ -387,7 +405,7 @@ def section_B() -> None:
             continue
         n_eval += 1
         mism += int((direct > 0) != (cf > 0))
-    check("B3 closed form (mu_c=0, correlated) has the sign of the direct SNR change", mism == 0, f"{mism} mismatches in {n_eval}")
+    check("B3 closed form (mu_c=0) has the sign of the direct SNR change (algebra, shared code)", mism == 0, f"{mism} mismatches in {n_eval}")
 
     # B4 frontier: closed-form boundary vs bisection on the direct comparison; direction of the shift (ILLUSTRATIVE values)
     m, rho, mu_, s2_, s2c_ = 1024, 0.10, 0.10, 1.0, 1.0
@@ -424,9 +442,9 @@ def section_B() -> None:
     eg2, vg2 = mean_var_corr(900, 100, 0.05, 0.4, 0.1, 1, 0, 1, 0.2, 0.01, 0.0); e02, v02 = mean_var_corr(900, 100, 0, 0, 0.1, 1, 0, 1, 0.2, 0.01, 0.0)
     d1 = (1 - 0.05) ** 2 * v01 - vg1; d2 = (1 - 0.05) ** 2 * v02 - vg2
     check("B4 gamma_0 does not enter k0^2 Var S_0 - Var S_g when mu_c = 0", abs(d1 - d2) < 1e-8 * abs(d1), f"{d1:.6f} vs {d2:.6f}")
-    # gamma_1 = gamma_01 = 0 but random gate phi1 = phi0 still hurts with positive correlation
+    # random gate phi1 = phi0 lowers the SNR (every correlation term vanishes on the diagonal); here gamma_01 = 0.01
     ok = all(closed_form_lhs_rhs(1024, 0.1, p, p, 0.1, 1, 1, g, 0.01) < 0 for p in (0.01, 0.05, 0.2) for g in (0, 0.01, 0.1))
-    check("B4 a random gate (phi1 = phi0) lowers the SNR for any gamma_1, gamma_01 >= 0", ok)
+    check("B4 a random gate (phi1 = phi0) lowers the SNR (grid of gamma_1, gamma_01 = 0.01)", ok)
 
     # B5 large-m limit and the conditional-on-flags variant (Remark 2.4), with accuracy P(S > 0) by Monte Carlo (ILLUSTRATIVE)
     m0_, m1_ = 900.0, 100.0
@@ -453,32 +471,35 @@ def section_B() -> None:
         Sg = (1 - g) * np.eye(1000) + g * np.ones((1000, 1000))
         x = np.linalg.solve(Sg, np.ones(1000))
         worst6 = max(worst6, x.std() / x.mean())
-    check("B6 exchangeable Sigma: Sigma^{-1} 1 is proportional to 1", worst6 < 1e-10, f"max cv {worst6:.1e}")
+    check("B6 Sherman-Morrison only: exchangeable Sigma^{-1} 1 is proportional to 1 (not an NP statement about the image)", worst6 < 1e-10, f"max cv {worst6:.1e}")
     # conditional closed form = unconditional + m0 k0 phi0 (mu^2 + g0 s2) + m1 k1 phi1 (muc^2 + g1 s2c) on the variance side
     eg, vg = mean_var_corr(m0_, m1_, p0, p1, mu_, s2_, muc_, s2c_, g0_, g1_, g01_)
     ec, vc = mean_var_corr_cond(m0_, m1_, p0, p1, mu_, s2_, muc_, s2c_, g0_, g1_, g01_)
     gap = vg - vc - (m0_ * (1 - p0) * p0 * (mu_ ** 2 + g0_ * s2_) + m1_ * (1 - p1) * p1 * (muc_ ** 2 + g1_ * s2c_))
-    check("B5 Var_uncond - Var_cond = m0 k0 phi0 (mu^2 + g0 s2) + m1 k1 phi1 (muc^2 + g1 s2c)", abs(gap) < 1e-8 * vg, f"gap {gap:.2e}")
-    # accuracy check with item-level common factors (Gaussian), R items per setting
-    R = 40000
-    mm0, mm1 = 360, 40
-    rng2 = np.random.default_rng(SEED + 2)
-    print("  ILLUSTRATIVE accuracy check, common random numbers across rows (m0=360, m1=40, mu=0.05, sigma2=sigma2_c=1, mu_c=0,"
-          " g0=0.01, g1=0.05, g01=0):")
-    print("    phi0  phi1   P(S>0) MC   Phi(SNR_uncond)  Phi(SNR_cond)")
-    F0 = rng2.normal(size=R); F1 = rng2.normal(size=R)
-    d0 = 0.05 + (math.sqrt(0.01) * F0[:, None] + math.sqrt(0.99) * rng2.normal(size=(R, mm0)))
-    d1 = 0.0 + (math.sqrt(0.05) * F1[:, None] + math.sqrt(0.95) * rng2.normal(size=(R, mm1)))
-    U0 = rng2.random((R, mm0)); U1 = rng2.random((R, mm1))
-    rows = []
+    check("B7 (Remark 2.4) Var_uncond - Var_cond = m0 k0 phi0 (mu^2 + g0 s2) + m1 k1 phi1 (muc^2 + g1 s2c)", abs(gap) < 1e-8 * vg, f"gap {gap:.2e}")
+    # accuracy with Gaussian shared factors, EXACT (r1): given retained counts (N0, N1), S is normal with the conditional variance
+    # of Remark 2.4, so P(S > 0) = sum over binomial (N0, N1) of Phi(E/sd). Replaces the r0 Monte Carlo table (red-team M5/R6).
+    from scipy.stats import binom
+    mm0, mm1, mu_t, g0t, g1t = 360, 40, 0.05, 0.01, 0.05
+    print("  ILLUSTRATIVE accuracy, Gaussian shared factors, exact (m0=360, m1=40, mu=0.05, sigma2=sigma2_c=1, mu_c=0, g0=0.01, g1=0.05, g01=0):")
+    print("    phi0  phi1   P(S>0) exact   Phi(SNR_uncond)  sign agrees with 'none' row")
+    base = None
+    n0 = np.arange(mm0 + 1)[:, None]; n1 = np.arange(mm1 + 1)[None, :]
+    agree = True
     for (q0, q1) in ((0.0, 0.0), (0.05, 0.05), (0.05, 0.5), (0.05, 0.9), (0.2, 0.9)):
-        acc = (((U0 > q0) * d0).sum(1) + ((U1 > q1) * d1).sum(1) > 0).mean()
-        eu, vu = mean_var_corr(mm0, mm1, q0, q1, 0.05, 1, 0, 1, 0.01, 0.05, 0)
-        ec, vc = mean_var_corr_cond(mm0, mm1, q0, q1, 0.05, 1, 0, 1, 0.01, 0.05, 0)
-        rows.append((acc, norm.cdf(eu / math.sqrt(vu)), norm.cdf(ec / math.sqrt(vc))))
-        print(f"    {q0:<5} {q1:<5}  {acc:.4f}      {rows[-1][1]:.4f}           {rows[-1][2]:.4f}")
-    print("    (MC s.e. of one P(S>0) is about 0.0024; differences between rows share the random numbers)")
-    del d0, d1, U0, U1
+        pm = binom.pmf(n0, mm0, 1 - q0) * binom.pmf(n1, mm1, 1 - q1)
+        v = n0 * (1 + (n0 - 1) * g0t) + n1 * (1 + (n1 - 1) * g1t)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            pr = np.where(v > 0, norm.cdf(n0 * mu_t / np.sqrt(np.where(v > 0, v, 1))), 0.0)
+        acc = float((pm * pr).sum())
+        eu, vu = mean_var_corr(mm0, mm1, q0, q1, mu_t, 1, 0, 1, g0t, g1t, 0)
+        ph = float(norm.cdf(eu / math.sqrt(vu)))
+        if base is None:
+            base = (acc, ph); tag = "-"
+        else:
+            same = np.sign(acc - base[0]) == np.sign(ph - base[1]); agree &= bool(same); tag = str(bool(same))
+        print(f"    {q0:<5} {q1:<5}  {acc:.6f}       {ph:.6f}         {tag}")
+    check("B8 Gaussian shared factors: sign of the accuracy change equals sign of the Phi(SNR) change (illustrative rows)", agree)
 
 
 # ======================================================================================================================
@@ -545,14 +566,15 @@ def section_C() -> None:
         w_opt = np.linalg.solve(Sig, mvec)
         if g == 0.0:
             w_mf = mvec / s2u
-            worst_unc = max(worst_unc, 1 - snr(w_mf, mvec, Sig) / snr(w_opt, mvec, Sig))
+            res0 = minimize(lambda w: -snr(w, mvec, Sig), x0=rng.random(n) + 0.1, method="BFGS", options=dict(gtol=1e-10, maxiter=20000))
+            worst_unc = max(worst_unc, 1 - snr(w_mf, mvec, Sig) / snr(res0.x, mvec, Sig))
         # non-negative optimum by L-BFGS-B on 0.5 w'Sig w - w'mu, w >= 0
         res = minimize(lambda w: 0.5 * w @ Sig @ w - w @ mvec, x0=np.full(n, 0.1), jac=lambda w: Sig @ w - mvec,
                        bounds=[(0, None)] * n, method="L-BFGS-B", options=dict(ftol=1e-15, gtol=1e-12, maxiter=5000))
         w_fp, xi = fixed_point_weights(mvec, dvec, g * sig2)
         xis.append((g, xi, int((w_fp == 0).sum())))
         worst_nn = max(worst_nn, abs(snr(res.x, mvec, Sig) - snr(w_fp, mvec, Sig)) / snr(res.x, mvec, Sig))
-    check("C2 gamma=0: matched filter mu(u)/sigma^2(u) attains the optimal SNR", worst_unc < 1e-10, f"max rel loss {worst_unc:.1e}")
+    check("C2 gamma=0: matched filter mu(u)/sigma^2(u) attains the SNR found by a generic optimiser (BFGS)", worst_unc < 1e-6, f"max rel loss {worst_unc:.1e}")
     check("C2 w >= 0 with exchangeable correlation: soft-threshold fixed point equals the QP optimum", worst_nn < 1e-6, f"max rel diff {worst_nn:.1e}")
     by_g = {}
     for g, xi, nz in xis:
@@ -583,9 +605,140 @@ def section_C() -> None:
     check("C3 clean-pair efficiency formula [(1-g)+g m]/[(1-g) nu + g m] matches the quadratic form", not any(f.startswith("C3 clean") for f in FAILS))
 
 
+# ======================================================================================================================
+# D. Revision r1 (2026-10-29): checks for every claim changed after the red-team review
+# ======================================================================================================================
+def section_D() -> None:
+    print("\n=== D. Revision r1 checks ===")
+    rng = np.random.default_rng(SEED + 4)
+
+    # D1 (M1): pooled vs per-item AUROC. f = token value, O empty. Item A: corrupted {1}, clean {0}; item B: corrupted {0,0}, clean {1,0}.
+    sc_ = np.array([1.0, 0.0, 0.0, 0.0, 1.0, 0.0])
+    a_pool = exact_auroc_atoms(sc_, np.r_[np.ones(3), np.zeros(3)], np.r_[np.zeros(3), np.ones(3)])
+
+    def item_auc(c, k):
+        return float(np.mean([1.0 if a > b else 0.5 if a == b else 0.0 for a in c for b in k]))
+    a_item = 0.5 * (item_auc([1], [0]) + item_auc([0, 0], [1, 0]))
+    print(f"  pooled class laws equal (TV = 0): pooled AUROC {a_pool:.3f}; per-item mean AUROC {a_item:.3f}")
+    check("D1 Prop. 1 bounds the pooled AUROC only: TV = 0 with per-item mean AUROC != 1/2",
+          abs(a_pool - 0.5) < 1e-12 and abs(a_item - 0.625) < 1e-12)
+
+    # D3 (Prop. 2(b)): symbolic identity, independent of the shared numeric code
+    import sympy as sp
+    m, r, p0, p1, mu, s, sc = sp.symbols("m rho phi0 phi1 mu sigma sigma_c", real=True)
+    g0, g1, g01 = sp.symbols("gamma0 gamma1 gamma01", real=True)
+    m0, m1 = (1 - r) * m, r * m
+    k0, k1 = 1 - p0, 1 - p1
+    Vg = (m0 * k0 * (s**2 + p0 * mu**2) + m1 * k1 * sc**2 + m0 * (m0 - 1) * k0**2 * g0 * s**2
+          + m1 * (m1 - 1) * k1**2 * g1 * sc**2 + 2 * m0 * m1 * k0 * k1 * g01 * s * sc)
+    V0 = Vg.subs({p0: 0, p1: 0})
+    lhs = (r * sc**2 * ((p1 - 2 * p0 + p0**2) + (r * m - 1) * g1 * (p1 - p0) * (2 - p0 - p1))
+           + 2 * r * (1 - r) * m * g01 * s * sc * (1 - p0) * (p1 - p0))
+    rhs = (1 - r) * p0 * (1 - p0) * (s**2 + mu**2)
+    resid = sp.simplify(sp.expand((k0**2 * V0 - Vg) / m - (lhs - rhs)))
+    check("D3 sympy: (k0^2 V0 - Vg)/m - [LHS - RHS of (2.5)] == 0", resid == 0, f"residual {resid}")
+    # Lemma 1 itself by Monte Carlo at a second point with gamma_01 < 0 (B1 used one point)
+    R = 300000; mA, mB = 20, 8; gA, gB, lam = 0.2, 0.1, -0.6
+    F0 = rng.normal(size=R); F1 = lam * F0 + math.sqrt(1 - lam**2) * rng.normal(size=R)
+    dA = 0.2 + (math.sqrt(gA) * F0[:, None] + math.sqrt(1 - gA) * rng.normal(size=(R, mA)))
+    dB = 0.1 + 1.3 * (math.sqrt(gB) * F1[:, None] + math.sqrt(1 - gB) * rng.normal(size=(R, mB)))
+    Ss = ((rng.random((R, mA)) > 0.2) * dA).sum(1) + ((rng.random((R, mB)) > 0.7) * dB).sum(1)
+    e_, v_ = mean_var_corr(mA, mB, 0.2, 0.7, 0.2, 1.0, 0.1, 1.69, gA, gB, lam * math.sqrt(gA * gB))
+    check("D3 Lemma 1 by Monte Carlo at a second point (gamma_01 < 0)",
+          abs(Ss.mean() - e_) < 4 * math.sqrt(v_ / R) and abs(Ss.var() - v_) < 4 * v_ * math.sqrt(2 / R),
+          f"mean {Ss.mean():.4f} vs {e_:.4f}; var {Ss.var():.3f} vs {v_:.3f}")
+    del dA, dB
+
+    # D4 (m1): negative gamma_01 opens a helping region BELOW the diagonal; negative gamma_1 alone cannot
+    M0, M1 = 900, 100
+    G0, G1, G01 = 0.05, 0.05, -0.045
+    Sig = np.zeros((M0 + M1, M0 + M1))
+    Sig[:M0, :M0] = G0; Sig[M0:, M0:] = G1; Sig[:M0, M0:] = G01; Sig[M0:, :M0] = G01
+    np.fill_diagonal(Sig, 1.0)
+    lam_min = float(np.linalg.eigvalsh(Sig).min())
+    e_n, v_n = mean_var_corr(M0, M1, 0, 0, 0.1, 1, 0, 1, G0, G1, G01)
+    e_g, v_g = mean_var_corr(M0, M1, 0.3, 0.0, 0.1, 1, 0, 1, G0, G1, G01)
+    print(f"  gamma_01 = -0.045 (min eigenvalue {lam_min:.4f}): SNR none {e_n / math.sqrt(v_n):.4f}, "
+          f"gate (phi0, phi1) = (0.3, 0) {e_g / math.sqrt(v_g):.4f}")
+    check("D4 with gamma_01 < 0 a gate that flags only clean tokens can raise the SNR (PSD example)",
+          lam_min > 0 and e_g / math.sqrt(v_g) > e_n / math.sqrt(v_n))
+    bad = 0
+    for _ in range(20000):
+        mm = int(rng.integers(20, 3000)); rr = rng.uniform(0.01, 0.6); m1_ = rr * mm
+        g1_ = rng.uniform(-1, 0) / max(m1_ - 1, 1)
+        a0 = rng.uniform(0.001, 0.9); a1 = rng.uniform(0, a0)
+        if closed_form_lhs_rhs(mm, rr, a0, a1, rng.uniform(0, 1), rng.uniform(0.1, 3), rng.uniform(0.1, 3), g1_, rng.uniform(0, 0.01)) > 0:
+            bad += 1
+    check("D4 with gamma_1 in [-1/(m1-1), 0] and gamma_01 >= 0 no gate at or below the diagonal raises the SNR", bad == 0, f"{bad} of 20000")
+
+    # D5 (M5): non-Gaussian shared component: the SNR rises while the accuracy falls (exact given counts and factor)
+    from scipy.stats import binom
+    mu5, M0, M1 = 0.05, 900, 100
+    p_rare, g1_target = 0.02, 0.074
+    Lf = math.sqrt(g1_target / p_rare)   # F1 = 0 w.p. 0.98, +/-Lf w.p. 0.01 each; corrupted total variance 1
+    se2 = 1.0 - g1_target                # idiosyncratic variance of a corrupted token
+
+    def acc_exact(q0, q1):
+        n0 = np.arange(M0 + 1)[:, None]; n1 = np.arange(M1 + 1)[None, :]
+        pm = binom.pmf(n0, M0, 1 - q0) * binom.pmf(n1, M1, 1 - q1)
+        tot = 0.0
+        for f, pf in ((0.0, 1 - p_rare), (Lf, p_rare / 2), (-Lf, p_rare / 2)):
+            v = n0 * 1.0 + n1 * se2
+            mean = n0 * mu5 + n1 * f
+            with np.errstate(divide="ignore", invalid="ignore"):
+                pr = np.where(v > 0, norm.cdf(mean / np.sqrt(np.where(v > 0, v, 1))), 0.0)
+            tot += pf * float((pm * pr).sum())
+        return tot
+    e0_, v0_ = mean_var_corr(M0, M1, 0, 0, mu5, 1, 0, 1, 0, g1_target, 0)
+    eg_, vg_ = mean_var_corr(M0, M1, 0.1, 0.5, mu5, 1, 0, 1, 0, g1_target, 0)
+    a0_, ag_ = acc_exact(0, 0), acc_exact(0.1, 0.5)
+    print(f"  rare non-Gaussian shared factor (gamma_1 = {g1_target}): SNR {e0_ / math.sqrt(v0_):.3f} -> {eg_ / math.sqrt(vg_):.3f}; "
+          f"exact accuracy {a0_:.4f} -> {ag_:.4f}")
+    check("D5 non-Gaussian correlation: gating raises the SNR of S but lowers P(S > 0)",
+          eg_ / math.sqrt(vg_) > e0_ / math.sqrt(v0_) and ag_ < a0_)
+
+    # D6 (m6): Prop. 3(a) corrected: a hard gate is optimal iff (mu(u))_+ / sigma^2(u) takes at most one non-zero value
+    mu_t, mu_c = 0.2, 0.0
+    pi1 = np.array([0.3] * 30 + [1.0] * 10)
+    mvec = (1 - pi1) * mu_t + pi1 * mu_c; s2u = 1.0 + pi1 * (1 - pi1) * (mu_t - mu_c) ** 2
+    Sg = np.diag(s2u)
+    res = minimize(lambda w: 0.5 * w @ Sg @ w - w @ mvec, x0=np.full(40, 0.1), jac=lambda w: Sg @ w - mvec,
+                   bounds=[(0, None)] * 40, method="L-BFGS-B", options=dict(ftol=1e-15, gtol=1e-12))
+    w = res.x
+    two_valued = bool(np.allclose(w[:30], w[0], rtol=1e-6) and np.allclose(w[30:], 0, atol=1e-9) and w[0] > 0)
+    print(f"  pi_1 in {{0.3, 1}}, mu_c = 0: optimal weights {w[0]:.4f} (pi_1 = 0.3) and {w[30:].max():.1e} (pi_1 = 1): a 0/1 gate with no oracle")
+    check("D6 hard gate optimal without an oracle when mu(u)_+/sigma^2(u) has one non-zero value", two_valued)
+    pi1b = np.array([0.1] * 20 + [0.5] * 20)
+    mvb = (1 - pi1b) * mu_t; s2b = 1.0 + pi1b * (1 - pi1b) * mu_t ** 2
+    wb = mvb / s2b
+    check("D6 with two distinct non-zero values of mu(u)/sigma^2(u) the optimum is not a 0/1 gate", abs(wb[0] / wb[-1] - 1) > 0.1)
+
+    # D7 (m6): xi = 0 for every gamma if all mu(u_k) <= 0
+    mneg = -np.abs(rng.normal(0.1, 0.05, 30)); dd = np.full(30, 0.9)
+    lo, hi = 0.0, 1.0
+    for _ in range(100):
+        xi = 0.5 * (lo + hi); rhs_ = 0.1 * (np.clip(mneg - xi, 0, None) / dd).sum()
+        lo, hi = (xi, hi) if rhs_ > xi else (lo, xi)
+    check("D7 xi = 0 at gamma > 0 when every mu(u_k) <= 0", 0.5 * (lo + hi) < 1e-12)
+
+    # D8 (m2): the large-m g(r) has two critical points: r = -mu/mu_c (global minimum, g = 0) and r*
+    worst = 0.0
+    for _ in range(500):
+        A_, C_ = rng.uniform(0.01, 1), rng.uniform(0.01, 1); B_ = rng.uniform(-0.99, 0.99) * math.sqrt(A_ * C_)
+        mu1, mu2 = rng.uniform(0.05, 1), rng.normal(0, 0.5)
+        rz = -mu1 / mu2
+
+        def g(x):
+            return (mu1 + x * mu2) ** 2 / (A_ + 2 * x * B_ + x * x * C_)
+        h = 1e-6
+        worst = max(worst, abs((g(rz + h) - g(rz - h)) / (2 * h)), g(rz))
+    check("D8 r = -mu/mu_c is a critical point with g = 0 (second critical point besides r*)", worst < 1e-6, f"max |g'|, g {worst:.1e}")
+
+
 if __name__ == "__main__":
     print(f"theory_check_2026-10-29.py  seed={SEED}  numpy={np.__version__}")
     section_A()
     section_B()
     section_C()
+    section_D()
     print(f"\nSUMMARY: {'ALL CHECKS PASSED' if not FAILS else 'FAILED: ' + '; '.join(FAILS)}")

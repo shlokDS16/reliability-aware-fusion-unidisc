@@ -558,3 +558,397 @@ with shared random numbers; this is within about one s.e. of one cell and is not
 4. Prop. 2 and 3 use exchangeable correlation; UniDisc's dependence is spatial. The direction results (frontier moves toward the diagonal with
    positive $\gamma_1,\gamma_{01}$; correlation induces a cut in the optimal weight) are the robust content; the closed forms are model-bound.
 5. Neither proposition has been red-teamed. Hand to `red-team` before any manuscript text is drafted from this file.
+
+---
+
+# Revision r1 (2026-10-29)
+
+**Written 2026-10-29, 00:48-01:00 IST, before any M4 value has been read.** I did not open `runs/P2-GATE-M4/` or any M4 output. Inputs:
+the red-team review `research/paper2/method/THEORY-REDTEAM-2026-10-29.md` (commit 29b5d41b) and the lead's decision D0078 (last row of
+`research/ledgers/decisions.jsonl`, commit 27e7c63e). Sections 0-6 above are kept unchanged as the r0 record (commit 1fed4d2f). **Where r1
+contradicts r0, r1 governs.** The manuscript, code, preregistration files and ledgers were not edited.
+
+## R1.1 Status of each item after r1
+
+| Item (r0 section) | r1 status | Where it may appear |
+|---|---|---|
+| Prop. 1(a)-(d) (1.2-1.3) | **Withdrawn as a contribution.** Background only: a known result, Li et al., arXiv 2102.08504, App. A.3 (proof of Thm. 1, eqs. 5-11, read by the red team at E2 from a garbled conversion; citation-validator must confirm the reference before use). Holds for the **pooled** population token AUROC only | At most one background sentence (R1.2), subject to the lead's ruling on must-not-claim 6 |
+| Prop. 1(e) (1.2-1.3) | Correct under (C1)-(C2) and a uniform hit set given its size; elementary; not a contribution | Not proposed for the manuscript |
+| Cor. 1.1(i)-(iii) (1.4) | **Withdrawn as a contribution.** (iii) has a false premise (R1.3) and is **not for manuscript use** (K2, D0074; D0078) | Nowhere in the manuscript |
+| Cor. 1.2 (1.5) | (i) falls with Prop. 1 (pooled only); (ii) is a toy existence statement. Not proposed for the manuscript | Not proposed |
+| Prop. 2 (2.1-2.5) | **Enters Method with the fixes of R1.4**; manuscript-ready text in R1.8 | Method (statement, sketch) and appendix (proof) |
+| Remark 2.6 | **Replaced** by R1.5. It does not restore Chair-Varshney optimality and does not answer A8 beyond "independence is an approximation" | One sentence at most, as in R1.5 |
+| Prop. 3, Cor. 3.1 (3.1-3.4) | Theoretical reference for the A4 soft arms only, with the corrections of R1.6; w* is not an A4 arm | Beside the A4 Tier-3 table, as a reference; not in Method as a contribution |
+
+## R1.2 Proposition 1 and Corollary 1.1: background only
+
+1. **Known result.** The inequality $|\mathrm{AUROC}-\tfrac12|\le\vartheta(1-\vartheta/2)$ is the core step of Li et al. (arXiv 2102.08504, App. A.3):
+   $\mathrm{TPR}-\mathrm{FPR}\le\vartheta$ at every threshold, so the ROC area is at most $\int_0^1\min(\mathrm{FPR}+\vartheta,1)\,d\mathrm{FPR}=\tfrac12+\vartheta-\vartheta^2/2$.
+   The lower limit $\tfrac12+\vartheta/2$ for the likelihood-ratio score and the characterisation in (b) are textbook (Youden index and
+   Kolmogorov-Smirnov distance). r0's "whether the constant appears in the literature was not searched" is superseded: it does. **No
+   sentence may call any part of Prop. 1 new or say "we prove" it.** The text of sections 1.1-1.7 is kept as a record and is withdrawn as a
+   contribution.
+2. **Pooled, not per item.** Prop. 1(a)-(b) and Cor. 1.2(i) bound only the pooled population AUROC $P\{f(X_1)>f(X_0)\}$ with $X_z\sim Q_z$. The
+   per-item mean AUROC, which method.tex lines 126-129 quote, compares tokens within an item and weights items equally; the item grouping is
+   information outside $(\tilde x_j,O_j)$. Check D1 reproduces the red team's counterexample: the pooled class laws are equal ($\vartheta=0$,
+   pooled AUROC 0.500), and the per-item mean AUROC is 0.625. Only Prop. 1(e) makes a per-item statement, and only under (C1)-(C2) with a
+   uniform hit set given its size. **No sentence may apply $\vartheta(1-\vartheta/2)$, or "AUROC $=\tfrac12$", to a per-item AUROC.**
+3. **Wording corrections kept for the record.** "On-manifold" is replaced by **"law-preserving"** throughout sections 1.2-1.7 (a corruption to
+   another value in the support with a different frequency stays in the support and is detectable). Cor. 1.1(i)-(ii) are well posed only for
+   one hit per item or for sequential (Gibbs) updates, which is case (e); with several simultaneous hits the score sees a context that
+   contains other new values. "Bayes-optimal model $p_\theta=\pi_0$" means a model trained on clean data only when the context is clean. The
+   class $\mathcal F_a$ contains every own-modality score only if $O_j$ is taken as the full own-modality context; with $O_j$ as the context
+   outside the token's group (section 0), scores that read other tokens of the same group are outside the class.
+4. **The single permitted background sentence** (red-team wording, section 6.3 of the review; usable only if the lead's ledger ruling on
+   must-not-claim 6 allows it, since an impossibility limit on AUROC is still a bound on detection power): "For the pooled token AUROC
+   against the hit indicator, any score computed from a token and its own-modality context satisfies $|\mathrm{AUROC}-\tfrac12|\le\vartheta(1-\vartheta/2)$,
+   where $\vartheta$ is the total variation between the class laws of (token, context) [Li et al., arXiv 2102.08504, App. A.3]; if the
+   corruption preserves the law of the own modality given the context, $\vartheta=0$. This is a property of an idealised data model and is
+   not evaluated for the corruptions studied here." Never next to the M1 table, the rival, or a P result; never in the title, abstract,
+   highlights or conclusion; never "on-manifold", never "$q$'s detection is limited by".
+
+## R1.3 Corollary 1.1(iii): corrected premise, not for manuscript use
+
+The r0 text says that (A1) holds for the full context. **Under the changed-code label it does not:** for a hit token
+$P(Z_j=1\mid o)=1-s(o)$, so the context law given $Z_j=1$ is $\mu_O(do)(1-s(o))/(1-\bar s)$, not $\mu_O$. The joint laws $Q_1,Q_0$ used in
+the r0 proof are correct as joint laws, and so are the total variation computation and the monotonicity of the likelihood ratio in
+$\pi_0(\tilde x_j\mid O_j)$. The triangle step is tight (the two deviations from $\mu_O\pi$ have opposite signs at every point), so the
+total variation is exactly
+$$\vartheta=\tfrac12\,\E_O\sum_y\pi(y\mid O)\,\big|\pi(y\mid O)-\bar s\big|\,\Big[\frac1{1-\bar s}+\frac{h}{1-h+h\bar s}\Big].$$
+Check A6 confirms the identity to $10^{-12}$ in the toy (0.339555 both ways; the r0 check A4 of the loose bound could not fail and is
+superseded). Under this label the **context alone is a detector**: the context-only score $-s(o)$, which never reads the token value, has
+exact pooled AUROC 0.6597 in the toy (check A6; the red team found 0.68-0.69 in three other toys).
+
+**Not for manuscript use (K2, D0074; D0078).** Read next to the M1 table, this statement would supply a mechanism for the texture or
+pixel-variance rival's advantage on JPEG and noise. K2 forbids presenting that advantage as evidence for any mechanism, and AB.1 forbids
+explanation clauses. The direction of the toy effect has not been shown to match the rival's sign, and whether the rival is in $\mathcal F_a$
+is undecided. It is kept here only as a record.
+
+## R1.4 Proposition 2: fixes
+
+1. **Negative $\gamma_{01}$ (r0 section 2.3(c) item 1 and the YAML claim "negative values move it away" are wrong).** For
+   $\gamma_{01}<0$ the cross term of (2.5) is positive below the diagonal, so a helping region can open **below** the diagonal: a gate that
+   flags only clean tokens can raise the SNR, because it shifts weight toward corrupted tokens whose evidence is negatively correlated with
+   the clean evidence. Check D4: with $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$ (minimum eigenvalue of the
+   correlation matrix 0.9500), $\mu=0.1$, $\mu_c=0$, $\sigma^2=\sigma_c^2=1$, the gate $(\phi_0,\phi_1)=(0.3,0)$ raises the SNR from 0.4892 to 0.5080
+   (ILLUSTRATIVE parameters, the red team's R4). Negative $\gamma_1$ alone cannot do this. **Corrected statement:** if $\gamma_{01}\ge0$, every
+   gate with $\phi_1\le\phi_0$ lowers the SNR, for every admissible $\gamma_0$ and $\gamma_1$. *Proof:* positive semi-definiteness gives
+   $G=(\rho m-1)\gamma_1\ge-1$. With $\phi_1\le\phi_0$ the bracket of (2.5), $(\phi_1-2\phi_0+\phi_0^2)+G(\phi_1-\phi_0)(2-\phi_0-\phi_1)$, is linear in
+   $G$, equals $\phi_1-2\phi_0+\phi_0^2\le-\phi_0(1-\phi_0)$ at $G=0$, equals $-\phi_1(1-\phi_1)\le0$ at $G=-1$, and decreases in $G$ for $G\ge0$; so it is
+   $\le0$. The cross term is $\le0$ when $\gamma_{01}\ge0$, and the right side is $>0$ for $0<\phi_0<1$. Check D4 (0 counterexamples in 20,000 random
+   draws with $\gamma_1\in[-1/(m_1-1),0]$). A random gate ($\phi_1=\phi_0$) lowers the SNR for every correlation, because all correlation terms
+   vanish on the diagonal. Above the diagonal the r0 derivative statements stand. The monotonicity of the left side in $\phi_1$ (r0 item 4)
+   needs $G\ge-1/(2(1-\phi_1))$; the root formula for $b(\phi_0)$ does not.
+2. **Large-$m$ limit (r0 2.3(d)).** $g(r)$ has two critical points: $r=-\mu/\mu_c$ (the zero of the numerator, the global minimum $g=0$; check
+   D8) and $r^\ast$. $r^\ast$ is the maximiser over directions $(1,r)$ when $AC>B^2$ and $\mu C\ne\mu_cB$. The feasible range of the retained
+   ratio is $r\in[0,\infty)$; if $r^\ast<0$ the best feasible value is $r=0$.
+3. **SNR is not accuracy under non-Gaussian correlation (red-team M5).** Prop. 2 is a statement about $\E S/\sqrt{\Var S}$. Under independence the
+   central limit theorem ties it to $P(S>0)$. With exchangeable correlation, $S/m$ converges to a random shared component, and $P(S>0)$
+   depends on that component's law, not only on its variance. Check D5 (red team's R5, computed exactly over binomial retained counts and the
+   factor): a rare non-Gaussian shared factor among corrupted tokens ($\gamma_1=0.074$), $\mu=0.05$, $\mu_c=0$, $m_0=900$, $m_1=100$; the gate
+   $(0.1,0.5)$ raises the SNR from 1.081 to 1.254 and **lowers** the exact accuracy from 0.9149 to 0.9088 (ILLUSTRATIVE). With Gaussian shared
+   factors the exact accuracy and $\Phi(\mathrm{SNR})$ agree in the sign of every change on the illustrative rows (check B8, which replaces the
+   r0 Monte Carlo table that could not resolve these differences). **Rule:** the manuscript says "signal-to-noise ratio of the sum"; it says
+   "accuracy" only together with "if the per-token terms are jointly Gaussian".
+4. **(M4) is violated by construction in GATE.** The flags come from $u_j=D_j-B_j$, a function of the same token value as $\Delta_j$; the
+   manuscript says that independence of flags and evidence is an approximation.
+5. **Check-script wording (red-team m8).** B3 and B4 share Lemma 1's code with the closed form, so they check the algebra from Lemma 1 to (2.5),
+   not Lemma 1; Lemma 1 is now checked by Monte Carlo at a second point with $\gamma_{01}<0$ (D3) and (2.5) by a symbolic identity (D3, sympy
+   residual 0). The B3 draws do not enforce positive semi-definiteness; the word "valid" was removed.
+6. **Illustrative numbers (red-team M8).** The illustrative frontier table, the toy values and every number in sections 1-3 and R1 come from
+   `research/paper2/method/theory_check_2026-10-29.py`, which is not a `runs/<id>/` directory. **None of them may appear in the manuscript**
+   (project rule: no number unless it is in `runs/`).
+
+## R1.5 Remark 2.6, replaced
+
+What the remark shows, exactly: **if** (1) the per-token terms $\Delta_j$ are jointly Gaussian under each caption hypothesis, (2) their mean
+vector is proportional to $\mathbf 1$, (3) their covariance is the same under both hypotheses, (4) that covariance is fully exchangeable,
+$\sigma^2\{(1-\gamma)I+\gamma\mathbf 1\mathbf 1^\top\}$, and (5) the decision threshold is the equal-prior threshold 0, **then** the equal-weight
+sum $\mathbf 1^\top\Delta$ is the optimal (Fisher and Neyman-Pearson) statistic **among functions of the vector $\Delta$**, because
+$\Sigma^{-1}\mathbf 1\propto\mathbf 1$ (Sherman-Morrison; check B6 verifies only this identity). Condition (2) fails with position-dependent means
+and whenever $\rho>0$ with $\mu_c\ne\mu$ and unknown labels (then $\Delta$ is a non-Gaussian mixture); condition (4) fails for block-exchangeable
+covariance ($\gamma_0,\gamma_1,\gamma_{01}$ not all equal).
+
+What it does **not** show: Chair-Varshney optimality means that the sum of local log-likelihood ratios equals the global log-likelihood ratio
+$\log p(v\mid c^+)-\log p(v\mid c^-)$, which requires the observations to be conditionally independent given the hypothesis. Under dependence the
+global ratio is not $\sum_j\Delta_j$, whatever $\Sigma$ is. The remark is optimality within a data reduction, not optimality of the test on the
+image; it does not restore Chair-Varshney optimality, and it answers plan review A8 only to the extent of stating that independence is an
+approximation. The section title "Chair-Varshney under exchangeable dependence" and the phrase "answers plan review A8 in part" are
+withdrawn. The method.tex sentence (lines 409-411) "used here as a standard statistic and not as an optimal one" stays as written. Permitted
+manuscript sentence, if any: "If the per-token terms were jointly Gaussian with a common mean and the same exchangeable covariance under both
+caption hypotheses, the equal-weight sum would be the optimal linear statistic of those terms; this does not make the sum the likelihood
+ratio of the image, and the sum is used as a standard statistic."
+
+## R1.6 Proposition 3 and Corollary 3.1: corrections (reference for the soft arms only)
+
+1. **Prop. 3(a), corrected.** r0's sentence "a hard gate is optimal only when $\pi_1(u)\in\{0,1\}$ (an oracle)" is false. Correct statement:
+   with independent tokens ($\gamma=0$) and $w\ge0$, the optimal weight is $(\mu(u))_+/\sigma^2(u)$, and **a hard (0/1) gate is optimal if and only if
+   $(\mu(u))_+/\sigma^2(u)$ takes at most one non-zero value on the support of $u$** (up to scale). Example (check D6, the red team's R7): $\pi_1(u)$
+   takes the values 0.3 and 1, $\mu_c=0$; the optimal weights are 0.1388 and 0, a 0/1 gate with no oracle. With two distinct non-zero values
+   the optimum is not a 0/1 gate (check D6). The special case "$w^\ast\propto1-\pi_1(u)$ when $\mu_c=0$, $\sigma_c=\sigma$, $\mu^2\ll\sigma^2$" stands
+   as an approximation. The r0 check C2 at $\gamma=0$ compared a vector with itself; it now compares the matched filter with a generic BFGS
+   optimiser.
+2. **Prop. 3(b).** "$\xi=0$ iff $\gamma=0$" holds only if some $\mu(u_k)>0$; if every $\mu(u_k)\le0$, $\xi=0$ for every $\gamma$ (check D7). The cut
+   comes from the constraint $w\ge0$ together with correlation; the unconstrained optimum (c) has no cut. So the reading is "correlation plus
+   non-negativity induces a cut", not "correlation favours gating".
+3. **Assumption (W3)** forces $\gamma_0=\gamma_1=\gamma_{01}$ (and $\sigma_c=\sigma$), which is not the case in which Prop. 2's frontier moves (it depends
+   on $\gamma_1,\gamma_{01}$, not $\gamma_0$, relative to each other). Props. 2 and 3 are therefore not jointly applicable, and no sentence may
+   combine them.
+4. **Lemma 2** also needs the weights to be independent across classes, not only within a class.
+5. **Corollary 3.1, scope.** The 3/4 is an $\mathrm{SNR}^2$ ratio (an SNR ratio of about 0.866). It assumes (W1), scores independent of
+   evidence, and weights i.i.d. uniform over the grid **within the item**. Within an item the scores are clustered (item-level shifts in
+   suspicion), so a clean item's weights need not be spread over the grid, and the per-item cost can be smaller or larger. **3/4 is not
+   SOFT-A's expected clean-cell cost, and it must not be compared with the M4 clean cell** (AB.1 spirit; A4.4 item 2).
+6. Unchanged from r0 section 3.4: $w^\ast$ is not an A4 arm, may not be computed on M4 data, and no ranking of the A4 arms is predicted.
+
+## R1.7 Binding rule: Prop. 2 never explains an E-pred disagreement
+
+1. Proposition 2, its frontier and its large-$m$ limit are **never used to explain, account for, excuse or reinterpret an E-pred
+   disagreement** (a cell where the committed independent-token sign differs from the observed sign), nor any agreement, in any text: paper,
+   response to reviewers, supplement or internal report. The refutation rule of spec 5.3 and SAP AB.3 item 4 stand unchanged: a plug-in sign
+   that disagrees with a cell whose observed interval excludes 0 refutes the independent-token model for that cell, and that is all that may
+   be said.
+2. No $\gamma_0,\gamma_1,\gamma_{01}$ is estimated on M4 arrays (or any test-fold array) to adjust, re-score or annotate E-pred, and no correlated
+   frontier is overlaid with measured $(\hat\phi_0,\hat\phi_1)$ points. Such a step would be a post hoc rescue and a forking path (red-team
+   M8; SAP AB.1 item 3, AB.3 items 4-6).
+3. The words "predicts", "explains", "accounts for", "is consistent with" are not used for Prop. 2 about any E-pred, P, PS, S2, B, R, E-dec or
+   Tier-3 cell. The word "predicted" appears only inside the E-pred table (AB.1 item 4).
+4. E-pred itself is unchanged: `theory.py` (blob `4d2b5500`), `epred_fit.py` and `epred_frozen.json` use the independent-token form, and
+   nothing in this file is used by them.
+
+## R1.8 Manuscript-ready text for Proposition 2 (method.tex notation)
+
+Symbols are those of method.tex (`\phi_0`, `\phi_1`, `\rho`, `\mu`, `\sigma^2`, `\mu_c`, `\sigma_c^2`, `m`, `S`, `I_j`, `\Delta_j`, macros `\E`, `\Var`);
+new symbols are $\gamma_0,\gamma_1,\gamma_{01}$ only, to be added to Table `tab:notation`. Labels `prop:snrcorr`, `eq:varcorr`, `eq:snrcorr`,
+`app:snrcorr` are new and do not collide with existing ones. No number appears in the block. It is a draft for the lead and the
+manuscript-writer; this revision does not edit method.tex. The design-effect phrase may need a citation (Kish); `citation-validator` decides.
+
+**Main text (Method, directly after the paragraph that ends with Eq. `eq:snr` and its three consequences):**
+
+```latex
+\paragraph{Correlated tokens.}
+Neighbouring image tokens are correlated, so Eq.~\eqref{eq:var} is an approximation. The following statement replaces independence by an
+exchangeable correlation; it is theory under stated assumptions and is not evaluated on the model.
+
+\begin{proposition}[withholding with exchangeably correlated tokens]\label{prop:snrcorr}
+Condition on the corruption labels, so that $(1-\rho)m$ tokens are clean and $\rho m$ are corrupted, with the moments $\mu,\sigma^2,\mu_c,\sigma_c^2$
+and the keep probabilities $1-\phi_0$, $1-\phi_1$ of Eqs.~\eqref{eq:mean}--\eqref{eq:var}.
+Assume (a) that for $j\neq k$ the correlation of $\Delta_j$ and $\Delta_k$ is $\gamma_0$ if both tokens are clean, $\gamma_1$ if both are
+corrupted and $\gamma_{01}$ otherwise, with values for which the covariance matrix is positive semi-definite; and (b) that the keep indicators
+$I_j$ are independent of each other and of every $\Delta_k$.
+Then $\E S$ is given by Eq.~\eqref{eq:mean}, and, under (a) and (b),
+\begin{equation}
+\begin{aligned}
+\Var S={}&V+(1-\rho)m\big((1-\rho)m-1\big)(1-\phi_0)^2\gamma_0\sigma^2+\rho m(\rho m-1)(1-\phi_1)^2\gamma_1\sigma_c^2\\
+&+2\rho(1-\rho)m^2(1-\phi_0)(1-\phi_1)\gamma_{01}\sigma\sigma_c,
+\end{aligned}
+\label{eq:varcorr}
+\end{equation}
+where $V$ is the right side of Eq.~\eqref{eq:var}.
+If moreover $\mu_c=0$ and $\E S>0$ with and without the gate, the gate raises $\E S/\sqrt{\Var S}$ if and only if
+\begin{equation}
+\begin{aligned}
+&\rho\,\sigma_c^2\Big[(\phi_1-2\phi_0+\phi_0^2)+(\rho m-1)\,\gamma_1\,(\phi_1-\phi_0)(2-\phi_0-\phi_1)\Big]
++2\rho(1-\rho)\,m\,\gamma_{01}\,\sigma\sigma_c\,(1-\phi_0)(\phi_1-\phi_0)\\
+&\qquad>\;(1-\rho)\,\phi_0(1-\phi_0)\,(\sigma^2+\mu^2).
+\end{aligned}
+\label{eq:snrcorr}
+\end{equation}
+Consequently:
+(i) $\gamma_0$ does not enter Eq.~\eqref{eq:snrcorr}, and at $\gamma_1=\gamma_{01}=0$ it is Eq.~\eqref{eq:snr};
+(ii) a gate with $\phi_1=\phi_0$, such as a random gate, lowers the ratio for every admissible correlation, and if $\gamma_{01}\ge0$ every gate
+with $\phi_1\le\phi_0$ lowers it;
+(iii) where $\phi_1>\phi_0$, a larger $\gamma_1$ or $\gamma_{01}$ can only turn a decrease of the ratio into an increase, so positive correlation
+among corrupted tokens, or between clean and corrupted tokens, enlarges the region of $(\phi_0,\phi_1)$ in which the gate raises the ratio,
+and as $(\rho m-1)\gamma_1\to\infty$ that region tends to $\{\phi_1>\phi_0\}$;
+(iv) if $\gamma_{01}<0$, a gate that flags only clean tokens can raise the ratio;
+(v) unlike Eq.~\eqref{eq:snr}, the condition depends on $m$.
+\end{proposition}
+
+\noindent\emph{Proof sketch.} Each of the $m(m-1)$ ordered pairs of distinct tokens adds $\E I_j\,\E I_k\,\mathrm{Cov}(\Delta_j,\Delta_k)$ to
+$\Var S$, which gives the three correlation terms of Eq.~\eqref{eq:varcorr}. With $\mu_c=0$ the gate multiplies $\E S$ by $1-\phi_0$, so it
+raises the ratio if and only if $(1-\phi_0)^2\,\Var S|_{\phi_0=\phi_1=0}>\Var S$; the clean-pair terms scale by $(1-\phi_0)^2$ on both sides and
+cancel, and the remaining terms, divided by $m$, give Eq.~\eqref{eq:snrcorr}. Appendix~\ref{app:snrcorr} gives the full proof. \qed
+
+The ratio in Proposition~\ref{prop:snrcorr} is the signal-to-noise ratio of the sum. If the per-token terms are jointly Gaussian, the
+accuracy $P(S>0)$ given the flags is $\Phi$ of the conditional ratio, which the unconditional ratio approximates; without joint
+Gaussianity no statement about accuracy follows, and a gate can raise the ratio while lowering the accuracy. Assumption (b) is an
+approximation for GATE, whose flags are computed from the same token values as the evidence. With correlation the ratio no longer grows
+like $\sqrt m$: it tends to a limit set by the shared component of the per-token terms. The descriptive family E-pred uses
+Eqs.~\eqref{eq:mean}--\eqref{eq:var} as preregistered; Proposition~\ref{prop:snrcorr} is not used by it and is not used to interpret it.
+```
+
+**Appendix (new subsection after the symbol crosswalk):**
+
+```latex
+\subsection{Proof of Proposition~\ref{prop:snrcorr}}\label{app:snrcorr}
+Write $m_0=(1-\rho)m$ and $m_1=\rho m$ for the numbers of clean and corrupted tokens, $k_0=1-\phi_0$ and $k_1=1-\phi_1$ for the keep
+probabilities, and $z_j\in\{0,1\}$ for the label of token $j$, so that $\E\Delta_j$ is $\mu$ or $\mu_c$ and $\Var\Delta_j$ is $\sigma^2$ or
+$\sigma_c^2$. Positive semi-definiteness of the exchangeable block covariance holds if and only if $\gamma_0\ge-1/(m_0-1)$,
+$\gamma_1\ge-1/(m_1-1)$, $\gamma_0,\gamma_1\le1$ and $\gamma_{01}^2\,m_0m_1\le\{1+(m_0-1)\gamma_0\}\{1+(m_1-1)\gamma_1\}$.
+
+\emph{Variance.} By assumption (b), $I_j$ is independent of $\Delta_j$, so
+$\Var(I_j\Delta_j)=k(\sigma_z^2+\mu_z^2)-k^2\mu_z^2=k\sigma_z^2+k(1-k)\mu_z^2$ with $k=k_{z_j}$, which are the terms of Eq.~\eqref{eq:var}.
+For $j\neq k$, again by (b),
+$\mathrm{Cov}(I_j\Delta_j,I_k\Delta_k)=\E I_j\,\E I_k\,\E[\Delta_j\Delta_k]-\E I_j\,\E I_k\,\E\Delta_j\,\E\Delta_k=k_{z_j}k_{z_k}\,\mathrm{Cov}(\Delta_j,\Delta_k)$.
+There are $m_0(m_0-1)$ ordered clean pairs with covariance $\gamma_0\sigma^2$, $m_1(m_1-1)$ ordered corrupted pairs with covariance
+$\gamma_1\sigma_c^2$ and $2m_0m_1$ ordered mixed pairs with covariance $\gamma_{01}\sigma\sigma_c$, which gives Eq.~\eqref{eq:varcorr}.
+
+\emph{Condition.} Let $V_g$ be Eq.~\eqref{eq:varcorr} at $(\phi_0,\phi_1)$ and $V_0$ its value at $\phi_0=\phi_1=0$. With $\mu_c=0$,
+$\E S=m_0k_0\mu$ with the gate and $m_0\mu$ without it, so, both being positive, the gate raises the ratio if and only if $k_0^2V_0>V_g$.
+Collect $k_0^2V_0-V_g$ by type of term. Clean terms:
+$k_0^2m_0\sigma^2\{1+(m_0-1)\gamma_0\}-m_0k_0(\sigma^2+\phi_0\mu^2)-m_0(m_0-1)k_0^2\gamma_0\sigma^2=-m_0k_0\phi_0(\sigma^2+\mu^2)$; the $\gamma_0$ terms cancel.
+Corrupted terms: $m_1\sigma_c^2\{(k_0^2-k_1)+(m_1-1)\gamma_1(k_0^2-k_1^2)\}$, with $k_0^2-k_1=\phi_1-2\phi_0+\phi_0^2$ and
+$k_0^2-k_1^2=(\phi_1-\phi_0)(2-\phi_0-\phi_1)$. Mixed terms: $2m_0m_1\gamma_{01}\sigma\sigma_c\,k_0(k_0-k_1)$, with $k_0-k_1=\phi_1-\phi_0$.
+Dividing the sum by $m$ gives Eq.~\eqref{eq:snrcorr}.
+
+\emph{Consequences.} (i) is read off Eq.~\eqref{eq:snrcorr}. (ii) At $\phi_1=\phi_0\in(0,1)$ every correlation term vanishes and the left side
+is $\rho\sigma_c^2(\phi_0^2-\phi_0)<0$, below the positive right side. For $\phi_1\le\phi_0$, let $G=(\rho m-1)\gamma_1$, so that $G\ge-1$ by
+positive semi-definiteness. The bracket $(\phi_1-2\phi_0+\phi_0^2)+G(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ is linear in $G$; it equals
+$\phi_1-2\phi_0+\phi_0^2\le-\phi_0(1-\phi_0)$ at $G=0$, equals $-\phi_1(1-\phi_1)\le0$ at $G=-1$, and does not increase for $G\ge0$; hence it is at
+most $0$. If $\gamma_{01}\ge0$ the mixed term is at most $0$ as well, while the right side is positive for $\phi_0\in(0,1)$.
+(iii) The derivatives of the left side with respect to $\gamma_1$ and $\gamma_{01}$ are $\rho\sigma_c^2(\rho m-1)(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ and
+$2\rho(1-\rho)m\sigma\sigma_c(1-\phi_0)(\phi_1-\phi_0)$, both positive when $\phi_1>\phi_0$ and $\rho m>1$, and the right side does not depend on
+$\gamma_1$ or $\gamma_{01}$. For fixed $\phi_1>\phi_0$ the $\gamma_1$ term grows without bound with $(\rho m-1)\gamma_1$, which gives the limit.
+With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, Eq.~\eqref{eq:snrcorr} reads
+$Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
+$\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$); as $G\to0$ this tends to the
+boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of Eq.~\eqref{eq:snr}.
+(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms; a numerical
+instance with a positive definite covariance is given in the supplementary check script.
+(v) $m$ enters Eq.~\eqref{eq:snrcorr} through $\rho m-1$ and $m$ whenever $\gamma_1\neq0$ or $\gamma_{01}\neq0$. \qed
+```
+
+Notes for the lead on the block: (1) item (iv) points to the check script (D4) instead of quoting its numbers, because the script is not a
+`runs/` artifact; if the lead wants the instance in the paper it must be produced under `runs/` first or stated with symbols only.
+(2) `\mathrm{Cov}` is written out because `paper2/main.tex` defines `\E` (line 22) and `\Var` (line 25) but no `\Cov`. (3) The boundary formula in the
+appendix proof of (iii) may be cut if space is short; nothing else depends on it.
+
+## R1.9 Script changes in r1 and output
+
+Changes to `research/paper2/method/theory_check_2026-10-29.py` (same file, r0 checks kept unless listed):
+- A6 (new): exact total variation under the changed-code label, and the context-only AUROC (R1.3).
+- B3: comment and label say "algebra, shared code"; "valid" removed. B4 random-gate comment corrected ($\gamma_{01}=0.01$ in that check).
+  B6 relabelled "Sherman-Morrison only". The Remark 2.4 check is relabelled B7.
+- B8 (new, replaces the r0 Monte Carlo accuracy table): exact accuracy with Gaussian shared factors, summed over binomial retained counts.
+- C2: the $\gamma=0$ check now compares the matched filter with a generic BFGS optimiser (r0 compared a vector with itself). Because this
+  draws from the same random stream, the illustrative zero-weight counts of C2 differ from r0's; the checks are unaffected.
+- D1, D3-D8 (new): pooled vs per-item counterexample; sympy identity for (2.5) and a second Monte Carlo point for Lemma 1 with
+  $\gamma_{01}<0$; negative $\gamma_{01}$ below-diagonal example and the corrected (ii) scan; non-Gaussian SNR-vs-accuracy; corrected Prop. 3(a);
+  $\xi=0$ when all $\mu(u)\le0$; the second critical point of $g$.
+- The r0 check A4 of the loose changed-label bound cannot fail (red-team m8); it is kept for the record and superseded by A6.
+
+Output of the r1 run (2026-10-29, 00:47 IST; CPU, about 25 s; GPU not used), verbatim. All values are toy or ILLUSTRATIVE, none from UniDisc:
+
+```
+theory_check_2026-10-29.py  seed=20261029  numpy=2.4.2
+
+=== A. Proposition 1: detectability limit ===
+[PASS] A1 |AUROC(f)-1/2| <= v - v^2/2 for random laws and scores  (max excess -2.18e-04)
+[PASS] A1 AUROC(LR) >= AUROC(f) (LR is AUROC-optimal)  (max excess 0.00e+00)
+[PASS] A1 AUROC(LR) >= 1/2 + v/2  (max shortfall 2.22e-16)
+[PASS] A2 bound attained by the three-point example  (max |err| 2.2e-16)
+  toy: V=3, L=8, items=40000, hit rate h=0.25; AUROC s.e. at 1/2 approx 0.0012
+  Gibbs (law-invariant) corruption, hit label, pooled AUROC - 1/2: B_full (K=m) -0.0007, B_grp (K=2) -0.0009, q=B_grp-D -0.0005, u=-q +0.0005, -B_grp +0.0009, D -0.0004, random -0.0009
+[PASS] A3 every within-modality score has pooled AUROC 1/2 (within 4 s.e.) under law-invariant corruption  (max |dev| 0.0009)
+[PASS] A3 per-item mean AUROC of u has expectation 1/2  (0.5005 +/- 0.0014)
+  uniform replacement (off-manifold), hit label, pooled AUROC: -B_grp 0.6111, u=-q 0.5978, random 0.5011
+[PASS] A3 positive control: uniform replacement is detected (AUROC of -B well above 1/2)
+  changed-code label, single-site resample: mean collision prob sbar=0.6272, exact TV=0.3396, bound=1.7648
+[PASS] A4 exact TV <= sbar/(1-sbar) + h sbar/(1-h+h sbar)
+  exact AUROC of the LR score (-pi_j(x_j | x_-j)) = 0.7202; limits [1/2 + v/2, 1/2 + v - v^2/2] = [0.6698, 0.7819]
+[PASS] A4 exact AUROC(LR) within the two-sided bound of Prop. 1(a,b)
+[PASS] A4 Monte Carlo AUROC(-pi) under changed label matches the exact value  (MC 0.7189 vs exact 0.7202)
+[PASS] A4 same corruption, hit label: AUROC 1/2  (0.4974)
+[PASS] A6 changed-code label: TV = (1/2) E sum pi|pi - sbar| [1/(1-sbar) + h/(1-h+h sbar)] (exact)  (0.339555 vs enumerated 0.339555)
+  changed-code label: context-only score -s(o) (never reads the token value) has exact pooled AUROC 0.6597 (toy)
+[PASS] A6 under the changed-code label the context law depends on Z: a context-only score has AUROC > 1/2
+[PASS] A5 within-modality scores blind to caption-blind (P_a-invariant) corruption  (max |AUROC-1/2| 0.0007)
+  per-token caption-blind Gibbs: cross-modal evidence mean on unhit tokens +0.0980, on hit tokens +0.0929 (s.e. 0.0016); small here because the unhit neighbours still carry the caption
+  item-level independent redraw from P_a: max |AUROC-1/2| of within-modality scores 0.0030; cross-modal evidence mean on clean items +0.0986, on hit items -0.0006
+[PASS] A5 item-level law-invariant redraw: within-modality scores at 1/2  (0.0030 vs 4 s.e. 0.0115)
+[PASS] A5 item-level law-invariant redraw: cross-modal evidence on hit items falls to about 0
+  cross-modal suspicion -(log p(v_j|v_-j,c) - log p(v_j|v_-j)) pooled AUROC 0.5187
+[PASS] A5 a caption-using score detects what within-modality scores cannot
+
+=== B. Proposition 2: correlated-token SNR of hard gating ===
+[PASS] B1 Lemma 1 mean (Monte Carlo)  (MC 7.7016 vs 7.7000)
+[PASS] B1 Lemma 1 variance (Monte Carlo)  (MC 144.238 vs 144.516)
+[PASS] B2 Lemma 1 at gamma=0 equals theory.mean_var  (max rel diff 1.2e-13)
+[PASS] B2 closed form at gamma=0 equals theory.special_case_inequality  (0 mismatches in 20000)
+[PASS] B3 closed form (mu_c=0) has the sign of the direct SNR change (algebra, shared code)  (0 mismatches in 31434)
+  ILLUSTRATIVE frontier (not estimates): m=1024, rho=0.1, mu=0.1, sigma2=sigma2_c=1, gamma_01=0, chi (red-team kappa)=0.1100
+  phi0   g1=0        g1=0.0001   g1=0.001    g1=0.01     g1=0.05   
+  0.01   0.1099      0.1080      0.0938      0.0436      0.0191    
+  0.05   0.5293      0.5224      0.4666      0.2243      0.0961    
+  0.1    none        0.9999      0.9265      0.4708      0.1941    
+  0.2    none        none        none        none        0.3993    
+[PASS] B4 closed-form boundary equals bisection on the direct SNR comparison  (max |diff| 3.6e-15)
+[PASS] B4 boundary decreases with gamma_1 and stays above the diagonal phi1 = phi0
+[PASS] B4 boundary tends to the diagonal as (rho m - 1) gamma_1 grows  (b(0.05) = 0.050000)
+[PASS] B4 gamma_0 does not enter k0^2 Var S_0 - Var S_g when mu_c = 0  (40.780000 vs 40.780000)
+[PASS] B4 a random gate (phi1 = phi0) lowers the SNR (grid of gamma_1, gamma_01 = 0.01)
+[PASS] B5 large-m limit of the SNR depends only on the retained shares  (0.34227 vs 0.34227)
+[PASS] B5 r* maximises the large-m SNR^2 over the retained-mass ratio  (max rel excess of grid max over g(r*) 1.7e-14)
+[PASS] B6 Sherman-Morrison only: exchangeable Sigma^{-1} 1 is proportional to 1 (not an NP statement about the image)  (max cv 5.8e-13)
+[PASS] B7 (Remark 2.4) Var_uncond - Var_cond = m0 k0 phi0 (mu^2 + g0 s2) + m1 k1 phi1 (muc^2 + g1 s2c)  (gap 8.73e-13)
+  ILLUSTRATIVE accuracy, Gaussian shared factors, exact (m0=360, m1=40, mu=0.05, sigma2=sigma2_c=1, mu_c=0, g0=0.01, g1=0.05, g01=0):
+    phi0  phi1   P(S>0) exact   Phi(SNR_uncond)  sign agrees with 'none' row
+    0.0   0.0    0.665600       0.665600         -
+    0.05  0.05   0.664687       0.664680         True
+    0.05  0.5    0.668095       0.668085         True
+    0.05  0.9    0.669891       0.669882         True
+    0.2   0.9    0.666539       0.666501         True
+[PASS] B8 Gaussian shared factors: sign of the accuracy change equals sign of the Phi(SNR) change (illustrative rows)
+
+=== C. Proposition 3: reliability weights ===
+[PASS] C1 Lemma 2 mean (Monte Carlo)  (MC 6.9406 vs 6.9500)
+[PASS] C1 Lemma 2 variance (Monte Carlo)  (MC 97.504 vs 97.391)
+[PASS] C1 Lemma 2 with w = I equals Lemma 1
+[PASS] C2 gamma=0: matched filter mu(u)/sigma^2(u) attains the SNR found by a generic optimiser (BFGS)  (max rel loss 0.0e+00)
+[PASS] C2 w >= 0 with exchangeable correlation: soft-threshold fixed point equals the QP optimum  (max rel diff 6.3e-16)
+  ILLUSTRATIVE (n=60 tokens): gamma -> mean threshold xi, mean number of tokens given weight 0
+    gamma=0.0    xi=0.0000  zero-weight tokens=0.9
+    gamma=0.002  xi=0.0173  zero-weight tokens=0.2
+    gamma=0.02   xi=0.0907  zero-weight tokens=4.3
+    gamma=0.1    xi=0.1509  zero-weight tokens=17.3
+[PASS] C2 threshold xi is 0 at gamma=0 and increases with gamma
+[PASS] C3 nu = E w^2 / (E w)^2 on the p-value grid equals 2(2N+3)/(3(N+2)), N=10
+[PASS] C3 nu = E w^2 / (E w)^2 on the p-value grid equals 2(2N+3)/(3(N+2)), N=1000
+[PASS] C3 nu = E w^2 / (E w)^2 on the p-value grid equals 2(2N+3)/(3(N+2)), N=1000000
+  clean-pair SNR^2 ratio (weights / none), conditional on weights, uniform p-value weights, by gamma_0:
+    gamma_0=0.0    direct 0.75037  formula 0.75037
+    gamma_0=0.001  direct 0.85890  formula 0.85890
+    gamma_0=0.01   direct 0.97151  formula 0.97151
+    gamma_0=0.1    direct 0.99711  formula 0.99711
+[PASS] C3 clean-pair efficiency formula [(1-g)+g m]/[(1-g) nu + g m] matches the quadratic form
+
+=== D. Revision r1 checks ===
+  pooled class laws equal (TV = 0): pooled AUROC 0.500; per-item mean AUROC 0.625
+[PASS] D1 Prop. 1 bounds the pooled AUROC only: TV = 0 with per-item mean AUROC != 1/2
+[PASS] D3 sympy: (k0^2 V0 - Vg)/m - [LHS - RHS of (2.5)] == 0  (residual 0)
+[PASS] D3 Lemma 1 by Monte Carlo at a second point (gamma_01 < 0)  (mean 3.4347 vs 3.4400; var 61.381 vs 61.221)
+  gamma_01 = -0.045 (min eigenvalue 0.9500): SNR none 0.4892, gate (phi0, phi1) = (0.3, 0) 0.5080
+[PASS] D4 with gamma_01 < 0 a gate that flags only clean tokens can raise the SNR (PSD example)
+[PASS] D4 with gamma_1 in [-1/(m1-1), 0] and gamma_01 >= 0 no gate at or below the diagonal raises the SNR  (0 of 20000)
+  rare non-Gaussian shared factor (gamma_1 = 0.074): SNR 1.081 -> 1.254; exact accuracy 0.9149 -> 0.9088
+[PASS] D5 non-Gaussian correlation: gating raises the SNR of S but lowers P(S > 0)
+  pi_1 in {0.3, 1}, mu_c = 0: optimal weights 0.1388 (pi_1 = 0.3) and 0.0e+00 (pi_1 = 1): a 0/1 gate with no oracle
+[PASS] D6 hard gate optimal without an oracle when mu(u)_+/sigma^2(u) has one non-zero value
+[PASS] D6 with two distinct non-zero values of mu(u)/sigma^2(u) the optimum is not a 0/1 gate
+[PASS] D7 xi = 0 at gamma > 0 when every mu(u_k) <= 0
+[PASS] D8 r = -mu/mu_c is a critical point with g = 0 (second critical point besides r*)  (max |g'|, g 1.4e-10)
+
+SUMMARY: ALL CHECKS PASSED
+```
+
+## R1.10 Concerns after r1
+
+1. The background sentence of R1.2 item 4 is usable only after a ledger ruling on the scope of must-not-claim 6; D0078 says "subject to
+   must-not #6" but does not rule.
+2. D0078 is timestamped 2026-10-29T01:05:00, while this machine's clock read 00:47 IST when the r1 check ran; the lead may want to check the
+   ledger timestamp, since dating before M4 is part of the evidence.
+3. Li et al. (arXiv 2102.08504) was read by the red team from a garbled PDF conversion; `citation-validator` must confirm the reference and
+   the equation location before it is cited.
+4. Proposition 2(iv) in R1.8 relies on a numerical instance that lives in the check script, not in `runs/`; the paper states it with symbols
+   only, or the instance is regenerated under `runs/`.
