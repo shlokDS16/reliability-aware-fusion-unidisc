@@ -101,3 +101,19 @@ Dated row (card v4 section 5; A3b.6). Read as the recommendation of each item:
 9. n = 300 for S2 and FOIL at the updated cost (S2 about +1.95 GPU-h, +4 h wall): yes.
 3. **Co-attestation: NOT given.** "All recommended" does not contain his own sentence, so it is not recorded as one. Asked
    again; if still absent when M1 is analysed, the lead writes the dated absence (card v4 section 5 row 3b).
+
+## 10. M2 slow-item guard stop (20:07 IST) and Shlok's answer
+**What happened.** M2 (calibration, n = 300) stopped at 20:07 with 106 of 300 rows done: `runs/P2-GATE-M2/chunks.jsonl`
+records `guard_stop`, reason "slow_item 3.0s > 2.0x median 1.5s", idx 105. Diagnosis (telemetry only): GPU 52-63 C,
+6.9 GB, throttle reason only the software power cap, no crash events, boot time unchanged (27 Oct 23:25); item 105 is
+ordinary (13 caption tokens, peak 4.58 GB). Not caused by the lead's M1 analysis, which finished at 20:00:11.
+
+**Question put to Shlok (wrap-up box):** "Relaunch M2 and use a 3x slow-item limit overnight?"
+
+**Shlok's answer (2026-10-28, in this session, verbatim): "Yes, both"**
+Read as:
+1. Relaunch M2 unchanged (same MEM flags, same 2x rule); it resumes at row 106. Done at 21:40 IST (first run's driver
+   log kept as `runs/P2-GATE-M2.driver.run1.out`).
+2. Add `--slow-factor` / `--slow-min-s` CLI flags with defaults unchanged (2.0 / 1.0), gate-auditor delta check, and a
+   dated card v4 amendment row pinning the new code SHA; overnight non-Omni stages then run with
+   `--slow-factor 3 --slow-min-s 2`. Until that row exists, every stage runs with the defaults.
