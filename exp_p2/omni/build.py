@@ -76,7 +76,13 @@ def production_loader(a, info: dict):
     def load():
         from exp_p2.omni import loader
         from exp_p2.omni.scorer import OmniScorer
+        from exp_p2.gate.watchdog import Watchdog, kill_process_on_trip
         t0 = time.time()
+        # runner.run_items starts its own watchdog only AFTER the load and the self-check; the load moves whole-GPU memory by 6 GB, so a watchdog of the same rules covers it here
+        run = Path(common.RUNS) / a.run_id
+        run.mkdir(parents=True, exist_ok=True)
+        wd = Watchdog(omni_guards_from_args(a), on_trip=kill_process_on_trip(run / "chunks.jsonl")).start()
+        info["load_watchdog"] = wd
         loader.offline_env()
         repo = loader.ensure_import_paths()
         snap, mag = loader.snapshot(loader.OMNI_REPO_ID), loader.snapshot(loader.MAGVIT_REPO_ID)
@@ -87,6 +93,13 @@ def production_loader(a, info: dict):
         info.update(repo=str(repo), snapshot=str(snap), magvit=str(mag), stub=stub, load_seconds=time.time() - t0)
         return runner.Counting(sc)
     return load
+
+
+def stop_load_watchdog(info: dict) -> None:
+    """Called once the runner's own watchdog is about to take over (make_ctx time)."""
+    wd = info.pop("load_watchdog", None)
+    if wd is not None:
+        wd.stop()
 
 
 def git_head(path: Path) -> str | None:

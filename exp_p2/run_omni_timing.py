@@ -137,6 +137,7 @@ def main(argv=None, *, scorer_factory=None, guards_factory=None):
 
     def ctx_factory(sc, run):
         if scorer_factory is None:
+            build.stop_load_watchdog(info)
             build.write_env(run, sc, info, a)
         return make_ctx(sc, run)
 
