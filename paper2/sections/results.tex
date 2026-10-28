@@ -1,0 +1,72 @@
+% results.tex -- headings and placeholders only. No GATE result exists. Every placeholder names the run directory and the
+% wording rule that applies, so that nothing is written beyond what the preregistration allows.
+% Each number entered later needs a LaTeX comment "% run: <exp-id>" on the same line or paragraph.
+
+\todo{RESULT: this section is filled only from the frozen run directories after the planned folds are complete. Lead each
+subsection with the observation, then the interval, then the preregistered wording from Section~\ref{ssec:tests}. Print the metric
+direction in every table header.}
+
+\subsection{Headroom and operating points}\label{ssec:res_headroom}
+\todo{RESULT (run P2-GATE-M3): table of the headroom check, per corruption and rung: $n_v$, $T_1$, $T_2$, pass or fail, the chosen
+operating point, $D_c$, $D^\ast$ and the rule (R1, R2 or R3) with the test-fold size. State which corruptions have no operating point
+and what that means for the primary family. If no corruption has an operating point, say that the downstream claim is withdrawn.}
+
+\subsection{Calibration of the gate}\label{ssec:res_cal}
+\todo{RESULT (runs P2-GATE-M2, P2-GATE-M4 clean arm): realised false-alarm proportion $\hat F$ with item-clustered interval for
+$\alpha=0.01,0.05,0.10$; $Z_{\rm cal}$ and the verdict (``no evidence of violation'' or violation); precision among flagged tokens per
+corruption; false-alarm proportion on the clean tokens of corrupted items; spatial map of clean false alarms (figure); the exploratory
+2\,000-split check of the marginal statement.}
+
+\subsection{Primary result: GATE-M against no gate}\label{ssec:res_primary}
+\todo{RESULT (run P2-GATE-M4): complete Table~\ref{tab:res_primary}; the sentence that applies from the preregistered wording table (positive,
+negative or inconclusive); the three-way label; $n_d$ and, for a null, the statement ``only $\theta\ge\theta^\ast$ would have been
+detectable'' (a sensitivity statement, not an observed power).}
+
+\begin{table}[t]
+\centering
+\caption{Primary family: GATE-M versus no gate, paired correctness of the image-direction statistic (higher is better).
+\todo{RESULT: test fold size, rule, interval type.}}
+\label{tab:res_primary}
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{lccccccc}
+\toprule
+Corruption (rung) & $n$ & Acc. none & Acc. GATE-M & $b$ / $c$ & $(b-c)/n$ [95\,\%] & $p$ & $p_{\rm Holm}$ \\
+\midrule
+JPEG & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} \\
+Gaussian noise & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} \\
+Pixel splice & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Mechanism controls}\label{ssec:res_mech}
+\todo{RESULT: GATE-M against the geometry-matched random gate (seed 1 confirmatory; seeds 2 and 3 as replications), the scattered random
+gate, plain-$B$ top-$k$ and $s_3$ top-$k$ (counts $b$, $c$ beside the primary result, especially under rule R3), the changed-code gate,
+and GATE on clean images. Use the wording of the mechanism rule: if the mechanism test is not rejected, the improvement is ``not
+distinguishable from masking the same shape elsewhere''.}
+
+\subsection{Detection against cheap rivals}\label{ssec:res_det}
+\todo{RESULT (runs P2-PROBE-02 resumed, P2-GATE-M4): per-item AUROC of $q$, plain-$B$, $s_3$, $A_j-B_j$, texture, neighbour distance,
+rarity and TbV-score (non-finetuned) against changed-code labels, per corruption, with the best cheap rival, its sign, and the paired
+difference with its interval; items excluded for too few corrupted or clean tokens, counted. State in the same sentence that the rival
+is chosen on the data. Sanity corruptions (patch, swap): the chance-bar check.}
+
+\subsection{Pixel denoising as a defence}\label{ssec:res_dn}
+\todo{RESULT: GATE-M against the denoised copy on JPEG and noise; for JPEG use the wording that the denoiser harms the image at this
+setting.}
+
+\subsection{Evidence ratio and the independent-token model}\label{ssec:res_snr}
+\todo{RESULT: paired change of $d_R$ (and $z_R$ as sensitivity) per corruption; the plug-in estimates of $\rho,\mu,\sigma^2,\mu_c,\sigma_c^2,
+\alpha_{\rm obs},\beta_{\rm obs}$ from the per-token terms, the predicted sign of Eq.~\eqref{eq:snr}'s ratio change next to the observed sign,
+and whether the pre-stated refutation applies.}
+
+\subsection{Coherence of the denoiser across mask patterns}\label{ssec:res_coh}
+\todo{RESULT: the median absolute gap against the 95th percentile of the repeat gap, and the pre-stated reading.}
+
+\subsection{Text-direction conditioning arms and two-way fusion (exploratory)}\label{ssec:res_text}
+\todo{RESULT: text-direction arms for the three realistic corruptions with intervals. Fusion only if the best single direction has a clean
+test accuracy below 0.95; otherwise one sentence that the fusion gain cannot be tested at the ceiling, with the clean accuracy.}
+
+\subsection{Cost}\label{ssec:res_cost}
+\todo{RESULT: network passes per item by stage, median time per item, peak GPU memory, from the run configuration and telemetry files.}

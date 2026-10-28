@@ -1,0 +1,110 @@
+% related.tex -- sources: research/paper2/related/CLOSEST-WORK-2026-10-28.md, TRUST-BUT-VERIFY-READ-2026-10-28.md,
+% REFERENCES-DRAFT-2026-10-28.md, NOVELTY-REAUDIT-GATE-2026-10-28.md. Descriptions of other papers stay at the level the
+% reference notes support (abstract, or passage read); anything weaker is not stated.
+
+The related work is organised along four axes: which tokens are treated as suspect, how a token is scored, how the
+threshold is set, and what is done with a flagged token.
+Table~\ref{tab:related} lists the closest works on these axes.
+
+\paragraph{Masked diffusion and unified models.}
+Absorbing-state discrete diffusion~\cite{austin2021d3pm,lou2024sedd} was simplified into masked diffusion language models
+\cite{sahoo2024mdlm} and scaled~\cite{nie2025llada}.
+A masked diffusion denoiser models the conditional distribution of a clean token given the unmasked context~\cite{ou2025radd},
+which is the property the gate score uses.
+Masked image-token generation~\cite{chang2022maskgit} and unified text-image models~\cite{swerdlow2025unidisc,yang2025mmada,li2025lavida,shi2025muddit}
+put several modalities in one sequence.
+UniDisc, the backbone used here, is trained to mask all tokens of a modality with some probability, so that a modality
+likelihood with the other modality withheld exists~\cite{swerdlow2025unidisc}.
+The appendix of that paper demonstrates repair of overlaid and mismatched image-caption pairs by random masking of both
+modalities, re-unmasking and best-of-$n$ selection by the model's own likelihood, shown as examples without a metric or a
+per-token score.
+That recipe is the closest prior procedure for re-infilling and is treated as a baseline in Section~\ref{sec:protocol}.
+
+\paragraph{Remasking and self-correction of generated tokens.}
+Training-free remasking acts on the sampler's own commitments~\cite{wang2025remdm,zhai2026core,yao2026remask}.
+Learned variants add a per-token quality score or a correction head~\cite{kim2025prism,schiff2026proseco,huang2025remedi}.
+For masked image generation, a learned critic decides which sampled image tokens to resample~\cite{lezama2022tokencritic}.
+In multimodal masked diffusion models, self-correction re-evaluates committed tokens with the token remasked and remasks the
+lowest-scoring ones~\cite{ouyang2026freecorrection}.
+A coupled sampler for concurrent text and image generation retracts commitments when cross-modal evidence turns against
+them~\cite{le2026co2jump}.
+All of these act on tokens that the model produced.
+The tokens studied here are given evidence whose provenance is untrusted, which raises a question that does not arise for
+self-correction: whether a suspect token should be withheld (left masked) or imputed (re-infilled).
+The loop of detecting, remasking and refilling is not claimed as new, and the cross-modal remasking trigger belongs to the
+works above.
+
+\paragraph{Corrupted input and conditioning tokens.}
+Trust but Verify~\cite{jhingran2026trustverify} is the nearest work.
+It studies corrupted context tokens in a masked diffusion language model with 170M parameters, finetuned with substituted
+context tokens.
+Its suspicion score is the model's probability of the observed token at its unmasked position, its threshold is annealed
+by hand within an edit budget derived from an assumed corruption rate, and flagged tokens are re-noised to the mask state and
+refilled.
+The paper reports a false-edit rate on clean tokens, and it reports that corruptions that are plausible under the left
+context are only partly detected even with the finetune.
+The present work differs in five ways: no finetuning of the network, a score computed after masking the token, with the
+other modality withheld, a second modality, a threshold with a stated bound on the clean false-alarm proportion, and an outcome
+measured on a cross-modal decision rather than on infilling quality.
+Its observation that detection of plausible corruptions is hard is treated here as an expected difficulty for JPEG and noise,
+with a stated falsifier (Section~\ref{sec:protocol}).
+That paper also suggests that bidirectional consistency checking is needed for plausible corruptions; the masked score used
+here is one way to make that check.
+Because the finetune is what makes the observed-position probability informative in that paper, the baseline named
+``TbV-score (non-finetuned)'' below reproduces its score but not its method.
+
+In vision-language models, uncertainty-guided dropout decoding masks visual tokens that are uncertain under a
+logit-lens projection, with hand-set drop probabilities and without a calibrated threshold~\cite{fang2025dropout}.
+A self-purification defence masks visual tokens of high saliency at inference to remove backdoor behaviour~\cite{wan2026disp}.
+Neither evaluates detection of corrupted tokens against known labels.
+
+\paragraph{Masked-likelihood scores, null-normalised scores and calibrated thresholds.}
+Scoring a token by its masked likelihood has a long history in text: the pseudo-log-likelihood~\cite{salazar2020mlm}, its
+variant for multi-piece words~\cite{kauf2023plwl2r}, and unsupervised spelling detection from the probability of the original
+token under a masked language model~\cite{li2022uchecker}.
+A generative model can be used for image-text matching by normalising the conditional error with the unconditional one
+\cite{krojer2023diffusionitm}, a null-normalised score that the pointwise-mutual-information statistics of this paper
+resemble.
+None of these is claimed as new.
+Conformal prediction supplies distribution-free guarantees under exchangeability~\cite{vovk2005algorithmic,angelopoulos2023gentle},
+conformal p-values give false-discovery control for outlier detection~\cite{bates2023outliers}, and conformal risk control
+bounds the expected value of a monotone loss~\cite{angelopoulos2024crc}.
+Gomes et al.~\cite{gomes2025crc} apply conformal risk control with masking-derived CLIPScore distributions to flag erroneous
+caption words.
+Their guarantee is a high-probability upper bound (Hoeffding and Bentkus) calibrated on foil-labelled data, with a CLIP
+score that changes when words or patches are masked.
+The calibration here uses clean pairs only, bounds an expectation, nests token losses inside items, and scores tokens
+with a generative within-modality likelihood, including image tokens.
+It does not make the guarantee of Gomes et al.\ the first of its kind, and it is not a stronger one: the two answer
+different questions.
+
+\begin{table}[t]
+\centering
+\caption{Closest works on the four axes of Section~\ref{sec:related}. Entries restate what the cited papers report, at the
+level of detail read for this study; ``--'' means not applicable. AR: autoregressive. FAP: false-alarm proportion.}
+\label{tab:related}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.18\linewidth}p{0.15\linewidth}p{0.22\linewidth}p{0.19\linewidth}p{0.14\linewidth}}
+\toprule
+Work & Tokens treated as suspect & Score & Threshold & Use of flagged tokens \\
+\midrule
+Trust but Verify \cite{jhingran2026trustverify} & Corrupted context tokens, text only & Probability of the observed token at its unmasked position (finetuned 170M model) & Hand-annealed, edit budget from an assumed rate; no guarantee & Re-noise to mask, refill \\
+Gomes et al.~\cite{gomes2025crc} & Caption words given an image & Change of CLIPScore under masking & Conformal risk control, high-probability bound, foil-labelled calibration & Flag only \\
+CO2Jump \cite{le2026co2jump} & Tokens generated by the sampler & Self-confidence and a cross-modal confidence term & Per-step quota from the schedule & Remask, resample \\
+FreeCorrection \cite{ouyang2026freecorrection} & Tokens committed by the sampler & Likelihood of the committed token with it remasked & Lowest scores per step, schedule tuned on a validation set & Remask, resample \\
+UniDisc, repair demo~\cite{swerdlow2025unidisc} & Random positions & -- & -- & Random mask, re-unmask, best of $n$ by model likelihood \\
+Dropout decoding~\cite{fang2025dropout} & Visual tokens in an AR vision-language model & Divergence of a logit-lens distribution from the image mean & Hand-set drop probabilities & Drop in several masks, vote \\
+\midrule
+This paper & Input image tokens of a given pair & Masked likelihood in own modality, other modality withheld, normalised by the position marginal & Conformal risk control on clean pairs, expected FAP at most $\alpha$ & Withhold (marginalise) or re-infill \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Source validation before fusion.}
+The classical background is outside machine learning.
+Failure detection and isolation~\cite{willsky1976survey,gao2015survey}, CFAR thresholding~\cite{finn1968adaptive,rohling1983cfar,diao2024radar},
+and decision fusion with weighted reliabilities~\cite{chair1986optimal,kittler1998combining} are the vocabulary the method
+borrows.
+Selecting the set of tokens to keep by looking at their values makes the missingness informative~\cite{rubin1976inference};
+Section~\ref{sec:method} states the conditions under which withholding a data-selected set is still the right treatment.

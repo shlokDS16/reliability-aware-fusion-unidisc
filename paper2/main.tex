@@ -1,0 +1,112 @@
+% main.tex -- Paper 2, Elsevier Information Fusion (research article), elsarticle template.
+% Status: outcome-independent parts drafted on 2026-10-28; no GATE result exists yet.
+% Layout option: the Guide for Authors does not name the elsarticle option and measures pages on the final template.
+% "preprint,12pt" is the single-column review layout; switch to "5p,twocolumn" to estimate the final page count (limit 35).
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{microtype}
+\usepackage{seqsplit}
+\emergencystretch=3em
+\usepackage{hyperref}
+
+% ---- project macros ---------------------------------------------------------------------------
+% \todo marks every open fact. [AUTHOR: ...] = a fact only the authors can supply; [RESULT: ...] = a place for a result
+% that does not exist yet. All \todo items must be resolved or deleted before submission.
+\newcommand{\todo}[1]{{\color{red}\textbf{[#1]}}}
+\newcommand{\mask}{\mathsf{M}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ind}{\mathbb{1}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\fp}{\texttt{fp32}}
+
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}\SetKwInOut{Data}{Data}
+\SetKwProg{Fn}{Function}{:}{}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}
+
+\journal{Information Fusion}
+
+\begin{document}
+
+\begin{frontmatter}
+
+% Title is provisional and written last. It carries the scope (one model) and makes no fusion, repair or improvement claim
+% (red-team condition C4).
+\title{Calibrated gating of corrupted input tokens in a pretrained text-image masked diffusion model: a preregistered measurement on UniDisc}
+
+\author[vit]{Shlok Kumar Goenka}
+\author[vit]{[AUTHOR: supervising professor, full name]}
+\affiliation[vit]{organization={[AUTHOR: school or department], Vellore Institute of Technology},
+            city={Vellore},
+            postcode={[AUTHOR: postcode]},
+            state={Tamil Nadu},
+            country={India}}
+\cortext[cor]{[AUTHOR: corresponding author, postal address and published e-mail]}
+
+\begin{abstract}
+% Provisional abstract, at most 250 words once the \todo items are filled. No citations, no fusion or repair claim (C4).
+% Every sentence about a result waits for the frozen run files.
+A unified masked diffusion model treats every observed token as certain, although the tokens of a real input can be damaged
+by compression, noise, splicing or a mismatched caption.
+This paper asks whether a pretrained model can find damaged image tokens itself, and whether withholding them changes a
+caption-verification decision.
+Each image token is scored by its masked likelihood inside the image with the caption withheld.
+A threshold is set by conformal risk control on clean image-caption pairs, so that the expected proportion of clean
+tokens flagged is at most a chosen level.
+Flagged tokens are removed from an additive image-to-caption evidence statistic.
+The measurement is preregistered, runs on one pretrained 1.4B model with no network finetuning, and compares the gate
+with no gate, with random masks of the same size and shape, with cheap non-generative detectors and with a pixel denoiser.
+\todo{RESULT: headroom outcome (which corruptions leave room for a gate), realised false-alarm proportion with interval,
+primary paired contrast per corruption with interval and Holm-adjusted p-value, mechanism and detection controls. Use only
+the wording allowed by the preregistration, section 12; one sentence on scope: one model, one dataset.}
+\end{abstract}
+
+\begin{highlights}
+% 3 to 5 items, at most 85 characters each; the working copy is highlights.txt. No fusion or repair claim (C4).
+\item \todo{RESULT: see highlights.txt; written after the results are frozen}
+\end{highlights}
+
+\begin{keyword}
+Masked discrete diffusion \sep Conformal risk control \sep Input reliability \sep False-alarm control \sep Vision-language tokens \sep Fault detection
+% [AUTHOR: whether to add "Multimodal fusion" as a keyword is open (scope-fit decision M7); it is kept out until decided.]
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}\label{sec:intro}
+\input{sections/introduction}
+
+\section{Related work}\label{sec:related}
+\input{sections/related}
+
+\section{Method}\label{sec:method}
+\input{sections/method}
+
+\section{Experimental protocol}\label{sec:protocol}
+\input{sections/protocol}
+
+\section{Results}\label{sec:results}
+\input{sections/results}
+
+\section{Discussion and limitations}\label{sec:discussion}
+\input{sections/discussion}
+
+\section{Conclusion}\label{sec:conclusion}
+\input{sections/conclusion}
+
+\input{sections/declarations}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}

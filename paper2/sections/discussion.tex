@@ -1,0 +1,44 @@
+% discussion.tex -- headings and todo placeholders for the outcome-dependent parts. The limitations subsection is outcome-independent
+% and is drafted now from the preregistration (card sections 1, 7, 13; SAP 1, 8; spec 12).
+
+\subsection{Findings}\label{ssec:disc_findings}
+\todo{RESULT: for each finding, the observation, the likely cause marked as a hypothesis, and what would falsify it (style rule 26).
+Use the three-way label of Section~\ref{ssec:tests}; say ``no improvement was detected'' for a null. Do not describe the gate as
+improving verification, repair or generation unless a primary rejection with $b>c$ exists.}
+
+\subsection{Where the work sits in information fusion}\label{ssec:disc_fit}
+\todo{AUTHOR: after the results are frozen, state in two or three sentences what is fused (image tokens as sources, an additive
+log-likelihood-ratio evidence sum), what the gate adds as source validation, and what is not claimed (a new fusion rule). Settle the scope-fit
+question with the supervising professor before submission; the open check is to give the abstract and Figure~1 caption to a reader with
+no project context and ask what is fused.}
+
+\subsection{Limitations}\label{ssec:limits}
+The limitations below are fixed by the design and do not depend on the outcome.
+\begin{itemize}
+\item \emph{One model, one data set.} All measurements use UniDisc 1.4B and COCO val2017 images as tokenised by one tokenizer.
+No statement is made for other models, resolutions, caption styles or data sets.
+\item \emph{Contamination is unknown.} Whether the evaluation images were in the training data of the model or of the tokenizer was not
+established, and it could make clean pairs easier than unseen ones.
+\item \emph{Narrow guarantee.} The calibration bounds the expected false-alarm proportion on clean, exchangeable test pairs. It gives
+no bound on detection power, none on the clean tokens of corrupted items, and none under shift. The realised proportion on one finite
+test set can lie above $\alpha$ because the statement is marginal over the calibration draw.
+\item \emph{Corruptions and labels.} Corruption labels are relative to the tokenisation of the clean image, so a ``clean'' token
+may already carry compression artefacts of the original photograph. Changed codes under JPEG and noise concentrate where the tokenizer
+is unstable, and the changed-code gate is not an upper bound for them.
+\item \emph{Comparators chosen on the data.} The best cheap rival is selected among about nine candidates, with both signs admitted, which
+biases the detection contrast against the gate. The rival's sign could not be fixed blind (Section~\ref{ssec:prereg}).
+\item \emph{Pixel denoiser.} One setting was used for all corruptions; it was chosen after one exploratory evaluation on 20 images and
+harms JPEG images, so the denoising contrast on JPEG favours the gate.
+\item \emph{Variance not in the intervals.} Intervals cover item sampling. They do not cover variation across mask partitions, corruption
+draws, jitter seeds or models, because no training seeds exist and only one corruption draw is made per image.
+\item \emph{Scope of the main run.} The preregistered run exercises withholding by dropping terms of a sum computed from a caption-only
+pass. Re-infilling, caption corruption, hard negatives, the repair recipe of the backbone's authors, and a second model were not run
+unless an addendum says so; two-way fusion is testable only below the stated ceiling.
+\item \emph{Hardware and missing data.} The GPU is a single laptop device that failed in earlier pilots. A crash leaves a prefix of the item
+list and the missing-item rule applies; a fold under 240 items is reported as incomplete.
+\item \emph{Narrow novelty.} Detecting and remasking corrupted input tokens, cross-modal remasking, risk-controlled thresholds for
+vision-language token errors and masked-likelihood scores each have precedents (Section~\ref{sec:related}). The claim is a measurement of
+their composition on one model, and it holds only as far as the measured results go.
+\item \emph{Concurrent work.} A search for concurrent work was last run on 28 October 2026; unpublished or under-review work is not visible.
+\todo{AUTHOR: repeat the search once before submission.}
+\end{itemize}

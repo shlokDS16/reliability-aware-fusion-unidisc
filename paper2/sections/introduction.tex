@@ -1,0 +1,98 @@
+% introduction.tex -- no outcome claims. Background sentences carry citation keys from references.bib; the only empirical
+% sentence (none here) would carry a run ID.
+% Must-not-claim list (NOVELTY-REAUDIT-GATE-2026-10-28, section 7) is respected: no "first" claim anywhere in this file.
+
+Input-token gating asks which of the observed tokens given to a model should be withheld before the model reasons from
+them.
+The question arises for any model that reads a sequence of discrete tokens as evidence, and it is sharp for masked
+discrete diffusion models.
+A masked diffusion model is trained to predict any masked token from any visible subset of the sequence, and the mask
+token means ``unknown''~\cite{austin2021d3pm,sahoo2024mdlm,ou2025radd}.
+Every token that is visible is therefore treated as certain.
+This is acceptable for a clean training sequence.
+It is a weakness when the input comes from a pipeline that compresses, adds noise to, crops, splices or mislabels the data,
+because a single wrong visible token is used with the same confidence as a correct one.
+Unified models extend the setting to two or more modalities in one token sequence~\cite{swerdlow2025unidisc,yang2025mmada,li2025lavida,shi2025muddit}.
+In such a model a damaged image token can change what the model concludes about a caption, and the reverse.
+
+\paragraph{Why this is a fusion problem.}
+Each image token and each caption token is a source that reports a value, and the model combines them.
+The paired decision studied here, whether a caption describes an image, sums per-token log-likelihood ratios over the image
+tokens.
+That is the log-likelihood-ratio rule used to fuse local decisions in distributed detection, in which each source is weighted
+by its reliability before a global threshold is applied~\cite{chair1986optimal,tenney1981detection}.
+The literature on multisensor fusion treats imperfect and spurious sensor data as a first-order difficulty
+\cite{khaleghi2013multisensor}, and decision fusion with unreliable or falsified sources has its own review~\cite{vempaty2013byzantine}.
+Classical practice answers this difficulty in two steps.
+It first checks each source for a fault and isolates the faulty ones before fusing, a task treated under fault detection and
+isolation~\cite{willsky1976survey,gao2015survey}.
+It sets the detection threshold from clean data so that the false-alarm rate stays at a chosen value, the idea behind
+constant false-alarm rate (CFAR) detection~\cite{finn1968adaptive,rohling1983cfar}.
+In this paper the image tokens are the sources, the masked denoiser is the model of what a healthy source looks like, and the
+gate is the fault detector that runs before the evidence is summed.
+This is a framing of the measurement, not a claim of a new fusion rule: the evidence statistic is the standard additive
+likelihood-ratio sum, and the contribution lies in the gate and in how it is calibrated and measured.
+
+\paragraph{What exists and what is missing.}
+Many recent methods remask tokens in a masked diffusion model.
+Most act on tokens that the sampler itself produced: they remask low-confidence commitments, learn a quality score, or
+perturb the context to find brittle tokens
+\cite{wang2025remdm,kim2025prism,schiff2026proseco,huang2025remedi,zhai2026core,yao2026remask,lezama2022tokencritic}.
+In multimodal masked diffusion models the same idea has been applied to the model's own generations, with cross-modal
+confidence as the trigger~\cite{ouyang2026freecorrection,le2026co2jump}.
+Work on corrupted \emph{input} tokens is thinner.
+Trust but Verify~\cite{jhingran2026trustverify} detects corrupted conditioning tokens in a text-only masked diffusion model,
+re-noises them to the mask state and refills them; it needs a finetune, uses a hand-set threshold, and has no second modality.
+Conformal risk control has been used with masking-derived scores to flag erroneous caption words given an image, with a
+CLIP-based score and a threshold calibrated on labelled foil data~\cite{gomes2025crc}.
+The authors of UniDisc show repair of corrupted image-caption pairs by random masking and best-of-$n$ re-infilling in one
+qualitative figure~\cite{swerdlow2025unidisc}.
+Section~\ref{sec:related} gives the precise differences.
+Three things are missing from this picture.
+No measurement separates a gate that finds damaged tokens from a mask that merely has the same shape.
+No threshold for input tokens carries a stated bound on the false-alarm proportion on clean inputs.
+And no comparison shows whether withholding flagged tokens helps a cross-modal decision more than cheap non-generative
+detectors or a pixel denoiser do.
+
+\paragraph{Contribution, stated as a measurement.}
+This paper does not claim to be the first to detect or remask corrupted input tokens, the first to remask in a unified
+model, the first risk-controlled threshold for vision-language token errors, or the first masked-likelihood or
+null-normalised generative score.
+The claim is the following, with every outcome clause a preregistered hypothesis.
+On a pretrained unified text-image masked diffusion model, with no network finetuning, each input token is scored by its
+masked likelihood in its own modality with the other modality withheld.
+The flag threshold is set by conformal risk control on clean pairs, so that the expected false-alarm proportion on clean
+inputs is at most a chosen level $\alpha$.
+The paper then measures whether withholding or re-infilling the flagged tokens preserves cross-modal verification under
+image-token corruption, against no gate, equal-size random gates, cheap detectors and a pixel denoiser.
+The contributions are:
+\begin{itemize}
+\item \emph{A gate and its calibration} (Section~\ref{sec:method}). The gate statistic, the evidence-separation rule that
+keeps cross-modal terms out of the gate, the conformal threshold with the exact guarantee it gives and the guarantees it does
+not give, and seven algorithms that build from one masked-score primitive to the full verification procedure.
+\item \emph{A preregistered protocol} (Section~\ref{sec:protocol}). One primary hypothesis family with a fixed correction,
+controls that separate detection from mask geometry, from texture and from denoising, a blind headroom rule that
+removes corruptions that leave nothing to repair, and a stated reading of null results.
+\item \emph{Measurements on one model} (Section~\ref{sec:results}). \todo{RESULT: one sentence per confirmed finding, with the
+number and interval from the frozen run files and the preregistered wording; findings that the data do not support are
+stated as such.}
+\item \emph{An exploratory feasibility result} (Section~\ref{sec:protocol}).
+% run: P2-PROBE-01
+A pilot on 300 clean image-caption pairs
+shows the pair-level evidence signal that the gate and the endpoint rely on.
+\end{itemize}
+The scope is one pretrained 1.4B model, one image-caption dataset, three realistic image corruptions and two sanity corruptions.
+Re-infilling, caption corruption and two-way fusion are described in the method but are outside the preregistered main
+run; Section~\ref{sec:protocol} states which parts were run.
+
+\todo{AUTHOR: Figure 1 (motivation, page 1-2 per IF anatomy rule 31): one measured clean versus corrupted example with the
+per-token evidence map, from a committed script; to be made after the results are frozen. Do not draw it with a generative
+image tool.}
+
+\paragraph{Roadmap.}
+Section~\ref{sec:related} places the work against the closest methods.
+Section~\ref{sec:method} defines the scores, the calibrated gate, the evidence statistic and the algorithms.
+Section~\ref{sec:protocol} gives the data, folds, corruptions, arms, baselines, endpoints, tests and hardware, with the
+exploratory pilot.
+Section~\ref{sec:results} reports the results, Section~\ref{sec:discussion} discusses them with the limitations, and
+Section~\ref{sec:conclusion} concludes.
