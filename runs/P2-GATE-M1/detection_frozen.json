@@ -1,0 +1,89 @@
+{
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ },
+ "frozen": {
+  "jpeg": {
+   "available": true,
+   "rival": "tex_neg",
+   "base": "tex",
+   "sign": -1,
+   "mean_auroc": 0.7557785397920582,
+   "n_items": 200,
+   "all_means": {
+    "tex": 0.24422146020794178,
+    "nbr": 0.4440604926663441,
+    "rarity": 0.5651037563155994,
+    "s3": 0.5197824970315201,
+    "plainB": 0.560495221253553,
+    "tbv": 0.581040998867284,
+    "tex_neg": 0.7557785397920582,
+    "nbr_neg": 0.5559395073336558,
+    "rarity_neg": 0.43489624368440055
+   },
+   "label": null,
+   "rarity_source": null
+  },
+  "noise": {
+   "available": true,
+   "rival": "tex_neg",
+   "base": "tex",
+   "sign": -1,
+   "mean_auroc": 0.7681135967414594,
+   "n_items": 200,
+   "all_means": {
+    "tex": 0.23188640325854074,
+    "nbr": 0.3537265976170999,
+    "rarity": 0.4100570806273037,
+    "s3": 0.475661944766237,
+    "plainB": 0.5108116086012288,
+    "tbv": 0.6073606987857539,
+    "tex_neg": 0.7681135967414594,
+    "nbr_neg": 0.6462734023829001,
+    "rarity_neg": 0.5899429193726964
+   },
+   "label": null,
+   "rarity_source": null
+  }
+ },
+ "n_items": 200,
+ "dry_run_items": 21,
+ "source": "analyze_gate_m1 on the complete M1 set"
+}

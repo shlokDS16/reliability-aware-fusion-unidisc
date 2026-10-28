@@ -1,0 +1,17 @@
+wrote detection_frozen.json: commit it before M3/M4
+{
+ "n_items": 200,
+ "has_q": true,
+ "label": "M1 detection table"
+}
+chance bar (patch/swap, plain-B and q; decided only at n >= 100 per cell and pool; lower 95% bound > 0.5 on the closed prefix AND on items 21 and later): PASSED n_all=200 n_late=179
+   patch/plainB n_all 200 n_late 179 lower95 [0.962, 0.962] decided_pass decided_pass -> pass
+   patch/q n_all 200 n_late 179 lower95 [0.959, 0.959] decided_pass decided_pass -> pass
+   swap/plainB n_all 200 n_late 179 lower95 [0.958, 0.957] decided_pass decided_pass -> pass
+   swap/q n_all 200 n_late 179 lower95 [0.952, 0.952] decided_pass decided_pass -> pass
+probe-2 rows report: {'n_lines': 200, 'n_clean_lines': 200, 'n_glued_lines': 0, 'n_recovered_rows': 0, 'n_unparseable_lines': 0, 'exists': True, 'n_rows': 200, 'n_array_items': 200, 'rows_lost_arrays_present': [], 'n_duplicate_rows': 0}
+swap {'nbr': 0.741, 'nbr_neg': 0.259, 'plainB': 0.96, 'q': 0.955, 'r_original': 0.503, 'random': 0.501, 'rarity': 0.598, 'rarity_neg': 0.402, 's1': 0.96, 's2': 0.95, 's3': 0.495, 'tbv': 0.859}
+patch {'nbr': 0.786, 'nbr_neg': 0.214, 'plainB': 0.964, 'q': 0.961, 'r_original': 0.504, 'random': 0.497, 'rarity': 0.602, 'rarity_neg': 0.398, 's1': 0.964, 's2': 0.952, 's3': 0.943, 'tbv': 0.854}
+jpeg {'nbr': 0.444, 'nbr_neg': 0.556, 'plainB': 0.56, 'q': 0.561, 'r_original': 0.491, 'random': 0.496, 'rarity': 0.565, 'rarity_neg': 0.435, 's1': 0.56, 's2': 0.553, 's3': 0.52, 'tbv': 0.581, 'tex': 0.244, 'tex_neg': 0.756}
+noise {'nbr': 0.354, 'nbr_neg': 0.646, 'plainB': 0.511, 'q': 0.503, 'r_original': 0.506, 'random': 0.495, 'rarity': 0.41, 'rarity_neg': 0.59, 's1': 0.511, 's2': 0.498, 's3': 0.476, 'tbv': 0.607, 'tex': 0.232, 'tex_neg': 0.768}
+exit 0

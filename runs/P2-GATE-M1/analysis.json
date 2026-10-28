@@ -1,0 +1,1230 @@
+{
+ "labels": {
+  "tbv": "TbV-score (non-finetuned)"
+ },
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ },
+ "n_items": 200,
+ "n_items_with_q": 200,
+ "item_idx": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  35,
+  36,
+  37,
+  38,
+  39,
+  40,
+  41,
+  42,
+  43,
+  44,
+  45,
+  46,
+  47,
+  48,
+  49,
+  50,
+  51,
+  52,
+  53,
+  54,
+  55,
+  56,
+  57,
+  58,
+  59,
+  60,
+  61,
+  62,
+  63,
+  64,
+  65,
+  66,
+  67,
+  68,
+  69,
+  70,
+  71,
+  72,
+  73,
+  74,
+  75,
+  76,
+  77,
+  78,
+  79,
+  80,
+  81,
+  82,
+  83,
+  84,
+  85,
+  86,
+  87,
+  88,
+  89,
+  90,
+  91,
+  92,
+  93,
+  94,
+  95,
+  96,
+  97,
+  98,
+  99,
+  100,
+  101,
+  102,
+  103,
+  104,
+  105,
+  106,
+  107,
+  108,
+  109,
+  110,
+  111,
+  112,
+  113,
+  114,
+  115,
+  116,
+  117,
+  118,
+  119,
+  120,
+  121,
+  122,
+  123,
+  124,
+  125,
+  126,
+  127,
+  128,
+  129,
+  130,
+  131,
+  132,
+  133,
+  134,
+  135,
+  136,
+  137,
+  138,
+  139,
+  140,
+  141,
+  142,
+  143,
+  144,
+  145,
+  146,
+  147,
+  148,
+  149,
+  150,
+  151,
+  152,
+  153,
+  154,
+  155,
+  156,
+  157,
+  158,
+  159,
+  160,
+  161,
+  162,
+  163,
+  164,
+  165,
+  166,
+  167,
+  168,
+  169,
+  170,
+  171,
+  172,
+  173,
+  174,
+  175,
+  176,
+  177,
+  178,
+  179,
+  180,
+  181,
+  182,
+  183,
+  184,
+  185,
+  186,
+  187,
+  188,
+  189,
+  190,
+  191,
+  192,
+  193,
+  194,
+  195,
+  196,
+  197,
+  198,
+  199
+ ],
+ "has_q": true,
+ "label": "M1 detection table",
+ "pool": {
+  "n_items": 200,
+  "n_late": 179,
+  "last_idx": 199,
+  "complete": true,
+  "item_idx_sha256": "050029a81b691389bb405be74dd4d2c17838c422c8de0972a1fb21e62b9b13cc"
+ },
+ "min_n": null,
+ "table": {
+  "swap": {
+   "nbr": {
+    "mean": 0.7407883085810412,
+    "lo": 0.7335181832086867,
+    "hi": 0.7479671325308536,
+    "n": 200
+   },
+   "nbr_neg": {
+    "mean": 0.25921169141895883,
+    "lo": 0.25203286746914644,
+    "hi": 0.26648181679131333,
+    "n": 200
+   },
+   "plainB": {
+    "mean": 0.9597752973595552,
+    "lo": 0.95750308911732,
+    "hi": 0.9620364380051737,
+    "n": 200
+   },
+   "q": {
+    "mean": 0.9545095429657886,
+    "lo": 0.9520485598760545,
+    "hi": 0.9569820771498726,
+    "n": 200
+   },
+   "r_original": {
+    "mean": 0.5032163707603522,
+    "lo": 0.49719365186972997,
+    "hi": 0.5092601934141187,
+    "n": 200
+   },
+   "random": {
+    "mean": 0.5009936015489662,
+    "lo": 0.4972704976710568,
+    "hi": 0.50458644070822,
+    "n": 200
+   },
+   "rarity": {
+    "mean": 0.5984375087798917,
+    "lo": 0.5898838850090055,
+    "hi": 0.6066195825294072,
+    "n": 200
+   },
+   "rarity_neg": {
+    "mean": 0.40156249122010834,
+    "lo": 0.39338041747059294,
+    "hi": 0.4101161149909945,
+    "n": 200
+   },
+   "s1": {
+    "mean": 0.9597147996694824,
+    "lo": 0.9574445803301602,
+    "hi": 0.9619827918910141,
+    "n": 200
+   },
+   "s2": {
+    "mean": 0.9497958902690291,
+    "lo": 0.9470267684390301,
+    "hi": 0.9525439802642166,
+    "n": 200
+   },
+   "s3": {
+    "mean": 0.49462441905651694,
+    "lo": 0.4909800949256254,
+    "hi": 0.4982701798217551,
+    "n": 200
+   },
+   "tbv": {
+    "mean": 0.858844175045115,
+    "lo": 0.8539313726900024,
+    "hi": 0.8636235449856288,
+    "n": 200
+   },
+   "_n_items": 200,
+   "_n_excluded": 0
+  },
+  "patch": {
+   "nbr": {
+    "mean": 0.7862695573605422,
+    "lo": 0.7778166687540986,
+    "hi": 0.7945821645365546,
+    "n": 200
+   },
+   "nbr_neg": {
+    "mean": 0.21373044263945798,
+    "lo": 0.2054178354634455,
+    "hi": 0.22218333124590134,
+    "n": 200
+   },
+   "plainB": {
+    "mean": 0.9644110316306211,
+    "lo": 0.9623589432110248,
+    "hi": 0.9664157171172867,
+    "n": 200
+   },
+   "q": {
+    "mean": 0.9610701169794222,
+    "lo": 0.9587965840657552,
+    "hi": 0.9632965698242189,
+    "n": 200
+   },
+   "r_original": {
+    "mean": 0.5042427299581044,
+    "lo": 0.4960007954168341,
+    "hi": 0.5123530245544586,
+    "n": 200
+   },
+   "random": {
+    "mean": 0.49739824267704746,
+    "lo": 0.4920411096436181,
+    "hi": 0.5028146175497369,
+    "n": 200
+   },
+   "rarity": {
+    "mean": 0.6016817122404705,
+    "lo": 0.5925178609212239,
+    "hi": 0.6107434374593321,
+    "n": 200
+   },
+   "rarity_neg": {
+    "mean": 0.3983182877595295,
+    "lo": 0.38925656254066787,
+    "hi": 0.407482139078776,
+    "n": 200
+   },
+   "s1": {
+    "mean": 0.9644298120805537,
+    "lo": 0.9623773869503454,
+    "hi": 0.9664509047505452,
+    "n": 200
+   },
+   "s2": {
+    "mean": 0.951878209148934,
+    "lo": 0.9487587585449219,
+    "hi": 0.9548686593302859,
+    "n": 200
+   },
+   "s3": {
+    "mean": 0.9431193317279565,
+    "lo": 0.9386223937494802,
+    "hi": 0.9473470899766112,
+    "n": 200
+   },
+   "tbv": {
+    "mean": 0.8540047230280803,
+    "lo": 0.847019860539522,
+    "hi": 0.860776333616803,
+    "n": 200
+   },
+   "_n_items": 200,
+   "_n_excluded": 0
+  },
+  "jpeg": {
+   "nbr": {
+    "mean": 0.4440604926663441,
+    "lo": 0.4312436533582493,
+    "hi": 0.45752616265120766,
+    "n": 197
+   },
+   "nbr_neg": {
+    "mean": 0.5559395073336558,
+    "lo": 0.5424738373487923,
+    "hi": 0.5687563466417506,
+    "n": 197
+   },
+   "plainB": {
+    "mean": 0.560495221253553,
+    "lo": 0.5455870244190452,
+    "hi": 0.5747810946796418,
+    "n": 197
+   },
+   "q": {
+    "mean": 0.5612629034380272,
+    "lo": 0.547311175460547,
+    "hi": 0.574955961923823,
+    "n": 197
+   },
+   "r_original": {
+    "mean": 0.49106692837600824,
+    "lo": 0.48081712776686786,
+    "hi": 0.5012760606215128,
+    "n": 197
+   },
+   "random": {
+    "mean": 0.49591626829701874,
+    "lo": 0.48746511881468985,
+    "hi": 0.5043069254535076,
+    "n": 197
+   },
+   "rarity": {
+    "mean": 0.5651037563155995,
+    "lo": 0.5534248424562258,
+    "hi": 0.5767607182930546,
+    "n": 197
+   },
+   "rarity_neg": {
+    "mean": 0.43489624368440044,
+    "lo": 0.4232392817069453,
+    "hi": 0.44657515754377425,
+    "n": 197
+   },
+   "s1": {
+    "mean": 0.5598114378683063,
+    "lo": 0.5449639030810988,
+    "hi": 0.5740955410454267,
+    "n": 197
+   },
+   "s2": {
+    "mean": 0.5525638587154911,
+    "lo": 0.538447467430937,
+    "hi": 0.566265426637221,
+    "n": 197
+   },
+   "s3": {
+    "mean": 0.5197824970315201,
+    "lo": 0.5026240747818997,
+    "hi": 0.5365339324294084,
+    "n": 197
+   },
+   "tbv": {
+    "mean": 0.5810409988672839,
+    "lo": 0.5690024164155794,
+    "hi": 0.592934001908178,
+    "n": 197
+   },
+   "tex": {
+    "mean": 0.2442214602079418,
+    "lo": 0.2323791249787043,
+    "hi": 0.2570543816361399,
+    "n": 197
+   },
+   "tex_neg": {
+    "mean": 0.7557785397920582,
+    "lo": 0.7429456183638602,
+    "hi": 0.7676208750212956,
+    "n": 197
+   },
+   "_n_items": 200,
+   "_n_excluded": 3
+  },
+  "noise": {
+   "nbr": {
+    "mean": 0.3537265976170999,
+    "lo": 0.3436696855681755,
+    "hi": 0.3640748985280741,
+    "n": 198
+   },
+   "nbr_neg": {
+    "mean": 0.6462734023829001,
+    "lo": 0.6359251014719258,
+    "hi": 0.6563303144318247,
+    "n": 198
+   },
+   "plainB": {
+    "mean": 0.5108116086012288,
+    "lo": 0.5006010856706766,
+    "hi": 0.5214255621003477,
+    "n": 198
+   },
+   "q": {
+    "mean": 0.502808546740695,
+    "lo": 0.49250833171057445,
+    "hi": 0.5133906819986384,
+    "n": 198
+   },
+   "r_original": {
+    "mean": 0.5061716827979119,
+    "lo": 0.4989396736322405,
+    "hi": 0.5132651908107847,
+    "n": 198
+   },
+   "random": {
+    "mean": 0.49497335170540874,
+    "lo": 0.4886616715557476,
+    "hi": 0.5011109206835606,
+    "n": 198
+   },
+   "rarity": {
+    "mean": 0.4100570806273037,
+    "lo": 0.4023600458886037,
+    "hi": 0.4175633542093549,
+    "n": 198
+   },
+   "rarity_neg": {
+    "mean": 0.5899429193726963,
+    "lo": 0.582436645790645,
+    "hi": 0.5976399541113963,
+    "n": 198
+   },
+   "s1": {
+    "mean": 0.51120256233363,
+    "lo": 0.5009322359787967,
+    "hi": 0.5217985399586075,
+    "n": 198
+   },
+   "s2": {
+    "mean": 0.4981064584002726,
+    "lo": 0.4878967953950078,
+    "hi": 0.50830885695655,
+    "n": 198
+   },
+   "s3": {
+    "mean": 0.475661944766237,
+    "lo": 0.4631390646943321,
+    "hi": 0.4884455078550129,
+    "n": 198
+   },
+   "tbv": {
+    "mean": 0.6073606987857538,
+    "lo": 0.5972102281015595,
+    "hi": 0.6177513640252994,
+    "n": 198
+   },
+   "tex": {
+    "mean": 0.23188640325854074,
+    "lo": 0.22351927292834203,
+    "hi": 0.2402721477236014,
+    "n": 198
+   },
+   "tex_neg": {
+    "mean": 0.7681135967414592,
+    "lo": 0.7597278522763986,
+    "hi": 0.7764807270716579,
+    "n": 198
+   },
+   "_n_items": 200,
+   "_n_excluded": 2
+  }
+ },
+ "paired_q_vs_best_cheap": {
+  "swap": {
+   "corr": "swap",
+   "available": true,
+   "target": "q",
+   "best_cheap": "plainB",
+   "rival_base": "plainB",
+   "rival_sign": 1,
+   "cheap_means": {
+    "nbr": 0.7407883085810412,
+    "rarity": 0.5984375087798917,
+    "s3": 0.49462441905651694,
+    "plainB": 0.9597752973595552,
+    "tbv": 0.858844175045115,
+    "nbr_neg": 0.25921169141895883,
+    "rarity_neg": 0.40156249122010834
+   },
+   "diff_mean": -0.005265754393766717,
+   "p": 0.00019998000199980003,
+   "ci95": [
+    -0.005838699021005897,
+    -0.004743529269452464
+   ],
+   "ci975": [
+    -0.005933590780065589,
+    -0.004663255430057736
+   ],
+   "diff_lo": -0.005838699021005897,
+   "diff_hi": -0.004743529269452464,
+   "excludes_zero": true,
+   "reselect": false,
+   "n_items": 200
+  },
+  "patch": {
+   "corr": "patch",
+   "available": true,
+   "target": "q",
+   "best_cheap": "plainB",
+   "rival_base": "plainB",
+   "rival_sign": 1,
+   "cheap_means": {
+    "nbr": 0.7862695573605422,
+    "rarity": 0.6016817122404705,
+    "s3": 0.9431193317279565,
+    "plainB": 0.9644110316306211,
+    "tbv": 0.8540047230280803,
+    "nbr_neg": 0.21373044263945798,
+    "rarity_neg": 0.3983182877595295
+   },
+   "diff_mean": -0.0033409146511989662,
+   "p": 0.00019998000199980003,
+   "ci95": [
+    -0.004150438435872397,
+    -0.002565589396158853
+   ],
+   "ci975": [
+    -0.004278105163574219,
+    -0.002453815714518232
+   ],
+   "diff_lo": -0.004150438435872397,
+   "diff_hi": -0.002565589396158853,
+   "excludes_zero": true,
+   "reselect": false,
+   "n_items": 200
+  },
+  "jpeg": {
+   "corr": "jpeg",
+   "available": true,
+   "target": "q",
+   "best_cheap": "tex_neg",
+   "rival_base": "tex",
+   "rival_sign": -1,
+   "cheap_means": {
+    "tex": 0.24422146020794178,
+    "nbr": 0.4440604926663441,
+    "rarity": 0.5651037563155994,
+    "s3": 0.5197824970315201,
+    "plainB": 0.560495221253553,
+    "tbv": 0.581040998867284,
+    "tex_neg": 0.7557785397920582,
+    "nbr_neg": 0.5559395073336558,
+    "rarity_neg": 0.43489624368440055
+   },
+   "diff_mean": -0.19451563635403085,
+   "p": 0.00019998000199980003,
+   "ci95": [
+    -0.21409076954430478,
+    -0.17480753714957012
+   ],
+   "ci975": [
+    -0.2167724384043295,
+    -0.1713518517213419
+   ],
+   "diff_lo": -0.21409076954430478,
+   "diff_hi": -0.17480753714957012,
+   "excludes_zero": true,
+   "reselect": false,
+   "n_items": 200
+  },
+  "noise": {
+   "corr": "noise",
+   "available": true,
+   "target": "q",
+   "best_cheap": "tex_neg",
+   "rival_base": "tex",
+   "rival_sign": -1,
+   "cheap_means": {
+    "tex": 0.23188640325854074,
+    "nbr": 0.3537265976170999,
+    "rarity": 0.4100570806273037,
+    "s3": 0.475661944766237,
+    "plainB": 0.5108116086012288,
+    "tbv": 0.6073606987857539,
+    "tex_neg": 0.7681135967414594,
+    "nbr_neg": 0.6462734023829001,
+    "rarity_neg": 0.5899429193726964
+   },
+   "diff_mean": -0.26530505000076426,
+   "p": 0.00019998000199980003,
+   "ci95": [
+    -0.2782212288133582,
+    -0.25267322541793813
+   ],
+   "ci975": [
+    -0.28001268317315803,
+    -0.2508164297998168
+   ],
+   "diff_lo": -0.2782212288133582,
+   "diff_hi": -0.25267322541793813,
+   "excludes_zero": true,
+   "reselect": false,
+   "n_items": 200
+  }
+ },
+ "falsifier": {
+  "per_corruption": {
+   "jpeg": {
+    "corr": "jpeg",
+    "available": true,
+    "target": "q",
+    "best_cheap": "tex_neg",
+    "rival_base": "tex",
+    "rival_sign": -1,
+    "cheap_means": {
+     "tex": 0.24422146020794178,
+     "nbr": 0.4440604926663441,
+     "rarity": 0.5651037563155994,
+     "s3": 0.5197824970315201,
+     "plainB": 0.560495221253553,
+     "tbv": 0.581040998867284,
+     "tex_neg": 0.7557785397920582,
+     "nbr_neg": 0.5559395073336558,
+     "rarity_neg": 0.43489624368440055
+    },
+    "diff_mean": -0.19451563635403085,
+    "p": 0.00019998000199980003,
+    "ci95": [
+     -0.21409076954430478,
+     -0.17480753714957012
+    ],
+    "ci975": [
+     -0.2167724384043295,
+     -0.1713518517213419
+    ],
+    "diff_lo": -0.21409076954430478,
+    "diff_hi": -0.17480753714957012,
+    "excludes_zero": true,
+    "reselect": false,
+    "n_items": 200,
+    "p_holm": 0.00039996000399960006
+   },
+   "noise": {
+    "corr": "noise",
+    "available": true,
+    "target": "q",
+    "best_cheap": "tex_neg",
+    "rival_base": "tex",
+    "rival_sign": -1,
+    "cheap_means": {
+     "tex": 0.23188640325854074,
+     "nbr": 0.3537265976170999,
+     "rarity": 0.4100570806273037,
+     "s3": 0.475661944766237,
+     "plainB": 0.5108116086012288,
+     "tbv": 0.6073606987857539,
+     "tex_neg": 0.7681135967414594,
+     "nbr_neg": 0.6462734023829001,
+     "rarity_neg": 0.5899429193726964
+    },
+    "diff_mean": -0.26530505000076426,
+    "p": 0.00019998000199980003,
+    "ci95": [
+     -0.2782212288133582,
+     -0.25267322541793813
+    ],
+    "ci975": [
+     -0.28001268317315803,
+     -0.2508164297998168
+    ],
+    "diff_lo": -0.2782212288133582,
+    "diff_hi": -0.25267322541793813,
+    "excludes_zero": true,
+    "reselect": false,
+    "n_items": 200,
+    "p_holm": 0.00039996000399960006
+   }
+  },
+  "falsified": true,
+  "q_significantly_better_on": [],
+  "q_significantly_worse_on": [
+   "jpeg",
+   "noise"
+  ],
+  "holm_m": 2,
+  "reselect": false,
+  "rule": "SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise"
+ },
+ "falsifier_rival_reselected_in_each_resample": {
+  "per_corruption": {
+   "jpeg": {
+    "corr": "jpeg",
+    "available": true,
+    "target": "q",
+    "best_cheap": "tex_neg",
+    "rival_base": "tex",
+    "rival_sign": -1,
+    "cheap_means": {
+     "tex": 0.24422146020794178,
+     "nbr": 0.4440604926663441,
+     "rarity": 0.5651037563155994,
+     "s3": 0.5197824970315201,
+     "plainB": 0.560495221253553,
+     "tbv": 0.581040998867284,
+     "tex_neg": 0.7557785397920582,
+     "nbr_neg": 0.5559395073336558,
+     "rarity_neg": 0.43489624368440055
+    },
+    "diff_mean": -0.19451563635403102,
+    "p": 0.00019998000199980003,
+    "ci95": [
+     -0.2140907695443045,
+     -0.17480753714956987
+    ],
+    "ci975": [
+     -0.21677243840432978,
+     -0.17135185172134235
+    ],
+    "diff_lo": -0.2140907695443045,
+    "diff_hi": -0.17480753714956987,
+    "excludes_zero": true,
+    "reselect": true,
+    "n_items": 200,
+    "p_holm": 0.00039996000399960006
+   },
+   "noise": {
+    "corr": "noise",
+    "available": true,
+    "target": "q",
+    "best_cheap": "tex_neg",
+    "rival_base": "tex",
+    "rival_sign": -1,
+    "cheap_means": {
+     "tex": 0.23188640325854074,
+     "nbr": 0.3537265976170999,
+     "rarity": 0.4100570806273037,
+     "s3": 0.475661944766237,
+     "plainB": 0.5108116086012288,
+     "tbv": 0.6073606987857539,
+     "tex_neg": 0.7681135967414594,
+     "nbr_neg": 0.6462734023829001,
+     "rarity_neg": 0.5899429193726964
+    },
+    "diff_mean": -0.2653050500007642,
+    "p": 0.00019998000199980003,
+    "ci95": [
+     -0.2782212288133584,
+     -0.2526732254179382
+    ],
+    "ci975": [
+     -0.28001268317315775,
+     -0.2508164297998168
+    ],
+    "diff_lo": -0.2782212288133584,
+    "diff_hi": -0.2526732254179382,
+    "excludes_zero": true,
+    "reselect": true,
+    "n_items": 200,
+    "p_holm": 0.00039996000399960006
+   }
+  },
+  "falsified": true,
+  "q_significantly_better_on": [],
+  "q_significantly_worse_on": [
+   "jpeg",
+   "noise"
+  ],
+  "holm_m": 2,
+  "reselect": true,
+  "rule": "SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise"
+ },
+ "falsifier_excluding_dry_run_items": {
+  "n_items": 179,
+  "per_corruption": {
+   "jpeg": {
+    "corr": "jpeg",
+    "available": true,
+    "target": "q",
+    "best_cheap": "tex_neg",
+    "rival_base": "tex",
+    "rival_sign": -1,
+    "cheap_means": {
+     "tex": 0.2441909530309532,
+     "nbr": 0.44135794952150964,
+     "rarity": 0.5666266481264902,
+     "s3": 0.5227294075019423,
+     "plainB": 0.5625391000011327,
+     "tbv": 0.5823443734054992,
+     "tex_neg": 0.7558090469690467,
+     "nbr_neg": 0.5586420504784904,
+     "rarity_neg": 0.43337335187350967
+    },
+    "diff_mean": -0.19204770286125034,
+    "p": 0.00019998000199980003,
+    "ci95": [
+     -0.21309939478837278,
+     -0.17212245182482103
+    ],
+    "ci975": [
+     -0.21592991183450966,
+     -0.16929226853057183
+    ],
+    "diff_lo": -0.21309939478837278,
+    "diff_hi": -0.17212245182482103,
+    "excludes_zero": true,
+    "reselect": false,
+    "n_items": 179,
+    "p_holm": 0.00039996000399960006
+   },
+   "noise": {
+    "corr": "noise",
+    "available": true,
+    "target": "q",
+    "best_cheap": "tex_neg",
+    "rival_base": "tex",
+    "rival_sign": -1,
+    "cheap_means": {
+     "tex": 0.23258417656069122,
+     "nbr": 0.3556360325626031,
+     "rarity": 0.4072970042449308,
+     "s3": 0.47617531293880144,
+     "plainB": 0.5103727271412671,
+     "tbv": 0.6065817764659356,
+     "tex_neg": 0.7674158234393089,
+     "nbr_neg": 0.6443639674373969,
+     "rarity_neg": 0.5927029957550691
+    },
+    "diff_mean": -0.2645072978617568,
+    "p": 0.00019998000199980003,
+    "ci95": [
+     -0.2781219268519682,
+     -0.2509843270207358
+    ],
+    "ci975": [
+     -0.28012570939611603,
+     -0.2489332202092104
+    ],
+    "diff_lo": -0.2781219268519682,
+    "diff_hi": -0.2509843270207358,
+    "excludes_zero": true,
+    "reselect": false,
+    "n_items": 179,
+    "p_holm": 0.00039996000399960006
+   }
+  },
+  "falsified": true,
+  "q_significantly_better_on": [],
+  "q_significantly_worse_on": [
+   "jpeg",
+   "noise"
+  ],
+  "holm_m": 2,
+  "reselect": false,
+  "rule": "SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise"
+ },
+ "chance_bar": {
+  "per_score": {
+   "patch/plainB": {
+    "available": true,
+    "n": 200,
+    "mean": 0.9644110316306211,
+    "lower95": 0.9623589432110248,
+    "upper95": 0.9664157171172867,
+    "passes": true
+   },
+   "patch/q": {
+    "available": true,
+    "n": 200,
+    "mean": 0.9610701169794222,
+    "lower95": 0.9587965840657552,
+    "upper95": 0.9632965698242189,
+    "passes": true
+   },
+   "swap/plainB": {
+    "available": true,
+    "n": 200,
+    "mean": 0.9597752973595552,
+    "lower95": 0.95750308911732,
+    "upper95": 0.9620364380051737,
+    "passes": true
+   },
+   "swap/q": {
+    "available": true,
+    "n": 200,
+    "mean": 0.9545095429657886,
+    "lower95": 0.9520485598760545,
+    "upper95": 0.9569820771498726,
+    "passes": true
+   }
+  },
+  "passes": true,
+  "failed": false,
+  "audit_trigger": false,
+  "n_unavailable": 0,
+  "rule": "SAP A2.5: lower 95 percent bound of the mean per-item AUROC > 0.5 for plain-B and q on patch and swap (descriptive level); failure = pipeline audit, nothing tuned",
+  "note": "descriptive, no minimum n; the binding bar is chance_bar_both (SAP A3b.5)"
+ },
+ "chance_bar_after_dry_run": {
+  "per_score": {
+   "patch/plainB": {
+    "available": true,
+    "n": 179,
+    "mean": 0.9640728436224352,
+    "lower95": 0.9618941567807511,
+    "upper95": 0.9661852880059478,
+    "passes": true
+   },
+   "patch/q": {
+    "available": true,
+    "n": 179,
+    "mean": 0.9609883828564306,
+    "lower95": 0.9585883450363585,
+    "upper95": 0.9632956708859931,
+    "passes": true
+   },
+   "swap/plainB": {
+    "available": true,
+    "n": 179,
+    "mean": 0.9595182999900194,
+    "lower95": 0.9570852925257994,
+    "upper95": 0.9618529757481638,
+    "passes": true
+   },
+   "swap/q": {
+    "available": true,
+    "n": 179,
+    "mean": 0.9541489021254433,
+    "lower95": 0.9515396157816668,
+    "upper95": 0.9567139749000345,
+    "passes": true
+   }
+  },
+  "passes": true,
+  "failed": false,
+  "audit_trigger": false,
+  "n_unavailable": 0,
+  "rule": "SAP A2.5: lower 95 percent bound of the mean per-item AUROC > 0.5 for plain-B and q on patch and swap (descriptive level); failure = pipeline audit, nothing tuned",
+  "note": "descriptive, no minimum n; the binding bar is chance_bar_both (SAP A3b.5)"
+ },
+ "chance_bar_both": {
+  "verdict": "PASSED",
+  "passes": true,
+  "failed": false,
+  "audit_trigger": false,
+  "min_n": 100,
+  "n_all": 200,
+  "n_late": 179,
+  "complete": true,
+  "per_score": {
+   "patch/plainB": {
+    "all": {
+     "available": true,
+     "n": 200,
+     "mean": 0.9644110316306211,
+     "lower95": 0.9623589432110248,
+     "upper95": 0.9664157171172867,
+     "passes": true
+    },
+    "late": {
+     "available": true,
+     "n": 179,
+     "mean": 0.9640728436224352,
+     "lower95": 0.9618941567807511,
+     "upper95": 0.9661852880059478,
+     "passes": true
+    },
+    "n_all_cell": 200,
+    "n_late_cell": 179,
+    "status_all": "decided_pass",
+    "status_late": "decided_pass",
+    "result": "pass",
+    "passes_both": true
+   },
+   "patch/q": {
+    "all": {
+     "available": true,
+     "n": 200,
+     "mean": 0.9610701169794222,
+     "lower95": 0.9587965840657552,
+     "upper95": 0.9632965698242189,
+     "passes": true
+    },
+    "late": {
+     "available": true,
+     "n": 179,
+     "mean": 0.9609883828564306,
+     "lower95": 0.9585883450363585,
+     "upper95": 0.9632956708859931,
+     "passes": true
+    },
+    "n_all_cell": 200,
+    "n_late_cell": 179,
+    "status_all": "decided_pass",
+    "status_late": "decided_pass",
+    "result": "pass",
+    "passes_both": true
+   },
+   "swap/plainB": {
+    "all": {
+     "available": true,
+     "n": 200,
+     "mean": 0.9597752973595552,
+     "lower95": 0.95750308911732,
+     "upper95": 0.9620364380051737,
+     "passes": true
+    },
+    "late": {
+     "available": true,
+     "n": 179,
+     "mean": 0.9595182999900194,
+     "lower95": 0.9570852925257994,
+     "upper95": 0.9618529757481638,
+     "passes": true
+    },
+    "n_all_cell": 200,
+    "n_late_cell": 179,
+    "status_all": "decided_pass",
+    "status_late": "decided_pass",
+    "result": "pass",
+    "passes_both": true
+   },
+   "swap/q": {
+    "all": {
+     "available": true,
+     "n": 200,
+     "mean": 0.9545095429657886,
+     "lower95": 0.9520485598760545,
+     "upper95": 0.9569820771498726,
+     "passes": true
+    },
+    "late": {
+     "available": true,
+     "n": 179,
+     "mean": 0.9541489021254433,
+     "lower95": 0.9515396157816668,
+     "upper95": 0.9567139749000345,
+     "passes": true
+    },
+    "n_all_cell": 200,
+    "n_late_cell": 179,
+    "status_all": "decided_pass",
+    "status_late": "decided_pass",
+    "result": "pass",
+    "passes_both": true
+   }
+  },
+  "audit_flag_point_estimate": [],
+  "rule": "SAP A3b.5 / A3b.5a: a cell-pool is decided only if n >= 100; PASSED iff all four cells pass in both pools; FAILED iff any cell fails; otherwise UNDECIDED (never a pass); failure = pipeline audit, nothing tuned; a point estimate <= 0.5 in a cell that has not failed is a descriptive flag only"
+ },
+ "frozen": {
+  "jpeg": {
+   "available": true,
+   "rival": "tex_neg",
+   "base": "tex",
+   "sign": -1,
+   "mean_auroc": 0.7557785397920582,
+   "n_items": 200,
+   "all_means": {
+    "tex": 0.24422146020794178,
+    "nbr": 0.4440604926663441,
+    "rarity": 0.5651037563155994,
+    "s3": 0.5197824970315201,
+    "plainB": 0.560495221253553,
+    "tbv": 0.581040998867284,
+    "tex_neg": 0.7557785397920582,
+    "nbr_neg": 0.5559395073336558,
+    "rarity_neg": 0.43489624368440055
+   },
+   "label": null,
+   "rarity_source": null
+  },
+  "noise": {
+   "available": true,
+   "rival": "tex_neg",
+   "base": "tex",
+   "sign": -1,
+   "mean_auroc": 0.7681135967414594,
+   "n_items": 200,
+   "all_means": {
+    "tex": 0.23188640325854074,
+    "nbr": 0.3537265976170999,
+    "rarity": 0.4100570806273037,
+    "s3": 0.475661944766237,
+    "plainB": 0.5108116086012288,
+    "tbv": 0.6073606987857539,
+    "tex_neg": 0.7681135967414594,
+    "nbr_neg": 0.6462734023829001,
+    "rarity_neg": 0.5899429193726964
+   },
+   "label": null,
+   "rarity_source": null
+  }
+ },
+ "rows_report": {
+  "n_lines": 200,
+  "n_clean_lines": 200,
+  "n_glued_lines": 0,
+  "n_recovered_rows": 0,
+  "n_unparseable_lines": 0,
+  "exists": true,
+  "n_rows": 200,
+  "n_array_items": 200,
+  "rows_lost_arrays_present": [],
+  "rows_without_arrays": [],
+  "n_duplicate_rows": 0
+ },
+ "tbv": {
+  "label": "TbV-score (non-finetuned)",
+  "n_items": 200,
+  "frac_items_copy_suspected": 0.0,
+  "copy_suspected": false
+ }
+}
