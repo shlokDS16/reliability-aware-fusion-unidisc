@@ -1,44 +1,88 @@
-% discussion.tex -- headings and todo placeholders for the outcome-dependent parts. The limitations subsection is outcome-independent
-% and is drafted now from the preregistration (card sections 1, 7, 13; SAP 1, 8; spec 12).
+% discussion.tex -- the Findings subsection waits for the frozen run files and for the outcome book of SAP Addendum A4 Part 2.
+% The fusion-context and limitations subsections are outcome-independent and drafted from the preregistration (card v4, SAP, A4).
+% No sentence in this file draws on PS, S2, B, R, E-dec, E-pred, the suite, detection or the exploratory comparison to explain, qualify
+% or predict the primary result (AB.1). The phrase "when does input gating help" is not used (decision pending, reading 1 of A4.2.6).
 
 \subsection{Findings}\label{ssec:disc_findings}
-\todo{RESULT: for each finding, the observation, the likely cause marked as a hypothesis, and what would falsify it (style rule 26).
-Use the three-way label of Section~\ref{ssec:tests}; say ``no improvement was detected'' for a null. Do not describe the gate as
-improving verification, repair or generation unless a primary rejection with $b>c$ exists.}
+\todo{RESULT: open with the sentence of the outcome book (SAP Addendum A4, Part 2, ``opening of 6.1'') that matches the label of the
+primary result. Then, for each finding, give the observation, the likely cause marked as a hypothesis, and what would falsify it
+(style rule 26). Use the label of Section~\ref{ssec:tests} and say ``no improvement was detected'' for a null. Do not describe the gate
+as improving verification, repair or generation unless a primary rejection with $b>c$ exists. The exploratory comparison of
+Section~\ref{ssec:tier3}, if it was run, enters only after the opening, as a separate finding that is not an account of the primary result.}
 
 \subsection{Where the work sits in information fusion}\label{ssec:disc_fit}
-\todo{AUTHOR: after the results are frozen, state in two or three sentences what is fused (image tokens as sources, an additive
-log-likelihood-ratio evidence sum), what the gate adds as source validation, and what is not claimed (a new fusion rule). Settle the scope-fit
-question with the supervising professor before submission; the open check is to give the abstract and Figure~1 caption to a reader with
-no project context and ask what is fused.}
+\emph{What is fused.}
+The 1\,024 image tokens of one image are 1\,024 sources.
+Each reports a log-likelihood ratio between two candidate captions, and the decision sums them; a second, text-direction statistic can
+be fused with that sum at score level (family B).
+\emph{At what level.}
+At the input: the gate acts on the sources before the evidence sum, not on the output decision, which is why the paper speaks of
+input-level source validation.
+\emph{Where reliability enters.}
+Only through a zero-one weight in the sum (GATE-M) or through replacement of the flagged values by a model draw (GATE-I).
+The weight is computed from within-modality evidence alone, and its threshold is set on clean data at a fixed false-alarm level, as in
+CFAR detection.
+\emph{What is not claimed.}
+The paper claims no new fusion rule.
+The additive rule is optimal only for sources that are independent given the hypothesis, which image tokens are not, and the hard
+weight is not claimed to be the best way to use a reliability estimate; graded weights and robust aggregation are the standard
+alternatives, and Section~\ref{ssec:tier3} states the exploratory comparison with them.
+
+The calibrated gate of Zhou and Lu~\cite{zhou2027burden} and the gate studied here answer different questions.
+As described in the abstract of Zhou and Lu, theirs decides which of two recognisers to believe for one test instance; the gate
+here decides which input tokens to withhold before two directions of image-text evidence are combined.
+The two could be stacked, but this is not tested.
+Evidential fusion~\cite{shao2024ddef,huang2025evidential} and conformal prediction sets on a fusion network~\cite{wang2025multistage}
+are other uses of reliability and of distribution-free calibration in this journal that we found; as far as their abstracts describe,
+none scores input tokens with the likelihood of a generative model.
+\todo{AUTHOR: after the results are frozen, give the abstract and Figure~1 caption to a reader with no project context and ask what is
+fused (open check on the scope-fit question); settle the scope-fit question with the supervising professor before submission.}
 
 \subsection{Limitations}\label{ssec:limits}
 The limitations below are fixed by the design and do not depend on the outcome.
 \begin{itemize}
-\item \emph{One model, one data set.} All measurements use UniDisc 1.4B and COCO val2017 images as tokenised by one tokenizer.
-No statement is made for other models, resolutions, caption styles or data sets.
+\item \emph{One model, one data set.} All measurements of the primary family use UniDisc 1.4B and COCO val2017 images as tokenised
+by one tokenizer. A second, 4-bit quantised model enters only in family R, only if P has a rejection with $b>c$, and is never pooled
+with UniDisc. No statement is made for other models, resolutions, caption styles or data sets.
 \item \emph{Contamination is unknown.} Whether the evaluation images were in the training data of the model or of the tokenizer was not
-established, and it could make clean pairs easier than unseen ones.
+established, and it could make clean pairs easier than unseen ones. The same applies, with more force, to the hard-negative set,
+whose true captions are COCO captions.
 \item \emph{Narrow guarantee.} The calibration bounds the expected false-alarm proportion on clean, exchangeable test pairs. It gives
-no bound on detection power, none on the clean tokens of corrupted items, and none under shift. The realised proportion on one finite
-test set can lie above $\alpha$ because the statement is marginal over the calibration draw.
+no bound on detection power, none on the clean tokens of corrupted items, and none under shift. Unlike a selective-risk bound on
+the harm of an action, as described for Zhou and Lu~\cite{zhou2027burden}, it says nothing about the harm or the power of the gate
+on corrupted inputs. The realised proportion on one finite test set can lie above $\alpha$ because the statement is marginal over the
+calibration draw.
 \item \emph{Corruptions and labels.} Corruption labels are relative to the tokenisation of the clean image, so a ``clean'' token
 may already carry compression artefacts of the original photograph. Changed codes under JPEG and noise concentrate where the tokenizer
-is unstable, and the changed-code gate is not an upper bound for them.
+is unstable, so the label may track tokenizer instability more than damage: a texture rival that wins against this label is not
+thereby shown to explain the corruption effect, and the changed-code gate is not an upper bound for these corruptions.
 \item \emph{Comparators chosen on the data.} The best cheap rival is selected among about nine candidates, with both signs admitted, which
 biases the detection contrast against the gate. The rival's sign could not be fixed blind (Section~\ref{ssec:prereg}).
 \item \emph{Pixel denoiser.} One setting was used for all corruptions; it was chosen after one exploratory evaluation on 20 images and
 harms JPEG images, so the denoising contrast on JPEG favours the gate.
 \item \emph{Variance not in the intervals.} Intervals cover item sampling. They do not cover variation across mask partitions, corruption
-draws, jitter seeds or models, because no training seeds exist and only one corruption draw is made per image.
-\item \emph{Scope of the main run.} The preregistered run exercises withholding by dropping terms of a sum computed from a caption-only
-pass. Re-infilling, caption corruption, hard negatives, the repair recipe of the backbone's authors, and a second model were not run
-unless an addendum says so; two-way fusion is testable only below the stated ceiling.
+draws, jitter seeds or models, because no training seeds exist and only one corruption draw is made per image. Eleven test families
+are run with no multiplicity control across them.
+\item \emph{A constructed task.} The primary decision is a two-way caption match on the weaker of the two available statistics, with
+random negatives (Section~\ref{ssec:task}). It measures how an image-direction statistic tolerates damage and says nothing about
+what a gate adds to a verifier that uses the stronger text direction; only family B addresses the two-direction setting, and it may be
+untestable at the ceiling or not run.
+\item \emph{A hard gate and dependent tokens.} The gate is binary, and the evidence sum and the signal-to-noise analysis assume
+independent tokens, which neighbouring image tokens are not. Graded and robust alternatives are examined only in an exploratory
+comparison (Section~\ref{ssec:tier3}), which is not a test and is subject to its own limits.
+\item \emph{Time input and checkpoint.} The scorer calls the denoiser without a time input; that this is the intended path was checked
+for the released configuration and checkpoint only, the training weight of whole-modality masks is unknown, and the key check does not
+cover the image tokeniser (Section~\ref{ssec:data}, \ref{app:timefree}).
+\item \emph{Scope of the preregistered run.} Families S2 (re-infilling), B (two-way fusion) and R (second model) each have a status of
+run or not run, decided by time and by their gatekeeping rule and never by an outcome, and the paper reports that status.
+Caption corruption, the backbone authors' own re-infill recipe and the gating of caption tokens are not tested as families.
 \item \emph{Hardware and missing data.} The GPU is a single laptop device that failed in earlier pilots. A crash leaves a prefix of the item
 list and the missing-item rule applies; a fold under 240 items is reported as incomplete.
 \item \emph{Narrow novelty.} Detecting and remasking corrupted input tokens, cross-modal remasking, risk-controlled thresholds for
-vision-language token errors and masked-likelihood scores each have precedents (Section~\ref{sec:related}). The claim is a measurement of
-their composition on one model, and it holds only as far as the measured results go.
-\item \emph{Concurrent work.} A search for concurrent work was last run on 28 October 2026; unpublished or under-review work is not visible.
-\todo{AUTHOR: repeat the search once before submission.}
+vision-language errors, including gates that decide between whole predictions~\cite{zhou2027burden}, and masked-likelihood scores
+each have precedents (Section~\ref{sec:related}). The claim is a measurement of their composition on one model, and it holds only as
+far as the measured results go.
+\item \emph{Concurrent work.} A search for concurrent work was last run on 28 October 2026; unpublished or under-review work is not
+visible, and the closest paper in this journal~\cite{zhou2027burden} was compared from its abstract and preview only.
+\todo{AUTHOR: repeat the search once before submission, and read the full text of Zhou and Lu.}
 \end{itemize}

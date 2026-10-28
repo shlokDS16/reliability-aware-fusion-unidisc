@@ -1,10 +1,12 @@
-% results.tex -- headings and placeholders only. No GATE result exists. Every placeholder names the run directory and the
+% results.tex -- card v4 order: the preregistered primary family first, then the secondary families, then the exploratory material.
+% Only the detection subsection (run P2-GATE-M1, decision D0074) has data. Every other placeholder names the run directory and the
 % wording rule that applies, so that nothing is written beyond what the preregistration allows.
 % Each number entered later needs a LaTeX comment "% run: <exp-id>" on the same line or paragraph.
 
 \todo{RESULT: this section is filled only from the frozen run directories after the planned folds are complete. Lead each
 subsection with the observation, then the interval, then the preregistered wording from Section~\ref{ssec:tests}. Print the metric
-direction in every table header.}
+direction in every table header. Every family is reported as run or not run (status map at the end of the section); a family that
+was cut is not replaced.}
 
 \subsection{Headroom and operating points}\label{ssec:res_headroom}
 \todo{RESULT (run P2-GATE-M3): table of the headroom check, per corruption and rung: $n_v$, $T_1$, $T_2$, pass or fail, the chosen
@@ -17,10 +19,11 @@ $\alpha=0.01,0.05,0.10$; $Z_{\rm cal}$ and the verdict (``no evidence of violati
 corruption; false-alarm proportion on the clean tokens of corrupted items; spatial map of clean false alarms (figure); the exploratory
 2\,000-split check of the marginal statement.}
 
-\subsection{Primary result: GATE-M against no gate}\label{ssec:res_primary}
-\todo{RESULT (run P2-GATE-M4): complete Table~\ref{tab:res_primary}; the sentence that applies from the preregistered wording table (positive,
-negative or inconclusive); the three-way label; $n_d$ and, for a null, the statement ``only $\theta\ge\theta^\ast$ would have been
-detectable'' (a sensitivity statement, not an observed power).}
+\subsection{Primary result: GATE-M against no gate (family P)}\label{ssec:res_primary}
+\todo{RESULT (run P2-GATE-M4): complete Table~\ref{tab:res_primary}; the sentence that applies from the outcome book (SAP Addendum A4,
+Part 2) for the label that the committed files give; $n_d$ and, for a null, the statement ``only $\theta\ge\theta^\ast$ would have been
+detectable'' (a sensitivity statement, not an observed power). The summary figure shows family P only, with the 90\,\% and 95\,\%
+intervals and the lines at $\pm0.05$; the positive control never shares its canvas.}
 
 \begin{table}[t]
 \centering
@@ -40,33 +43,86 @@ Pixel splice & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} & \todo{R} &
 \end{tabular}
 \end{table}
 
-\subsection{Mechanism controls}\label{ssec:res_mech}
+\subsection{Mechanism controls (family S-M)}\label{ssec:res_mech}
 \todo{RESULT: GATE-M against the geometry-matched random gate (seed 1 confirmatory; seeds 2 and 3 as replications), the scattered random
 gate, plain-$B$ top-$k$ and $s_3$ top-$k$ (counts $b$, $c$ beside the primary result, especially under rule R3), the changed-code gate,
 and GATE on clean images. Use the wording of the mechanism rule: if the mechanism test is not rejected, the improvement is ``not
-distinguishable from masking the same shape elsewhere''.}
+distinguishable from masking the same shape elsewhere, and therefore not attributable to detection beyond mask geometry''.}
 
-\subsection{Detection against cheap rivals}\label{ssec:res_det}
-\todo{RESULT (runs P2-PROBE-02 resumed, P2-GATE-M4): per-item AUROC of $q$, plain-$B$, $s_3$, $A_j-B_j$, texture, neighbour distance,
-rarity and TbV-score (non-finetuned) against changed-code labels, per corruption, with the best cheap rival, its sign, and the paired
-difference with its interval; items excluded for too few corrupted or clean tokens, counted. State in the same sentence that the rival
-is chosen on the data. Sanity corruptions (patch, swap): the chance-bar check.}
+\subsection{Detection against cheap rivals (family S-D)}\label{ssec:res_det}
+% run: P2-GATE-M1
+This family was analysed before the main test, on the 200 detection items, and it is a measurement of the within-modality score $q$;
+it enters no claim about the primary result.
+Intervals are 95\,\% percentile bootstrap intervals over items for the per-item AUROC against changed-code labels; items with too
+few corrupted or clean tokens are excluded and counted (3 for JPEG, 2 for noise).
+On the sanity corruptions $q$ reaches 0.961 (0.959 to 0.963) for a replaced patch and 0.955 (0.952 to 0.957) for swapped codes, so the
+chance bar of the positive control was passed; plain-$B$ is slightly higher, 0.964 and 0.960, with $q$ minus plain-$B$ equal to
+$-0.0033$ ($-0.0042$ to $-0.0026$) and $-0.0053$ ($-0.0058$ to $-0.0047$).
+The non-finetuned TbV score reaches 0.854 and 0.859 and the neighbour codebook distance 0.786 and 0.741 on the same corruptions; a
+check for copying of the released output layer suspected no item.
+On JPEG quality 10 $q$ reaches 0.561 (0.547 to 0.575, 197 items) and on Gaussian noise 0.10 it reaches 0.503 (0.493 to 0.513, 198
+items).
+The non-finetuned TbV score reaches 0.581 (0.569 to 0.593) on JPEG and 0.607 (0.597 to 0.618) on noise; on noise the marginal
+intervals of $q$ and TbV do not overlap, on JPEG they do, and no paired test between them was run.
+The best cheap rival is the pixel variance of a token's patch with its sign flipped, 0.756 (0.743 to 0.768) on JPEG and 0.768 (0.760
+to 0.776) on noise.
+The rival and its sign were chosen on the data among about nine candidates, which biases the contrast against $q$.
+The paired difference of $q$ minus the rival is $-0.195$ ($-0.214$ to $-0.175$) on JPEG and $-0.265$ ($-0.278$ to $-0.253$) on noise,
+with a Holm-adjusted $p$ of 0.0004 on each, the resolution floor of 10\,000 resamples.
+The result is the same when the rival is re-selected in every resample and when the 21 items analysed before the plan's second
+addendum are removed (179 items).
+The preregistered falsifier for the score was therefore met on both corruptions, and the paper does not say that the score detects
+corrupted codes better than cheap methods.
+That a texture score wins against this label is read as the label-circularity concern of Section~\ref{ssec:limits} and not as
+evidence that texture explains the corruption effect.
+\todo{RESULT (runs P2-GATE-M4, family S-D2): the same contrast on the test items at their operating points, including splice if it has
+one; the detection of splice has not been measured outside the main run.}
 
-\subsection{Pixel denoising as a defence}\label{ssec:res_dn}
+\subsection{Positive control (family PS)}\label{ssec:res_ps}
+\todo{RESULT (run P2-GATE-M4, patch and swap): the table of the same test as the primary family, Holm over two, in its own table and
+never beside the primary rows. Wording: ``the pipeline is not broken'' if both are rejected with $b>c$, ``pipeline defect suspected,
+audit triggered'' otherwise. Nothing is said about where the gate works.}
+
+\subsection{Pixel denoising as a defence (family S-DN)}\label{ssec:res_dn}
 \todo{RESULT: GATE-M against the denoised copy on JPEG and noise; for JPEG use the wording that the denoiser harms the image at this
 setting.}
 
-\subsection{Evidence ratio and the independent-token model}\label{ssec:res_snr}
-\todo{RESULT: paired change of $d_R$ (and $z_R$ as sensitivity) per corruption; the plug-in estimates of $\rho,\mu,\sigma^2,\mu_c,\sigma_c^2,
-\alpha_{\rm obs},\beta_{\rm obs}$ from the per-token terms, the predicted sign of Eq.~\eqref{eq:snr}'s ratio change next to the observed sign,
-and whether the pre-stated refutation applies.}
+\subsection{Evidence ratio and sign agreement of the independent-token calculation (families S-Z and E-pred)}\label{ssec:res_snr}
+\todo{RESULT: paired change of $d_R$ (and $z_R$ as sensitivity) per corruption. For E-pred: the plug-in estimates of
+$\rho,\mu,\sigma^2,\mu_c,\sigma_c^2,\hat\phi_0,\hat\phi_1$ from the per-token terms, and the sentence ``the sign of the plug-in
+signal-to-noise change agreed with the sign of the net accuracy difference in $A$ of $K_{\rm eval}$ cells'' with its interval, P and PS
+cells separate and both signs shown. The word ``predicted'' is used only inside the E-pred table columns.}
+
+\subsection{Decomposition of the accuracy lost to corruption (descriptive, E-dec)}\label{ssec:res_edec}
+\todo{RESULT: the residual loss under the changed-code gate and the gap to that gate, with paired bootstrap intervals. No test and no use
+of these parts as an account of the primary result.}
 
 \subsection{Coherence of the denoiser across mask patterns}\label{ssec:res_coh}
 \todo{RESULT: the median absolute gap against the 95th percentile of the repeat gap, and the pre-stated reading.}
 
-\subsection{Text-direction conditioning arms and two-way fusion (exploratory)}\label{ssec:res_text}
-\todo{RESULT: text-direction arms for the three realistic corruptions with intervals. Fusion only if the best single direction has a clean
-test accuracy below 0.95; otherwise one sentence that the fusion gain cannot be tested at the ceiling, with the clean accuracy.}
+\subsection{Re-infilling the flagged tokens (family S2)}\label{ssec:res_s2}
+\todo{RESULT (run P2-GATE-S2, or ``not run'' with the reason): patch and splice, I-GATE against I-RAND4 (kept draw) with the draw-level
+and all-four contrasts beside it, I-GATE against none printed beside it, completed $n$ and whether it is a partial prefix. The claim-bearing
+cell is splice; a patch-only rejection is a positive control with no realistic cell. No statement for JPEG or noise, and the string
+``G.1'' is not used.}
 
-\subsection{Cost}\label{ssec:res_cost}
-\todo{RESULT: network passes per item by stage, median time per item, peak GPU memory, from the run configuration and telemetry files.}
+\subsection{Two-way fusion on hard negatives (family B)}\label{ssec:res_text}
+\todo{RESULT (run P2-GATE-FOIL, or ``not run''/``untestable at ceiling'' with the clean accuracy of the better single direction): fusion
+against the better single direction, the two margins and the frozen fusion line. Text-direction conditioning arms for the three
+realistic corruptions with intervals (exploratory).}
+
+\subsection{Second model (family R)}\label{ssec:res_omni}
+\todo{RESULT (runs P2-OMNI-R-TEST, or ``not run: no rejection with $b>c$ in P''): directional replication on a second model, 4-bit
+quantised, with the confound list and, under rule~R2, the statement that the same test images were used; ``not replicated;
+inconclusive at this $n$'' for a non-rejection. Never pooled with UniDisc and never ``generalises''.}
+
+\subsection{Exploratory comparisons}\label{ssec:res_expl}
+\todo{RESULT (run P2-GATE-M4, \texttt{tier3\_fusion.json}, or ``not run''): the exploratory comparison of Section~\ref{ssec:tier3} in
+its own table, primary-family cells and positive-control cells in separate panels, with the number of intervals, ``no multiplicity
+adjustment'', the minimum detectable difference beside every interval, and the four limits printed beside the table. The three-way reading
+and the placement rule of the plan apply: nothing here explains, qualifies or rescues a primary result. The exploratory corruption suite
+(Appendix table, intervals only) is reported here as well.}
+
+\subsection{Status of every family and cost}\label{ssec:res_cost}
+\todo{RESULT: one line per family with its status (run, descriptive, partial prefix, untestable at ceiling, not run with the reason).
+Network passes per item by stage, median time per item and peak GPU memory, from the run configuration and telemetry files.}

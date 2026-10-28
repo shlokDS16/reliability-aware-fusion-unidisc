@@ -40,9 +40,10 @@
 
 \begin{frontmatter}
 
-% Title is provisional and written last. It carries the scope (one model) and makes no fusion, repair or improvement claim
-% (red-team condition C4).
-\title{Calibrated gating of corrupted input tokens in a pretrained text-image masked diffusion model: a preregistered measurement on UniDisc}
+% Title is provisional and written last. It is the outcome-neutral question title QT of SAP Addendum A4 (Part 2, A4.2.3), the title that
+% every label without a rejection with b>c uses; a positive label replaces it with the title of that label. It names the model and
+% carries no fusion, repair or improvement claim and no selling word ("calibrated" is not one, A4.2.2; red-team condition C4).
+\title{Does masked-likelihood token gating help image-direction verification under image corruption? A preregistered test in UniDisc}
 
 \author[vit]{Shlok Kumar Goenka}
 \author[vit]{[AUTHOR: supervising professor, full name]}
@@ -55,20 +56,21 @@
 
 \begin{abstract}
 % Provisional abstract, at most 250 words once the \todo items are filled. No citations, no fusion or repair claim (C4).
-% Every sentence about a result waits for the frozen run files.
+% The result sentence comes from the outcome book of SAP Addendum A4 (Part 2) for the label that the committed files give; secondary
+% families are stated only with their family label, and none draws a causal clause for a null in P (AB.1).
 A unified masked diffusion model treats every observed token as certain, although the tokens of a real input can be damaged
-by compression, noise, splicing or a mismatched caption.
-This paper asks whether a pretrained model can find damaged image tokens itself, and whether withholding them changes a
-caption-verification decision.
+by compression, noise or splicing.
+This paper asks whether a pretrained model can flag damaged image tokens with its own masked likelihood, and whether withholding
+the flagged tokens changes a caption-verification decision.
 Each image token is scored by its masked likelihood inside the image with the caption withheld.
 A threshold is set by conformal risk control on clean image-caption pairs, so that the expected proportion of clean
 tokens flagged is at most a chosen level.
 Flagged tokens are removed from an additive image-to-caption evidence statistic.
-The measurement is preregistered, runs on one pretrained 1.4B model with no network finetuning, and compares the gate
+The test is preregistered, uses one pretrained 1.4B model with no network finetuning, and compares the gate
 with no gate, with random masks of the same size and shape, with cheap non-generative detectors and with a pixel denoiser.
-\todo{RESULT: headroom outcome (which corruptions leave room for a gate), realised false-alarm proportion with interval,
-primary paired contrast per corruption with interval and Holm-adjusted p-value, mechanism and detection controls. Use only
-the wording allowed by the preregistration, section 12; one sentence on scope: one model, one dataset.}
+Re-infilling, two-way fusion and a second model are secondary families, each reported under its own label as run or not run.
+\todo{RESULT: the result sentence of the outcome book for the label of the primary family, the realised false-alarm proportion with
+its interval, the detection result with its family label, and one sentence on scope (one model, one data set).}
 \end{abstract}
 
 \begin{highlights}
@@ -105,6 +107,9 @@ Masked discrete diffusion \sep Conformal risk control \sep Input reliability \se
 \input{sections/conclusion}
 
 \input{sections/declarations}
+
+\appendix
+\input{sections/appendix}
 
 \bibliographystyle{elsarticle-num}
 \bibliography{references}

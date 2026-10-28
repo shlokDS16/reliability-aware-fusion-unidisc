@@ -1,0 +1,219 @@
+% appendix.tex -- Appendix A: preregistration record (pins, audit record, families, deviations, symbol crosswalk).
+%                 Appendix B: evidence that UniDisc's denoiser has no time input in the released configuration.
+% Sources: PREREG-GATE-v4-2026-10-28.md sections 1, 2, 4.1, 4.2, 4.4, 9; SAP-ADDENDUM-A4-2026-10-28.md (r1) A4.3.1, A4.5;
+% REDTEAM-P2-PLAN.md section B; runs/P2-UNIDISC-KEYCHECK/README.md. Hashes are copied from the card, not recomputed here.
+
+\section{Preregistration record}\label{app:prereg}
+
+\subsection{Pins}\label{app:pins}
+Table~\ref{tab:pins} lists the pinned artefacts.
+Hashes of the card are SHA-256 of the committed bytes (LF convention) unless marked; the worktree is CRLF for some files, so a raw
+hash can differ without a content change.
+Twelve-hex prefixes stand for hashes that are given in full in the pin file of the repository.
+
+\begin{table}[t]
+\centering
+\caption{Pinned artefacts of the main run. ``Pin file'' is \texttt{runs/P2-GATE-CARD-V4/pins.json}.}
+\label{tab:pins}
+\footnotesize
+\begin{tabular}{p{0.24\linewidth}p{0.68\linewidth}}
+\toprule
+Artefact & Identifier \\
+\midrule
+Code, tests, guard (113 files) & commit \texttt{\seqsplit{9c4e1e25cb0d1a77b78410e1613098d8c6ba1085}} (final audited commit); moved by dated row A-1 to \texttt{\seqsplit{f2f7b2e15e4f2b90545837d9e64207051c24a1cd}}; per-file hashes in the pin file; manifest hash \texttt{\seqsplit{65513677ba4d98adfa1a861db4215200ad64b78aec1cceeaf0bcdca6b4664dec}} \\
+Analysis plan with Addenda A1 to A3b.12 & \texttt{\seqsplit{e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7}} (LF) \\
+Addendum A4 & draft commit \texttt{40828e96}, revision r1 commit \texttt{f1671c91} \\
+Fold file & LF \texttt{\seqsplit{c19db5b3b9fabdeb89e8e686c58ae6c011f746529fbf9be84f1c58c99c446786}}; CRLF working copy \texttt{\seqsplit{450edb543779de7ee5e6a52422fd6507ef52f15ba3b956a8b05c2e561620f311}} \\
+Hard-negative pool, manifest, leak check & \texttt{cfd0f94facd0} (pool, LF), \texttt{070fb29a2ebc} (manifest, LF), \texttt{91f4b7968b54} (leak check, LF) \\
+Frozen fit files of the descriptive family E-pred & \texttt{c89700dbc3ba} (fit), \texttt{5c535a3bda75} (signal-to-noise calculator), \texttt{8d7528bbb37b} (test file); audit record \texttt{26145a2a6b91} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Audit and sign-off record}\label{app:audits}
+The analysis plan was signed off by the statistician with changes.
+The red team signed Addenda A2 and A3 with conditions, and signed Addendum A4 with eleven conditions that revision r1 answers.
+The code was audited in several rounds by a separate auditor, who found defects that were fixed; the final verdict is a pass at the
+final audited commit, and a delta audit covers the later change of two command-line flags.
+The hard-negative id mapping and leak check were signed off by a data steward.
+No signature says that the method works, and no reviewer read a GPU outcome.
+
+\subsection{Families and wording rules}\label{app:families}
+Table~\ref{tab:families} lists the eleven test families and the three descriptive analyses.
+\begin{table}[t]
+\centering
+\caption{Test families of the main run. $n$: planned number of items; $m_{\rm H}$: hypotheses in the family's Holm correction.
+Each family has its own level 0.05; there is no control across families.}
+\label{tab:families}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.12\linewidth}p{0.09\linewidth}p{0.36\linewidth}p{0.05\linewidth}p{0.28\linewidth}}
+\toprule
+Family & $n$ & Test & $m_{\rm H}$ & Not allowed \\
+\midrule
+P (headline) & 300, 500 or 300 with $d_R$ & exact McNemar, GATE-M against none: JPEG, noise, splice; under rule R3 Wilcoxon on $d_R$ & 3 & a claim from a rejection with $c>b$ in favour of the gate; ``predicted'', ``explained'', ``caused by detection'' \\
+PS & as P & same test on patch and swap & 2 & ``the gate works where detection is easy''; use as a demonstration \\
+S2 & 300 & exact McNemar I-GATE against I-RAND4 (kept draw), patch and splice; tested only if $n\ge120$ & 2 & ``improves'', ``restores'', gate detection as mechanism \\
+B & 300 pairs & exact McNemar fusion against better single direction; untestable at ceiling 0.95 & 1 & a bound on foil noise; a statement about corruption \\
+R & 150 & exact McNemar GATE-M against none per corruption of P$^+$; runs only if $\text{P}^+\neq\emptyset$ & $|\text{P}^+|$ & ``generalises''; pooling with UniDisc \\
+S-M, S-Z, S-DN, S-D, S-D2, S-C & as P & mechanism, evidence ratio, denoising, detection, out-of-sample detection, clean control & 3, 3, 2, 2, 2, 1 & as in the protocol \\
+\midrule
+E-dec & P fold & paired bootstrap intervals only & -- & ``treatment'' or ``detection'' for its parts in abstract, highlights, conclusion \\
+E-pred & P, PS cells & agreement of signs, Clopper--Pearson interval & -- & ``predicted'', ``explains'', ``supported'' \\
+Suite & 100 + 100 & eight cells, intervals only & -- & any $p$-value in a claim; abstract or highlights \\
+\bottomrule
+\end{tabular}
+\end{table}
+No secondary family can rescue a null result in P.
+A null in P is reported with its label and with no causal clause drawn from PS, S2, B, R, E-dec, E-pred, the suite or the
+exploratory comparison of Section~\ref{ssec:tier3}, in the title, abstract, highlights or conclusion.
+
+\subsection{Deviations and disclosures known at the time of writing}\label{app:deviations}
+\begin{enumerate}
+\item The sample size of S2 and B was set to 300 instead of 150 before any outcome, conditional on the first author's dated
+confirmation; S2 was restricted to patch and splice after a 21-item dry run.
+\item The first stage of the detection measurement stopped and was resumed at item 106 of 200.
+\item Three checks of the second-model adapter are applied outside the module that holds the others; the adapter checks are executed
+by the implementer's code and reviewed, not executed, by the auditor, so the adapter is not described as independently verified.
+\item The sensitivity analyses of S2 and B read ``rejection'' as the favourable-direction rejection at the adjusted level; this can
+over-flag sensitivity to $n$ and never under-flags it, and it enters no claim.
+\item The firewall for the S2 smoke test is an honour rule.
+\item The swap and patch parameters are stored in one frozen file that stands for two files named in the plan.
+\item The chance bar for the sanity corruptions is called blind only on the lead's assertion that no detection-pilot output from item
+26 onward was read, which nobody else can verify; the first author's co-attestation is \todo{AUTHOR: present or absent}.
+\item Where the card forbids any claim from a rejection with $c>b$ and the analysis plan prescribes the sentence ``reduced
+verification accuracy'', the plan governs: no claim in favour of the gate is made from such a rejection, and no title carries it.
+\item The exploratory comparison of Section~\ref{ssec:tier3} was pre-specified in Addendum A4, whose draft and revision were
+committed before the headroom decision was written; the addendum's author states that no value of the headroom or primary stage was
+read when it was written, which is an assertion and not an attestation.
+Its code is committed only with a dated pin row.
+\item Family B may run before S2 if a fixed time inequality holds; if a stop occurs while B runs, the order reverts, and B complete
+with S2 partial is then possible.
+\item Whether a fallback applies if P is null, and the wording rule that governs the framing of the paper in that case, was
+\todo{AUTHOR: record the first author's answer and its date}.
+\end{enumerate}
+
+\subsection{Dated amendments}\label{app:amend}
+Row A-1 moved the code pin to the commit named in Table~\ref{tab:pins} for every stage launched afterwards; it changed two
+command-line flags of the stage runner and the guard settings recorded per chunk, and no analysis path, scoring definition, frozen
+file or guard.
+Row A-2 appended a slow-item limit of three times the median item time, with a floor of two seconds, to every non-second-model
+stage, on the first author's dated answer; guard settings decide only whether a run continues and never change an item's output.
+
+\subsection{Symbol crosswalk}\label{app:crosswalk}
+Table~\ref{tab:crosswalk} maps the symbols of the preregistration documents and code to the paper's.
+\begin{table}[t]
+\centering
+\caption{Crosswalk from preregistration and code names to the symbols of this paper.}
+\label{tab:crosswalk}
+\footnotesize
+\begin{tabular}{p{0.38\linewidth}p{0.5\linewidth}}
+\toprule
+Preregistration or code & This paper \\
+\midrule
+\texttt{alpha}, \texttt{beta} in the signal-to-noise calculator & $\phi_0$, $\phi_1$ \\
+\texttt{alpha\_obs}, \texttt{beta\_obs} & $\hat\phi_0$, $\hat\phi_1$ \\
+CRC level $\alpha$ & $\alpha$ \\
+partition group $S_k$ & $\Gamma_k$ \\
+re-infill samples (\texttt{n\_draw}, $L$) & $n_{\rm draw}$ \\
+I-GATE, I-RAND4 & GATE-I, random-gate best-of-four re-infill \\
+Proposition 4 of the specification (plug-in signal-to-noise change) & Eq.~\eqref{eq:snr} \\
+Proposition 1 of the paper (conformal risk control applied) & Proposition~\ref{prop:crc} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Time input of the released configuration}\label{app:timefree}
+Section~\ref{ssec:data} states that UniDisc's denoiser has no time input in the released configuration.
+Table~\ref{tab:timefree} gives the evidence, read in the authors' code at commit
+\texttt{\seqsplit{3ee3e47a9e64bac2fdca59957726f14723371ced}} of the UniDisc repository (clean tree) and in the key names of the
+checkpoint, snapshot \texttt{\seqsplit{2b344ca856bd108b52a2d022a3463dace131249f}}.
+The statement is about this configuration and checkpoint and not about UniDisc in general.
+\begin{table}[t]
+\centering
+\caption{Evidence for the absence of a time input. Paths are relative to the UniDisc repository unless marked.}
+\label{tab:timefree}
+\footnotesize
+\begin{tabular}{p{0.4\linewidth}p{0.5\linewidth}}
+\toprule
+Claim & Evidence (file:line) \\
+\midrule
+Time conditioning is off; the diffusion type is absorbing state, the parameterisation \texttt{subs}; no experiment overrides it & \texttt{configs/config.yaml:12,14,15} \\
+The project composes the official demonstration experiments and loads the interleaved checkpoint & project files \texttt{runs/env-2026-10-14/\allowbreak scripts/\allowbreak unidisc\_\allowbreak setup.py:17,30-35} and \texttt{exp001/\allowbreak unidisc\_\allowbreak net.py:46-47} \\
+The official inference experiment sets a null noise level; the authors' samplers pass \texttt{None} & \texttt{configs/\allowbreak experiments/\allowbreak large\_\allowbreak scale\_\allowbreak high\_\allowbreak res\_\allowbreak interleaved\_\allowbreak inference.\allowbreak yaml:30-31}; \texttt{model\_eval.py:\allowbreak 2057,\allowbreak 2086,\allowbreak 3019,\allowbreak 3060,\allowbreak 3186} \\
+The forward pass accepts a null noise level only when this is allowed & \texttt{model.py:660-662,691,729} \\
+No timestep embedder and no time modulation in the final layer without time conditioning & \texttt{models/\allowbreak dit.py:\allowbreak 1105,\allowbreak 1186-1188,\allowbreak 1377-1379} and \texttt{models/\allowbreak dit.py:\allowbreak 1064-1090} \\
+A stored scaling flag is never read & \texttt{configs/\allowbreak model/\allowbreak extra\_\allowbreak large.yaml:8}; \texttt{models/\allowbreak dit.py:1290} \\
+The checkpoint has no time-embedding or time-modulation keys; the string ``sigma'' does not occur in it & key names read from the checkpoint pickle, no tensor loaded \\
+Raw logits are returned before the step that copies observed positions & \texttt{model.py:784-788} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The loader is non-strict by default.
+% run: P2-UNIDISC-KEYCHECK
+A key check on a model built without weights found 342 of 342 checkpoint tensors matched to model parameters with equal shape and
+dtype, no missing key, no unexpected key, and no shape mismatch, and the framework's own loader reports empty lists of missing and
+unexpected keys.
+Deterministic rotary-embedding buffers are computed at construction and are not part of any state dictionary.
+The check covers the denoiser backbone, not the image tokeniser, which is loaded by another path, and it does not show that the
+checkpoint values are the intended final weights.
+During training, a whole modality was masked with some probability; which value applied to the released checkpoint is not recoverable
+from the code.
+
+\section{Diagnostics, cost and hardware}\label{app:diag}
+\subsection{Calibration diagnostics and pipeline checks}\label{app:diagchecks}
+On the clean test items the realised false-alarm proportion $\hat F=n^{-1}\sum_i L_i(\hat\tau)$ is reported for
+$\alpha\in\{0.01,0.05,0.10\}$, with $\alpha=0.05$ primary.
+A violation is flagged when $Z_{\rm cal}=(\hat F-\alpha)/\big(\hat\sigma_L\sqrt{1/n_{\rm cal}+1/n_{\rm test}}\big)$ exceeds 2.13 at any
+level, where $\hat\sigma_L$ is the pooled item-level standard deviation of $L_i$; a pass means ``no evidence of violation'' and is
+never worded as validation.
+The precision among flagged tokens, the false-alarm proportion on the clean tokens of corrupted items and the spatial map of clean
+false alarms are reported with equal prominence; for $\alpha=0.05$ on an $8\times8$ patch image, about 48 false flags are expected
+against at most 64 true ones, so precision is at most 0.57 even for a perfect detector.
+For the sanity corruptions the lower bound of the 95\,\% interval of the per-item AUROC of $q$ and of plain-$B$ must exceed 0.5; a
+result at chance is a pipeline defect, not a scientific result, and triggers an audit.
+The clean no-gate accuracy is reported with a Wilson interval against the pilot value of Section~\ref{ssec:pilot} as a descriptive
+check.
+A coherence test on 100 clean calibration items measures whether the denoiser's joint likelihood of two image tokens is independent
+of the order in which they are revealed; it is read as ``coherent within numerical noise'' if the median absolute gap lies within the
+95th percentile of the gap between repeats of the same computation, and as ``incoherent at the evidence scale'' if it exceeds the
+clean mean per-token paired evidence, in which case Eq.~\eqref{eq:marginalise} is reported as not applicable.
+
+\subsection{Cost in network calls}\label{app:cost}
+Cost is counted in network passes (one row of a batch), because a call at this scale is the dominant term.
+Table~\ref{tab:cost} lists the passes per quantity.
+Gating the image adds $K$ passes per image version and nothing else to the image-direction evidence, because the evidence
+passes depend on the caption only.
+With only the image gated, verification of $N$ candidates costs $K$ gate passes, $2N$ evidence passes (the image-direction
+half cached per caption), and $S_rn_{\rm draw}$ more for GATE-I, against $2N$ for the ungated two-way baseline.
+
+\begin{table}[t]
+\centering
+\caption{Network passes per quantity. $K$: complementary groups; $N$: candidate captions; $S_r$, $n_{\rm draw}$: re-infill steps and draws.}
+\label{tab:cost}
+\small
+\begin{tabular}{p{0.36\linewidth}p{0.12\linewidth}p{0.38\linewidth}}
+\toprule
+Quantity & Passes & Depends on, and cache \\
+\midrule
+$B$ over all image tokens & $K$ & image only (caption masked); per image \\
+$C$ for image tokens (image fully masked) & 1 & caption only; per caption, shared across images and arms \\
+$D$ for image or caption tokens & 1 & layout only (caption length); per length \\
+$A$ over all image tokens & $K$ & image and caption \\
+Image-direction evidence, all arms & 2 & the two captions; arms differ only in gathered entries \\
+Text-direction evidence per candidate and arm & 1 & image, gated set \\
+Re-infill (GATE-I) & $S_rn_{\rm draw}$ & image, gated set; shared by all candidates \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hardware and runtime}\label{app:hardware}
+% run: P2-PROBE-01
+All runs use one laptop GPU (NVIDIA RTX 5070 Ti Laptop, 12~GB) with 31~GB of system memory and no other hardware.
+In the pilot one item cost 58 network passes, the median item time was 7.0~s and the peak GPU memory 8.2~GB, so passes are batched
+four rows at a time.
+Runs go in short checkpointed chunks under a guard that stops on memory, temperature and power-source events and is resumable; an
+abort ends the stage and is not retried until reviewed.
+% run: P2-PROBE-02
+An earlier detection pilot stopped after 20 complete items when the GPU session failed.

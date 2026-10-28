@@ -108,3 +108,23 @@ and decision fusion with weighted reliabilities~\cite{chair1986optimal,kittler19
 borrows.
 Selecting the set of tokens to keep by looking at their values makes the missingness informative~\cite{rubin1976inference};
 Section~\ref{sec:method} states the conditions under which withholding a data-selected set is still the right treatment.
+
+Work in this journal treats unreliable inputs mostly by weighting them.
+Evidential fusion methods attach a reliability to each modality and discount it before the modalities are combined with
+Dempster's rule~\cite{shao2024ddef,huang2025evidential}; discounting is the soft counterpart of withholding a source, and
+Section~\ref{ssec:tier3} states a pre-specified exploratory comparison of the hard gate with it.
+A survey of multimodal fusion on low-quality data lists noisy and quality-varying inputs among its four settings~\cite{zhang2026lowquality}.
+Two recent papers in the journal bound the risk of trusting a source at the level of a whole decision.
+As described in its abstract, Zhou and Lu~\cite{zhou2027burden} replace a default vision-language prediction by a challenger's
+only when a Dempster--Shafer evidence score clears a threshold chosen with a Clopper--Pearson bound on harmful overwrites, and Wang
+et al.~\cite{wang2025multistage} attach split conformal prediction sets to a text-and-tabular fusion network to flag predictions
+for human review.
+% corrigendum 10.1016/j.inffus.2025.103287 to Wang et al.: content not read; only the abstract-level statement above is used.
+Both act on the output of a recogniser or classifier; as far as their abstracts, and for Wang et al.\ their conformal-prediction
+section, describe, neither scores the individual input tokens of one modality, and neither uses the likelihood of a generative
+model.
+The present gate differs in its unit (an input token, before any fusion), its score (the masked likelihood of the token inside its
+own modality with the other modality withheld) and its guarantee (a conformal-risk-control threshold calibrated on clean pairs,
+which bounds the expected false-alarm proportion on clean inputs and uses no corruption labels).
+\todo{AUTHOR: the comparison with Zhou and Lu rests on its abstract and preview, because the full text was not available; read it
+(risk definition, labels needed for calibration, any corruption experiment) and upgrade or correct this paragraph before submission.}

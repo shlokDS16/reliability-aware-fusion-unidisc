@@ -1,13 +1,18 @@
-% protocol.tex -- sources: PREREG-GATE-MUST-v3-2026-10-28.md (frozen at commit 164a18a5), SAP-GATE-2026-10-28.md (with
-% Addenda 1 and 2), GATE-METHOD-SPEC-v2-2026-10-28.md. Precedence: SAP Addendum 2 > Addendum 1 > SAP > spec v2 > spec v1.
-% Numbers in this file come from the preregistration documents (design values) or from runs/P2-PROBE-01/summary.json (pilot).
-% No GATE outcome exists yet.
+% protocol.tex -- sources: PREREG-GATE-v4-2026-10-28.md (card v4, with its dated rows A-1 and A-2), SAP-GATE-2026-10-28.md with Addenda
+% A1 to A4, PREREG-GATE-MUST-v3-2026-10-28.md for the sections that v4 carries over, GATE-METHOD-SPEC-v2-2026-10-28.md.
+% Precedence: SAP Addendum A4 > A3b > A3 > A2b > A2 > A1 > SAP body > card v4 > v3 > spec v2.
+% Pins, the family table with its wording rules, the deviations box and the amendment log are in Appendix A (appendix.tex).
+% Numbers in this file come from the preregistration documents (design values) or from runs/P2-PROBE-01, runs/P2-GATE-CPU and
+% runs/P2-UNIDISC-KEYCHECK. No GATE outcome of the main run exists.
 
 The protocol was fixed before any outcome of the main run existed.
-It is recorded in a preregistration card, a statistical analysis plan with two addenda, and a method specification, all
-pinned by commit and hash (Section~\ref{ssec:prereg}).
-This section states what was run, with what, and how the results will be judged.
-Parts of the method that the preregistered run does not exercise are named as such.
+It is recorded in a preregistration card (version 4), a statistical analysis plan (SAP) with its addenda, and a method
+specification, all pinned by commit and hash (Section~\ref{ssec:prereg} and \ref{app:prereg}).
+Eleven test families are preregistered, each at its own level with no control across families.
+Only the primary family P can carry the headline: no secondary family can rescue or explain a null result in P, and none is stated in
+the title, abstract, highlights or conclusion without its family label.
+This section states what is run, with what, and how each result will be judged; parts of the method that a family does not
+exercise are named as such.
 
 \subsection{Model, data and tokenisation}\label{ssec:data}
 The model is UniDisc with 1.4B parameters~\cite{swerdlow2025unidisc}, used as released, with no training or finetuning here.
@@ -19,7 +24,18 @@ Instance annotations of val2017 are used to restrict wrong captions (Section~\re
 Whether COCO val2017 images were in the training data of UniDisc or of the tokenizer is unknown to the authors and is a stated
 limitation (Section~\ref{sec:discussion}).
 The backbone runs in \texttt{bf16}; log-probabilities are an \fp{} log-softmax of the logits restricted to the scored modality.
-The model is treated as time-independent, as in the released inference path, which calls the network without a noise-level input.
+
+\paragraph{Time input.}
+% run: P2-UNIDISC-KEYCHECK
+UniDisc's denoiser has no time input in the released configuration: time conditioning is off, the official inference
+configuration passes a null noise level, the backbone builds no timestep embedder without time conditioning, and the released
+checkpoint contains no time-embedding weights; the scorer uses the authors' null-sigma inference path.
+This is a property of the released configuration and checkpoint, read in the authors' code at the pinned commit (files and lines in
+\ref{app:timefree}), and not a statement about UniDisc in general.
+Because the loader is non-strict, a key check was run: all 342 checkpoint tensors match the 342 parameters of the denoiser backbone,
+with no missing key, no unexpected key and no shape mismatch.
+The check does not cover the image tokeniser and does not show that the values are the intended final weights, and how often
+whole-modality masks occurred in training cannot be recovered from the code.
 
 \subsection{Folds, negatives and tokeniser check}\label{ssec:folds}
 % run: P2-GATE-FOLDS
@@ -27,7 +43,6 @@ Four disjoint sets of images are drawn by COCO image id with a fixed seed (20261
 (100), test (300, with an ordered extension to 500 used only if the sample-size rule of Section~\ref{ssec:headroom} asks
 for it), and the 200 items of an earlier detection pilot, which serve as the detection set.
 All new folds exclude the 494 image ids of the two pilots.
-The fold file has SHA-256 \texttt{450edb54...f311} (full hash in the data statement).
 The wrong caption $c^-$ of an item is a caption of another image, fixed once per item and shared by every arm and
 corruption; where annotations exist, it comes from an image that shares no annotated COCO category with the true image.
 Before any score is computed, the frozen caption token counts are compared with the counts of the runtime tokeniser.
@@ -37,7 +52,8 @@ An item whose real count falls outside 5 to 32 is excluded from every analysis, 
 \subsection{Corruptions}\label{ssec:corruptions}
 Table~\ref{tab:corruptions} lists the corruptions.
 Three are \emph{realistic}: they act on pixels before tokenisation and produce plausible codes.
-Two are \emph{sanity} corruptions that replace tokens by uniform random codes; they are not in the primary family.
+Two are \emph{sanity} corruptions that replace tokens by uniform random codes; they form the separate positive-control family PS,
+not the primary family.
 The corrupted-token label is $Z_j=\ind[\tilde v_j\neq v^\circ_j]$, relative to the tokenisation of the clean image.
 Noise draws and the donor image and location of a splice derive from the item id, so one corruption realisation exists per image.
 
@@ -85,7 +101,7 @@ The decision, $D_c$ and $D^\ast$ are written to a file that is committed before 
 \subsection{Arms and controls}\label{ssec:arms}
 Table~\ref{tab:arms} lists the arms of the image-direction analysis.
 All arms reuse the two caption-only passes per item (Table~\ref{tab:cost}).
-The primary contrast is the marginalise arm (\emph{GATE-M}) against \emph{none}.
+The primary contrast is GATE-M against \emph{none}.
 The controls separate three competing explanations: mask geometry (an equally shaped mask elsewhere), texture or encoder
 instability (cheap non-generative detectors), and pixel denoising.
 
@@ -122,35 +138,30 @@ GATE on clean images & as GATE-M on uncorrupted images & negative control \\
 \end{table}
 
 \subsection{Detection baselines and comparators}\label{ssec:baselines}
-Detection of changed codes is evaluated against four non-generative or uncalibrated rivals, all fixed in advance:
-the \emph{patch texture} (pixel variance of the $16\times16$ patch of a token), the \emph{neighbour codebook distance}
+Detection of changed codes is evaluated against four non-generative or uncalibrated rivals, fixed in advance:
+the \emph{patch texture} (pixel variance of a token's $16\times16$ patch), the \emph{neighbour codebook distance}
 (mean $L_2$ distance of the token's codebook vector to its eight neighbours), the \emph{code rarity} (negative log frequency of the
-code among the calibration fold's clean codes), and the \emph{uncertainty score} $s_3$ above.
-Both signs are admitted for each rival, which favours the rival (a sign oracle).
-Plain-$B$ ($B_j$ without the null term) is the detector of Eq.~\eqref{eq:suspicion} without the null normalisation, and the score
-$A_j-B_j$ is the cancellation control (expected near 0.5).
-The three families of comparator that the related work names are handled as follows.
-\emph{TbV-score (non-finetuned).} The observed-position probability of Trust but Verify~\cite{jhingran2026trustverify}
-computed from the raw backbone logits of the unmodified model with the caption masked, never from the released
-output layer, which writes a probability of one at every unmasked position.
-It reproduces the score of that paper but not its method, which needs a finetune that is outside this study.
-It is reported threshold-free, and it is marked not applicable if the raw logits turn out to be degenerate.
-\emph{UniDisc repair recipe}~\cite{swerdlow2025unidisc}: random mask of equal size, $n$ re-infills, best of $n$ by the model's
-own likelihood, at matched network calls.
-This comparator belongs to the re-infill tier, which is not frozen; if it is run, an addendum is written before its first item,
-and otherwise the paper says that it was not run.
-\emph{Pixel denoiser}: OpenCV non-local-means denoising for colour images, one setting for all corruptions, with strength
-$h=h_{\rm color}=25.5$ grey levels (matched to the noise level $0.10\times255$) and windows of 7 and 21 pixels.
+code among the calibration fold's clean codes) and the \emph{uncertainty score} $s_3$.
+Both signs are admitted for each rival, which favours the rival (a sign oracle), and the best rival is chosen on the data.
+Plain-$B$ is the detector of Eq.~\eqref{eq:suspicion} without the null normalisation, and $A_j-B_j$ is the cancellation control
+(expected near 0.5).
+The \emph{TbV-score (non-finetuned)} is the observed-position probability of Trust but Verify~\cite{jhingran2026trustverify}
+computed from the raw backbone logits of the unmodified model with the caption masked, never from the released output layer, which
+writes a probability of one at every unmasked position; it reproduces that paper's score but not its method, which needs a finetune,
+and it is reported threshold-free.
+The random-gate best-of-four re-infill (I-RAND4) of family S2 is the closest we can build to the repair demonstration of the
+backbone's authors~\cite{swerdlow2025unidisc}: an equal-size random set is re-infilled four times and the draw with the highest chain
+likelihood under the model is kept, with the sampler of the analysis plan, so it says nothing about the backbone's own re-infilling.
+The \emph{pixel denoiser} is OpenCV non-local-means with one setting for all corruptions (strength matched to noise level $0.10$).
 % run: P2-GATE-CPU/denoise_check
-On 20 images this setting raises the PSNR of the noisy image at $\sigma=0.10$ from 20.41 to 25.75~dB, and lowers that of JPEG
-quality~10 from 26.82 to 25.13~dB.
-The denoiser is therefore not neutral on JPEG: against it GATE-M is compared with an aggressive denoiser that harms the image,
-and the JPEG row is worded accordingly.
+On 20 images it raises the PSNR of the noisy image at $\sigma=0.10$ from 20.41 to 25.75~dB and lowers that of JPEG quality~10 from
+26.82 to 25.13~dB, so on JPEG GATE-M is compared with an aggressive denoiser that harms the image, and the JPEG row is worded
+accordingly.
 Token-Critic~\cite{lezama2022tokencritic}, CO2Jump~\cite{le2026co2jump} and FreeCorrection~\cite{ouyang2026freecorrection} are
 discussed but not run: they need a trained critic, are sampler-level methods for generation, or have code that is not
 runnable at the pinned commit.
 
-\subsection{Endpoints and tests}\label{ssec:tests}
+\subsection{The primary family and how it is read}\label{ssec:tests}
 \paragraph{Primary family.}
 For each of JPEG, noise and splice, at the operating point from the headroom rule, the endpoint is the paired correctness
 $Y$ of Eq.~\eqref{eq:delta} under GATE-M against none.
@@ -162,102 +173,127 @@ p=\min\Big\{1,\ 2\,\PP\big(\mathrm{Bin}(n_d,\tfrac12)\le\min(b,c)\big)\Big\}.
 \end{equation}
 The family has exactly three hypotheses at all times, with Holm step-down~\cite{holm1979sequentially} at familywise level 0.05:
 a corruption without an operating point stays in the family with $p=1$.
-The headline claim is supported only if at least one hypothesis is rejected after Holm with $b>c$; a rejection with $c>b$ is
-reported as ``GATE-M worse than none''.
 With every test the paper reports $b$, $c$, $n_d$, $n$, both accuracies, the net difference $(b-c)/n$ with paired bootstrap
 intervals (10\,000 resamples) at 95\,\% and at 98.33\,\%, and the Clopper--Pearson interval~\cite{clopper1934} of $b/n_d$.
 The design minimum detectable net gain at $n=300$ is 0.053 unadjusted and 0.060 at the first Holm step, under an assumed
 discordance of 10\,\% (assumed, not observed).
 
-\paragraph{Secondary families (each with its own Holm correction, none able to rescue a failed primary test).}
-Table~\ref{tab:families} lists them.
-Everything else is exploratory, reported with intervals and without $p$-values that enter a claim.
-
-\begin{table}[t]
-\centering
-\caption{Secondary confirmatory families. $m$: number of hypotheses in the family's Holm correction.}
-\label{tab:families}
-\small
-\begin{tabular}{p{0.2\linewidth}p{0.6\linewidth}p{0.05\linewidth}}
-\toprule
-Family & Contrast and test & $m$ \\
-\midrule
-Mechanism & GATE-M versus the geometry-matched random gate (seed 1), exact McNemar; tested only for corruptions rejected in the primary family & 3 \\
-Evidence ratio & paired change of $d_R$, GATE-M minus none, Wilcoxon signed rank & 3 \\
-Denoising & GATE-M versus the pixel denoiser, exact McNemar; JPEG and noise only & 2 \\
-Detection & per-item AUROC of $q$ minus that of the best cheap rival on the 200 detection items, JPEG quality 10 and noise 0.10; paired bootstrap over items & 2 \\
-Out-of-sample detection & the same contrast with the rival frozen after the detection run, on the test items at their operating points & 2 \\
-Clean control & GATE-M versus none on clean test images, exact McNemar & 1 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{Calibration diagnostics.}
-On the clean test items, the realised false-alarm proportion $\hat F=n^{-1}\sum_i L_i(\hat\tau)$ is reported for
-$\alpha\in\{0.01,0.05,0.10\}$, with $\alpha=0.05$ primary and the others unselected sensitivities.
-A violation is flagged when $Z_{\rm cal}=(\hat F-\alpha)/\big(\hat\sigma_L\sqrt{1/n_{\rm cal}+1/n_{\rm test}}\big)$ exceeds 2.13 at any
-level, where $\hat\sigma_L$ is the pooled item-level standard deviation of $L_i$.
-A pass means ``no evidence of violation'' and is never worded as validation.
-Reported with equal prominence: the precision among flagged tokens per corruption, the false-alarm proportion on the clean tokens
-of corrupted items, and the spatial map of clean false alarms.
-For $\alpha=0.05$ on an $8\times8$ patch image, about 48 false flags are expected against at most 64 true ones, so precision is at
-most 0.57 even for a perfect detector.
-
-\paragraph{Pipeline checks and positive controls.}
-For the sanity corruptions, the lower bound of the 95\,\% interval of the per-item AUROC of $q$ and of plain-$B$ against the
-changed-code labels must exceed 0.5; a result at chance is a pipeline defect, not a scientific result, and triggers an audit without
-any change of rule.
-The clean no-gate accuracy of the image direction is reported with a Wilson interval against the pilot value of
-Section~\ref{ssec:pilot} as a descriptive pipeline check; it is not a validation and tests nothing.
-A coherence test measures, on 100 clean calibration items, whether the denoiser's joint likelihood of two image tokens is
-independent of the order in which they are revealed.
-Its pre-stated reading is ``coherent within numerical noise'' if the median absolute gap lies within the 95th percentile of the
-gap between repeats of the same computation, and ``incoherent at the evidence scale'' if it exceeds the clean mean per-token
-paired evidence; in the second case Eq.~\eqref{eq:marginalise} and the marginalise--impute comparison are reported as not applicable
-at the scale that matters.
-
-\paragraph{Reading of results.}
-The outcome is labelled \emph{positive} if at least one primary hypothesis is rejected after Holm with $b>c$, which supports only
-``GATE-M improves image-direction verification over no gate on that corruption''; attribution to detection needs the mechanism
-family.
-It is \emph{negative} if no primary hypothesis is rejected and, for every corruption with an operating point, the 90\,\% paired
-bootstrap interval of the net accuracy difference lies inside $(-0.05,+0.05)$ with at least 240 completed items.
-It is \emph{inconclusive} otherwise.
+\paragraph{Reading of the primary result.}
+The wording for every outcome was fixed before the headroom decision of the main run was written, in an outcome book of the analysis
+plan (Addendum A4), and the title, highlights and abstract follow it.
+The outcome is labelled \emph{positive} if at least one hypothesis is rejected after Holm with $b>c$ and none with $c>b$; it supports
+only ``a gate built on the masked-likelihood score improved image-direction verification over no gate on that corruption''.
+Attribution to detection needs the mechanism family: if GATE-M against the geometry-matched random gate is not rejected, the
+improvement is ``not distinguishable from masking the same shape elsewhere, and therefore not attributable to detection beyond mask
+geometry''.
+A rejection with $c>b$ is reported as ``GATE-M reduced verification accuracy'' and counts against the gate; with rejections of both
+kinds the outcome is \emph{mixed}.
+The outcome is \emph{negative} if no hypothesis is rejected and, for every corruption with an operating point, the 90\,\% paired
+bootstrap interval of the net accuracy difference lies inside $(-0.05,+0.05)$ with at least 240 completed items; it is
+\emph{inconclusive} otherwise.
 A null result is worded ``no improvement was detected; the data are compatible with a net accuracy change between $L$ and $U$'', and
 never ``GATE-M has no effect''.
 Under rule~R3 the primary endpoint is the evidence ratio, the label negative is not available, and the positive sentence says that
 GATE-M increased the evidence ratio and nothing about verification accuracy, with the caveat that removing heavy-tailed tokens can
 raise a ratio for any reason.
-Rules that stop the claim are fixed in advance: no corruption with an operating point, detection by $q$ not better than the best
-rival on both JPEG and noise, no primary rejection, a $Z_{\rm cal}$ above 2.13, and more than 5\,\% empty or non-finite
-evidence in an arm.
+If no corruption has an operating point, the outcome is ``no operating point'' and no statement about gating and verification is made.
 
-\subsection{Two-way fusion and the text direction}\label{ssec:fusionprotocol}
-Two-way fusion is analysed only if the best single direction has a clean test accuracy below 0.95.
-Otherwise the paper states that the fusion gain cannot be tested at that ceiling.
+\paragraph{Rules that stop or reword a claim.}
+These are fixed in advance.
+The improvement claim is withdrawn if no hypothesis is rejected, and the null wording above applies.
+The claim of a working guarantee is suspended if the calibration statistic $Z_{\rm cal}$ exceeds 2.13 at any level, until an audit
+against the unit tests ends.
+An arm with more than 5\,\% empty or non-finite evidence stops and is diagnosed from logs.
+If the score does not beat the best cheap rival on both JPEG and noise, the paper may not say that it detects corrupted codes better
+than cheap methods, and it reports the rival, its sign and its AUROC with an interval in the main text; the primary test still runs.
+A failed positive-control chance bar does not block the primary test; it triggers an audit and is reported as a pipeline defect.
+
+\subsection{Why the image direction is the primary endpoint}\label{ssec:task}
+The primary decision uses the image-direction statistic, which is the weaker of the two statistics available on clean pairs.
+% run: P2-PROBE-01
+In the exploratory pilot (Section~\ref{ssec:pilot}) the full-mask text direction reached 0.990 and the image direction 0.843.
+The image direction became the primary endpoint because it has headroom and because the corruptions studied act on the image.
+The choice was made after seeing the pilot.
+A practitioner who wanted to verify captions would use the text direction, or fuse the two.
+The primary result therefore describes how well the weaker statistic tolerates image damage, with and without a gate, in a
+setting where the wrong caption is a caption of another image that shares no annotated category with the true one, an easy
+matching task.
+It does not show what a gate buys a verifier that already uses the stronger statistic.
+The only preregistered test of the two-direction setting is family B (Section~\ref{ssec:fusionprotocol}), on harder negatives, and it
+is declared untestable if the better single direction is already at or above 0.95 accuracy on the fit pairs.
+If B is untestable or is not run, the question of what gating adds to a near-ceiling verifier is left open.
+
+\subsection{Secondary and descriptive families}\label{ssec:families}
+Besides P there are ten test families; Table~\ref{tab:families} in \ref{app:prereg} gives their sizes, tests and wording rules.
+\emph{PS} is the positive control, the same test on the two sanity corruptions with Holm over two: a pass means ``the pipeline is not
+broken'', a failure triggers an audit, and it is never shown beside P as a demonstration that the gate works where detection is easy.
+\emph{S2} tests re-infilling on patch and splice, the repaired flagged set against the repaired equal-size random set (I-GATE against
+I-RAND4), and only if at least 120 items are complete.
+\emph{B} tests two-way fusion on hard negatives (Section~\ref{ssec:fusionprotocol}).
+\emph{R} repeats the primary test on a second model, an 8B unified masked diffusion model quantised to 4 bits
+\todo{AUTHOR: cite Omni-Diffusion}, on 150 test images, and runs only if P has a rejection with $b>c$.
+Six further families come from the first version of the plan: mechanism (S-M), evidence ratio (S-Z), denoising (S-DN), detection
+(S-D, with its out-of-sample version S-D2) and the clean control (S-C).
+E-dec, E-pred and an exploratory corruption suite are descriptive and have no test.
+E-dec decomposes the accuracy lost to corruption into the residual loss under the changed-code (oracle) gate and the gap to that
+oracle; E-pred reports in how many of $K_{\rm eval}$ cells the sign of the plug-in signal-to-noise change of Eq.~\eqref{eq:snr}
+agreed with the sign of the observed net accuracy difference.
+Each family has its own level 0.05 and Holm correction, with no multiplicity control across families.
+Families run in a fixed order, and anything unfinished at the results freeze is cut in the reverse order by time only (the suite,
+then R, B and S2 last), declared not run and never replaced.
+
+\subsection{Calibration diagnostics and pipeline checks}\label{ssec:diagnostics}
+On the clean test items the realised false-alarm proportion $\hat F=n^{-1}\sum_i L_i(\hat\tau)$ is reported for
+$\alpha\in\{0.01,0.05,0.10\}$, with $\alpha=0.05$ primary; a calibration statistic $Z_{\rm cal}$ above 2.13 at any level is a
+violation flag, and a pass means ``no evidence of violation'', never validation.
+The precision among flagged tokens and the false-alarm proportion on the clean tokens of corrupted items are reported with equal
+prominence.
+A positive-control chance bar on the sanity corruptions and a coherence test of the denoiser across mask patterns serve as pipeline
+checks; their definitions and readings are in \ref{app:diag}.
+
+\subsection{Exploratory comparison with robust and weighted combiners}\label{ssec:tier3}
+The gate gives each token a weight of zero or one, whereas the usual answer to unreliable sources is graded: weights that follow
+reliability~\cite{chair1986optimal,huang2025evidential}, or aggregators that need no detector, such as a median or a trimmed mean.
+The hard weight was chosen because the conformal threshold bounds the expected share of flags on clean items, which a graded weight
+does not; it was not shown to be better.
+With dependent image tokens, whether the detector adds anything beyond robust aggregation is a fair question.
+SAP Addendum A4, committed before the headroom decision of the main run was written, pre-specifies an exploratory comparison on
+the stored per-token evidence $\Delta_j$ of the primary test fold, with the primary decision rule.
+GATE-M is compared with five combiners of the same $\Delta_j$: the median; a trimmed mean that removes as many tokens as the gate
+flagged for the item, half from each tail; a 20\,\% trimmed mean; a discount of the flagged tokens whose weight falls with their
+suspicion; and a weight on every token equal to the conformal $p$-value of its suspicion against the clean calibration tokens.
+Paired accuracy differences are reported with bootstrap 95\,\% intervals and the minimum detectable difference at the realised
+spread; no $p$-value is computed and no multiplicity adjustment is made.
+A detector-free combiner (the median or either trimmed mean) whose accuracy is above that of the gate counts against the method; one
+that is not distinguishable counts against the added value of the detector only if the minimum detectable difference is at most
+0.05, and is otherwise uninformative at the realised $n$.
+For the two graded weights, a higher accuracy counts against discarding tokens, not against the detector.
+The comparison is exploratory (Tier 3): it has its own Results subsection after the preregistered families, it is absent from the
+title, abstract, highlights, conclusion and contributions, and it cannot explain, qualify or rescue a primary result.
+It has not been run.
+
+\subsection{Two-way fusion and the text direction (family B)}\label{ssec:fusionprotocol}
+Family B asks whether the score-level fusion of the two directions, with weights fitted on separate fit pairs (Eq.~\eqref{eq:lda}) and
+frozen, is more accurate than the better single direction on a hard-negative set built from FOIL-COCO
+\todo{AUTHOR: cite FOIL} (exact McNemar, one hypothesis).
+It is analysed only if the better single direction has an accuracy below 0.95 on the fit pairs; otherwise the paper states that the
+fusion gain cannot be tested at that ceiling and gives the clean accuracy.
+B is not a corruption test and says nothing about corruption.
 The text-direction conditioning arms (none, GATE-M with the flagged image tokens masked, geometry-matched, changed-code) run for the
 three realistic corruptions and are exploratory.
-Caption corruption, re-infilling and a hard-negative set are not part of the preregistered main run.
-The title, abstract and highlights therefore make no claim about fusion, marginalisation versus imputation, re-infilling or
-caption corruption, and the paper states that these were not tested unless an addendum adds them before the first item of the run
-concerned.
+Caption corruption is not part of any family, and the paper makes no statement about it.
 
 \subsection{Exploratory feasibility result}\label{ssec:pilot}
 % run: P2-PROBE-01
 A pilot on 300 clean COCO images, run before the protocol was fixed, shows the pair-level signal on which the endpoint rests.
-For each image the true caption was compared with a caption drawn from a different image, and accuracy is the share of images for which
-the true caption scores higher (chance 0.5; bootstrap intervals over images, 10\,000 resamples).
-With $K=8$ complementary masks and the other modality visible, the text direction reaches 0.730 (95\,\% interval 0.680 to 0.777) and the
-image direction 0.783 (0.737 to 0.830).
-A caption-only control, with the whole image masked, stays at chance, 0.497 (0.440 to 0.553), so the text-direction value is not explained
-by caption fluency.
+For each image the true caption was compared with a caption of a different image; accuracy is the share of images for which the true
+caption scores higher (chance 0.5; bootstrap intervals over images, 10\,000 resamples).
+With $K=8$ complementary masks the text direction reaches 0.730 (95\,\% interval 0.680 to 0.777) and the image direction 0.783
+(0.737 to 0.830), and a caption-only control with the whole image masked stays at chance, 0.497 (0.440 to 0.553).
 Variants chosen after seeing these results, with all tokens of the scored modality masked in one pass and the image-masked null
-subtracted, reach 0.990 (0.977 to 1.000) in the text direction and 0.843 (0.803 to 0.883) in the image direction, 253 of 300 images
-(Figure~\ref{fig:probe1}).
-The image-direction accuracy of 0.843 is the headroom that makes it, and not the text direction, the primary endpoint: the text
-direction sits near a ceiling at which restoration cannot be shown.
-The mean paired margin of that image-direction statistic is 0.18 nats per token.
-This is a single run with one mismatch draw, on clean images, with the full-mask variants selected post hoc; it is exploratory and
+subtracted, reach 0.990 (0.977 to 1.000) in the text direction and 0.843 (0.803 to 0.883) in the image direction
+(Figure~\ref{fig:probe1}), whose mean paired margin is 0.18 nats per token.
+This is one run with one mismatch draw, on clean images, with the full-mask variants selected post hoc; it is exploratory and
 carries no inference beyond the intervals shown.
 
 \begin{figure}[t]
@@ -273,33 +309,23 @@ models.}
 \end{figure}
 
 \subsection{Hardware, runtime and missing items}\label{ssec:hardware}
-% run: P2-PROBE-01
-All runs use one laptop GPU (NVIDIA RTX 5070 Ti Laptop, 12~GB) with 31~GB of system memory and no other hardware.
-In the pilot, one item cost 58 network passes, the median item time was 7.0~s, and the peak GPU memory was 8.2~GB, which is why
-passes are batched four rows at a time.
-Runs go in short checkpointed chunks under a guard that stops on memory, temperature and power-source events and is resumable;
-an abort ends the stage and is not retried until reviewed.
-An earlier detection pilot stopped after 20 complete items when the GPU session failed.
-% run: P2-PROBE-02
-Missing items are handled by a fixed rule: complete cases per analysis, no replacements and no reordering, so that a crash leaves a
-prefix of the item list; if the completed base fold has fewer than 240 items, the paper says that the fold is under 80\,\% complete,
-prints the minimum detectable effect at the achieved $n$, and does not read ``not rejected'' as evidence against GATE-M.
-No analysis that computes $Y$, $b$, $c$, $p$ or a difference of $d_R$ is run on test data before the planned fold is complete.
-Mask-seed and corruption-seed variance are not in the intervals, which is a stated limitation.
+All runs use one laptop GPU (12~GB) in short checkpointed chunks under a guard (\ref{app:diag}).
+Missing items are handled by a fixed rule: complete cases per analysis, no replacements and no reordering, so a crash leaves a
+prefix of the item list; if the completed base fold has fewer than 240 items the paper says so, prints the minimum detectable effect
+at the achieved $n$, and does not read ``not rejected'' as evidence against GATE-M.
+No analysis that computes $Y$, $b$, $c$, $p$ or a difference of $d_R$ runs on test data before the planned fold is complete.
+Mask-seed and corruption-seed variance are not in the intervals.
 
 \subsection{Preregistration, pins and disclosed deviations}\label{ssec:prereg}
-The code, the tests, the fold file and the analysis plan are pinned: the code at commit \texttt{164a18a5}, the analysis plan by SHA-256
-(\texttt{b4e0bf57...6c47}), and the denoiser check, crash diagnosis and audit files by hash in the repository.
-Changes after the pin are logged as amendments; none is made inside a stage.
-One analysis preceded the analysis plan and is disclosed.
+The code, the tests, the fold file, the hard-negative pool and the analysis plan are pinned by commit and SHA-256, and the pins,
+the audit and sign-off record, the deviations known at the time of writing and the dated amendments are in \ref{app:prereg}.
+Changes after a pin are logged as dated amendments; none is made inside a stage.
 % run: P2-GATE-CPU/m1_fallback
-The first 21 items of the detection set were analysed on CPU before the plan's second addendum, without the gate statistic $q$ (which needs a
-GPU pass).
+One analysis preceded the plan's second addendum and bears on the detection wording.
+The first 21 items of the detection set were analysed on CPU without the gate statistic $q$, which needs a GPU pass.
 In that exploratory look the mean per-item AUROC against changed-code labels of plain-$B$ was 0.54 on JPEG quality 10 and 0.51 on noise
 0.10, while pixel variance with its sign flipped scored 0.76 and 0.77.
 The sign of the pixel-variance rival therefore cannot be claimed to be fixed blind, which is why both signs of every rival are admitted
 and the rival is chosen on the data.
-Any change to the score, $K$, $\alpha$, folds, rungs, arms, family or rival rule that was made after that look and is not a new version of
-the preregistration is listed in the change log of the preregistration card and disclosed here.
 \todo{AUTHOR: final list of amendments and the date of the first M2 outcome; confirm the status of the open decisions on guard
 thresholds, the JPEG denoiser setting and the fallback before the run.}
