@@ -1,0 +1,43 @@
+event-log check (last 12 h): 7 crash-signature event(s), latest Id 1001 Application at 2026-10-27T23:32:50.9465304+05:30: Fault bucket 0x116_TdrBCR:4:C000009A_Tdr:A_IMAGE_nvlddmkm.sy - review before launching (events from an earlier crash are expected right after one)
+C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1028 09:50:48.250000 8228 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1028 09:50:49.118000 8228 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)
+unsupported operand type(s) for /: 'WindowsPath' and 'NoneType'
+[2026-10-28 09:50:48] [Rank:0] Forcing cudnn spda context
+[2026-10-28 09:50:48] [Rank:0] Not using Flash Attention 3!
+[2026-10-28 09:50:48] [Rank:0] Imported Flash Attention 2!
+[2026-10-28 09:50:58] [Rank:0] Failed to import Chameleon tokenizers from C:\Users\Shlok\Downloads\Multi-Modality Language model\models\third_party\unidisc\third_party\Lumina-mGPT\lumina_mgpt: No module named 'model.chameleon_vae_ori'; 'model' is not a package
+[2026-10-28 09:50:58] [Rank:0] Setting torch defaults
+[2026-10-28 09:50:58] [Rank:0] Using Llama tokenizer, adding add_eos_token and setting padding_side to right
+[2026-10-28 09:50:59] [Rank:0] Set compute dtype in model: torch.bfloat16
+[2026-10-28 09:50:59] [Rank:0] Text vocab size: 32001, Image vocab size: 16384
+[2026-10-28 09:50:59] [Rank:0] Vocab size: 48385, Mask index: 32000
+[2026-10-28 09:50:59] [Rank:0] Image Model: True, Unified Model: True
+[2026-10-28 09:50:59] [Rank:0] Using Scale factor: 1
+[2026-10-28 09:50:59] [Rank:0] Using Scale factor: 2
+[2026-10-28 09:50:59] [Rank:0] Using Scale factor: 3
+[2026-10-28 09:50:59] [Rank:0] Using Scale factor: 4
+[2026-10-28 09:50:59] [Rank:0] Not using AR, disabling txt dropout
+[2026-10-28 09:50:59] [Rank:0] DIT Found XLA: False
+trainable params: 1406870785 || all params: 1406870785 || trainable%: 100.0
+[2026-10-28 09:50:59] [Rank:0] Total trainable parameters (excluding embeddings): 1,307,741,441, Total trainable parameters: 1,406,870,785, Total frozen parameters: 0
+[2026-10-28 09:50:59] [Rank:0] Loading model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+Loading from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt, .pt, False
+[2026-10-28 09:51:06] [Rank:0] Loaded model state dict from C:\Users\Shlok\.cache\huggingface\hub\models--aswerdlow--unidisc_interleaved\snapshots\2b344ca856bd108b52a2d022a3463dace131249f\unidisc_interleaved.pt
+[2026-10-28 09:51:06] [Rank:0] Moving model to cuda
+selfcheck {'ids_equal': True, 'modality_equal': True, 'len_ref': 1068, 'len_mine': 1068, 'n_cap': 16, 'image_tokens_frac_equal': 1.0, 'max_abs_diff_text': 0.057218194007873535, 'max_abs_diff_img': 0.08141183853149414, 'mean_diff_text': 0.010746815241873264, 'mean_diff_img': -0.011420197784900665, 'mean_lp_text': -0.4736281931400299, 'mean_lp_img': -4.626166343688965}
+gpu_guard: child exited 0; telemetry in runs\P2-M0-STAGE2\telemetry.csv
+EXIT 0
