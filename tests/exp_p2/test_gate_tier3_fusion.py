@@ -159,12 +159,73 @@ def test_mdd_formula_on_known_sd():
 
 def test_reading_and_counts_against():
     assert C.reading(0.01, 0.1) == "above" and C.reading(-0.1, -0.01) == "below" and C.reading(-0.1, 0.1) == "not_distinguishable" and C.reading(0.0, 0.1) == "not_distinguishable"
-    assert C.counts_against("MED", "above", 0.2) == "finding_against_the_method"
-    assert C.counts_against("TM20", "not_distinguishable", 0.05) == "finding_against_added_value"      # MDD <= 0.05 inclusive
-    assert C.counts_against("TM-G", "not_distinguishable", 0.0501) == "uninformative_at_this_n"
-    assert C.counts_against("SOFT-G", "above", 0.2) == "finding_against_discarding"
-    assert C.counts_against("SOFT-A", "not_distinguishable", 0.2) == "discarding_and_weighting_not_distinguishable"
-    assert C.counts_against("MED", "below", 0.2) == "gate_higher"
+    assert C.counts_against("MED", "above", 0.2, 30, 0.2) == "finding_against_the_method"
+    assert C.counts_against("TM20", "not_distinguishable", 0.05, 12, 0.5) == "finding_against_added_value"      # n_d >= 10: MDD <= 0.05 inclusive
+    assert C.counts_against("TM-G", "not_distinguishable", 0.0501, 12, 0.0) == "uninformative_at_this_n"
+    assert C.counts_against("SOFT-G", "above", 0.2, 30, 0.2) == "finding_against_discarding"
+    assert C.counts_against("SOFT-A", "not_distinguishable", 0.2, 30, 0.2) == "discarding_and_weighting_not_distinguishable"
+    assert C.counts_against("SOFT-G", "identical", 0.0, 0, 0.0074) == "discarding_and_discounting_not_distinguishable_identical"
+    assert C.counts_against("SOFT-A", "identical", 0.0, 0, 0.0074) == "discarding_and_weighting_not_distinguishable_identical"
+    assert C.counts_against("MED", "below", 0.2, 30, 0.2) == "gate_higher"
+    assert C.counts_against("MED", "undefined", float("nan"), 0, float("nan")) == "undefined"
+
+
+def test_exact_theta_interval_and_reading():
+    from scipy.stats import beta
+    assert C.exact_reading(4, 0) == "not_distinguishable" and C.exact_reading(5, 0) == "not_distinguishable"
+    assert C.exact_reading(6, 0) == "above" and C.exact_reading(0, 6) == "below" and C.exact_reading(0, 0) == "identical"
+    assert C.exact_reading(0, 5) == "not_distinguishable" and C.exact_reading(3, 3) == "not_distinguishable"
+    assert all(np.isnan(x) for x in C.exact_theta_interval(0, 0))
+    assert C.exact_theta_interval(0, 5) == (0.0, pytest.approx(float(beta.ppf(0.975, 1, 5))))      # b = 0: lower 0
+    assert C.exact_theta_interval(5, 0) == (pytest.approx(float(beta.ppf(0.025, 5, 1))), 1.0)      # b = n_d: upper 1
+    lo, hi = C.exact_theta_interval(6, 0)
+    assert lo == pytest.approx(0.025 ** (1 / 6)) and lo > 0.5 and hi == 1.0                         # 0.025^(1/6) = 0.541
+    assert 0.025 ** (1 / 5) < 0.5 and C.exact_theta_interval(5, 0)[0] == pytest.approx(0.478, abs=1e-3)
+    lo, hi = C.exact_theta_interval(3, 7)                                                           # interior b: both Beta quantiles
+    assert lo == pytest.approx(float(beta.ppf(0.025, 3, 8))) and hi == pytest.approx(float(beta.ppf(0.975, 4, 7)))
+    assert 0 < lo < 0.3 < hi < 1
+
+
+def test_discordance_bound_values():
+    assert C.discordance_bound(0, 300) == pytest.approx(0.0122, abs=1e-4)
+    assert C.discordance_bound(0, 500) == pytest.approx(0.0074, abs=1e-4)
+    assert C.discordance_bound(5, 5) == 1.0 and C.discordance_bound(7, 5) == 1.0
+    assert C.discordance_bound(15, 500) <= 0.05                                                       # r3 item 4: B <= 0.05 for every n_d <= 15 at n = 500
+    assert C.discordance_bound(3, 100) < C.discordance_bound(4, 100)
+
+
+def test_counts_against_uses_the_bound_below_ten_and_the_mdd_from_ten():
+    assert C.counts_against("MED", "identical", 0.0, 0, C.discordance_bound(0, 500)) == "finding_against_added_value"
+    assert C.counts_against("TM20", "not_distinguishable", 0.0, 9, 0.06) == "uninformative_at_this_n"        # n_d < 10: B governs; mdd 0.0 is not used
+    assert C.counts_against("TM20", "not_distinguishable", 0.06, 12, 0.001) == "uninformative_at_this_n"    # n_d >= 10: MDD governs; B is not used
+    assert C.counts_against("MED", "not_distinguishable", 0.06, 12, 0.5) == "uninformative_at_this_n"
+    assert C.counts_against("MED", "not_distinguishable", 0.0, 9, 0.05) == "finding_against_added_value"
+
+
+def test_bootstrap_above_but_exact_not_distinguishable_gives_no_finding_against():
+    """b = 4, c = 0 of n = 40: the percentile bootstrap lower bound is above 0 (red-team G3), the exact reading is not_distinguishable."""
+    Y = {a: np.zeros(40, np.int8) for a in C.ARMS}
+    Y["MED"][:4] = 1
+    idx = C.index_matrix(40, C.cell_seed_sequence("jpeg"), 2000)
+    row = C.accuracy_contrasts(Y, idx, "P")["MED_minus_GM"]
+    assert row["b"] == 4 and row["c"] == 0 and row["ci95"][0] > 0 and row["reading_bootstrap"] == "above"
+    assert row["reading"] == "not_distinguishable" and row["mdd_used"] is False
+    assert not row["counts_against"].startswith("finding_against_the_method")
+    assert row["discordance_bound_B"] > 0.05 and row["counts_against"] == "uninformative_at_this_n"           # B(4, 40) = 0.23
+    assert row["theta_ci95_exact"] == list(C.exact_theta_interval(4, 0)) and row["discordance_bound_B"] == pytest.approx(C.discordance_bound(4, 40))
+    # six discordant pairs on one side are "above" (exact)
+    Y["MED"][:6] = 1
+    row6 = C.accuracy_contrasts(Y, idx, "P")["MED_minus_GM"]
+    assert row6["reading"] == "above" and row6["counts_against"] == "finding_against_the_method"
+    # identical on every item: n_d = 0 and the degenerate mdd of 0.0 is flagged as not used
+    ident = C.accuracy_contrasts({a: np.zeros(40, np.int8) for a in C.ARMS}, idx, "P")["TM20_minus_GM"]
+    assert ident["reading"] == "identical" and ident["n_d"] == 0 and ident["mdd"] == 0.0 and ident["mdd_used"] is False
+    assert ident["counts_against"] == "uninformative_at_this_n"                                      # B(0, 40) = 0.088 > 0.05
+    Y500 = {a: np.zeros(500, np.int8) for a in C.ARMS}
+    r500 = C.accuracy_contrasts(Y500, C.index_matrix(500, C.cell_seed_sequence("jpeg"), 50), "P")
+    assert r500["MED_minus_GM"]["counts_against"] == "finding_against_added_value" and r500["SOFT-G_minus_GM"]["counts_against"] == "discarding_and_discounting_not_distinguishable_identical"
+    assert r500["MED_minus_NONE"].get("counts_against") is None                                       # only "minus GM" carries a counts_against label
+
 
 
 def test_seed_slots_independent_of_absent_cells_and_equal_the_spawn_child():
@@ -206,6 +267,11 @@ def test_d_control_by_hand_and_drops():
     assert c["ci95"] == pytest.approx([2.0, 2.0]) and c["reading"] == "above"
     assert out["per_arm"]["GM"]["n_dropped"] == 1 and out["per_arm"]["GM"]["mean_d"] == pytest.approx(1.5)
     assert "MED" not in out["per_arm"] and "SOFT-G" not in out["per_arm"]
+    # r3 (A4.1.12 item 7): every valid paired difference exactly 0 -> "identical_on_every_item"; the other contrast keeps the bootstrap reading
+    same = {"NONE": np.ones(3), "GM": np.array([1.0, 2.0, np.nan]), "TM-G": np.array([1.0, 2.0, 5.0]), "TM20": np.array([2.0, 3.0, 4.0])}
+    o2 = C.d_control(same, idx)["contrasts"]
+    assert o2["TM-G_minus_GM"]["reading"] == "identical_on_every_item" and o2["TM-G_minus_GM"]["n_valid"] == 2
+    assert o2["TM20_minus_GM"]["reading"] == "above"
 
 
 # ------------------------------------------------------------------------------------------------ cells on tiny fixtures
@@ -351,9 +417,11 @@ def test_module_imports_and_calls_no_test_function():
     import ast
     tree = ast.parse((ROOT / "exp_p2" / "gate" / "tier3_fusion.py").read_text(encoding="utf8"))
     imported = {a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names} | {n.module for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)}
-    assert not any(m and m.split(".")[0] == "scipy" for m in imported)
+    assert {m for m in imported if m and m.split(".")[0] == "scipy"} <= {"scipy.stats"}
+    scipy_names = {a.name for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.module == "scipy.stats" for a in n.names}
+    assert scipy_names == {"beta"}                                  # A4.1.12 item 1: only the Clopper-Pearson quantiles, no test function
     called = {n.func.attr if isinstance(n.func, ast.Attribute) else getattr(n.func, "id", "") for n in ast.walk(tree) if isinstance(n, ast.Call)}
-    assert not {c for c in called if re.search(r"mcnemar|wilcoxon|holm|ttest|permutation|report_test|exact", c, flags=re.I)}
+    assert not {c for c in called if re.search(r"mcnemar|wilcoxon|holm|ttest|permutation|report_test|binomtest|fisher|\bcdf\b|\bsf\b", c, flags=re.I)}
 
 
 def test_arm_values_in_the_run_match_a_direct_recomputation(world):
@@ -393,7 +461,7 @@ def test_one_index_matrix_per_cell_is_shared_by_arms_and_contrasts():
     p = pool10()
     r1 = C.cell_results(cd, p, "P", "jpeg", n_boot=300)
     r2 = C.cell_results(cd, p, "P", "jpeg", n_boot=300)
-    assert r1 == r2                                                 # same seed slot: identical
+    assert C.dumps(r1) == C.dumps(r2)                               # same seed slot: identical (NaN-safe: n_d = 0 gives a NaN exact interval)
     r3 = C.cell_results(cd, p, "P", "noise", n_boot=300)             # another slot: the resamples differ, the point estimates do not
     assert r3["contrasts"]["MED_minus_GM"]["diff"] == r1["contrasts"]["MED_minus_GM"]["diff"]
     assert any(r3["contrasts"][k]["ci95"] != r1["contrasts"][k]["ci95"] or r3["contrasts"][k]["se_boot"] != r1["contrasts"][k]["se_boot"] for k in r1["contrasts"])

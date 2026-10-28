@@ -24,8 +24,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
+from scipy.stats import beta
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT =Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                          # noqa: E402
@@ -39,6 +40,8 @@ N_BOOT = 10000                                               # A4.1.7
 Z_MDD = 1.959964 + 0.841621                                  # A4.1.7: two-sided 5 percent, 80 percent power normal approximation = 2.801585
 MEAN_TOL = 1e-9                                              # A4.1.3
 MDD_DESIGN_MARGIN = 0.05                                     # A4.1.10 / SAP 4.3
+N_D_MDD_MIN = 10                                             # A4.1.12 item 1 (r3): the MDD is used only for n_d >= 10; below it the discordance bound B is used
+ALPHA_EXACT = 0.05                                           # A4.1.12 item 1 (r3): exact intervals are two-sided 95 percent (0.025 / 0.975 quantiles)
 SEED_SPAWN_KEY = (32,)                                       # A4.1.7: the child an append of `tier3_fusion` at position 32 of seeds.ANALYSES would give (A3.7)
 SEED_SLOTS = ("clean", "jpeg", "noise", "splice", "patch", "swap")
 SANITY_CONDS = analysis_m4.SANITY_CONDS                      # ("patch", "swap"): PS cells
@@ -224,8 +227,37 @@ def reading(lo: float, hi: float) -> str:
     return "not_distinguishable"
 
 
-def counts_against(comparator: str, read: str, mdd: float) -> str:
-    """What the reading means for the method, 'comparator minus GM' on a P cell (A4.1.10, C4-9 / F7(d))."""
+def exact_theta_interval(b: int, c: int) -> tuple[float, float]:
+    """A4.1.12 item 2 / A4.1.10 r3 item 1: Clopper-Pearson two-sided 95 percent interval of theta = b / n_d, conditional on the n_d = b + c discordant pairs (an interval, not a p-value)."""
+    n_d = int(b) + int(c)
+    if n_d == 0:
+        return float("nan"), float("nan")
+    lo = 0.0 if b == 0 else float(beta.ppf(0.025, b, n_d - b + 1))
+    hi = 1.0 if b == n_d else float(beta.ppf(0.975, b + 1, n_d - b))
+    return lo, hi
+
+
+def exact_reading(b: int, c: int) -> str:
+    """A4.1.12 item 3: identical (n_d = 0), above (theta_L > 0.5), below (theta_U < 0.5), else not_distinguishable. Labels come from this, not from the bootstrap."""
+    if b + c == 0:
+        return "identical"
+    lo, hi = exact_theta_interval(b, c)
+    if lo > 0.5:
+        return "above"
+    if hi < 0.5:
+        return "below"
+    return "not_distinguishable"
+
+
+def discordance_bound(n_d: int, n: int) -> float:
+    """A4.1.12 item 4: Clopper-Pearson 95 percent upper limit of n_d / n; bounds the absolute net difference |A^k - A^GM| <= pi_d."""
+    if n_d >= n:
+        return 1.0
+    return float(beta.ppf(0.975, n_d + 1, n - n_d))
+
+
+def counts_against(comparator: str, read: str, mdd: float, n_d: int, B: float) -> str:
+    """What the exact reading means for the method, 'comparator minus GM' on a P cell (A4.1.10 r3 item 4, A4.1.12 item 5). The bound on GM's advantage is B for n_d < 10 and the MDD otherwise."""
     if read == "undefined":
         return "undefined"
     if read == "below":
@@ -233,10 +265,12 @@ def counts_against(comparator: str, read: str, mdd: float) -> str:
     if comparator in DETECTOR_FREE:
         if read == "above":
             return "finding_against_the_method"
-        return "finding_against_added_value" if mdd <= MDD_DESIGN_MARGIN else "uninformative_at_this_n"
+        bound = B if n_d < N_D_MDD_MIN else mdd
+        return "finding_against_added_value" if bound <= MDD_DESIGN_MARGIN else "uninformative_at_this_n"
     if read == "above":
         return "finding_against_discarding"
-    return "discarding_and_discounting_not_distinguishable" if comparator == "SOFT-G" else "discarding_and_weighting_not_distinguishable"
+    base = "discarding_and_discounting_not_distinguishable" if comparator == "SOFT-G" else "discarding_and_weighting_not_distinguishable"
+    return base + "_identical" if read == "identical" else base
 
 
 def accuracy_contrasts(Y: dict[str, np.ndarray], idx: np.ndarray, cell_kind: str) -> dict:
@@ -248,10 +282,14 @@ def accuracy_contrasts(Y: dict[str, np.ndarray], idx: np.ndarray, cell_kind: str
             n = int(diff.size)
             b, c = int((diff == 1).sum()), int((diff == -1).sum())
             iv = bootstrap_interval(diff[idx].mean(axis=1))
-            row = dict(comparator=k, reference=ref, n=n, acc_comparator=float(Y[k].mean()), acc_reference=float(Y[ref].mean()), b=b, c=c, n_d=b + c, diff=(b - c) / n,
-                       ci95=[iv["lo"], iv["hi"]], se_boot=iv["se_boot"], mdd=iv["mdd"], n_undefined_resamples=iv["n_undefined_resamples"], reading=reading(iv["lo"], iv["hi"]))
+            n_d = b + c
+            B = discordance_bound(n_d, n)
+            row = dict(comparator=k, reference=ref, n=n, acc_comparator=float(Y[k].mean()), acc_reference=float(Y[ref].mean()), b=b, c=c, n_d=n_d, diff=(b - c) / n,
+                       ci95=[iv["lo"], iv["hi"]], se_boot=iv["se_boot"], mdd=iv["mdd"], n_undefined_resamples=iv["n_undefined_resamples"],
+                       theta_ci95_exact=list(exact_theta_interval(b, c)), discordance_bound_B=B, reading=exact_reading(b, c), reading_bootstrap=reading(iv["lo"], iv["hi"]),
+                       mdd_used=bool(n_d >= N_D_MDD_MIN))
             if ref == "GM" and cell_kind == "P":
-                row["counts_against"] = counts_against(k, row["reading"], iv["mdd"])
+                row["counts_against"] = counts_against(k, row["reading"], iv["mdd"], n_d, B)
             out[f"{k}_minus_{ref}"] = row
     return out
 
@@ -269,9 +307,10 @@ def d_control(dvals: dict[str, np.ndarray], idx: np.ndarray) -> dict:
         with np.errstate(invalid="ignore", divide="ignore"):
             boots = np.where(cnt > 0, diff[idx].sum(axis=1) / cnt, np.nan)
         iv = bootstrap_interval(boots)
+        all_zero = bool(valid.any() and np.all(diff[valid] == 0.0))
         contrasts[f"{a}_minus_{ref}"] = dict(n_valid=int(valid.sum()), n_dropped=int((~valid).sum()), mean_diff=(float(diff[valid].mean()) if valid.any() else float("nan")),
                                              ci95=[iv["lo"], iv["hi"]], se_boot=iv["se_boot"], mdd=iv["mdd"], n_undefined_resamples=iv["n_undefined_resamples"],
-                                             reading=reading(iv["lo"], iv["hi"]), reading_wording="higher evidence ratio d")
+                                             reading=("identical_on_every_item" if all_zero else reading(iv["lo"], iv["hi"])), reading_wording="higher evidence ratio d")
     return dict(per_arm=per_arm, contrasts=contrasts, note="descriptive; symmetric trimming lowers the retained sd mechanically (A4.1.8); Tier 3, never qualifies P's sentence")
 
 
