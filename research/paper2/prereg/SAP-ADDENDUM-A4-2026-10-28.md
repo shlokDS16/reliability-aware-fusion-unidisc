@@ -3,75 +3,100 @@ agent: statistician
 date: 2026-10-28
 brief: >
   SAP Addendum A4 for Paper 2 (GATE on UniDisc; Information Fusion). Part 1 pre-specifies the Tier-3 fusion comparators of
-  red-team M-e (detector-free robust combiners, a soft reliability weight, the hard gate). Part 2 is the outcome book
-  (red-team M-c, A1, A3, A4): title, highlight 1, abstract result sentence, Discussion 6.1 opening, contribution list and
-  figure layout for every A2.2 label, K1 and R3, and the D18 / AB.1 reconciliation. Part 3 has two dated rules (time input of
-  the released UniDisc configuration; FOIL before S2). To be committed before `analysis_m4` is first run (card v4 row 6).
+  red-team M-e (detector-free robust combiners, discounting of the gate-flagged tokens, reliability weighting of every token,
+  the hard gate). Part 2 is the outcome book (red-team M-c, A1, A3, A4): title, highlight 1, abstract result sentence,
+  Discussion 6.1 opening, contribution list and figure layout for every label of P, K1 and R3, and the D18 / AB.1 question
+  for Shlok. Part 3 has two dated rules (time input of the released UniDisc configuration; FOIL before S2). Revision r1
+  answers the red-team A4 signature (conditions C4-1 to C4-11).
 sources_examined:
   - research/CONTRACT.md
-  - research/paper2/prereg/SAP-GATE-2026-10-28.md (sections 1-3, 4.6-11 and the addenda A1, A2 (A2.x), A2-debate (AD.x), A2b (AB.x), A3, A3b, A3b.12 read; Appendix A and sections 4.1-4.5 not re-read)
-  - research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md (sections 1-9 read in full)
-  - research/paper2/ideation/NOVELTY-CHECK-INFFUS-2026-10-28.md (sections 0-6); research/paper2/ideation/NOVELTY-REAUDIT-GATE-2026-10-28.md (section 7, must-not 1-9)
+  - research/paper2/prereg/SAP-GATE-2026-10-28.md (sections 1-3, 4.6-11 and addenda A1, A2 (A2.x), A2-debate (AD.x), A2b (AB.x), A3, A3b, A3b.12)
+  - research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md (sections 1-9)
+  - research/paper2/prereg/RED-TEAM-SIGNOFF-2026-10-28.md lines 382-492 ("A4 signature", commit b3504aa3) (r1)
+  - research/paper2/ideation/NOVELTY-CHECK-INFFUS-2026-10-28.md (sections 0-6); research/paper2/ideation/NOVELTY-REAUDIT-GATE-2026-10-28.md (section 7)
   - research/paper2/CONFIRM-EVENING-2026-10-28.md (full)
-  - research/paper2/benchmark/REDTEAM-P2-PLAN.md (sections 0, A1-A11, B, C, D, concerns)
-  - research/paper2/prereg/PREREG-GATE-MUST-v3-2026-10-28.md lines 197-219 (section 12, R3 wording)
-  - research/ledgers/decisions.jsonl row D0074 (K2 applied)
-  - runs/P2-GATE-M1/analysis.json (keys table, falsifier, frozen, chance_bar_both; already analysed and committed, D0074)
-  - code read at HEAD 768e40ed (no edit, nothing executed except one json read): exp_p2/run_gate_m4.py, exp_p2/run_gate_m2.py lines 30-62, exp_p2/gate/fit_threshold.py, exp_p2/gate/calibrate.py, exp_p2/gate/pipeline.py lines 30-73, exp_p2/gate/scores.py lines 108-110, exp_p2/gate/evidence.py lines 29-46, exp_p2/gate/analysis_m4.py lines 40-105 and 220-258, exp_p2/gate/seeds.py, exp_p2/gate/arms.py lines 17-60, exp_p2/run_gate_foil.py lines 1-75, exp_p2/run_gate_s2.py (grep)
+  - research/paper2/benchmark/REDTEAM-P2-PLAN.md (sections 0, A1-A11, B, C, D)
+  - research/paper2/prereg/PREREG-GATE-MUST-v3-2026-10-28.md lines 197-219
+  - research/ledgers/decisions.jsonl row D0074
+  - runs/P2-GATE-M1/analysis.json (table, falsifier, frozen, chance_bar_both; analysed and committed before A4, D0074)
+  - runs/P2-UNIDISC-KEYCHECK/README.md (commit e954217e) (r1)
+  - code read at HEAD (no edit; nothing executed except a json read and character counts): exp_p2/run_gate_m4.py, exp_p2/run_gate_m2.py 30-62, exp_p2/gate/fit_threshold.py, exp_p2/gate/calibrate.py, exp_p2/gate/pipeline.py 30-73, exp_p2/gate/scores.py 108-110, exp_p2/gate/evidence.py 29-46, exp_p2/gate/analysis_m4.py 40-150 and 220-258, exp_p2/gate/seeds.py, exp_p2/gate/arms.py 17-60, exp_p2/run_gate_foil.py 1-75, exp_p2/run_gate_s2.py (grep)
 coverage: >
-  Not read: the paper sources (main.tex, method.tex, protocol.tex), PANEL-P2-PLAN, INFFUS-CITATIONS, spec v2, IMPL reports.
-  Outcome firewall: I opened no M2, M3 or M4 value. For M2 I read only the row count of items.jsonl (300) and the existence of
-  threshold.json (contents not read). For M3 I listed the run directory (config, driver log, telemetry, 0 arrays, no items.jsonl,
-  no family.json). No M4 directory exists. The only outcome numbers used are M1's, which were analysed and committed before this
-  addendum (D0074, commit ace6dbe3 per the ledger).
+  Not read: the paper sources, PANEL-P2-PLAN, INFFUS-CITATIONS, spec v2, IMPL reports, Wilcox, Tukey-McLaughlin, huang2025evidential.
+  Outcome firewall (author's assertion, not an attestation): no M2, M3 or M4 value was opened. For M2 I read the row count (300)
+  and the existence of threshold.json. For M3 I listed file names only (at 22:41 IST: no family.json, no ps_frozen.json; no
+  runs/P2-GATE-EPRED-FIT directory). No M4 directory exists. The only outcome numbers quoted are M1's (D0074).
 claims:
-  - statement: "Every array the Tier-3 comparators need is stored per M4 item: per-token Delta (`<cond>_delta`), B and D (`<cond>_B`, `<cond>_D`) and the flags at each alpha (`<cond>_flag0.05` etc.); the suspicion u itself is not stored but is a deterministic function of the stored B and D."
+  - statement: "Every array the Tier-3 comparators need is stored per M4 item; u is not stored but is a deterministic function of the stored B and D."
     status: supported
-    evidence: "exp_p2/run_gate_m4.py:144, 149-157; exp_p2/gate/pipeline.py:30-35; exp_p2/gate/scores.py:108-110 (read at HEAD 768e40ed)"
+    evidence: "exp_p2/run_gate_m4.py:144, 149-157; exp_p2/gate/pipeline.py:30-35; exp_p2/gate/scores.py:108-110; confirmed by the red team (A4 signature, 'What I checked')"
     level: E3
     confidence: 0.9
-  - statement: "Denoised conditions (`<cond>_dn`) store Delta and codes but no B, D or flags, so no gate-dependent comparator can be computed on them."
+  - statement: "Denoised conditions store Delta and codes but no B, D or flags."
     status: supported
-    evidence: "exp_p2/run_gate_m4.py:144-148 (the `continue` before the gate scores)"
+    evidence: "exp_p2/run_gate_m4.py:144-148"
     level: E3
     confidence: 0.9
-  - statement: "FOIL family B has no input from M2-M4 or S2 and uses no random stream, so running it before S2 changes no number of either family."
+  - statement: "FOIL family B takes no input from M2-M4 or S2 and draws no random numbers."
     status: supported
-    evidence: "exp_p2/run_gate_foil.py:1-75 (prerequisites: FOIL file, committed pool, leak check, fusion_frozen.json); S2 streams keyed by item and ARM_TAG, exp_p2/gate/arms.py:58-60"
+    evidence: "exp_p2/run_gate_foil.py:1-75 (author's reading, not audited; E1 for the red team)"
     level: E3
-    confidence: 0.8
+    confidence: 0.75
 competing_explanations: []
 unknowns:
   - every M3, M4, S2, FOIL, Omni and suite outcome
-  - whether Shlok accepts the D18 reading of A4.2.6 (needs Shlok)
-  - the 85-character highlight limit is quoted from memory of Elsevier's guide (E0); the venue scout verifies it
-next_test: {hypothesis: "none (plan only)", intervention: "commit this addendum before analysis_m4; audit the Tier-3 code before it runs", primary_metric: "none", falsifier: "none", gpu_hours: 0}
+  - Shlok's answer on D18 (A4.2.6; required before analysis_m4)
+  - the 85-character highlight limit (E0, from memory of Elsevier's guide; the venue scout verifies)
+next_test: {hypothesis: "none (plan only)", intervention: "commit A4 r1 and the C4 rows before analysis_m4; audit the Tier-3 code before it runs", primary_metric: "none", falsifier: "none", gpu_hours: 0}
 ```
 
-# SAP Addendum A4 (2026-10-28, before any M3 or M4 outcome)
+# SAP Addendum A4 (2026-10-28, before any M3 or M4 outcome), revision r1
 
-Author: statistician. Written 2026-10-28, clock 22:22 IST at the start of writing. A separate file beside the SAP, because the brief
-forbids edits to the SAP text. **Precedence:** A4 > A3b > A3 > A2b > A2 > A1 > SAP body (card v4 "Precedence"), and only on the
-points listed here; family P and every earlier rule stand. Sections are **A4.1 to A4.6**.
+Author: statistician. Draft written from 22:22 IST and committed as `40828e96` (committer time 22:27:23 +0530). Revision r1 written
+from 22:41 IST in answer to the red-team signature on A4 (`RED-TEAM-SIGNOFF-2026-10-28.md` lines 382-492, commit `b3504aa3`); the diff
+against `40828e96` is the record of what changed. A separate file beside the SAP (the brief forbids SAP edits). **Precedence:** A4 >
+A3b > A3 > A2b > A2 > A1 > SAP body (card v4 "Precedence"), only on the points listed; family P and every earlier rule stand.
 
-**Status and firewall.** M2 has 300 rows and a `threshold.json` (contents not read by me). M3 has started (run directory with
-`config.json`, logs and telemetry; 0 arrays, no `items.jsonl`, no `family.json` at 22:22 IST). No M4 directory exists. No S2,
-FOIL, Omni or suite item exists. Nothing below was chosen with knowledge of any M2, M3 or M4 value. The only outcome numbers quoted
-are those of M1 (`runs/P2-GATE-M1/analysis.json`, SHA-256 `bdc3fda3be5a36b763338c3695857e4b45ae330c40eee3c3389ffeb79aa22295`),
-analysed and committed earlier (ledger D0074).
+## Revision r1: how each red-team condition is met
 
-**Pins (before A4).** SAP at HEAD `768e40ed`: LF `e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7`, CRLF working tree
-`d95fb87b22c8eb713d35b07a0a066c56cb250a7578e590691cdb983609ec6da6` (both equal to card v4 section 1.3). Red-team plan review
-`research/paper2/benchmark/REDTEAM-P2-PLAN.md` SHA-256 `38e1b85a575379724bd0ab840e9e4cac1d891e8d0ae26590145ec2a461ff2169` (commit `768e40ed`).
-`exp_p2/run_gate_m4.py` CRLF working tree `0050fbf9d2f84085b5ec289692ebad93fa3d10cefccbea979098c3f16b6735df`. The SHA-256 of this file is
-recorded by the lead at commit time (it cannot be written inside the file).
+| Condition | Change in r1 | Where |
+|---|---|---|
+| C4-1 (F1) binding and commit order | A4 binds for its specification from its commit; the auditor's match gates only the running of the Tier-3 code. Commit-order row recorded: A4 `40828e96` (22:27:23 IST) and r1 precede `family.json`, `ps_frozen.json` and `epred_frozen.json`, none of which existed at 22:41 IST (file listing). Per the coordinator: M3 finished at 22:27 IST, the headroom script has not run, nobody has read M3 rows (the coordinator's statement; I cannot verify it). Rule: if r1 or the C4 rows are committed after any of the three files, the row lists which of their values were visible | Status block, A4.0 |
+| C4-2 (F10) D18 | D18's condition restored verbatim; my rewrite of the submission condition withdrawn; "binds by default" (old A4.4 item 5) struck. Shlok's own sentence, or a dated row "no answer; the AB.1 reading binds and the submission condition of D18 is unchanged", is required **before `analysis_m4`**. A status-only definition of "informative" is proposed for his row; he may adopt or drop it | A4.2.6, A4.4 |
+| C4-3 (F2) contributions | Part 1 is removed from the contribution list (it can be "not run"); bullet 6 lists only families whose status is "run"; bullet 4's one-pass comparison is limited to noise (non-overlapping marginal intervals), JPEG stated as overlapping, no paired test | A4.2.4 |
+| C4-4 (F3) c > b claims | Dated reading: SAP 9 ("reduced") outranks card v4 section 2 (card precedence clause); the card's "forbidden: any claim from a rejection with c > b" is read as "no claim in favour of the gate". HARM and MIXED titles carry no claim (question title); the SAP 9 sentence appears in highlight 1, abstract and 6.1. These sentences need the red team's re-signature | A4.2.1, A4.2.3 |
+| C4-5 (F4) POS-G | SAP 9 / K5 wording only: "not distinguishable from masking the same shape elsewhere", "not attributable to detection beyond mask geometry"; "no more than", "as did", "did as well", "belongs to" removed | A4.2.3 |
+| C4-6 (F5) R3 harm and mixed | New labels R3-HARM and R3-MIXED; R3-INC now requires no Holm rejection in either direction | A4.2.1, A4.2.3 |
+| C4-7 (F6) fusion, scope | "fusion" removed from every title (stricter than C4-7: family B is never a title result, AD.1); every title names UniDisc | A4.2.2, A4.2.3 |
+| C4-8 (F8) abstract clause | The mandatory abstract clause (old A4.1.10 item 2) and the R3 Results clause (old item 5) are **struck**, not reworded: no Tier-3 result changes any P sentence, so AD.12's last sentence is not amended. The R3 trimming control is reported with the three-way reading of A4.1.10, its trigger matching its sentence | A4.1.10 |
+| C4-9 (F7, F9) placement, SOFT, power, comparator set | One placement rule (own Results subsection after the preregistered families; in Discussion only after 6.1's opening, never in the paragraph that states P, never as an account of P); "property of mean aggregation" sentence struck. SOFT renamed "discounting of the gate-flagged tokens" (SOFT-G). Comparator set widened by one fully specified arm, **reliability weighting of every token** (SOFT-A, conformal p-value weight), which answers plan review A8; a sign-aware detector-free estimator is **not** added, with the reason (label leakage). Every "not distinguishable" carries n_d and the minimum detectable difference; it counts against the method only when that difference is at most 0.05; limits F7(a)-(d) disclosed beside the table | A4.1.4, A4.1.5, A4.1.10 |
+| C4-10 (F13, F14) pins, seeds, FOIL rule | No `seeds.py` append (fallback seed only); the module and test file are committed only with a dated pin row moving the card's pin (card section 7) and an auditor delta check. FOIL rule: freeze fixed at Fri 30 Oct 2026 18:00 IST (a moved freeze never enters), W_S2 is a named constant, no smoke option, a stop during FOIL ends the FOIL-first order, inversion risk in the deviations box | A4.1.7, A4.1.11, A4.3.2 |
+| C4-11 (F11, F12, F15) minor | Highlights rebuilt with short names and a counted fallback (all at most 85 characters); NEG: summary figure shows the 90 percent interval that carries the claim, highlight states the bound as a bound; the printed multiplicity sentence replaced by a count with "no multiplicity adjustment (SAP 7)"; bootstrap index matrix fully specified; the "no Delta distribution looked at" sentence labelled as my assertion | A4.1.7, A4.2.3, A4.2.5 |
+| (not a condition) A4.3.1 limit (ii) | The non-strict load is now closed by `runs/P2-UNIDISC-KEYCHECK` (commit e954217e: 0 missing, 0 unexpected, 0 shape mismatches of 342 tensors) | A4.3.1 |
 
-**Binding condition.** A4 binds when (i) it is committed before `analysis_m4` is first run on M4 data (card v4 row 6), (ii) the red team
-has read it, and (iii) the gate-auditor has matched the Tier-3 code of A4.1.11 to the text before that code is run. If (i) fails, Part 1
-is void (forking paths, red-team concern 5) and the comparators may not be reported at all, not even as exploratory; Parts 2 and 3 then
-need a new dated addendum that says they were written after P was visible.
+I object to no condition. Two points where r1 goes beyond the letter: C4-7 (no "fusion" in any title, even if B is formal) and C4-8 (the
+clause is struck rather than reworded). Both are stricter readings; the red team may relax them by a dated row.
 
-Provenance tags as in the SAP: **derived** (arithmetic shown), **ASSUMED**, **design** (a rule chosen now), E-levels as in the contract.
+## A4.0 Status, firewall, pins, binding
+
+**Status and firewall.** At the draft (22:22 IST) M2 had 300 rows and `threshold.json` (contents not read by me); M3 had started with 0
+arrays. At r1 (22:41 IST) the M3 directory listing shows no `family.json` and no `ps_frozen.json`; no M4 or EPRED-FIT directory exists.
+Nothing in A4 or r1 was chosen with knowledge of any M2, M3 or M4 value (my assertion, not an attestation). The only outcome numbers
+quoted are M1's (`runs/P2-GATE-M1/analysis.json`, SHA-256 `bdc3fda3be5a36b763338c3695857e4b45ae330c40eee3c3389ffeb79aa22295`; D0074).
+
+**Pins (before the draft).** SAP at HEAD `768e40ed`: LF `e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7`, CRLF
+`d95fb87b22c8eb713d35b07a0a066c56cb250a7578e590691cdb983609ec6da6` (card v4 section 1.3). `REDTEAM-P2-PLAN.md` SHA-256
+`38e1b85a575379724bd0ab840e9e4cac1d891e8d0ae26590145ec2a461ff2169`. `exp_p2/run_gate_m4.py` CRLF working tree
+`0050fbf9d2f84085b5ec289692ebad93fa3d10cefccbea979098c3f16b6735df`. The SHA-256 of this file is recorded by the lead at commit time.
+
+**Binding (C4-1).** A4 binds for its specification (Parts 1 to 3) from its commit. The gate-auditor's match of the Tier-3 code to A4.1
+gates only the **running** of that code. The red-team signature binds when the C4 rows are recorded before `analysis_m4` is first run on M4
+data. **Commit-order row (for the lead to record):** draft `40828e96` at 22:27:23 IST and r1 (at its commit) precede `family.json`,
+`ps_frozen.json` and `epred_frozen.json`. If r1 or any C4 row is committed after one of those files, the row names the file and lists which
+of its values (n-rule, operating points, PS parameters, E-pred signs) were visible to the person who finished A4.2.1 to A4.2.5. If A4 r1 is
+not committed before `analysis_m4`, Part 1 is void and is not reported at all (forking paths).
+
+Provenance tags as in the SAP: **derived**, **ASSUMED**, **design**; E-levels as in the contract.
 
 ---
 
@@ -79,479 +104,480 @@ Provenance tags as in the SAP: **derived** (arithmetic shown), **ASSUMED**, **de
 
 ### A4.1.1 Question, label, and what it is not
 
-Question: on the same per-token evidence $\Delta_j$ and the same decision rule as family P, does the hard gate GATE-M give a
-different image-direction matching accuracy from (a) detector-free robust combiners of $\Delta_j$ and (b) a soft reliability weight
-built from the same suspicion score $u_j$ that the gate thresholds?
+Question: on the same per-token evidence $\Delta_j$ and the same decision rule as family P, does the hard gate GATE-M give a different
+image-direction verification accuracy from (a) detector-free robust combiners of $\Delta_j$, (b) discounting the gate-flagged tokens
+instead of discarding them, and (c) reliability weighting of every token by the gate's own score?
 
-**Label: Tier 3, exploratory (SAP 7).** Confidence intervals only. **No p-value is computed for any contrast in this part** (stricter than
-SAP 7, which would allow unadjusted p-values labelled exploratory; reason: with 12 or more intervals and an obvious "beats the method"
-reading, a printed p invites selection). No multiplicity statement. It is not a family, cannot enter P or any secondary family, cannot
-rescue or explain a P result (AB.1), and its comparators are never presented as "our method", "an improved gate" or a variant of GATE
-(red-team C.3, last bullet).
+**Label: Tier 3, exploratory (SAP 7).** Confidence intervals only; **no p-value is computed** for any contrast in this part. No multiplicity
+claim (SAP 7); the output prints only the number of intervals with "no multiplicity adjustment (SAP 7)". Not a family; cannot enter P or any
+secondary family; cannot rescue, explain or qualify a P result (AB.1); its comparators are never presented as "our method", "an improved
+gate" or a variant of GATE (red-team C.3).
 
 ### A4.1.2 Data: run, fold, cells, items, arrays
 
-**Run and fold.** `runs/P2-GATE-M4`, the M4 test fold as fixed by the committed n-rule (`runs/P2-GATE-M3/family.json`): the first
-300 ids (R1, R3, NO-GO) or 500 (R2). The analysed items are exactly the items that `analysis_m4` analysed for P (de-duplicated rows,
-`analysis_m4.load_items`, SAP 8.1). Nothing is added, dropped or re-run for this part.
+**Run and fold.** `runs/P2-GATE-M4`, the M4 test fold of the committed n-rule (`runs/P2-GATE-M3/family.json`): 300 ids (R1, R3, NO-GO) or 500
+(R2). The items are exactly those `analysis_m4` analysed for P (de-duplicated rows, `analysis_m4.load_items`, SAP 8.1).
 
-**Cells (fixed now; the set present follows mechanically from `family.json` and `ps_frozen.json`).** One cell per M4 condition key:
-- **P cells:** the family conditions at their operating points (`corruptions.corruption_key(corr, sev)`, built at
-  `exp_p2/run_gate_m4.py:108-125`, line 119). These carry the M-e question.
-- **Clean cell** `clean`: cost of each combiner on clean pairs (no corruption).
-- **PS cells** `patch`, `swap`: reported in a separate table labelled "positive-control conditions; pipeline check only", never pooled
-  with or plotted beside the P cells (A4.2.5).
-- **Not computed:** the denoised copies `<cond>_dn` (no B, D or flags are stored for them, `run_gate_m4.py:144-148`); the text
-  direction (no per-token text arrays are stored; only summaries in `cr["txt"]`).
-Under K1 (NO-GO) there are no P cells; the part then has only the clean and PS cells and the paper says "no realistic cell".
+**Cells (fixed now; which are present follows mechanically from `family.json` and `ps_frozen.json`).**
+- **P cells:** the family conditions at their operating points (`corruptions.corruption_key(corr, sev)`, `exp_p2/run_gate_m4.py:108-125`,
+  line 119). These carry the M-e question.
+- **Clean cell** `clean`: cost of each combiner on clean pairs.
+- **PS cells** `patch`, `swap`: own table, "positive-control conditions; pipeline check only"; never pooled with or plotted beside P cells.
+- **Not computed:** denoised copies `<cond>_dn` (no B, D or flags stored, `run_gate_m4.py:144-148`); the text direction (no per-token text
+  arrays are stored).
+Under K1 (NO-GO) there are no P cells and the paper says "no realistic cell".
 
-**Arrays used, per item `runs/P2-GATE-M4/arrays/item<idx:04d>.npz` (written by `runner.run_items`, `exp_p2/gate/runner.py:208-209`; read
-the same way by `analysis_m4.py:368, 484`).** All are stored; nothing needed is missing.
+**Arrays, per item `runs/P2-GATE-M4/arrays/item<idx:04d>.npz`** (`exp_p2/gate/runner.py:208-209`; read the same way by `analysis_m4.py:368, 484`).
+All needed arrays are stored.
 
-| Quantity | Key in the npz | Where written | Note |
+| Quantity | Key | Where written | Note |
 |---|---|---|---|
-| per-token paired evidence $\Delta_j$, 1,024 float32 | `<cond>_delta` | `run_gate_m4.py:141, 144` | $\Lambda^{c^+}_j[v_j]-\Lambda^{c^-}_j[v_j]$, same deranged $c^-$ as P (`pipeline.py:44-46`) |
-| GATE-M flags at alpha 0.05 (bool, 1,024) | `<cond>_flag0.05` | `run_gate_m4.py:150-152, 156-157` | key format `f"{al:g}"`; jittered $u$ compared with $\tau$ (strict) |
-| B, D (1,024 each) | `<cond>_B`, `<cond>_D` | `run_gate_m4.py:149, 154` | **$u$ is not stored**; it is recomputed exactly as `scores.suspicion_q(B, D)` = $-(B-D)$ in float32 (`scores.py:108-110`), the same call as `pipeline.gate_scores` (`pipeline.py:30-35`); D is stored as float32 and `suspicion_q` casts to float32, so the recomputation is bit-identical. The jittered $u$ is not stored and is not needed |
-| stored arm summaries (cross-check) | `items.jsonl` `conds[<cond>].img.none` and `.img["gate0.05"]` (`n`, `mean`, `sd`, `z`, `d`, `y`) | `run_gate_m4.py:173`; `pipeline.compact`, `evidence.evidence_from_delta` | used only for the consistency gate of A4.1.3 |
+| per-token evidence $\Delta_j$, 1,024 float32 | `<cond>_delta` | `run_gate_m4.py:141, 144` | same deranged $c^-$ as P (`pipeline.py:44-46`) |
+| GATE-M flags, alpha 0.05 | `<cond>_flag0.05` | `run_gate_m4.py:150-152, 156-157` | jittered $u$ against $\tau$, strict |
+| B, D | `<cond>_B`, `<cond>_D` | `run_gate_m4.py:149, 154` | **$u$ is not stored**; recomputed bit-identically as `scores.suspicion_q(B, D)` (`scores.py:108-110`, `pipeline.py:30-35`). The jittered $u$ is not stored and not needed |
+| stored arm summaries | `items.jsonl` `conds[<cond>].img.none`, `.img["gate0.05"]` | `run_gate_m4.py:173` | consistency gate only |
 | flagged count | `conds[<cond>].gate["0.05"].n_flag` | `run_gate_m4.py:158` | cross-check of $g_i$ |
-| calibration pool for the soft weight | `runs/P2-GATE-M2/arrays/item<idx:04d>.npz` keys `B`, `D` | `run_gate_m2.py:60` | clean calibration pairs only |
-| threshold | `runs/P2-GATE-M2/threshold.json` `thresholds["0.05"].tau`, `ids_hash` | `fit_threshold.py:34-38` | committed before M4 (card v4 row 3) |
+| calibration pool | `runs/P2-GATE-M2/arrays/item<idx:04d>.npz` `B`, `D` | `run_gate_m2.py:60` | clean pairs only |
+| threshold | `runs/P2-GATE-M2/threshold.json` `thresholds["0.05"].tau`, `ids_hash` | `fit_threshold.py:34-38` | |
 
-**Complete case per cell (SAP 8.1).** An item enters a cell if and only if its npz holds `<cond>_delta` with 1,024 finite values,
-`<cond>_flag0.05`, and finite `<cond>_B` and `<cond>_D`. The same item set is used for every arm and comparator of that cell (paired).
-Excluded items are counted per cell with the reason.
+**Complete case per cell (SAP 8.1).** An item enters a cell iff its npz holds `<cond>_delta` with 1,024 finite values, `<cond>_flag0.05`,
+and finite `<cond>_B` and `<cond>_D`. One item set per cell for every arm (paired); exclusions counted with the reason.
 
 ### A4.1.3 Consistency gate (before any comparator is computed)
 
-For every item of every cell, recompute the NONE and GATE-M margins from the npz with `evidence.evidence_from_delta` (all tokens; tokens with
-`flag0.05` false) and compare with the stored `img.none` and `img["gate0.05"]`: `y` must be equal and `mean` equal within 1e-9 absolute,
-and $g_i$ = `flag0.05.sum()` must equal `gate["0.05"].n_flag`. **Any mismatch stops Part 1** before a comparator is computed: it is
-reported as a pipeline discrepancy, investigated against the unit tests, and Part 1 runs only after a bug fix with a dated row (card
-v4 section 7). No comparator number exists until the gate passes.
+For every item of every cell, recompute NONE and GM with `evidence.evidence_from_delta` (all tokens; tokens with `flag0.05` false) and compare
+with the stored `img.none` and `img["gate0.05"]`: `y` equal, `mean` equal within 1e-9, and $g_i$ = `flag0.05.sum()` equal to `gate["0.05"].n_flag`.
+**Any mismatch stops Part 1**; it is reported as a pipeline discrepancy and investigated against the unit tests; Part 1 runs only after a bug
+fix with a dated row (card v4 section 7).
 
-### A4.1.4 The arms (all on the same $\Delta_j$ of the same item and cell; $m=1{,}024$)
+### A4.1.4 The arms (same $\Delta_j$, same item and cell; $m=1{,}024$)
 
-Notation: $\Delta_{(1)}\le\dots\le\Delta_{(m)}$ the sorted values in float64; $F_j\in\{0,1\}$ the stored flag `<cond>_flag0.05`; $g_i=\sum_jF_j$.
+Notation: $\Delta_{(1)}\le\dots\le\Delta_{(m)}$ sorted in float64; $F_j$ the stored flag; $g_i=\sum_jF_j$.
 
 | Arm | Item margin $M_i$ | Origin |
 |---|---|---|
 | **NONE** (reference) | $\frac1m\sum_j\Delta_j$ | P's "none" arm |
-| **GM** (hard gate, as preregistered) | mean of $\Delta_j$ over $\{j:F_j=0\}$ | P's GATE-M arm (alpha 0.05, $K=8$, CRC threshold from M2, jitter as stored). Not recomputed with any other alpha, K or seed |
-| **MED** | `numpy.median` of the 1,024 values (mean of $\Delta_{(512)}$ and $\Delta_{(513)}$) | detector-free |
-| **TM-G** (trimmed mean at the gate's realised flag count) | $k_i=\lfloor g_i/2\rfloor$ removed from **each** tail; mean of $\Delta_{(k_i+1)},\dots,\Delta_{(m-k_i)}$ | detector-free in its choice of tokens; only the count $g_i$ comes from the gate |
-| **TM20** (fixed trim fraction) | $k=\lfloor0.20\cdot1024\rfloor=204$ per tail (derived), mean of the 616 central values | detector-free |
-| **SOFT** (soft reliability weight) | $\sum_jw_j\Delta_j/\sum_jw_j$, $w_j$ of A4.1.5 | same detector as GM |
+| **GM** (hard gate, as preregistered) | mean of $\Delta_j$ over $\{F_j=0\}$ | P's GATE-M arm; no other alpha, K or seed |
+| **MED** | `numpy.median` of the 1,024 values (mean of $\Delta_{(512)}$, $\Delta_{(513)}$) | detector-free |
+| **TM-G** (trimmed mean at the gate's flag count) | $k_i=\lfloor g_i/2\rfloor$ removed from **each** tail | detector-free in which tokens it removes; only the count comes from the gate |
+| **TM20** | $k=\lfloor0.20\cdot1024\rfloor=204$ per tail; mean of the 616 central values (derived) | detector-free |
+| **SOFT-G** (discounting of the gate-flagged tokens) | $\sum_jw^{G}_j\Delta_j/\sum_jw^{G}_j$, A4.1.5 | same detector and flagged set as GM |
+| **SOFT-A** (reliability weighting of every token) | $\sum_jw^{A}_j\Delta_j/\sum_jw^{A}_j$, A4.1.5 | same score as GM, no threshold |
 
-**Why TM-G removes $\lfloor g_i/2\rfloor$ per tail (design).** "Trim fraction equal to the gate's realised flag rate" has two readings: the
-fraction $g_i/m$ removed in total (half from each tail) or from each tail (twice the gate's count). The first is adopted because it
-**matches the number of removed tokens** to the gate item by item, so TM-G versus GM isolates *which* tokens are removed (the extremes of
-$\Delta$ against the tokens with high $u$) at equal count. The retained set has $m-2k_i\in\{m-g_i,\,m-g_i+1\}$ tokens, never fewer than
-GM's. $g_i\le1$ gives $k_i=0$ (TM-G equals NONE). The other reading is not computed.
+**TM-G removes $\lfloor g_i/2\rfloor$ per tail (design)**, so the number of removed tokens matches the gate item by item and TM-G versus GM
+isolates *which* tokens are removed. Retained: $m-g_i$ or $m-g_i+1$ tokens. $g_i\le1$ gives TM-G = NONE. The reading "$g_i/m$ per tail" is
+not computed.
 
-**Why 20 percent per tail for TM20 (design, fixed without data).** It is the conventional default trimming for a robust location estimate
-(the 20 percent trimmed mean of Tukey and McLaughlin, recommended as a default in Wilcox's robust-statistics texts; **citations E0 from
-memory, to be checked by the citation checker before the paper cites them**). It also completes a fixed ladder of trimming with no free
-choice: TM-G (about the gate's count, near alpha on clean pairs if the guarantee holds), TM20 (a fixed heavy trim), MED (the limit: the
-median is the trimmed mean with 511 per tail, an identity used as a self-test). No $\Delta$ distribution from M1-M4 was looked at; the
-SAP's probe-1 skewness (section 2.5) is of item margins, not tokens, and was not used.
+**TM20 (design, fixed without data).** The conventional default trimming of a robust location estimate (Tukey and McLaughlin; Wilcox's
+robust-statistics texts; **citations E0, checked by the citation checker before use**). With TM-G and MED (= trimmed mean with 511 per tail) it
+forms a fixed trimming ladder. I did not look at any M1-M4 $\Delta$ distribution (my assertion).
 
-**Ties and empty sets.** $Y_i=\mathbb 1[M_i>0]$; $M_i=0$, an empty retained set or $\sum_jw_j=0$ give $Y_i=0$ (SAP 2.1). Counts per arm and
-cell are reported.
+**Why no sign-aware detector-free estimator (C4-9, F7(a)).** The direction in which a corruption moves $\Delta_j$ is defined relative to the
+**true** caption ($\Delta_j=\Lambda^{c^+}_j-\Lambda^{c^-}_j$). A combiner that uses that direction (for example, trimming only the lower tail)
+raises the margin of every item towards "correct" whether or not anything is corrupted: it uses the label, which a deployable combiner does
+not know. It would be label leakage, not a rival, so it is not computed. A detector-free, label-free estimator that targets the expected
+**shrinkage** of $|\Delta_j|$ on corrupted tokens would rest on an untested assumption (**ASSUMED**, no data) and is not added.
 
-### A4.1.5 The soft reliability weight (fixed now; parameters from M2 clean pairs only)
+**Ties and empty sets.** $Y_i=\mathbb 1[M_i>0]$; $M_i=0$, an empty retained set or a zero weight sum give $Y_i=0$ (SAP 2.1). Counted per arm and cell.
 
-Let $u_j=$ `scores.suspicion_q(B_j, D_j)` (unjittered) for the test token, and let the **clean calibration pool** be all tokens of the M2
-calibration items listed in `runs/P2-GATE-M2/items.jsonl` (the items `fit_threshold` used; the script asserts that `calibrate.ids_hash` of
-their `gid` list equals `threshold.json` `ids_hash`), with $u^{\rm cal}$ = `fit_threshold.suspicion_from_arrays(arr, "q")` unjittered.
-Every calibration item has 1,024 image tokens, so the item-weighted pooled survival function of CRC (`calibrate.fit_threshold`, the
-`tail` array) equals the token-pooled one:
-$$S_{\rm cal}(x)=\frac{1}{N}\#\{u^{\rm cal}>x\},\qquad N=\text{number of pooled calibration tokens}.$$
-With $\tau=$ `threshold.json` `thresholds["0.05"].tau`:
-$$w_j=\begin{cases}1 & F_j=0\\ \min\{1,\;S_{\rm cal}(u_j)/S_{\rm cal}(\tau)\} & F_j=1\end{cases}\qquad(\text{if }S_{\rm cal}(\tau)=0,\ w_j=0\text{ for flagged }j,\ \text{SOFT}=\text{GM}).$$
+### A4.1.5 The two weights (fixed now; parameters from M2 clean pairs only)
 
-**Justification (first principles; no corrupted image, no M3 or M4 value, no free scale parameter).**
-1. **Evidential discounting.** $S_{\rm cal}(u_j)$ is the conformal p-value of token $j$ against clean calibration tokens: the share of clean
-   tokens at least as suspicious. Dividing by its value at the threshold makes $w_j$ the relative plausibility that a flagged token is a
-   clean token, used as a reliability that discounts rather than discards the source, the analogue of reliability discounting in evidence
-   theory that the red team names (`huang2025evidential` in the project's citation list; I have not read it, E0).
-2. **It touches only the gate's flagged set.** $\{j:w_j<1\}\subseteq\{j:F_j=1\}$, so on a clean test pair exchangeable with the calibration
-   pairs the expected share of **discounted** tokens is at most alpha, by the same CRC statement as GATE-M (it says nothing about how much
-   weight is lost). SOFT versus GM therefore isolates one design choice, discount versus discard, with the same detector, the same
-   threshold and the same flagged set.
-3. **Limits.** $w_j$ is non-increasing in $u_j$ among flagged tokens; $w_j$ is near 1 for a token just above $\tau$ and is 0 only when $u_j$
-   is at least the maximum of the calibration pool. As $S_{\rm cal}$ is a step function, $w$ has at most $N+1$ distinct values.
-4. **Parameters:** alpha 0.05 (preregistered primary; no other alpha is used here), $\tau$ and $S_{\rm cal}$ from M2 clean pairs. Nothing is
-   tuned, and no alternative $f$ (logistic, full-range p-value weight) is computed.
+$u_j=$ `scores.suspicion_q(B_j, D_j)` (unjittered). Clean calibration pool: all tokens of the M2 calibration items in
+`runs/P2-GATE-M2/items.jsonl` (the script asserts `calibrate.ids_hash` of their `gid` list equals `threshold.json` `ids_hash`), with
+$u^{\rm cal}$ = `fit_threshold.suspicion_from_arrays(arr, "q")` unjittered. All calibration items have 1,024 tokens, so the item-weighted
+pooled survival function of CRC equals the token-pooled one:
+$$S_{\rm cal}(x)=\tfrac1N\#\{u^{\rm cal}>x\},\qquad P_{\rm cal}(x)=\frac{1+\#\{u^{\rm cal}\ge x\}}{N+1}.$$
 
-**Freeze (design).** Preferred: after `threshold.json` is committed and **before the first M4 item**, the lead commits
-`runs/P2-GATE-M2/soft_weight_frozen.npz` holding the sorted pooled $u^{\rm cal}$ (float32), $\tau$, $N$, `ids_hash`, the SHA-256 of
-`threshold.json` and of the writer script. If that file does not exist when Part 1 runs, $S_{\rm cal}$ is computed from the M2 arrays at
-analysis time and the SHA-256 of every M2 npz used is written into the output; because $S_{\rm cal}$ is a deterministic function of the
-calibration fold, no choice is involved either way. M2 arrays are not modified.
+**SOFT-G (discounting of the gate-flagged tokens).** With $\tau$ = `thresholds["0.05"].tau`:
+$w^{G}_j=1$ if $F_j=0$; $w^{G}_j=\min\{1,S_{\rm cal}(u_j)/S_{\rm cal}(\tau)\}$ if $F_j=1$ (if $S_{\rm cal}(\tau)=0$, $w^G_j=0$ for flagged $j$ and SOFT-G = GM).
+Properties: $\{w^G<1\}\subseteq\{F=1\}$, so on a clean pair exchangeable with calibration the expected share of **discounted** tokens is at most
+alpha (the CRC statement; nothing about the weight lost). SOFT-G versus GM isolates discount against discard with the same detector,
+threshold and flagged set. **Limit (F7(b), stated wherever SOFT-G is reported):** its weights lie token by token between GM's and NONE's; it
+is not reliability weighting of every token.
+
+**SOFT-A (reliability weighting of every token; added in r1, answers plan review A8).** $w^{A}_j=P_{\rm cal}(u_j)$, the conformal p-value of
+token $j$ against the clean calibration tokens (the +1 form keeps every weight in $[1/(N+1),1]$, so no token is discarded and the weight sum
+is positive). No threshold, no alpha, no free parameter. Properties: on a clean token exchangeable with the pool $w^A$ is uniform on its grid,
+so SOFT-A pays an efficiency cost on clean pairs (shown by the clean cell) and no bias if $u$ is unrelated to $\Delta$; on a token more
+suspicious than every clean token $w^A=1/(N+1)$. It is the evidential-discounting analogue the red team names (`huang2025evidential`, unread,
+E0). No other weight function is computed.
+
+**Freeze (design).** Preferred: after `threshold.json` is committed and before the first M4 item, the lead commits
+`runs/P2-GATE-M2/soft_weight_frozen.npz` (sorted pooled $u^{\rm cal}$ float32, $\tau$, $N$, `ids_hash`, SHA-256 of `threshold.json` and of the
+writer). Otherwise $S_{\rm cal}$ and $P_{\rm cal}$ are computed from the M2 arrays at analysis time with the SHA-256 of every M2 npz written into
+the output; both are deterministic functions of the calibration fold. Note that `runs/P2-GATE-M2` is outside the card's code pin scope;
+the freeze file is a data artifact, not code.
 
 ### A4.1.6 Decision rule and metric
 
-Decision rule: as P (SAP 2.1): sign of the item margin, image direction, same true caption and same deranged negative caption, ties and
-empty sets wrong. **Metric:** paired matching accuracy $A^{\rm arm}=\frac1n\sum_iY^{\rm arm}_i$ on the cell's complete-case items, and the
-paired net difference $\hat\Delta=A^{\rm a}-A^{\rm b}=(b-c)/n$ with $b=\#\{Y^{\rm a}=1,Y^{\rm b}=0\}$, $c=\#\{Y^{\rm a}=0,Y^{\rm b}=1\}$.
-Reported with every contrast: $n$, both accuracies, $b$, $c$, $n_d$, $\hat\Delta$, the 95 percent interval.
-**Under R3** (P's endpoint is $d$) this part still uses $Y$ (stored in every case, AB.3 item 3), plus the $d$-scale trimming control of
-A4.1.8. The paper says that the Tier-3 accuracy contrasts are not on P's R3 endpoint.
+As P (SAP 2.1): sign of the item margin, image direction, same true and same deranged negative caption, ties and empty sets wrong.
+Metric: paired accuracy $A^{\rm arm}$ on the cell's complete-case items and $\hat\Delta=A^{\rm a}-A^{\rm b}=(b-c)/n$. Reported with every
+contrast: $n$, both accuracies, $b$, $c$, $n_d$, $\hat\Delta$, its 95 percent interval and its minimum detectable difference (A4.1.7).
+**Under R3** this part still uses $Y$ (AB.3 item 3), plus the $d$-scale control of A4.1.8; the paper says these contrasts are not on P's R3 endpoint.
 
 ### A4.1.7 Contrasts, intervals, seeds
 
-**Contrasts (fixed list, per cell; all reported, whatever their direction):**
-- versus the hard gate: **MED - GM, TM-G - GM, TM20 - GM, SOFT - GM** (the M-e question);
-- versus no gate, descriptive context: **MED - NONE, TM-G - NONE, TM20 - NONE, SOFT - NONE**. GM - NONE is P's own contrast and is quoted
-  from `analysis.json`, never recomputed as a new result.
+**Contrasts (fixed list, per cell; all reported whatever their direction):** against GM: **MED, TM-G, TM20, SOFT-G, SOFT-A minus GM**;
+against NONE (context): **MED, TM-G, TM20, SOFT-G, SOFT-A minus NONE**. GM - NONE is P's contrast, quoted from `analysis.json`, not recomputed.
 
-**Interval:** paired percentile bootstrap over items, 10,000 resamples, 95 percent (2.5th and 97.5th percentiles). Within a cell one
-resample-index matrix is shared by every arm and contrast (so the contrasts are coherent). **Seeds:** a new analysis name
-`tier3_fusion` appended to `exp_p2/gate/seeds.ANALYSES` after `suite` (position 32; appending leaves the 32 earlier children unchanged,
-A3.7). Until it is appended, the documented fallback `numpy.random.SeedSequence(20261028, spawn_key=(32,))` is used and recorded (it
-equals the appended child). That child is spawned into 6 fixed slots in the order `clean, jpeg, noise, splice, patch, swap`; an absent
-cell leaves its slot unused, so no cell's stream depends on which others exist.
+**Interval.** Paired percentile bootstrap, 10,000 resamples, 95 percent (`numpy.quantile` at 0.025 and 0.975, default method). For a cell with
+$n$ complete items, the index matrix is `rng.integers(0, n, size=(10000, n))` with `rng = numpy.random.default_rng(child)`, items in
+ascending `idx` order; one matrix per cell, shared by every arm and contrast of that cell.
 
-**Multiplicity, stated, not corrected.** With up to 3 P cells x 4 contrasts against GM = 12 intervals, about 0.6 would exclude 0 by
-chance if every true difference were 0 and the intervals were independent (derived: 12 x 0.05; they are not independent). The paper
-prints this sentence beside the table.
+**Minimum detectable difference (MDD), printed beside every interval:** $\mathrm{MDD}=(1.959964+0.841621)\cdot\mathrm{SE}_{\rm boot}=2.801585\cdot\mathrm{SE}_{\rm boot}$,
+with $\mathrm{SE}_{\rm boot}$ the SD (ddof 1) of the 10,000 resampled differences (the two-sided 5 percent, 80 percent power normal
+approximation; derived). It is a design sensitivity at the realised spread, not an observed power.
 
-### A4.1.8 Trimming control on the size-free evidence ratio $d$ (descriptive; answers red-team D question 5)
+**Seeds (C4-10).** `seeds.py` is **not** edited. The stream is `numpy.random.SeedSequence(20261028, spawn_key=(32,))` (equal to the child an
+append of `tier3_fusion` at position 32 would give, A3.7), spawned into 6 fixed slots in the order `clean, jpeg, noise, splice, patch, swap`;
+an absent cell leaves its slot unused. The output records the seed and states that it is the documented fallback.
 
-For every cell, also report $d=\bar\Delta_R/s_R$ (ddof 1, `evidence.py:37-41`) over the retained set $R$ of NONE, GM, TM-G and TM20, and
-the paired bootstrap 95 percent interval of the mean of **$d^{\rm TM\text{-}G}-d^{\rm GM}$** and $d^{\rm TM20}-d^{\rm GM}$ (same index matrix).
-Items with $|R|<2$ or $s_R=0$ in either arm are dropped from that contrast and counted. MED and SOFT have no $d$ in this plan (not defined
-consistently); stated. **Reason:** symmetric trimming of the extremes lowers $s_R$ mechanically, so a GM rise in $d$ may be trimming, not
-detection (v3 line 213, the caveat "trimming heavy-tailed tokens can raise d"). TM-G is a detector-free trimming of the same count; it is
-the only empirical handle on that caveat in this plan. It is Tier 3 and does not test P.
+**Multiplicity (C4-11).** The output and the paper print the number of intervals reported and "no multiplicity adjustment (SAP 7)"; no
+expected-false-exclusion figure is printed.
 
-### A4.1.9 Order (binding; adds a step to AD.12)
+### A4.1.8 Trimming control on the evidence ratio $d$ (descriptive)
 
-Part 1 is **AD.12 step 5a**: it runs after `analysis.json` with the P section is committed (step 3), after the step-4 secondary families
-and after step 5 (PS, E-dec, E-pred), and **before** steps 6 to 9 (S2, B, R, the rest of Tier 3). Reason: it needs only stored M4 arrays
-and should not wait on later GPU stages; it cannot change steps 3 to 5, and nothing in steps 6 to 9 depends on it (cut and go decisions
-are time-only, AB.9). Its output `runs/P2-GATE-M4/tier3_fusion.json` is committed at once. It is run **once**; a rerun on the same inputs
-must be byte-identical (SAP 10). A later bug fix follows card v4 section 7 (pre-fix output kept, both printed).
+For every cell, $d=\bar\Delta_R/s_R$ (ddof 1, `evidence.py:37-41`) over the retained set of NONE, GM, TM-G and TM20, and the paired bootstrap 95
+percent interval (same index matrix) of the mean of $d^{\rm TM\text{-}G}-d^{\rm GM}$ and $d^{\rm TM20}-d^{\rm GM}$, with the MDD. Items with $|R|<2$
+or $s_R=0$ in either arm are dropped and counted. MED, SOFT-G and SOFT-A have no $d$ here (not defined consistently). Reason: symmetric trimming
+lowers $s_R$ mechanically, so a GM rise in $d$ may be trimming (v3 line 213); TM-G is a detector-free trimming of the same count. Read with
+the three-way rule of A4.1.10; it is Tier 3 and never qualifies P's sentence.
 
-### A4.1.10 Reading and wording rules (binding)
+### A4.1.9 Order (binding; adds step 5a to AD.12)
 
-**Reading of a contrast "comparator k minus GM" on a cell (95 percent interval, fixed now):**
-- **above GM:** lower bound > 0. Wording: "on {cell}, the {comparator} of the same per-token evidence gave higher matching accuracy than
-  the hard gate ({Delta}, 95% CI {L} to {U}; exploratory)".
-- **not distinguishable:** the interval contains 0. Wording: "the data do not show that the hard gate adds anything beyond the
-  {comparator} on {cell} ({Delta}, 95% CI {L} to {U}; n_d = {n_d}; exploratory)". Never "equivalent", never "as good as".
-- **below GM:** upper bound < 0. Wording: "the hard gate gave higher matching accuracy than the {comparator} on {cell} ({Delta}, 95% CI;
-  exploratory)".
+Part 1 is **AD.12 step 5a**: after `analysis.json` with the P section is committed (step 3), after step 4 and step 5 (PS, E-dec, E-pred), before
+steps 6 to 9. It changes no wording of step 3 (no Tier-3 clause enters a P sentence, A4.1.10), so the last sentence of AD.12 stands
+unamended. Output `runs/P2-GATE-M4/tier3_fusion.json`, committed at once, run once, byte-identical on rerun; a later bug fix follows card v4
+section 7 (pre-fix output kept, both printed).
 
-**Findings against the method.** For MED, TM-G and TM20 (detector-free), "above GM" and "not distinguishable" on a P cell are **findings
-against the method** and are reported as such in Results and Discussion, in the same paragraph as P. For SOFT, "above GM" is a finding
-against the hard-gate design (discarding), not against the detector; "not distinguishable" reads "discounting and discarding the flagged
-tokens were not distinguishable".
+### A4.1.10 Reading, placement and wording (binding)
 
-**Where they may appear.**
-1. **Never** in the title, highlights or conclusion, under any label.
-2. **Abstract:** under a P-null label (negative, inconclusive, harm, K1, R3-inconclusive) Part 1 does **not** appear in the abstract (any
-   mention there would read as an explanation or a substitute headline, AB.1). Under a positive label (POS-M, POS-G, MIXED, R3-POS) the
-   abstract **must** carry one limiting clause when any detector-free comparator is "above GM" or "not distinguishable" on a P cell that
-   P rejected: "a detector-free {median / trimmed mean} of the same evidence was not shown to do worse (exploratory)". This is a limit on
-   the positive, never a gain.
-3. Never as a gain of "our approach"; the comparators are named by what they are (median, trimmed mean at the gate's flag count,
-   20 percent trimmed mean, soft reliability weight), never "robust GATE", "soft GATE" or "improved gate".
-4. **AB.1:** no sentence uses Part 1 to explain, predict or rescue a P result ("the gate failed because robust aggregation suffices",
-   "the gate failed because the detector misses", "a soft gate would have worked"). A detector-free combiner beating NONE when GM did not
-   is reported as a property of mean aggregation under this corruption, in Results under the Tier-3 label, and is not a result about GATE.
-5. **R3-POS:** if $d^{\rm TM\text{-}G}-d^{\rm GM}$ has an upper bound $\ge0$ on a P cell that P rejected, the R3 positive sentence in Results and
-   Discussion adds "a detector-free trimmed mean of the same size raised $d$ at least as much (exploratory)".
-6. All cells and all four comparators are reported in one table (PS cells in their own table); none is dropped for its result.
+**Three-way reading of "comparator k minus GM" on a cell (95 percent interval, fixed now):**
+- **above GM:** lower bound > 0. "On {cell}, {k} gave higher verification accuracy than the hard gate ({Delta}, 95% CI {L} to {U}; exploratory)."
+- **below GM:** upper bound < 0. "The hard gate gave higher verification accuracy than {k} on {cell} ({Delta}, 95% CI; exploratory)."
+- **not distinguishable:** the interval contains 0. "The data do not show a difference between the hard gate and {k} on {cell} ({Delta},
+  95% CI {L} to {U}; n_d = {n_d}; minimum detectable difference {MDD}; exploratory)." Never "equivalent", "as good as", "did as well".
+The same rule reads the $d$ contrasts of A4.1.8, with "higher evidence ratio d" in place of "higher verification accuracy".
+
+**What counts against the method (C4-9, F7(d)).** For MED, TM-G, TM20 (detector-free) on a P cell: "above GM" is a finding against the method;
+"not distinguishable" is a finding against the method's added value **only if MDD <= 0.05** (the SAP's design margin, section 4.3); with
+MDD > 0.05 it is reported as "uninformative at this n". For SOFT-G and SOFT-A: "above GM" is a finding against discarding (hard gating),
+never against the detector; "not distinguishable" reads "discarding and discounting (or weighting) were not distinguishable", with n_d and MDD.
+
+**Placement (one rule; C4-8, C4-9; consistent with AB.1 item 2 and A4.2.2 item 5).**
+1. Part 1 is reported in its own Results subsection, titled as exploratory, after the preregistered families; PS cells in their own table.
+2. In the Discussion it may appear only after the opening of 6.1, as a separate finding, never in the paragraph that states the P result and
+   never as an account of it.
+3. It never appears in the title, abstract, highlights, conclusion or contribution list, under any label (the draft's mandatory abstract
+   clause and its R3 Results clause are struck).
+4. No sentence uses it to explain, predict, qualify or rescue a P result. A comparator that beats NONE where GM did not is reported under the
+   Tier-3 label as a property of that comparator on that cell, not as an account of the P result.
+5. Comparators are named only as above (median, trimmed mean at the gate's flag count, 20 percent trimmed mean, discounting of the
+   gate-flagged tokens, reliability weighting of every token), never "robust GATE", "soft GATE" or "improved gate".
+6. All cells and all five comparators are reported; none is dropped for its result.
+
+**Limits printed beside the Part 1 table (F7):** (a) no sign-aware estimator, for the reason in A4.1.4; (b) SOFT-G's weights lie between GM's and
+NONE's; (c) when the gate's score is near chance (M1: JPEG 0.561, noise 0.503, `runs/P2-GATE-M1/analysis.json` `table.<corr>.q.mean`) the
+flagged count is close to the false-alarm count, so TM-G approximates NONE trimmed at about that count and TM-G minus GM largely repeats P's
+own contrast; (d) at the realised n many contrasts may be uninformative, shown by the MDD.
 
 ### A4.1.11 Code specification (for the lead; this addendum edits no code)
 
-New module `exp_p2/gate/tier3_fusion.py` (CLI `PY -m exp_p2.gate.tier3_fusion --run-id P2-GATE-M4 --family-run P2-GATE-M3 --cal-run
-P2-GATE-M2`), CPU only, reading only the files of A4.1.2 and writing `runs/P2-GATE-M4/tier3_fusion.json`; plus
-`tests/exp_p2/test_tier3_fusion.py` on synthetic data (nothing under `runs/` read). It refuses to run unless `runs/P2-GATE-M4/analysis.json`
-is committed (step 3) and its P section exists. Self-tests: (a) NONE and GM recomputation equals `evidence_from_delta`; (b) TM-G with
-$g=0$ or 1 equals NONE; (c) TM with 511 per tail equals MED; (d) SOFT with no flags equals NONE and with $S_{\rm cal}\equiv0$ equals GM;
-(e) $w\in[0,1]$, $w=1$ off the flagged set, $w$ non-increasing in $u$ on it; (f) ties and empty sets give $Y=0$; (g) the consistency gate
-stops on an injected mismatch; (h) the seed slot of a cell does not change when another cell is absent; (i) byte-identical rerun.
-The module and the `seeds.ANALYSES` append are new files in the card's pin scope (A3b.7 item 1): a dated pin row and a gate-auditor match
-to this section are required **before it is run**; they are not required before `analysis_m4` runs, because the specification, not
-the code, is what must precede the P outcome.
+Module `exp_p2/gate/tier3_fusion.py` (CLI `PY -m exp_p2.gate.tier3_fusion --run-id P2-GATE-M4 --family-run P2-GATE-M3 --cal-run P2-GATE-M2`),
+CPU only, reading only the files of A4.1.2, writing `runs/P2-GATE-M4/tier3_fusion.json`; tests `tests/exp_p2/test_tier3_fusion.py` on
+synthetic data. It refuses unless `runs/P2-GATE-M4/analysis.json` with the P section is committed. Self-tests: NONE and GM equal
+`evidence_from_delta`; TM-G with $g\le1$ equals NONE; trimmed mean with 511 per tail equals MED; SOFT-G with no flags equals NONE and with
+$S_{\rm cal}\equiv0$ equals GM; $w^G\in[0,1]$, 1 off the flagged set, non-increasing in $u$ on it; $w^A\in[1/(N+1),1]$ non-increasing in $u$; ties
+and empty sets give $Y=0$; the consistency gate stops on an injected mismatch; a cell's seed slot does not change when another cell is
+absent; byte-identical rerun; MDD formula on a known SD.
+**Pin rule (C4-10, F13).** Both files are in the card's pre-launch scope (`exp_p2`, `tests`). They are committed **only together with a dated
+pin row** that moves the card's pin to that commit after a gate-auditor delta check (card v4 section 7, as rows A-1/A-2 did), or after the
+last GPU stage that runs the pre-launch check. The auditor matches the module to A4.1 before it runs. Neither is needed before
+`analysis_m4`: the specification, not the code, must precede the P outcome. `seeds.py` is not changed (A4.1.7).
 
 ---
 
 ## A4.2 Part 2: outcome book (red-team M-c, A1, A3, A4)
 
-### A4.2.1 Labels (determined mechanically from committed files; no judgement)
+### A4.2.1 Labels (mechanical from committed files)
 
-Inputs: `runs/P2-GATE-M3/family.json` (`n_rule.rule` in R1, R2, R3, NO-GO; operating points) and the P section of
-`runs/P2-GATE-M4/analysis.json` (`primary.per_corruption.*.gate_better`, `p_holm`, `b`, `c`; `outcome_reading.label`), plus the S-M
-section for the POS split. A "harm rejection" is a Holm-adjusted p below 0.05 with $c>b$.
+Inputs: `runs/P2-GATE-M3/family.json` (`n_rule.rule`, operating points) and the P section of `runs/P2-GATE-M4/analysis.json`
+(`primary.per_corruption.*`: `p_holm`, `b`, `c` under R1/R2; `p_holm`, `mean_diff` under R3, `analysis_m4.py:119-140`), plus S-M for the
+POS split. A **harm rejection** is $p_{\rm Holm}<0.05$ with $c>b$ (R1/R2) or with `mean_diff` < 0 (R3).
 
 | Code | Condition |
 |---|---|
-| **POS-M** | R1/R2; at least one P rejection with $b>c$; S-M rejected for **every** such corruption (K5 and K6 not triggered for it) |
-| **POS-G** | R1/R2; at least one P rejection with $b>c$; S-M not rejected (K5) or K6 for at least one such corruption |
-| **MIXED** | R1/R2; at least one rejection with $b>c$ **and** at least one harm rejection. Title and highlights of MIXED; the POS-M or POS-G sentences apply to the $b>c$ corruptions |
-| **NEG** | A2.2 negative (no rejection; every corruption with an operating point has its 90 percent CI inside (-0.05, 0.05) and completed $n\ge240$) |
-| **INC** | A2.2 inconclusive under R1/R2 with no harm rejection and at least one operating point |
-| **HARM** | R1/R2; at least one harm rejection, no rejection with $b>c$ (A2.2 label "inconclusive"; SAP 9 wording "reduced") |
-| **K1** | `family.json` rule NO-GO: no corruption has an operating point; P not tested |
-| **R3-POS** | R3; at least one rejection on $d$ after Holm with the $d$ difference favouring GATE-M (`gate_better`) |
-| **R3-INC** | R3; no such rejection (negative is not available under R3) |
+| **POS-M** | R1/R2; >= 1 rejection with $b>c$; no harm rejection; S-M rejected for every such corruption (K5, K6 not triggered) |
+| **POS-G** | R1/R2; >= 1 rejection with $b>c$; no harm rejection; K5 or K6 for at least one such corruption |
+| **MIXED** | R1/R2; >= 1 rejection with $b>c$ and >= 1 harm rejection |
+| **NEG** | A2.2 negative |
+| **INC** | R1/R2; no rejection in either direction; not NEG; at least one operating point |
+| **HARM** | R1/R2; >= 1 harm rejection; no rejection with $b>c$ |
+| **K1** | rule NO-GO: no operating point; P not tested |
+| **R3-POS** | R3; >= 1 Holm rejection on $d$ with `mean_diff` > 0 (`gate_better`); no harm rejection |
+| **R3-HARM** | R3; >= 1 harm rejection; none with `mean_diff` > 0 |
+| **R3-MIXED** | R3; at least one of each |
+| **R3-INC** | R3; no Holm rejection in either direction |
 
-**Modifiers (apply on top of the label).** *Partial headroom:* when one or two corruptions have no operating point, every sentence names
-the tested corruptions and adds "({Y}: no operating point at either severity; not tested)". *Partial fold:* a corruption with completed
-$n<240$ gives INC (A2.2) and every sentence adds "partial fold (n = {n} of {planned})". *M4 not finished at the freeze:* no label is
-assigned; by Shlok's D18 the deadline moves rather than a paper without M4 being submitted.
+**C4-4 reading (dated; needs the red team's re-signature of the HARM, MIXED and R3-HARM, R3-MIXED sentences).** Card v4 section 2 forbids "any
+claim from a rejection with c > b"; SAP 9 prescribes "GATE-M reduced verification accuracy" and makes the full P table required content. The
+card's precedence clause ("a disagreement between this card and the SAP is a card defect") decides it: SAP 9 governs, and the card's cell is
+read as "no claim in favour of the gate, and no improvement claim, from a rejection with c > b". To keep the harm out of the most visible
+place, **no title carries a harm** (HARM and MIXED use the question title); the SAP 9 sentence appears in highlight 1, the abstract and 6.1.
+The same reading applies under R3 with "lowered the evidence ratio d".
+
+**Modifiers.** *Partial headroom:* every sentence names the tested corruptions and adds "({Y}: no operating point at either severity; not
+tested)". *Partial fold:* completed $n<240$ for a corruption gives INC (A2.2), and sentences add "partial fold (n = {n} of {planned})".
+*M4 not finished at the freeze:* no label; per D18 the deadline moves rather than a paper without M4 being submitted.
 
 ### A4.2.2 Rules common to every label
 
-1. **Numbers.** Every `{...}` placeholder is filled only from the committed `analysis.json`, `family.json`, `tier3_fusion.json` or
-   `runs/P2-GATE-M1/analysis.json`. "Matching accuracy" means the SAP's image-direction verification accuracy (`analysis_m4.WORDING_Y`).
-2. **Detector wording (K2, D0074): the detector is a measured object, not the asset.** In every label: the score is "the gate's
-   masked-likelihood score", never "our detector"; no sentence says it detects corrupted codes better than cheap methods; a positive is
-   worded "a gate built on the masked-likelihood score raised ...", never "the detector finds corrupted tokens"; the M1 rival (texture,
-   sign chosen on the data), its sign and its AUROC with CI appear in the main text; its win is reported as the label-circularity concern,
-   not as evidence that texture explains anything (A1.2 rule 4).
-3. **Must-not list (NOVELTY-REAUDIT section 7 items 1-9, NOVELTY-CHECK-INFFUS section 4 items 10-13).** In particular: one model only
-   (UniDisc 1.4B; no "generalises", item 9); no "first" claim of items 1-4, 10, 11; no guarantee beyond "the expected flagged share of a
-   clean pair's tokens is at most alpha" (item 6); "calibrated" is not a selling word in title, abstract or highlights (item 10 note);
-   GATE is "input-level source validation", never "decision-level fusion" (item 13).
-4. **Words reserved for a positive.** "fusion", "repair", "robust", "improves" do not appear in a title without a P rejection with $b>c$
-   (red-team C.3). Under R3 neither "verification" nor "improved" appears for the primary (v3 line 213).
-5. **AB.1 under every P-null label (NEG, INC, HARM, K1, R3-INC):** no clause in title, abstract, highlights, conclusion **or the opening of
-   Discussion 6.1** draws on PS, S2, B, R, E-dec, E-pred, the suite, detection (S-D, S-D2, M1) or Part 1 to explain, qualify or predict
-   the P result. These results appear in Results under their family label, and later in the Discussion only as separate findings.
-   Never "predicted", "explained", "caused by detection", "because the detector".
-6. **Highlights:** at most 85 characters each (Elsevier's limit, quoted from memory, E0; the venue scout verifies). If a filled highlight
-   exceeds it, `{X}` is replaced by "{k} of 3 corruptions" and the names move to highlight 2. Highlights 2 to 5 are written later but
-   obey rules 2 to 5; none of them states a secondary or Tier-3 result as a gain.
-7. **Scope phrase** `{S}` = "in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) on COCO image-caption pairs with
-   a random other caption as the negative".
+1. **Numbers** only from committed `analysis.json`, `family.json` or `runs/P2-GATE-M1/analysis.json`. Wording follows SAP 9: "image-direction
+   verification accuracy" ("verification accuracy" where space is short).
+2. **Detector wording (K2, D0074): the detector is a measured object, not the asset.** "the gate's masked-likelihood score", never "our
+   detector"; no "detects corrupted codes better than cheap methods"; a positive reads "a gate built on the masked-likelihood score raised
+   ..."; the M1 rival (texture, sign chosen on the data), its sign and AUROC with CI are in the main text; its win is the label-circularity
+   concern, not an explanation.
+3. **Must-not 1-13.** One model (UniDisc 1.4B, named in every title); no "first" claims; no guarantee beyond "the expected flagged share of a
+   clean pair's tokens is at most alpha"; "calibrated" is not a selling word; "input-level source validation", never "decision-level fusion".
+4. **Reserved words.** "fusion" appears in **no title** (C4-7; B is never a title result, AD.1). "repair", "robust", "improves" appear in no title
+   without a rejection with $b>c$. Under R3 neither "verification" nor "improved" is used for the primary (v3 line 213).
+5. **AB.1 under every label without a $b>c$ rejection** (NEG, INC, HARM, K1, R3-HARM, R3-INC): no clause in title, abstract, highlights,
+   conclusion or the opening of 6.1 draws on PS, S2, B, R, E-dec, E-pred, the suite, detection (S-D, S-D2, M1) or Part 1 to explain, qualify or
+   predict the P result. Never "predicted", "explained", "caused by detection".
+6. **Highlights** at most 85 characters (E0 limit, verified by the venue scout). Corruption names in highlights are "JPEG", "noise",
+   "splice"; when a slot holds two or more corruptions it reads "{k} corruptions" with a digit ("2 corruptions"). With these substitutions every
+   highlight 1 below is at most 85 characters (counted for every combination of single names and the fallback; derived). Highlights 2-5
+   obey items 2-5 and state no secondary or Tier-3 result as a gain.
+7. **Scope** `{S}` = "in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) on COCO image-caption pairs with a random
+   other caption as the negative".
 
 ### A4.2.3 Title, highlight 1, abstract result sentence, opening of Discussion 6.1
 
-`{X}` = tested corruption(s) of that clause, short form "JPEG", "Gaussian noise", "splice" (severity in the abstract: "JPEG quality
-{q}", "noise sigma {s}", "a {p}-pixel splice"). `{A0}`, `{A1}` accuracies of none and gate; `{D}` net difference; `{L}`, `{U}` 95 percent CI.
+`{X}`, `{Y}`: corruption names (abstract: "JPEG quality {q}", "Gaussian noise sigma {s}", "a {p}-pixel splice"). `{A0}`, `{A1}`: accuracy of no gate
+and gate; `{D}` net difference; `{L}`, `{U}` 95 percent CI; `{L90}`, `{U90}` 90 percent CI.
+**Question title QT** (all labels without a $b>c$ rejection under R1/R2): "Does masked-likelihood token gating help image-direction
+verification under image corruption? A preregistered test in UniDisc". **Question title QT-d** (R3-HARM, R3-INC): "Does masked-likelihood
+token gating strengthen image-text evidence under image corruption? A preregistered test in UniDisc".
 
 **POS-M**
-- Title: "Masked-likelihood token gating before image-text evidence fusion: a preregistered gain under {X} in a unified masked diffusion model"
-- Highlight 1: "Gating flagged image tokens raised image-text matching accuracy under {X}"
-- Abstract result sentence: "In the preregistered test (exact McNemar, Holm over three corruptions), a gate built on the masked-likelihood score raised matching accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}), more than an equally shaped random mask did; {for the other tested corruptions: no change was detected ({their D and CI})}. This is {S}, at one severity per corruption." Plus the Part 1 limiting clause when A4.1.10 item 2 requires it.
-- Discussion 6.1 opens: "Under {X}, removing the tokens the gate flagged raised matching accuracy, and a random mask of the same shape did not; the random-mask control rules out the shape of the mask as the cause, but not the removal of low-likelihood tokens in general, and the gate's score did not beat cheap rivals at finding changed codes on JPEG and noise."
+- Title: "Masked-likelihood token gating raised image-direction verification accuracy under {X} in UniDisc: a preregistered test"
+- Highlight 1: "Gating raised verification accuracy under {X}, beyond a same-shape mask"
+- Abstract: "In the preregistered test (exact McNemar, Holm over three corruptions), a gate built on the masked-likelihood score raised image-direction verification accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}), beyond what an equally shaped random mask gives; {for the other tested corruptions: no improvement was detected ({D}, {L} to {U})}. This is {S}, at one severity per corruption."
+- 6.1 opens: "Under {X}, the gate improved image-direction verification over no gate beyond what an equally shaped random mask gives; this control rules out the shape of the mask, not the removal of low-likelihood tokens in general, and the gate's score did not beat cheap rivals at finding changed codes on JPEG and noise."
 
 **POS-G**
-- Title: "Masked-likelihood token gating raised image-text matching accuracy under {X}, but no more than a same-shape random mask: a preregistered test in a unified masked diffusion model"
-- Highlight 1: "Gating raised matching accuracy under {X}, as did a same-shape random mask"
-- Abstract: "... a gate built on the masked-likelihood score raised matching accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}), but the gain was not distinguishable from that of a random mask of the same shape, so it is not attributed to the flagged positions. This is {S}." Plus the Part 1 clause when required.
-- 6.1 opens: "Gating raised matching accuracy under {X}, but a random mask of the same shape did as well, so the gain belongs to removing a set of that shape, not to the positions the score flagged."
+- Title: "Masked-likelihood token gating raised image-direction verification accuracy under {X} in UniDisc, not distinguishably from a same-shape random mask: a preregistered test"
+- Highlight 1: "Gain from token gating under {X} not distinguishable from a same-shape mask"
+- Abstract: "... a gate built on the masked-likelihood score raised image-direction verification accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}): an improvement, but not distinguishable from masking the same shape elsewhere, and therefore not attributable to detection beyond mask geometry. This is {S}."
+- 6.1 opens: "Under {X} the gate improved image-direction verification over no gate, but the improvement was not distinguishable from masking the same shape elsewhere, so it is not attributable to detection beyond mask geometry."
 
 **MIXED**
-- Title: "Masked-likelihood token gating raised image-text matching accuracy under {X} and lowered it under {Y}: a preregistered test in a unified masked diffusion model"
-- Highlight 1: "Token gating raised matching accuracy under {X}, lowered it under {Y}"
-- Abstract: the POS-M or POS-G sentence for {X}, followed by "and lowered it under {Y} (net {D_Y}, 95% CI {L_Y} to {U_Y})."
-- 6.1 opens: "The same gate raised matching accuracy under {X} and lowered it under {Y}; the preregistered test counts both."
+- Title: QT.
+- Highlight 1: "Gating: verification accuracy rose under {X}, fell under {Y}"
+- Abstract: the POS-M or POS-G abstract sentence for {X} (by the S-M result for {X}), then "Under {Y}, GATE-M reduced verification accuracy (net {D_Y}, 95% CI {L_Y} to {U_Y})." Then {S}.
+- 6.1 opens: "The same gate improved image-direction verification under {X} and reduced verification accuracy under {Y}; the preregistered test reports both."
 
 **NEG**
-- Title: "Does masked-likelihood token gating help image-text matching under image corruption? A preregistered test in a unified masked diffusion model"
-- Highlight 1: "Token gating moved matching accuracy by under 5 points under {X}"
-- Abstract: "In the preregistered test, gating did not change matching accuracy detectably under {X}; for each, the 90% CI of the net difference lay inside plus or minus 0.05 ({D}, {L90} to {U90}; n = {n}), so a gain or a loss larger than 5 percentage points is excluded at this severity. This is not evidence that gating has no effect. This is {S}."
-- 6.1 opens: "The preregistered test bounds the effect of gating on matching accuracy under {X} to less than five percentage points in either direction, for this model and these severities; it does not say that gating has no effect."
+- Title: QT.
+- Highlight 1: "Gains or losses above 5 points from token gating excluded under {X}"
+- Abstract: "In the preregistered test no improvement was detected under {X}; for each tested corruption the 90% CI of the net accuracy change lay inside plus or minus 0.05 ({D}, {L90} to {U90}; n = {n}), so an improvement larger than 0.05 is excluded and a loss larger than 0.05 is excluded. This is not 'GATE-M has no effect'. This is {S}."
+- 6.1 opens: "The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy from gating under {X}, for this model and these severities; it does not show that gating has no effect."
 
 **INC**
-- Title: as NEG.
-- Highlight 1: "No detectable change in matching accuracy from token gating under {X}"
-- Abstract: "In the preregistered test, no change in matching accuracy from gating was detected under {X} (net {D}, 95% CI {L} to {U}; n = {n}); the intervals are too wide to exclude a gain or a loss of 5 percentage points, so the test is inconclusive. This is {S}."
-- 6.1 opens: "The preregistered test did not detect a change in matching accuracy from gating under {X}, and it cannot exclude a gain or a loss of five percentage points; we read it as inconclusive, not as evidence that gating has no effect."
+- Title: QT.
+- Highlight 1: "No detectable change in verification accuracy from token gating under {X}"
+- Abstract: "In the preregistered test no improvement was detected under {X}; the data are compatible with a net accuracy change between {L} and {U} (95% CI; n = {n}), too wide to exclude a gain or a loss of 0.05, so the test is inconclusive. This is {S}."
+- 6.1 opens: "The preregistered test detected no improvement in image-direction verification accuracy from gating under {X}, and its intervals cannot exclude a gain or a loss of five percentage points; we read it as inconclusive, not as evidence that gating has no effect."
 
 **HARM**
-- Title: "Masked-likelihood token gating reduced image-text matching accuracy under {X}: a preregistered test in a unified masked diffusion model"
-- Highlight 1: "Gating flagged image tokens lowered image-text matching accuracy under {X}"
-- Abstract: "In the preregistered test, gating reduced matching accuracy under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}); {no gain was detected for the other tested corruptions}. This is {S}."
-- 6.1 opens: "Under {X}, gating lowered matching accuracy relative to no gate; the preregistered test counts this against the gate."
+- Title: QT.
+- Highlight 1: "Token gating reduced image-direction verification accuracy under {X}"
+- Abstract: "In the preregistered test, GATE-M reduced verification accuracy under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}); {no improvement was detected for the other tested corruptions}. This is {S}."
+- 6.1 opens: "Under {X}, GATE-M reduced image-direction verification accuracy relative to no gate; the preregistered test counts this against the gate."
 
 **K1 (NO-GO)**
-- Title: "Masked-likelihood token gating in a unified masked diffusion model: corruption headroom, token detection and clean false-alarm control in a preregistered measurement"
+- Title: "Masked-likelihood token gating in UniDisc: corruption headroom, token detection and clean false-alarm control in a preregistered measurement"
 - Highlight 1: "No preregistered corruption left headroom, so the gating test was not run"
-- Abstract: "No preregistered corruption met the headroom rule at either severity on separate items (headroom statistics T1 and T2 in Table {t}), so the preregistered test of gating against no gate was not run and no statement about gating and matching accuracy under corruption is made. This is {S}." The detection and calibration measurements follow as their own sentences, labelled.
-- 6.1 opens: "No preregistered corruption met the headroom rule, so this paper makes no statement about whether gating changes matching accuracy under corruption; what it reports is whether the corruptions lowered the evidence, how well the gate's score finds changed codes, and whether the clean false-alarm statement held."
+- Abstract: "No preregistered corruption met the headroom rule at either severity on separate items (T1 and T2 in Table {t}), so the preregistered test of gating against no gate was not run and no statement about gating and verification accuracy under corruption is made. This is {S}." Detection and calibration follow as their own labelled sentences.
+- 6.1 opens: "No preregistered corruption met the headroom rule, so this paper makes no statement about whether gating changes verification accuracy under corruption; it reports whether the corruptions lowered the evidence, how well the gate's score finds changed codes, and whether the clean false-alarm statement held."
 
 **R3-POS**
-- Title: "Does masked-likelihood token gating strengthen image-text evidence under image corruption? A preregistered test in a unified masked diffusion model"
+- Title: "Masked-likelihood token gating raised the per-item evidence ratio under {X} in UniDisc, not a verification-accuracy result: a preregistered test"
 - Highlight 1: "Token gating raised the evidence ratio d under {X}; not an accuracy result"
-- Abstract: "Too few items changed their decision under corruption for an accuracy test, so the preregistered primary endpoint switched to the per-item evidence ratio d (mean over spread of the per-token evidence). Gating raised d under {X} ({D_d}, 95% CI {L} to {U}; Wilcoxon, Holm over three; n = {n}); trimming heavy-tailed tokens raises d whatever their corruption status, so this is not a result about matching accuracy. This is {S}." Plus the Part 1 clause of A4.1.10 item 5 when required.
-- 6.1 opens: "Gating raised the evidence ratio d under {X}; because d is a mean-to-spread ratio, removing heavy-tailed tokens raises it whether or not they are corrupted, and the result says nothing about matching accuracy."
+- Abstract: "Too few items changed their decision under corruption for an accuracy test, so the preregistered primary endpoint switched to the per-item evidence ratio d (mean over spread of the per-token evidence). Gating increased the evidence ratio d under {X} ({D_d}, 95% CI {L} to {U}; Wilcoxon, Holm over three; n = {n}); trimming heavy-tailed tokens raises d whatever their corruption status, so this is not a result about verification or matching accuracy. This is {S}."
+- 6.1 opens: "Gating increased the evidence ratio d under {X}; because d is a mean-to-spread ratio, removing heavy-tailed tokens raises it whether or not they are corrupted, and the result says nothing about matching accuracy."
+
+**R3-HARM**
+- Title: QT-d.
+- Highlight 1: "Token gating lowered the evidence ratio d under {X}; not an accuracy result"
+- Abstract: the R3 switch sentence, then "Gating lowered the evidence ratio d under {X} ({D_d}, 95% CI {L} to {U}; Wilcoxon, Holm over three; n = {n}); this is not a result about matching accuracy. This is {S}."
+- 6.1 opens: "Under the preregistered switch to the evidence ratio d, gating lowered d under {X}; the result says nothing about matching accuracy and counts against the gate."
+
+**R3-MIXED**
+- Title: QT-d.
+- Highlight 1: "Gating raised evidence ratio d under {X}, lowered it under {Y}"
+- Abstract: the R3 switch sentence, then "Gating increased the evidence ratio d under {X} ({D_d}, CI) and lowered it under {Y} ({D_dY}, CI); trimming heavy-tailed tokens raises d whatever their corruption status; neither is a result about matching accuracy. This is {S}."
+- 6.1 opens: "Under the preregistered switch to the evidence ratio d, gating increased d under {X} and lowered it under {Y}; neither says anything about matching accuracy."
 
 **R3-INC**
-- Title: as R3-POS.
-- Highlight 1: "No detectable change in the evidence ratio d from token gating under {X}"
-- Abstract: "Too few items changed their decision under corruption for an accuracy test, so the preregistered primary endpoint switched to the per-item evidence ratio d; gating did not change d detectably under {X} ({D_d}, 95% CI {L} to {U}; n = {n}). This says nothing about matching accuracy. This is {S}."
-- 6.1 opens: "Under the preregistered switch to the evidence ratio d, gating did not detectably change d under {X}; the result says nothing about matching accuracy and is not evidence that gating has no effect."
+- Title: QT-d.
+- Highlight 1: "No detectable change in evidence ratio d from token gating under {X}"
+- Abstract: the R3 switch sentence, then "No change in d from gating was detected under {X} ({D_d}, 95% CI {L} to {U}; n = {n}); this says nothing about matching accuracy and is not evidence that gating has no effect. This is {S}."
+- 6.1 opens: "Under the preregistered switch to the evidence ratio d, no change in d from gating was detected under {X}; the result says nothing about matching accuracy and is not evidence that gating has no effect."
 
 ### A4.2.4 Numbered contribution list (Introduction)
 
-Only bullets whose cell is delivered whenever M4 is analysed (Shlok's D18: no submission without M4). Bullets 1, 2, 4, 5 and 6 are the
-same for every label; bullet 3 takes the label's sentence.
+Only bullets whose cell is delivered whenever M4 is analysed (D18: no submission without M4). Part 1 is in no bullet (C4-3).
 1. **The measured object.** "We specify, and treat as the object of measurement, an input-level source-validation gate for a pretrained
-   unified masked diffusion model: each image token is scored by the model's own masked likelihood with the caption withheld, and the
-   flag threshold is set by conformal risk control on clean pairs so that the expected flagged share of a clean pair's tokens is at most
-   alpha." (K2, M-b; no "first", must-not 3, 4, 10.)
-2. **A closed-form condition** (theory, no data): "Under an independent-token approximation, we give the condition on the false-alarm and
-   hit rates under which discarding flagged tokens raises the signal-to-noise ratio of an additive evidence sum; we state it as an
-   approximation because image tokens are dependent." Never linked to a P result (AB.1).
-3. **The preregistered test** (exact McNemar, Holm over three realistic corruptions, n fixed by a headroom-based rule). Label sentence:
-   POS-M / POS-G / MIXED / HARM: the label's 6.1 opening, first clause; NEG: "bounds the effect to under five percentage points in either
-   direction under {X}"; INC: "did not detect a change and is inconclusive under {X}"; K1: "found that no preregistered corruption left
-   headroom, so the test was not run"; R3-POS / R3-INC: the R3 sentence with "evidence ratio d" and "not matching accuracy".
-4. **Token detection, measured.** "At the token level the gate's score separates code-level random replacements (AUROC 0.961 for a patch
-   and 0.955 for swapped codes) but is near chance on JPEG and Gaussian noise (0.561 and 0.503), below a one-pass score without
-   fine-tuning (0.581 and 0.607) and a texture score whose sign was chosen on the same items (0.756 and 0.768); the preregistered
-   falsifier for the score was met." Source: `runs/P2-GATE-M1/analysis.json` `table.<corr>.{q, tbv, tex_neg}.mean`; CIs in the text
-   (q JPEG 0.547 to 0.575, noise 0.493 to 0.513). Splice detection is added only where splice has an operating point (it is measured
-   only in M4).
-5. **Calibration and fusion baselines.** "We check the clean false-alarm statement on held-out clean pairs, and compare the hard gate,
-   as preregistered exploratory analyses, with a median, trimmed means and a soft reliability weight of the same per-token evidence."
-   Under K1 the second half reads "... on clean pairs and on the positive-control corruptions only (no realistic cell)".
-6. **Secondary families, reported as run or not run:** "re-infilling the flagged tokens (S2), combining the two directions on FOIL-COCO
-   hard negatives (B), and a second, 4-bit model (run only after a positive main test)". This bullet stays true whatever is cut.
+   unified masked diffusion model: each image token is scored by the model's own masked likelihood with the caption withheld, and the flag
+   threshold is set by conformal risk control on clean pairs so that the expected flagged share of a clean pair's tokens is at most alpha."
+2. **A closed-form condition** (theory): "Under an independent-token approximation, we give the condition on the false-alarm and hit rates
+   under which discarding flagged tokens raises the signal-to-noise ratio of an additive evidence sum; we state it as an approximation because
+   image tokens are dependent." Never linked to a P result (AB.1).
+3. **The preregistered test** (exact McNemar, Holm over three realistic corruptions, n fixed by a headroom rule). Label sentence: the first
+   clause of the label's 6.1 opening (A4.2.3), with K1 "found that no preregistered corruption left headroom, so the test was not run".
+4. **Token detection, measured.** "At the token level the gate's score separates code-level random replacements (AUROC 0.961 for a patch,
+   0.955 for swapped codes) but is near chance on JPEG and Gaussian noise (0.561 and 0.503). On noise it is below a one-pass score without
+   fine-tuning (0.607; marginal 95% intervals 0.493-0.513 and 0.597-0.618 do not overlap; no paired test was run); on JPEG the two overlap
+   (0.561, 0.547-0.575, against 0.581, 0.569-0.593). In the preregistered comparison it is below a texture score whose sign was chosen on the
+   same items (0.756 and 0.768), so the preregistered falsifier for the score was met." Source: `runs/P2-GATE-M1/analysis.json`
+   `table.<corr>.{q, tbv, tex_neg}` and `falsifier`. Splice detection is added only where splice has an operating point (M4 only).
+5. **Calibration, checked.** "We check the clean false-alarm statement on held-out clean test pairs." (SAP 6; computed inside `analysis_m4`.)
+6. **Secondary families (status-conditional, C4-3).** The bullet names only the families among S2, B and R whose AD.11 status is "run, formal"
+   or "run, descriptive", with that status; if none ran, the bullet is omitted. Families not run appear only in the deviations box. The
+   status is read from the status map, never from an estimate.
 
-Not a bullet under any label: PS (pipeline check only, AB.1(a)), E-pred, E-dec, the suite, Omni as "generalisation", S2 or B as a
-gain, Part 1 as a gain, the second mask-seed check.
+Not a bullet under any label: PS, E-pred, E-dec, the suite, Part 1, Omni as "generalisation", S2 or B as a gain, the second mask-seed check.
 
-### A4.2.5 Layout rule for the summary figure (and the figures around it)
+### A4.2.5 Layout rule for the summary figure
 
-1. **Summary figure = family P only**, under every label. R1/R2: one row per P1-P3, net accuracy difference GATE-M minus none with the
-   95 percent (thin) and 98.33 percent (thick) bootstrap intervals, a solid line at 0 and dashed lines at plus and minus 0.05. R3: the
-   mean difference in d with its 95 percent interval, **no** plus or minus 0.05 lines (the margin is defined for accuracy), and the
-   trimming caveat in the caption. Rows with completed n < 240 carry an open marker and "partial (n = ...)".
-2. **Hatched "not tested"** on the summary figure: a P row without an operating point ("no operating point; headroom T1 = ..., T2 = ...").
-   Under K1 all three rows are hatched and a table may replace the figure.
-3. **PS never shares a canvas with P**, under any label (red-team A1). PS has its own table or figure titled "Positive control (pipeline
-   check)", with the AB.1(a) wording only.
-4. **No detection quantity on the P canvas**, under any label: no AUROC, no rival, no "conditions (ii)/(iii)" row labels, no E-pred
-   sign, no E-dec part, no Tier-3 comparator. E-pred is a table only (AB.3).
-5. **Part 1** has its own figure or table titled "Exploratory: hard gate against detector-free and soft combiners of the same evidence",
-   P cells and PS cells in separate panels, GM as the reference line. Never on the P canvas.
-6. **Family status map (optional figure or table):** one row per family in the AD.11 order (fixed), **status only, no estimates**:
-   "run, formal", "run, descriptive (n < 120)", "partial prefix", "not run (cut by time)", "not run (gatekept: P+ empty)", "untestable at
-   ceiling", "pipeline defect: not run", "undecided". Every status other than "run" is **hatched "not run"** or with its status text. No
-   arrows, no ordering by result.
-7. **Theory frontier (red-team M-d), if made:** theory only, in the Method section, with no measured (alpha_obs, beta_obs) point on it in any
-   label; a measured overlay is E-pred content and may only appear as the E-pred table.
+1. **Summary figure = family P only**, every label. R1/R2: one row per P1-P3, net accuracy difference GATE-M minus none with the **90
+   percent (thick)** and **95 percent (thin)** bootstrap intervals, a solid line at 0 and dashed lines at plus and minus 0.05 (C4-11: the 90
+   percent interval carries the NEG claim; the 98.33 percent interval is in the P table). Fixed for every label, so the figure is not chosen by
+   the result. R3: mean $d$ difference with its 95 percent interval, no plus or minus 0.05 lines, trimming caveat in the caption. Rows with
+   completed n < 240: open marker, "partial (n = ...)".
+2. **Hatched "not tested":** a P row without an operating point ("no operating point; headroom T1 = ..., T2 = ..."). Under K1 all three rows
+   are hatched and a table may replace the figure.
+3. **PS never shares a canvas with P**, any label; own table or figure "Positive control (pipeline check)".
+4. **Nothing else on the P canvas**: no AUROC, rival, "conditions (ii)/(iii)" labels, E-pred sign, E-dec part or Tier-3 comparator.
+5. **Part 1**: own figure or table "Exploratory: hard gate against detector-free combiners, discounting and reliability weighting of the
+   same evidence", P and PS cells in separate panels, GM as reference, the F7 limits in the caption.
+6. **Family status map (optional):** one row per family in AD.11 order, status only, no estimates; every status other than "run" hatched
+   with its text ("not run (cut by time)", "not run (gatekept: P+ empty)", "untestable at ceiling", "pipeline defect: not run", "undecided",
+   "partial prefix", "run, descriptive (n < 120)").
+7. **Theory frontier (M-d), if made:** theory only, in the Method section; no measured point on it under any label.
 
-### A4.2.6 D18 against AB.1 (needs Shlok)
+### A4.2.6 D18 against AB.1 (needs Shlok before `analysis_m4`)
 
-**What each says.** D18 (Shlok, "All recommended", 19:14 IST, `CONFIRM-EVENING-2026-10-28.md` "Shlok's answer" item 7): "if P is null but
-S2, PS and FOIL are informative, submit to Information Fusion as a 'when does input gating help' article with the null in the abstract;
-if M4 cannot finish by the freeze, move the deadline rather than submit without M4." AB.1 (signed by the red team): under a P null, no
-causal clause from PS, E-pred, E-dec, S2, B, R or the suite in title, abstract, highlights or conclusion; AB.1(a) bars "the gate works where
-detection is easy" whether PS is met or not; AB.1(b) bars "predicted" or "explained" for any P result.
+**D18 verbatim** (CONFIRM-EVENING "Shlok's answer", item 7, read from his "All recommended" at 19:14 IST): "if P is null but S2, PS and FOIL
+are informative, submit to Information Fusion as a 'when does input gating help' article with the null in the abstract; if M4 cannot finish
+by the freeze, move the deadline rather than submit without M4." The alternatives offered in CONFIRM section 7 were "a short CPU-only
+feasibility note, or another venue". **D18's condition stands as his decision**; the draft's rewrite of it is withdrawn.
 
-**Compatible parts:** the venue (Information Fusion), the null in the abstract, and moving the deadline rather than submitting without M4.
-The outcome book above keeps all three.
+**AB.1 (signed):** under a P null, no causal clause from PS, E-pred, E-dec, S2, B, R or the suite in title, abstract, highlights or conclusion;
+AB.1(a) bars "the gate works where detection is easy" whether PS is met or not; AB.1(b) bars "predicted" or "explained" for any P result.
 
-**Conflict:** the framing "when does input gating help". Under a P null (NEG, INC, HARM, K1, R3-INC) the only data that could say *when*
-gating helps are PS (patch and swap), S2, B, detection and E-pred, and AB.1 forbids using exactly these to explain or qualify the P result.
-A title, abstract question or 6.1 opening that asks "when" would be answered either by a forbidden inference or not at all (red-team A1,
-fatal-conditional). D18's own condition "S2, PS and FOIL are informative" is also unusable as a rule: under AB.1 none of them can inform P,
-and "informative" is not defined.
+**Where they meet.** Compatible: the venue, the null in the abstract, moving the deadline rather than submitting without M4. In tension: the
+framing "when does input gating help". Under a P null the data that could say *when* are PS, S2, B, detection and E-pred, which AB.1 bars from
+explaining or qualifying P. Two readings are admissible under the signed rules (red team, F10(c)):
+- **Reading 1 (stricter; the one the outcome book above is written to):** the phrase does not appear in the title, abstract, highlights,
+  conclusion or the opening of 6.1 under a P-null label; the "when" question is discussed after 6.1 only through the closed-form condition
+  (theory) and the P table itself.
+- **Reading 2:** a question-form framing ("when does input gating help?") whose answer is a set of separately labelled family results, with no
+  causal clause and no use of PS as a demonstration. This is allowed by AB.1's letter; the red team notes it as admissible.
+Which one is wanted is Shlok's call.
 
-**Reading I recommend (needs Shlok):** D18 is read as a **submission decision** (venue, null in the abstract, deadline over a paper without
-M4), not as a framing decision. Under every P-null label the phrase "when does input gating help" does not appear in the title, abstract,
-highlights, conclusion or the opening of Discussion 6.1; the title is the label's title of A4.2.3 (a "does ... help?" question that P itself
-answers, or the K1 measurement title). The "when" question may be discussed after 6.1 only through (i) the closed-form condition (theory,
-no data) and (ii) which corruptions P itself showed a change for, never through PS, S2, B, detection, E-pred or Part 1. The decision to
-submit depends only on the P label and on M4 being complete, not on S2, PS or FOIL outcomes (otherwise the venue decision itself becomes
-outcome-dependent). Under POS-M, POS-G and MIXED, D18 does not apply and there is no conflict; "when" may still not appear in the title
-(must-not 9: one model, one severity).
+**Definition of "informative" offered for his row (status only, no estimate):** S2, PS and FOIL are each "informative" iff their AD.11 status
+is "run, formal" (S2 and B: completed n >= 120 and tested; PS: both cells tested); "run, descriptive", "partial prefix", "untestable at
+ceiling", "not run" and "pipeline defect" are not. He may adopt it, change it, or drop the condition.
 
-**If Shlok prefers the literal D18 framing**, it needs a dated SAP addendum that amends AB.1, signed by the red team, committed before
-`analysis_m4` is first run; after the P result is visible it cannot be done. I do not recommend it.
+**Required before `analysis_m4` (C4-2).** A dated row with Shlok's own sentence choosing reading 1 or 2 and recording the D18 condition (with
+the definition of "informative", or its removal), **or** a dated row by the lead: "no answer; the AB.1 reading binds and the submission
+condition of D18 is unchanged". Under "no answer", reading 1 governs the wording (it is the reading that is certainly inside AB.1), and D18's
+submission condition stands as recorded. "All recommended" is not an answer to this question (it predates it). Under POS-M, POS-G and MIXED,
+D18 does not apply; "when" does not appear in a title under any label (must-not 9). Changing AB.1 itself would need a dated SAP addendum signed
+by the red team before `analysis_m4`; I do not recommend it.
 
 ---
 
 ## A4.3 Part 3: two dated rules (2026-10-28, before any M3, M4, S2 or FOIL outcome)
 
-### A4.3.1 (a) "No time input in the released configuration"
+### A4.3.1 (a) "No time input in the released configuration" (signed as written; limit (ii) updated in r1)
 
-**Rule (binding on the paper's Method section and App. A).** The paper states, as a property of the released configuration and
-checkpoint and not of UniDisc in general: "UniDisc's denoiser has no time input in the released configuration: time conditioning is off,
-the official inference configuration passes a null noise level, the backbone builds no timestep embedder without time conditioning, and the
-released checkpoint contains no time-embedding weights; the scorer uses the authors' null-sigma inference path." The wording "in the
-released configuration" is mandatory; "UniDisc is time-free" or "time-free in general" is not allowed. App. A carries the file:line table
-of REDTEAM-P2-PLAN section B, at UniDisc SHA `3ee3e47a9e64bac2fdca59957726f14723371ced`:
+**Rule.** The paper states, as a property of the released configuration and checkpoint, not of UniDisc in general: "UniDisc's denoiser has no
+time input in the released configuration: time conditioning is off, the official inference configuration passes a null noise level, the
+backbone builds no timestep embedder without time conditioning, and the released checkpoint contains no time-embedding weights; the scorer
+uses the authors' null-sigma inference path." "In the released configuration" is mandatory; "UniDisc is time-free" is not allowed. App. A
+carries the file:line table of REDTEAM-P2-PLAN section B at UniDisc SHA `3ee3e47a9e64bac2fdca59957726f14723371ced`:
 
 | Claim | Evidence (REDTEAM-P2-PLAN section B row) |
 |---|---|
-| time conditioning off by default; absorbing state; `subs` parameterisation; no experiment overrides it | `configs/config.yaml:12,14,15` (row 1) |
-| the project composes the official demo experiments and loads `unidisc_interleaved.pt` | `runs/env-2026-10-14/scripts/unidisc_setup.py:17,30-35`; `exp001/unidisc_net.py:46-47` (row 2) |
-| official inference sets `force_null_sigma` and `allow_null_sigma`; the authors' samplers pass `None` | `configs/experiments/large_scale_high_res_interleaved_inference.yaml:30-31`; `model_eval.py:2057,2086,3019,3060,3186` (row 3) |
+| time conditioning off; absorbing state; `subs`; no experiment overrides it | `configs/config.yaml:12,14,15` (row 1) |
+| project composes the official demo experiments, loads `unidisc_interleaved.pt` | `runs/env-2026-10-14/scripts/unidisc_setup.py:17,30-35`; `exp001/unidisc_net.py:46-47` (row 2) |
+| official inference sets `force_null_sigma`, `allow_null_sigma`; samplers pass `None` | `configs/experiments/large_scale_high_res_interleaved_inference.yaml:30-31`; `model_eval.py:2057,2086,3019,3060,3186` (row 3) |
 | `forward` accepts `sigma=None` only with `allow_null_sigma` | `model.py:660-662, 691, 729` (row 4) |
 | no timestep embedder or adaLN time modulation without time conditioning | `models/dit.py:1105, 1186-1188, 1377-1379`; `models/dit.py:1064-1090` (rows 5, 6) |
 | `scale_by_sigma` stored, never read | `configs/model/extra_large.yaml:8`; `models/dit.py:1290` (row 7) |
-| no `sigma_map`, no `adaLN_modulation` key; "sigma" absent from the checkpoint pickle | HF snapshot `2b344ca856bd108b52a2d022a3463dace131249f` (row 8) |
-| `return_logits=True` returns raw backbone logits before the SUBS step | `model.py:784-788` (row 9) |
+| no `sigma_map` or `adaLN_modulation` key; "sigma" absent from the pickle | HF snapshot `2b344ca856bd108b52a2d022a3463dace131249f` (row 8) |
+| `return_logits=True` returns raw logits before the SUBS step | `model.py:784-788` (row 9) |
 
-Evidence level: **E3 by the red team's code reading**, not by this author and not reproduced here. Two limits go beside it: (i) the
-weight of the training mask patterns (`mask_entire_modality` 0.15 or 0.2) is not recoverable from the code (E1, section B); (ii) the
-state dict is loaded non-strictly (`model_setup.py:665`, `configs/config.yaml:188`), so a silent partial load is not excluded by reading;
-until a key-diff print closes it, the paper says "loaded non-strictly; missing keys not checked". The rule changes no test.
+Evidence level E3 by the red team's code reading, not reproduced by me. Limits beside it: (i) the weight of the training mask patterns
+(`mask_entire_modality` 0.15 or 0.2) is not recoverable from the code (E1); (ii) **updated in r1:** the non-strict load is closed for the DiT
+backbone by `runs/P2-UNIDISC-KEYCHECK` (commit e954217e, E4 per its README: 342 of 342 tensors matched, 0 missing, 0 unexpected, 0 shape
+mismatches); the VQ tokenizer is loaded by another path and is not covered, and key equality does not show the values are the intended final
+weights. The paper says so in those words. The rule changes no test.
 
-### A4.3.2 (b) FOIL (rows 10-11) before S2 (rows 8a-9)
+### A4.3.2 (b) FOIL (rows 10-11) before S2 (rows 8a-9), revised in r1 (C4-10, F14)
 
-**Assessment under AB.9.** Moving FOIL ahead of S2 is a change of **run order**, not a cut and not a go decision. AB.9 allows run and cut
-decisions on time, GPU-hours and pre-written technical criteria only, and forbids reordering on a visible P result. It is therefore allowed
-if (i) it is fixed now, before any S2 or FOIL outcome and before `analysis_m4` runs, (ii) its trigger is time only, (iii) it does not invert
-the AD.8 priority (S2 is cut last, FOIL before it) when time is short, and (iv) no FOIL outcome can reach an S2 decision. By code reading,
-FOIL has no input from M2-M4 or S2 and draws no random numbers (`exp_p2/run_gate_foil.py:1-75`), and the S2 streams are keyed by item
-and `ARM_TAG` (`exp_p2/gate/arms.py:58-60`), so the order changes no number of either family. The cost to S2 is about 0.3 wall-h (CONFIRM
-section 8, FOIL n = 300, estimate), about 11 S2 items at about 37.5 items per wall-h (derived from 300 items in about 8 wall-h, the same
-source; an estimate, not measured).
+**Assessment under AB.9.** A change of run order, not a cut and not a go decision; allowed if fixed now, time-only, without discretion, not
+inverting the AD.8 priority when time is short, and with no FOIL outcome able to reach an S2 decision. By my reading of
+`exp_p2/run_gate_foil.py:1-75` FOIL takes no M2-M4 or S2 input and draws no random numbers, and S2 streams are keyed by item and `ARM_TAG`
+(`exp_p2/gate/arms.py:58-60`); this reading is E3 by me and unaudited (E1 for the red team), so the gate-auditor confirms it before row 10 runs
+early; if the auditor does not confirm it, the card order stands. Cost to S2: about 0.3 wall-h (CONFIRM section 8, estimate).
 
-**Rule (binding; design).**
-1. **When:** at the boundary after row 7 (M5) and before row 8a, once.
-2. **Before the check:** the S2 arm set (with or without I-CHG) is decided by time only and logged (A3b.2 item 6), so that no FOIL output can
-   reach it.
-3. **Check (time only):** FOIL goes first iff
-   $t_{\rm now}+0.3\,{\rm h}+W_{\rm S2}+2\,{\rm h}\le$ the results freeze (Fri 30 Oct 2026 18:00 IST, CONFIRM "Shlok's answer" item 4), with
-   $W_{\rm S2}$ = 8 wall-h for three arms or 5.2 wall-h for two arms (derived: IMPL-E's 2.6 busy GPU-h quoted in card v4 section 3, times 2
-   for the 0.5 duty cycle; CONFIRM section 8 shows the same factor of about 2 for three arms, 3.9 busy against about 8 wall). If the S2 smoke
-   (row 8a) has run first, $W_{\rm S2}$ may instead be 300 x the median smoke seconds per item x 2 / 3600, chosen before the smoke prints
-   (state which in the log row). The 2 h margin is a design choice: it covers one guard stop and relaunch of the longest length seen so far
-   (20:07 to 21:40 IST on 28 Oct, about 1.6 h; CONFIRM sections 10-11).
-4. **If the check passes:** rows 10 and 11, then 8a (if not yet run), 8, 9. **If it fails:** the card order stands (8a, 8, 9, 10, 11) and the
-   AD.8 cut order applies unchanged. Either way the decision, its inputs ($t_{\rm now}$, $W_{\rm S2}$ and its source, the freeze) and the result
-   of the inequality are logged with the time in the ledger before row 8a or 10 starts.
-5. **Analysis order unchanged:** `analysis_foil freeze` (fit pairs) may run as soon as row 10 ends (AD.12 step 2); `analysis_foil analyze`
-   (the B test) stays at AD.12 step 7, after the S2 table (step 6), or at the freeze if S2 is still running or was cut. So the B outcome is
-   not visible while S2 runs.
-6. Nothing here changes a family, n, test, ceiling rule or wording of B or S2.
+**Rule (binding; design; no free choice left).**
+1. **When:** once, at the boundary after row 7 (M5) ends and before row 8a starts.
+2. **First:** the S2 arm set (with or without I-CHG) is decided by time only and logged (A3b.2 item 6).
+3. **Inequality:** FOIL goes first iff $t_{\rm now}+0.3\,{\rm h}+W_{\rm S2}+2\,{\rm h}\le$ **Fri 30 Oct 2026 18:00 IST** (fixed here; a freeze moved
+   later, under D18 or otherwise, never enters this inequality). $W_{\rm S2}$ is the named constant **8.0 wall-h** if the logged arm set has
+   three arms, **5.2 wall-h** if two (5.2 derived as 2 x 2.6 busy GPU-h, IMPL-E row 8 as quoted in card v4 section 3, at the 0.5 duty cycle;
+   8.0 from CONFIRM section 8). The S2 smoke is not an input. The 2 h margin (design) covers one guard stop and relaunch of the longest length
+   seen so far (20:07 to 21:40 IST on 28 Oct, about 1.6 h, CONFIRM sections 10-11); it does not cover a crash, see item 5.
+4. **If true:** rows 10, 11, then 8a, 8, 9. **If false:** card order (8a, 8, 9, 10, 11), AD.8 cut order unchanged. The decision, $t_{\rm now}$, the
+   arm set, $W_{\rm S2}$ and the result are logged with the time before row 8a or 10 starts.
+5. **Stops and crashes:** if any guard stop or crash-log event occurs while row 10 or 11 runs, the FOIL-first order ends: on relaunch S2 (8a,
+   8, 9) runs next, and the unfinished FOIL rows wait behind S2 in the AD.8 cut order. A stop during S2 after FOIL finished changes nothing.
+   The **inversion risk** (FOIL complete, S2 partial after a later stop) is declared in the deviations box whenever FOIL ran first.
+6. **Analysis order unchanged:** `analysis_foil freeze` may run when row 10 ends (AD.12 step 2); `analysis_foil analyze` stays at AD.12 step 7,
+   after the S2 table or at the freeze if S2 is unfinished or cut.
+7. No family, n, test, ceiling rule or wording of B or S2 changes.
 
 ---
 
 ## A4.4 Assumptions and concerns (statistician)
 
-1. Part 1 is meaningful only if committed before `analysis_m4`; M3 has started, so the window is open now and closes at card v4 row 6.
-2. The soft weight is one fixed choice (discount the flagged tokens by their relative clean tail probability). A reviewer may want a weight
-   on every token; that alternative is not computed and must not be added after M4 (it would be forking paths).
-3. TM20's 20 percent default and the evidence-discounting analogy rest on citations I have not read (E0); the citation checker verifies
-   them before they are cited. The rule does not depend on them.
-4. Under R3 the Tier-3 accuracy contrasts will have few discordant items, so most will be "not distinguishable"; under A4.1.10 that reads as
-   "no evidence the gate adds anything", which is honest but uninformative. The $d$-scale trimming control is the useful part under R3.
-5. The D18 reading of A4.2.6 is a recommendation and needs Shlok's words before `analysis_m4`; until he answers, the outcome book as written
-   binds (it is the AB.1-consistent reading).
-6. A p-value says nothing about novelty or practical importance; with the most probable labels being INC or R3-INC (v3 section 12), the
-   outcome book is mostly about saying a null well.
+1. Part 1 is close to non-discriminative at n = 300 when the gate's score is near chance (F7); the MDD column makes that visible, and the
+   reading rule stops low power being reported as a finding against the method.
+2. SOFT-A adds one comparator in r1 (before any M3/M4 value); no other weight or estimator may be added after M4.
+3. The TM20 default and the evidential-discounting analogy rest on unread citations (E0).
+4. The C4-4 reading (SAP 9 over the card for a c > b rejection) needs the red team's re-signature of the HARM, MIXED, R3-HARM and R3-MIXED sentences
+   before `analysis_m4`; until then, under C4-4's own rule, no title or highlight may be drawn from a harm and only the P table with the SAP 9
+   sentence stands.
+5. D18 needs Shlok's sentence or the lead's dated "no answer" row before `analysis_m4` (C4-2). (The draft's item 5, "binds by default", is struck.)
+6. The FOIL-order rule depends on an unaudited reading of the FOIL runner; the auditor's confirmation is a precondition.
+7. A p-value says nothing about novelty or practical importance; the most probable labels are INC or R3-INC (v3 section 12).
 
 ## A4.5 Disclosure additions (Methods and deviations box; substance binding, wording editable)
 
-(1) The Tier-3 comparators of Part 1, their parameters and the time this addendum was committed relative to `analysis_m4`; (2) that no
-p-value was computed for them; (3) the outcome book was fixed before the P result, with the D18 reading and Shlok's answer or its absence;
-(4) the time-input statement with its evidence level and the non-strict-load limit; (5) whether FOIL ran before S2, with the logged check.
+(1) The Tier-3 comparators, their parameters, the fallback seed, and the commit times of A4 and r1 relative to `family.json` and
+`analysis_m4`; (2) no p-value computed for them, number of intervals, no multiplicity adjustment; (3) the outcome book fixed before the P
+result, Shlok's D18 answer or the lead's "no answer" row, and the C4-4 reading; (4) the time-input statement with its evidence level and the
+key-check result; (5) whether FOIL ran before S2, the logged inequality, and the inversion risk.
 
-## A4.6 Amendment log row (for the lead to append to the SAP log by a dated row; this file does not edit the SAP)
+## A4.6 Amendment log rows (for the lead to append by dated rows; this file does not edit the SAP)
 
 | Date | Change | Reason | Before/after outcome data? |
 |---|---|---|---|
-| 2026-10-28 | Addendum A4 (separate file): Tier-3 fusion comparators MED, TM-G (floor(g_i/2) per tail), TM20 (204 per tail), SOFT (flagged tokens discounted by S_cal(u)/S_cal(tau) from M2 clean pairs) against GM and NONE, Y with paired bootstrap 95% CIs only, no p-value, d-scale trimming control, consistency gate, AD.12 step 5a, wording rules (A4.1); outcome book for POS-M, POS-G, MIXED, NEG, INC, HARM, K1, R3-POS, R3-INC with titles, highlight 1, abstract sentence, 6.1 opening, contribution list and figure layout; D18 read as a submission decision (needs Shlok) (A4.2); "no time input in the released configuration" with REDTEAM section B evidence; FOIL before S2 by a time-only check (A4.3) | red-team review REDTEAM-P2-PLAN (A1, A3, A4, A5, A8, A9, C.1 M-b to M-e, D) | before any M3, M4, S2, FOIL, Omni or suite outcome; M2 complete (values not read by the author); M1 analysed earlier (D0074); commit SHA to be added |
+| 2026-10-28 | Addendum A4 draft (`40828e96`): Tier-3 comparators, outcome book, time-input and FOIL-order rules | red-team plan review REDTEAM-P2-PLAN | before any M3, M4, S2, FOIL, Omni or suite outcome; commit 22:27:23 IST |
+| 2026-10-28 | A4 revision r1: binding clause and commit-order row (C4-1); D18 restored verbatim, Shlok's sentence or a "no answer" row before analysis_m4 (C4-2); contribution list without Part 1, status-conditional secondary bullet, TbV claim limited to noise (C4-3); SAP 9 over card for c > b, no harm in titles (C4-4); POS-G in SAP 9 / K5 words (C4-5); R3-HARM and R3-MIXED labels (C4-6); no "fusion" in any title, UniDisc named (C4-7); abstract and R3 Tier-3 clauses struck (C4-8); one placement rule, SOFT-G renamed, SOFT-A added, sign-aware estimator excluded with reason, MDD and the 0.05 rule (C4-9); no seeds.py append, pin row before the module, fixed FOIL inequality with named W_S2 and stop handling (C4-10); highlights at most 85 characters, 90 percent interval on the summary figure, multiplicity count only, bootstrap matrix specified (C4-11); key-check result in A4.3.1 | red-team A4 signature, conditions C4-1 to C4-11 (`b3504aa3`) | before `family.json`, `ps_frozen.json`, `epred_frozen.json` and any M4 item (none existed at 22:41 IST); M3 finished 22:27 IST with headroom not run and no M3 row read (coordinator's statement); commit SHA to be added |
