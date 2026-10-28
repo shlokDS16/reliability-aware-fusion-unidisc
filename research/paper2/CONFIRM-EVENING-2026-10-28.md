@@ -86,3 +86,18 @@ the changed-code arm (S2 drops to about 2.6 GPU-h), then the cut order above.
 ## Already decided (no answer needed)
 S2 re-infill is MUST; S2 and FOIL at n = 300; swap, FOIL, Omni adapter and suite are being built today (CPU only); then a
 gate-auditor check and card v4 pin the code and SAP before the first new item.
+
+## Shlok's answer (2026-10-28 19:14 IST, in this session, verbatim): "All recommended"
+Dated row (card v4 section 5; A3b.6). Read as the recommendation of each item:
+1. Guard settings: `--max-used-first-mib 11000 --max-used-mib 11000 --max-rise-mib 4500 --mem-frac 0.75` (MEM for every
+   non-Omni stage; Omni stages keep their committed values).
+2. Unattended GPU runs under the guards tonight and overnight: yes.
+4. Results freeze: Fri 30 Oct 2026 18:00 IST.
+5. D17: (a) keep the one denoiser setting; JPEG worded "against an aggressive denoiser that harms the image".
+6. D4: yes; code to be built, audited and pinned in a dated row before it runs, after M4, only if the GPU is idle.
+7. D18: if P is null but S2, PS and FOIL are informative, submit to Information Fusion as a "when does input gating help"
+   article with the null in the abstract; if M4 cannot finish by the freeze, move the deadline rather than submit without M4.
+8. S2: keep all three arms; the changed-code arm is the first cut.
+9. n = 300 for S2 and FOIL at the updated cost (S2 about +1.95 GPU-h, +4 h wall): yes.
+3. **Co-attestation: NOT given.** "All recommended" does not contain his own sentence, so it is not recorded as one. Asked
+   again; if still absent when M1 is analysed, the lead writes the dated absence (card v4 section 5 row 3b).
