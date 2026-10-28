@@ -490,3 +490,77 @@ Not signed: the binding clause of A4 as written (F1); contribution bullets 4 (th
 ## Residual risks the signature does not cover
 
 Citations (E0); the 85-character limit (E0, for the venue scout); the claim that FOIL has no random draws or M2-M4 input; the E3 reading of UniDisc in A4.3.1 is mine (plan review B), not reproduced, with the non-strict load unclosed; many intervals with no multiplicity control; a single model; the lead's and the statistician's firewall statements are assertions, not attestations. Judgement, not measured: the most probable labelled outcomes are INC or R3-INC (v3 section 12), so most of this book is about stating a null well. A4 improves that, and the chance of a defensible positive claim stays at about 0.05 to 0.08.
+
+
+
+---
+
+# A4 r1/r2 re-signature (red team, 2026-10-29, after commit eadfa00b; M4 running; CPU only)
+
+Read: the full current A4 (r1 + r2); `git diff f1671c91 5ee84384` on A4 (r2 is 23 added lines, all in the r2 row, the r2 notes and A4.1.10); card v4 section 2 (family P row) and its precedence clause; SAP 9 and A2.2; AB.1; v3 section 12; NOVELTY-CHECK section 4; CONFIRM-EVENING sections 7, 8, 12 and "Shlok's answer"; ledger D0073-D0076; GATE-CODE-AUDIT-TIER3 in full; `tier3_fusion.py` at 00b92d4d lines 205-262 (`reading`, `counts_against`, `accuracy_contrasts`). Not opened: anything under `runs/P2-GATE-M4`; no M3 or M4 value (I took rule R2, n = 500, endpoint Y from the subject line of commit f6ad4c56 and `stat` birth times of M3 files). One synthetic check (numpy/scipy on made-up discordance counts, CPU, seconds). Not read: huang2025evidential, Wilcox, Tukey (E0 as before).
+
+## Verdict: SIGN WITH CONDITIONS (C4r-1 to C4r-5); confidence 0.65
+No finding is `fatal`. Three are `major` (G1, G2, G3). I sign: r1 as the answer to C4-1 (in fact), C4-3, C4-5 (except the pooling gap G1), C4-6 (labels), C4-7, C4-8, C4-9, C4-10, C4-11; the r2 notes N1 and N3; the precedence reading of C4-4 (SAP 9 over card section 2); the D18 reading-1 outcome. I do not sign: the POS-G sentences as written (G1); the HARM and MIXED 6.1 and "counts against" wording (G2); the r2 rule for n_d < 10 as the basis for any "finding" label (G3); R3-HARM and R3-MIXED (moot, G6). The signature binds when the C4r rows are recorded before `analysis_m4`.
+
+## Check (1): each C4-n
+| C4 | Status | Evidence |
+|---|---|---|
+| 1 | met in fact; row not yet written | r1 committed 22:44:54; `family.json` file birth 22:45:00.336, `c1_head.json` 22:45:00.679, `ps_frozen.json` 22:45:13, `epred_frozen.json` 23:09:47 (stat). A4.2 text is unchanged since r1 (diff f1671c91..5ee84384 touches only the r2 lines). r2 (00:00:54) is after all three files, edits only A4.1.10 (Tier 3), and quotes n = 500, so R2 was visible to its author; the row must say so. No C4-1 row exists in `decisions.jsonl` (last row D0076). The M3 `items.jsonl` (headroom data) existed from 22:23, before r1; "not read" is the author's assertion |
+| 2 | met in substance, with defects (G5) | D0076 plus CONFIRM s12 |
+| 3 | met | Part 1 absent from the contribution list; bullet 4 limits the TbV clause to noise, JPEG overlap stated, no paired test; bullet 6 is status-conditional |
+| 4 | precedence met; sentences not (G2); row not written | |
+| 5 | met except pooling (G1) | "no more than", "as did", "did as well", "belongs to" are gone; title, abstract and 6.1 use SAP 9 and K5 words |
+| 6 | labels met; sentences moot (G6) | R3-HARM and R3-MIXED exist; R3-INC needs no rejection in either direction |
+| 7 | met | no title contains "fusion"; every title names UniDisc |
+| 8 | met | abstract clause and R3 Results clause struck; AD.12 last sentence untouched |
+| 9 | met, subject to G3 | one placement rule; SOFT-G and SOFT-A names; n_d and MDD beside each "not distinguishable"; F7 (a)-(d) printed beside the table; the sign-aware estimator is excluded with a reason I accept (it uses the label) |
+| 10 | met | no `seeds.py` edit; pin row before the module; freeze constant fixed (Fri 30 Oct 18:00); W_S2 a constant (8.0 or 5.2; 5.2 = 2.6 busy GPU-h at duty 0.5, checked against CONFIRM s8 and card section 3); no smoke input; a stop ends FOIL-first; inversion risk in the deviations box; auditor confirmation of the FOIL reading is a precondition |
+| 11 | met | I counted every highlight 1 for single names and the "{k} corruptions" fallback: maximum 85 (POS-G, R3-HARM), within the E0 limit of 85; the figure shows the 90 percent interval; the multiplicity sentence is replaced by a count |
+
+## Findings
+### G1 (major). POS-G pools corruptions with different S-M outcomes under one "not distinguishable" sentence
+POS-G fires when K5 or K6 holds for at least one rejected corruption (A4.2.1). Its title, highlight, abstract and 6.1 use one `{X}` and say the gain is "not distinguishable from a same-shape random mask / masking the same shape elsewhere". Nothing restricts `{X}` to the corruptions where S-M did not reject. With JPEG S-M-rejected and noise not, the title would assert the limitation for JPEG, where S-M rejected: false. MIXED handles it ("by the S-M result for {X}"); POS-G does not.
+
+### G2 (major). HARM and MIXED: the precedence reading is sound, two sentences are not licensed, and the text states a motive that a reviewer will quote
+The reading that SAP 9 ("GATE-M reduced verification accuracy") outranks card section 2 ("any claim from a rejection with c > b") is correct under the card's own precedence clause. But (i) HARM 6.1 adds "the preregistered test counts this against the gate", a verdict that is in neither SAP 9 nor the card; (ii) A4.2.1 says no title carries a harm "to keep the harm out of the most visible place": positive results get a title claim, a Holm-rejected harm does not, and the document records the reason in those words; (iii) the HARM and MIXED highlights ("Token gating reduced ...", "Gating: ... rose ...") name no gate, model or severity, so a general statement rests on a one-model, one-severity rejection (the title carries the only scope); (iv) the MIXED highlight says "rose under {X}" with no K5 qualifier when X is S-M-unrejected. The ledger row that settles the card-versus-SAP conflict (C4-4 asked for a dated row) is not written.
+
+### G3 (major). The r2 rule does not touch the reading that produces the "finding"
+r2 replaces only the MDD test for n_d < 10. The three-way reading (`reading()`, tier3_fusion.py:216-224) is still the percentile-bootstrap interval for every n_d, and `counts_against` turns "above" into "finding_against_the_method" (detector-free) or "finding_against_discarding" (SOFT). My synthetic check (10,000 resamples as in A4.1.7, exact two-sided sign test for comparison): b = 4, c = 0 gives a lower bound of 0.0033 at n = 300 and 0.0020 at n = 500, i.e. "above GM", with exact p = 0.125; b = 3, c = 0 gives lower bound 0.0 (p = 0.25); b = 8, c = 0 gives lower 0.010 (p = 0.008). So four discordant items in one direction yield a finding against the method, and r2 prints B beside it as if B governed the label. The percentile bootstrap is not a valid interval at that n_d.
+
+### G4 (minor). r2 override: coincides with the code at n = 500, differs elsewhere, and is not clean in the artifact
+Verified numerically: B = 0.0122 (n_d = 0, n = 300) and 0.0074 (n = 500); B <= 0.05 up to n_d = 7 at n = 300 (0.0475; n_d = 8 gives 0.0519) and up to 15 at n = 500 (0.049). At the fold in force (n = 500) every n_d < 10 satisfies B <= 0.05, so r2 and the code's MDD rule give the same label and differ only in wording. At n = 300 they differ for n_d = 8, 9, and the switch back to MDD at n_d = 10 (MDD about 0.03) makes n_d = 10 "against" and n_d = 8 "uninformative": non-monotone, and the two thresholds are not commensurate (a power quantity against a confidence bound). The write-once `tier3_fusion.json` will carry `mdd` = 0.0 and `finding_against_added_value` for n_d = 0 with no "not used" label; r2 item 5 lets the lead choose, after the output exists, between hand-applying the rule and changing audited code (new SHA, new delta check).
+
+### G5 (minor to major for the record). D0076 and CONFIRM s12: timestamps, "explicit", and the D18 frame
+(i) The commit that contains the row and the answer is eadfa00b, 2026-10-29 00:05:46; CONFIRM s12 dates the question ~00:05 and Shlok's answer ~00:10, and D0076 `ts` is 00:12:00. The record cannot have been written after the answer it quotes. The order against `analysis_m4` is unaffected (M4 at about 115 of 500), but a preregistration audit trail with a row dated after its own commit invites doubt. (ii) D0076 says "explicit delegation"; the sentence ("Choose whatever alleviate") answers no option and is the lead's reading of an ambiguous sentence, as CONFIRM s12 itself says ("Read as a delegation"). (iii) The "informative" definition was offered to Shlok and not adopted by him; the lead adopts it under the delegation. This is the narrowing I asked to see in a row, so it is acceptable, but the row should name who fixed it. (iv) D0076 says "D18 submission condition unchanged", but D18's verbatim text submits the paper "as a 'when does input gating help' article"; reading 1 bars that phrase from title, abstract, highlights, conclusion and the opening of 6.1. The row does not say what becomes of the frame. What C4-2 required (reading 1 plus the unchanged condition with a status-only meaning of "informative", before `analysis_m4`) is present.
+
+### G6 (minor). R3 sentences
+The family file fixes rule R2 (commit f6ad4c56), so no R3 label can occur. For the record: SAP 9 has no row for a lowering of d and A2.2 allows only positive or inconclusive under R3, so R3-HARM and R3-MIXED have no governing clause; R3-HARM 6.1 says the result "says nothing about matching accuracy and counts against the gate"; R3-POS says trimming "raises d whatever their corruption status" where v3 section 12 says it "can"; A4.2.2 item 4 bars "verification" under R3 and the R3-POS title and abstract contain it.
+
+### G7 (minor). Partial folds
+A4.2.1 modifier: "completed n < 240 for a corruption gives INC". A corruption rejected with b > c at n < 240 is positive by A2.2's definition and inconclusive by "everything else"; the two sentences disagree.
+
+## Check (2): sentence-level result
+POS-M: consistent with SAP 9, K5/K6, K2 (D0074: the 6.1 clause says the score did not beat cheap rivals on JPEG and noise; no "our detector"), AB.1. POS-G: G1. MIXED, HARM: G2. R3-POS, R3-INC: no conflict with A2.2; R3-HARM, R3-MIXED: G6. K1, NEG, INC: unchanged since my first signature. Must-not claims 10-13 (NOVELTY-CHECK s4): no "first", no "risk-calibrated" as a selling word, "input-level source validation" kept, no "decision-level". "Fusion" in no title.
+
+## Check (3): r2 rule for n_d < 10
+The Clopper-Pearson formula, the bound |A^k - A^GM| <= pi_d and the quoted numbers are right. Gaps: G3 (the label comes from the bootstrap reading, not from B) and G4 (override unclean; it coincides with the code at n = 500).
+
+## Check (4): D18 reading-1 row against C4-2
+Present and sufficient in substance; defects in G5. A4.4 item 5 no longer says "binds by default" (it asks for the row).
+
+## Conditions (dated ledger rows by the lead before `analysis_m4` is first run on M4 data)
+- **C4r-1.** POS-G title, highlight, abstract and 6.1 carry the K5/K6 limitation only for corruptions where S-M did not reject, and carry none for a corruption where it did.
+- **C4r-2.** A dated row settles card section 2 against SAP 9 for HARM and MIXED (my acceptance: SAP 9 governs). "Counts this against the gate" is not used unless SAP 9 or a signed addendum carries it. The motive phrase in A4.2.1 is not carried into any paper text. The HARM and MIXED highlights are re-signed after their scope and the MIXED K5 qualifier are settled. R3-HARM and R3-MIXED are recorded as moot under rule R2 and stay unsigned.
+- **C4r-3.** No "finding against the method" or "against discarding" label is issued for a contrast with n_d < 10 on the strength of a percentile-bootstrap interval alone; the reading used for n_d < 10 is stated and signed before the output is read. Until then those cells are reported with n_d, b, c and B only.
+- **C4r-4.** Rows: the C4-1 commit-order row with the file birth times above and the statement that r2 postdates the three frozen files and edits only A4.1.10; the D0076 correction (times, "explicit", who fixed the "informative" meaning, what becomes of D18's "when does input gating help" frame under reading 1); the pin row naming `test_gate_tier3_fusion.py` before the module is committed; and which of r2 item 5's two routes the lead takes, recorded before the Tier-3 output exists.
+- **C4r-5.** The partial-fold sentence of A4.2.1 is made consistent with A2.2 for a rejected corruption at n < 240; the n_d = 8, 9 cliff of r2 at n = 300 is either declared moot by a row (n = 500 in force) or removed.
+
+## What would force rejection of a claim made from A4 r1/r2
+- A "finding against the method" or "against discarding" printed for any cell with n_d < 10 from the bootstrap reading (G3), before C4r-3.
+- A POS-G sentence that applies the S-M limitation to a corruption where S-M rejected (G1).
+- A title, highlight or abstract that states a harm as "counts against the gate", or the unscoped "Token gating reduced/raised" (G2).
+- A P, PS, S-M or M4 value read by whoever edits A4.2 or A4.1.10 before the C4r rows exist, then used in an edit.
+- Any Tier-3 number printed before the pin row and the auditor's match, or with a failed consistency gate (unchanged from the first A4 signature).
+
+## Residual risks
+All firewall statements (statistician, coordinator, lead: "no M3/M4 value read") are assertions, not attestations. The M3 headroom `items.jsonl` existed before r1. The E0 limit of 85 characters and the E0 citations are unchanged. Judgement, not measured: the most likely labels remain INC or NEG; r1 and r2 improve how a null is stated and leave the chance of a defensible positive claim at about 0.05 to 0.08.
