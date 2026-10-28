@@ -411,6 +411,27 @@ def test_c1_looks_read_the_right_fields_and_each_look_is_recorded_once(tmp_path,
     assert c1.main(["--look", "cal"]) == 2                                      # looks are recorded once and never pooled
 
 
+def test_c1_test_look_refuses_a_partial_m4_fold(tmp_path, monkeypatch):
+    from exp_p2.gate import c1
+    monkeypatch.setattr(common, "RUNS", tmp_path)
+    m4 = tmp_path / "P2-GATE-M4"
+    m4.mkdir()
+    row = lambda i: dict(idx=i, conds=dict(clean=dict(img={"none": dict(y=1)})))
+    (m4 / "items.jsonl").write_text("\n".join(json.dumps(row(i)) for i in range(299)) + "\n")
+    assert c1.expected_test_n() == 300 and c1.main(["--look", "test"]) == 2 and not (m4 / "c1_test.json").exists()         # 299 of 300: refused, nothing written
+    (m4 / "items.jsonl").write_text("\n".join(json.dumps(row(i)) for i in range(300)) + "\n")
+    assert c1.main(["--look", "test"]) == 0 and (m4 / "c1_test.json").exists()
+    (m4 / "c1_test.json").unlink()
+    (tmp_path / "P2-GATE-M3").mkdir()
+    (tmp_path / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(n_rule=dict(rule="R2", test_fold=500))))
+    assert c1.expected_test_n() == 500 and c1.main(["--look", "test"]) == 2                                              # R2: the planned fold is 500
+    (m4 / "effective_n.json").write_text(json.dumps(dict(planned=500, effective=300)))
+    assert c1.expected_test_n() == 300 and c1.main(["--look", "test"]) == 0                                              # exclusions lower the expectation
+    (tmp_path / "P2-GATE-M2").mkdir()                                                                                    # the calibration look is not affected
+    (tmp_path / "P2-GATE-M2" / "items.jsonl").write_text("\n".join(json.dumps(dict(idx=i, img=dict(y=1))) for i in range(10)) + "\n")
+    assert c1.main(["--look", "cal"]) == 0
+
+
 def test_analysis_reports_c1_on_the_clean_test_items(tmp_path):
     n = 60
     g, o = flips(n, 5, 1)

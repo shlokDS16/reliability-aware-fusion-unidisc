@@ -287,6 +287,7 @@ def test_effective_n_after_exclusions_lets_the_run_and_the_driver_finish(env, mo
     monkeypatch.setattr(gate_driver.driver, "gates_ok", lambda: (True, "ok"))
     monkeypatch.setattr(gate_driver, "EVENTS_FN", lambda since: dict(ok=True, events=[], error=None))
     monkeypatch.setattr(gate_driver, "AC_FN", lambda: True)
+    monkeypatch.setattr(gate_driver, "PIN_FN", lambda: dict(ok=True))
     monkeypatch.setattr(gate_driver.subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(AssertionError("must not launch: already complete")))
     (env / "P2-GATE-M2").mkdir()
     (env / "P2-GATE-M2" / "effective_n.json").write_text(json.dumps(dict(planned=30, effective=2)))

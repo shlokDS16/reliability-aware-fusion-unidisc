@@ -198,8 +198,10 @@ def test_guards_memory_ac_rise_and_slow_item():
     assert "9500" in g.before_item(1)                                            # 9500 > 9000 (later items)
     g = guards.Guards(used_fn=lambda: 10500.0, ac_fn=lambda: True)
     assert "10500" in g.before_item(0)
-    g = guards.Guards(used_fn=iter([5000.0, 6700.0]).__next__, ac_fn=lambda: True)
-    assert g.before_item(0) is None and "rise" in g.before_item(1)
+    g = guards.Guards(used_fn=iter([5000.0, 5100.0, 5200.0, 6900.0]).__next__, ac_fn=lambda: True)
+    assert g.before_item(0) is None and g.after_item(2.0) is None              # the rise rule is armed by the first completed item (re-audit W1)
+    assert g.before_item(1) is None and g.after_item(2.0) is None and g.before_item(2) is None and g.after_item(2.0) is None
+    assert "rise 1700" in g.before_item(3).replace("_", " ")                  # +1.7 GB after the baseline items
     g = guards.Guards(used_fn=lambda: 100.0, ac_fn=lambda: False)
     assert g.before_item(0) == "ac_lost"
     g = guards.Guards(used_fn=lambda: 100.0, ac_fn=lambda: None)                 # unknown power state does not stop

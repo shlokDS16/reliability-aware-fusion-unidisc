@@ -49,6 +49,19 @@ def ys_from_rows(rows: list[dict], look: str) -> list[float]:
     raise ValueError(look)
 
 
+def expected_test_n(runs: Path | None = None) -> int:
+    """Items the M4 test fold must contain before look (iii) may be read: the n-rule's test fold (family.json; 300 if absent) minus the items excluded by the real-tokenizer rule."""
+    runs = Path(runs) if runs is not None else Path(common.RUNS)
+    want = 300
+    fj = runs / "P2-GATE-M3" / "family.json"
+    if fj.exists():
+        want = int(json.loads(fj.read_text(encoding="utf8")).get("n_rule", {}).get("test_fold", 300))
+    eff = runs / "P2-GATE-M4" / "effective_n.json"
+    if eff.exists():
+        want = min(want, int(json.loads(eff.read_text(encoding="utf8"))["effective"]))
+    return want
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--look", choices=sorted(LOOKS), required=True)
@@ -57,6 +70,11 @@ def main(argv=None) -> int:
     rid = a.run_id or LOOKS[a.look][0]
     run = Path(common.RUNS) / rid
     rows = common.read_jsonl(run / "items.jsonl")
+    if a.look == "test":                                           # look (iii) only at the analysis step after the planned fold is complete (SAP 8.2, A2.3)
+        done, want = len({r["idx"] for r in rows}), expected_test_n()
+        if done < want:
+            print(f"STOP: the M4 test fold is not complete ({done} of {want} items); look (iii) is read only after the planned fold is complete (SAP 8.2)", file=sys.stderr)
+            return 2
     res = c1(ys_from_rows(rows, a.look), LOOKS[a.look][1])
     out = run / f"c1_{a.look}.json"
     if out.exists():

@@ -40,6 +40,8 @@ class Guards:
     used_fn: object = gpu_used_mib
     ac_fn: object = on_ac
     first_item_active: bool = True                 # read by the watchdog thread: the first item of a chunk gets the higher memory allowance
+    rise_armed: bool = False                       # the 1.5 GB rise rule is armed only after the first item of the chunk has completed (re-audit W1): the model load and the first
+                                                   # item legitimately move whole-GPU memory by 4-6 GB inside one sample (stored telemetry); only the absolute ceilings apply until then
     _last_used: float | None = field(default=None, repr=False)
     _times: list = field(default_factory=list, repr=False)
 
@@ -52,12 +54,15 @@ class Guards:
         lim = self.max_used_first_mib if n_done_in_chunk == 0 else self.max_used_mib
         if used > lim:
             return f"gpu_memory {used:.0f} MiB > {lim:.0f}"
-        if self._last_used is not None and used - self._last_used > self.max_rise_mib:
+        if self.rise_armed and self._last_used is not None and used - self._last_used > self.max_rise_mib:
             return f"gpu_memory_rise {used - self._last_used:.0f} MiB"
         self._last_used = used
         return None
 
     def after_item(self, busy_s: float) -> str | None:
+        if not self.rise_armed:                    # first item done: arm the rise rule with a fresh baseline (the next reading sets it)
+            self.rise_armed = True
+            self._last_used = None
         prior = list(self._times)
         self._times.append(busy_s)
         if len(prior) >= self.min_items_for_median and busy_s > self.slow_factor * statistics.median(prior):

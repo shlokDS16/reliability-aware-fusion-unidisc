@@ -84,6 +84,7 @@ def driver(env, monkeypatch):
     monkeypatch.setattr(gate_driver.driver, "gates_ok", lambda: (True, "ok"))
     monkeypatch.setattr(gate_driver, "EVENTS_FN", lambda since: dict(ok=True, events=[], error=None))
     monkeypatch.setattr(gate_driver, "AC_FN", lambda: True)
+    monkeypatch.setattr(gate_driver, "PIN_FN", lambda: dict(ok=True, via="committed blob"))      # (the real check shells out to git, which these tests patch away)
     return env
 
 
@@ -192,9 +193,12 @@ def test_watchdog_rules_memory_first_item_rise_and_ac():
     assert w.check_once() is None                                             # first item: allowance 10,000
     g.first_item_active = False
     assert "gpu_memory 9500" in w.check_once()                                # later items: 9,000
-    vals = iter([5000.0, 7000.0])
+    vals = iter([5000.0, 7000.0, 5100.0, 7100.0])
     g, w = _wd(lambda: next(vals))
-    assert w.check_once() is None and "rise 2000" in w.check_once().replace("_", " ")      # +2 GB between two 1 s samples
+    assert w.check_once() is None and w.check_once() is None                  # +2 GB before the first item completed: only the ceilings apply
+    g.after_item(7.0)                                                         # first item done: the rise rule is armed from a fresh baseline
+    g.first_item_active = False
+    assert w.check_once() is None and "rise 2000" in w.check_once().replace("_", " ")      # +2 GB between two 1 s samples afterwards
     g, w = _wd(lambda: 100.0, ac=lambda: False)
     assert w.check_once() == "ac_lost"
     g, w = _wd(lambda: 100.0, ac=lambda: None)
@@ -317,7 +321,7 @@ def test_guarded_probe2_stops_on_memory_after_the_first_item_with_the_lower_limi
 
 
 def test_guarded_probe2_rise_rule_slow_item_and_ac(env, monkeypatch):
-    rc, _ = _guarded(env, monkeypatch, [3000.0, 5000.0], [2.0] * 5)
+    rc, _ = _guarded(env, monkeypatch, [3000.0, 3000.0, 3000.0, 5200.0], [2.0] * 5)
     assert rc == 76 and "rise" in common.read_jsonl(env / "P2-PROBE-X" / "chunks.jsonl")[-1]["reason"]
     (env / "P2-PROBE-X" / "items.jsonl").unlink()
     rc, _ = _guarded(env, monkeypatch, [3000.0] * 6, [2.0, 2.0, 2.0, 9.0, 2.0])
@@ -364,6 +368,145 @@ def test_run_probe2_file_is_not_modified_by_this_work():
     out = subprocess.run(["git", "-C", str(ROOT), "diff", "--stat", "HEAD", "--", "exp_p2/run_probe2.py", "exp_p2/run_probe1.py", "exp_p2/scoring.py", "exp_p2/driver.py", "tools/gpu_guard.py"],
                          capture_output=True, text=True).stdout
     assert out.strip() == ""
+
+
+# ------------------------------------------------------------------------------------------------ re-audit W1: no false trip at the model load and the first item
+def _drive(trace, steps):
+    """Feed a memory trace to a Watchdog the way the runners do: `steps` is a list of ('sample',) or ('item', n_done_before, busy_s) events; returns the first trip reason."""
+    it = iter(trace)
+    g = guards.Guards(used_fn=lambda: 0.0, ac_fn=lambda: True)
+    w = watchdog.Watchdog(g, used_fn=lambda: next(it), ac_fn=lambda: True, sleep=lambda s: None)
+    for st in steps:
+        if st[0] == "sample":
+            why = w.check_once()
+            if why:
+                return why, g
+        else:                                                                   # an item boundary: the runner calls before_item then, later, after_item
+            g.first_item_active = st[1] == 0
+            g.after_item(st[2])
+    return None, g
+
+
+def test_a_5gb_load_jump_and_a_first_item_spike_do_not_trip_but_a_2gb_jump_after_item_2_does():
+    trace = [1416, 5600,                 # idle, then the model load: +4.2 GB inside one sample
+             5600, 8200, 9611,           # first item: +2.6 GB and +1.4 GB (the stored telemetry reaches 9,611 MiB)
+             6100, 6150, 6200, 6150,     # steady items
+             8300]                       # +2.15 GB after items 1 and 2: must trip
+    steps = [("sample",)] * 2 + [("sample",)] * 3 + [("item", 0, 7.0)] + [("sample",)] * 2 + [("item", 1, 7.0), ("sample",), ("item", 2, 7.0), ("sample",), ("sample",)]
+    why, g = _drive(trace, steps)
+    assert why is not None and "rise 2150" in why.replace("_", " ")             # tripped only on the last sample
+    healthy, _ = _drive(trace[:-1], steps[:-2])
+    assert healthy is None                                                      # the load jump, the first-item spike and the steady items never trip
+    assert g.rise_armed
+
+
+def test_a_5gb_jump_after_a_completed_item_and_a_ceiling_breach_during_load_still_trip():
+    why, _ = _drive([1416, 5600, 11000], [("sample",)] * 3)
+    assert why is not None and "gpu_memory 11000" in why                        # the absolute first-item ceiling (10,000) applies during the load and the first item
+    why, _ = _drive([5600, 6000, 6100, 11100], [("sample",), ("item", 0, 7.0), ("sample",), ("sample",), ("sample",)])
+    assert why is not None                                                      # 11,100 breaches 9,000 after the first item as well
+    why, _ = _drive([5600, 6000, 6100, 8900], [("sample",), ("item", 0, 7.0), ("sample",), ("sample",), ("sample",)])
+    assert why is not None and "rise" in why.replace("_", " ")                  # below the ceiling, but +2.8 GB in one sample after the first item
+
+
+def test_the_per_item_guards_and_the_runner_apply_the_same_rule(env):
+    g = guards.Guards(used_fn=iter([5600.0, 8200.0, 8300.0, 8350.0]).__next__, ac_fn=lambda: True)
+    assert g.before_item(0) is None and g.after_item(7.0) is None               # 5.6 GB at the first item
+    assert g.before_item(1) is None and g.after_item(7.0) is None               # 8.2 GB afterwards (+2.6 GB since before item 1): baseline, no trip
+    assert g.before_item(2) is None and g.after_item(7.0) is None and g.before_item(3) is None
+    g = guards.Guards(used_fn=iter([5600.0, 6000.0, 6100.0, 8300.0]).__next__, ac_fn=lambda: True)
+    for n in range(3):
+        assert g.before_item(n) is None and g.after_item(7.0) is None
+    why = g.before_item(3)
+    assert why and "rise" in why                                                # +2.2 GB after item 2
+
+
+def test_probe_wrappers_start_the_watchdog_before_the_load_but_it_does_not_trip_on_the_load_jump(env, monkeypatch):
+    trace = iter([1416.0, 5600.0, 9611.0, 6100.0, 6150.0, 6200.0, 6150.0])
+    g_holder = {}
+
+    def factory(g, run):
+        g_holder["g"] = g
+        return watchdog.Watchdog(g, used_fn=lambda: next(trace), ac_fn=lambda: True, on_trip=lambda why: g_holder.setdefault("tripped", why), sleep=lambda s: None)
+    monkeypatch.setattr(common, "load_net", lambda: "net")
+    cuda = Cuda([6100.0] * 8)
+    seen = []
+
+    def main():
+        w = watchdog_ref["w"]
+        for _ in range(3):
+            seen.append(w.check_once())                                          # the load: 1416 -> 5600 -> 9611 inside the first item allowance
+        common.load_net()
+        run = Path(common.RUNS) / "P2-PROBE-X"
+        run.mkdir(parents=True, exist_ok=True)
+        for i in range(3):
+            cuda.mem_get_info()
+            common.append_jsonl(run / "items.jsonl", dict(idx=i, seconds=7.0))
+            seen.append(w.check_once())
+        return 0
+    watchdog_ref = {}
+
+    def fac(g, run):
+        w = factory(g, run)
+        watchdog_ref["w"] = w
+        w.start = lambda: None
+        w.stop = lambda: None
+        return w
+    rc = probe2_guarded.run_guarded(["--run-id", "P2-PROBE-X", "--n", "3", "--resume"], probe_main=main, cuda=cuda, watchdog_factory=fac, ac_fn=lambda: True,
+                                    events_fn=lambda since: dict(ok=True, events=[], error=None))
+    assert rc == 0 and seen == [None] * 6 and "tripped" not in g_holder and g_holder["g"].rise_armed
+
+
+# ------------------------------------------------------------------------------------------------ re-audit N4: pin checks that survive CRLF checkouts; driver refuses a modified gpu_guard
+def _git(repo, *a):
+    import subprocess
+    return subprocess.run(["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@t", "-c", "core.autocrlf=false", *a], capture_output=True, text=True)
+
+
+def test_pin_check_passes_for_the_committed_blob_and_for_a_crlf_working_copy_and_fails_on_a_change(tmp_path):
+    from exp_p2.gate import pins
+    repo = tmp_path / "r"
+    (repo / "tools").mkdir(parents=True)
+    lf = b"print('guard')\nx = 1\n"
+    (repo / "tools" / "g.py").write_bytes(lf)
+    _git(repo, "init")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "x")
+    want = pins.sha256_bytes(lf)
+    (repo / "tools" / "g.py").write_bytes(lf.replace(b"\n", b"\r\n"))                    # what core.autocrlf=true leaves in the working tree
+    r = pins.check_pin("tools/g.py", want, repo=repo)
+    assert r["ok"] and r["via"] == "committed blob" and r["working_raw"] != want and r["working_normalised"] == want
+    (repo / "tools" / "u.py").write_bytes(lf.replace(b"\n", b"\r\n"))                    # an untracked CRLF copy: the normalised working copy matches
+    r = pins.check_pin("tools/u.py", want, repo=repo)
+    assert r["ok"] and r["via"] == "working copy (CRLF normalised)" and r["committed_blob"] is None
+    (repo / "tools" / "u.py").write_bytes(b"print('changed')\r\n")
+    assert pins.check_pin("tools/u.py", want, repo=repo)["ok"] is False and pins.check_pin("tools/nothing.py", want, repo=repo)["ok"] is False
+    (repo / "tools" / "g.py").write_bytes(b"changed\n")                                  # the committed blob still matches ...
+    assert pins.check_pin("tools/g.py", want, repo=repo)["ok"] is True
+    assert pins.working_sha256(repo / "tools" / "g.py") != want                          # ... while the working copy is visibly different (the pin check reads the blob)
+
+
+def test_the_real_gpu_guard_matches_its_exp001_pin_and_is_unmodified():
+    import subprocess
+    from exp_p2.gate import pins
+    r = pins.gpu_guard_pin()
+    if r["ok"] is None:
+        pytest.skip("EXP-001 manifest not in this worktree")
+    assert r["ok"] is True and r["expected"] == "5ddf7d09f1ea830a6a1049b5958974c342cd37a2817e1063e1dbf797d855aa6d"
+    assert subprocess.run(["git", "-C", str(ROOT), "diff", "--stat", "HEAD", "--", "tools/gpu_guard.py"], capture_output=True, text=True).stdout.strip() == ""
+
+
+def test_driver_refuses_to_launch_with_a_modified_gpu_guard(driver, monkeypatch):
+    def no(*a, **k):
+        raise AssertionError("must not launch")
+    monkeypatch.setattr(gate_driver.subprocess, "run", no)
+    monkeypatch.setattr(gate_driver, "PIN_FN", lambda: dict(ok=False, expected="aa", committed_blob="bb", working_normalised="cc"))
+    assert gate_driver.main(["--stage", "m2", "--n", "5"]) == gate_driver.EXIT_PIN == 10
+    assert "does not match its pin" in (driver / "P2-GATE-M2" / "driver.log").read_text()
+    monkeypatch.setattr(gate_driver, "PIN_FN", lambda: dict(ok=None, note="manifest not found"))      # unknown pin (no manifest): not a stop
+    fake, calls = _fake_child(driver, [0], rows_per_chunk=5)
+    monkeypatch.setattr(gate_driver.subprocess, "run", fake)
+    assert gate_driver.main(["--stage", "m2", "--n", "5"]) == 0
 
 
 # ------------------------------------------------------------------------------------------------ probe-1 wrapper (M0 stage 2) and the event-log line
@@ -420,7 +563,7 @@ def test_probe1_wrapper_memory_rise_slow_item_battery_and_hold(env):
     e = common.read_jsonl(env / "P2-M0-STAGE2" / "chunks.jsonl")[-1]
     assert e["event"] == "guard_stop" and e["source"] == "probe1_guarded" and "gpu_memory" in e["reason"]
     (env / "P2-M0-STAGE2" / "items.jsonl").unlink()
-    rc, _ = _guarded1(env, [3000.0, 5000.0], [2.0] * 4)
+    rc, _ = _guarded1(env, [3000.0, 3000.0, 3000.0, 5200.0], [2.0] * 4)
     assert rc == 76 and "rise" in common.read_jsonl(env / "P2-M0-STAGE2" / "chunks.jsonl")[-1]["reason"]
     (env / "P2-M0-STAGE2" / "items.jsonl").unlink()
     rc, _ = _guarded1(env, [3000.0] * 6, [2.0, 2.0, 2.0, 9.0, 2.0])

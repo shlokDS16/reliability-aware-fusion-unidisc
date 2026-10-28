@@ -5,7 +5,7 @@ lower temperature limit). It never creates or deletes a hold file and never laun
     python -m exp_p2.gate.gate_driver --stage m2 [--run-id P2-GATE-M2] [--n 300]
 
 Completion is read from the row count, never from the exit code. Exit codes: 0 complete, 3 gate not open, 4 three temperature stops, 5 two chunks
-without progress, 6 max chunks, 7 on hold, 8 guard abort or battery (never relaunched), 9 new crash-signature events in the Windows logs (or the log unreadable)."""
+without progress, 6 max chunks, 7 on hold, 8 guard abort or battery (never relaunched), 9 new crash-signature events in the Windows logs (or the log unreadable), 10 tools/gpu_guard.py does not match its pin."""
 from __future__ import annotations
 
 import argparse
@@ -21,12 +21,13 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common, driver                                           # noqa: E402
-from exp_p2.gate import eventlog, guards, hold                              # noqa: E402
+from exp_p2.gate import eventlog, guards, hold, pins                        # noqa: E402
 from exp_p2.gate.watchdog import EXIT_GUARD                                 # noqa: E402
 
-EXIT_GUARD_STOP, EXIT_EVENTS = 8, 9      # driver exit codes: a guard abort (never relaunched), new crash-signature events in the Windows logs
+EXIT_GUARD_STOP, EXIT_EVENTS, EXIT_PIN = 8, 9, 10      # driver exit codes: a guard abort (never relaunched), new crash-signature events in the Windows logs
 EVENTS_FN = eventlog.new_events          # replaceable in tests
 AC_FN = guards.on_ac
+PIN_FN = pins.gpu_guard_pin              # the safety wrapper must be the pinned one (committed blob or CRLF-normalised copy; re-audit N4)
 
 # stage -> (module, default run id, default item count; 0 = number of probe-2 arrays on disk). Static on purpose: the driver stays torch-free.
 # 'p2' runs run_probe2.main() unchanged inside gate/probe2_guarded.py (memory cap, AC, memory/rise/slow-item rules, watchdog); its items.jsonl rows are the completion count.
@@ -75,6 +76,10 @@ def main(argv=None) -> int:
     if holds:
         say("STOP: hold file(s) exist: " + "; ".join(str(h) for h in holds) + " (GPU run on hold; delete only with Shlok's go-ahead)")
         return hold.EXIT_HOLD
+    pin = PIN_FN()
+    if pin.get("ok") is False:
+        say(f"STOP: tools/gpu_guard.py does not match its pin ({pin.get('expected')}): committed {pin.get('committed_blob')}, working copy normalised {pin.get('working_normalised')}")
+        return EXIT_PIN
     n_stop, fails, pause = 0, 0, 30.0
     started = datetime.now()                                              # "since the run started" for the event-log check
     for ch in range(a.max_chunks):

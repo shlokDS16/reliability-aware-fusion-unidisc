@@ -1,8 +1,9 @@
 """In-process watchdog for the gate runners (audit finding M1; tools/gpu_guard.py is NOT edited: its SHA-256 is pinned by the Paper 1 EXP-003 manifest).
 
 The per-item checks of `guards.Guards` cannot see a memory jump inside an item (the 2026-10-27 crash happened within 5 s; an item takes 7-10 s). This thread samples
-whole-GPU memory and AC power every second while the model runs and applies the diagnosis' abort rules: used memory above the limit (higher allowance during the first
-item), a rise of more than 1.5 GB between two consecutive samples, AC lost. On a trip it calls `on_trip(reason)`; the default writes a `guard_stop` event, flushes and
+whole-GPU memory and AC power every second while the model runs and applies the diagnosis' abort rules: used memory above the limit (higher allowance during the load and the
+first item), AC lost, and a rise of more than 1.5 GB between two consecutive samples ONLY AFTER the first item of the chunk has completed (re-audit W1: the load and the first item
+move memory by 4-6 GB inside one sample in the stored telemetry; until then only the absolute ceilings apply). On a trip it calls `on_trip(reason)`; the default writes a `guard_stop` event, flushes and
 ends the process at once with EXIT_GUARD (76), because a GPU job in the middle of a forward cannot be interrupted any other way. Readers and the sleep are injectable, so
 the logic is unit-tested without a GPU."""
 from __future__ import annotations
@@ -25,6 +26,7 @@ class Watchdog:
         self.on_trip = on_trip or (lambda why: None)
         self.every, self.sleep = every, sleep
         self._last: float | None = None
+        self._armed_seen = False
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
         self.tripped: str | None = None
@@ -36,7 +38,9 @@ class Watchdog:
         lim = self.g.max_used_first_mib if self.g.first_item_active else self.g.max_used_mib
         if used > lim:
             return f"gpu_memory {used:.0f} MiB > {lim:.0f}"
-        if self._last is not None and used - self._last > self.g.max_rise_mib:
+        if self.g.rise_armed and not self._armed_seen:        # the rise rule starts after the first item of the chunk, from a fresh baseline (re-audit W1)
+            self._armed_seen, self._last = True, None
+        if self.g.rise_armed and self._last is not None and used - self._last > self.g.max_rise_mib:
             return f"gpu_memory_rise {used - self._last:.0f} MiB in {self.every:g} s"
         self._last = used
         return None
