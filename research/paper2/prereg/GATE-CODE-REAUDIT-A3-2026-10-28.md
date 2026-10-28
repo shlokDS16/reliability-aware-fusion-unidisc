@@ -158,3 +158,13 @@ All MAJORs are FIXED, so `runs/P2-OMNI-ADAPTER/adapter_signature.json` is writte
 ## 7. Independence
 
 I wrote none of the audited code, changed no file under `exp_p2/`, `tests/`, `tools/` or the frozen files, and opened no item or array of `runs/P2-PROBE-02/`. My only new artifacts are this note, the CPU signature file, and a scratch probe in the session scratchpad (`reaud/probe1.py`, not in the repository).
+
+## 8. m1 re-check (appended after commit 9c4e1e25)
+
+**Verdict: R-m1 FIXED. Final verdict stays PASS (the one required fix of section 2 is closed). Final audited SHA: 9c4e1e25cb0d1a77b78410e1613098d8c6ba1085.**
+
+- Diff 8c9edf8c..9c4e1e25 under `exp_p2/`, `tools/`, `tests/` is two files only: `exp_p2/gate/reinfill.py` (+12/-2) and `tests/exp_p2/test_gate_s2.py` (+8). `git status --porcelain -- exp_p2 tools` is empty. The frozen files of section 3 are not in the diff.
+- `keep_best` (reinfill.py): converts to float64, raises `NonFiniteDrawError(ValueError)` if `np.all(np.isfinite(a))` is false (NaN, +inf, -inf each covered by the new test), otherwise returns `int(np.argmax(a))` exactly as before. Finite behaviour and the tie rule (first maximum, lowest index) are unchanged; the existing tie assertions are untouched. It does not use `nanargmax`, does not drop a draw and does not default to 0, as specified.
+- Stop path: `run_gate_s2.py:185` calls `keep_best` inside `process`; `runner.py:195` runs `process(sc, it, ctx)` inside a `try`, and `runner.py:196-198` catches `Exception`, appends an `item_error` row (idx, repr, traceback) to `chunks.jsonl` and re-raises. The item row and arrays are written only after `process` returns (l.206-213), so the item is not committed. The prerequisite `try/except (FileNotFoundError, ValueError)` in `run_gate_s2.main` (l.286-313) ends before `run_items`, so the ValueError is not swallowed there; the chunk dies, and the driver, which sees no progress, stops after two such chunks (`gate_driver.py` fails >= 2, exit 5).
+- `tests/exp_p2/test_gate_s2.py`: 40 passed (re-run here, CPU).
+- Still required of the lead: take the card v4 pin at or after 9c4e1e25 and re-run `pins.require_clean` at the pin.
