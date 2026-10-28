@@ -13,7 +13,7 @@ at most 2 + 8 x 5 = 42 rows. The output is the contract of `epred.load_fit_input
 The jitter stream uses the condition index M4 would give the same condition (clean 0, each family corruption, its denoised copy if any, then the sanity names), so a flag is the flag M4's procedure draws.
 
 Fences (AB.3 items 5 and 6; the runner refuses, exit code in brackets, before any model is touched):
-  [2]  runs/P2-GATE-M2/threshold.json or a committed runs/P2-GATE-M3/family.json (endpoint d) is missing, the M3 run is incomplete (fewer rows than its effective n), an M3 array lacks a needed key,
+  [2]  runs/P2-GATE-M2/threshold.json or a committed runs/P2-GATE-M3/family.json (endpoint d) or a committed runs/P2-GATE-M3/ps_frozen.json (python -m exp_p2.gate.ps_freeze write) is missing, the M3 run is incomplete (fewer rows than its effective n), an M3 array lacks a needed key,
        or --audit-record is missing / does not exist (the fit code is "committed and gate-auditor-checked before the fit chunk runs"; --allow-unaudited is for rehearsals and is recorded);
   [3]  an M4 item already exists, or epred_frozen.json already exists (the chunk must precede the first M4 item);
   [11] the fit-code files (epred.FIT_CODE_FILES) or family.json have uncommitted changes (--allow-dirty records them).
@@ -33,7 +33,7 @@ sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                          # noqa: E402
 from exp_p2.scoring import IMG_VOCAB                                                # noqa: E402
-from exp_p2.gate import arms, calibrate as cal, checks, config, corruptions, epred, folds, foil, pins, pipeline, runner      # noqa: E402
+from exp_p2.gate import arms, calibrate as cal, checks, config, corruptions, epred, folds, foil, pins, pipeline, ps_freeze, runner      # noqa: E402
 from exp_p2.run_gate_m4 import SANITY_ALL, load_prereqs, parse_sanity               # noqa: E402
 
 RUN_ID = epred.FIT_RUN_ID                                  # "P2-GATE-EPRED-FIT"
@@ -87,6 +87,10 @@ def check_prereqs(runs: Path | None = None, *, audit_record: str | None = None, 
             foil.require_committed(fam_path)                                         # AD.3: the operating points are committed before any flag exists on a headroom item
         except (RuntimeError, ValueError) as e:
             raise Refusal(f"family.json must be committed and unmodified before the fit chunk runs (AD.3, AD.12): {e}")
+    try:                                                                             # the PS parameters are frozen and committed before the chunk computes any PS flag (AD.4, AD.12 step 2; code audit part 1, M-1)
+        ps_doc = ps_freeze.check(runs, require_commit=check_git)
+    except ps_freeze.PsFrozenError as e:
+        raise Refusal(str(e))
     m4_items = runs / M4_RUN / "items.jsonl"
     if m4_items.exists() and m4_items.stat().st_size > 0:
         raise Refusal(f"{m4_items} already has M4 items: the fit chunk must precede the first M4 item (AB.3 item 5). E-pred is 'not run'.", EXIT_ORDER)
@@ -113,7 +117,7 @@ def check_prereqs(runs: Path | None = None, *, audit_record: str | None = None, 
     want = min(config.N_HEAD, json.loads(eff.read_text(encoding="utf8"))["effective"]) if eff.exists() else config.N_HEAD
     if len(rows) < want:
         raise Refusal(f"the M3 run has {len(rows)} of {want} headroom items; the fit chunk follows a COMPLETE M3 (AD.12)")
-    return dict(thr=thr, family=family, eps0=eps0, family_json=fam_json, m3_rows=rows, dirty=dirty, audit=audit, n_m3=len(rows))
+    return dict(thr=thr, family=family, eps0=eps0, family_json=fam_json, ps_doc=ps_doc, m3_rows=rows, dirty=dirty, audit=audit, n_m3=len(rows))
 
 
 # ------------------------------------------------------------------------------------------------ items
@@ -154,9 +158,10 @@ def make_ctx_factory(pre: dict, runs: Path | None = None, sanity=SANITY_ALL):
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
         checks.l10_once(sc, run)
         grid = int(round(sc.L_I ** 0.5))
+        ps_freeze.assert_runtime(grid, max(2, grid // 4))                                   # SAP AB.7 item 2 / A3.3 item 3 (code audit part 1, M-2)
         keys, ps = plan(pre["family_json"], sanity)
         return SimpleNamespace(run=run, runs=runs_, dcache=pipeline.dcache_for(), tau=pre["thr"][config.ALPHA_PRIMARY].tau, eps0=pre["eps0"], family=pre["family"], keys=keys, ps=ps,
-                               ci=condition_indices(pre["family"], config.DENOISE_FOR, tuple(sanity)), grid=grid, patch=max(2, grid // 4))
+                               ci=condition_indices(pre["family"], tuple(pre["ps_doc"]["params"]["denoise_for"]), tuple(sanity)), grid=grid, patch=max(2, grid // 4))
     return make_ctx
 
 
@@ -204,7 +209,7 @@ def main(argv=None, *, runs: Path | None = None):
     except (FileNotFoundError, ValueError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2
-    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, sanity=list(sanity), family=[f["key"] for f in pre["family_json"]["family"]], audit_record=pre["audit"],
+    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, sanity=list(sanity), family=[f["key"] for f in pre["family_json"]["family"]], audit_record=pre["audit"], ps_params=ps_freeze.params(), ps_frozen_sha256=ps_freeze.sha256(Path(runs) if runs is not None else Path(common.RUNS)),
                unaudited=bool(a.allow_unaudited and not pre["audit"]), dirty_fit_code=pre["dirty"], fit_code=epred.fit_code_hashes())
 
     def load():

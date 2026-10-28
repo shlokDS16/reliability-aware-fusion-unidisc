@@ -15,7 +15,7 @@ for _p in (ROOT, Path(__file__).resolve().parent):
         sys.path.insert(0, str(_p))
 
 from exp_p2 import common, run_gate_epred_chunk as chunk, run_gate_m3, run_gate_m4   # noqa: E402
-from exp_p2.gate import config, epred, epred_fit, foil, pins, pipeline, runner         # noqa: E402
+from exp_p2.gate import config, epred, epred_fit, foil, pins, pipeline, ps_freeze, runner         # noqa: E402
 from test_gate_runners_fake import _fold, _m4_prereqs, _sc, _write_folds, env           # noqa: E402,F401  (env: the shared fixture)
 
 FAM = [("jpeg", 10), ("noise", 0.1), ("splice", 128)]
@@ -27,6 +27,7 @@ def _headroom(env, n=N):
     """M2 threshold, family.json (endpoint d), folds.json and a complete M3 run on the fake network for n headroom items."""
     sc = _sc()
     _m4_prereqs(env, sc, FAM)
+    ps_freeze.write(env)                                                          # the PS parameters are frozen after M3 / family.json and before the chunk (code audit part 1, M-1)
     items = _fold(n, offset=1000)
     _write_folds(env, cal=[], head=items, test=_fold(3, 2000), test_ext=[])
     rc = runner.run_items(run_id="P2-GATE-M3", cfg=dict(run_gate_m3.CONFIG, n_items=n), load=lambda: sc, get_items=lambda s, r: items, process=run_gate_m3.process,

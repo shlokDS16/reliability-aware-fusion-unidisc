@@ -164,7 +164,8 @@ def ps_family(df, rule: str = "R1", family=None, n_boot: int = 10000) -> dict:
     """Family PS (SAP AD.4, AD.11, AD.13): positive control on the token-level corruptions. PS1 = GATE-M versus none on patch, PS2 = on swap. m = 2 ALWAYS: a cell that is not in the rows
     (not run, or its code not audited, AB.7 item 2) is not tested, gets p = 1 and stays in the Holm correction. Fold, endpoint and test are those of P in force: R1/R2 exact two-sided McNemar on
     Y, R3 Wilcoxon signed-rank on d; Holm thresholds 0.025 and 0.05 (alpha 0.05 for the family). Reading: `met` iff both are rejected with the right sign (b > c, or a positive mean d difference
-    under R3), `partly met` iff one, `not met` otherwise (not met triggers the pipeline audit of A2.3 and bars the sentence 'the gate works where detection is easy'; nothing is tuned).
+    under R3), `partly met` iff one, `not met` otherwise (not met triggers the pipeline audit of A2.3, nothing is tuned). AB.1 item 1(a) (replaces the AD.4 clause): the sentence 'the gate works where detection is easy', and any sentence
+    that calls PS a demonstration of the method's value, is not permitted whether PS is met or not; PS may be used only for 'the pipeline is not broken' (met) or 'pipeline defect suspected, audit triggered' (not met).
     Descriptive, no p: the realised discordance n_d (low power is possible if the patch as coded changes few decisions), the headroom statistics T1, T2 on the evidence endpoint d (SAP 5 definition,
     clean - none and changed-code - none), and the difference of the paired accuracy differences (PS cell minus each P cell present in `family`), paired bootstrap over items."""
     rows = _records(df)
@@ -190,8 +191,9 @@ def ps_family(df, rule: str = "R1", family=None, n_boot: int = 10000) -> dict:
     n_rej = sum(res[c]["gate_better"] for c in SANITY_CONDS)
     reading = {2: "met", 1: "partly met", 0: "not met"}[n_rej]
     return dict(per_corruption=res, holm_m=2, rule=rule, endpoint="d (Wilcoxon)" if rule == "R3" else "Y (exact McNemar)", n_rejected_right_sign=n_rej, positive_control=reading,
-                label="secondary family PS, positive control; no headline claim; not evidence for JPEG, noise or splice (SAP AD.4)",
-                on_not_met="pipeline audit of A2.3 (nothing tuned); the sentence 'the gate works where detection is easy' is barred" if n_rej < 2 else None,
+                label=("secondary family PS, positive control; no headline claim; not evidence for JPEG, noise or splice (SAP AD.4). AB.1 item 1(a): the sentence 'the gate works where detection is easy' and any sentence calling PS "
+                       "a demonstration of the method's value are not permitted whether PS is met or not; PS is used only for 'the pipeline is not broken' (met) or 'pipeline defect suspected, audit triggered' (not met)"),
+                on_not_met="pipeline defect suspected: audit of A2.3 triggered (nothing tuned); AB.1 item 1(a) applies" if n_rej < 2 else None,
                 chance_bar_note="the A2.5 chance bar (lower 95 percent AUROC bound above 0.5, M1 items, 200 and 179) stays the only pre-registered pass/fail on detection for these two corruptions")
 
 

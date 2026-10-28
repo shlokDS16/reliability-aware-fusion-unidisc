@@ -152,8 +152,11 @@ def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", che
     ci95 = (float(np.quantile(boots, 0.025)), float(np.quantile(boots, 0.975)))
     ci975 = (float(np.quantile(boots, 0.0125)), float(np.quantile(boots, 0.9875)))
     base, sign = split_sign(best)
-    return dict(corr=corr, available=True, target=target, best_cheap=best, rival_base=base, rival_sign=sign, cheap_means=means, diff_mean=diff, p=bootstrap_p(boots),
-                ci95=list(ci95), ci975=list(ci975), diff_lo=ci95[0], diff_hi=ci95[1], excludes_zero=bool(ci95[0] > 0 or ci95[1] < 0), reselect=reselect, n_items=int(len(rows)))
+    out = dict(corr=corr, available=True, target=target, best_cheap=best, rival_base=base, rival_sign=sign, cheap_means=means, diff_mean=diff, p=bootstrap_p(boots),
+               ci95=list(ci95), ci975=list(ci975), diff_lo=ci95[0], diff_hi=ci95[1], excludes_zero=bool(ci95[0] > 0 or ci95[1] < 0), reselect=reselect, n_items=int(len(rows)))
+    if min_n is not None:
+        out["n_pair"] = n_pair                                       # the paired finite count the floor tested (code audit part 1, m-1); n_items stays the pool size
+    return out
 
 
 def holm_adjust(pvals: dict) -> dict:
@@ -191,7 +194,7 @@ def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed
 
 
 def _n_of(r: dict) -> int:
-    return int(r.get("n_items", r.get("n", 0)) or 0)
+    return int(r.get("n_pair", r.get("n_items", r.get("n", 0))) or 0)
 
 
 def chance_bar(per_item: list[dict], scores=("plainB", "q"), corrs=("patch", "swap"), n_boot: int = 10000, seed=None) -> dict:

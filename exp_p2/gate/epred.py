@@ -342,6 +342,21 @@ def verify_frozen(frozen: dict, root: Path = ROOT) -> list[str]:
     return bad
 
 
+def chunk_code_mismatch(config_path: Path, root: Path = ROOT) -> list[str]:
+    """Problems found when the `fit_code` hashes that the fit chunk wrote into its run `config.json` are compared (sha256_lf) with the current FIT_CODE_FILES; empty = the chunk ran with the same fit code.
+    A missing config or a config without `fit_code` is a problem (the chunk records it at start)."""
+    p = Path(config_path)
+    if not p.exists():
+        return [f"{p} missing: the fit chunk's run config is the record of the fit code it ran with"]
+    rec = (json.loads(p.read_text(encoding="utf8")).get("fit_code") or {})
+    if not rec:
+        return [f"{p} has no fit_code hashes (not written by run_gate_epred_chunk?)"]
+    cur = fit_code_hashes(root)
+    bad = [f"{f}: chunk ran with {str((rec.get(f) or {}).get('sha256_lf'))[:12]}, current {h['sha256_lf'][:12]}" for f, h in cur.items() if (rec.get(f) or {}).get("sha256_lf") != h["sha256_lf"]]
+    bad += [f"{f}: recorded by the chunk but not in FIT_CODE_FILES" for f in rec if f not in cur]
+    return bad
+
+
 def cmd_fit(a) -> int:
     from exp_p2 import common
     st = selftest()
@@ -372,6 +387,11 @@ def cmd_fit(a) -> int:
     if family.get("endpoint") != "d":
         print("STOP: family.json does not record endpoint d", file=sys.stderr)
         return 2
+    if not a.skip_git_checks:                                                      # code audit part 1, m-6: the chunk must have run with the fit code that is being frozen
+        bad = chunk_code_mismatch(fit_dir / "config.json")
+        if bad:
+            print("STOP: the fit chunk's recorded fit-code hashes differ from the current ones (AB.3 item 5):" + "".join("\n  " + b for b in bad), file=sys.stderr)
+            return 2
     folds_path = Path(a.folds) if a.folds else runs / "P2-GATE-FOLDS" / "folds.json"
     folds = json.loads(folds_path.read_text(encoding="utf8"))
     m3_rows = common.read_jsonl(m3 / "items.jsonl")
@@ -388,6 +408,9 @@ def cmd_fit(a) -> int:
         if (fit_dir / nm).exists():
             extra[f"fit_run_{nm}"] = sha256_file(fit_dir / nm)
     extra["fit_items.jsonl"] = sha256_file(fit_dir / "items.jsonl")
+    chunk_py = ROOT / "exp_p2" / "run_gate_epred_chunk.py"
+    if chunk_py.exists():
+        extra["chunk_runner_run_gate_epred_chunk.py"] = sha256_file(chunk_py)                # the chunk runner is not in FIT_CODE_FILES; its hash is recorded here (m-6)
     frozen = build_frozen(fit, run_id=a.run_id, fit_run=a.fit_run, family_path=fam_path, m3_items=m3 / "items.jsonl", folds_path=folds_path, fit_files=files, n_boot=a.boot, st=st, folds_check=check,
                           allow_dirty=a.allow_dirty, dirty=dirty, audit_record=Path(a.audit_record) if a.audit_record else None, extra_inputs=extra)
     write_once_exclusive(out, json.dumps(frozen, indent=1, allow_nan=False))

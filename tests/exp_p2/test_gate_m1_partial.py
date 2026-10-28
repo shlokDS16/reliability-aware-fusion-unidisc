@@ -200,3 +200,20 @@ def test_analysis_json_carries_frozen_meta(tmp_path):
     res = A.run(run, fam, n_boot=100, frozen={"jpeg": dict(available=False), "noise": dict(available=False)}, frozen_meta=meta)
     assert res["frozen_meta"] == meta and "k = 106" in res["s_d2"]["rival_frozen_label"]
     assert A.run(run, fam, n_boot=100)["frozen_meta"] is None
+
+
+# ------------------------------------------------------------------------------------------------ code audit part 1: m-1 and m-3
+def test_falsifier_n_is_the_paired_finite_count_not_the_pool_size():
+    pi = _items(150, q_gain=0.25, n_target=120)                                  # q is finite on 120 of the 150 pool items
+    f = detect.falsifier(pi, "q", n_boot=200, min_n=100)
+    assert f["n"] == {"jpeg": 120, "noise": 120}
+    r = f["per_corruption"]["jpeg"]
+    assert r["n_pair"] == 120 and r["n_items"] == 150
+    assert "n_pair" not in detect.paired_vs_best_cheap(pi, "jpeg", "q", n_boot=100)          # default behaviour unchanged
+
+
+def test_ps_output_text_has_the_ab1_sentence_and_not_the_superseded_ad4_clause():
+    r = A.ps_family([], rule="R1", family=None, n_boot=10)
+    assert r["positive_control"] == "not met" and "barred" not in r["on_not_met"] and "pipeline defect suspected" in r["on_not_met"]
+    assert "not permitted whether PS is met or not" in r["label"] and "the pipeline is not broken" in r["label"]
+    assert "bars the sentence" not in (A.ps_family.__doc__ or "")

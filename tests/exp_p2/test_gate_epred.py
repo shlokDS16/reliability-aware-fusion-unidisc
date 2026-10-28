@@ -209,6 +209,9 @@ def test_cli_fit_refuses_after_the_first_m4_item_overlap_dirty_code_and_partial_
     monkeypatch.setattr(epred, "git_status_lines", lambda paths, repo=ROOT: [" M exp_p2/gate/epred.py"])
     assert epred.main(["fit", "--runs-dir", str(runs3), "--min-items", "12", "--boot", "100"]) == 11                      # uncommitted fit code
     assert not (runs3 / "P2-GATE-EPRED-FIT" / "epred_frozen.json").exists()
+    cfgp = runs3 / "P2-GATE-EPRED-FIT" / "config.json"
+    assert epred.main(["fit", "--runs-dir", str(runs3), "--min-items", "12", "--boot", "100", "--allow-dirty"]) == 2        # the chunk's run config does not record the fit code (m-6)
+    cfgp.write_text(json.dumps(dict(fit_code=epred.fit_code_hashes())), encoding="utf8")
     assert epred.main(["fit", "--runs-dir", str(runs3), "--min-items", "12", "--boot", "100", "--allow-dirty"]) == 0
     fr = json.loads((runs3 / "P2-GATE-EPRED-FIT" / "epred_frozen.json").read_text())
     assert fr["allow_dirty"] is True and fr["dirty_files_at_freeze"] == [" M exp_p2/gate/epred.py"]                     # recorded, not hidden
@@ -274,3 +277,23 @@ def test_verify_frozen_flags_a_changed_seed_fingerprint_and_ignores_appended_ana
 
 def json_roundtrip(x):
     return json.loads(json.dumps(x))
+
+
+def test_fit_refuses_when_the_chunk_ran_with_different_fit_code_than_the_current_one(tmp_path, monkeypatch, capsys):
+    runs, _ = make_runs(tmp_path)
+    monkeypatch.setattr(epred, "git_status_lines", lambda paths, repo=ROOT: [])
+    cfgp = runs / "P2-GATE-EPRED-FIT" / "config.json"
+    rec = epred.fit_code_hashes()
+    args = ["fit", "--runs-dir", str(runs), "--min-items", "12", "--boot", "100"]
+    cfgp.unlink(missing_ok=True)
+    assert epred.main(args) == 2 and "missing" in capsys.readouterr().err
+    bad = json.loads(json.dumps(rec))
+    bad["exp_p2/gate/theory.py"]["sha256_lf"] = "0" * 64
+    cfgp.write_text(json.dumps(dict(fit_code=bad)), encoding="utf8")
+    assert epred.main(args) == 2 and "theory.py" in capsys.readouterr().err
+    assert not (runs / "P2-GATE-EPRED-FIT" / "epred_frozen.json").exists()
+    cfgp.write_text(json.dumps(dict(fit_code=rec)), encoding="utf8")
+    assert epred.main(args) == 0
+    fr = json.loads((runs / "P2-GATE-EPRED-FIT" / "epred_frozen.json").read_text())
+    assert "chunk_runner_run_gate_epred_chunk.py" in fr["inputs"] and "fit_run_config.json" in fr["inputs"]
+    assert epred.chunk_code_mismatch(cfgp) == [] and epred.chunk_code_mismatch(tmp_path / "none.json")

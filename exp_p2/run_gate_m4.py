@@ -31,7 +31,7 @@ sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                          # noqa: E402
 from exp_p2.scoring import IMG_VOCAB                                                # noqa: E402
-from exp_p2.gate import arms, baselines, calibrate as cal, checks, config, corruptions, evidence, folds, pipeline, runner, scores   # noqa: E402
+from exp_p2.gate import arms, baselines, calibrate as cal, checks, config, corruptions, evidence, folds, pipeline, ps_freeze, runner, scores   # noqa: E402
 from exp_p2.run_gate_m3 import rung_rng                                              # noqa: E402
 
 RUN_ID = "P2-GATE-M4"
@@ -82,6 +82,8 @@ def parse_sanity(text: str) -> tuple[str, ...]:
     bad = [t for t in names if t not in SANITY_ALL]
     if bad:
         raise ValueError(f"unknown sanity condition(s) {bad}; allowed {SANITY_ALL}")
+    if "swap" in names and "patch" not in names:                           # code audit part 1, m-5: swap alone would take patch's condition index and with it a different jitter stream
+        raise ValueError("--sanity swap without patch is not allowed: swap's condition index (and its jitter stream) must equal the one of the full run; drop swap or keep patch")
     return tuple(t for t in SANITY_ALL if t in names)
 
 
@@ -94,8 +96,10 @@ def make_ctx_factory(a, runs: Path | None = None):
         pipeline.require_frozen(runs_)
         cbp = runs_ / M1_RUN / "codebook.npy"
         checks.l10_once(sc, run)
-        return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, 500), grid=int(round(sc.L_I ** 0.5)),
-                               patch=max(2, int(round(sc.L_I ** 0.5)) // 4), codebook=(np.load(cbp) if cbp.exists() else None), tbv=tbv_enabled(a.tbv, runs_),
+        grid = int(round(sc.L_I ** 0.5))
+        ps_freeze.assert_runtime(grid, max(2, grid // 4))                                   # SAP AB.7 item 2 / A3.3 item 3: token map 32 and patch 8 at run time (code audit part 1, M-2)
+        return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, 500), grid=grid,
+                               patch=max(2, grid // 4), codebook=(np.load(cbp) if cbp.exists() else None), tbv=tbv_enabled(a.tbv, runs_),
                                denoise_for=tuple(a.denoise_for.split(",")) if a.denoise_for else (),
                                sanity=parse_sanity(getattr(a, "sanity", "patch")))     # main() always sets --sanity (default patch,swap); a bare namespace keeps the pre-swap behaviour
     return make_ctx
@@ -187,11 +191,18 @@ def main(argv=None):
         load_prereqs()
         pipeline.require_frozen()
         check_n_against_rule(a.n)
-        parse_sanity(a.sanity)
-    except (FileNotFoundError, ValueError) as e:
+        sanity = parse_sanity(a.sanity)
+        ps_doc = None
+        if sanity:                                                        # ps_frozen.json is written and committed before the first M4 item (AD.4, AD.12 step 2, A3.3 item 1, AB.8)
+            ps_doc = ps_freeze.check(Path(common.RUNS))
+            dn = tuple(t for t in a.denoise_for.split(",") if t)
+            if dn != tuple(ps_doc["params"]["denoise_for"]):
+                raise ValueError(f"--denoise-for {dn} differs from the frozen {tuple(ps_doc['params']['denoise_for'])}: it fixes the condition indices and with them the PS jitter streams (ps_frozen.json)")
+    except (FileNotFoundError, ValueError, ps_freeze.PsFrozenError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2
-    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv, denoise_for=a.denoise_for.split(",") if a.denoise_for else [], sanity=list(parse_sanity(a.sanity)))
+    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv, denoise_for=a.denoise_for.split(",") if a.denoise_for else [], sanity=list(sanity),
+               ps_params=ps_freeze.params(), ps_frozen_sha256=(ps_freeze.sha256(Path(common.RUNS)) if ps_doc else None), ps_frozen_code_commit=(ps_doc or {}).get("code_commit"))
 
     def load():
         from exp_p2.scoring import UniScorer

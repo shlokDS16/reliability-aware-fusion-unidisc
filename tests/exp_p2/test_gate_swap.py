@@ -131,9 +131,17 @@ def test_a_bare_namespace_keeps_the_pre_swap_behaviour_and_the_cli_default_has_s
     monkeypatch.setattr(pipeline, "require_frozen", lambda *a, **k: None)
     monkeypatch.setattr(run_gate_m4, "check_n_against_rule", lambda *a, **k: 300)
     monkeypatch.setattr(runner, "run_items", lambda **kw: seen.update(kw) or 0)
+    from exp_p2.gate import ps_freeze
+    orig = ps_freeze.check
+    monkeypatch.setattr(ps_freeze, "check", lambda runs, *a, **k: orig(runs, require_commit=False))
+    assert run_gate_m4.main([]) == 2                                          # ps_frozen.json is missing: M4 refuses (code audit part 1, M-1)
+    ps_freeze.write(env)
     assert run_gate_m4.main([]) == 0
-    assert seen["cfg"]["sanity"] == ["patch", "swap"]
+    assert seen["cfg"]["sanity"] == ["patch", "swap"] and seen["cfg"]["ps_params"] == ps_freeze.params() and len(seen["cfg"]["ps_frozen_sha256"]) == 64
     assert run_gate_m4.main(["--sanity", "swap,bogus"]) == 2
+    assert run_gate_m4.main(["--sanity", "swap"]) == 2                        # swap without patch would change swap's condition index and jitter stream (m-5)
+    assert run_gate_m4.main(["--denoise-for", "jpeg"]) == 2                   # the denoise list fixes the condition indices: frozen
+    assert run_gate_m4.main(["--sanity", "patch"]) == 0
     assert run_gate_m4.parse_sanity("swap,patch") == ("patch", "swap")        # fixed order: condition indices (hence seeds) never depend on the flag order
 
 
