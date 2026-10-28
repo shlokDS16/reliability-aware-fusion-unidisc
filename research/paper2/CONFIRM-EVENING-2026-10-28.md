@@ -134,3 +134,5 @@ Lead's choice under that delegation: relaunch M2 now with `--slow-factor 3 --slo
 f2f7b2e1, row A-1); M2's remaining 186 items are about 15 min of GPU and are stored unchanged whatever the verdict.
 **M3 and later GPU stages are held** until the red-team's verdict on whether `sigma=None` is UniDisc's intended
 inference path; a defect would need an audited fix before any stage that depends on the scores.
+
+Erratum (lead): the time of the answer above is about 22:05 IST, not ~22:40; the M2 relaunch logged 22:06:29 (`runs/P2-GATE-M2.driver.out`; earlier log kept as `P2-GATE-M2.driver.run2.out`). Card v4 rows A-1/A-2 say ~22:30; they were committed shortly before 22:05.
