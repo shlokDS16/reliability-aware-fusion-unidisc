@@ -18,3 +18,13 @@ Each decision below is the lead's, made before outcomes, and is to be cited by c
    (48c7cece). Recorded also in SAP A3b.12; the attestation file stays unchanged because its hash is pinned.
 5. **Guard settings and n = 300** are Shlok's decisions (`research/paper2/CONFIRM-EVENING-2026-10-28.md` items 1, 2 and 9). No
    GPU stage runs before his answer; S2 and FOIL-test do not start before a dated row records his n = 300 answer (A3b.6).
+
+## Additions after card v4 (49c1f492), ~17:15 IST
+6. **Affirmed:** `runs/P2-GATE-M3/ps_frozen.json` stands for both the `ps_frozen.json` and the `family.json` references in SAP
+   A3.3 item 1 (gate-auditor re-audit note; card v4 row).
+7. **Closing the Omni tightening window (A3b.4 item 3):** the lead records the closing time in `research/progress.md` as a dated
+   line at the earlier of (a) the launch of the omni-timing stage and (b) the first run of `analysis_m4` on M4 data. No
+   threshold change is accepted after that line.
+8. **Second mask-seed check (D4):** no code exists at the card v4 pin. If Shlok says yes, it is built after the pin as a separate
+   descriptive runner (own run directory `runs/P2-GATE-SEEDCHK`, SAP A2.4 order), audited, and recorded in a card v4 amendment
+   row before it runs; it is never read by any family-P code.

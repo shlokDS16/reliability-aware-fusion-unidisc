@@ -53,7 +53,7 @@ Alternatives: (b) a per-corruption setting by a new dated rule before M4; (c) dr
 
 ## 6. Second mask-seed check (D4)
 50 headroom items with a second mask seed, descriptive only, after M4 and only if the GPU is idle. **Recommendation: yes**
-(about 0.2 GPU-h, estimate; it answers the reviewer question "does the gate depend on the random mask partition?").
+(about 0.2 GPU-h, estimate; it answers the reviewer question "does the gate depend on the random mask partition?"). Its code is not built yet; on your yes I build and audit it while M4 runs, so it costs no GPU wait.
 
 ## 7. Fallback if the main test is null (D18)
 The preregistration fixes that a null is reported as a null and no secondary family can rescue it (A2b). The open question is
