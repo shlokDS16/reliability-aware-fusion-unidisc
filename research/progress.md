@@ -1181,3 +1181,9 @@ Checklists are added when the previous gate passes (criteria in FRAMEWORK sectio
   Communications if VIT covers 7,350 USD), then a Q1 fallback. Supersedes D0002.
 - Open with the user: VIT's reimbursement cap per paper; whether rented GPU time is acceptable
   for full-precision confirmation runs after Gate 5; restricted-data requests (SETUP_STEPS section 6).
+
+## HANDOFF 57 (2026-10-28 ~13:45 IST, Paper 2 lead)
+- Shlok (after his review, ~13:30): "You can continue, provide what all require my confirmation. Will provide it to you by evening after my class. You can keep building."
+- M1 (probe-2 completion) STOPPED at 10:26 by the watchdog: whole-GPU 10,509 MiB > 10,000 MiB first-item ceiling, chunk 3, 106/200 items. No crash, boot time unchanged (27 Oct 23:25). By rule the GPU stays idle until Shlok answers. Cause (telemetry only, items 0-25): per-item peak allocated is ~4.1 or ~8.2 GB; with context + ~1.3 GB other apps an 8.2 GB item spikes to ~10.5 GB for <1 s. Proposal to Shlok: ceilings 11,000/11,000 MiB, rise 4,500 MiB, cap 0.75 (CLI flags only).
+- Confirmation list for the evening: research/paper2/CONFIRM-EVENING-2026-10-28.md (items 1-2 block the GPU). Push notification sent.
+- Coding wave dispatched (sonnet, CPU only, disjoint files): A swap in M4 + S2 re-infill n=300; B FOIL n=300 + imagecorruptions install/smoke + 179-item chance bar; C Omni-Diffusion 4-bit adapter + timing + family R. Next: E-dec/E-pred fit code (AB.3: audited and frozen before the first M4 item), gate-auditor check, card v4.
