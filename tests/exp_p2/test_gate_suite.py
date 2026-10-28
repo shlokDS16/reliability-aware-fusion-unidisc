@@ -15,7 +15,7 @@ for _p in (ROOT, Path(__file__).resolve().parent):
 
 from fake_gate import FakeScorer, fake_image                               # noqa: E402
 from exp_p2 import common, run_gate_suite                                   # noqa: E402
-from exp_p2.gate import arms, calibrate as cal, config, folds as folds_mod, pipeline, runner, suite   # noqa: E402
+from exp_p2.gate import arms, calibrate as cal, config, edec as edec_mod, epred, epred_fit, folds as folds_mod, pipeline, runner, seeds as seeds_mod, suite   # noqa: E402
 
 try:
     suite.load_package()
@@ -153,49 +153,64 @@ def test_fold_filter_and_absent_cells():
 
 def test_edec_identity_and_values():
     r = suite.suite_cells(_frame(n=100, seed=3), n_boot=500)["cells"]["pixelate2"]["edec"]
-    t, u, rr, v = (r["tau"][k]["mean"] for k in "TURV")
+    ds = r["d_scale"]
+    t, u, rr, v = (ds["tau"][k]["mean"] for k in "TURV")
     assert t == pytest.approx(u + rr + v, abs=1e-12) and t == pytest.approx(0.20, abs=0.01) and u == pytest.approx(0.05, abs=0.01) and rr == pytest.approx(0.10, abs=0.01) and v == pytest.approx(0.05, abs=0.01)
-    assert r["tau"]["_identity_in_resamples"] is True and r["n"] == 100 and r["n_dropped_incomplete"] == 0
-    assert r["shares"]["U"] + r["shares"]["R"] + r["shares"]["V"] == pytest.approx(1.0)
+    assert ds["identity_in_all_resamples"] is True and r["n_complete"] == 100 and r["n_dropped_incomplete"] == 0
+    assert ds["shares"]["U"] + ds["shares"]["R"] + ds["shares"]["V"] == pytest.approx(1.0)
+    assert "accuracy_scale" in r and "ci9833" not in ds["tau"]["T"]                       # suite cells are not P cells: 95 percent only
+
+
+def test_the_suite_calls_the_audited_edec_and_epred_not_copies():
+    for name in ("edec_split", "edec_cell", "_boot_means", "epred_agreement"):
+        assert not hasattr(suite, name), name                                             # the private copies are gone (integration, IMPL-D concern 5)
+    assert suite.edec_mod is edec_mod and suite.epred is epred and suite.epred_fit is epred_fit
+    assert suite.SEED_NAME == "suite" and "suite" in seeds_mod.ANALYSES
 
 
 def test_edec_shares_are_undefined_when_the_total_loss_is_not_clearly_positive():
     rng = np.random.default_rng(0)
     n = 80
     c = rng.normal(0.3, 0.1, n)
-    r = suite.edec_cell(c, c + rng.normal(0, 0.1, n), c + rng.normal(0, 0.1, n), c + rng.normal(0, 0.1, n), n_boot=300)
-    assert isinstance(r["shares"], str) and "undefined" in r["shares"]
+    r = edec_mod.edec_cell("fog4", (c, c + rng.normal(0, 0.1, n), c + rng.normal(0, 0.1, n), c + rng.normal(0, 0.1, n)), None, n_boot=300)
+    assert isinstance(r["d_scale"]["shares"], str) and "undefined" in r["d_scale"]["shares"]
 
 
 def test_edec_is_complete_case_and_the_identity_is_asserted():
     d = [np.array([1.0, 2, 3, np.nan]), np.array([0.5, 1, 2, 3]), np.array([0.7, 1.5, 2.5, 3]), np.array([0.6, 1.6, 2.2, 3])]
-    sp = suite.edec_split(*d)
-    assert sp["n"] == 3 and sp["n_dropped"] == 1 and np.allclose(sp["T"], sp["U"] + sp["R"] + sp["V"])
+    sp = edec_mod.edec_split(*d)
+    assert sp["n"] == 3 and sp["n_dropped"] == 1 and np.allclose(sp["d"]["T"], sp["d"]["U"] + sp["d"]["R"] + sp["d"]["V"])
     # V is negative when GATE-M beats the oracle gate (not detection)
-    assert sp["V"][1] == pytest.approx(1.5 - 1.6) and sp["V"][1] < 0
+    assert sp["d"]["V"][1] == pytest.approx(1.5 - 1.6) and sp["d"]["V"][1] < 0
 
 
-def test_epred_signs_from_headroom_tokens_and_agreement():
+def _headroom_item(rng, helps):
+    z = np.zeros(1024, bool)
+    z[:200] = True
+    delta = rng.normal(0.10, 0.3, 1024)
+    delta[z] = rng.normal(0.0, 1.0, 200)                               # changed tokens carry no signal and a large variance (hand computation: SNR 0.153 before; 0.264 with flags on them; 0.137 with random flags)
+    flag = np.zeros(1024, bool)
+    if helps:
+        flag[:180] = True                                              # flags sit on the changed tokens (beta high, alpha ~ 0)
+    else:
+        flag[rng.choice(1024, 200, replace=False)] = True              # random flags
+    return dict(delta=delta, z=z, flag=flag)
+
+
+def test_epred_signs_come_from_the_audited_fit_and_agreement_from_epred():
     rng = np.random.default_rng(0)
-
-    def item(helps):
-        z = np.zeros(1024, bool)
-        z[:200] = True
-        delta = rng.normal(0.10, 0.3, 1024)
-        delta[z] = rng.normal(0.0, 1.0, 200)                           # changed tokens carry no signal and a large variance (hand computation: SNR 0.153 before; 0.264 with flags on them; 0.137 with random flags)
-        flag = np.zeros(1024, bool)
-        if helps:
-            flag[:180] = True                                          # flags sit on the changed tokens (beta high, alpha ~ 0)
-        else:
-            flag[rng.choice(1024, 200, replace=False)] = True          # random flags
-        return dict(delta=delta, z=z, flag=flag)
-    s = suite.epred_signs({"fog4": [item(True) for _ in range(20)], "pixelate2": [item(False) for _ in range(20)], "empty": []})
+    s = suite.epred_signs({"fog4": [_headroom_item(rng, True) for _ in range(20)], "pixelate2": [_headroom_item(rng, False) for _ in range(20)], "empty": []}, n_boot=200)
     assert s["fog4"]["sign"] == 1 and s["pixelate2"]["sign"] == -1 and s["empty"]["sign"] is None and s["fog4"]["n_items"] == 20
-    a = suite.epred_agreement(s, {"fog4": 1, "pixelate2": 1, "empty": 1})
-    assert a["K_eval"] == 2 and a["A"] == 1 and "empty" in a["skipped"] and a["cp95"][0] < 0.5 < a["cp95"][1]
-    assert "never pooled" in a["label"]
-    a2 = suite.epred_agreement(s, {"fog4": 0, "pixelate2": -1})
-    assert a2["K_eval"] == 1 and a2["A"] == 1 and a2["skipped"]["fog4"].startswith("b = c_cnt")
+    assert s["fog4"]["cell"] == "fog4" and "stability" in s["fog4"]                                       # the audited cell record, re-keyed to the suite cell
+    ok = dict(b=20, c=5, n=100, ci95=[0.05, 0.25])
+    a = epred.epred_agreement(s, {"fog4": ok, "pixelate2": ok, "empty": ok})
+    assert a["K_eval"] == 2 and a["A"] == 1 and "no committed sign" in a["excluded"]["empty"] and a["cp95"][0] < 0.5 < a["cp95"][1]
+    assert "never pooled" in a["label"] and a["formal_test"] is None and "p" not in a and "p_value" not in a
+    assert a["refutation_rule_met_for_cells"] == ["pixelate2"]                                             # s = -1 against an observed interval that excludes 0 on the + side
+    assert a["rivals"]["always +"] == dict(A=2, K_eval=2)
+    tie = dict(b=7, c=7, n=100, ci95=[-0.1, 0.1])
+    a2 = epred.epred_agreement(s, {"fog4": tie, "pixelate2": dict(b=3, c=20, n=100, ci95=[-0.3, -0.05])})
+    assert a2["K_eval"] == 1 and a2["A"] == 1 and a2["excluded"]["fog4"].startswith("b = c_cnt") and a2["refutation_rule_met_for_cells"] == []
 
 
 def test_suite_cells_can_carry_the_epred_block():

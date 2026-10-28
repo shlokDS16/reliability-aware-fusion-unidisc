@@ -26,7 +26,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import config, report, seeds, stats, theory               # noqa: E402
+from exp_p2.gate import config, edec as edec_mod, epred, epred_fit, report, seeds   # noqa: E402     (E-dec and E-pred are computed by the audited modules, not by copies)
 
 SUITE_RUN_ID = "P2-GATE-SUITE"
 SMOKE_RUN_ID = "P2-SUITE-SMOKE"
@@ -37,7 +37,7 @@ SEVERITIES = (2, 4)
 CELLS = tuple((t, s) for t in TYPES for s in SEVERITIES)          # 8 cells, order fixed now
 HEAD_N, TEST_N = 100, 100                                         # the 100 headroom items (fit fold for E-pred) and the first 100 items of the test list
 SUITE_ARMS = ("none", "gm", "chg")
-CI_LEVEL = 95.0
+SEED_NAME = "suite"                                               # seeds.ANALYSES position 31 (appended 2026-10-28); the bootstrap stream of every suite interval
 
 
 def cell_key(name: str, severity: int) -> str:
@@ -172,49 +172,6 @@ def _versions() -> dict:
 
 
 # ------------------------------------------------------------------------------------------------ analysis
-def edec_split(d_clean, d_none, d_chg, d_gm) -> dict:
-    """AD.2 on the size-free evidence d, item by item: T = d_clean - d_none, U = d_clean - d_chg, R = d_gm - d_none, V = d_chg - d_gm, and T = U + R + V holds item by item (asserted to 1e-9).
-    Complete case: an item enters only if all four d are finite. Returns the four arrays and the number dropped."""
-    a = [np.asarray(x, float) for x in (d_clean, d_none, d_chg, d_gm)]
-    ok = np.all([np.isfinite(x) for x in a], axis=0)
-    c, n, g, m = (x[ok] for x in a)
-    T, U, R, V = c - n, c - g, m - n, g - m
-    if T.size:
-        assert np.allclose(T, U + R + V, atol=1e-9, rtol=0), "E-dec identity T = U + R + V violated"
-    return dict(T=T, U=U, R=R, V=V, n=int(ok.sum()), n_dropped=int((~ok).sum()))
-
-
-def _boot_means(parts: dict[str, np.ndarray], n_boot: int, seed) -> dict:
-    """Joint paired bootstrap over items (the same resample for T, U, R, V so the identity holds in every resample); 95 percent percentile intervals."""
-    n = len(next(iter(parts.values())))
-    out = {}
-    if n < 2:
-        return {k: dict(mean=float(v.mean()) if n else float("nan"), ci95=[float("nan")] * 2) for k, v in parts.items()} | dict(_identity_in_resamples=None)
-    idx = np.random.default_rng(seed).integers(0, n, size=(n_boot, n))
-    boots = {k: v[idx].mean(axis=1) for k, v in parts.items()}
-    ident = bool(np.allclose(boots["T"], boots["U"] + boots["R"] + boots["V"], atol=1e-9))
-    lo, hi = (100 - CI_LEVEL) / 200, 1 - (100 - CI_LEVEL) / 200
-    for k, v in parts.items():
-        out[k] = dict(mean=float(v.mean()), ci95=[float(np.quantile(boots[k], lo)), float(np.quantile(boots[k], hi))])
-    out["_identity_in_resamples"] = ident
-    return out
-
-
-def edec_cell(d_clean, d_none, d_chg, d_gm, *, n_boot: int = 10000, seed=None) -> dict:
-    """E-dec for one cell (AB.2 names: U = residual loss under the oracle gate, V = gap to the oracle gate). Shares U/T, R/T, V/T are reported only if the lower 95 percent bound of tau_T exceeds 0."""
-    sp = edec_split(d_clean, d_none, d_chg, d_gm)
-    parts = {k: sp[k] for k in ("T", "U", "R", "V")}
-    est = _boot_means(parts, n_boot, seed if seed is not None else np.random.SeedSequence([seeds.ROOT_SEED, 9102]))
-    res = dict(n=sp["n"], n_dropped_incomplete=sp["n_dropped"], tau=est, identity_per_item="asserted to 1e-9", label="secondary, descriptive; no test, no p-value (AD.2, AB.2)")
-    t_lo = est["T"]["ci95"][0]
-    if np.isfinite(t_lo) and t_lo > 0:
-        tm = est["T"]["mean"]
-        res["shares"] = {k: est[k]["mean"] / tm for k in ("U", "R", "V")}
-    else:
-        res["shares"] = "undefined (lower 95 percent bound of tau_T does not exceed 0)"
-    return res
-
-
 SUITE_COLS = ("fold", "idx", "cell", "y_clean", "y_none", "y_gm", "y_chg", "d_clean", "d_none", "d_gm", "d_chg", "n_changed", "n_flag", "n_tp")
 
 
@@ -230,48 +187,32 @@ def suite_frame(rows: list[dict]):
     return pd.DataFrame.from_records(recs, columns=list(SUITE_COLS))
 
 
-def epred_signs(head_arrays: dict[str, list[dict]]) -> dict:
-    """Plug-in sign s_c per cell from the HEADROOM items (the fit fold of AD.3), pooled over items at token level through `theory.plug_in_from_deltas`: head_arrays[cell] is a list of dicts with the
-    per-token 'delta', the changed-code labels 'z' and GATE-M's 'flag' of one headroom item. s_c = +1 if the plug-in SNR rises with gating, -1 otherwise, None if an input is not finite.
-    This is the suite-local plug-in; the audited, frozen `epred_fit` of AB.3 (not available to this file's author) is what a claim-bearing E-pred uses, and it should replace this."""
+def epred_signs(head_arrays: dict[str, list[dict]], *, n_boot: int = epred_fit.N_BOOT) -> dict:
+    """Plug-in sign s_c per suite cell from the HEADROOM items (the fit fold of AD.3), computed by the audited `epred_fit.epred_fit` (pooled token-level inputs, `sign_of_gating`, tie and undefined handling,
+    stability bootstrap with the seed of `prop4_plugin`). head_arrays[cell] is a list (one per headroom item, fixed order) of dicts with the per-token 'delta', the changed-code labels 'z' and GATE-M's
+    'flag'. `epred_fit` only accepts the five labels of AD.3, so each suite cell is passed under the label "P1" in a call of its own and the result is re-keyed to the suite cell: the label is mechanical
+    and enters no computation. Returns cell -> the cell of the fit result (sign +1 / -1 / 0 tie / None undefined, inputs, stability) with 'cell' set to the suite key. These suite signs are NOT the
+    committed AD.3 signs and are not part of the frozen AD.3 file; the suite block is exploratory and is never pooled with AD.3 (AB.3 item 2)."""
     out = {}
     for cell, lst in head_arrays.items():
         if not lst:
-            out[cell] = dict(sign=None, reason="no headroom items")
+            out[cell] = dict(cell=cell, sign=None, sign_text="none (undefined)", reason_no_sign="no headroom items", n_items=0)
             continue
-        d, z, f = (np.concatenate([np.asarray(x[k]) for x in lst]) for k in ("delta", "z", "flag"))
-        pi = theory.plug_in_from_deltas(d, z, f)
-        out[cell] = dict(sign=(None if "predicted_helps" not in pi else (1 if pi["predicted_helps"] else -1)), inputs=pi, n_items=len(lst))
+        fit = epred_fit.epred_fit({"P1": [dict(delta=x["delta"], z=x["z"]) for x in lst]}, {"P1": [x["flag"] for x in lst]}, n_boot=n_boot)
+        out[cell] = dict(fit["cells"]["P1"], cell=cell)
     return out
-
-
-def epred_agreement(s_c: dict, observed: dict) -> dict:
-    """A = number of evaluable cells with s_c == o_c out of K_eval, with a Clopper-Pearson 95 percent interval. o_c = sign(b_c - c_cnt); a cell with b = c (or without a plug-in sign) is excluded and counted.
-    Descriptive only (family E is withdrawn, AB.3); suite cells are never pooled with the P or PS cells."""
-    ev, skipped, agree = {}, {}, 0
-    for k, s in s_c.items():
-        sg = s["sign"] if isinstance(s, dict) else s
-        o = observed.get(k)
-        if sg is None or o is None or o == 0:
-            skipped[k] = "no plug-in sign" if sg is None else "b = c_cnt (no observed sign)" if o == 0 else "no observed sign"
-            continue
-        ev[k] = dict(s=int(sg), o=int(o), agree=bool(sg == o))
-        agree += int(sg == o)
-    K = len(ev)
-    lo, hi = stats.clopper_pearson(agree, K, 0.95) if K else (float("nan"), float("nan"))
-    rival_plus = sum(1 for v in ev.values() if v["o"] == 1)
-    return dict(A=agree, K_eval=K, cp95=[lo, hi], cells=ev, skipped=skipped, rival_always_plus_agreement=rival_plus, label="exploratory, suite cells only; never pooled with AD.3; no p-value, no test",
-                note="the observed sign is sign(b - c_cnt) of GATE-M against none on Y; a plug-in sign that disagrees with a cell whose interval excludes 0 refutes the independent-token model for that cell only")
 
 
 def suite_cells(df, *, fold: str = "test", n_boot: int = 10000, seed=None, s_c: dict | None = None) -> dict:
     """The cell table of AD.9 from the long frame `df` (columns SUITE_COLS): for each of the cells present, on the items of `fold`: b, c_cnt, n_d, net difference (GATE-M minus none on Y) with a 95 percent paired
-    percentile bootstrap CI, accuracies of none / GATE-M / chg, flag statistics, and the E-dec split on d. No exact p-value, no Holm, no multiplicity statement: Tier 3 exploratory. If `s_c` (cell -> plug-in sign
-    or dict with 'sign') is given, the E-pred agreement over the evaluable cells is added. Items are matched by (fold, idx); an item missing a cell is simply absent from that cell."""
+    percentile bootstrap CI, accuracies of none / GATE-M / chg, flag statistics, and the E-dec split on d (`edec.edec_cell`, the audited function: identity asserted per item and per
+    resample, complete case, shares rule, accuracy-scale companion). No exact p-value, no Holm, no multiplicity statement: Tier 3 exploratory. If `s_c` (cell -> output of `epred_signs`, a dict with 'sign',
+    or a bare sign) is given, the agreement over the evaluable cells is added by `epred.epred_agreement` (A of K_eval, Clopper-Pearson, o_c*, rival rules; own block, never pooled with AD.3). Items are
+    matched by (fold, idx); an item missing a cell is simply absent from that cell. Seed: `seeds.seed_for("suite")` unless `seed` is given."""
     import pandas as pd
     d = df[df["fold"] == fold]
-    sd = seed if seed is not None else np.random.SeedSequence([seeds.ROOT_SEED, 9101])
-    cells, observed = {}, {}
+    sd = seed if seed is not None else seeds.seed_for(SEED_NAME)
+    cells, p_cells = {}, {}
     for k in [c for c in CELL_KEYS if c in set(d["cell"])] + sorted(set(d["cell"]) - set(CELL_KEYS)):
         g = d[d["cell"] == k].sort_values("idx")
         y_gm, y_none, y_chg, y_cl = (g[c].to_numpy(float) for c in ("y_gm", "y_none", "y_chg", "y_clean"))
@@ -280,12 +221,13 @@ def suite_cells(df, *, fold: str = "test", n_boot: int = 10000, seed=None, s_c: 
         cells[k] = dict(n_items=int(len(g)), gm_vs_none=rep, net_difference=rep["delta"], acc_clean=float(np.nanmean(y_cl)), acc_none=float(np.nanmean(y_none)), acc_gm=float(np.nanmean(y_gm)),
                         acc_chg=float(np.nanmean(y_chg)), mean_n_changed=float(g["n_changed"].mean()), mean_n_flag=float(g["n_flag"].mean()),
                         flag_precision=(float(g["n_tp"].sum() / g["n_flag"].sum()) if g["n_flag"].sum() > 0 else None), flag_recall=(float(g["n_tp"].sum() / g["n_changed"].sum()) if g["n_changed"].sum() > 0 else None),
-                        edec=edec_cell(g["d_clean"], g["d_none"], g["d_chg"], g["d_gm"], n_boot=n_boot, seed=sd), sign_observed=int(np.sign(rep["b"] - rep["c"])))
-        observed[k] = cells[k]["sign_observed"]
+                        edec=edec_mod.edec_cell(k, tuple(g[f"d_{a}"].to_numpy(float) for a in edec_mod.ARMS), tuple(g[f"y_{a}"].to_numpy(float) for a in edec_mod.ARMS), n_boot=n_boot, seed=sd),
+                        sign_observed=int(np.sign(rep["b"] - rep["c"])))
+        p_cells[k] = dict(b=rep["b"], c=rep["c"], n=rep["n"], net_difference=rep["delta"], ci95=rep["ci95"])
     out = dict(fold=fold, n_cells=len(cells), cells=cells, label="Tier 3, exploratory. No p-value enters a claim; no multiplicity statement (AD.9)", meta=seeds.meta(),
                choice="the four types and two severities were chosen by kind from a package of fifteen types with no recorded rationale: researcher choice (AB.8)")
     if s_c is not None:
-        out["epred_suite"] = epred_agreement(s_c, observed)
+        out["epred_suite"] = epred.epred_agreement({k: (v if isinstance(v, dict) else dict(sign=v)) for k, v in s_c.items()}, p_cells)
     return out
 
 

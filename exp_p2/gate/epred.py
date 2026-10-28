@@ -1,7 +1,9 @@
 """E-pred (SAP Addendum A2 AD.3, as DEMOTED by Addendum A2b AB.3): out-of-sample sign prediction from Proposition 4 (spec v2 5.3, general form with mu_c not 0). Secondary, descriptive.
 CPU only; no model. Two stages with a freeze between them.
 
-    # after M3 (family.json committed) and the fit chunk runs/P2-GATE-EPRED-FIT (GATE flags on the 100 headroom items), BEFORE the first M4 item:
+    # the fit chunk (GPU, after M3 and a committed family.json, before the first M4 item; runner exp_p2/run_gate_epred_chunk.py, driver stage "epred-fit"):
+    python -m exp_p2.gate.gate_driver --stage epred-fit --extra "--audit-record <gate-auditor record>"        # -> runs/P2-GATE-EPRED-FIT (GATE flags on the 100 headroom items, the contract of load_fit_inputs)
+    # after M3 (family.json committed) and the fit chunk runs/P2-GATE-EPRED-FIT, BEFORE the first M4 item:
     python -m exp_p2.gate.epred fit --run-id P2-GATE-M3 --fit-run P2-GATE-EPRED-FIT [--boot 10000] [--audit-record PATH]
         -> runs/P2-GATE-EPRED-FIT/epred_frozen.json   (write-once; the fit-code SHA-256 and every input hash are inside)
     # after M4, family P and PS analysed (analysis.json exists), AD.12 step 5:
@@ -75,8 +77,9 @@ def _o_star(o: int, ci95) -> int | None:
 RIVALS = {"always +": lambda c: 1, "- for P cells, + for PS cells": lambda c: -1 if c in P_CELLS else 1}
 
 
-def _agg(cells: dict, names) -> dict:
-    """A of K_eval with a Clopper-Pearson interval for the cells `names`; cells without s_c or without o_c are excluded and counted. The rival rules are scored on the same evaluable cells."""
+def _agg(cells: dict, names, rivals=None) -> dict:
+    """A of K_eval with a Clopper-Pearson interval for the cells `names`; cells without s_c or without o_c are excluded and counted. The rival rules (default: RIVALS of AB.3) are scored on the same evaluable cells."""
+    rivals = RIVALS if rivals is None else rivals
     from exp_p2.gate import stats
     ev = {c: cells[c] for c in names if c in cells and cells[c]["evaluable"]}
     excl = {c: cells[c]["excluded_reason"] for c in names if c in cells and not cells[c]["evaluable"]}
@@ -85,8 +88,29 @@ def _agg(cells: dict, names) -> dict:
     star = {c: v for c, v in ev.items() if v["o_star"] is not None}
     return dict(A=A, K_eval=K, cp95=[lo, hi], cells_evaluable=sorted(ev), excluded=excl,
                 agreement_where_observed_interval_excludes_0=dict(A=sum(1 for v in star.values() if v["s"] == v["o_star"]), K=len(star), cells=sorted(star), note="descriptive column o_c*"),
-                rivals={name: dict(A=sum(1 for c, v in ev.items() if fn(c) == v["o"]), K_eval=K) for name, fn in RIVALS.items()},
+                rivals={name: dict(A=sum(1 for c, v in ev.items() if fn(c) == v["o"]), K_eval=K) for name, fn in rivals.items()},
                 sentence=(ALLOWED_WORDING.format(A=A, K=K, lo=lo, hi=hi) if K else "no cell is evaluable"), reachability_of_withdrawn_test=reachability(K))
+
+
+def _score_row(c: str, fc: dict, pc: dict | None, group: str) -> dict:
+    """One cell of the agreement table: committed sign s (from `fc`, a cell of epred_frozen.json / of an epred_fit result), observed o and o*, evaluability. `pc` = the test of the cell on the test fold
+    (b, c, ci95, optionally n and net_difference) or None. A cell without a committed sign, without a test, or with b = c_cnt has no evaluable pair: excluded and counted."""
+    s = fc.get("sign")
+    row = dict(cell=c, s=s, s_text=fc.get("sign_text"), stability_share_same_sign=(fc.get("stability") or {}).get("share_same_sign"), group=group)
+    if pc is None:
+        row.update(o=None, o_star=None, b=None, c_cnt=None, evaluable=False, agree=None, excluded_reason="no test for this cell on the test fold (not run or no operating point)")
+        return row
+    b, cc = int(pc["b"]), int(pc["c"])
+    o = _sgn(b - cc)
+    row.update(b=b, c_cnt=cc, n=pc.get("n"), net_difference=pc.get("net_difference"), ci95=list(pc["ci95"]) if pc.get("ci95") is not None else None, o=o if o != 0 else None,
+               o_star=_o_star(o, pc.get("ci95")) if o != 0 else None)
+    if s not in (1, -1):
+        row.update(evaluable=False, agree=None, excluded_reason=("no committed sign: " + str(fc.get("reason_no_sign") or "cell absent from epred_frozen.json")))
+    elif o == 0:
+        row.update(evaluable=False, agree=None, excluded_reason="b = c_cnt: no observed sign (counted, excluded)")
+    else:
+        row.update(evaluable=True, agree=bool(s == o), excluded_reason=None)
+    return row
 
 
 def epred_score(frozen: dict, p_cells: dict) -> dict:
@@ -98,25 +122,7 @@ def epred_score(frozen: dict, p_cells: dict) -> dict:
     unknown = sorted(set(p_cells) - set(CELLS))
     if unknown:
         raise ValueError(f"unknown cell(s) in p_cells: {unknown}")
-    cells = {}
-    for c in CELLS:
-        s = fcells.get(c, {}).get("sign")
-        pc = p_cells.get(c)
-        row = dict(cell=c, s=s, s_text=fcells.get(c, {}).get("sign_text"), stability_share_same_sign=(fcells.get(c, {}).get("stability") or {}).get("share_same_sign"), group="P" if c in P_CELLS else "PS")
-        if pc is None:
-            row.update(o=None, o_star=None, b=None, c_cnt=None, evaluable=False, agree=None, excluded_reason="no test for this cell on the test fold (not run or no operating point)")
-        else:
-            b, cc = int(pc["b"]), int(pc["c"])
-            o = _sgn(b - cc)
-            row.update(b=b, c_cnt=cc, n=pc.get("n"), net_difference=pc.get("net_difference"), ci95=list(pc["ci95"]) if pc.get("ci95") is not None else None, o=o if o != 0 else None,
-                       o_star=_o_star(o, pc.get("ci95")) if o != 0 else None)
-            if s not in (1, -1):
-                row.update(evaluable=False, agree=None, excluded_reason=("no committed sign: " + str((fcells.get(c) or {}).get("reason_no_sign") or "cell absent from epred_frozen.json")))
-            elif o == 0:
-                row.update(evaluable=False, agree=None, excluded_reason="b = c_cnt: no observed sign (counted, excluded)")
-            else:
-                row.update(evaluable=True, agree=bool(s == o), excluded_reason=None)
-        cells[c] = row
+    cells = {c: _score_row(c, fcells.get(c) or {}, p_cells.get(c), "P" if c in P_CELLS else "PS") for c in CELLS}
     grp_P, grp_PS = _agg(cells, P_CELLS), _agg(cells, PS_CELLS)
     grp_PS["label"] = "foregone: patch and swap are expected to be detected and helped (AB.3 item 2); not evidence for the P cells"
     refuted = {c: bool(v["evaluable"] and v["o_star"] is not None and v["s"] != v["o_star"]) for c, v in cells.items()}
@@ -124,6 +130,21 @@ def epred_score(frozen: dict, p_cells: dict) -> dict:
                 refutation_note="spec 5.3 / AB.3 item 4: a committed sign that disagrees with a cell whose observed 95 percent interval of the net accuracy difference excludes 0 refutes the independent-token model for that cell",
                 formal_test=None, formal_test_note="no test, no p-value, no alpha: family E is withdrawn (AB.3 item 1)", label=LABEL,
                 observed_sign_definition="o_c = sign(b_c - c_cnt) on the binary Y of GATE-M versus none under every n-rule, R3 included; o_c* only where the 95 percent paired-bootstrap interval excludes 0 (AB.3 item 3)")
+
+
+SUITE_RIVALS = {"always +": lambda c: 1, "- for every cell (the P-cell rule applied to the pixel-corruption suite cells)": lambda c: -1}
+
+
+def epred_agreement(sign_cells: dict, p_cells: dict, *, rivals=None, group: str = "suite", label: str | None = None) -> dict:
+    """The same agreement table for a set of cells that is NOT the five cells of AD.3 (the exploratory suite cells of AD.9): `sign_cells[c]` is a cell of an `epred_fit` result (sign, sign_text,
+    stability, reason_no_sign) and `p_cells[c]` the test of the cell as in `epred_score`. One group, reported as its own block, never pooled with the P or PS cells (AB.3 item 2). Same row logic
+    (`_score_row`), same A of K_eval with a Clopper-Pearson interval, o_c*, refutation flags; no test, no p-value. Rival rules default to SUITE_RIVALS."""
+    names = sorted(set(sign_cells) | set(p_cells))
+    cells = {c: _score_row(c, sign_cells.get(c) or {}, p_cells.get(c), group) for c in names}
+    agg = _agg(cells, names, SUITE_RIVALS if rivals is None else rivals)
+    refuted = sorted(c for c, v in cells.items() if v["evaluable"] and v["o_star"] is not None and v["s"] != v["o_star"])
+    return dict(cells=cells, **agg, refutation_rule_met_for_cells=refuted, formal_test=None, formal_test_note="no test, no p-value, no alpha (AB.3 item 1)",
+                label=label or "exploratory, suite cells only; never pooled with AD.3 (the P and PS cells); no p-value, no test (AB.3 item 2, AB.8)")
 
 
 def observed_cells_from_rows(rows: list[dict], family, *, n_boot: int = N_BOOT) -> dict:
