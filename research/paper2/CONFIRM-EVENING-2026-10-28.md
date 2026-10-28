@@ -145,3 +145,6 @@ one the A4 outcome book is written to): under a P-null label the phrase "when do
 abstract, highlights, conclusion and the opening of 6.1, and is discussed only through the closed-form condition and the P table.
 D18's submission condition stands verbatim, with the **status-only definition of "informative"** of A4.2.6 adopted (S2, PS and
 FOIL each "informative" iff AD.11 status "run, formal"). No M4 value had been read (M4 at about 115 of 500, running).
+
+## 13. Operations log (no decision needed)
+- 2026-10-29 01:34 IST: M4 driver stopped with "max chunks reached" (default 12 chunks; exit 6; not a guard stop, no crash event) at 334/500. Relaunched 01:35 with `--max-chunks 30`, same flags; resumes at row 334, same item list (driver log of the first run kept as `runs/P2-GATE-M4.driver.run1.out`). Card v4 row 6 printed no `--max-chunks`; this is an operational setting, recorded for the deviations box.
