@@ -117,3 +117,13 @@ Read as:
 2. Add `--slow-factor` / `--slow-min-s` CLI flags with defaults unchanged (2.0 / 1.0), gate-auditor delta check, and a
    dated card v4 amendment row pinning the new code SHA; overnight non-Omni stages then run with
    `--slow-factor 3 --slow-min-s 2`. Until that row exists, every stage runs with the defaults.
+
+## 11. Second M2 slow-item stop (21:45 IST): GPU halted until Shlok answers
+`runs/P2-GATE-M2/chunks.jsonl`: `guard_stop`, "slow_item 4.4s > 2.0x median 1.8s", idx 113; 114 of 300 rows done
+(driver log `runs/P2-GATE-M2.driver.out`). Telemetry 21:45:05-21:45:16: GPU utilisation 0 % and memory flat at
+5,290 MiB through most of the item, i.e. the GPU waited on the host. free_ram_gb fell to 4.15 (system 31.4 GB total);
+at the time the lead had three CPU agents running (a new git worktree checkout, targeted pytest, PDF reading) and
+Defender was active. No crash events, boot time unchanged (27 Oct 23:25), temperature 50-59 C.
+Both stops (idx 105: 3.0 s vs 1.5 s; idx 113: 4.4 s vs 1.8 s) are below the proposed 3x / 2 s rule (4.5 s, 5.4 s).
+By the standing rule no relaunch until Shlok answers. Question put: relaunch M2 with the 3x / 2 s rule once the
+flag is audited and pinned, and keep CPU-heavy agent work off the machine while GPU stages run.
