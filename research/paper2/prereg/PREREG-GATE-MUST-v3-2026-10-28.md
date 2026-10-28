@@ -399,3 +399,16 @@ CPU only, any time: `python -m exp_p2.gate.cpu_dryrun`; unit tests; analysis `se
 4. The cause of the earlier unreproduced test failure (1 in 14 runs) is unknown; the real-GPU paths, including the watchdog kill and the TbV-score on the real model, remain untested by construction.
 5. Plain-B top-k counts beside the R3 result are a red-team resolution condition that I did not find verified in the analysis output.
 6. No `hypotheses` ledger row and no `research/prereg/<hyp-id>.md` copy were written (brief: write only this file).
+
+## Amendment A1 (2026-10-28 ~09:00 IST, before any M0-M5 GPU outcome)
+Code moves from 164a18a5 to **623faaff**. The changes are safety and procedure only; no measurement, scoring or analysis code
+changed:
+- The gpu_guard pin check (delta audit N4) now needs both the committed blob to match the pin and the CRLF-normalised working
+  copy to equal the blob, so an uncommitted edit fails. tools/gpu_guard.py is unchanged.
+- Runners, probe wrappers, run_gate_m0 and gate_driver refuse to start (exit 11) when exp_p2/ or tools/ has uncommitted
+  changes. `--allow-dirty` overrides and is recorded in the run config.
+- The slow-item guard now also needs an absolute floor of 1 s, because it tripped on sub-millisecond test timings; this explains
+  the earlier unreproduced test failure. Real items take about 7-10 s. This is a guard-threshold change and belongs to decision
+  D3 for Shlok.
+Tests: 209 passed, twice, at 623faaff (lab engineer). The lead's pre-launch check must now pin 623faaff. A gate-auditor delta
+check of 164a18a5..623faaff is still to do before M0.
