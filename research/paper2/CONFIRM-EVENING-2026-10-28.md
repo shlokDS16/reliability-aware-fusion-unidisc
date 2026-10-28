@@ -72,6 +72,13 @@ If you answer by about 19:00 tonight and nothing stops, the GPU work ends around
 over a day before a Friday 18:00 freeze. **Recommendation: keep all three S2 arms**; if a stop costs time, the first cut is
 the changed-code arm (S2 drops to about 2.6 GPU-h), then the cut order above.
 
+## 9. Red-team conditions that need your words (A3 signature, `prereg/RED-TEAM-SIGNOFF-2026-10-28.md`)
+- **n = 300 at the updated cost.** This morning I quoted "about +1 GPU-h" for raising S2 and FOIL to n = 300. The implementer's
+  estimate for S2 alone is about +1.95 GPU-h (about +4 h wall). The red team signs n = 300 only if you confirm it at this cost.
+  **Recommendation: yes** (at n = 150 S2 cannot detect gains below about 8-11 points; at n = 300 about 4-8 points, derived
+  with assumed discordance rates, `runs/P2-GATE-A3/a3_power_output.txt`).
+- **Item 3 above (co-attestation)** is also a condition of the signature.
+
 ## Already decided (no answer needed)
 S2 re-infill is MUST; S2 and FOIL at n = 300; swap, FOIL, Omni adapter and suite are being built today (CPU only); then a
 gate-auditor check and card v4 pin the code and SAP before the first new item.
