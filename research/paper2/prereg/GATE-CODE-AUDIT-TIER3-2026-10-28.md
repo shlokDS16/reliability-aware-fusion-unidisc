@@ -132,3 +132,52 @@ Real-data check on M2 only (no outcome): `build_cal_pool` on `runs/P2-GATE-M2` r
 ## 9. Not covered
 
 Behaviour on the real M4 arrays and the real `analysis.json` (blind); the full test suite (CPU shared with the GPU stage); the spec text of A4.1.10 wording (the module emits mechanical labels, the writer's sentences are outside this audit); the red-team's signature on A4.2 and A4.3 (other parts of A4).
+
+---
+
+# Delta r3 (2026-10-29): `00b92d4d` -> `32f02836` against SAP A4.1.12 items 1-8 and A4.1.10 r3
+
+**Audited SHA: `32f02836`** (branch `worktree-agent-a42dc73cfa4f09bb9`, on top of the audited `00b92d4d`; SAP r3 at main-worktree commit `2305d64a`).
+Blob ids: `tier3_fusion.py` 91e45945977ed94f2d32e95fa9d449939a816f16 (SHA-256 of committed bytes `1ff4e5b9a87be858af43cd885895cfc4763286c1a409f99ce44087fdbca3f457`);
+`test_gate_tier3_fusion.py` 695b24275968014b4da6cd72f92214dadf81d521 (SHA-256 `2ecf5ee9f64a81db2af3bce7071d3a68a6bc95fe0f7728f32d5490c27c01ae26`).
+`runs/P2-GATE-M4` not opened.
+
+## Verdict: PASS (no required fix)
+
+## Items (against `git diff 00b92d4d 32f02836`)
+| A4.1.12 item | Verdict | Evidence |
+|---|---|---|
+| 1 import `scipy.stats.beta`; `N_D_MDD_MIN = 10`, `ALPHA_EXACT = 0.05` | met | import and constants added after `MDD_DESIGN_MARGIN` |
+| 2 `exact_theta_interval` (NaN pair if n_d=0; lower 0 if b=0 else `beta.ppf(0.025, b, n_d-b+1)`; upper 1 if b=n_d else `beta.ppf(0.975, b+1, n_d-b)`) | met | identical to the text |
+| 3 `exact_reading` (identical; lower > 0.5 above; upper < 0.5 below; else not_distinguishable) | met | strict inequalities as specified |
+| 4 `discordance_bound` (1.0 if n_d >= n else `beta.ppf(0.975, n_d+1, n-n_d)`) | met | |
+| 5 `counts_against(comparator, read, mdd, n_d, B)` | met | `bound = B if n_d < N_D_MDD_MIN else mdd`, inclusive `<= 0.05`; below -> gate_higher; SOFT stems with "_identical" suffix |
+| 6 row fields `theta_ci95_exact`, `discordance_bound_B`, `reading` (exact), `reading_bootstrap`, `mdd_used`; `ci95`, `se_boot`, `mdd` unchanged | met | `counts_against` still only on "minus GM" rows of P cells |
+| 7 `d_control` all-zero valid differences -> `identical_on_every_item` | met | `valid.any() and np.all(diff[valid] == 0.0)`; other contrasts keep the bootstrap reading (r3 item 6) |
+| 8 tests | met | all listed cases present: (4,0) nd, (6,0) above, (0,6) below, (0,0) identical, (5,0) nd; B(0,300), B(0,500) within 1e-4; MED identical n=500 n_d=0 -> finding_against_added_value; MED nd n_d=12 mdd 0.06 -> uninformative; bootstrap "above" with exact "nd" yields no `finding_against_*` (b=4, c=0, n=40) |
+| A4.1.10 r3 items 1-6 | met | labels from the exact interval; bootstrap kept as description; `mdd_used` flags n_d < 10; the module emits fields only, sentences stay the writer's |
+
+## Hand recomputation of exact cases (mine: closed forms and an independent bisection on binomial tails)
+- b=4, c=0 (n_d=4): lower = 0.025^(1/4) = 0.39764 < 0.5, upper = 1 -> not_distinguishable. Module 0.3976353643835253 equals the bisection value.
+- n_d=0: identical; interval (NaN, NaN); `discordance_bound(0,500)` = 1 - 0.025^(1/500) = 0.0073506 (spec 0.0074 within 1e-4), `(0,300)` = 0.0122210 (spec 0.0122), `(15,500)` = 0.04900 <= 0.05 (as r3 item 4 states). MED with "identical", n_d=0, n=500 -> finding_against_added_value; at n=40, B = 0.088 -> uninformative (test).
+- Also (6,0): lower 0.54074 -> above (so n_d >= 6 is the one-sided threshold of r3 item 2); (5,0): lower 0.47818 -> not distinguishable; (0,6): upper 0.45926 -> below; (3,1): (0.1941, 0.9937); (12,5): (0.4404, 0.8969). Module and bisection agree to 1e-15.
+
+## Ambiguities 14-20
+| # | Reading | Right? |
+|---|---|---|
+| 14 | SOFT label = stem + "_identical" (stem already contains "not_distinguishable") | Yes, literal; cosmetic oddity, the writer must not quote the label string |
+| 15 | "minus NONE" rows get the exact fields and reading | Yes (item 6 "per row"); no `counts_against` there |
+| 16 | n_d >= 10 and MDD NaN -> `uninformative_at_this_n` | Yes, conservative: NaN comparison is False, no "against" label |
+| 17 | `ALPHA_EXACT` defined, literals 0.025 / 0.975 in formulas | Yes (items 2 and 4 write the literals) |
+| 18 | NaN in JSON for n_d = 0; "MDD not used" text left to the writer, `mdd_used` flag in JSON | Yes (r3 item 3) |
+| 19 | `discordance_bound` returns 1.0 for n_d >= n including n = n_d = 0 | Yes (item 4) |
+| 20 | Sentences not generated | Yes |
+
+## Existing files and tests
+- `git diff --stat f2f7b2e1 32f02836 -- exp_p2 tools tests`: only the two new files (+541, +603); no existing file modified. `git diff 00b92d4d 32f02836` touches only those two and the IMPL report. Worktree clean after the test run.
+- `.venv python -m pytest tests/exp_p2/test_gate_tier3_fusion.py -q -p no:cacheprovider`: **35 passed in 18.65 s** (one pynvml warning).
+- Everything audited at `00b92d4d` is unchanged except the import, two constants, `counts_against`, `accuracy_contrasts` and `d_control`. The no-p-value rule holds: only `scipy.stats.beta` is imported (AST test `scipy_names == {"beta"}`), and the output has no p-value key; `beta.ppf` gives interval limits, not tests.
+
+## Non-blocking notes
+- N5. Cosmetic: the diff changes `ROOT = Path(...)` to `ROOT =Path(...)` (a deleted space). No effect.
+- N6. The pin row replaces `00b92d4d` by `32f02836` (A4.1.12); record the two SHA-256 values above.
