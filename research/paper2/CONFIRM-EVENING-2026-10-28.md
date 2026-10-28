@@ -1,5 +1,9 @@
 # Paper 2: what needs Shlok's confirmation (evening of Wed 28 Oct 2026)
 
+**State at ~17:00 IST.** Everything in the plan is built and audited on the CPU: swap in M4, S2 re-infill, FOIL family B,
+the image-corruption suite, the Omni-Diffusion adapter, and the E-dec/E-pred analyses. There are 536 CPU tests, all passing. The
+gate-auditor gives a plain PASS at code 9c4e1e25, and the red team signed SAP addenda A3/A3b with conditions. Card v4, which pins all of this, is being written. The GPU starts as soon as you answer items 1 and 2.
+
 Reply "all recommended" to accept every recommendation below, or give a number and your choice.
 Items 1 and 2 block the GPU; the rest can wait until Thursday morning.
 
