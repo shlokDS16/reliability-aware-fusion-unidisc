@@ -375,3 +375,118 @@ Not signed: the A3.2 item 1 sentence "so the contrast is symmetric"; "G.1-inspir
 
 ## Residual risks the signature does not cover
 Eleven test families with no cross-family control (AB.3); single UniDisc model; contamination of COCO val2017 captions (U8), which applies with more force to FOIL because c+ are COCO captions; mask-seed and corruption-seed variance outside every interval; the 8.2 GB peaks and eight GPU crashes since 10-14 (memory notes), which make partial prefixes the likely state of the last-run families; no gate-auditor audit of the S2, FOIL, Omni, E-dec and E-pred code exists yet; I read none of the Omni code, the FOIL file, or UniDisc App. G.1. Judgement, not measured: A3 adds three secondary families whose most likely labelled outcome is "inconclusive"; the chance of a defensible positive claim stays at about 0.05 to 0.08, and what A3 adds is a better chance of a reportable, honestly worded measurement paper if M4 runs.
+
+
+---
+
+# A4 signature (SAP "Addendum A4", file `research/paper2/prereg/SAP-ADDENDUM-A4-2026-10-28.md`, commit 40828e96, sections A4.1 to A4.6)
+
+Date: 2026-10-28, after commit 40828e96, M3 running. CPU only. I read no M3 or M4 value and opened nothing under `runs/`; the M1 numbers A4 quotes are checked against REDTEAM-P2-PLAN A11, where I compared them with `runs/P2-GATE-M1/analysis.json` earlier. The only commands run were a character count of the nine highlights and a print of ledger rows D0072 to D0075.
+Read: A4 in full; CONTRACT; SAP AD.12, A2.2, section 7, section 9, the K1-K7 table, AB.1 to AB.10; card v4 sections 2, 3, 7, 9; REDTEAM-P2-PLAN sections 0, A1-A11, B, C.1; NOVELTY-CHECK-INFFUS section 4; CONFIRM-EVENING section 7 and "Shlok's answer"; `exp_p2/run_gate_m4.py` lines 100-189, `gate/evidence.py`, `gate/seeds.py`, `gate/calibrate.py`, `gate/fit_threshold.py`, `gate/scores.py` 108-110, `gate/pipeline.py` (gate_scores, image_delta, compact); ledger D0072-D0075. Not read: the paper sources, `run_gate_s2.py`, `run_gate_foil.py` (A4's statement that FOIL draws no random numbers and takes no M2-M4 input is E1 here), the UniDisc code (section B of my plan review is my own earlier reading), `huang2025evidential`, Wilcox and Tukey (E0 in A4, E0 here).
+
+## Verdict: SIGN WITH CONDITIONS (confidence 0.6 that this is the right call)
+
+I sign Part 1 (the Tier-3 comparators) as a specification, Part 3(a) (time-input sentence) as written, and Part 3(b) (FOIL before S2) with C4-10. I sign Part 2 (the outcome book) only in part; the sentences listed under "Not signed" are struck from the signature. No finding is `fatal`. Ten are `major`: each would leave a sentence in a title, abstract or contribution list that the SAP, the card or the data cannot carry. The signature binds when the conditions are recorded as dated rows before `analysis_m4` is first run on M4 data (C4-1 and C4-2 must be met earlier, before `family.json` is committed where they say so). Nothing here says any comparator will tell us anything: Part 1 is close to non-discriminative at n = 300 (F7).
+
+## What I checked and found sound (Part 1 mechanics)
+
+- Every array A4.1.2 names exists as stated: `<cond>_delta` (run_gate_m4.py:144), `_B` and `_D` (154), `_flag{al:g}` (156-157, key "0.05"). Denoised copies store Delta and codes only (145-148, `continue`). Verified by reading.
+- The u recomputation is exact: `suspicion_q` casts B and D to float32 before subtracting (scores.py:108-110) and D is stored as float32. A4 correctly does not need the jittered u.
+- The consistency gate (A4.1.3) will not stop on rounding: `pipeline.compact` keeps the full-precision floats of `evidence_from_delta` on the same float32 delta that is saved, so the 1e-9 tolerance is met by identity. A stop would indicate a real discrepancy.
+- Arithmetic: floor(0.20 x 1024) = 204 per tail leaves 616; 511 per tail leaves the two middle values (the median); floor(g/2) per tail leaves m - g or m - g + 1. `seeds.ANALYSES` has 32 names (suite = 31), so `tier3_fusion` is 32 and `SeedSequence(20261028, spawn_key=(32,))` equals the appended child. For SOFT, tau is a jittered calibration score (calibrate.py:92-95) and the unjittered S_cal at tau is consistent because the jitter is below half the minimum gap.
+- No p-value, a fixed contrast list, one shared resample matrix, all cells reported, PS cells in their own table, denoised and text-direction cells excluded: tighter than SAP 7, signed.
+- A no-gate (NONE) and a hard-gate (GM) reference are present for every comparator on the accuracy scale. On the d scale NONE and GM are reported, but only TM-G and TM20 are contrasted with GM (not with NONE). Answer to check (2): neither the 20 percent trim nor the g/2 rule reads as tuned; both are fixed before data. The 20 percent default is E0 but not outcome-driven.
+
+## Findings
+
+### F1 (major). The binding clause is circular and the commit order is not tied to `family.json`
+A4 "binds when (i) committed before `analysis_m4`, (ii) the red team has read it, (iii) the gate-auditor has matched the Tier-3 code to the text before that code is run". A4.1.11 then says the code and its audit are not required before `analysis_m4`, and the code does not exist. So (iii) cannot hold when P becomes visible, and a reader can say Parts 2 and 3 were not yet binding. Separately, nothing requires A4 to precede `family.json`, `ps_frozen.json` or `epred_frozen.json`; M3 is running now. The n-rule, the operating points and PS status could be known to whoever finishes the text, and the label table of A4.2.1 depends on them. The author's firewall statement ("nothing chosen with knowledge of any M3 value") is true now and is not made a condition.
+
+### F2 (major). The contribution list promises a stage that may be "not run", and one bullet overstates M1
+Bullet 5 is "the same for every label" and names the Part 1 comparison. Part 1 is void if A4 is not committed first, stops on any consistency-gate mismatch, and does not run until the auditor matches code that is not yet written. This is plan review item A4 again (a numbered contribution whose Results subsection says "not run"). Bullet 5 also makes a Tier-3 analysis a numbered contribution while A4.1.10 item 1 bars it from title, highlights and conclusion; a conclusion normally restates the contributions. Bullet 4 says the score is "below a one-pass score without fine-tuning (0.581 and 0.607)": on JPEG q is 0.561 [0.547, 0.575] against 0.581 [0.569, 0.593], and those intervals overlap; no paired q-versus-TbV test exists or may be added (plan review A3). Only noise has non-overlapping marginal intervals.
+
+### F3 (major). HARM and MIXED put a claim from a c > b rejection in the title; the card forbids it
+Card v4 section 2, family P row, "Forbidden": "any claim from a rejection with c > b". SAP section 9 allows "GATE-M reduced verification accuracy". A4 follows SAP 9 and builds the HARM and MIXED titles, highlights and abstracts on it ("Gating flagged image tokens lowered ... accuracy") without noting the conflict. One of the two documents is wrong for these labels and A4 does not say which.
+
+### F4 (major). POS-G asserts equivalence and a cause from a non-rejection
+POS-G is triggered by K5 (S-M not rejected) or K6. The title says "but no more than a same-shape random mask", highlight 1 says "as did a same-shape random mask", and 6.1 says "a random mask of the same shape did as well, so the gain belongs to removing a set of that shape, not to the positions the score flagged". SAP 9 allows only "improvement, but not distinguishable from masking the same shape elsewhere"; K5 allows "not attributable to detection beyond mask geometry". A non-rejection at n = 300 is not "did as well" (A4's own Part 1 rule says "never equivalent, never as good as"), and "the gain belongs to" is a causal attribution.
+
+### F5 (major). R3 has no label for a harm on d, and R3-INC would then be false
+R3-INC is "R3; no such rejection". A Holm-adjusted Wilcoxon rejection with GATE-M lowering d is a rejection that is not R3-POS, so it falls into R3-INC, whose abstract says "gating did not change d detectably" and whose 6.1 says the same. That is false in that case. A mixed result under R3 (one corruption up, one down) is also undefined. Under R1/R2 A4 defined HARM and MIXED; the R3 path was left out.
+
+### F6 (major). The POS-M title promises fusion that P does not test, and no title names a model
+"Masked-likelihood token gating before image-text evidence fusion: a preregistered gain ...". P is the image direction alone (no text direction, no fusion). The only fusion test is family B, which can be "not run" or "untestable at ceiling". This is N5 and C4 of my first signature (no fusion claim in title, abstract or highlights unless the fusion run exists) and plan review A4. A4.2.2 item 4 licenses the word on "a P rejection with b > c", which is a statement about the gate, not about fusion. My first signature also required scope in the title (M9, single model); all nine titles say "a unified masked diffusion model" and none names UniDisc or one model.
+
+### F7 (major). Part 1 cannot discriminate, and its comparator set is narrower than its names
+(a) The detector-free rivals are the median and two symmetric trims. The corruption's effect on Delta has a known sign (replaced codes lower the matched caption's advantage), yet no estimator uses it. The "finding against the method" reading can then be reached only by the weakest natural rival, and the omission is fixed now ("not computed"). (b) SOFT discounts only tokens the hard gate already flagged (w = 1 elsewhere, w <= 1 on F = 1), so tokenwise its weights lie between GM's and NONE's. It does not answer plan review A8 (reliability weighting of every token); the contribution list and A4.1.10 call it "a soft reliability weight" without that limit. (c) When the detector is at chance (JPEG AUROC 0.56, noise 0.50), g_i is about 51 for every item, so TM-G is NONE trimmed by about 2.5 percent per tail and TM-G - GM repeats P's own contrast. (d) "Not distinguishable" counts as a finding against the method (A4.1.10), yet at n = 300 the SAP's own MDE is 0.08 to 0.11, and A4 admits the weakness only under R3 (A4.4 item 4). The rule turns low power into a reported negative.
+
+### F8 (major). The mandatory abstract clause is wrong in one case, stronger than its trigger in another, and lets Tier 3 change a P abstract
+(i) For "above GM" the clause says the comparator "was not shown to do worse"; it did better, and A4.1.10 itself calls that a finding against the method. (ii) Which comparator the clause names ("median / trimmed mean") is left free when several qualify. (iii) The R3 sentence "raised d at least as much" is triggered by "upper bound >= 0", which includes an interval such as [-0.3, 0.01] whose point estimate is far below GM. (iv) The clause makes the wording of a P-positive abstract depend on a step-5a Tier-3 result. AD.12 last sentence: "Nothing computed in steps 4 to 9 may change the wording of step 3"; SAP 7: no Tier-3 result enters a claim. A4 inserts step 5a but does not list this clause as an amendment of AD.12.
+
+### F9 (major). Part 1 wording rules contradict each other and AB.1 item 2
+A4.1.10 puts "findings against the method" "in the same paragraph as P". A4.2.2 item 5 says Part 1 may not "explain, qualify or predict" P and appears later "only as separate findings". AB.1 item 2 allows secondary results in Results "not as an explanation of P". A4.1.10 item 4 describes a comparator that beats NONE where GM did not as "a property of mean aggregation under this corruption": that is a causal clause about a P null, drawn from a secondary family.
+
+### F10 (major). D18: the framing part is the right reading, the submission part is a rewrite, and the default is to bind without Shlok
+(a) That "when does input gating help" cannot be a title, highlight or 6.1 opening under a P null follows from AB.1 and from plan review A1; A4 is consistent with it. (b) D18 as recorded (CONFIRM section 7 and "Shlok's answer" item 7) is conditional: submit as a "when does input gating help" article if S2, PS and FOIL are informative; the other branches are a CPU-only note or another venue. A4 replaces the condition with "submit under every complete P label", argues that "informative" is undefined and that a condition would make the venue decision outcome-dependent. That changes Shlok's decision; it is not a reading of it. AB.9 limits the lead's run and cut decisions; it does not limit the owner's submission decision, and "informative" can be defined from the AD.11 status map (run formal, run descriptive, not run, untestable at ceiling) without reading any estimate. (c) Admissible alternative reading, stated because you asked: AB.1 bans causal clauses and the use of PS as a demonstration; it does not ban a question-form framing whose answer is a set of separately labelled family results. A4's stricter bar (the phrase absent from highlights and 6.1) is admissible too. Which one is wanted is Shlok's call. (d) A4.4 item 5 says the outcome book "binds" until he answers, while A4.2.6 says the window for the literal reading closes at `analysis_m4`, and nothing stops `analysis_m4` from running first. "All recommended" accepted a recommendation that did not mention the AB.1 conflict, so it is not an answer to the question A4 now poses.
+
+### F11 (minor). The highlight fallback does not fit
+Counting characters (limit 85, itself E0): POS-M, POS-G, HARM and R3-POS become 88 to 89 with "{k} of 3 corruptions", and R3-INC 87. A two-name X ("JPEG and Gaussian noise") takes POS-M to 93. The stated repair does not repair.
+
+### F12 (minor). NEG: figure and highlight against the claim
+The NEG claim rests on the 90 percent interval lying inside plus or minus 0.05, but the summary figure shows 95 and 98.33 percent intervals with the dashed lines, so a reader sees an interval crossing the line beside an abstract that says exclusion. The highlight "moved matching accuracy by under 5 points" states a bound as if it were the size of a movement.
+
+### F13 (minor). Pin scope and the seeds edit
+`exp_p2/gate/tier3_fusion.py`, `tests/exp_p2/test_tier3_fusion.py` and the `seeds.py` append all fall inside the card's pre-launch scope (`git diff --quiet f2f7b2e1 HEAD -- exp_p2 tools tests`, card row A-1). Committing them before the remaining GPU stages makes every later pre-launch check fail unless a pin row moves first. `seeds.py` is imported by `analysis_m4`, and `meta()` writes `spawn_order` into every analysis output, so appending before `analysis_m4` changes the bytes of the P output file. The fallback seed makes the append unnecessary, and A4 does not say when it may be made.
+
+### F14 (minor). Part 3(b) under AB.9
+A time-only trigger with a logged inequality is admissible. Residual discretion: (i) the freeze (Fri 30 Oct 18:00 IST) is a constant here, but D18 lets the deadline move; a freeze moved after P is visible changes the inequality. (ii) W_S2 may be the constant (8 or 5.2 wall-h) or the smoke-based estimate; the choice is made when P is already visible (card row 6 commits `analysis.json` before row 7). (iii) "Does not invert the AD.8 priority" holds only when the check passes; a crash after FOIL has run leaves FOIL complete and S2 partial, which is the inversion the cut order exists to prevent. The 2 h margin covers one guard stop, and eight crashes are on record since 10-14. (iv) That FOIL has no input from M2-M4 and draws no random numbers is the author's reading of 75 lines (E3 by the author, not audited).
+
+### F15 (minor). Smaller points
+The printed multiplicity sentence contradicts SAP 7 ("no multiplicity statement is made"); A4 says "stricter" without noting it. "About 0.6 would exclude 0" is an expected count for 12 intervals, while the part reports many more. "No Delta distribution from M1-M4 was looked at" is the author's assertion about his own behaviour. The citations for TM20 and the evidential-discounting analogy are E0.
+
+## Answers to the five check items
+
+1. Tier-3 comparators: specified except the construction of the bootstrap index matrix (shape and generator call), which can move a CI in the third decimal. Arrays, order and seeds verified. None can enter P or explain a P null as written in A4.1.1, but F8 and F9 show clauses that let one qualify a P positive and describe a P null.
+2. Forking paths: the 20 percent trim and the g/2 rule are not tuned, and NONE and GM are present for each. The risk is the narrow comparator set (F7), not a tuned one.
+3. Outcome book: no title conflicts with AB.1 or K2 (D0074). It conflicts with the card, SAP 9 and the data in F3, F4, F5, F6; bullet 5 promises a stage that may be "not run" (F2).
+4. D18: F10.
+5. Part 3: (a) signed; (b) F14 and C4-10.
+
+## Signed and not signed
+
+Signed: A4.1.1 to A4.1.9 as specification; A4.1.10 items 1, 3, 6; A4.2.1 labels as definitions for NEG, INC, K1, R3-POS, POS-M and POS-G (conditions, not wording); A4.2.2 items 1 to 7 except the fallback in item 6; A4.2.3 titles, highlights, abstract and 6.1 sentences of NEG, INC, K1 and R3-POS (with F11, F12); A4.2.4 bullets 1, 2, 3, 6; A4.2.5 items 1 to 7; A4.3.1; A4.5.
+Not signed: the binding clause of A4 as written (F1); contribution bullets 4 (the TbV clause) and 5 (F2); HARM and MIXED titles, highlights and abstracts (F3); POS-G title, highlight and 6.1 (F4); R3-INC abstract and 6.1 and the R3 label gap (F5); the POS-M title (F6); A4.1.10 item 2 clause wording, item 4's "property of mean aggregation", item 5, and "same paragraph as P" (F8, F9); A4.2.6 "reading I recommend" and A4.4 item 5 as default-binding (F10); A4.3.2 as written (F14).
+
+## Conditions (dated rows by the lead; all before `analysis_m4` is first run on M4 data unless stated)
+
+- **C4-1.** A4 binds for its specification (Parts 1 to 3) from its commit; condition (iii) gates only the running of the Tier-3 code. A row records the commit time of A4 relative to `family.json`, `ps_frozen.json` and `epred_frozen.json`; if A4 is committed after any of them, the row lists which of their values were visible to whoever finished A4.2.1 to A4.2.5.
+- **C4-2.** Shlok's own sentence on D18, or a dated row "no answer; the AB.1 reading binds and the submission condition of D18 is unchanged", exists before `analysis_m4`. The submission condition ("S2, PS and FOIL informative") is recorded as his decision, with the status-map meaning of "informative" fixed in the same row, or as explicitly dropped by him. A4.4 item 5 (default binding) is struck.
+- **C4-3.** Bullet 5 of A4.2.4 names Part 1 only if Part 1 has run. Bullet 4's TbV comparison is limited to what the intervals support (noise: non-overlapping marginal intervals; JPEG: overlapping; no paired test).
+- **C4-4.** A dated row settles card section 2 ("forbidden: any claim from a rejection with c > b") against SAP 9 ("reduced") for HARM and MIXED; the title, highlight and abstract sentences of those labels are re-signed afterwards.
+- **C4-5.** POS-G uses SAP 9 and K5 wording only; "no more than", "as did", "did as well" and "belongs to" are removed.
+- **C4-6.** R3 gets labels for a harm on d and for mixed directions; R3-INC cannot state "no detectable change" in either case.
+- **C4-7.** "Fusion" is absent from every title unless family B ran and was formal (C4 of the first signature); the title scope phrase names one model.
+- **C4-8.** A4.1.10 items 2 and 5 are re-worded so that an "above GM" comparator is reported as better, the trigger matches the sentence (R3 included), the named comparator is fixed by a rule, and A4 states that it amends the last sentence of AD.12 for this clause (or the clause is struck).
+- **C4-9.** One rule for where Part 1 appears relative to P (the "same paragraph" instruction and the "property of mean aggregation" sentence reconciled with AB.1 item 2 and A4.2.2 item 5). SOFT is named "discounting of the gate-flagged tokens" everywhere. Every "not distinguishable" carries n_d and the minimum detectable difference beside it, and the limits of F7 (a) to (d) are disclosed beside the Part 1 table.
+- **C4-10.** Before the Tier-3 module or the `seeds.py` append is committed, a dated pin row covers both (card section 7). The `seeds.py` append waits until after `analysis_m4` or is not made (fallback seed). For FOIL before S2: the freeze constant and the W_S2 estimator (constant or smoke) are fixed in the rule now, a freeze moved after P is visible does not enter the inequality, and the inversion risk is added to the deviations box.
+- **C4-11.** Minor wording: a highlight fallback that fits 85 characters; the NEG figure shows the interval that carries the claim; SAP 7 "no multiplicity statement" reconciled with the printed sentence.
+
+## What would make me withdraw this signature
+
+- Any Tier-3 number computed or printed before A4 and the C4-1 row are committed, or from a cell, contrast, trim, weight or seed other than those of A4.1.
+- A P, PS, S-M or M4 value read by whoever finishes the A4.2 text before C4-4 to C4-6 are recorded, and then used in an edit.
+- Part 1 run before the auditor's match to A4.1.11, or with a failed consistency gate.
+- Any sentence that calls a P null "explained", "predicted" or "caused" by a comparator, SOFT, PS, S2, B or detection; any title, highlight or conclusion that names Part 1.
+- A "when does input gating help" framing in title, abstract, highlights, conclusion or 6.1 under a P-null label without a dated amendment of AB.1 that I have signed before `analysis_m4`.
+
+## Results that would force rejection of a claim made from A4
+
+- Consistency gate mismatch (A4.1.3): no Part 1 number is valid until the discrepancy is explained against the unit tests.
+- A comparator contrast whose interval excludes 0 in favour of the comparator on a P cell: a finding against the method for MED, TM-G and TM20, and against discarding only for SOFT; never against the detector. A comparator that beats NONE where GM did not is reported under the Tier-3 label as a property of the comparator, not as an account of the P result.
+- A "not distinguishable" interval is not evidence of equivalence and may not be worded as such.
+- POS-G, NEG or INC sentences that exceed SAP 9 wording: the claim they support is invalid as worded.
+- If HARM, MIXED or an R3 harm occurs and C4-4 or C4-6 is unrecorded, no title or highlight can be drawn from it; the P table with the SAP 9 sentence stands.
+
+## Residual risks the signature does not cover
+
+Citations (E0); the 85-character limit (E0, for the venue scout); the claim that FOIL has no random draws or M2-M4 input; the E3 reading of UniDisc in A4.3.1 is mine (plan review B), not reproduced, with the non-strict load unclosed; many intervals with no multiplicity control; a single model; the lead's and the statistician's firewall statements are assertions, not attestations. Judgement, not measured: the most probable labelled outcomes are INC or R3-INC (v3 section 12), so most of this book is about stating a null well. A4 improves that, and the chance of a defensible positive claim stays at about 0.05 to 0.08.
