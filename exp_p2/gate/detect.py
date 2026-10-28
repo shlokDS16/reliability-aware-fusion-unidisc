@@ -98,26 +98,44 @@ def _boot_diff(a: np.ndarray, b: np.ndarray, n_boot: int, seed: int):
     return d, d[idx].mean(axis=1)
 
 
-def candidate_means(rows, cheap=CHEAP) -> dict:
+def candidate_means(rows, cheap=CHEAP, min_n=None) -> dict:
+    """Mean per-item AUROC of every cheap candidate that has a finite value on at least one item. With `min_n` set (SAP A3b.12a item 1, partial M1 pool) a candidate is kept only if its count of
+    finite values is at least `min_n`; `min_n=None` is the old behaviour."""
     cand = [c for c in cheap if any(not np.isnan(r.get(c, np.nan)) for r in rows)]
+    if min_n is not None:
+        cand = [c for c in cand if _n_finite(rows, c) >= min_n]
     return {c: float(np.nanmean([r.get(c, np.nan) for r in rows])) for c in cand}
+
+
+def _n_finite(rows, c) -> int:
+    return int(sum(1 for r in rows if not np.isnan(r.get(c, np.nan))))
 
 
 def split_sign(name: str) -> tuple[str, int]:
     return (name[:-4], -1) if name.endswith("_neg") else (name, 1)
 
 
-def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", cheap=CHEAP, n_boot: int = 10000, seed=None, reselect: bool = False) -> dict:
+def paired_vs_best_cheap(per_item: list[dict], corr: str, target: str = "q", cheap=CHEAP, n_boot: int = 10000, seed=None, reselect: bool = False, min_n=None) -> dict:
     """Per-item AUROC of `target` minus that of the cheap rival with the highest mean AUROC on this corruption (sign included: a sign oracle; SAP A1.2 rule 2); paired bootstrap
-    over items: two-sided bootstrap p, percentile CIs at 95 and 97.5 percent. reselect=True re-selects the rival inside every bootstrap resample (stricter sensitivity)."""
+    over items: two-sided bootstrap p, percentile CIs at 95 and 97.5 percent. reselect=True re-selects the rival inside every bootstrap resample (stricter sensitivity).
+    min_n (SAP A3b.12a items 1 and 3; None = old behaviour): only candidates with at least min_n finite values are eligible, and if fewer than min_n items have a finite value for BOTH the target and the
+    selected rival (in the reselect branch also: fewer than min_n items finite for the target and every eligible candidate) the result is dict(corr, available=False, reason="n < min_n", n=count)."""
     seed = seed if seed is not None else seeds.seed_for("detection_contrast")
     rows = [p[corr] for p in per_item if corr in p]
-    means = candidate_means(rows, cheap) if rows else {}
+    means = candidate_means(rows, cheap, min_n) if rows else {}
     if not rows or not means or not any(not np.isnan(r.get(target, np.nan)) for r in rows):
+        if min_n is not None and rows and not means:
+            return dict(corr=corr, available=False, reason=f"no candidate with n >= {min_n}", n=0)
         return dict(corr=corr, available=False)
     best = max(means, key=means.get)
     a = np.array([r.get(target, np.nan) for r in rows])
     M = {c: np.array([r.get(c, np.nan) for r in rows]) for c in means}
+    if min_n is not None:
+        n_pair = int((~np.isnan(a) & ~np.isnan(M[best])).sum())
+        if reselect:
+            n_pair = min(n_pair, int((~np.isnan(a) & ~np.any(np.isnan(np.stack([M[c] for c in M])), axis=0)).sum()))
+        if n_pair < min_n:
+            return dict(corr=corr, available=False, reason=f"n < {min_n}", n=n_pair)
     if not reselect:
         d, boots = _boot_diff(a, M[best], n_boot, seed)
         diff = float(d.mean())
@@ -144,20 +162,36 @@ def holm_adjust(pvals: dict) -> dict:
     return dict(zip(keys, stats.holm([pvals[k] for k in keys])))
 
 
-def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed=None, reselect: bool = False) -> dict:
+def falsifier(per_item: list[dict], target: str = "q", n_boot: int = 10000, seed=None, reselect: bool = False, min_n=None) -> dict:
     """SAP 2.5 / A1.2: S-D over JPEG q10 and noise 0.10, Holm over m = 2. 'q beats the best cheap baseline' on a corruption iff the Holm-adjusted p <= 0.05 with a positive mean
     difference; the falsifier (spec 7.6) is met if that holds for neither corruption (a significant difference on the negative side therefore also meets it). A corruption
-    without q gets p = 1 and stays in m = 2."""
-    res = {c: paired_vs_best_cheap(per_item, c, target, n_boot=n_boot, seed=seed, reselect=reselect) for c in ("jpeg", "noise")}
+    without q gets p = 1 and stays in m = 2.
+    min_n (SAP A3b.12a item 4; None = old behaviour, `falsified = not wins`): with min_n set, `falsified` is False if `wins` is non-empty, True if both corruptions are available (n >= min_n for
+    the target and the rival) and `wins` is empty, and None ("not evaluated", neither met nor unmet) otherwise; min_n and n per corruption are returned."""
+    res = {c: paired_vs_best_cheap(per_item, c, target, n_boot=n_boot, seed=seed, reselect=reselect, min_n=min_n) for c in ("jpeg", "noise")}
     if not any(r.get("available") for r in res.values()):
-        return dict(per_corruption=res, falsified=None, note="needs q (M1 post-hoc arrays) and a cheap baseline on jpeg and noise")
+        out = dict(per_corruption=res, falsified=None, note="needs q (M1 post-hoc arrays) and a cheap baseline on jpeg and noise")
+        if min_n is not None:
+            out.update(min_n=min_n, n={c: _n_of(r) for c, r in res.items()}, note="not evaluated: n below min_n, or no q / no eligible rival")
+        return out
     adj = holm_adjust({c: (r["p"] if r.get("available") else 1.0) for c, r in res.items()})
     for c, r in res.items():
         r["p_holm"] = adj[c]
     wins = [c for c, r in res.items() if r.get("available") and r["p_holm"] <= 0.05 and r["diff_mean"] > 0]
     worse = [c for c, r in res.items() if r.get("available") and r["p_holm"] <= 0.05 and r["diff_mean"] < 0]
-    return dict(per_corruption=res, falsified=bool(not wins), q_significantly_better_on=wins, q_significantly_worse_on=worse, holm_m=2, reselect=reselect,
-                rule="SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise")
+    out = dict(per_corruption=res, falsified=bool(not wins), q_significantly_better_on=wins, q_significantly_worse_on=worse, holm_m=2, reselect=reselect,
+               rule="SAP 2.5/A1.2: Holm over m = 2; falsifier met when q beats the best cheap rival (sign oracle) on neither JPEG nor noise")
+    if min_n is not None:
+        both = all(r.get("available") for r in res.values())
+        out.update(falsified=(False if wins else (True if both else None)), min_n=min_n, n={c: _n_of(r) for c, r in res.items()})
+        if out["falsified"] is None:
+            out["note"] = "not evaluated: n below min_n"
+        out["rule"] += "; partial pool (SAP A3b.12 rule 5): met only if both corruptions are evaluated (n >= min_n) and neither has a win, 'not evaluated' (None) otherwise"
+    return out
+
+
+def _n_of(r: dict) -> int:
+    return int(r.get("n_items", r.get("n", 0)) or 0)
 
 
 def chance_bar(per_item: list[dict], scores=("plainB", "q"), corrs=("patch", "swap"), n_boot: int = 10000, seed=None) -> dict:
@@ -184,18 +218,22 @@ def chance_bar(per_item: list[dict], scores=("plainB", "q"), corrs=("patch", "sw
                 rule="SAP A2.5: lower 95 percent bound of the mean per-item AUROC > 0.5 for plain-B and q on patch and swap (descriptive level); failure = pipeline audit, nothing tuned")
 
 
-def freeze_rivals(per_item: list[dict], corrs=("jpeg", "noise"), cheap=CHEAP) -> dict:
+def freeze_rivals(per_item: list[dict], corrs=("jpeg", "noise"), cheap=CHEAP, min_n=None) -> dict:
     """detection_frozen.json content (SAP A1.2 rule 5): per corruption the selected rival, its base name, sign and mean AUROC on the M1 items. Frozen after M1 and before M3/M4,
-    tested on the M4 test items (family S-D2). Rarity for S-D2 uses the calibration codefreq (A1.3 N11), recorded here."""
+    tested on the M4 test items (family S-D2). Rarity for S-D2 uses the calibration codefreq (A1.3 N11), recorded here.
+    min_n (SAP A3b.12a item 2; None = old behaviour, entry unchanged): only candidates with at least min_n finite per-item AUROCs on the corruption are eligible; with none the entry is
+    dict(available=False, reason="no candidate with n >= min_n", n_pool=len(rows)); otherwise n_items = the finite count of the selected rival, n_pool = len(rows), all_n = finite count per candidate."""
     out = {}
     for c in corrs:
         rows = [p[c] for p in per_item if c in p]
-        m = candidate_means(rows, cheap) if rows else {}
+        m = candidate_means(rows, cheap, min_n) if rows else {}
         if not m:
-            out[c] = dict(available=False)
+            out[c] = dict(available=False) if min_n is None else dict(available=False, reason=f"no candidate with n >= {min_n}", n_pool=len(rows))
             continue
         best = max(m, key=m.get)
         base, sign = split_sign(best)
         out[c] = dict(available=True, rival=best, base=base, sign=sign, mean_auroc=m[best], n_items=len(rows), all_means=m, label=(baselines.TBV_LABEL if base == "tbv" else None),
                       rarity_source="runs/P2-GATE-M2/codefreq.npy (calibration clean codes)" if base == "rarity" else None)
+        if min_n is not None:
+            out[c].update(n_items=_n_finite(rows, best), n_pool=len(rows), all_n={k: _n_finite(rows, k) for k in m}, min_n=min_n)
     return out

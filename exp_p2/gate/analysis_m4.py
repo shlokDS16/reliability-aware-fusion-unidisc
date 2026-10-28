@@ -341,7 +341,15 @@ def rival_suspicion(frozen: dict, arr, cond: str, codefreq) -> np.ndarray | None
     return sign * v
 
 
-def s_d2(run_dir: Path, rows: list[dict], family, frozen: dict | None, codefreq=None, n_boot: int = 10000) -> dict:
+def frozen_label(frozen_meta: dict | None) -> str:
+    """Label of every S-D2 number (SAP A3b.12 rule 6): which pool the rival was frozen on."""
+    m = frozen_meta or {}
+    if m.get("partial"):
+        return f"rival frozen on the completed prefix of k = {m.get('closed_k')} items (not 200); n_q = {m.get('closed_nq')}; floor n >= {m.get('min_n')} per candidate"
+    return "rival frozen on the complete M1 set (200 items)"
+
+
+def s_d2(run_dir: Path, rows: list[dict], family, frozen: dict | None, codefreq=None, n_boot: int = 10000, frozen_meta: dict | None = None) -> dict:
     """S-D2 (Addendum 1 A1.2 rule 5): per-item AUROC of q minus that of the frozen rival (rival and sign fixed on M1) on the M4 test items at the M4 operating point of
     JPEG and of noise; paired bootstrap p, Holm over m = 2; a corruption with no operating point or no usable rival gets p = 1 and stays in m = 2."""
     from exp_p2.gate import detect
@@ -351,7 +359,7 @@ def s_d2(run_dir: Path, rows: list[dict], family, frozen: dict | None, codefreq=
         fr = (frozen or {}).get(corr) or {}
         k = fm.get(corr)
         if k is None or not fr.get("available"):
-            res[corr] = dict(tested=False, p=1.0, reason="no operating point" if k is None else "no frozen rival")
+            res[corr] = dict(tested=False, p=1.0, reason="no operating point" if k is None else ("no frozen rival" + (f": {fr['reason']}" if fr.get("reason") else "")))
             continue
         qa, ra = [], []
         for r in rows:
@@ -369,14 +377,14 @@ def s_d2(run_dir: Path, rows: list[dict], family, frozen: dict | None, codefreq=
             res[corr] = dict(tested=False, p=1.0, reason="no eligible items", n_eligible=int(d.size))
             continue
         boots = d[np.random.default_rng(seeds.seed_for("s_d2")).integers(0, d.size, size=(n_boot, d.size))].mean(axis=1)
-        res[corr] = dict(tested=True, key=k, rival=fr["rival"], n_eligible=int(d.size), n_excluded=int(len(rows) - d.size), auroc_q=float(np.nanmean(qa)), auroc_rival=float(np.nanmean(ra)),
+        res[corr] = dict(tested=True, key=k, rival=fr["rival"], rival_n_items=fr.get("n_items"), n_eligible=int(d.size), n_excluded=int(len(rows) - d.size), auroc_q=float(np.nanmean(qa)), auroc_rival=float(np.nanmean(ra)),
                          diff_mean=float(d.mean()), p=detect.bootstrap_p(boots), ci95=[float(np.quantile(boots, .025)), float(np.quantile(boots, .975))],
                          ci9833=[float(np.quantile(boots, .00835)), float(np.quantile(boots, .99165))], label="at the M4 rung " + k)
     adj = detect.holm_adjust({c: res[c]["p"] for c in res})
     for c in res:
         res[c]["p_holm"] = adj[c]
         res[c]["q_beats_frozen_rival"] = bool(res[c].get("tested") and res[c]["p_holm"] <= 0.05 and res[c]["diff_mean"] > 0)
-    return dict(per_corruption=res, holm_m=2)
+    return dict(per_corruption=res, holm_m=2, rival_frozen_label=frozen_label(frozen_meta))
 
 
 def mechanism(rows: list[dict], key: str, n_boot=10000) -> dict:
@@ -559,8 +567,9 @@ def selftest(n_sim: int = 20000, seed: int = 1) -> dict:
 
 # ------------------------------------------------------------------------------------------------ driver
 def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict | None = None, codefreq=None, *, planned: list[dict] | None = None, m2_dir: Path | None = None,
-        split_reps: int = 0, allow_partial: bool = False, rule: str = "R1", excluded_idx=()) -> dict:
-    """family: list of family.json entries (or of condition keys). endpoint: 'd' (SAP default, Addendum 1) or 'z'. planned: the committed ordered list of test items (SAP 8.1/8.2)."""
+        split_reps: int = 0, allow_partial: bool = False, rule: str = "R1", excluded_idx=(), frozen_meta: dict | None = None) -> dict:
+    """frozen_meta: the partial / closed_k / closed_nq / min_n fields of detection_frozen.json (SAP A3b.12a item 7), copied into analysis.json and used in the S-D2 label.
+    family: list of family.json entries (or of condition keys). endpoint: 'd' (SAP default, Addendum 1) or 'z'. planned: the committed ordered list of test items (SAP 8.1/8.2)."""
     run_dir = Path(run_dir)
     rows, n_dup = load_items(run_dir)
     fm = _family_map(family)
@@ -579,7 +588,7 @@ def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict |
     res = dict(meta=dict(seeds.meta(), allow_partial=bool(allow_partial)), tested_by_primary=wording(rule), caveats=caveats, rule=rule, primary_endpoint="d (z*), Wilcoxon" if rule == "R3" else "Y, exact McNemar",
                negative_available=bool(rule in ("R1", "R2")), n_items=len(rows), family=keys, endpoint=endpoint, completeness=comp, primary=prim,
                secondary_y=(dict(y_family, label="secondary under R3") if rule == "R3" else None), outcome=outcome_reading(prim, rule, family), s_m=s_m(rows, family, prim, n_boot),
-               c1_test=c1mod.c1(c1mod.ys_from_rows(rows, "test"), "test (look 3, analysis step)"), s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot),
+               c1_test=c1mod.c1(c1mod.ys_from_rows(rows, "test"), "test (look 3, analysis step)"), s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot, frozen_meta), frozen_meta=frozen_meta,
                ps=ps_family(rows, rule, family, n_boot), mechanism={k: mechanism(rows, k, n_boot) for k in keys + (sanity_present(rows) or ["patch"])}, calibration=calibration(run_dir, rows, keys, n_boot, m2_dir=m2_dir, split_reps=split_reps))
     if rule == "R3":
         res["s_m"]["uninformative_under_R3"] = True                                                  # stated in advance (red team N2)
@@ -621,7 +630,9 @@ def main(argv=None) -> int:
             return 2
     from exp_p2.gate import baselines, folds
     cp = Path(a.codefreq)
-    frozen = json.loads(fp.read_text(encoding="utf8"))["frozen"]
+    fdoc = json.loads(fp.read_text(encoding="utf8"))
+    frozen = fdoc["frozen"]
+    frozen_meta = {k: fdoc.get(k) for k in ("partial", "closed_k", "closed_nq", "min_n")}
     codefreq = baselines.CodeFreq(np.load(cp)) if cp.exists() else None
     test_fold = int(fam.get("n_rule", {}).get("test_fold", 300))
     planned = folds.test_items(json.loads(folds.folds_path().read_text(encoding="utf8")), test_fold if test_fold > 300 else None)[:test_fold]
@@ -633,7 +644,7 @@ def main(argv=None) -> int:
         xp = Path(common.RUNS) / a.run_id / "token_exclusions.json"
         ex = json.loads(xp.read_text(encoding="utf8"))["excluded"] if xp.exists() else {}
         res = run(Path(common.RUNS) / a.run_id, fam["family"], a.boot, a.endpoint, frozen, codefreq, planned=planned, m2_dir=Path(common.RUNS) / a.m2_run,
-                  split_reps=a.split_reps, allow_partial=a.allow_partial, rule=rule, excluded_idx=list(ex.get("test", [])) + list(ex.get("test_ext", [])))
+                  split_reps=a.split_reps, allow_partial=a.allow_partial, rule=rule, excluded_idx=list(ex.get("test", [])) + list(ex.get("test_ext", [])), frozen_meta=frozen_meta)
     except (PartialRun, PipelineDefect) as e:
         print("STOP:", e, file=sys.stderr)
         return 3
