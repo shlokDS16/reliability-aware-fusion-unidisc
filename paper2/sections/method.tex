@@ -5,6 +5,7 @@
 % (groups Gamma_k, sample count n_draw, empirical calibration risk F_cal, SNR flag probabilities phi_0, phi_1); crosswalk in Appendix A.
 % Propositions: Prop. 1 (calibration) is conformal risk control applied, not a contribution; the marginalisation property is
 % the standard denoiser property, not a contribution (must-not-claim items 5 and 6).
+% Prop. 2 (correlated-token gating) is theory (D0078, D0079); it is never used to explain an E-pred result; Props. 1 and 3 of the theory addendum are not used here.
 
 This section defines the notation, the scores, the calibrated gate, the evidence statistic and seven algorithms.
 Each algorithm calls the earlier ones, and Algorithm~\ref{alg:gate} composes all of them.
@@ -56,6 +57,7 @@ $d_R$, $z_R$ & size-normalised evidence ratio and evidence $z$-score over $R$ (E
 $S_r$, $n_{\rm draw}$ & number of re-infill steps and of independent re-infill draws \\
 $S$, $\rho$, $\mu,\sigma^2$, $\mu_c,\sigma^2_c$ & additive statistic $\sum_jI_j\Delta_j$; corrupted fraction; mean and variance of $\Delta_j$ on clean and on corrupted tokens (Eqs.~\ref{eq:mean}--\ref{eq:snr}) \\
 $\phi_0$, $\phi_1$ & probability that a clean, respectively a corrupted, token is flagged in the signal-to-noise analysis; $\hat\phi_0,\hat\phi_1$ their observed values (called $\alpha$, $\beta$, $\alpha_{\rm obs}$, $\beta_{\rm obs}$ in the preregistration and the code) \\
+$\gamma_0$, $\gamma_1$, $\gamma_{01}$ & correlation of $\Delta_j$ and $\Delta_k$, $j\neq k$, for two clean tokens, two corrupted tokens, and one of each (Proposition~\ref{prop:snrcorr}; theory only) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -332,6 +334,70 @@ The protocol estimates $\rho,\mu,\sigma^2,\mu_c,\sigma_c^2$ and the observed fla
 the per-token terms, and reports in how many corruptions the sign of the plug-in change of the ratio agrees with the sign of the
 observed net accuracy difference (descriptive family E-pred, Section~\ref{ssec:families}); it is not a test and enters no claim
 about the primary result.
+E-pred uses Eqs.~\eqref{eq:mean}--\eqref{eq:var} as committed, and Proposition~\ref{prop:snrcorr} below is neither used by it nor
+used to explain or interpret any E-pred result, agreeing or not.
+
+\paragraph{Correlated tokens.}\label{par:snrcorr}
+Eqs.~\eqref{eq:mean}--\eqref{eq:snr} treat the per-token terms as independent, which is an approximation for image tokens.
+The following statement replaces independence by an exchangeable correlation within and between the two classes of tokens.
+It is theory under stated assumptions and is not evaluated on the model.
+The new symbols are $\gamma_0$, $\gamma_1$ and $\gamma_{01}$, the correlations of two clean, two corrupted, and one clean and one
+corrupted token.
+
+\begin{proposition}[withholding with exchangeably correlated tokens]\label{prop:snrcorr}
+Condition on the corruption labels, so that $(1-\rho)m$ tokens are clean and $\rho m$ are corrupted, with the moments
+$\mu,\sigma^2,\mu_c,\sigma_c^2$ and the keep probabilities $1-\phi_0$, $1-\phi_1$ of Eqs.~\eqref{eq:mean}--\eqref{eq:var}.
+Assume (a) that for $j\neq k$ the correlation of $\Delta_j$ and $\Delta_k$ is $\gamma_0$ if both tokens are clean, $\gamma_1$ if both
+are corrupted and $\gamma_{01}$ otherwise, with values for which the covariance matrix is positive semi-definite; and (b) that the
+keep indicators $I_j$ are independent of each other and of every $\Delta_k$.
+Then $\E S$ is given by Eq.~\eqref{eq:mean}, and, under (a) and (b),
+\begin{equation}
+\begin{aligned}
+\Var S={}&V+(1-\rho)m\big((1-\rho)m-1\big)(1-\phi_0)^2\gamma_0\sigma^2\\
+&+\rho m(\rho m-1)(1-\phi_1)^2\gamma_1\sigma_c^2\\
+&+2\rho(1-\rho)m^2(1-\phi_0)(1-\phi_1)\gamma_{01}\sigma\sigma_c,
+\end{aligned}
+\label{eq:varcorr}
+\end{equation}
+where $V$ is the right side of Eq.~\eqref{eq:var}.
+If moreover $\mu_c=0$ and $\E S>0$ with and without the gate, the gate raises $\E S/\sqrt{\Var S}$ if and only if
+\begin{equation}
+\begin{aligned}
+&\rho\,\sigma_c^2\Big[(\phi_1-2\phi_0+\phi_0^2)\\
+&\qquad+(\rho m-1)\,\gamma_1\,(\phi_1-\phi_0)(2-\phi_0-\phi_1)\Big]\\
+&\quad+2\rho(1-\rho)\,m\,\gamma_{01}\,\sigma\sigma_c\,(1-\phi_0)(\phi_1-\phi_0)\\
+&\qquad>\;(1-\rho)\,\phi_0(1-\phi_0)\,(\sigma^2+\mu^2).
+\end{aligned}
+\label{eq:snrcorr}
+\end{equation}
+Consequently:
+(i) $\gamma_0$ does not enter Eq.~\eqref{eq:snrcorr}, and at $\gamma_1=\gamma_{01}=0$ it is Eq.~\eqref{eq:snr};
+(ii) a gate with $\phi_1=\phi_0$, such as a random gate, lowers the ratio for every admissible correlation, and if $\gamma_{01}\ge0$ every
+gate with $\phi_1\le\phi_0$ lowers it;
+(iii) where $\phi_1>\phi_0$, a larger $\gamma_1$ or $\gamma_{01}$ can only turn a decrease of the ratio into an increase, so positive
+correlation among corrupted tokens, or between clean and corrupted tokens, enlarges the region of $(\phi_0,\phi_1)$ in which the gate
+raises the ratio, and as $(\rho m-1)\gamma_1\to\infty$ that region tends to $\{\phi_1>\phi_0\}$;
+(iv) if $\gamma_{01}<0$, a gate that flags only clean tokens can raise the ratio;
+(v) unlike Eq.~\eqref{eq:snr}, the condition depends on $m$.
+\end{proposition}
+
+\noindent\emph{Proof sketch.} Each of the $m(m-1)$ ordered pairs of distinct tokens adds $\E I_j\,\E I_k\,\mathrm{Cov}(\Delta_j,\Delta_k)$
+to $\Var S$, which gives the three correlation terms of Eq.~\eqref{eq:varcorr}.
+With $\mu_c=0$ the gate multiplies $\E S$ by $1-\phi_0$, so it raises the ratio if and only if
+$(1-\phi_0)^2\,\Var S|_{\phi_0=\phi_1=0}>\Var S$; the clean-pair terms scale by $(1-\phi_0)^2$ on both sides and cancel, and the
+remaining terms, divided by $m$, give Eq.~\eqref{eq:snrcorr}.
+Appendix~\ref{app:snrcorr} gives the full proof. \qed
+
+At zero correlation the statement is the independent-token analysis above: Eq.~\eqref{eq:varcorr} reduces to Eq.~\eqref{eq:var} and
+Eq.~\eqref{eq:snrcorr} to Eq.~\eqref{eq:snr}.
+Correlation therefore moves the gating frontier in the way (ii)--(iv) state, and independence is an approximation whose effect on the
+frontier is of that kind and not of a fixed sign.
+The ratio in Proposition~\ref{prop:snrcorr} is the signal-to-noise ratio of the sum.
+If the per-token terms are jointly Gaussian, the accuracy $P(S>0)$ given the flags is $\Phi$ of the conditional ratio, which the
+unconditional ratio approximates; without joint Gaussianity no statement about accuracy follows, and a gate can raise the ratio while
+lowering the accuracy.
+Assumption (b) is an approximation for GATE, whose flags are computed from the same token values as the evidence.
+With correlation the ratio no longer grows like $\sqrt m$: it tends to a limit set by the shared component of the per-token terms.
 
 \subsection{Text-direction evidence and conditioning arms}\label{ssec:text}
 The text direction scores the caption tokens given the image.
@@ -406,9 +472,11 @@ divided by $\sqrt{2+2\hat r}$, where $\hat r$ is the calibration correlation;
 \end{equation}
 with the weights fitted on pairs disjoint from the test pairs and frozen before the test fold.
 The fusion therefore has two fitted weights, which is why the paper says ``no network finetuning'' and not ``training-free''.
-The sum of per-token log-likelihood ratios in Eq.~\eqref{eq:delta} is the naive-Bayes rule of distributed detection~\cite{chair1986optimal},
-which is optimal for sources that are independent given the hypothesis; image tokens are not, so the rule is used here as a
-standard statistic and not as an optimal one.
+The sum of per-token log-likelihood ratios in Eq.~\eqref{eq:delta} is the fusion rule of distributed detection~\cite{chair1986optimal}, which
+equals the global log-likelihood ratio only for sources that are independent given the hypothesis.
+Image tokens are not independent, so independence is an approximation here; Proposition~\ref{prop:snrcorr} states how correlation
+moves the gating frontier, and it does not make the sum optimal.
+The sum is used as a standard statistic and not as an optimal one.
 Whether a fusion gain can be tested depends on the clean accuracy of the best single direction (Section~\ref{sec:protocol}).
 
 \begin{algorithm}[t]

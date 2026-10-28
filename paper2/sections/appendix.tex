@@ -1,5 +1,6 @@
 % appendix.tex -- Appendix A: preregistration record (pins, audit record, families, deviations, symbol crosswalk).
 %                 Appendix B: evidence that UniDisc's denoiser has no time input in the released configuration.
+%                 Appendix D: proof of Proposition 2 (correlated-token gating; theory addendum r1, D0078; check log runs/P2-THEORY-CHECK).
 % Sources: PREREG-GATE-v4-2026-10-28.md sections 1, 2, 4.1, 4.2, 4.4, 9; SAP-ADDENDUM-A4-2026-10-28.md (r1) A4.3.1, A4.5;
 % REDTEAM-P2-PLAN.md section B; runs/P2-UNIDISC-KEYCHECK/README.md. Hashes are copied from the card, not recomputed here.
 
@@ -217,3 +218,55 @@ Runs go in short checkpointed chunks under a guard that stops on memory, tempera
 abort ends the stage and is not retried until reviewed.
 % run: P2-PROBE-02
 An earlier detection pilot stopped after 20 complete items when the GPU session failed.
+
+\section{Proof of Proposition~\ref{prop:snrcorr}}\label{app:snrcorr}
+Write $m_0=(1-\rho)m$ and $m_1=\rho m$ for the numbers of clean and corrupted tokens, $k_0=1-\phi_0$ and $k_1=1-\phi_1$ for the keep
+probabilities, and $z_j\in\{0,1\}$ for the label of token $j$, so that $\E\Delta_j$ is $\mu$ or $\mu_c$ and $\Var\Delta_j$ is $\sigma^2$ or
+$\sigma_c^2$.
+The exchangeable block covariance of assumption (a) is positive semi-definite if and only if $\gamma_0\ge-1/(m_0-1)$,
+$\gamma_1\ge-1/(m_1-1)$, $\gamma_0,\gamma_1\le1$ and $\gamma_{01}^2\,m_0m_1\le\{1+(m_0-1)\gamma_0\}\{1+(m_1-1)\gamma_1\}$.
+
+\paragraph{Variance.}
+By assumption (b), $I_j$ is independent of $\Delta_j$, so
+$\Var(I_j\Delta_j)=k(\sigma_z^2+\mu_z^2)-k^2\mu_z^2=k\sigma_z^2+k(1-k)\mu_z^2$ with $k=k_{z_j}$, which are the terms of Eq.~\eqref{eq:var}.
+For $j\neq k$, again by (b),
+$\mathrm{Cov}(I_j\Delta_j,I_k\Delta_k)=\E I_j\,\E I_k\,\E[\Delta_j\Delta_k]-\E I_j\,\E I_k\,\E\Delta_j\,\E\Delta_k=k_{z_j}k_{z_k}\,\mathrm{Cov}(\Delta_j,\Delta_k)$.
+There are $m_0(m_0-1)$ ordered clean pairs with covariance $\gamma_0\sigma^2$, $m_1(m_1-1)$ ordered corrupted pairs with covariance
+$\gamma_1\sigma_c^2$ and $2m_0m_1$ ordered mixed pairs with covariance $\gamma_{01}\sigma\sigma_c$, which gives Eq.~\eqref{eq:varcorr}.
+
+\paragraph{Condition.}
+Let $V_g$ be Eq.~\eqref{eq:varcorr} at $(\phi_0,\phi_1)$ and $V_0$ its value at $\phi_0=\phi_1=0$.
+With $\mu_c=0$, $\E S=m_0k_0\mu$ with the gate and $m_0\mu$ without it, so, both being positive, the gate raises the ratio if and only if
+$k_0^2V_0>V_g$.
+Collect $k_0^2V_0-V_g$ by type of term.
+The clean terms are
+$k_0^2m_0\sigma^2\{1+(m_0-1)\gamma_0\}-m_0k_0(\sigma^2+\phi_0\mu^2)-m_0(m_0-1)k_0^2\gamma_0\sigma^2=-m_0k_0\phi_0(\sigma^2+\mu^2)$,
+in which the $\gamma_0$ terms cancel.
+The corrupted terms are $m_1\sigma_c^2\{(k_0^2-k_1)+(m_1-1)\gamma_1(k_0^2-k_1^2)\}$, with $k_0^2-k_1=\phi_1-2\phi_0+\phi_0^2$ and
+$k_0^2-k_1^2=(\phi_1-\phi_0)(2-\phi_0-\phi_1)$.
+The mixed terms are $2m_0m_1\gamma_{01}\sigma\sigma_c\,k_0(k_0-k_1)$, with $k_0-k_1=\phi_1-\phi_0$.
+Dividing the sum by $m$ gives Eq.~\eqref{eq:snrcorr}.
+
+\paragraph{Consequences.}
+(i) is read off Eq.~\eqref{eq:snrcorr}.
+(ii) At $\phi_1=\phi_0\in(0,1)$ every correlation term vanishes and the left side is $\rho\sigma_c^2(\phi_0^2-\phi_0)<0$, below the positive
+right side.
+For $\phi_1\le\phi_0$, let $G=(\rho m-1)\gamma_1$, so that $G\ge-1$ by positive semi-definiteness.
+The bracket $(\phi_1-2\phi_0+\phi_0^2)+G(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ is linear in $G$; it equals
+$\phi_1-2\phi_0+\phi_0^2\le-\phi_0(1-\phi_0)$ at $G=0$, equals $-\phi_1(1-\phi_1)\le0$ at $G=-1$, and does not increase for $G\ge0$; hence it is
+at most $0$.
+If $\gamma_{01}\ge0$ the mixed term is at most $0$ as well, while the right side is positive for $\phi_0\in(0,1)$.
+(iii) The derivatives of the left side with respect to $\gamma_1$ and $\gamma_{01}$ are
+$\rho\sigma_c^2(\rho m-1)(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ and $2\rho(1-\rho)m\sigma\sigma_c(1-\phi_0)(\phi_1-\phi_0)$, both positive when
+$\phi_1>\phi_0$ and $\rho m>1$, and the right side does not depend on $\gamma_1$ or $\gamma_{01}$.
+For fixed $\phi_1>\phi_0$ the $\gamma_1$ term grows without bound with $(\rho m-1)\gamma_1$, which gives the limit.
+With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, Eq.~\eqref{eq:snrcorr} reads
+$Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
+$\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$); as $G\to0$ this tends to the
+boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of Eq.~\eqref{eq:snr}.
+(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms.
+% run: P2-THEORY-CHECK (check D4)
+An instance with a positive definite covariance is $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$, $\mu=0.1$, $\mu_c=0$,
+$\sigma^2=\sigma_c^2=1$, for which the smallest eigenvalue of the correlation matrix is 0.9500 and the ratio rises from 0.4892 without a
+gate to 0.5080 with the gate $(\phi_0,\phi_1)=(0.3,0)$; the instance is an illustration of the algebra and not an estimate from the model.
+(v) $m$ enters Eq.~\eqref{eq:snrcorr} through $\rho m-1$ and $m$ whenever $\gamma_1\neq0$ or $\gamma_{01}\neq0$. \qed
