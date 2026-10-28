@@ -1,13 +1,13 @@
 """Tier-3 fusion comparators of Paper 2 / GATE (SAP Addendum A4 r1, section A4.1; red-team conditions C4-9 and C4-10). Exploratory, CPU only, no model.
 
-    python -m exp_p2.gate.comparators run --run-id P2-GATE-M4 --cal-run P2-GATE-M2 [--family-run P2-GATE-M3]
+    python -m exp_p2.gate.tier3_fusion run --run-id P2-GATE-M4 --cal-run P2-GATE-M2 [--family-run P2-GATE-M3]
 
 Question (A4.1.1): on the same per-token evidence Delta_j and the same decision rule as family P, does the hard gate GATE-M give a different image-direction
 verification accuracy from (a) detector-free robust combiners (MED, TM-G, TM20), (b) discounting of the gate-flagged tokens (SOFT-G) and (c) reliability weighting of
 every token by the gate's own score (SOFT-A)?  Label: Tier 3, exploratory. Confidence intervals only: NO p-value is computed for any contrast; no multiplicity claim.
 
 Order (A4.1.9): runs only after runs/<run>/analysis.json with the P section is committed (this module refuses before it opens items.jsonl or any array of the run),
-after the consistency gate (A4.1.3) passed on every item of every cell. Output runs/<run>/comparators.json is write-once and byte-identical on a recomputation.
+after the consistency gate (A4.1.3) passed on every item of every cell. Output runs/<run>/tier3_fusion.json is write-once and byte-identical on a recomputation.
 Seeds (A4.1.7, C4-10): seeds.py is NOT edited; the stream is SeedSequence(20261028, spawn_key=(32,)) spawned into 6 slots (clean, jpeg, noise, splice, patch, swap).
 Specification section map: A4.1.2 load_cell / complete case, A4.1.3 consistency_problems, A4.1.4 item_margins, A4.1.5 CalPool, A4.1.6 accuracy_contrasts,
 A4.1.7 bootstrap_interval / cell_seed_sequence, A4.1.8 d_control, A4.1.9 require_committed / run, A4.1.10 reading / counts_against."""
@@ -31,7 +31,7 @@ sys.path.insert(0, str(ROOT))
 from exp_p2 import common                                                          # noqa: E402
 from exp_p2.gate import analysis_m4, artifacts, calibrate as cal, config, evidence, fit_threshold, scores, seeds     # noqa: E402
 
-OUT_NAME = "comparators.json"
+OUT_NAME = "tier3_fusion.json"
 ALPHA_KEY = f"{config.ALPHA_PRIMARY:g}"                      # "0.05": flag arrays are `<cond>_flag0.05`, summaries `img["gate0.05"]`, `gate["0.05"]`
 M_TOKENS = 1024                                              # tokens per item (32 x 32 map); A4.1.2 complete case
 TM20_FRACTION = 0.20                                         # A4.1.4 TM20: k = floor(0.20 m) = 204 per tail
@@ -479,9 +479,9 @@ def dumps(res: dict) -> str:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(prog="python -m exp_p2.gate.comparators", description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(prog="python -m exp_p2.gate.tier3_fusion", description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    r = sub.add_parser("run", help="compute runs/<run-id>/comparators.json (write-once)")
+    r = sub.add_parser("run", help="compute runs/<run-id>/tier3_fusion.json (write-once)")
     r.add_argument("--run-id", default="P2-GATE-M4")
     r.add_argument("--cal-run", default="P2-GATE-M2")
     r.add_argument("--family-run", default="P2-GATE-M3")

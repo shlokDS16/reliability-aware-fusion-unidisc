@@ -12,9 +12,9 @@ coverage: >
   runs/P2-GATE-M4/items.jsonl and runs/P2-GATE-M4/arrays were NOT opened (the worktree has no such files; the module also refuses before it opens them). No M2/M3/M4 outcome value
   was read. Tests use synthetic fixtures in a temporary directory and a temporary git repository only. The module has NOT been run on real data.
 claims:
-  - statement: "All 31 tests of tests/exp_p2/test_gate_comparators.py pass on CPU (about 16 s)"
+  - statement: "All 31 tests of tests/exp_p2/test_gate_tier3_fusion.py pass on CPU (about 16 s)"
     status: supported
-    evidence: "python -m pytest tests/exp_p2/test_gate_comparators.py -q (31 passed)"
+    evidence: "python -m pytest tests/exp_p2/test_gate_tier3_fusion.py -q (31 passed)"
     level: E4
     confidence: 0.95
   - statement: "The module implements A4.1 as written; ambiguities are listed below, none resolved by inventing a parameter"
@@ -25,21 +25,21 @@ claims:
 competing_explanations: []
 unknowns:
   - behaviour on the real M4 arrays (never read)
-  - whether the lead wants the file name tier3_fusion (spec) or comparators (brief)
+  - none open on naming (resolved to the SAP names)
 next_test: {hypothesis: "none (implementation)", intervention: "gate-auditor delta check of the module against A4.1, then a dated pin row (C4-10)", primary_metric: "none", falsifier: "none", gpu_hours: 0}
 ```
 
 # Implementation report: Tier-3 comparators (A4.1)
 
 ## Files (all new; no existing file under `exp_p2/`, `tools/` or `tests/` was modified)
-- `exp_p2/gate/comparators.py` (module and CLI)
-- `tests/exp_p2/test_gate_comparators.py` (31 tests, synthetic data only)
+- `exp_p2/gate/tier3_fusion.py` (module and CLI)
+- `tests/exp_p2/test_gate_tier3_fusion.py` (31 tests, synthetic data only)
 - this report
 
 Not touched: `exp_p2/gate/seeds.py` (A4 r1: no append), `epred_fit.py`, `theory.py`, `tests/exp_p2/test_gate_epred_fit.py`, `exp_p2/omni/checks.py`, `tools/gpu_guard.py`, `analysis_m4.py`, `run_gate_m4.py`, `fit_threshold.py`. Reused without change: `analysis_m4.load_items / corr_of / SANITY_CONDS`, `evidence.evidence_from_delta`, `scores.suspicion_q`, `fit_threshold.suspicion_from_arrays`, `calibrate.ids_hash / Threshold`, `artifacts.write_once`, `common.RUNS / read_jsonl`, `seeds.ROOT_SEED`.
 
 ## CLI
-`python -m exp_p2.gate.comparators run --run-id P2-GATE-M4 --cal-run P2-GATE-M2 [--family-run P2-GATE-M3]`. Exit 0 written; exit 2 refusal or write-once collision (reason on stderr); exit 3 consistency-gate failure (A4.1.3, stderr). Output `runs/<run-id>/comparators.json`, write-once through `artifacts.write_once` (force never passed), no timestamp or git SHA inside, so a recomputation is byte-identical. Printed on success: the path, the cells, the number of intervals and "no multiplicity adjustment (SAP 7)".
+`python -m exp_p2.gate.tier3_fusion run --run-id P2-GATE-M4 --cal-run P2-GATE-M2 [--family-run P2-GATE-M3]`. Exit 0 written; exit 2 refusal or write-once collision (reason on stderr); exit 3 consistency-gate failure (A4.1.3, stderr). Output `runs/<run-id>/tier3_fusion.json`, write-once through `artifacts.write_once` (force never passed), no timestamp or git SHA inside, so a recomputation is byte-identical. Printed on success: the path, the cells, the number of intervals and "no multiplicity adjustment (SAP 7)".
 
 ## Spec-to-code map
 | Spec | Code |
@@ -56,12 +56,12 @@ Not touched: `exp_p2/gate/seeds.py` (A4 r1: no append), `epred_fit.py`, `theory.
 | A4.1.10 reading | `reading` (above / below / not_distinguishable), `counts_against` for MED, TM-G, TM20 (above = against the method; not distinguishable = against added value only if MDD <= 0.05, else "uninformative at this n") and SOFT-G, SOFT-A (above = against discarding; not distinguishable = discarding and discounting / weighting not distinguishable), emitted only for "minus GM" on P cells; the limits (a) to (d) are written into the output (`limits`) |
 | A4.1.11 self-tests | all listed self-tests are in the test file (see below) |
 
-## Tests (tests/exp_p2/test_gate_comparators.py)
+## Tests (tests/exp_p2/test_gate_tier3_fusion.py)
 Arms on hand-computed fixtures (m = 8: median 1.5, TM20 7/6, TM-G 1.25 at g = 4 and g = 5, GM 12/7; weights on a 10-token calibration pool: S(tau)=0.3, w^G = 1, 2/3, 1/3, 0, 1; w^A = 2/11, 1, 6/11, 8/11; SOFT-G = 5/2); NONE and GM equal `evidence_from_delta`; TM-G with g <= 1 equals NONE exactly; trimmed mean with 511 per tail equals MED at m = 1024; TM20 removes 204 per tail; SOFT-G with no flags equals NONE and with S_cal(tau) = 0 equals GM; weight ranges and monotonicity; ties and empty sets (also at cell level, counts); consistency gate passes, and stops on an injected y, mean (beyond 1e-9), n_flag or missing summary, and at CLI level (exit 3, no output file); refusal (no analysis.json, untracked, staged only, modified after commit, no P section) and that no M4 or M2 rows are read before the refusal; refusal on item-count, family or calibration-hash mismatch; write-once; bootstrap determinism by seed and slot, seed slots equal the spawn child 32, slot independence when a cell is absent; MDD on a known SD (hand-computed idx matrix); three-way reading and `counts_against`; d control by hand incl. drops; incomplete-case exclusions with reasons; full CLI end to end; byte-identical recomputation; no p-value key in the output and no test function imported or called.
 Not run: the full suite (CPU shared with the running GPU stage). No existing test was run, since no existing file changed.
 
 ## Ambiguities (most literal reading implemented; none resolved by inventing a parameter)
-1. **Names.** A4.1.11 names `exp_p2/gate/tier3_fusion.py`, CLI `--run-id --family-run --cal-run`, output `tier3_fusion.json`, test `test_tier3_fusion.py`. The brief asks for `comparators.py`, `comparators run --run-id --cal-run`, `comparators.json`, `test_gate_comparators.py`; the brief was followed. `--family-run` (default `P2-GATE-M3`) is an optional extra so the spec's family source is reachable; the requested call works with defaults. The lead should reconcile the file name with SAP A4.1.9 ("tier3_fusion.json") and the A4.1.11 pin row.
+1. **Names (resolved).** The first commit used the brief's names (comparators.py, comparators.json, test_gate_comparators.py). On the coordinator's instruction the SAP wins: module `exp_p2/gate/tier3_fusion.py`, output `runs/<run-id>/tier3_fusion.json`, test `tests/exp_p2/test_gate_tier3_fusion.py`, CLI `python -m exp_p2.gate.tier3_fusion run --run-id P2-GATE-M4 --cal-run P2-GATE-M2 --family-run P2-GATE-M3` (`--family-run` default `P2-GATE-M3`). A4.1.11 prints the CLI without the word `run`; the `run` subcommand is kept as the coordinator wrote it, so the SAP form without `run` is not accepted (the lead may drop the subcommand).
 2. **"Committed".** Implemented as git-tracked and clean in the repository that contains the file (same test as `foil.require_committed`, but repository found from the file). It checks that `analysis.json` has a `primary.per_corruption`; it cannot check "P section committed before step 4/5" order.
 3. **Extra consistency checks** not named in A4.1: `len(items.jsonl rows) == analysis.json n_items` ("exactly those analysis_m4 analysed") and `family.json` keys equal `analysis.json` `family`. Either mismatch refuses. Remove if unwanted.
 4. **Cells.** P cells come from `family.json`; PS cells from `ps_frozen.json` `params.sanity_order` (falls back to `("patch","swap")` if the file is absent) intersected with the conditions present in the rows; absent ones are listed in `not_run_ps_cells`. The seed slot of a P cell is its `corruption` field in `family.json`.

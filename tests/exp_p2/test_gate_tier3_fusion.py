@@ -1,4 +1,4 @@
-"""Tier-3 comparators (SAP A4.1, exp_p2/gate/comparators.py): each arm on hand-computable fixtures, the A4.1.3 consistency gate, the A4.1.9 refusal, write-once, bootstrap
+"""Tier-3 comparators (SAP A4.1, exp_p2/gate/tier3_fusion.py): each arm on hand-computable fixtures, the A4.1.3 consistency gate, the A4.1.9 refusal, write-once, bootstrap
 determinism by seed, MDD, the trimming control on d, and that no p-value is produced. SYNTHETIC data only (a temporary run directory and a temporary git repository); no real
 M2, M3 or M4 file is read. CPU only."""
 import json
@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import analysis_m4, comparators as C, config, evidence, fit_threshold, pipeline, scores, seeds     # noqa: E402
+from exp_p2.gate import analysis_m4, tier3_fusion as C, config, evidence, fit_threshold, pipeline, scores, seeds     # noqa: E402
 
 M = C.M_TOKENS
 AK = C.ALPHA_KEY
@@ -349,7 +349,7 @@ def test_end_to_end_cells_arms_and_no_p_value(world, capsys):
 
 def test_module_imports_and_calls_no_test_function():
     import ast
-    tree = ast.parse((ROOT / "exp_p2" / "gate" / "comparators.py").read_text(encoding="utf8"))
+    tree = ast.parse((ROOT / "exp_p2" / "gate" / "tier3_fusion.py").read_text(encoding="utf8"))
     imported = {a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names} | {n.module for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)}
     assert not any(m and m.split(".")[0] == "scipy" for m in imported)
     called = {n.func.attr if isinstance(n.func, ast.Attribute) else getattr(n.func, "id", "") for n in ast.walk(tree) if isinstance(n, ast.Call)}
@@ -513,7 +513,7 @@ def test_write_once(world, capsys):
     assert _run_cli() == 2
     assert "write-once" in capsys.readouterr().err
     assert out.read_bytes() == first
-    assert not list(out.parent.glob("comparators.json.prev-*"))      # no forced rewrite exists
+    assert not list(out.parent.glob("tier3_fusion.json.prev-*"))      # no forced rewrite exists
 
 
 def test_r3_note_and_quote_come_from_the_y_contrast(tmp_path, monkeypatch):
