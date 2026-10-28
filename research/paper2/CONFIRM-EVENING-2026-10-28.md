@@ -127,3 +127,10 @@ Defender was active. No crash events, boot time unchanged (27 Oct 23:25), temper
 Both stops (idx 105: 3.0 s vs 1.5 s; idx 113: 4.4 s vs 1.8 s) are below the proposed 3x / 2 s rule (4.5 s, 5.4 s).
 By the standing rule no relaunch until Shlok answers. Question put: relaunch M2 with the 3x / 2 s rule once the
 flag is audited and pinned, and keep CPU-heavy agent work off the machine while GPU stages run.
+
+**Shlok's answer to section 11 (2026-10-28 ~22:40 IST, verbatim): "Go with what you think is the best for our project among these two options."**
+(Options put: "Yes, relaunch" with the 3x / 2 s rule; "Wait for red-team" on the UniDisc time-input question.)
+Lead's choice under that delegation: relaunch M2 now with `--slow-factor 3 --slow-min-s 2` (card v4 row A-2; code pin
+f2f7b2e1, row A-1); M2's remaining 186 items are about 15 min of GPU and are stored unchanged whatever the verdict.
+**M3 and later GPU stages are held** until the red-team's verdict on whether `sigma=None` is UniDisc's intended
+inference path; a defect would need an audited fix before any stage that depends on the scores.
