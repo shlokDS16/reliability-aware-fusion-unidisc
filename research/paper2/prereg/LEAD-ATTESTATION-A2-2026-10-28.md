@@ -28,3 +28,9 @@ were told not to open items with idx > 25 or arrays; the FOIL L7 data-steward re
 `runs/P2-PROBE-01|02/selection.json` (the input list, not outputs).
 Shlok's own co-attestation is still pending (requested in `research/paper2/CONFIRM-EVENING-2026-10-28.md`); until it exists the
 statement above about Shlok is the lead's belief, not his attestation.
+
+## Shlok's co-attestation (2026-10-28 19:22 IST, typed by Shlok in the Paper 2 lead session, verbatim)
+"have not looked at any M1 (probe 2) results from item 26 onward."
+Recorded for SAP A3b.5 item 10 (d) and card v4 section 5 row 3b. It was given while the M1 resume (items 106-199, started
+19:15 IST) was running and before any M1 analysis. This section is appended after the SHA-256 recorded in A3b and card v4;
+those hashes cover the file up to the 14:45 extension.
