@@ -354,6 +354,20 @@ def test_freeze_then_analyze_end_to_end(foil_env):
     assert json.loads((fam / "analysis.json").read_text())["test"]["b"] == res["test"]["b"]
 
 
+def test_freeze_and_analyze_refuse_an_empty_or_unstarted_run(foil_env):
+    fam = foil_env / foil.FOIL_RUN_ID
+    with pytest.raises(FileNotFoundError):
+        analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")          # no run directory at all: nothing may be frozen
+    assert not (fam / "fusion_frozen.json").exists()
+    _write_rows(foil_env / foil.FIT_RUN_ID, _margins(240, 0.7, 0.7, seed=5))
+    (foil_env / foil.FIT_RUN_ID / "token_exclusions.json").unlink()
+    with pytest.raises(analysis_foil.PartialRun):                                             # planned n unknown: refused unless --allow-partial
+        analysis_foil.freeze(foil_env / foil.FIT_RUN_ID, fam / "fusion_frozen.json")
+    assert not (fam / "fusion_frozen.json").exists()
+    with pytest.raises(FileNotFoundError):
+        analysis_foil.analyze(foil_env / foil.TEST_RUN_ID, fam / "fusion_frozen.json", None, fam / "a.json", check_commit=False)
+
+
 def test_analysis_refuses_a_partial_fold_and_freeze_refuses_a_partial_fit(foil_env):
     fam = foil_env / foil.FOIL_RUN_ID
     _write_rows(foil_env / foil.FIT_RUN_ID, _margins(240, 0.7, 0.7, seed=5))

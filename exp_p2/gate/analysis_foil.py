@@ -62,6 +62,10 @@ def git_sha() -> str:
 def freeze(fit_dir: Path, out: Path, *, allow_partial: bool = False, force: bool = False) -> dict:
     rows, ndup = load_rows(fit_dir)
     exp = expected_n(fit_dir)
+    if not rows:
+        raise FileNotFoundError(f"no fit rows under {fit_dir}: run `python -m exp_p2.run_gate_foil --stage fit` first (nothing is frozen from an empty run)")
+    if exp is None and not allow_partial:
+        raise PartialRun(f"{fit_dir} has no token_exclusions.json, so the planned number of fit pairs is unknown; the fit run must have started and finished (or --allow-partial, which is recorded)")
     if exp is not None and len(rows) < exp and not allow_partial:
         raise PartialRun(f"fit run has {len(rows)} of {exp} pairs; finish it first (or --allow-partial, which is recorded)")
     X = foil.margins_from_rows(rows)
@@ -80,6 +84,8 @@ def analyze(test_dir: Path, frozen_path: Path, fit_dir: Path | None, out: Path, 
     frozen = json.loads(Path(frozen_path).read_text(encoding="utf8"))
     rows, ndup = load_rows(test_dir)
     exp = expected_n(test_dir)
+    if not rows:
+        raise FileNotFoundError(f"no test rows under {test_dir}: run `python -m exp_p2.run_gate_foil --stage test` first")
     if exp is not None and len(rows) < exp and not allow_partial:
         raise PartialRun(f"test run has {len(rows)} of {exp} pairs; the outcome analysis waits for the planned fold (SAP 8.2) or runs with --allow-partial and is then descriptive")
     X_test = foil.margins_from_rows(rows)
