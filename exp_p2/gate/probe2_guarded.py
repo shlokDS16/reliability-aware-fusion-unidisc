@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                  # noqa: E402
-from exp_p2.gate import eventlog, hold, runner                                        # noqa: E402
+from exp_p2.gate import eventlog, hold, pins, runner                                        # noqa: E402
 from exp_p2.gate.guards import Guards                                       # noqa: E402
 from exp_p2.gate.watchdog import EXIT_GUARD                                 # noqa: E402
 
@@ -57,6 +57,7 @@ def run_guarded(argv: list[str], *, probe_main=None, cuda=None, watchdog_factory
     ap.add_argument("--max-rise-mib", type=float, default=Guards.max_rise_mib)
     ap.add_argument("--no-ac-check", action="store_true")
     ap.add_argument("--no-eventlog-check", action="store_true")
+    ap.add_argument("--allow-dirty", action="store_true")
     ap.add_argument("--eventlog-hours", type=float, default=12.0)
     ga, rest = ap.parse_known_args(argv)
     rid_ap = argparse.ArgumentParser(add_help=False, allow_abbrev=False)          # abbreviations off: '--n' must never match '--no-ac-check'
@@ -70,6 +71,13 @@ def run_guarded(argv: list[str], *, probe_main=None, cuda=None, watchdog_factory
     except hold.HoldActive as e:
         print("STOP:", e, file=sys.stderr)
         return hold.EXIT_HOLD
+    clean_ok, dirty = pins.require_clean(ga.allow_dirty, label=spec["name"])
+    if not clean_ok:
+        return pins.EXIT_DIRTY
+    if dirty:
+        d = Path(common.RUNS) / run_id
+        d.mkdir(parents=True, exist_ok=True)
+        common.append_jsonl(d / "chunks.jsonl", dict(event="dirty_allowed", t=time.time(), source=spec["name"], files=dirty))
     g = Guards(max_used_mib=ga.max_used_mib, max_used_first_mib=ga.max_used_first_mib, max_rise_mib=ga.max_rise_mib, require_ac=not ga.no_ac_check, **({"ac_fn": ac_fn} if ac_fn else {}))
     if g.require_ac and g.ac_fn() is False:
         _event(run_id, "ac_lost_before_load", spec["name"])

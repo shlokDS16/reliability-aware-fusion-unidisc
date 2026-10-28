@@ -41,6 +41,7 @@ def main(argv=None) -> int:
     ap.add_argument("--idle-minutes", type=float, default=5.0)
     ap.add_argument("--mem-frac", type=float, default=0.75)
     ap.add_argument("--no-eventlog-check", action="store_true")
+    ap.add_argument("--allow-dirty", action="store_true")
     a = ap.parse_args(argv)
     try:
         hold.require_clear(a.run_id)
@@ -48,7 +49,10 @@ def main(argv=None) -> int:
         print("STOP:", e, file=sys.stderr)
         return hold.EXIT_HOLD
     from datetime import datetime, timedelta
-    from exp_p2.gate import eventlog, guards
+    from exp_p2.gate import eventlog, guards, pins
+    clean_ok, dirty = pins.require_clean(a.allow_dirty, label="run_gate_m0")
+    if not clean_ok:
+        return pins.EXIT_DIRTY
     if not a.no_eventlog_check:
         print(eventlog.summary_line(eventlog.new_events(datetime.now() - timedelta(hours=12)), 12), flush=True)       # hand-launched stage: one-line event-log check
     if guards.on_ac() is False:                                           # audit F3: power state is checked before CUDA or the model is touched
@@ -63,8 +67,9 @@ def main(argv=None) -> int:
     sc = UniScorer(common.load_net())
     load_s = time.perf_counter() - t0
     fwd_s = one_batch(sc)
-    log = [dict(event="loaded_and_one_forward", load_s=load_s, forward_s=fwd_s, peak_gb=torch.cuda.max_memory_allocated() / 1e9, gpu=common.gpu_state())]
-    print(log[0], flush=True)
+    log = [dict(event="dirty_allowed", files=dirty)] if dirty else []
+    log += [dict(event="loaded_and_one_forward", load_s=load_s, forward_s=fwd_s, peak_gb=torch.cuda.max_memory_allocated() / 1e9, gpu=common.gpu_state())]
+    print(log[-1], flush=True)
     t_end = time.time() + a.idle_minutes * 60
     while time.time() < t_end:
         time.sleep(10)

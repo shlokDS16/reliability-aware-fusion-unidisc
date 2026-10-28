@@ -5,7 +5,7 @@ lower temperature limit). It never creates or deletes a hold file and never laun
     python -m exp_p2.gate.gate_driver --stage m2 [--run-id P2-GATE-M2] [--n 300]
 
 Completion is read from the row count, never from the exit code. Exit codes: 0 complete, 3 gate not open, 4 three temperature stops, 5 two chunks
-without progress, 6 max chunks, 7 on hold, 8 guard abort or battery (never relaunched), 9 new crash-signature events in the Windows logs (or the log unreadable), 10 tools/gpu_guard.py does not match its pin."""
+without progress, 6 max chunks, 7 on hold, 8 guard abort or battery (never relaunched), 9 new crash-signature events in the Windows logs (or the log unreadable), 10 tools/gpu_guard.py does not match its pin, 11 uncommitted changes under exp_p2/ or tools/."""
 from __future__ import annotations
 
 import argparse
@@ -54,6 +54,7 @@ def main(argv=None) -> int:
     ap.add_argument("--wait-minutes", type=float, default=20.0)
     ap.add_argument("--max-chunks", type=int, default=12)
     ap.add_argument("--max-temp", type=float, default=MAX_TEMP_DEFAULT)
+    ap.add_argument("--allow-dirty", action="store_true", help="launch although exp_p2/ or tools/ has uncommitted changes (recorded in driver.log and passed to the stage)")
     ap.add_argument("--no-eventlog-check", action="store_true", help="skip the read-only Windows event-log check between chunks (not recommended)")
     ap.add_argument("--extra", default="", help="extra flags forwarded to the stage module, e.g. --extra \"--tbv\" for m1 or --extra \"--tbv on\" for m4")
     a = ap.parse_args(argv)
@@ -76,6 +77,12 @@ def main(argv=None) -> int:
     if holds:
         say("STOP: hold file(s) exist: " + "; ".join(str(h) for h in holds) + " (GPU run on hold; delete only with Shlok's go-ahead)")
         return hold.EXIT_HOLD
+    clean_ok, dirty = pins.require_clean(a.allow_dirty, label="gate_driver")
+    if not clean_ok:
+        say("STOP: uncommitted changes under exp_p2/ or tools/: " + "; ".join(dirty[:10]) + " (commit first, or --allow-dirty)")
+        return pins.EXIT_DIRTY
+    if dirty:
+        say("--allow-dirty: continuing with uncommitted changes: " + "; ".join(dirty[:10]))
     pin = PIN_FN()
     if pin.get("ok") is False:
         say(f"STOP: tools/gpu_guard.py does not match its pin ({pin.get('expected')}): committed {pin.get('committed_blob')}, working copy normalised {pin.get('working_normalised')}")
@@ -118,7 +125,7 @@ def main(argv=None) -> int:
         mins = a.first_chunk_min if ch == 0 else a.chunk_min
         if n_stop:
             mins = min(mins, 10.0)
-        cmd = build_cmd(stage_mod, run_id, n, mins, max(1.0, mins - 2.5), a.duty if not n_stop else min(a.duty, 1 / 3), ch, run, a.max_temp, shlex.split(a.extra))
+        cmd = build_cmd(stage_mod, run_id, n, mins, max(1.0, mins - 2.5), a.duty if not n_stop else min(a.duty, 1 / 3), ch, run, a.max_temp, shlex.split(a.extra) + (["--allow-dirty"] if a.allow_dirty else []))
         n_guard_before = sum(1 for e in common.read_jsonl(run / "chunks.jsonl") if e.get("event") == "guard_stop")
         say("launch " + " ".join(cmd[-12:]))
         with open(run / f"stdout-chunk{ch:02d}.log", "w", encoding="utf8") as fh:

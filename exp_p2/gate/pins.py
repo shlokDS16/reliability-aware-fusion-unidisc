@@ -1,6 +1,7 @@
-"""Hash pins that survive the checked-out line endings (re-audit N4). `tools/gpu_guard.py` is pinned by the EXP-001 manifest (SHA-256 of the committed bytes) and must not be edited, but with
-`core.autocrlf=true` the working-tree copy has CRLF endings and hashes differently. A pin check therefore passes if EITHER the committed blob (`git show <rev>:<path>`) OR the working copy with
-CRLF normalised to LF matches. A real content change fails both. Read-only; nothing here writes to the pinned file. (`exp003/manifest.py: reused_check`, which hashes raw working-tree
+"""Hash pins that survive the checked-out line endings, and the dirty-tree guard (delta audit N4). `tools/gpu_guard.py` is pinned by the EXP-001 manifest (SHA-256 of the committed bytes) and must
+not be edited. With `core.autocrlf=true` the working-tree copy has CRLF endings, so a pin check passes only if BOTH the committed blob (`git show <rev>:<path>`) hashes to the pin AND the working copy,
+CRLF normalised to LF, equals that blob: a CRLF checkout passes, an uncommitted edit, a committed change or a missing file fails. `require_clean` / `git_dirty` make the runners and the driver refuse
+to start when `git status --porcelain -- exp_p2 tools` shows uncommitted changes (unless --allow-dirty, which is recorded). Read-only. (`exp003/manifest.py: reused_check`, which hashes raw working-tree
 bytes, belongs to Paper 1 and is not changed; on this checkout it reports a false mismatch for the same reason.)"""
 from __future__ import annotations
 
@@ -30,10 +31,39 @@ def committed_sha256(rel_path: str, rev: str = "HEAD", repo: Path = ROOT) -> str
 
 
 def check_pin(rel_path: str, expected: str, *, repo: Path = ROOT, rev: str = "HEAD") -> dict:
-    """ok if the committed blob or the CRLF-normalised working copy hashes to `expected`; `via` says which."""
+    """ok only if BOTH hold: the committed blob hashes to `expected`, AND the working copy (CRLF normalised to LF) equals the committed blob. So a CRLF checkout of the pinned bytes
+    passes, while an uncommitted edit of a pinned file fails (delta audit N4), as does a committed change or a missing file."""
     blob, work = committed_sha256(rel_path, rev, repo), working_sha256(Path(repo) / rel_path)
-    via = "committed blob" if blob == expected else ("working copy (CRLF normalised)" if work == expected else None)
-    return dict(path=rel_path, expected=expected, ok=via is not None, via=via, committed_blob=blob, working_normalised=work, working_raw=working_sha256(Path(repo) / rel_path, False))
+    blob_ok, work_ok = blob == expected, (work is not None and work == blob)
+    return dict(path=rel_path, expected=expected, ok=bool(blob_ok and work_ok), via=("committed blob == pin, working copy (CRLF normalised) == blob" if blob_ok and work_ok else None),
+                committed_matches_pin=blob_ok, working_matches_committed=work_ok, committed_blob=blob, working_normalised=work, working_raw=working_sha256(Path(repo) / rel_path, False))
+
+
+def git_dirty(repo: Path = ROOT, paths=("exp_p2", "tools")) -> list[str]:
+    """`git status --porcelain -- <paths>`: every line is an uncommitted change (modified, staged, deleted or untracked). If git cannot be run the answer is a single error line (fail closed)."""
+    r = subprocess.run(["git", "-C", str(repo), "status", "--porcelain", "--", *paths], capture_output=True, text=True)
+    if r.returncode != 0:
+        return [f"git status failed: {r.stderr.strip()[:200]}"]
+    return [l for l in r.stdout.splitlines() if l.strip()]
+
+
+def dirty_files() -> list[str]:
+    """Uncommitted changes under exp_p2 and tools of this checkout (the code that produces results)."""
+    return git_dirty(ROOT, ("exp_p2", "tools"))
+
+
+EXIT_DIRTY = 11
+
+
+def require_clean(allow_dirty: bool = False, *, label: str = "") -> tuple[bool, list[str]]:
+    """(ok, files). Prints the uncommitted files when there are any. ok is False when there are some and --allow-dirty was not given; with --allow-dirty it is True and the caller must record
+    `allow_dirty` and the file list in the run config."""
+    files = dirty_files()
+    if files:
+        import sys
+        print(f"{label or 'code'} has uncommitted changes under exp_p2/ or tools/:" + "".join("\n  " + l for l in files)
+              + ("\n  --allow-dirty given: continuing, recorded in the run config" if allow_dirty else "\n  STOP: commit first (or pass --allow-dirty, which is recorded)"), file=sys.stderr)
+    return (not files) or bool(allow_dirty), files
 
 
 def gpu_guard_pin(repo: Path = ROOT) -> dict:

@@ -15,7 +15,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from exp_p2 import common
-from exp_p2.gate import hold
+from exp_p2.gate import hold, pins
 from exp_p2.gate.guards import Guards
 
 from exp_p2.gate.watchdog import EXIT_GUARD, Watchdog, kill_process_on_trip     # noqa: E402
@@ -36,6 +36,7 @@ def base_parser(default_run_id: str, default_n: int | None = None) -> argparse.A
     ap.add_argument("--max-used-first-mib", type=float, default=Guards.max_used_first_mib)
     ap.add_argument("--max-rise-mib", type=float, default=Guards.max_rise_mib)
     ap.add_argument("--no-ac-check", action="store_true")
+    ap.add_argument("--allow-dirty", action="store_true", help="run although exp_p2/ or tools/ has uncommitted changes (recorded in the run config)")
     return ap
 
 
@@ -90,7 +91,7 @@ def _cuda():
 
 
 def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None, soft_minutes: float = 12.5, duty: float = 0.5, limit: int | None = None,
-              guards: Guards | None = None, mem_frac: float | None = None, selfcheck=None, watchdog_factory=None) -> int:
+              guards: Guards | None = None, mem_frac: float | None = None, selfcheck=None, watchdog_factory=None, allow_dirty: bool = False) -> int:
     """load() -> scorer; get_items(sc, run) -> list of dicts with a unique integer 'idx'; process(sc, item, ctx) -> (row dict, arrays dict);
     make_ctx(sc, run) -> context object; selfcheck(sc, items) -> dict or None (production: the UniScorer layout self-check, as probes 1 and 2)."""
     from exp001.runtools import Duty, Deadline, atomic_save_npz, atomic_write_json
@@ -99,8 +100,13 @@ def run_items(*, run_id: str, cfg: dict, load, get_items, process, make_ctx=None
     except hold.HoldActive as e:
         print("STOP:", e, file=sys.stderr)
         return hold.EXIT_HOLD
+    ok, dirty = pins.require_clean(allow_dirty, label=run_id)         # results must come from committed code (delta audit N4)
+    if not ok:
+        return pins.EXIT_DIRTY
     dl, dty = Deadline(soft_minutes), Duty(duty)
-    run = common.init_run(run_id, cfg)
+    run = common.init_run(run_id, dict(cfg, allow_dirty=bool(allow_dirty), dirty_files=dirty) if dirty else cfg)
+    if dirty:
+        common.append_jsonl(run / "chunks.jsonl", dict(event="dirty_allowed", t=time.time(), files=dirty))
     rows_path = run / "items.jsonl"
     repair_torn_tail(rows_path)
     done = {r["idx"] for r in common.read_jsonl(rows_path)}

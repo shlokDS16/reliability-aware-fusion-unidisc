@@ -463,7 +463,7 @@ def _git(repo, *a):
     return subprocess.run(["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@t", "-c", "core.autocrlf=false", *a], capture_output=True, text=True)
 
 
-def test_pin_check_passes_for_the_committed_blob_and_for_a_crlf_working_copy_and_fails_on_a_change(tmp_path):
+def test_pin_check_needs_both_the_committed_blob_and_an_equal_working_copy(tmp_path):
     from exp_p2.gate import pins
     repo = tmp_path / "r"
     (repo / "tools").mkdir(parents=True)
@@ -475,15 +475,102 @@ def test_pin_check_passes_for_the_committed_blob_and_for_a_crlf_working_copy_and
     want = pins.sha256_bytes(lf)
     (repo / "tools" / "g.py").write_bytes(lf.replace(b"\n", b"\r\n"))                    # what core.autocrlf=true leaves in the working tree
     r = pins.check_pin("tools/g.py", want, repo=repo)
-    assert r["ok"] and r["via"] == "committed blob" and r["working_raw"] != want and r["working_normalised"] == want
-    (repo / "tools" / "u.py").write_bytes(lf.replace(b"\n", b"\r\n"))                    # an untracked CRLF copy: the normalised working copy matches
+    assert r["ok"] and r["committed_matches_pin"] and r["working_matches_committed"] and r["working_raw"] != want and r["working_normalised"] == want
+    (repo / "tools" / "g.py").write_bytes(b"print('guard')\nx = 2\n")                       # an UNCOMMITTED working-tree edit: the committed blob still matches the pin, the working copy does not
+    r = pins.check_pin("tools/g.py", want, repo=repo)
+    assert r["ok"] is False and r["committed_matches_pin"] is True and r["working_matches_committed"] is False
+    (repo / "tools" / "g.py").write_bytes(lf)
+    assert pins.check_pin("tools/g.py", want, repo=repo)["ok"] is True                    # restored: passes again
+    (repo / "tools" / "u.py").write_bytes(lf.replace(b"\n", b"\r\n"))                    # an untracked copy with the right bytes has no committed blob: fails
     r = pins.check_pin("tools/u.py", want, repo=repo)
-    assert r["ok"] and r["via"] == "working copy (CRLF normalised)" and r["committed_blob"] is None
-    (repo / "tools" / "u.py").write_bytes(b"print('changed')\r\n")
-    assert pins.check_pin("tools/u.py", want, repo=repo)["ok"] is False and pins.check_pin("tools/nothing.py", want, repo=repo)["ok"] is False
-    (repo / "tools" / "g.py").write_bytes(b"changed\n")                                  # the committed blob still matches ...
-    assert pins.check_pin("tools/g.py", want, repo=repo)["ok"] is True
-    assert pins.working_sha256(repo / "tools" / "g.py") != want                          # ... while the working copy is visibly different (the pin check reads the blob)
+    assert r["ok"] is False and r["committed_blob"] is None
+    assert pins.check_pin("tools/nothing.py", want, repo=repo)["ok"] is False
+    (repo / "tools" / "g.py").write_bytes(b"changed\n")
+    _git(repo, "commit", "-am", "edit")                                                    # a COMMITTED change no longer matches the pin
+    assert pins.check_pin("tools/g.py", want, repo=repo)["ok"] is False and pins.check_pin("tools/g.py", want, repo=repo)["committed_matches_pin"] is False
+
+
+def test_git_dirty_lists_modified_staged_deleted_and_untracked_files_only_under_the_given_paths(tmp_path):
+    from exp_p2.gate import pins
+    repo = tmp_path / "r"
+    for d in ("exp_p2", "tools", "other"):
+        (repo / d).mkdir(parents=True)
+        (repo / d / "a.py").write_text("a = 1\n")
+    _git(repo, "init")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "x")
+    assert pins.git_dirty(repo) == []
+    (repo / "other" / "a.py").write_text("a = 2\n")                                       # outside exp_p2/ and tools/: ignored
+    assert pins.git_dirty(repo) == []
+    (repo / "exp_p2" / "a.py").write_text("a = 2\n")
+    (repo / "tools" / "new.py").write_text("n = 1\n")
+    (repo / "tools" / "b.py").write_text("b = 1\n")
+    _git(repo, "add", "tools/b.py")
+    (repo / "tools" / "a.py").unlink()
+    got = pins.git_dirty(repo)
+    assert len(got) == 4 and any("exp_p2/a.py" in l and l.startswith(" M") for l in got) and any("?? tools/new.py" in l for l in got) and any("tools/b.py" in l for l in got) and any("tools/a.py" in l for l in got)
+    assert pins.git_dirty(tmp_path / "not_a_repo")[0].startswith("git status failed")      # fail closed
+
+
+def test_require_clean_prints_the_files_and_allow_dirty_continues(monkeypatch, capsys):
+    from exp_p2.gate import pins
+    assert pins.require_clean(False) == (True, [])
+    monkeypatch.setattr(pins, "dirty_files", lambda: [" M exp_p2/gate/runner.py", "?? exp_p2/gate/x.py"])
+    ok, files = pins.require_clean(False, label="run_gate_m2")
+    err = capsys.readouterr().err
+    assert not ok and files == [" M exp_p2/gate/runner.py", "?? exp_p2/gate/x.py"] and "run_gate_m2" in err and "exp_p2/gate/runner.py" in err and "STOP: commit first" in err
+    ok, files = pins.require_clean(True)
+    assert ok and len(files) == 2 and "--allow-dirty given" in capsys.readouterr().err
+
+
+def test_runner_refuses_a_dirty_tree_before_anything_else_and_records_allow_dirty(env, monkeypatch):
+    from exp_p2.gate import pins
+    monkeypatch.setattr(pins, "dirty_files", lambda: [" M exp_p2/gate/scores.py"])
+    called = []
+    kw = dict(run_id="P2-GATE-D", cfg=dict(n_items=3), load=lambda: called.append("load") or object(), get_items=lambda sc, r: _items(3), process=_proc, soft_minutes=12.5, duty=1.0)
+    assert runner.run_items(**kw) == pins.EXIT_DIRTY == 11 and called == [] and not (env / "P2-GATE-D").exists()          # nothing created, no model touched
+    assert runner.run_items(**kw, allow_dirty=True) == 0
+    cfg = json.loads((env / "P2-GATE-D" / "config.json").read_text())
+    assert cfg["allow_dirty"] is True and cfg["dirty_files"] == [" M exp_p2/gate/scores.py"]
+    ev = common.read_jsonl(env / "P2-GATE-D" / "chunks.jsonl")
+    assert ev[0]["event"] == "dirty_allowed" and ev[0]["files"] == [" M exp_p2/gate/scores.py"]
+    monkeypatch.setattr(pins, "dirty_files", lambda: [])
+    assert runner.run_items(**dict(kw, run_id="P2-GATE-C")) == 0
+    assert "allow_dirty" not in json.loads((env / "P2-GATE-C" / "config.json").read_text())      # a clean run records nothing extra
+
+
+def test_base_parser_has_allow_dirty():
+    assert runner.base_parser("X").parse_args(["--allow-dirty"]).allow_dirty is True and runner.base_parser("X").parse_args([]).allow_dirty is False
+
+
+def test_driver_refuses_a_dirty_tree_and_passes_allow_dirty_to_the_stage(driver, monkeypatch):
+    from exp_p2.gate import pins
+    monkeypatch.setattr(pins, "dirty_files", lambda: [" M exp_p2/run_gate_m2.py"])
+
+    def no(*a, **k):
+        raise AssertionError("must not launch")
+    monkeypatch.setattr(gate_driver.subprocess, "run", no)
+    assert gate_driver.main(["--stage", "m2", "--n", "5"]) == pins.EXIT_DIRTY
+    log = (driver / "P2-GATE-M2" / "driver.log").read_text()
+    assert "uncommitted changes" in log and "run_gate_m2.py" in log
+    fake, calls = _fake_child(driver, [0], rows_per_chunk=5)
+    monkeypatch.setattr(gate_driver.subprocess, "run", fake)
+    assert gate_driver.main(["--stage", "m2", "--n", "5", "--allow-dirty"]) == 0
+    assert calls[0][-1] == "--allow-dirty" and "--allow-dirty: continuing" in (driver / "P2-GATE-M2" / "driver.log").read_text()
+
+
+def test_probe_wrappers_and_m0_refuse_a_dirty_tree(env, monkeypatch):
+    from exp_p2 import run_gate_m0
+    from exp_p2.gate import pins, probe1_guarded
+    monkeypatch.setattr(pins, "dirty_files", lambda: [" M exp_p2/scoring.py"])
+    called = []
+    evs = lambda since: dict(ok=True, events=[], error=None)
+    assert probe2_guarded.run_guarded(["--run-id", "P2-PROBE-X"], probe_main=lambda: called.append(1), cuda=Cuda([0.0]), events_fn=evs) == pins.EXIT_DIRTY
+    assert probe1_guarded.run_guarded(["--run-id", "P2-M0-STAGE2"], probe_main=lambda: called.append(1), cuda=Cuda1([0.0]), events_fn=evs) == pins.EXIT_DIRTY
+    assert run_gate_m0.main(["--run-id", "P2-M0-STAGE1", "--no-eventlog-check"]) == pins.EXIT_DIRTY and called == []
+    rc = probe2_guarded.run_guarded(["--run-id", "P2-PROBE-X", "--allow-dirty"], probe_main=lambda: 0, cuda=Cuda([0.0]), events_fn=evs, ac_fn=lambda: True,
+                                    watchdog_factory=lambda g, run: SimpleNamespace(start=lambda: None, stop=lambda: None))
+    assert rc == 0 and common.read_jsonl(env / "P2-PROBE-X" / "chunks.jsonl")[0]["event"] == "dirty_allowed"
 
 
 def test_the_real_gpu_guard_matches_its_exp001_pin_and_is_unmodified():
