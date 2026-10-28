@@ -7,7 +7,8 @@ import numpy as np
 
 ROOT_SEED = 20261028
 ANALYSES = ("load_items", "completeness_report", "arm_y_z", "exact_mcnemar", "paired_boot_diff", "primary", "s_m", "s_z", "s_dn", "s_d", "s_d2", "s_c", "headroom_check",
-            "fap_check", "split_replication", "auroc", "detection_contrast", "wilcoxon_z", "fusion", "prop4_plugin", "mechanism", "calibration", "equivalence", "selftest", "denoise_check")
+            "fap_check", "split_replication", "auroc", "detection_contrast", "wilcoxon_z", "fusion", "prop4_plugin", "mechanism", "calibration", "equivalence", "selftest", "denoise_check",
+            "ps_family", "s2_family", "s2_descriptive")        # the last three are appended for family PS and S2 (SAP AD.13); appending leaves every earlier child seed unchanged
 
 
 def seed_for(name: str) -> np.random.SeedSequence:

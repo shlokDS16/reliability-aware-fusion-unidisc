@@ -56,6 +56,15 @@ def apply_pixel(name: str, severity, pil512, rng: np.random.Generator, donor512=
     raise ValueError(name)
 
 
+TOKEN_RNG_TAG = {"patch": 190, "swap": 191}
+"""Third entry of the per-item rng of the token-level sanity corruptions: `np.random.default_rng([config.SEED_GATE, gid, TOKEN_RNG_TAG[name]])`. 190 is the tag M4 has always used for patch
+(unchanged, so the patch codes of a run made before swap existed are reproduced exactly); 191 is new for swap and collides with no other stream (M3 uses 100 to 125 and 150, M5 300, the pipeline 99)."""
+
+
+def token_rng(seed: int, gid: int, name: str) -> np.random.Generator:
+    return np.random.default_rng([seed, gid, TOKEN_RNG_TAG[name]])
+
+
 def apply_token(name: str, clean: np.ndarray, rng: np.random.Generator, *, grid: int, patch: int, swap_frac: float, vocab: int) -> np.ndarray:
     if name == "patch":
         return core.patch_occlusion(clean, grid, patch, vocab, rng)

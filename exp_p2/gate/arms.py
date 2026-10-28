@@ -55,4 +55,7 @@ def arm_rng(seed: int, gid: int, cond_index: int, arm_tag: int, rep: int) -> np.
     return np.random.default_rng([seed, gid, cond_index, arm_tag, rep])
 
 
-ARM_TAG = dict(jitter=1, geo=2, scattered=3, tbv=4, rand=5)
+ARM_TAG = dict(jitter=1, geo=2, scattered=3, tbv=4, rand=5,
+               s2_gate_order=6, s2_rand_set=7, s2_rand_order=8, s2_chg_order=9, s2_leak_order=10, s2_sample=11)
+"""Tags 1-5 are the M4 streams and are unchanged. 6-11 are the S2 re-infill streams (reinfill.py): the visiting order of the flagged set, the equal-size random set and its order,
+the order of the changed-code set, the order of the caption-visible leakage control, and the sampling seed of every draw. `arm_rng(seed, gid, cond_index, tag, rep)` takes the draw number as `rep`."""

@@ -33,7 +33,8 @@ PIN_FN = pins.gpu_guard_pin              # the safety wrapper must be the pinned
 # 'p2' runs run_probe2.main() unchanged inside gate/probe2_guarded.py (memory cap, AC, memory/rise/slow-item rules, watchdog); its items.jsonl rows are the completion count.
 STAGES = {"p2": ("exp_p2.gate.probe2_guarded", "P2-PROBE-02", 200),      # M1 part 1: complete probe 2 with run_probe2 UNCHANGED, wrapped by the new guards (audit F2)
           "m1": ("exp_p2.run_gate_m1", "P2-GATE-M1", 0), "m2": ("exp_p2.run_gate_m2", "P2-GATE-M2", 300), "m3": ("exp_p2.run_gate_m3", "P2-GATE-M3", 100),
-          "m4": ("exp_p2.run_gate_m4", "P2-GATE-M4", 300), "m5": ("exp_p2.run_gate_m5", "P2-GATE-M5", 100)}
+          "m4": ("exp_p2.run_gate_m4", "P2-GATE-M4", 300), "m5": ("exp_p2.run_gate_m5", "P2-GATE-M5", 100),
+          "s2": ("exp_p2.run_gate_s2", "P2-GATE-S2", 300)}      # S2 re-infill (SAP AD.5): reads M4's flags, so it runs after M4; figures: --stage s2 --run-id P2-GATE-S2-FIG --extra "--figures" (see run_gate_s2.py)
 MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0       # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
 
 

@@ -7,8 +7,10 @@ Prerequisites (the runner refuses to start without them; no defaults are invente
 
     python -m exp_p2.run_gate_m4 --resume --soft-minutes 12.5 [--limit N] [--tbv auto|on|off] [--run-id P2-GATE-M4]
 
-Per item (75 passes + 6 encodes with a 3-corruption family, v2 11.1 itemised): conditions = clean, each family corruption (pixel level, tokenised),
-patch (token-level sanity), and a denoised copy of the jpeg and noise conditions (encode only, no gate).
+Per item (75 passes + 6 encodes with a 3-corruption family and patch only, v2 11.1 itemised; +8 B passes, +1 with TbV, per extra token-level sanity condition): conditions = clean,
+each family corruption (pixel level, tokenised), the token-level sanity conditions of family PS (SAP AD.4: patch = 8 x 8 block of random codes, swap = 15 percent of positions replaced
+by uniform random codes; `--sanity patch,swap`, the default; swap added 2026-10-28 after the red-team finding AB.7), and a denoised copy of the jpeg and noise conditions (encode only,
+no gate). Swap is appended AFTER patch, so every earlier condition index (and with it every arm seed) is unchanged; its own corruption stream is `corruptions.TOKEN_RNG_TAG["swap"]`.
   gate input   B (K=8, caption masked) = 8 per gated condition (clean, family, patch) -> 40; cached null D; u = -(B - D); one jitter draw per condition
   TbV-style    1 pass per gated condition if enabled (5)
   image dir.   Lambda^{c+}, Lambda^{c-} = 2 passes; every arm below is a gather
@@ -34,8 +36,9 @@ from exp_p2.run_gate_m3 import rung_rng                                         
 
 RUN_ID = "P2-GATE-M4"
 M2_RUN, M3_RUN, M1_RUN = "P2-GATE-M2", "P2-GATE-M3", "P2-GATE-M1"
+SANITY_ALL = ("patch", "swap")            # family PS (SAP AD.4); order = condition order, patch first so that its condition index does not change
 CONFIG = dict(stage="M4", fold="test", n_items=config.N_TEST, seed=config.SEED_GATE, K=config.K, alphas=list(config.ALPHAS), n_geo_seeds=config.N_GEO_SEEDS,
-              denoise_for=list(config.DENOISE_FOR), duty=0.5, spec="research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4")
+              denoise_for=list(config.DENOISE_FOR), sanity=list(SANITY_ALL), duty=0.5, spec="research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4")
 
 
 def load_prereqs(runs: Path | None = None) -> tuple[dict, list[tuple[str, object]], float]:
@@ -73,6 +76,15 @@ def tbv_enabled(mode: str, runs: Path | None = None) -> bool:
     return bool(p.exists() and not pipeline.load_json(p).get("copy_suspected", True))
 
 
+def parse_sanity(text: str) -> tuple[str, ...]:
+    """'patch,swap' -> ('patch', 'swap'). Only names of SANITY_ALL, in their fixed order (a different order would change the condition indices and with them the seeds)."""
+    names = [t.strip() for t in str(text).split(",") if t.strip()]
+    bad = [t for t in names if t not in SANITY_ALL]
+    if bad:
+        raise ValueError(f"unknown sanity condition(s) {bad}; allowed {SANITY_ALL}")
+    return tuple(t for t in SANITY_ALL if t in names)
+
+
 def make_ctx_factory(a, runs: Path | None = None):
     def make_ctx(sc, run):
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
@@ -84,7 +96,8 @@ def make_ctx_factory(a, runs: Path | None = None):
         checks.l10_once(sc, run)
         return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, 500), grid=int(round(sc.L_I ** 0.5)),
                                patch=max(2, int(round(sc.L_I ** 0.5)) // 4), codebook=(np.load(cbp) if cbp.exists() else None), tbv=tbv_enabled(a.tbv, runs_),
-                               denoise_for=tuple(a.denoise_for.split(",")) if a.denoise_for else ())
+                               denoise_for=tuple(a.denoise_for.split(",")) if a.denoise_for else (),
+                               sanity=parse_sanity(getattr(a, "sanity", "patch")))     # main() always sets --sanity (default patch,swap); a bare namespace keeps the pre-swap behaviour
     return make_ctx
 
 
@@ -102,9 +115,9 @@ def build_conditions(sc, it, pil, clean, ctx) -> list[dict]:
         conds.append(dict(name=key, kind="pixel", codes=sc.encode(img), pix=np.asarray(img), corr=corr))
         if corr in ctx.denoise_for:
             conds.append(dict(name=key + "_dn", kind="denoise", src=key, codes=sc.encode(corruptions.denoise(img)), pix=None, corr=corr))
-    pc = corruptions.apply_token("patch", clean, np.random.default_rng([config.SEED_GATE, gid, 190]), grid=ctx.grid, patch=ctx.patch,
-                                 swap_frac=config.SWAP_FRAC, vocab=IMG_VOCAB)
-    conds.append(dict(name="patch", kind="token", codes=pc, pix=None, corr="patch"))
+    for name in getattr(ctx, "sanity", ("patch",)):
+        tc = corruptions.apply_token(name, clean, corruptions.token_rng(config.SEED_GATE, gid, name), grid=ctx.grid, patch=ctx.patch, swap_frac=config.SWAP_FRAC, vocab=IMG_VOCAB)
+        conds.append(dict(name=name, kind="token", codes=tc, pix=None, corr=name))
     return conds
 
 
@@ -168,15 +181,17 @@ def main(argv=None):
     ap = runner.base_parser(RUN_ID, CONFIG["n_items"])
     ap.add_argument("--tbv", choices=["auto", "on", "off"], default="auto", help="TbV-score (non-finetuned) pass, raw logits; auto = on only if M1 found no copy-through (U7)")
     ap.add_argument("--denoise-for", default=",".join(config.DENOISE_FOR), help="comma list of family corruptions that get a denoised copy ('' = none)")
+    ap.add_argument("--sanity", default=",".join(SANITY_ALL), help="token-level sanity conditions of family PS (SAP AD.4: both are always tested, m = 2); dropping one makes its PS cell 'not run', p = 1")
     a = ap.parse_args(argv)
     try:                                                                  # all prerequisites are checked BEFORE the model is touched
         load_prereqs()
         pipeline.require_frozen()
         check_n_against_rule(a.n)
+        parse_sanity(a.sanity)
     except (FileNotFoundError, ValueError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2
-    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv, denoise_for=a.denoise_for.split(",") if a.denoise_for else [])
+    cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv, denoise_for=a.denoise_for.split(",") if a.denoise_for else [], sanity=list(parse_sanity(a.sanity)))
 
     def load():
         from exp_p2.scoring import UniScorer

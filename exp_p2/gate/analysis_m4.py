@@ -8,6 +8,7 @@ Tiers
                    other two seeds are separate replications with their own unadjusted p. K5 / K6 flags.
   S-Z  (2.5, A1.1) Wilcoxon on the evidence endpoint d (z* = 32 d), m = 3; z as sensitivity.     S-DN (A1.3 N2) GATE-M vs denoise, m = 2.
   S-D2 (A1.2)      q versus the frozen rival, m = 2.     S-C (2.5) GATE-M vs none on clean images, m = 1.
+  PS   (AD.4)      positive control on the token-level corruptions: GATE-M versus none on patch (PS1) and swap (PS2), Holm m = 2, p = 1 for a cell that was not run (`ps_family`).
   Calibration (6)  Z_cal = (F - alpha) / (sigma_L sqrt(1/n_cal + 1/n_test)) at the three alphas, violation iff Z_cal > 2.13 (K4); item-clustered bootstrap CI; exploratory 2,000-split
                    replication; precision / FAP on clean tokens of corrupted items.
   Completeness (8.1) planned vs completed n, prefix check, covariates of missing vs completed, NaN/empty-R counts per arm, K7 (> 5 percent stops the analysis), worst-case sensitivity.
@@ -143,6 +144,75 @@ CAVEAT_D = ("d = mean/sd of the per-token evidence over the retained tokens can 
             "keep the moments of d roughly unchanged, so they do not separate detecting corruption from trimming heavy tails. The controls that could (plain-B top-k, s3 top-k) are Tier 3, "
             "reported beside the P result, with no p-value (red team N2).")
 CAVEAT_SM_R3 = "S-M under R3 is an accuracy McNemar with too few discordant items to say anything: stated as uninformative in advance (red team N2)."
+
+SANITY_CONDS = ("patch", "swap")           # family PS (SAP AD.4): PS1 patch, PS2 swap; the order is the Holm label order, p = 1 for a cell that was not run
+
+
+def sanity_present(rows: list[dict]) -> list[str]:
+    """The token-level sanity conditions that are in the rows (a run made before swap existed has patch only)."""
+    return [c for c in SANITY_CONDS if any(c in r["conds"] for r in rows)]
+
+
+def _records(df) -> list[dict]:
+    """Rows as a list of dicts from a list of dicts or a pandas DataFrame (SAP AD.13 writes `df`)."""
+    if hasattr(df, "to_dict") and hasattr(df, "columns"):
+        return df.to_dict("records")
+    return list(df)
+
+
+def ps_family(df, rule: str = "R1", family=None, n_boot: int = 10000) -> dict:
+    """Family PS (SAP AD.4, AD.11, AD.13): positive control on the token-level corruptions. PS1 = GATE-M versus none on patch, PS2 = on swap. m = 2 ALWAYS: a cell that is not in the rows
+    (not run, or its code not audited, AB.7 item 2) is not tested, gets p = 1 and stays in the Holm correction. Fold, endpoint and test are those of P in force: R1/R2 exact two-sided McNemar on
+    Y, R3 Wilcoxon signed-rank on d; Holm thresholds 0.025 and 0.05 (alpha 0.05 for the family). Reading: `met` iff both are rejected with the right sign (b > c, or a positive mean d difference
+    under R3), `partly met` iff one, `not met` otherwise (not met triggers the pipeline audit of A2.3 and bars the sentence 'the gate works where detection is easy'; nothing is tuned).
+    Descriptive, no p: the realised discordance n_d (low power is possible if the patch as coded changes few decisions), the headroom statistics T1, T2 on the evidence endpoint d (SAP 5 definition,
+    clean - none and changed-code - none), and the difference of the paired accuracy differences (PS cell minus each P cell present in `family`), paired bootstrap over items."""
+    rows = _records(df)
+    fm = _family_map(family) if family is not None else {}
+    res = {}
+    sd = seeds.seed_for("ps_family")
+    for label, name in zip(("PS1", "PS2"), SANITY_CONDS):
+        if any(name in r["conds"] for r in rows):
+            if rule == "R3":
+                e = dict(_wilcoxon_gate_vs_none(rows, name, "d", n_boot, sd), tested=True, endpoint="d")
+                e["right_sign"] = bool(e["mean_diff"] > 0)
+            else:
+                e = dict(report.report_test(_arm(rows, name, A0, "y"), _arm(rows, name, "none", "y"), n_boot=n_boot, seed=sd), tested=True, endpoint="Y")
+                e["right_sign"] = bool(e["b"] > e["c"])
+            e.update(label=label, key=name, desc=descriptive_ps(rows, name, fm, n_boot, sd))
+        else:
+            e = dict(label=label, key=name, tested=False, p=1.0, b=0, c=0, right_sign=False, note="not run: p = 1 stays in the family (SAP AD.4, m = 2 always)")
+        res[name] = e
+    adj = stats.holm([res[c]["p"] for c in SANITY_CONDS])
+    for c, p in zip(SANITY_CONDS, adj):
+        res[c]["p_holm"] = p
+        res[c]["gate_better"] = bool(res[c]["tested"] and res[c]["right_sign"] and p < 0.05)
+    n_rej = sum(res[c]["gate_better"] for c in SANITY_CONDS)
+    reading = {2: "met", 1: "partly met", 0: "not met"}[n_rej]
+    return dict(per_corruption=res, holm_m=2, rule=rule, endpoint="d (Wilcoxon)" if rule == "R3" else "Y (exact McNemar)", n_rejected_right_sign=n_rej, positive_control=reading,
+                label="secondary family PS, positive control; no headline claim; not evidence for JPEG, noise or splice (SAP AD.4)",
+                on_not_met="pipeline audit of A2.3 (nothing tuned); the sentence 'the gate works where detection is easy' is barred" if n_rej < 2 else None,
+                chance_bar_note="the A2.5 chance bar (lower 95 percent AUROC bound above 0.5, M1 items, 200 and 179) stays the only pre-registered pass/fail on detection for these two corruptions")
+
+
+def descriptive_ps(rows: list[dict], name: str, fm: dict, n_boot: int, seed) -> dict:
+    """Descriptive numbers printed beside a PS test (no p-value): share of discordant items, none-arm accuracy, headroom statistics, difference of paired accuracy differences."""
+    from exp_p2.gate import headroom
+    out = {}
+    g, n = _arm(rows, name, A0, "y"), _arm(rows, name, "none", "y")
+    ok = np.isfinite(g) & np.isfinite(n)
+    out["share_discordant"] = float((g[ok] != n[ok]).mean()) if ok.any() else float("nan")
+    out["acc_none"] = float(n[ok].mean()) if ok.any() else float("nan")
+    has_clean = any("clean" in r["conds"] for r in rows)
+    out["acc_clean_none"] = float(np.nanmean(_arm(rows, "clean", "none", "y"))) if has_clean else float("nan")
+    if has_clean and any("chg" in r["conds"][name]["img"] for r in rows if name in r["conds"]):
+        clean, none, chg = _arm(rows, "clean", "none", "d"), _arm(rows, name, "none", "d"), _arm(rows, name, "chg", "d")
+        okd = np.isfinite(clean) & np.isfinite(none) & np.isfinite(chg)
+        out["headroom_T1_clean_minus_none"] = headroom.paired_t(clean, none, okd)
+        out["headroom_T2_changed_code_minus_none"] = headroom.paired_t(chg, none, okd)
+    out["mean_n_changed"] = float(np.mean([r["conds"][name]["n_changed"] for r in rows if name in r["conds"]]))
+    out["ps_minus_P_cell_accuracy_difference"] = {key: paired_boot(g - n, _arm(rows, key, A0, "y") - _arm(rows, key, "none", "y"), n_boot, seed) for key in fm.values()}
+    return out
 
 
 def wording(rule: str) -> str:
@@ -398,7 +468,7 @@ def split_replication(U_cal: list, U_test: list, alpha: float, reps: int = 2000,
 
 def calibration(run: Path, rows: list[dict], family_keys: list[str], n_boot=10000, *, m2_dir: Path | None = None, split_reps: int = 0) -> dict:
     out = dict(per_condition={})
-    cond_names = ["clean"] + family_keys + ["patch"]
+    cond_names = ["clean"] + family_keys + (sanity_present(rows) or ["patch"])
     per_item = {c: [] for c in cond_names}
     for r in rows:
         arr = np.load(run / "arrays" / f"item{r['idx']:04d}.npz")
@@ -510,7 +580,7 @@ def run(run_dir: Path, family, n_boot=10000, endpoint: str = "d", frozen: dict |
                negative_available=bool(rule in ("R1", "R2")), n_items=len(rows), family=keys, endpoint=endpoint, completeness=comp, primary=prim,
                secondary_y=(dict(y_family, label="secondary under R3") if rule == "R3" else None), outcome=outcome_reading(prim, rule, family), s_m=s_m(rows, family, prim, n_boot),
                c1_test=c1mod.c1(c1mod.ys_from_rows(rows, "test"), "test (look 3, analysis step)"), s_c=s_c(rows, n_boot), s_dn=s_dn(rows, family, n_boot), s_z=s_z(rows, family, endpoint, n_boot), s_d2=s_d2(run_dir, rows, family, frozen, codefreq, n_boot),
-               mechanism={k: mechanism(rows, k, n_boot) for k in keys + ["patch"]}, calibration=calibration(run_dir, rows, keys, n_boot, m2_dir=m2_dir, split_reps=split_reps))
+               ps=ps_family(rows, rule, family, n_boot), mechanism={k: mechanism(rows, k, n_boot) for k in keys + (sanity_present(rows) or ["patch"])}, calibration=calibration(run_dir, rows, keys, n_boot, m2_dir=m2_dir, split_reps=split_reps))
     if rule == "R3":
         res["s_m"]["uninformative_under_R3"] = True                                                  # stated in advance (red team N2)
         res["s_z"]["duplicate_of_primary_under_R3"] = True
