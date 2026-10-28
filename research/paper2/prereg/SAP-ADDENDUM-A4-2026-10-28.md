@@ -74,6 +74,7 @@ A3b > A3 > A2b > A2 > A1 > SAP body (card v4 "Precedence"), only on the points l
 | C4-11 (F11, F12, F15) minor | Highlights rebuilt with short names and a counted fallback (all at most 85 characters); NEG: summary figure shows the 90 percent interval that carries the claim, highlight states the bound as a bound; the printed multiplicity sentence replaced by a count with "no multiplicity adjustment (SAP 7)"; bootstrap index matrix fully specified; the "no Delta distribution looked at" sentence labelled as my assertion | A4.1.7, A4.2.3, A4.2.5 |
 | (not a condition) A4.3.1 limit (ii) | The non-strict load is now closed by `runs/P2-UNIDISC-KEYCHECK` (commit e954217e: 0 missing, 0 unexpected, 0 shape mismatches of 342 tensors) | A4.3.1 |
 | **r2** (2026-10-29, 00:00 IST; gate-auditor note N2 of `GATE-CODE-AUDIT-TIER3-2026-10-28.md`, commit 1b9f09d9; before any Tier-3 output exists, no M4 value seen by the author) | Reading for n_d = 0 and small n_d: below 10 discordant items the bootstrap MDD is not used and the exact Clopper-Pearson bound on the discordance rate replaces it; n_d = 0 is worded "same decision on all n items" with that bound. Plus r2 notes N1 (test file name) and N3 (stop file). Nothing else in A4 changes | A4.1.10 "r2 rule for few discordant items"; "r2 notes" below |
+| **r3** (2026-10-29, from 00:15 IST; red-team re-signature C4r-1 to C4r-5, `RED-TEAM-SIGNOFF-2026-10-28.md` lines 498-567; after `family.json` (R2, test fold 500) was committed and read by me, see "r3 notes"; before any M4 value or Tier-3 output exists) | G3/C4r-3: direction labels ("above", "below") and every "finding" label now come from the exact Clopper-Pearson interval of the discordant split, not from the percentile bootstrap; the bootstrap interval of the net difference stays as a description; r2 items 1-3 and 5 are superseded for labelling, a code delta is specified (A4.1.12). G1/C4r-1: POS-G sentences per corruption (S-M-rejected and S-M-unrejected corruptions named separately). G2/C4r-2: "counts this against the gate" removed; the motive phrase removed from A4.2.1; a fixed scope highlight for every label; MIXED qualifier fixed. G4/C4r-5: the n = 300 branch of r2 declared moot (n = 500 in force); how `mdd` = 0.0 is reported. G6: K1, partial headroom and all R3 labels moot under R2, R3-HARM/R3-MIXED unsigned. G7/C4r-5: partial-fold sentence made consistent with A2.2 | A4.1.10 "r3 rule"; A4.1.12; A4.2.1; A4.2.2 item 6; A4.2.3; "r3 notes" below |
 
 I object to no condition. Two points where r1 goes beyond the letter: C4-7 (no "fusion" in any title, even if B is formal) and C4-8 (the
 clause is struck rather than reworded). Both are stricter readings; the red team may relax them by a dated row.
@@ -82,6 +83,19 @@ clause is struck rather than reworded). Both are stricter readings; the red team
 the `tests/exp_p2/test_tier3_fusion.py` printed in A4.1.11; a naming deviation with no effect on content, recorded under the actual name in
 the dated pin row. N3: on a consistency-gate stop (A4.1.3; the module exits with code 3 and writes the reason to stderr only), the lead saves
 the stderr to `runs/P2-GATE-M4/tier3_fusion_stop.txt` before doing anything else; that file is the text of the "pipeline discrepancy" row.
+
+**r3 notes (2026-10-29, from 00:15 IST).** *Firewall, stated for C4r-4.* r2 (00:00 IST) postdates `family.json`, `ps_frozen.json` and
+`epred_frozen.json` and edits only A4.1.10; it quoted n = 500 from the coordinator's brief, so rule R2 was known to me then. For r3 I read
+`runs/P2-GATE-M3/family.json` (coordinator's permission; a frozen design file): rule R2, endpoint `d` for headroom, operating points JPEG
+quality 10, noise sigma 0.1 and splice 128 px, and the headroom statistics it carries (T1, T2, D_c, the changed-code-gate discordance). No P,
+PS, S-M, E-dec, E-pred or M4 value was read; nothing under `runs/P2-GATE-M4` was opened (my assertion). Consequences used in r3, all
+mechanical: every corruption has an operating point, so K1 and the partial-headroom modifier cannot occur; R2 is in force, so all R3 labels
+cannot occur and n = 500 (A2.2's n >= 240 threshold is unchanged). No sentence of A4.2 was chosen with knowledge of a headroom value beyond
+these three facts. *Rows that are the lead's* (C4r-4): the C4-1 commit-order row with the file birth times of the re-signature; the D0076
+correction (times, "explicit", who fixed "informative", what becomes of D18's "when does input gating help" frame under reading 1: it is
+not used in title, abstract, highlights, conclusion or the 6.1 opening, and the D18 submission condition is otherwise unchanged); the pin
+row naming `tests/exp_p2/test_gate_tier3_fusion.py`; and the route for r2 item 5, which r3 fixes as the code delta of A4.1.12 (no hand
+application).
 
 ## A4.0 Status, firewall, pins, binding
 
@@ -287,6 +301,35 @@ every bootstrap resample gives a difference of 0, so the interval is [0, 0] and 
 5. Where the module's `counts_against` field (MDD rule only) disagrees with this rule, this rule governs: the lead applies it from the printed
    n_d and n in the results text, or adds it to the code with a gate-auditor delta check before the output is read.
 
+**r3 rule: exact labels for every contrast (2026-10-29; answers red-team G3, G4, C4r-3, C4r-5; supersedes r2 items 1, 2, 3 and 5 for
+labelling and the bootstrap-based labels above; Tier 3 stays CIs only).** The percentile bootstrap is not a valid interval at small n_d
+(red-team synthetic check: b = 4, c = 0 gives a bootstrap lower bound above 0). The labels therefore come from an exact interval
+conditional on the discordant pairs, which is an interval statement, not a p-value:
+1. **Exact discordant-split interval.** For "comparator k minus GM" with $b$ items where only $k$ is correct and $c$ where only GM is correct,
+   $n_d=b+c$, let $\theta=b/n_d$ and $[\theta_L,\theta_U]$ its Clopper-Pearson two-sided 95 percent interval ($\theta_L=0$ if $b=0$, else
+   `beta.ppf(0.025, b, n_d - b + 1)`; $\theta_U=1$ if $b=n_d$, else `beta.ppf(0.975, b + 1, n_d - b)`).
+2. **Direction (replaces the bootstrap reading for labels):** **identical** if $n_d=0$; **above GM** iff $\theta_L>0.5$; **below GM** iff
+   $\theta_U<0.5$; otherwise **not distinguishable**. An exact consequence (derived): with all discordant pairs on one side, "above" or
+   "below" needs $n_d\ge6$ ($0.025^{1/5}=0.478$, $0.025^{1/6}=0.541$); b = 4, c = 0 is "not distinguishable".
+3. **Size, printed beside every contrast:** $n$, $b$, $c$, $n_d$, the net difference $(b-c)/n$, its percentile bootstrap 95 percent interval
+   (labelled "descriptive"), and the discordance bound $B$ of r2 (Clopper-Pearson 95 percent upper limit of $n_d/n$, which bounds the absolute net
+   difference). The MDD is printed only for $n_d\ge10$; for $n_d<10$ the text writes "MDD not used ($n_d<10$)" in place of the `mdd` value
+   (for $n_d=0$ the output's `mdd` is 0.0, which is degenerate and is never quoted as a number).
+4. **What counts against the method (replaces the MDD rule and r2 item 2):** for MED, TM-G, TM20 on a P cell: "above GM" (exact) is a
+   finding against the method; "identical" or "not distinguishable" is a finding against the method's added value iff the bound on GM's
+   advantage is at most 0.05, where that bound is $B$ for $n_d<10$ and the MDD for $n_d\ge10$; otherwise "uninformative at this n". For SOFT-G and
+   SOFT-A the same reading is "against discarding" / "discarding and discounting (or weighting) identical or not distinguishable". "below GM"
+   (exact) is "the hard gate gave higher verification accuracy". **At the fold in force (n = 500)** $B\le0.05$ for every $n_d\le15$ and $B=0.0074$
+   at $n_d=0$ (r2, verified by the red team), so the switch at $n_d=10$ is monotone there; the n = 300 branch of r2 (the $n_d$ = 8, 9 cliff) is
+   **moot** under R2 and is not used.
+5. **Wording.** "identical": the r2 item 3 sentence with {B}. "not distinguishable": the A4.1.10 sentence with n_d and {B} or {MDD} per item 4.
+   "above"/"below": the A4.1.10 sentences with "(exact 95% interval for the discordant split {theta_L} to {theta_U})" added.
+6. The $d$ contrasts of A4.1.8 keep the bootstrap reading (they carry no "finding" label); a contrast whose paired differences are all 0 is
+   printed "identical on every item".
+7. **Before the code delta of A4.1.12 is audited, Part 1 is not run** (no hand application; this fixes the route of r2 item 5 before any
+   Tier-3 output exists). If the output nevertheless exists without the delta, its `reading` and `counts_against` fields are not quoted;
+   cells are reported with n_d, b, c and B only (C4r-3).
+
 **Placement (one rule; C4-8, C4-9; consistent with AB.1 item 2 and A4.2.2 item 5).**
 1. Part 1 is reported in its own Results subsection, titled as exploratory, after the preregistered families; PS cells in their own table.
 2. In the Discussion it may appear only after the opening of 6.1, as a separate finding, never in the paragraph that states the P result and
@@ -318,6 +361,30 @@ pin row** that moves the card's pin to that commit after a gate-auditor delta ch
 last GPU stage that runs the pre-launch check. The auditor matches the module to A4.1 before it runs. Neither is needed before
 `analysis_m4`: the specification, not the code, must precede the P outcome. `seeds.py` is not changed (A4.1.7).
 
+### A4.1.12 Code delta for r3 (for the lead; this addendum edits no code)
+
+Against `exp_p2/gate/tier3_fusion.py` at the audited commit `00b92d4d` (read: lines 205-262). A gate-auditor delta check and a dated pin row
+are required before the module runs (card v4 section 7); the new SHA replaces `00b92d4d` in the pin row.
+1. Import `from scipy.stats import beta` (scipy is already used by `analysis_m4`). Constants `N_D_MDD_MIN = 10`, `ALPHA_EXACT = 0.05`.
+2. New `exact_theta_interval(b: int, c: int) -> tuple[float, float]`: $n_d=b+c$; $(\text{nan},\text{nan})$ if $n_d=0$; lower $0.0$ if $b=0$ else
+   `float(beta.ppf(0.025, b, n_d - b + 1))`; upper $1.0$ if $b=n_d$ else `float(beta.ppf(0.975, b + 1, n_d - b))`.
+3. New `exact_reading(b: int, c: int) -> str`: "identical" if $b+c=0$; "above" if lower > 0.5; "below" if upper < 0.5; else "not_distinguishable".
+4. New `discordance_bound(n_d: int, n: int) -> float`: $1.0$ if $n_d\ge n$ else `float(beta.ppf(0.975, n_d + 1, n - n_d))`.
+5. `counts_against(comparator, read, mdd, n_d, B)`: `read` is the exact reading; "below" gives "gate_higher"; for `DETECTOR_FREE`: "above" gives
+   "finding_against_the_method"; "identical" or "not_distinguishable" gives "finding_against_added_value" iff `(B if n_d < N_D_MDD_MIN else mdd) <=
+   MDD_DESIGN_MARGIN`, else "uninformative_at_this_n"; for SOFT-G / SOFT-A: "above" gives "finding_against_discarding"; otherwise
+   "discarding_and_discounting_not_distinguishable" / "discarding_and_weighting_not_distinguishable" (suffix "_identical" when `read ==
+   "identical"`). "undefined" only if n = 0.
+6. `accuracy_contrasts`: add per row `theta_ci95_exact` = item 2, `discordance_bound_B` = item 4, `reading` = `exact_reading(b, c)`, new key
+   `reading_bootstrap` = the old `reading(lo, hi)` value, `mdd_used` = `n_d >= N_D_MDD_MIN`; pass `n_d` and `B` to `counts_against`. Keys
+   `ci95`, `se_boot`, `mdd` unchanged (the text follows r3 item 3 for `mdd`).
+7. `d_control`: unchanged except a contrast whose valid paired differences are all exactly 0 gets `reading = "identical_on_every_item"`.
+8. Tests (`tests/exp_p2/test_gate_tier3_fusion.py`, synthetic): (b, c) = (4, 0) "not_distinguishable"; (6, 0) "above"; (0, 6) "below"; (0, 0)
+   "identical"; (5, 0) "not_distinguishable"; `discordance_bound(0, 300)` = 0.0122 and `(0, 500)` = 0.0074 within 1e-4; `counts_against` for MED
+   with "identical", n = 500, n_d = 0 gives "finding_against_added_value"; MED "not_distinguishable" with n_d = 12 and mdd 0.06 gives
+   "uninformative_at_this_n"; a case where the bootstrap says "above" and the exact rule says "not_distinguishable" yields no "finding_against"
+   label; existing tests updated for the new `reading` semantics.
+
 ---
 
 ## A4.2 Part 2: outcome book (red-team M-c, A1, A3, A4)
@@ -327,11 +394,14 @@ last GPU stage that runs the pre-launch check. The auditor matches the module to
 Inputs: `runs/P2-GATE-M3/family.json` (`n_rule.rule`, operating points) and the P section of `runs/P2-GATE-M4/analysis.json`
 (`primary.per_corruption.*`: `p_holm`, `b`, `c` under R1/R2; `p_holm`, `mean_diff` under R3, `analysis_m4.py:119-140`), plus S-M for the
 POS split. A **harm rejection** is $p_{\rm Holm}<0.05$ with $c>b$ (R1/R2) or with `mean_diff` < 0 (R3).
+**Per-corruption sets (r3, C4r-1):** $X_M$ = corruptions rejected with $b>c$ for which S-M rejected (K5, K6 not triggered); $X_G$ = corruptions
+rejected with $b>c$ for which K5 or K6 holds; $X_H$ = corruptions with a harm rejection. Every S-M limitation sentence names only $X_G$, and
+no sentence about $X_M$ carries it.
 
 | Code | Condition |
 |---|---|
-| **POS-M** | R1/R2; >= 1 rejection with $b>c$; no harm rejection; S-M rejected for every such corruption (K5, K6 not triggered) |
-| **POS-G** | R1/R2; >= 1 rejection with $b>c$; no harm rejection; K5 or K6 for at least one such corruption |
+| **POS-M** | R1/R2; >= 1 rejection with $b>c$; no harm rejection; S-M rejected for every such corruption (K5, K6 not triggered); {X} = $X_M$ |
+| **POS-G** | R1/R2; >= 1 rejection with $b>c$; no harm rejection; K5 or K6 for at least one such corruption. Variant **G-only** if $X_M$ is empty, **M+G** otherwise (r3, C4r-1) |
 | **MIXED** | R1/R2; >= 1 rejection with $b>c$ and >= 1 harm rejection |
 | **NEG** | A2.2 negative |
 | **INC** | R1/R2; no rejection in either direction; not NEG; at least one operating point |
@@ -342,15 +412,22 @@ POS split. A **harm rejection** is $p_{\rm Holm}<0.05$ with $c>b$ (R1/R2) or wit
 | **R3-MIXED** | R3; at least one of each |
 | **R3-INC** | R3; no Holm rejection in either direction |
 
+**Moot under the committed rule R2 (r3, G6):** K1 and all four R3 labels cannot occur (`family.json`: rule R2, three operating points).
+Their sentences stay in A4.2.3 as history, are unsigned (R3-HARM, R3-MIXED) or signed but unused, and are not used.
+
 **C4-4 reading (dated; needs the red team's re-signature of the HARM, MIXED and R3-HARM, R3-MIXED sentences).** Card v4 section 2 forbids "any
 claim from a rejection with c > b"; SAP 9 prescribes "GATE-M reduced verification accuracy" and makes the full P table required content. The
 card's precedence clause ("a disagreement between this card and the SAP is a card defect") decides it: SAP 9 governs, and the card's cell is
-read as "no claim in favour of the gate, and no improvement claim, from a rejection with c > b". To keep the harm out of the most visible
-place, **no title carries a harm** (HARM and MIXED use the question title); the SAP 9 sentence appears in highlight 1, the abstract and 6.1.
-The same reading applies under R3 with "lowered the evidence ratio d".
+read as "no claim in favour of the gate, and no improvement claim, from a rejection with c > b". **Title rule (r3, neutral form; C4r-2):**
+a title states only the preregistered headline claim (an improvement with $b>c$, SAP 2.4); every other P result, including the SAP 9 sentence
+"GATE-M reduced verification accuracy", is reported content and goes in highlight 1, the abstract and 6.1, so HARM and MIXED use the question
+title QT. No evaluative verdict beyond the SAP 9 sentence is attached to a harm. The dated row settling card section 2 against SAP 9 is the
+lead's (red team: SAP 9 governs). The R3 analogue is moot under R2.
 
-**Modifiers.** *Partial headroom:* every sentence names the tested corruptions and adds "({Y}: no operating point at either severity; not
-tested)". *Partial fold:* completed $n<240$ for a corruption gives INC (A2.2), and sentences add "partial fold (n = {n} of {planned})".
+**Modifiers.** *Partial headroom (moot under R2, r3):* every sentence names the tested corruptions and adds "({Y}: no operating point at
+either severity; not tested)". *Partial fold (r3, G7, as A2.2):* a corruption with completed $n<240$ cannot contribute to NEG; a rejection with
+$b>c$ at $n<240$ still makes the label positive (POS-M, POS-G or MIXED); a harm rejection at $n<240$ still counts as a harm rejection; with no
+rejection the label is INC. Every sentence about such a corruption adds "partial fold (n = {n} of {planned})".
 *M4 not finished at the freeze:* no label; per D18 the deadline moves rather than a paper without M4 being submitted.
 
 ### A4.2.2 Rules common to every label
@@ -370,8 +447,9 @@ tested)". *Partial fold:* completed $n<240$ for a corruption gives INC (A2.2), a
    predict the P result. Never "predicted", "explained", "caused by detection".
 6. **Highlights** at most 85 characters (E0 limit, verified by the venue scout). Corruption names in highlights are "JPEG", "noise",
    "splice"; when a slot holds two or more corruptions it reads "{k} corruptions" with a digit ("2 corruptions"). With these substitutions every
-   highlight 1 below is at most 85 characters (counted for every combination of single names and the fallback; derived). Highlights 2-5
-   obey items 2-5 and state no secondary or Tier-3 result as a gain.
+   highlight 1 below is at most 85 characters (counted for every combination of single names and the fallback; derived). **Highlight 2 is fixed
+   for every label (r3, C4r-2 scope):** "Preregistered test in one model (UniDisc 1.4B), one severity per corruption" (75 characters). Highlights
+   3-5 obey items 2-5 and state no secondary or Tier-3 result as a gain.
 7. **Scope** `{S}` = "in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) on COCO image-caption pairs with a random
    other caption as the negative".
 
@@ -383,22 +461,21 @@ and gate; `{D}` net difference; `{L}`, `{U}` 95 percent CI; `{L90}`, `{U90}` 90 
 verification under image corruption? A preregistered test in UniDisc". **Question title QT-d** (R3-HARM, R3-INC): "Does masked-likelihood
 token gating strengthen image-text evidence under image corruption? A preregistered test in UniDisc".
 
-**POS-M**
+**POS-M** ({X} = $X_M$)
 - Title: "Masked-likelihood token gating raised image-direction verification accuracy under {X} in UniDisc: a preregistered test"
 - Highlight 1: "Gating raised verification accuracy under {X}, beyond a same-shape mask"
 - Abstract: "In the preregistered test (exact McNemar, Holm over three corruptions), a gate built on the masked-likelihood score raised image-direction verification accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}), beyond what an equally shaped random mask gives; {for the other tested corruptions: no improvement was detected ({D}, {L} to {U})}. This is {S}, at one severity per corruption."
 - 6.1 opens: "Under {X}, the gate improved image-direction verification over no gate beyond what an equally shaped random mask gives; this control rules out the shape of the mask, not the removal of low-likelihood tokens in general, and the gate's score did not beat cheap rivals at finding changed codes on JPEG and noise."
 
-**POS-G**
-- Title: "Masked-likelihood token gating raised image-direction verification accuracy under {X} in UniDisc, not distinguishably from a same-shape random mask: a preregistered test"
-- Highlight 1: "Gain from token gating under {X} not distinguishable from a same-shape mask"
-- Abstract: "... a gate built on the masked-likelihood score raised image-direction verification accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}): an improvement, but not distinguishable from masking the same shape elsewhere, and therefore not attributable to detection beyond mask geometry. This is {S}."
-- 6.1 opens: "Under {X} the gate improved image-direction verification over no gate, but the improvement was not distinguishable from masking the same shape elsewhere, so it is not attributable to detection beyond mask geometry."
+**POS-G** (r3, C4r-1: the S-M limitation is attached to $X_G$ only)
+- *G-only* ($X_M$ empty, {X} = $X_G$): title "Masked-likelihood token gating raised image-direction verification accuracy under {X} in UniDisc, not distinguishably from a same-shape random mask: a preregistered test"; highlight 1 "Gain from token gating under {X} not distinguishable from a same-shape mask"; abstract "... a gate built on the masked-likelihood score raised image-direction verification accuracy over no gate under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}): an improvement, but not distinguishable from masking the same shape elsewhere, and therefore not attributable to detection beyond mask geometry. This is {S}."; 6.1 opens "Under {X} the gate improved image-direction verification over no gate, but the improvement was not distinguishable from masking the same shape elsewhere, so it is not attributable to detection beyond mask geometry."
+- *M+G* ($X_M$ and $X_G$ both non-empty): title = the POS-M title with {X} = $X_M$; highlight 1 = the POS-M highlight with {X} = $X_M$; highlight 3 = the G-only highlight 1 with {X} = $X_G$; abstract = the POS-M sentence for $X_M$, then "Under {X_G} the gate also raised verification accuracy ({D}, 95% CI {L} to {U}), but not distinguishably from masking the same shape elsewhere, so that gain is not attributable to detection beyond mask geometry."; 6.1 opens = the POS-M sentence for $X_M$ followed by the G-only sentence for $X_G$.
 
 **MIXED**
 - Title: QT.
 - Highlight 1: "Gating: verification accuracy rose under {X}, fell under {Y}"
 - Abstract: the POS-M or POS-G abstract sentence for {X} (by the S-M result for {X}), then "Under {Y}, GATE-M reduced verification accuracy (net {D_Y}, 95% CI {L_Y} to {U_Y})." Then {S}.
+- Qualifier (r3, C4r-2): {X} is the set rejected with $b>c$, {Y} = $X_H$. If $X_G$ is non-empty, highlight 3 is the G-only highlight 1 with {X} = $X_G$, and the abstract and 6.1 use the M+G split for {X}; "rose" in highlight 1 states the P result, and the attribution limit is in highlight 3.
 - 6.1 opens: "The same gate improved image-direction verification under {X} and reduced verification accuracy under {Y}; the preregistered test reports both."
 
 **NEG**
@@ -417,13 +494,15 @@ token gating strengthen image-text evidence under image corruption? A preregiste
 - Title: QT.
 - Highlight 1: "Token gating reduced image-direction verification accuracy under {X}"
 - Abstract: "In the preregistered test, GATE-M reduced verification accuracy under {X} from {A0} to {A1} (net {D}, 95% CI {L} to {U}; n = {n}); {no improvement was detected for the other tested corruptions}. This is {S}."
-- 6.1 opens: "Under {X}, GATE-M reduced image-direction verification accuracy relative to no gate; the preregistered test counts this against the gate."
+- 6.1 opens (r3, C4r-2; SAP 9 sentence only): "Under {X}, GATE-M reduced image-direction verification accuracy relative to no gate, in one model at one severity."
 
-**K1 (NO-GO)**
+**K1 (NO-GO)** (moot under R2, r3; kept as history)
 - Title: "Masked-likelihood token gating in UniDisc: corruption headroom, token detection and clean false-alarm control in a preregistered measurement"
 - Highlight 1: "No preregistered corruption left headroom, so the gating test was not run"
 - Abstract: "No preregistered corruption met the headroom rule at either severity on separate items (T1 and T2 in Table {t}), so the preregistered test of gating against no gate was not run and no statement about gating and verification accuracy under corruption is made. This is {S}." Detection and calibration follow as their own labelled sentences.
 - 6.1 opens: "No preregistered corruption met the headroom rule, so this paper makes no statement about whether gating changes verification accuracy under corruption; it reports whether the corruptions lowered the evidence, how well the gate's score finds changed codes, and whether the clean false-alarm statement held."
+
+*R3 blocks below: moot under the committed rule R2 (r3, G6); R3-HARM and R3-MIXED unsigned; none is used. Their known defects ("raises d whatever" where v3 says "can"; "verification" in the R3-POS title and abstract; "counts against the gate" in R3-HARM) are not corrected because they cannot be used.*
 
 **R3-POS**
 - Title: "Masked-likelihood token gating raised the per-item evidence ratio under {X} in UniDisc, not a verification-accuracy result: a preregistered test"
