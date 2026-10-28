@@ -57,6 +57,21 @@ what we submit. **Recommendation:** if P is null but S2, PS and FOIL are informa
 "when does input gating help" article with the null stated in the abstract; if the GPU cannot finish M4 by the freeze,
 move the deadline rather than submit without M4. Alternatives: a short CPU-only feasibility note, or another venue.
 
+## 8. GPU timeline and the S2 size (all estimates from the implementer reports, not measured on these stages)
+Busy GPU time, then wall time at the 0.5 duty cycle (the guard pauses as long as each item runs):
+| Stage | Busy GPU-h | Wall h |
+|---|---|---|
+| M1 remainder (94 items) | about 0.3 | about 0.6 |
+| M1 detection stage, M2, M3, M4 (with patch and swap), M5 | about 2.7 | about 5.4 |
+| S2 re-infill, n = 300, three arms (GATE, random best-of-4, changed-code) | about 3.9 | about 8 |
+| FOIL family B, n = 300 | about 0.13 | about 0.3 |
+| imagecorruptions suite | 0.5-0.7 | 1.0-1.4 |
+| Omni-Diffusion timing + family R | 0.6-1.6 | 1.2-3.2 |
+| **Total** | **about 8-9** | **about 16-19** |
+If you answer by about 19:00 tonight and nothing stops, the GPU work ends around midday to early afternoon Thursday, leaving
+over a day before a Friday 18:00 freeze. **Recommendation: keep all three S2 arms**; if a stop costs time, the first cut is
+the changed-code arm (S2 drops to about 2.6 GPU-h), then the cut order above.
+
 ## Already decided (no answer needed)
 S2 re-infill is MUST; S2 and FOIL at n = 300; swap, FOIL, Omni adapter and suite are being built today (CPU only); then a
 gate-auditor check and card v4 pin the code and SAP before the first new item.
