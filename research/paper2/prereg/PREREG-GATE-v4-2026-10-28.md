@@ -1,0 +1,236 @@
+```yaml
+agent: experiment-designer
+date: 2026-10-28
+brief: Card v4 for GATE (Paper 2). Delta card on v3 (PREREG-GATE-MUST-v3-2026-10-28.md plus its Amendment A1). It pins the final audited code and the SAP (Addenda A1, A2, A2b, A3, A3b), lists the families and their rules, fixes the run order with exact commands, records every audit and signature, and lists what is still Shlok's. v1, v2 and v3 stay unchanged on disk.
+card_id: PREREG-GATE-v4-2026-10-28
+supersedes: PREREG-GATE-MUST-v3-2026-10-28 (+ A1) for everything that runs from the first GPU item after this card; v3 sections not named in section 6 below are carried over unchanged
+sources_examined:
+  - research/CONTRACT.md
+  - research/paper2/prereg/PREREG-GATE-MUST-v3-2026-10-28.md (sections 3, 4, 8-18 and Amendment A1 read; sections 1, 2, 5-7 not re-read and carried over)
+  - research/paper2/prereg/SAP-GATE-2026-10-28.md (AD.0-AD.12, AB.1-AB.10, A3.1-A3.9, A3b.1-A3b.7, A3b.12, A3b.12a, A3b.13 read; AD.13-AD.15, A3.10-A3.11, A3b.8-A3b.11 not read; SAP hashes recomputed)
+  - research/paper2/method/IMPL-E-INTEGRATION-2026-10-28.md (section 3 and Round 3 R3.1-R3.3 read; other sections not read)
+  - research/paper2/prereg/GATE-CODE-REAUDIT-A3-2026-10-28.md (sections 0-8; section 1 table rows only skimmed)
+  - research/paper2/prereg/GATE-CODE-AUDIT-A3-PART1/2/3 (verdict, finding headings and the E-pred section 4 of part 1 only)
+  - research/paper2/prereg/RED-TEAM-SIGNOFF-2026-10-28.md (A3 section: verdict, signed/not signed, withdrawal conditions; the A2 section by headings)
+  - research/paper2/prereg/LEAD-DECISIONS-2026-10-28-PM.md, research/paper2/CONFIRM-EVENING-2026-10-28.md (full)
+  - git: ls-tree, show, diff, log at 9c4e1e25 and HEAD 462b4465; exp_p2/gate/pins.py; argparse lines of the driver, runners and CPU modules (flags checked by grep, not executed)
+coverage: >
+  Nothing was run on a GPU. Not read: the statistician's power script, the A3b.8-A3b.11 text, spec v2, the audit findings' bodies (only their verdict lines), IMPL-A/B/C/D, any run output under runs/P2-PROBE-02 or runs/P2-GATE-M1 (the author opened none). The run commands below were not executed; their flags were checked against the argparse definitions at the pin.
+claims:
+  - statement: "Code at 9c4e1e25 is unchanged at HEAD 462b4465 under exp_p2/, tools/ and tests/, and the tracked tree is clean there; pins.require_clean returned (True, [])."
+    status: supported
+    evidence: "runs/P2-GATE-CARD-V4/pins.json fields code_diff_pin_to_head_empty, require_clean, gpu_guard_pin"
+    level: E4
+    confidence: 0.95
+  - statement: "The SAP at HEAD equals the pinned values e33f078c... (LF) and d95fb87b... (CRLF working tree); nothing changed from the A3b.13 expectation."
+    status: supported
+    evidence: "section 1.3; pins.json sap"
+    level: E4
+    confidence: 0.95
+competing_explanations: []
+unknowns: [every outcome of M1-M5, S2, B, R, suite; section 5 items]
+next_test: {hypothesis: "H-G as in v3 section 2", intervention: "run order of section 3", primary_metric: "exact McNemar on Y, GATE-M vs none, Holm m=3 (family P)", falsifier: "no Holm rejection with b>c in family P (K3)", gpu_hours: "about 8-9 busy, 16-19 wall for the whole sheet (CONFIRM-EVENING section 8, estimates)"}
+```
+
+# Preregistration card v4: GATE (Paper 2)
+
+**Status.** Frozen against the code commit **`9c4e1e25cb0d1a77b78410e1613098d8c6ba1085`** (final audited SHA, `GATE-CODE-REAUDIT-A3-2026-10-28.md` section 8) and the SAP hashes of section 1.3, before any M2-M5, S2, FOIL, Omni or suite item exists and before any M1 outcome has been analysed. "Frozen" is not "ready": GPU work stays blocked until the Shlok items of section 5 are answered (items 1 and 2 block every GPU stage). After the signatures a change is a new version or a dated SAP addendum, never an edit (v3 section 17 stands).
+**Precedence.** SAP addenda (A3b > A3 > A2b > A2 > A1 > body) > this card > v3 > spec v2. A disagreement between this card and the SAP is a card defect.
+**No new numbers.** Every number is a hash computed here, or is quoted with its file.
+
+---
+
+## 1. Pins
+
+### 1.1 Code, tests, tools
+| Item | Value |
+|---|---|
+| Commit | `9c4e1e25cb0d1a77b78410e1613098d8c6ba1085` (branch `claude/frosty-clarke-209639`) |
+| Scope | every file under `exp_p2/` (80), `tests/exp_p2/` (32) and `tools/gpu_guard.py` (1): **113 files** |
+| Per-file hashes | **`runs/P2-GATE-CARD-V4/pins.json`** (committed with this card): for each file the git blob id, `sha256_lf` (SHA-256 of the committed bytes), the raw working-tree SHA-256 and whether the CRLF-normalised working copy equals the commit |
+| Manifest hash | `65513677ba4d98adfa1a861db4215200ad64b78aec1cceeaf0bcdca6b4664dec` = SHA-256 of the lines `path<TAB>sha256_lf<LF>` over the 113 files, sorted by path (`pins.json` field `manifest_sha256`) |
+| Convention | `sha256_lf`. The worktree is CRLF for some files (`core.autocrlf=true`), so a raw hash can differ with no content change; `pins.check_pin` normalises. |
+| Delta since v3's pin | `git diff --shortstat 623faaff 9c4e1e25 -- exp_p2 tools tests`: 56 files, +10512/-71. `git diff --stat 9c4e1e25 HEAD -- exp_p2 tools tests` is empty (HEAD is `462b4465`; later commits touch `research/` only). |
+| `pins.require_clean` at the pin | **`(True, [])`**; `git status --porcelain -- exp_p2 tools tests runs/P2-GATE-FOLDS runs/P2-GATE-FOIL runs/P2-OMNI-ADAPTER` empty (run 2026-10-28 at HEAD `462b4465`, whose code equals the pin; recorded in `pins.json` fields `require_clean` and `head_when_generated`) |
+| gpu_guard | `tools/gpu_guard.py`: committed blob and CRLF-normalised working copy both `5ddf7d09f1ea830a6a1049b5958974c342cd37a2817e1063e1dbf797d855aa6d` = the EXP-001 manifest pin (`pins.gpu_guard_pin()["ok"]` True; raw CRLF hash `dff4b96c...`) |
+| Test record | Lead (CONFIRM-EVENING): 536 CPU tests, all passing. Gate-auditor at the pin: 247 passed in 12 targeted files (re-audit section 0); `test_gate_s2.py` 40 passed after the NaN guard (section 8). CPU suite run by the card writer at HEAD: see the line at the end of this section. Real-GPU paths (watchdog kill, memory fraction, `peak_gb`, UniScorer layout, Omni 4-bit load, S2 sampler on the real network) are untested by construction. |
+
+CPU suite, card writer, `python -m pytest tests/exp_p2 -q` (CUDA_VISIBLE_DEVICES empty, venv python): **537 passed, 5 skipped, 1 warning in 257.14 s** (the 5 skipped are the `.venv-omni` tests; run 2026-10-28 at HEAD `462b4465`, code equal to the pin; output in the writer's scratchpad, not stored in `runs/`; `git status --porcelain -- exp_p2 tools tests` empty afterwards). This differs from the lead's "536" by one test; not investigated.
+
+### 1.2 Pinned data and sign-offs (hashes computed 2026-10-28; full table in `pins.json` `other_pins`)
+| Artifact | Path | SHA-256 |
+|---|---|---|
+| Folds | `runs/P2-GATE-FOLDS/folds.json` | committed LF `c19db5b3b9fabdeb89e8e686c58ae6c011f746529fbf9be84f1c58c99c446786`; CRLF working tree `450edb543779de7ee5e6a52422fd6507ef52f15ba3b956a8b05c2e561620f311` (the value v3 pinned; unchanged since v1) |
+| FOIL manifest | `runs/P2-GATE-FOIL/manifest.json` | LF `070fb29a2ebc7a589de29a64ac381628fed14d707a10ddb06c4399315294f597`; CRLF `1f7ec4d4d416305157f6b7d667e69513d9ca36fc1c32a88604dd833c51d0365e` |
+| FOIL pool | `runs/P2-GATE-FOIL/pool.json` | LF `cfd0f94facd00782e0e8c539e372470a57896fc9f3fe4a67ecb64158b3923b92`; CRLF `8cbe072d210d1c99afdf04fee4b4ae5b4ef8f6ea5ca73867372dcbe9e8c2400e`. Internal content hash `foil.pool_sha256(pool)` recomputed here = `edc3b227baf940eb9b665369097866a28bbd628ad7ac893ad0813dd9b74a3616` (equals the value quoted in SAP A3.1 and in `leak_check.json`) |
+| FOIL leak check | `runs/P2-GATE-FOIL/leak_check.json` (`ok` true) | LF `91f4b7968b5400c45feea3efd7a0a424dcfa95768c8a3b4edf11da4215e6a7c7`; CRLF `b34191db7b2a7e5b7524990933467d23e446947c2d68623a6c8d333ef50647fa` |
+| FOIL source file (outside git) | `foilv1.0_test_2017.json` | `7b37ab2a4e3dc911d006d5941919245c47d1e67d2ee29b4f7a87d5ecc9284642` (manifest field; July 2017 info block vs Oct 2018 revision unresolved, A3.4 item 4) |
+| FOIL L7 sign-off (data-steward) | `research/paper2/related/FOIL-L7-SIGNOFF-2026-10-28.md` | `33790a86a1ded36c902ff2cd7ada5d1e4ce6e31fd71bb755ff8c4c3026817676` (verdict PASS for id mapping and non-vacuity of the leak check, SAP A3.4) |
+| Omni CPU adapter signature | `runs/P2-OMNI-ADAPTER/adapter_signature.json` | `3d3fbd2c71fd9482d2ba2555b5a50e290c8c6f88868504e1030e9faf672628ab`. **It says "CODE-AUDIT PASS (CPU only); GPU adapter checks pending"**, `selfcheck_sha256: null`. It is not the signature the Omni stages read (`runs/P2-OMNI-TIMING/adapter_signature.json`, written only after the timing stage; re-audit section 5). No document may say the adapter was "independently verified" (A3b.4 item 1). |
+| Omni checks | `research/paper2/method/OMNI-ADAPTER-CHECKS-2026-10-28.md` / `exp_p2/omni/checks.py` | `9b429e12df9d8aab6b569d83aeace75652eb78ee2d75454b6891d5bf435dbe55` / `9e397f2a3dedcd4a8edf133214d30ed25ee9170ca80a089238435c2217f6c48f` (LF; equal to A3b.4 item 2; `checks.py` unchanged since) |
+| E-pred frozen fit files (EPRED-FIT-AUDIT PASS, `GATE-CODE-AUDIT-A3-PART1-2026-10-28.md` section 4) | `exp_p2/gate/epred_fit.py` / `exp_p2/gate/theory.py` / `tests/exp_p2/test_gate_epred_fit.py` | `c89700dbc3ba4da61f4f8ae681a5775d05e54cbbf3a86d05650e4151d5d29abc` / `5c535a3bda759e0bc3ef7b888b8a773ce2d0cf077c2b515661fda0a9ae00ab46` / `8d7528bbb37b9f125f80c37d13baadfcee01f347343910861c6fa355cabad25f` (all equal to `pins.json` `files`; re-audit section 3 confirms byte-identity from the audit to the pin) |
+| E-pred `--audit-record` | `research/paper2/prereg/GATE-CODE-AUDIT-A3-PART1-2026-10-28.md` | `26145a2a6b918536a1b5eb13fbb09e0f20241332b57f3505bdd95b158d234c61`; must stay unedited (its hash goes into `config.json` and `epred_frozen.json`) |
+| Lead attestation (with the 14:45 IST extension) | `research/paper2/prereg/LEAD-ATTESTATION-A2-2026-10-28.md` | `4ddf79bb2feb028cc416c39eeb49e4c02da18a4982d44cf6ac5c1bf27430bae3` |
+| Lead decisions (afternoon) | `research/paper2/prereg/LEAD-DECISIONS-2026-10-28-PM.md` | `7d507e4bbcef92254616286a5f26709a4ac5b22f7634955184409ee6862230dd` |
+| S2 chain-likelihood guard | `exp_p2/gate/reinfill.py` | `3659a5d5ea867f80d5ebb7aeb0cb4f4abf54d759df1a2bd744ced24864da4811` (`NonFiniteDrawError`, commit 9c4e1e25) |
+Audit and sign-off documents are hashed in `pins.json` `other_pins` (12-hex prefixes in section 4).
+
+### 1.3 The SAP
+`research/paper2/prereg/SAP-GATE-2026-10-28.md`, with Addenda A1, A2, A2b, A3, A3b and A3b.12, as committed at the pin and at HEAD:
+| Convention | SHA-256 | Match |
+|---|---|---|
+| **LF** (committed blob at `9c4e1e25` and at HEAD; working copy with CRLF removed) | `e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7` | equals the expected value (A3b.13 / lead brief) |
+| **CRLF** (raw working tree of this checkout) | `d95fb87b22c8eb713d35b07a0a066c56cb250a7578e590691cdb983609ec6da6` | equals the expected value |
+The card uses **LF** as its convention (the committed bytes); v3 pinned the raw CRLF value of an earlier SAP (`b4e0bf57...`), now history. Earlier SAP pins in the file (A2b "Pins", A3 "Pins", A3b "Pins") are history. Both hashes were recomputed; nothing changed. A later SAP edit needs a dated addendum and a new pin row.
+
+### 1.4 Pre-launch check (before every GPU stage; all must pass, any failure = stop and write a dated row)
+```
+git rev-parse 9c4e1e25                                    :: 9c4e1e25cb0d1a77b78410e1613098d8c6ba1085
+git diff --quiet 9c4e1e25 HEAD -- exp_p2 tools tests runs/P2-GATE-FOLDS/folds.json runs/P2-GATE-FOIL/manifest.json runs/P2-GATE-FOIL/pool.json runs/P2-GATE-FOIL/leak_check.json      :: exit 0 (fusion_frozen.json is added to runs/P2-GATE-FOIL later, so the files are listed)
+PY -c "from exp_p2.gate import pins; print(pins.require_clean(False, label='launch'), pins.gpu_guard_pin()['ok'])"   :: (True, []) True
+git show HEAD:research/paper2/prereg/SAP-GATE-2026-10-28.md | sha256sum    :: e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7
+git status --porcelain -- exp_p2 tools tests              :: empty
+```
+(`PY` and `W` as in section 3.) The driver and every runner also refuse on a dirty tree (exit 11), a `gpu_guard.py` pin mismatch (exit 10), a hold file, an event-log hit (exit 9) and AC loss (re-audit section 4); `--allow-dirty` is not used.
+
+---
+
+## 2. Families and rules
+
+Eleven test families (AB.3 item 1: family E withdrawn). **No cross-family multiplicity control** (AD.11); each family has its own alpha 0.05. The headline comes only from P. **B-1 (AB.1, binding): no secondary family can rescue a null in P.** A P null is reported with the v3 section 12 / A2.2 label and **no causal clause** drawn from PS, S2, B, R, E-dec, E-pred or the suite, in title, abstract, highlights or conclusion; none of them is stated in the abstract without its family label.
+
+| Family | n (planned) | Test, alpha / Holm m | Governing SAP clauses | Allowed claim | Forbidden |
+|---|---|---|---|---|---|
+| **P** (headline; unchanged) | 300 (R1), 500 (R2), 300 with d-Wilcoxon (R3); n-rule from `family.json` | exact two-sided McNemar on Y, GATE-M vs none: P1 JPEG, P2 noise, P3 splice; Holm **m = 3 always**, alpha 0.05; R3: Wilcoxon on d | SAP 2.1-2.4, 4.6, A1.1, A2.2, AD.1; v3 sections 3, 9, 11a, 12; K1-K7 | improvement claim only with a Holm rejection and b > c; label "negative" only under A2.2 (not under R3 or NO-GO) | any claim from a rejection with c > b; "predicted", "explained", "caused by detection" for a P result (AB.1) |
+| **PS** patch, swap (positive control) | P's fold | same test as P; Holm **m = 2** (0.025, 0.05) | AD.4, AB.1(a), A3.3 | "pipeline is not broken" (met) / "pipeline defect suspected, audit triggered" (not met) | "the gate works where detection is easy"; any use as a demonstration of the method's value (AB.1(a)) |
+| **S2** re-infill, patch and splice | 300 (prefix of the test list); sensitivity at the first 150 | exact McNemar I-GATE vs I-RAND4 (kept draw), Holm **m = 2**; floor: tested only if completed n >= 120, else descriptive; 120-239 labelled "partial prefix" with MDE | AD.5, AB.4, A3.1, A3.2, A3b.1, A3b.2, A3b.6 (n = 300 conditional on Shlok); AD.8, AB.9 | A3b.2 item 3: the repaired flagged set scores higher (or not) than equal-size random sets, best of four by chain log-likelihood, caption masked | "improves" verification, restoration or image quality, UniDisc's own re-infill, re-masking as a mechanism, gate detection, "location does not matter" if inconclusive; the string "G.1" in title, abstract, highlights, figure titles, table header; a kept-draw result without the draw-level and all-four contrasts beside it (A3b.1) |
+| **B** FOIL fusion | 300 test pairs in the committed pool (298 expected completed, IMPL-B); sensitivity = first 150 pool positions | exact McNemar fusion vs best single direction, **m = 1**; ceiling rule: best single direction >= 0.95 on fit pairs = "untestable at ceiling", p = 1 | AD.6, AB.6 (L0-L8), A3.4, A3b.3, A3b.6 | A3b.3 item 6 sentences (untriggered); A3.4 item 3 sentence (triggered) | "up to 8.7 percent" or any bound on foil noise; "FOIL solved"; a statement about corruption (B is not a corruption test) |
+| **R** Omni-Diffusion 8B 4-bit | n_R = 150 (120 branch, descriptive unless no pair excluded); calibration 100, positive control 50 | exact McNemar GATE-M vs none per corruption in P+, Holm **m_R = abs(P+)** (1-3), gatekept by P; not run if P+ empty | AD.7, AB.5, A3.5, A3b.4, lead decision 1 | R1/R2: "directional replication on a second model, 4-bit quantised" with the confound list; R3: "the evidence-ratio effect found in P was / was not accompanied by an accuracy change on Omni"; non-rejection = "not replicated; inconclusive at this n" | "generalises"; "independently verified" adapter; pooling with UniDisc; "directional replication" under R3 |
+| **E-dec** | M4 test fold, no new passes | none (paired bootstrap CI only) | AD.2, AB.2 | T = U + R + V with the AB.2 names ("residual loss under the oracle gate", "gap to the oracle gate") | the words "treatment" and "detection" for U and V in abstract, highlights or conclusion; any use to rescue P |
+| **E-pred** (descriptive) | P and PS cells separately (P: K <= 3) | none; Clopper-Pearson interval; family E withdrawn | AB.3, A3.6, A3b.7 | "the sign of the plug-in SNR change agreed with the sign of the net accuracy difference in A of K_eval cells (CI)", both signs shown | "predicted", "explains", "supported"; pooling with suite cells |
+| **Suite** (exploratory, Tier 3) | 100 headroom + first 100 test items, 8 cells | none; CIs only | AD.9, AB.8, A3.6 item 5 | descriptive, labelled exploratory | any p-value in a claim; combination with AD.3 agreement; any appearance in abstract or highlights |
+| **v3 secondaries** (unchanged) S-M (3), S-Z (3), S-DN (2), S-D (2), S-D2 (2), S-C (1) | as v3 section 4 | as v3 section 4 | v3 section 4; A1.2; A3b.12 for S-D / S-D2 at k < 200 | as v3 | as v3; K2 is "not evaluated" (not "met") when a corruption has n < 100 |
+
+Thresholds shared by S2, B, R: completed n >= 120 to test; interrupted runs leave a prefix, no replacement, no skipping (SAP 8.1, AD.8); no look at an outcome before the planned fold of that family is complete or the freeze (SAP 8.2); no optional stopping at n = 300 (A3.1 item 4). S2, B and R run only if their code was matched by the gate-auditor (AB.8): all three were audited at the pin (section 4); R additionally needs the signature written after its timing stage.
+
+---
+
+## 3. Run order and exact commands
+
+`W` = `C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639`; `PY` = `C:\Users\Shlok\Downloads\Multi-Modality Language model\.venv\Scripts\python.exe`; `DRV` = `PY -m exp_p2.gate.gate_driver`. All from `W`. **`MEM` = `--max-used-first-mib <CEIL_FIRST> --max-used-mib <CEIL> --max-rise-mib <RISE> --mem-frac <MEM_FRAC>`**, filled from Shlok's answer to item 1 (section 5) and written into a dated row before the first GPU stage. The four flags exist in `runner.base_parser` for every runner and in `probe2_guarded`. Omni stages carry their own committed values (9500 / 9000 / 1500, `--mem-frac 0.62`, 7000 MiB peak allocation, 2500 MiB before load); **`MEM` is not added to an Omni command** (A3b.4 item 6: no Omni cap is changed after an Omni memory reading is seen). `HF_HUB_OFFLINE=1` is assigned by the driver for the four Omni stages (lead decision 2). Temperature limit 80 C, charger check, event-log check and crash-log check stay as in v3 section 11b. A guard stop (exit 8 / 76) or a crash-log event halts everything until Shlok returns. M0 stages 1-3 passed (commit `93f230bc`) and are not repeated. The HOLD was released in `f12c455d` (progress HANDOFF 56).
+
+Row numbers follow the 16-row sheet of IMPL-E section 3. **New rows: 4b (R3.1) and 8a.** Estimates are those of IMPL-E and CONFIRM-EVENING section 8 (not measured on these stages).
+
+| # | GPU command (after `DRV`) / CPU command | CPU steps before and after (binding order) |
+|---|---|---|
+| 1 | `--stage p2 --extra "<MEM>"` : M1 resume, items 106-199, stopped item retried, same list (A3.8 ii) | none |
+| 2 | `--stage m1 --extra "--tbv <MEM>"` : D at stored codes + TbV on the raw logits | **After:** (a) the **M1 closing row** "M1 closed: k items, n_q, reason, time" (A3b.5 item 1, A3b.12 rule 1), time rule only (AB.9), written before `analyze_gate_m1` runs in any form; (b) Shlok's co-attestation or the dated statement of its absence in the attestation file (A3b.5 item 10 (d)); (c) `PY -m exp_p2.analyze_gate_m1 --probe-run P2-PROBE-02 --m1-run P2-GATE-M1` and, **only if k < 200 or n_q < 200**, `--closed-k K --closed-nq Q` equal to the closing row (A3b.12 rule 8); commit `detection_frozen.json` and `analysis.json`. UNDECIDED is never a pass; FAILED triggers the A2.3 audit (nothing tuned) and **does not block M3 or M4** (lead decision 3). This analysis precedes M3. |
+| 3 | `--stage m2 --n 300 --extra "<MEM>"` | **After:** `PY -m exp_p2.gate.fit_threshold --run-id P2-GATE-M2`; commit `threshold.json`; `PY -m exp_p2.gate.c1 --look cal` |
+| 4 | `--stage m3 --n 100 --extra "<MEM>"` | **After:** `PY -m exp_p2.gate.headroom --run-id P2-GATE-M3 --endpoint d`; `PY -m exp_p2.gate.c1 --look head`; **commit `runs/P2-GATE-M3/family.json`** (write-once; D*, rule R1/R2/R3 / NO-GO) |
+| **4b** (new, IMPL-E R3.1) | CPU only: `PY -m exp_p2.gate.ps_freeze write`, then `PY -m exp_p2.gate.ps_freeze check` | **Commit `runs/P2-GATE-M3/ps_frozen.json` before row 5 and before the first M4 item** (AB.8 withdrawal condition otherwise). Rows 5 and 6 refuse (exit 2) without it. `ps_frozen.json` stands for both itself and the A3.3 item 1 `family.json` reference (section 4.4). |
+| 5 | `--stage epred-fit --n 100 --extra "--audit-record research/paper2/prereg/GATE-CODE-AUDIT-A3-PART1-2026-10-28.md <MEM>"` (optional, fenced) | **After:** `PY -m exp_p2.gate.epred fit --run-id P2-GATE-M3 --fit-run P2-GATE-EPRED-FIT --audit-record research/paper2/prereg/GATE-CODE-AUDIT-A3-PART1-2026-10-28.md`; commit `epred_frozen.json` **before the first M4 item**. If not ready when M4 is ready, E-pred is "not run" and M4 does not wait (AB.3 item 5, AB.9). No decision depends on this chunk (AB.3 item 6). |
+| 6 | `--stage m4 --n <300, or 500 if family.json says R2> --extra "--tbv auto <MEM>"` (fresh run; `--n` must equal the committed n-rule; swap and patch are in) | **Closing of the Omni tightening window (A3b.4 item 3) is recorded in a dated row before `analysis_m4` is first run on M4 data.** **After the planned fold is complete (or at the freeze), once:** `PY -m exp_p2.gate.analysis_m4 --run-id P2-GATE-M4 --family-run P2-GATE-M3`; **commit `analysis.json` at once** (AD.12 step 3: the P section is fixed before PS, E-dec, E-pred are read; part-1 audit m-8: the separation is procedural). Then `PY -m exp_p2.gate.edec run --run-id P2-GATE-M4 --family-run P2-GATE-M3`, then `PY -m exp_p2.gate.epred score --run-id P2-GATE-M4 --family-run P2-GATE-M3` (AD.12 step 5). C1 look 3 is inside `analysis_m4`. |
+| 7 | `--stage m5 --n 100 --extra "<MEM>"` | **After:** `PY -m exp_p2.gate.coherence_report --run-id P2-GATE-M5 --mu <clean mean per-token paired evidence from M4>` |
+| 8a (new) | **S2 smoke, 3 items, GPU:** `PY tools/gpu_guard.py --log runs/P2-GATE-S2-SMOKE/telemetry.csv --every 1 --max-temp 80 --max-minutes 12 -- PY -m exp_p2.run_gate_s2_smoke --limit 3 --n 300 <MEM>` | **Blocked by section 5 item 4 (it runs S2 items).** Prints only `peak_gb`, `seconds`, `n_rows`; `analysis_s2` is never run on the smoke directory. The firewall is an honour rule; this card records the script (A3b.7 item 4). The S2 run card must first copy the sampler specification of A3.2 item 2 (A3b.2 item 2), state `HF_HUB_OFFLINE`, and say which `run_gate_m2.py` wrote `n_rows` (A3b.7 item 5). |
+| 8 | `--stage s2 --n 300 --max-chunks 60 --extra "<MEM>"` | **Blocked by section 5 item 4.** The I-CHG cut (`--arms igate,irand` appended to `--extra`) is decided **before the first S2 item, for all items**, by time and GPU-hours only (A3b.2 item 6), logged with its time. **After:** `PY -m exp_p2.gate.analysis_s2 --run-id P2-GATE-S2 --n 300` (the same `--n` as the run; D2 of the re-audit). |
+| 9 | `--stage s2 --run-id P2-GATE-S2-FIG --n 300 --extra "--figures <MEM>"` | after the S2 table only (AD.12 step 6) |
+| 10 | `--stage foil-fit --extra "<MEM>"` | **After:** `PY -m exp_p2.gate.analysis_foil freeze`; commit `runs/P2-GATE-FOIL/fusion_frozen.json` (status ok, fit pairs >= 100, best direction below 0.95, else B is not testable) |
+| 11 | `--stage foil-test --extra "<MEM>"` | **Blocked by section 5 item 4.** Refuses unless `fusion_frozen.json` is committed with status ok. **After:** `PY -m exp_p2.gate.analysis_foil analyze` |
+| 12 | `--stage omni-timing` (no `MEM`, no `--skip-gpu-adapter-checks`) | **Run only if P+ is non-empty** (AD.7; the one permitted outcome dependence, AB.9). Needs the P analysis of row 6. **After:** `PY -m exp_p2.omni.signing --run-id P2-OMNI-TIMING` (writes `signing_check.json`; T1-T3; never the signature); the gate-auditor reads `selfcheck.json`, decides S-2 and S-5 by hand and writes `runs/P2-OMNI-TIMING/adapter_signature.json`; then `PY -m exp_p2.gate.analysis_omni gate --n-plus <abs(P+)> --time-left-h <H>`. Crash-event readings for Omni stages are recorded by the lead (lead decision 2). |
+| 13 | `--stage omni-r-cal` | only if `omni_gate.json` says go. **After:** `PY -m exp_p2.gate.analysis_omni fit --run-id P2-OMNI-R-CAL` |
+| 14 | `--stage omni-r-pos` | **After:** `PY -m exp_p2.gate.analysis_omni pos --run-id P2-OMNI-R-POS` (exit 3 = "pipeline defect: not run") |
+| 15 | `--stage omni-r-test` (corruptions at 512 px, no `--corrupt-at`; lead decision 1) | **After:** `PY -m exp_p2.gate.analysis_omni r --run-id P2-OMNI-R-TEST` |
+| 16 | `--stage suite --max-chunks 12 --extra "<MEM>"` | **After:** `PY -m exp_p2.gate.suite analyze` |
+
+Notes. (i) If Shlok answers "no" to n = 300: rows 8, 8a, 9, 11 run with `--n 150` (`analysis_s2 --n 150`; B at 150) as the primary (A3b.6 item 4); the sensitivity at 300 is then not run. If he gives no answer, no S2 or B item runs and both are cut under AB.9, logged with the time. (ii) Not scheduled: I-GATE-LEAK (`--leak`; descriptive, first to be cut), S2 on JPEG (not built), the second mask-seed check (section 5 item 6: no code exists at the pin; running it would need new audited code and a dated pin row). (iii) The Omni 4-bit stages use `.venv-omni`; the driver selects it. (iv) Row 2 may be cut by time; then the closing row records n_q = 0 and A3b.12 applies.
+
+**Cut order** (AD.8; AB.9; lead's order; first cut first): the suite (row 16), Omni R (rows 13-15), Omni timing (row 12), FOIL (rows 10-11), S2 last (rows 8a-9). Inside S2 the first cut is **I-CHG** (A3b.2 item 6, A3.2 item 3; about 2.6 instead of 3.9 GPU-h busy, IMPL-E row 8, estimate). The run order above is the reverse of the cut order, with M1-M5 first. **AB.9: cut and go decisions use time, GPU-hours already used and the pre-written technical criteria only; they never depend on the P, PS, S-M, E-dec or E-pred outcome.** The single permitted outcome dependence is the gatekeeping already signed: R runs only for P+. The results freeze is Shlok's item 5.4; anything unfinished at the freeze is cut in the order above and declared "not run" in the deviations box. A cut family is never replaced.
+
+---
+
+## 4. Audits and signatures
+
+### 4.1 Verdicts (all 2026-10-28; documents are in `research/paper2/prereg/` unless stated; 12-hex SHA-256 prefix)
+| Role | Document (commit) | Scope | Verdict and conditions |
+|---|---|---|---|
+| statistician | SAP Addendum 2 (`2ab42a6e`) | SAP and card v1 | SIGNED OFF WITH CHANGES (carried in v2/v3) |
+| red-team | `RED-TEAM-SIGNOFF-2026-10-28.md` A2 section (`e2d68b65`) | A2 | SIGN WITH CONDITIONS, 0.6; blockers B-1 to B-7 answered by A2b (`ad21a831`) |
+| red-team | same file, A3 section (`c8631f83`), `ac5e07a9e4bc` | A3 | SIGN WITH CONDITIONS, 0.6; no fatal finding; conditions C3-1 to C3-9 recorded as A3b (`a7f1fa5e`). **Conditional on Shlok in two respects:** n = 300 confirmation (C3-7) and the M1 co-attestation or stated absence (C3-6). Withdrawal grounds: see its section "What would make me withdraw" (S2 table without the draw-level contrast; a change of n, floor, sensitivity, kept-draw rule, sampler, arm set, pairing key, ceiling, exclusion rule or Omni threshold after the first item of that family; Omni R before the auditor's signature; the chance bar called blind without the attestation; any rescue of a P null) |
+| gate-auditor | `GATE-CODE-AUDIT-2026-10-28.md` `32be9321e0d3`; `GATE-CODE-REAUDIT-2026-10-28.md` `b1067d69b4d6` (re-audit at `857673b0`; delta audits `164a18a5` and `623faaff`) | v3 code | PASS WITH FIXES; delta audits PASS (v3 D9 closed) |
+| gate-auditor | `GATE-CODE-AUDIT-A3-PART1-2026-10-28.md` `26145a2a6b91` (`07f5d56d`) | M4 swap / PS, seeds, M1 chance bar and partial pool (A3b.5a, A3b.12a), E-dec / E-pred, driver | PASS WITH FIXES (M-1 `ps_frozen.json`, M-2 patch-size assertion); EPRED-FIT-AUDIT **PASS** |
+| gate-auditor | `GATE-CODE-AUDIT-A3-PART2-2026-10-28.md` `4375502169cc` (`20968093`) | S2, B, suite | PASS WITH FIXES (M1-M5); KEEP_BEST-CHECK PASS |
+| gate-auditor | `GATE-CODE-AUDIT-A3-PART3-OMNI-2026-10-28.md` `006f208303e0` (`ea524f89`) | Omni adapter, runners, `omni_gate` / `omni_r` | PASS WITH FIXES (M-1 R3 wording, M-2 GO rule (b)); signing criteria S-1..S-8 and tightenings T1-T3 written before any GPU output; signature not written |
+| gate-auditor | `GATE-CODE-REAUDIT-A3-2026-10-28.md` `4907686d13b9` (`8e10e24e`, section 8 appended in `1506dd54`) | delta `f938ceab..8c9edf8c`, parts 1-3 | PASS WITH FIXES; all 9 MAJOR **FIXED**; D1-D5 of engineer F consistent with the SAP; R-m1 (`keep_best` NaN guard) **FIXED** at `9c4e1e25`; **final verdict PASS; final audited SHA `9c4e1e25cb0d1a77b78410e1613098d8c6ba1085`**. Required of the lead: take the pin at or after `9c4e1e25` and re-run `pins.require_clean` (done, section 1.1) |
+| data-steward | `research/paper2/related/FOIL-L7-SIGNOFF-2026-10-28.md` | id mapping, non-vacuous leak check | PASS (SAP A3.4) |
+| gate-auditor | `runs/P2-OMNI-ADAPTER/adapter_signature.json` | Omni adapter, CPU | CODE-AUDIT PASS (CPU only); GPU adapter checks pending; not the signature the R stages read |
+| lead | `LEAD-DECISIONS-2026-10-28-PM.md` `7d507e4bbcef` (`9c9ec85a`) | before any M2-M5, S2, FOIL, Omni or suite outcome | (1) Omni pixel corruptions at 512 px then tokenised at 256 px (A3.5), cost disclosed; (2) T1-T3 accepted, T1 as a separate signing check reading `selfcheck.json`, `HF_HUB_OFFLINE=1` per Omni stage, crash-event readings recorded by the lead; (3) a FAILED patch/swap chance bar does not block M3 or M4, and the M1 analysis (after the audit of `detect.py` / `analyze_gate_m1.py`, done in part 1) runs before M3; (4) erratum: the attestation extension was written and committed at 14:45 IST (`48c7cece`), file unchanged; (5) guard settings and n = 300 are Shlok's |
+| lead | `LEAD-ATTESTATION-A2-2026-10-28.md` `4ddf79bb2feb` | M1 firewall | the lead's assertion that no M1 outcome from item 26 onward was read; **not verifiable by anyone else** |
+
+SAP addenda by commit: A1 `acc81407`; A2 `3f998076`; A2b `ad21a831`; A3 `017bffc0`; A3b `a7f1fa5e`; A3b.12 `a0cfaab3`. Code commits from v3's pin to the new pin: `b8605b8b`, `c9d7fec4`, `4e4d637e`, `f58cd32c`, `c538676a`, `9cb25186`, `34714293`, `8c8363de`, `e277c527`, `490ae692`, `87fa8b86`, `467bce06`, `581b9294`, `6ff67978`, `f938ceab`, `1051d01f`, `9fae9b66`, `6a7e7d87`, `9c4e1e25`.
+
+### 4.2 Deviations box (substance binding; the auditor's notes, `GATE-CODE-REAUDIT-A3-2026-10-28.md` section 6 item 4)
+1. **T1-T3 are applied outside `exp_p2/omni/checks.py`.** T1 is `exp_p2/omni/signing.t1_check` (A5 floors mean_logp(s=1) >= -8.011, top-1 >= 0.005, read from `selfcheck.json`); T2 is recorded in `omni_env.json`; T3 is the 7,000 MiB gate in `run_omni_timing`. `checks.py` and the checks file keep the hashes of A3b.4 item 2; A3b.4 item 3 allowed a tightening "in a dated commit that changes the hashes", and the audit recorded them as signing criteria instead.
+2. **D3 is an operational reading.** The sensitivity's "rejection" is the favourable-direction rejection at p x m < 0.05 (S2 m = 2, B m = 1). It can over-flag "sensitive to n", never under-flag, and enters no Holm set and no claim. The run card says so once.
+3. **The S2 smoke firewall is an honour rule** (A3b.7 item 4): the script prints only `peak_gb`, `seconds`, `n_rows`, and its author, not the code, enforces that nothing else is read.
+4. (Same section of the re-audit.) The adapter checks are "executed by the implementer's code and reviewed, not executed, by the auditor"; no document may say "independently verified" (A3b.4 item 1).
+Plus the deviations the SAP already binds: n = 300 replaced 150 before outcomes (A3.9); S2 restricted to patch and splice, decided after the 21-item dry run (AB.4 item 3, AB.7 item 1); M1 stop and resume at 106 of 200 (A3.8); Omni caps are E0 and uncalibrated and may produce a permanent NO-GO (A3b.4 item 3).
+
+### 4.3 What the signatures do not say
+No signature says the method works. Neither the red team nor the auditor read a GPU outcome. The statistician's power figures use assumed discordance (SAP A3.10). The v3 expected status of H-G (null or inconclusive is the most probable labelled outcome, v3 section 12) is unchanged.
+
+### 4.4 Lead row: `ps_frozen.json` stands for `family.json`
+Re-audit section 6 item 2: AD.4 and A3.3 item 1 say the swap and patch parameters go into `ps_frozen.json` **and** `family.json`; `family.json` is written by the headroom stage for the P cells and holds no PS parameters, and AD.12 step 2 names only `ps_frozen.json`. **This card records the reading, as a dated row: `runs/P2-GATE-M3/ps_frozen.json` stands for both `ps_frozen.json` and the A3.3 item 1 `family.json` reference; no PS parameter is written into `family.json`.** It changes no test. (Authority: the lead's offer in re-audit section 6; the row is the lead's to affirm. If the lead prefers the literal reading, a code change and a re-audit are needed before row 4, which this card does not schedule.)
+
+---
+
+## 5. Preconditions still open (Shlok's; source `research/paper2/CONFIRM-EVENING-2026-10-28.md`)
+
+Each blocks only what it names. Answers go into a dated row (his own words) before the blocked stage.
+
+| # | Open item | Blocks | If answered "no" or not at all |
+|---|---|---|---|
+| 1 | **Guard settings** (CONFIRM item 1): the recommendation is PyTorch cap 0.75 with whole-GPU ceilings 11,000 MiB (first item and later) and rise 4,500 MiB; the card carries them only as `<CEIL_FIRST> <CEIL> <RISE> <MEM_FRAC>` | **every GPU stage** | defaults (10,000 / 9,000 / 1,500 MiB, 0.75) stay and will stop at random, as at 10:26 |
+| 2 | **Unattended GPU runs under the guards for tonight** (item 2, D8; his morning "Yes, guarded" is cited, but the confirmation is asked again) and the laptop open and on the charger | **every GPU stage** | Shlok present for every launch; the timeline of CONFIRM section 8 does not hold |
+| 3 | **n = 300 at the updated cost** (item 9; S2 about +1.95 GPU-h and +4 h wall over n = 150, estimates) as a dated row with his words (A3b.6) | **the first S2 item (including the smoke, row 8a) and the first FOIL-test item** (row 11) | "no": n = 150 is primary for S2 and B (A3b.6 item 4); no answer: neither runs and both are cut under AB.9 |
+| 3b | **M1 co-attestation in his own words** (item 3): that he has not looked at probe-2 output from item 26 onward | **calling the chance bar blind**, and (A3b.5 item 10 (d)) the M1 analysis, unless the lead first writes the dated absence | wording stays "pre-registered ... Shlok's co-attestation: absent"; the lead writes the absence into the attestation file with the date |
+| 4 | **Results freeze time** (item 4, D5): proposed Fri 30 Oct 12:00, recommended Fri 30 Oct 18:00 | nothing on the GPU; it sets the time rule of the cut decisions (AB.9) | the SAP/spec date 12:00 stands (v3 D5) |
+| 5 | **JPEG denoiser D17** (item 5): keep the one sigma-matched setting and word S-DN on JPEG as "against an aggressive denoiser that harms the image" (a), a per-corruption setting by a new dated rule (b), or drop the denoiser baseline on JPEG (c) | **before M4** (row 6) | (a) stays by default (v3 row v3-9); (b) and (c) need a dated rule before M4 |
+| 6 | **Second mask-seed check D4** (item 6): 50 headroom items, mask seed 20261030, after M4 and only if the GPU is idle | the check itself (after M4); never delays M4 | not run. **No code exists at the pin** (grep for the seed and the run id in `exp_p2/` finds nothing): a "yes" additionally needs new audited code and a dated pin row |
+| 7 | **Fallback if P is null D18** (item 7): recommendation = submit to Information Fusion as a "when does input gating help" article with the null in the abstract (if P null but S2, PS and FOIL informative); move the deadline rather than submit without M4 | nothing on the GPU; red-team C3 asks it before the results are seen | no answer on record: the CPU-only note of spec 11.4 stays the default fallback of v3 D18; the red team asks for the answer before the results are seen, i.e. before row 6 |
+
+Also open and not Shlok's: the S2 run card (sampler specification of A3.2 item 2 copied in; `HF_HUB_OFFLINE`; which `run_gate_m2.py`), the closing-time row for the Omni tightening window, the M1 closing row, and the gate-auditor's signature after the Omni timing stage. The v3 items D6 (R2), D7, D9, D13-D16, D19 are unchanged or closed as in v3 section 15; D1 (HOLD) was released in `f12c455d`; D2/D3 are item 1 above; D10 and D11 (hand-launched M0 stages, system changes) are moot or unchanged.
+
+---
+
+## 6. Change log v3 -> v4 (all rows: before any M2-M5, S2, FOIL, Omni or suite outcome; after the 21-item dry run, as disclosed in AD.10)
+
+| Row | Change | Source |
+|---|---|---|
+| v4-1 | **Code pin** moved from `623faaff` (v3 Amendment A1; v3 original `164a18a5`) to `9c4e1e25cb0d1a77b78410e1613098d8c6ba1085`: 56 files, +10512/-71 under `exp_p2/`, `tests/`, `tools/`; 113 files hashed in `pins.json`; `pins.require_clean` clean | re-audit A3 section 8; A3b.7 item 1 |
+| v4-2 | **SAP pin** moved from `b4e0bf57...` (CRLF raw of the SAP at Addendum 2) to `e33f078c...` (LF) / `d95fb87b...` (CRLF), covering A1, A2, A2b, A3, A3b, A3b.12; convention = LF | A3b.13; section 1.3 |
+| v4-3 | **Data pins** added: FOIL manifest, pool, leak check, L7 sign-off, Omni CPU signature, checks hashes, E-pred frozen fit files and audit record; folds unchanged (`450edb54...` CRLF / `c19db5b3...` LF) | A3b.4 item 2, A3b.7, re-audit section 3 |
+| v4-4 | **Families** PS, S2, B, R, E-dec, E-pred (descriptive; family E withdrawn), suite added to the card, 11 test families; P unchanged (m = 3); B-1 stated | AD.1-AD.11, AB.1-AB.3, A3.1-A3.6, A3b.1-A3b.4 |
+| v4-5 | **n = 300** for S2 and B, conditional on Shlok's dated confirmation; n = 150 nested prefix is the sensitivity (or the primary if he says no) | A3.1, A3b.6 |
+| v4-6 | **Run order** replaced by the 16-row sheet of IMPL-E section 3 with **row 4b** (`ps_freeze write` + commit between headroom and epred-fit) and **row 8a** (S2 smoke); CPU steps between stages; M1 close / analysis order (closing row, attestation or absence, `analyze_gate_m1` before M3); P section committed before PS / E-dec / E-pred are read | IMPL-E R3.1; A3b.5; A3b.12; lead decision 3; AD.12; part-1 audit m-8 |
+| v4-7 | **Cut order and AB.9**: suite, Omni R, Omni timing, FOIL, S2 last; I-CHG first cut inside S2; time-only decisions; Omni run only when P+ is non-empty | AD.8, AB.9, A3b.2 item 6 |
+| v4-8 | **Guard settings** are CLI placeholders `<CEIL_FIRST> <CEIL> <RISE> <MEM_FRAC>` filled from Shlok's answer; Omni caps committed and never raised after an Omni memory reading. Supersedes v3 section 11b's fixed 9,000 / 10,000 / 1,500 MiB values and its "no unattended or overnight GPU run" (D8) once Shlok confirms items 1-2 | A3.8, A3b.4 item 6; CONFIRM items 1-2 |
+| v4-9 | **Omni**: pixel corruptions at 512 px, then tokenised at 256 px; T1-T3 as signing criteria outside `checks.py`; `HF_HUB_OFFLINE=1`; the auditor's tightening window closes before `analysis_m4` is first run on M4 data (or the timing stage, whichever is first) | lead decisions 1-2; A3b.4 items 3 and 6; part-3 audit |
+| v4-10 | **Chance bar and S-D / S-D2 at k < 200**: pools A and L, floor 100, UNDECIDED never a pass; partial `detection_frozen.json` only with `--closed-k/--closed-nq`; K2 "not evaluated"; a FAILED bar does not block M3 / M4 | A3b.5, A3b.12, lead decision 3 |
+| v4-11 | **`ps_frozen.json`** stands for `ps_frozen.json` and the A3.3 item 1 `family.json` reference (section 4.4) | re-audit section 6 item 2 |
+| v4-12 | **Deviations box**: T1-T3 outside `checks.py`; D3 operational reading; S2 smoke is an honour rule; adapter checks executed by the implementer's code (section 4.2) | re-audit section 6 item 4 |
+| v4-13 | **Audit state**: v3's open D9 (delta check) closed by the delta audits at `164a18a5` and `623faaff`; parts 1-3 and the re-audit (final verdict PASS at `9c4e1e25`) recorded; red-team A2 and A3 signatures recorded (section 4.1) | audit files |
+| v4-14 | **Shlok's open items** restated (section 5); v3 D1 closed (HOLD released, M0 passed `93f230bc`); v3 D2/D3 become item 1; D17 and D4 carried with their deadlines | CONFIRM-EVENING |
+| v4-15 | **Test record**: lead's 536 passing; auditor's 247 targeted at the pin; the card writer's full run (section 1.1) | CONFIRM-EVENING; re-audit; section 1.1 |
+
+Version history rows v1-v3-12 and Amendment A1 of v3 are not repeated and stay true as history, except where a row above supersedes them.
+
+## 7. Amendment rule
+v3 section 17 stands. Choosing the section 5 values is not a change to the science; each is recorded as a dated row before the stage it unblocks. Any edit to a file in `pins.json` after this card needs a dated row (file, diff hash, reason, whether outcome data exist) and, if it touches an analysis path that has produced a number, a rerun beside the original (v3 section 17 (iv)). The frozen E-pred fit files, `epred.py`'s scoring definitions, `checks.py` and the audit record of E-pred are not edited (A3.6 item 2, A3b.4 item 3, A3b.7 items 2-3).
+
+## 8. Concerns for the orchestrator
+1. **GPU is blocked on Shlok** (section 5 items 1 and 2); the n = 300 row blocks the first S2 item and the FOIL-test item, and I put the S2 smoke under the same block because it runs S2 items.
+2. The Omni tightening window (A3b.4 item 3) closes at the first of the timing stage and the first `analysis_m4` on M4 data; the sheet runs `analysis_m4` first, so the lead must record the closing time before row 6's CPU step. Nobody owns that row yet.
+3. The second-seed check (D4) has no code at the pin; a "yes" from Shlok does not make it runnable.
+4. `analysis_m4` computes P, secondary families and PS in one pass; the separation of AD.12 step 3 is procedural (commit `analysis.json` at once, read PS afterwards).
+5. Item 7 (fallback D18) is a red-team C3 precondition from v3 that still has no recorded answer.
+6. This agent added no `hypotheses` ledger row and no `research/prereg/<hyp-id>.md` copy (brief: card and `pins.json` only).
