@@ -216,3 +216,41 @@ def test_effective_n_lets_a_new_stage_complete_after_exclusions(driver, monkeypa
         common.append_jsonl(run / "items.jsonl", dict(idx=i))
     monkeypatch.setattr(gate_driver.subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(AssertionError("already complete")))
     assert gate_driver.main(["--stage", "foil-fit"]) == 0
+
+
+# ------------------------------------------------------------------------------------------------ the child's refusal reason reaches driver.log (exit codes and stop rules unchanged)
+@pytest.mark.parametrize("rc", [2, 3, 10, 11])
+def test_a_refusal_exit_writes_the_reason_to_driver_log_at_the_time_and_changes_no_stop_rule(rc, driver, monkeypatch):
+    calls = []
+
+    def fake_run(cmd, **kw):
+        calls.append(cmd)
+        kw["stdout"].write("some banner\nSTOP: runs/P2-GATE-M3/family.json missing; create it with: python -m exp_p2.gate.headroom\n")
+        kw["stdout"].flush()
+        return SimpleNamespace(returncode=rc)
+    monkeypatch.setattr(gate_driver.subprocess, "run", fake_run)
+    out = gate_driver.main(["--stage", "m4", "--n", "300"])
+    log = (driver / "P2-GATE-M4" / "driver.log").read_text(encoding="utf8")
+    assert f"chunk 0 refused (exit {rc}): STOP: runs/P2-GATE-M3/family.json missing" in log and f"chunk 1 refused (exit {rc})" in log
+    assert log.index("chunk 0 exit") < log.index("chunk 0 refused")
+    assert out == 5 and len(calls) == 2 and "STOP: two chunks without progress" in log           # the old rule: no progress twice -> exit 5; nothing relaunched beyond it
+
+
+def test_the_reason_falls_back_to_the_last_line_and_other_exits_write_none(driver, monkeypatch, tmp_path):
+    f = tmp_path / "x.log"
+    f.write_text("a\nTraceback (most recent call last):\nValueError: bad\n", encoding="utf8")
+    assert gate_driver.refusal_reason(f) == "ValueError: bad"
+    f.write_text("STOP: first\nmore\nSTOP: second\ntail\n", encoding="utf8")
+    assert gate_driver.refusal_reason(f) == "STOP: second"
+    assert gate_driver.refusal_reason(tmp_path / "missing.log").startswith("(log unreadable")
+    f.write_text("", encoding="utf8")
+    assert gate_driver.refusal_reason(f) == "(no output)"
+    run = driver / "P2-GATE-M2"
+
+    def fake_run(cmd, **kw):
+        common.append_jsonl(run / "items.jsonl", dict(idx=len(common.read_jsonl(run / "items.jsonl"))))
+        kw["stdout"].write("STOP: not a refusal exit\n")
+        return SimpleNamespace(returncode=75)
+    monkeypatch.setattr(gate_driver.subprocess, "run", fake_run)
+    assert gate_driver.main(["--stage", "m2", "--n", "2"]) == 0
+    assert "refused" not in (run / "driver.log").read_text(encoding="utf8")

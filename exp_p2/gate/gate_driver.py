@@ -66,6 +66,22 @@ def build_cmd(stage_mod: str, run_id: str, n: int, mins: float, soft: float, dut
             "--duty", str(duty), "--soft-minutes", str(soft)] + list(extra or [])
 
 
+REFUSAL_EXITS = (2, 3, 10, 11)       # runner exits that mean "a fence was not met" (missing prerequisite, order violation, pin, uncommitted code); the reason is the last stderr line
+
+
+def refusal_reason(log: Path, tail_bytes: int = 8192) -> str:
+    """The child's refusal reason from its stdout/stderr log (stderr is merged into it): the last line that starts with STOP, else the last non-empty line, else a note. Never raises."""
+    try:
+        with open(log, "rb") as fh:
+            fh.seek(0, 2)
+            fh.seek(max(0, fh.tell() - tail_bytes))
+            lines = [l.strip() for l in fh.read().decode("utf8", "replace").splitlines() if l.strip()]
+    except OSError as e:
+        return f"(log unreadable: {e})"
+    stops = [l for l in lines if l.startswith("STOP")]
+    return (stops or lines or ["(no output)"])[-1][:600]
+
+
 def default_n(stage: str, fallback: int, runs: Path | None = None) -> int:
     """The item count when --n is not given. omni-r-test: the n_R recorded in runs/P2-OMNI-TIMING/omni_gate.json (the runner refuses a different --n), else the fallback 150."""
     if stage == "omni-r-test":
@@ -171,6 +187,8 @@ def main(argv=None) -> int:
             r = subprocess.run(cmd, cwd=str(ROOT), stdout=fh, stderr=subprocess.STDOUT)
         new_done = len(common.read_jsonl(run / "items.jsonl"))
         say(f"chunk {ch} exit {r.returncode}; rows {done} -> {new_done}")
+        if r.returncode in REFUSAL_EXITS:                                      # a prerequisite / order / pin / dirty-tree refusal: say why now (the loop's stop rules are unchanged)
+            say(f"chunk {ch} refused (exit {r.returncode}): " + refusal_reason(run / f"stdout-chunk{ch:02d}.log"))
         if r.returncode == hold.EXIT_HOLD:
             return hold.EXIT_HOLD
         n_guard_after = sum(1 for e in common.read_jsonl(run / "chunks.jsonl") if e.get("event") == "guard_stop")
