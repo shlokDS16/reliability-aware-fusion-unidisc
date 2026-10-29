@@ -171,3 +171,20 @@ is still outstanding (N-2). It is the lead's precondition after S2 has ended, an
 ## Gate bookkeeping
 
 Not ticked in `research/progress.md`: the brief asked only for this file. No ledger rows were added, and nothing was committed. Code was not edited.
+
+## Delta FX (2026-10-29): b2725e57 -> b5b41d90
+
+**Scope:** `git diff b2725e57 b5b41d90 -- exp_p2 tools tests`, checked against FX-1 and FX-2 only. The code diff touches 2 files plus their 2 test files:
+`exp_p2/gate/build_hardneg_items.py`, `exp_p2/gate/h3_gonogo.py`, `tests/exp_p2/test_gate_hardneg_items.py`, `tests/exp_p2/test_gate_h3_gonogo.py`. Nothing else under exp_p2, tools or tests changed.
+The other two commits in the range (b2a6f76c, 2c42a0a6) only bring this audit report into the branch.
+
+**Verdict: PASS.** FX-1 and FX-2 are met. No other behaviour changed. Audited SHA for the pin: `b5b41d90032f2be535d7f08d6eafb3a4230a8863`.
+
+| Fix | Finding | Evidence |
+|---|---|---|
+| FX-1 (H-L4) | **met.** `foil_pool_ids` reads the `fit` and `test` image ids of `runs/P2-GATE-FOIL/pool.json`. A missing pool file is a STOP (exit 2), so the check cannot be skipped. `h_l4` asserts that H and the FOIL pool share no image and records the count in `meta.h_l4` and the builder's printed report. The check runs after `meta.sha1` is computed and does not change the items. The real pool.json (both worktrees) has keys meta, counts, fit (240), test (300), build_stats; fit + test = 540 ids, the same as my independent count. | `build_hardneg_items.py:124-137, 229, 251, 261-264`. Scratch build at b5b41d90 (`scratchpad/build3`): `h_l4 = {checked: true, n_foil_pool_images: 540, n_overlap: 0}`; content sha1 still **6cae72d56505c1eb**; cal/head/test/test_ext identical to the b2725e57 build; the only meta difference is the new `h_l4` key. Tests `test_h_l4_foil_pool_overlap_is_asserted_and_counted`, `test_foil_pool_ids_read_fit_and_test_and_a_missing_pool_stops_the_builder`. |
+| FX-2 (clock provenance) | **met.** `decide_record` now holds `now_source` ("--now" or "system"), `system_clock_at_decide` (always the real clock) and `last_row_source` ("--last-row-time", "mtime" or "unavailable"). `main` passes `now` only when `--now` is given; before this fix it always parsed, so the source could not be told apart. The new fields are times and source strings only, so no signed gate quantity enters the file or stdout, and the firewall of section 3 still holds. | `h3_gonogo.py:224-226, 242-245, 269`. Tests `test_decide_record_states_the_source_of_now_and_of_the_last_row_time`, `test_main_passes_overrides_only_when_the_flags_are_given`. |
+
+**Tests (BELOW_NORMAL priority, b5b41d90):** `test_gate_hardneg_items.py`, `test_gate_h3_gonogo.py`, `test_gate_h_strata.py`: **86 passed, 0 failed, 0 skipped** in 12.0 s. The full suite was not re-run for this delta, because only the four listed files changed.
+
+**Still open (unchanged):** N-2, the C5-8 byte-identical regeneration after S2 and the merge (lead's precondition for pin row A-6), and the notes N-1, N-3 to N-6.
