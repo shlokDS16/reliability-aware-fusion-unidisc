@@ -845,3 +845,56 @@ The cheapest explanation of a null: power 0.73 at half the exploratory effect, o
 - Judgement, not measured: if C6-1(a) is met, a defensible LRF headline has probability of about 0.4 to 0.55 (power at a plausible shrunk effect, times the chance the effect is real). Under (b) it is lower.
 
 **Ledger.** No rows added: the brief allows edits to this file only. Under the red-team rules, the fatal K1 blocks the gate until the orchestrator records the C6-1 resolution in `decisions.jsonl`.
+
+---
+
+# A6 r1 check (red team, 2026-10-29, on commit 941a260b: A6 r1 and A5 r2; ledger D0083 at 5ff2c0d7, D0084 at 635e781e; CPU only)
+
+Read:
+- `git diff 71c78306 941a260b` for both addenda: A6 r1 in full, and A5 r2 (the r2 table, the quoted amendment and the edited stop-rule line).
+- Ledger rows D0083 and D0084.
+
+Checked (E4):
+- **Amendment text.** It matches my signed text word for word, items 1 to 7.
+- **Hashes.** `sha256sum` of `codebook.npy`, `DI_n013.npy`, `data.py`, `families.py` and `lrf.py` equals the A6.2 table.
+- **No outputs exist.** There is no H3, H4, re-score, L_FIX, fold or Study 2 directory under `runs/`.
+- **Commit order.** Signature 0ea9cf33 (14:35:18), then D0083 5ff2c0d7 (14:35:19), then A6 r1 and A5 r2 941a260b (14:40:35), then D0084 (14:40:36). All of these precede any H3 item.
+
+## Per condition
+
+| Condition | Status | Evidence in r1 / note |
+|---|---|---|
+| C6-1 (K1, K2; fatal) | **MET** | Option (a) was declared (D0083) before any re-scored output existed. A6.2 fixes:<br>- the L_FIX = 13 layout for B, s3, D and tbv;<br>- the positive control at the true length;<br>- the invariance gate across c+, c- and PAD (0, or at most 1e-6 by an auditor row before any re-frozen output);<br>- no re-frozen accuracy before the hash commit;<br>- ca5c4e2f retired.<br>A6.10 item 2 has no fallback. That is stricter than my clock rule (Study 2 is "not run" instead of option (b)), so it is acceptable. Delta keeps its own lengths, as it should. tex and nbr do not depend on the layout. **K1 is resolved in design**; it is closed in fact only when the invariance check passes. |
+| C6-2 (K3) | **MET** | The hash table includes the codebook and `DI_n013.npy` (values verified). The entry points go into the pin row. The scorer checks hashes at start. A non-finite value is an error, never "wrong". The auditor tests three failure paths. |
+| C6-3 (K4) | **MET** (exceeded) | L2 is removed. GATE-M on the fresh fold is supplement-only. No LRF/GATE-M comparison appears in any text. |
+| C6-4 (K5) | **MET** | A6.1 items 2 and 3, A6.12 placement 2 and 3, and the A6.13 chronology appear once each. D0084 corrects the "motivation" wording of D0082 and CONFIRM s16. |
+| C6-5 (K6) | **MET, one clause open (minor)** | A6.4 sets the headline threshold at 0.025, and branch B keeps "confirmed" in Results only. Open clause: branch B's abstract sentence prints {D} and p for L1 without the L-NI sentence, although C6-5 says "if L1 is in the abstract, L-NI is too". A tightening closes it (allowed at any time). |
+| C6-6 (K7) | **MET** | The no-rescue paragraph is in place. Branch titles A to D are fixed. Route and venue are fixed before the first L item (A6.0 item 3). |
+| C6-7 (K8) | **MET** | A6.13 names F1 to F4, SEL by inner CV, SCER, CANAL, two routes and the first-freeze length defect. |
+| C6-8 (K9) | **MET** | A6.2 step 4, A6.14 item 1 and the Must-not list. The L_FIX cross-fit is exploratory and only sets n. |
+| C6-9 | **MET** (text and git order so far) | A6.0 items 1 to 3. Still to be met by execution: the object commit, the lead's statement and the full hash set before the fold build. |
+| C6-10 (K12) | **MET** | A6.3 uses the union of image ids, SugarCrepe is included, and the manifest lists every file read. |
+| C6-11 (K10, K11) | **MET** | A6.5 has the LG wording. A6.4 and A6.12 state that the L-NI margin was chosen after the M4 clean CI had been seen. |
+
+## New points in r1 (none fatal, none major)
+
+- **R1 (minor). The n-rule depends on design data.** n_L is set from the L_FIX cross-fit on the M4 items.
+  - It is a prefix of a fixed 533-item list, decided before any fresh item exists, so it cannot bias L1.
+  - The risk: a large cross-fit effect lowers n towards 400. Power at a true half-size effect (Delta 0.05) is then about 0.62, the shrinkage being applied once only.
+- **R2 (minor). The re-score GPU stage has no go-ahead clause.** It is a GPU stage of about 2.5 h, possibly overnight before Mon 04:15. A6.0 requires Shlok's GPU go-ahead only before the first L item, so the re-score (and its unattended status) needs his words too.
+- **R3 (minor). Titles B and C put both studies under one question.** "Does learned reliability weighting help ...? Two preregistered studies" groups Study 1 (a hard gate) with Study 2.
+  - This is not a causal link, so AB.1 holds.
+  - A reader may still take Study 1 as a failed case of the same question. The A6.12 placement rule 2 binds the text under them.
+- **R4 (minor). The family list does not add up as printed.** A6.7 lists 12 names for "17 families". The count comes from AD.11 and A5.13, which I did not recompute.
+
+## Verdict: SIGNED (all of C6-1 to C6-11 met in text; C6-5 has one minor open clause, R2 needs Shlok's words before the re-score)
+
+- The A5.1 amendment 1 (A5 r2) and A6 r1 are signed.
+- K1 no longer blocks the gate: D0083 and A6.2 resolve it in design.
+- The signature lapses for Study 2 if any of the following happens:
+  - the invariance check fails beyond 1e-6;
+  - a re-frozen accuracy is computed before the object's hash commit;
+  - the object commit misses T_RF;
+  - any item of the "What would make me withdraw" list of the A6 signature occurs.
+
+No ledger rows added (the brief allows edits to this file only).
