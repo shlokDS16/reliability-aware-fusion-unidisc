@@ -4,9 +4,11 @@ date: 2026-10-29
 brief: >
   SAP addendum A5 (final) for Paper 2 (GATE on UniDisc 1.4B): a new confirmatory family H on SugarCrepe hard negatives, added
   after the primary family P was analysed (label NEGATIVE). Approved by Shlok ("Yes, add it", D0080). Reconciled with the
-  implementation draft at 336b31c6; specifies the H3 go/no-go module. No H data exists.
+  implementation draft at 336b31c6; specifies the H3 go/no-go module. No H data exists. Revision r1 answers the red-team
+  A5 signature (conditions C5-1 to C5-8).
 sources_examined:
   - research/CONTRACT.md
+  - research/paper2/prereg/RED-TEAM-SIGNOFF-2026-10-28.md section "A5 signature" (r1; findings F1-F9, conditions C5-1 to C5-8)
   - research/paper2/prereg/SAP-ADDENDUM-A5-HARDNEG-DRAFT-2026-10-29.md (r0; committed by the lead as 86064e57)
   - research/paper2/CONFIRM-EVENING-2026-10-28.md section 14; research/ledgers/decisions.jsonl row D0080; commit 80b06c00
   - research/paper2/data/HARDNEG-FEASIBILITY-2026-10-29.md; research/paper2/prereg/SAP-GATE-2026-10-28.md (as listed in r0);
@@ -45,9 +47,25 @@ next_test: {hypothesis: "HJ/HN/HS of A5.4", intervention: "H3 pilot (50 items, M
 # SAP Addendum A5 (2026-10-29): family H, hard negatives (SugarCrepe) on new COCO images
 
 Author: statistician. Final version of the draft r0 (`SAP-ADDENDUM-A5-HARDNEG-DRAFT-2026-10-29.md`, committed by the lead as `86064e57`, kept
-unchanged). Written 2026-10-29 from about 10:40 IST. A separate file beside the SAP. **Precedence:** A5 > A4 > A3b > A3 > A2b > A2 > A1 > SAP body,
+unchanged). Written 2026-10-29 between Shlok's answer (10:23:21 IST) and the lead's commit `b32e72a1` (10:30:07 IST); the earlier
+"from about 10:40 IST" was wrong (C5-5). Revision r1 written from 10:38 IST on 2026-10-29, before any H item. A separate file beside the SAP. **Precedence:** A5 > A4 > A3b > A3 > A2b > A2 > A1 > SAP body,
 **only on the points listed here**. Family P, PS, S-M, S-Z, S-DN, S-D, S-D2, S-C, S2, B, R, E-dec, E-pred, the suite, the outcome book of A4.2 and
 every earlier rule stand unchanged.
+
+## Revision r1 (2026-10-29, red-team A5 signature, conditions C5-1 to C5-8; before any H item)
+
+| Condition | Change in r1 | Where |
+|---|---|---|
+| C5-1 (F1) | One placement rule, stated once: H never in title, abstract, highlights, graphical abstract, significance statement, the Conclusion (all of it), the opening of 6.1, limitations, future work, cover letter or response text, captions other than H's own, README, Zenodo or repository text; the r0/final item "H may appear later in the conclusion" is struck | A5.1, A5.9 "Placement" |
+| C5-2 (F2) | The disclosure paragraph lists everything computed and committed before H was designed and what the designer read; the motive clause about few changed decisions is removed; Must-not 1 governs Methods and the deviations box too | A5.14, A5.9 Must-not 1, A5.0 |
+| C5-3 (F3) | Stop rule: H is the last confirmatory family added after the P outcome; any later post-P analysis is Tier 3, labelled and listed in the deviations box; placement rules and D-H2 may only be tightened after the first H3 item, and D-H2 cannot change once any H output exists | A5.1, A5.9 item 5, A5.15 |
+| C5-4 (F4) | Length-matched (LM) and add_* (LA) counts are the primary description of every H result; a gain is stated without the length clause only if b_LM > c_LM and the LM 95 percent lower bound exceeds -D_H; harms symmetric | A5.7 |
+| C5-5 (F5) | D-H2 and D-H4 restated as the lead's defaults under Shlok's veto; D-H3 unattended needs Shlok's words, else attended only; time of writing corrected; ledger rows for D-H2 to D-H4 are the lead's precondition | header, A5.0, A5.12, A5.15 |
+| C5-6 (F6) | No person opens H3 rows, arrays, chunk outputs or logs before the H4 analysis is committed; signed H3 numbers are never reported if H4 is not analysed; `h3_gonogo` tests cover stdout, stderr and logs | A5.8, A5.5a, A5.16 |
+| C5-7 (F7) | `decide` deadline defined; `G_max_headroom` defined for the H-NOGO sentence; the x4 bound recorded when n_H4 = 200 (the GO rule stays x6); per-corruption projections in the power statement | A5.5a, A5.9 |
+| C5-8 (F9) | Merge only after S2 has ended and after a byte-identical regeneration of the committed P, Tier-3, E-dec and E-pred outputs from the merged code; the lead's precondition, recorded in pin row A-6 | A5.0, A5.11 |
+| F8 (informational) | One corruption per H-POS sentence; clean-image control clause on every H-POS and H-MIXED sentence | A5.9, A5.16 |
+| unchanged | H3 rule (a), (b), validity 45, R1/R2/NO-GO thresholds, time-rule constants and the bounds 12:27, 12:36, 13:42 IST (checked by the red team) | A5.5, A5.12 |
 
 ## Changes r0 -> final
 
@@ -74,8 +92,8 @@ every earlier rule stand unchanged.
 - Read by me before r0: the P section, `outcome`, `s_m`, `c1_test`, `completeness`, and parts of `mechanism` and `calibration` of
   `analysis.json`; `family.json`; the one-line Tier-3 summary in `research/progress.md` HANDOFF 60. Not opened: S2, FOIL, suite, M5 and Tier-3
   output files (S2: row count and driver chunk lines only). For the final: the implementation diff and report (no outcome in them).
-- Family H was proposed **because** P showed almost no decision headroom on random negatives. It is **not blind to the P outcome** in its motivation,
-  its choice of negatives and its sample-size rule. It is blind to every H outcome: no SugarCrepe item has been scored.
+- Family H was proposed **because** P showed almost no decision headroom on random negatives (internal record only; in any paper text Must-not 1
+  governs and this motive is not stated, A5.14). It is **not blind to the P outcome** in its motivation, its choice of negatives and its sample-size rule. It is blind to every H outcome: no SugarCrepe item has been scored.
 - The design reuses P's corruptions, severities, threshold and arms unchanged, so no H design parameter was tuned on M4 values. The one rule shaped
   by M4 is the n-rule (A5.5), which replaces the changed-code proxy because M4 showed that proxy to be badly optimistic. Disclosed (A5.14).
 
@@ -83,11 +101,15 @@ every earlier rule stand unchanged.
 `research/ledgers/decisions.jsonl` D0080; commit `80b06c00`). The D-H answers are in A5.15.
 
 **Binding conditions still open (all before the first H3 item).**
-1. Red-team signature on this file (proposer is not validator). Any change after the signature is a dated row, before any H item.
-2. The code of A5.11 (implementation draft 336b31c6 plus the deltas listed there) tested, audited PASS by the gate-auditor, merged, and pinned
-   by a dated card v4 row (A-6).
+1. Red-team signature: given **with conditions C5-1 to C5-8** (`RED-TEAM-SIGNOFF-2026-10-28.md`, "A5 signature"); it binds when the conditions are
+   recorded as dated rows before the first H3 item. This r1 meets C5-1 to C5-4, C5-6 and C5-7 in text; C5-5 and C5-8 are the lead's (items 5, 2).
+2. The code of A5.11 (implementation draft 336b31c6 plus the deltas listed there) tested and audited PASS by the gate-auditor, the audit including a
+   **byte-identical regeneration of `runs/P2-GATE-M4/analysis.json` and of every committed Tier-3, E-dec and E-pred output** from the merged code;
+   merged **only after S2 (rows 8 and 9) has ended**; pinned by a dated card v4 row (A-6) that records both (C5-8; lead's precondition).
 3. `folds_hardneg.json`, the derived H3 file, the plan family file and the leak-check record of A5.2 committed, with the data-steward's H-L7 sign-off.
 4. This file committed by the lead before items 2 and 3 are used.
+5. Shlok's own words (dated ledger rows) on D-H2 and D-H4, or a dated row that they stand as the lead's defaults under his veto; and either his words
+   approving **unattended** H runs or a dated row that H3 and H4 run attended only (C5-5; lead's precondition; A5.15).
 If any condition is not met by the time rule of A5.12, family H is "not run" and appears only in the deviations box.
 
 ## A5.1 What family H is, and what it is not
@@ -97,13 +119,17 @@ If any condition is not met by the time rule of A5.12, family H is "not run" and
   other caption.
 - **Status.** A new, separately labelled **secondary confirmatory family** with its own alpha 0.05 and its own Holm correction (m = 3). Label
   everywhere: "family H (hard negatives), added after the primary result was known".
-- **It cannot rescue or reinterpret P.** AB.1 extends to H word for word: under the P null, no clause drawn from H appears in the title, abstract,
-  highlights, conclusion or the opening of Discussion 6.1 to explain, qualify or predict the P result. P stays the preregistered headline and its
-  A4.2 sentences (label NEG) are used **whatever H shows**.
+- **It cannot rescue or reinterpret P.** AB.1 extends to H word for word, and beyond AB.1 **H does not appear at all** in the places listed in the
+  single placement rule of A5.9 (title, abstract, highlights, Conclusion, the opening of 6.1 and the others listed there). P stays the preregistered
+  headline and its A4.2 sentences (label NEG) are used **whatever H shows**.
 - **It is not a test of "P versus H".** P and H differ in negatives, images, time of planning and sample size. No statistic contrasts them, nothing
   is pooled, and no sentence says or implies that the gate helps "on hard negatives but not on random ones" or "when the task is hard" (D18 reading 1
   also bars "when does input gating help" from those places).
 - **It is not a replication of P** and not a SugarCrepe benchmark score (different protocol, stratified sample, corrupted images, likelihood decision).
+- **Stop rule (C5-3).** H is the **last confirmatory family** added to Paper 2 after the P outcome. Any later post-P analysis has no alpha and no
+  family: it is Tier 3 exploratory, labelled "added after the primary and family H results", and listed in the deviations box. The placement rule of
+  A5.9 and D-H2 may only be **tightened** after the first H3 item, never loosened, and D-H2 cannot change once any H output exists (including
+  `runs/P2-GATE-H3/family.json`).
 
 ## A5.2 Data: pool, sampling, order, exclusions, leak check
 
@@ -225,8 +251,10 @@ detection from removal of an equally shaped random set.
   "folds_hardneg_sha256": ...}}`;
 - refuses to overwrite either file; prints the H3 start deadline of A5.12 (Fri 30 Oct 12:27 IST).
 
-**2. `python -m exp_p2.gate.h3_gonogo decide --h3-run P2-GATE-H3 [--now ISO8601]`** (once, after H3 is complete or at its deadline; `--now` only for tests;
-otherwise the system clock in IST, recorded):
+**2. `python -m exp_p2.gate.h3_gonogo decide --h3-run P2-GATE-H3 [--now ISO8601]`** (once). **Deadline (C5-7):** it is the first CPU step after the H3
+driver reports completion, run within A_H3 = 0.5 h of the last H3 row's timestamp; if H3 has not completed by **Fri 30 Oct 13:12 IST** (the rule-1 start
+bound 12:27 plus W_H3), it is run then on the completed prefix (the n_valid >= 45 condition applies). `--now` only for tests; otherwise the system clock
+in IST, recorded with the last H3 row's time and the gap (a gap above 0.5 h is logged with its reason). The clock can only lower n, never by outcome.
 - loads H3 rows with `load_items` (first complete row per idx); asserts every row's gid is in 6000-6049 and its image id is in the `head` list of
   `folds_hardneg.json`;
 - per c in REALISTIC (key from the plan file): `yc = _arm(rows, "clean", "none", "y")`, `yn = _arm(rows, key, "none", "y")`, `yg = _arm(rows, key, "gate0.05", "y")`;
@@ -234,19 +262,23 @@ otherwise the system clock in IST, recorded):
   exact McNemar p of (6 F-, 6 F+), headroom = (F- > F+ and bound_p <= 0.05/3), G = disc.sum(), tested = (n_valid >= 45 and headroom and G >= 3), reason text;
 - H+, G*, rule code (`R1` if G* >= 8, `R2` if 3 <= G* <= 7, `NO-GO` if H+ empty), the time rule of A5.12 with the named constants
   (W_H4_300 = 2.9, W_H4_200 = 1.8, A_H4 = 0.5, M = 2.0 h; FREEZE = 2026-10-30T18:00+05:30);
+- `G_max_headroom` = the largest G_c over corruptions with n_valid_c >= 45 that pass (a) (null if none): used only by the H-NOGO sentence;
+- descriptive, no rule effect (C5-7): `bound_p_at_n` = exact McNemar p of (k F-_c, k F+_c) with k = n_H4 / 50 (6 or 4), and `projection_at_n` =
+  G_c x k for every corruption; the printed power statement uses these per-corruption projections at the n actually run, not G* alone. The GO rule
+  itself stays at x6 (signed as written);
 - writes **`runs/P2-GATE-H3/family.json`** (write-once; refuses to overwrite) with exactly:
 
 ```
 {"endpoint": "d", "endpoint_note": "H endpoint is Y; 'd' only satisfies run_gate_m4/analysis_m4 (S-Z secondary)",
  "n_headroom_items": <rows>, "family": [<plan entries for c in H+, each plus G_c, F_minus, F_plus>],
  "excluded": [{"corruption": c, "reason": ...} for c not in H+],
- "n_rule": {"rule": "R1"|"R2"|"NO-GO", "h_rule": "H-R1"|"H-R2"|"H-NOGO", "test_fold": 300|200|0, "G_star": int|null, "N_star": 43,
+ "n_rule": {"rule": "R1"|"R2"|"NO-GO", "h_rule": "H-R1"|"H-R2"|"H-NOGO", "test_fold": 300|200|0, "G_star": int|null, "G_max_headroom": int|null, "N_star": 43,
             "min_G": 3, "r1_G": 8, "scale_50_to_300": 6, "alpha_step1": 0.016667, "min_valid": 45, "primary_endpoint": "Y",
             "primary_endpoint_code": "Y", "negative_reading_available": <test_fold >= 240 and rule in (R1, R2)>,
             "time_rule": {"now": ..., "freeze": ..., "constants": {...}, "n_by_rule": 300|0, "n_after_time": 300|200|0,
                           "status": "ok"|"n=200 by time"|"cut by time"|"not tested (NO-GO)"}},
  "go": <H+ non-empty and test_fold > 0>, "downstream_claim_withdrawn": <not go>,
- "per_corruption": {c: {"n_valid", "F_minus", "F_plus", "bound_b", "bound_c", "bound_p", "headroom", "G", "chg_discordance", "tested", "reason"}},
+ "per_corruption": {c: {"n_valid", "F_minus", "F_plus", "bound_b", "bound_c", "bound_p", "bound_p_at_n", "headroom", "G", "projection_at_n", "chg_discordance", "tested", "reason"}},
  "clean_none_accuracy": {"k", "n", "wilson95"},
  "inputs": {"h3_run": "P2-GATE-H3", "items_sha256", "plan_family_sha256", "folds_h3_sha256", "code_commit"},
  "spec": "SAP addendum A5, A5.5 and A5.5a"}
@@ -260,7 +292,9 @@ otherwise the system clock in IST, recorded):
 
 **Tests (CPU, `tests/exp_p2/test_gate_h3_gonogo.py`):** synthetic rows reproduce each branch (R1, R2, NO-GO, pilot incomplete, time cut, n = 200);
 the bound examples (2,0), (3,1), (4,1); the output JSON contains no key `b`, `c`, `acc_gate`, `gate_accuracy` or any signed gate value; the output is
-identical for two inputs with equal none arms and equal `yg != yn` indicators but different `yg` values elsewhere (non-valid items); write-once
+identical for two inputs with equal none arms and equal `yg != yn` indicators but different `yg` values elsewhere (non-valid items); **captured stdout,
+stderr and any log the module writes contain no signed gate quantity (no b, c, accuracy or count by direction), and the gate-auditor reads the code for
+any print or log of a `yg`-derived value other than the unsigned count (C5-6)**; write-once
 refusal for both files; `run_gate_m4.check_n_against_rule` accepts the written file with the matching n and refuses n = 300 when test_fold is 200 or 0;
 `analysis_m4.main`'s family-file parsing accepts the written file (rule R1/R2).
 
@@ -289,21 +323,31 @@ Reading: n = 300 detects a net gain of about 0.06 if 10 percent of items are dis
 | H-CAL | A5.3 check (`analysis_m4` `calibration`) | wording gate only |
 | Clean accuracy | none-arm accuracy on clean H4 images, Wilson CI, beside M4's 0.880 (0.849 to 0.906) | descriptive; `analysis_m4`'s C1 audit trigger (probe-1 reference) does not apply to H and is not read as a trigger |
 | Other `analysis_m4` sections on H4 (`ps`, `s_z`, `s_dn`, `s_d2`, `mechanism`, E-dec-like splits) | as computed | descriptive only; the `ps` "positive control" reading is not used for H (PS is not re-tested); AB.1(a) applies |
-| **Length strata** (`h_strata.py`) | add_obj and add_att negatives are longer (dry run mean tok_diff 3.95 and 2.63); every H test repeated on LM = replace_obj, replace_att, replace_rel, swap_obj, swap_att and LA = add_obj, add_att | descriptive: b, c, net difference with 95 percent CI, exact p unadjusted, labelled exploratory |
+| **Length strata** (`h_strata.py`) | add_obj and add_att negatives are longer (dry run mean tok_diff 3.95 and 2.63; about 86 of 300 items); every H test repeated on LM = replace_obj, replace_att, replace_rel, swap_obj, swap_att and LA = add_obj, add_att | **primary description of every H result** (r1): n, n_d, b, c, net difference with 95 percent CI for LM and LA, printed beside every H test, rejected or not; exact p unadjusted, labelled exploratory; no test |
 | Per subset (`h_strata.py`) | the same per subset (about 43 items each) | descriptive, CIs only |
 | Stratified bootstrap (`h_strata.py`) | 95 and 90 percent CIs of each H net difference, items resampled within subsets | sensitivity |
 | Decision headroom (`h_strata.py`) | clean versus corrupted none-arm flips on H4 and the restore-clean bound | descriptive |
 | Text direction, TbV, denoise arms, d, z | as in M4 | Tier 3, exploratory |
 
-**Length rule (binding wording).** If an H rejection with b > c is reported and the LM estimate for that corruption has the opposite sign with a 95
-percent CI excluding 0, every sentence about that rejection adds "not present on the length-matched subsets".
+**Length rule (binding wording; r1, C5-4).** For every corruption with an H rejection with b > c (net D_H > 0), the LM and LA counts appear in the
+same sentence or table row. The gain is stated **without** a length clause only if, on the length-matched subsets, b_LM > c_LM **and** the lower 95
+percent bound of the LM net difference is above -D_H (the LM data exclude an opposite effect as large as the H estimate). Otherwise the sentence adds
+"the gain was not shown on the length-matched subsets (b = {b_LM}, c = {c_LM}); it may be carried by the longer negatives of add_obj and add_att",
+and the label carries the suffix "(length-mismatched)". A harm rejection gets the same rule with the signs reversed. The rule reads only counts and an
+interval printed for every result, so it cannot be applied selectively.
 
 ## A5.8 Missing items, peeking, seeds, identity checks
 
 - SAP 8.1 applies: complete case per analysis, committed order, prefix on interruption, no replacement, completed n < 240 stated with the MDE at the
   achieved n, worst-case sensitivity (`analysis_m4` `completeness`). K7 analogue: more than 5 percent NaN or empty R in an arm = stop and diagnose.
-- SAP 8.2 applies: `analysis_m4` and `h_strata` are not run on H4 data until H4 is complete or the freeze arrives. `h3_gonogo decide` runs once; nobody
-  opens H3 rows by other means before the H4 analysis is committed. After that, H3 signed results may be reported only as "pilot, descriptive".
+- SAP 8.2 applies: `analysis_m4` and `h_strata` are not run on H4 data until H4 is complete or the freeze arrives. `h3_gonogo decide` runs once and is
+  the only reader of H3 rows.
+- **H3 firewall (r1, C5-6; binding).** No person opens `runs/P2-GATE-H3/items.jsonl`, its arrays, the per-chunk stdout logs, `driver.log` beyond row
+  counts and chunk start/stop lines, or the driver `.out`/`.err` files, before the H4 analysis is committed; committing the directory with git without
+  displaying its content is allowed. **If H4 is never analysed** (H-NOGO, cut by time, pilot incomplete), **no signed H3 number is ever reported**
+  anywhere; only the go/no-go inputs written by `h3_gonogo` appear (n_valid, F-, F+, the bounds, unsigned G, `G_max_headroom`, clean none-arm accuracy,
+  changed-code discordance). If H4 is analysed, signed H3 numbers may appear only in the H supplement as "pilot, descriptive", never in a test or claim.
+  A breach withdraws the red-team signature.
 - Seeds: `analysis_m4` uses its own seeds (as for P; different data). `h_strata` uses `numpy.random.SeedSequence(20261028, spawn_key=(33,))` (A4.1.7
   used 32); the auditor confirms that no module uses key 33 (else the next free key, recorded in the pin row). `seeds.py` is not edited.
   `h3_gonogo` draws no random numbers.
@@ -337,22 +381,32 @@ negatives on {n} COCO images not used elsewhere; Holm over the same three corrup
 | H-NEG | "no improvement was detected; gains or losses larger than 0.05 are excluded under {X} (90% CI {L90} to {U90})." |
 | H-INC | "no improvement was detected under {X}; the intervals ({L} to {U}) cannot exclude a gain or a loss of 0.05." |
 | H-HARM | "GATE-M reduced verification accuracy under {X} (net {D}, 95% CI {L} to {U})." |
-| H-NOGO | "the pre-written pilot rule found no corruption under which the gate changed enough decisions (at most {G*} of 50) [or: no corruption with decision headroom], so the family's test was not run." |
+| H-NOGO | (i) if `G_max_headroom` is null: "the pre-written pilot rule found no corruption with decision headroom on 50 pilot images, so the family's test was not run." (ii) otherwise: "the pre-written pilot rule found that the gate changed at most {G_max_headroom} of 50 decisions under any corruption with decision headroom (3 were required), so the family's test was not run." |
 
-Each sentence carries n, n_d and, where the length rule triggers, its clause. H-POS sentences carry the H-CAL clause if Z_cal > 2.13.
+Each sentence carries n, n_d, the LM and LA counts and, where the length rule triggers, its clause. H-POS sentences carry the H-CAL clause if
+Z_cal > 2.13. **{X} is one corruption per sentence** (no pooled {X}; with two rejected corruptions, two sentences; C4r-1). Every H-POS and H-MIXED
+sentence also carries the clean-image control: if the 95 percent CI of the H-C net difference (GATE-M minus none on clean H4 images) contains D_H,
+it adds "a gain of similar size on clean images is not excluded, so the gain is not shown to be specific to the corruption".
 
-**Placement (binding).**
-1. **Title:** no H content under any label (the title follows A4.2.3 for P, i.e. QT under NEG).
-2. **Highlights:** no H content under any label.
-3. **Abstract:** **no H content under any label** (D-H2 = default (b), A5.15).
-4. **Discussion 6.1 opening and the Conclusion's first sentence:** P only. H may appear later in the conclusion with its prefix.
-5. **Results:** own subsection "Family H (added after the primary result)" after the preregistered families, own table and figure; never on the P
-   canvas (A4.2.5), never beside PS.
-6. **Contribution list:** bullet 6 of A4.2.4 names H only by status ("run, formal", "run, descriptive", "not run"), with the prefix's post hoc label.
+**Placement (binding; the single placement rule for H; r1, C5-1; replaces the r0/final list, whose item 4 is struck).** "H content" means any H
+result, label, number, status or interpretation, including H-NOGO and "not run".
+1. **Never:** the title; the abstract (D-H2); the highlights; the graphical abstract; any statement of significance or impact; the **Conclusion section,
+   all of it**; the opening of Discussion 6.1; the limitations and future-work paragraphs; the cover letter and any response-to-reviewers text that
+   summarises the findings; the caption of any figure or table other than H's own; the README, the Zenodo record description and any repository
+   text (these may document H's code, files and commands as procedure, with no H result).
+2. **Only here:** the Results subsection "Family H (added after the primary result)" after the preregistered families, with its own table and figure
+   (own captions, with the prefix); one Discussion paragraph after the opening of 6.1, headed with the prefix, containing no sentence about P; the
+   supplement section for H; the deviations box and the family status map (status only).
+3. In every allowed place: the mandatory prefix, no clause linking H and P (AB.1), Must-not 1 to 7; never on the P canvas (A4.2.5), never beside PS.
+4. **Contribution list:** bullet 6 of A4.2.4 names H only by status ("run, formal", "run, descriptive", "not run") with the post hoc label, no result.
+5. This rule may be tightened, never loosened, after the first H3 item (A5.1 stop rule). A5.1's AB.1 sentence and this list are one rule; where any
+   other text of A5 seems to allow more, this list governs.
 
 **Must-not (adds to A4.2.2 item 3 and novelty items 10 to 13).**
 1. Any sentence that P was null because the negatives were easy, random or "lacked headroom", or that H "explains", "shows why", "reveals", "unmasks"
-   or "confirms" anything about P (AB.1). The realised P discordance may be printed in the P table as a number, nothing more.
+   or "confirms" anything about P (AB.1). The realised P discordance may be printed in the P table as a number, nothing more. **This applies in Methods
+   and the deviations box too (r1, C5-2):** the motive of H is stated only as "to test the same contrast on a different population of image-caption
+   pairs" (A5.14); no sentence says that the preregistered task changed few decisions as a reason for adding H.
 2. "The gate helps on hard negatives but not on random negatives", "harder tasks", "when the task is hard", or any P-versus-H contrast.
 3. "Compositional" understanding or reasoning of UniDisc or of the gate; "SugarCrepe score", "state of the art", or any comparison with published
    SugarCrepe numbers of other models.
@@ -391,9 +445,11 @@ Each sentence carries n, n_d and, where the length rule triggers, its clause. H-
    cal-id failure).
 6. The `test_gate_runner` skip for `h3`/`h4` is updated to the new module of `h3`.
 
-**Order (binding):** code and tests in the isolated branch -> gate-auditor delta audit PASS -> merge -> card v4 row A-6 (new pin; the pre-launch check
-reads it) -> builder run in the main worktree and commit of `folds_hardneg.json` -> `h3_gonogo plan` and commit of its two files -> data-steward H-L7
-sign-off -> red-team signature on this file -> H3. No scoring path, threshold, frozen file or `tools/gpu_guard.py` changes. A failed audit means H is
+**Order (binding):** code and tests in the isolated branch -> gate-auditor delta audit PASS, **including a byte-identical regeneration of
+`runs/P2-GATE-M4/analysis.json` and of every committed Tier-3, E-dec and E-pred output from the merged code** -> merge **only after S2 (rows 8 and 9)
+has ended** -> card v4 row A-6 (new pin; records both; the pre-launch check reads it) (C5-8) -> builder run in the main worktree and commit of
+`folds_hardneg.json` -> `h3_gonogo plan` and commit of its two files -> data-steward H-L7 sign-off -> red-team conditions C5-1 to C5-8 and the A5.0
+item 5 rows recorded as dated rows -> H3. No scoring path, threshold, frozen file or `tools/gpu_guard.py` changes. A failed audit means H is
 not run.
 
 **Commands (after the pin):**
@@ -428,8 +484,8 @@ restarts (feasibility note): W_H3 = 0.75 h, A_H3 = 0.5 h, W_H4(300) = 2.9 h, W_H
 4. The only outcome dependence of H is the H3 rule on H3's own unsigned counts. Nothing about H depends on P, PS, S2, B, E-dec, E-pred, Tier 3 or the
    suite, and no H value may change their order, cuts or wording. Each decision is logged with its time.
 
-GPU: H3 and H4 run under the guards and unattended rules already approved (D-H3), with the card's memory flags, the parallel sessions told before the
-job starts, and the pre-launch check at the new pin.
+GPU: H3 and H4 run under the approved guards and the card's memory flags, the parallel sessions told before the job starts, and the pre-launch check
+at the new pin; **unattended only with Shlok's words on unattended H runs, otherwise attended** (D-H3, A5.0 item 5, A5.15).
 
 ## A5.13 Multiplicity map and analysis order (adds to AD.11, AD.12)
 
@@ -445,21 +501,34 @@ before Tier 3 (step 9): `runs/P2-GATE-H3/family.json` at H3; `analysis.json` and
 
 ## A5.14 Disclosure paragraph (Methods and deviations box; substance binding, wording editable)
 
-"Family H was added on 29 October 2026 after the primary family had been analysed (label negative) and after the positive-control audit had shown that
-the preregistered task changed few binary decisions. It was specified in SAP addendum A5 (draft 86064e57; final {sha}) before any hard-negative item was
-scored, approved by the first author (decision D0080), signed by the red team and implemented in audited code (pin {sha}). It reuses the primary family's
-corruptions, severities, threshold and arms; its sample-size rule uses the gate's own discordance on 50 separate pilot images because the primary family's
-proxy (changed-code discordance with kappa 0.5) had predicted 47.5 discordant items in 500 against 1, 0 and 4 observed. Family H has its own Holm
-correction, cannot change the primary result, and is reported whatever its outcome, including 'not run'."
+"Family H was added on 29 October 2026, after the following had been computed and committed: the primary family (label negative) with its
+secondary families and mechanism arms (S-M, S-Z, S-DN, S-D2, S-C), the calibration check and the clean-accuracy look; the positive-control family
+PS and the pipeline audit it triggered (no defect found); the decomposition and sign-agreement analyses (E-dec, E-pred); and the exploratory
+comparators (Tier 3). Of these, the analyst who designed family H read the primary family, S-M, the completeness and clean-accuracy records, parts
+of the mechanism and calibration sections, the positive-control audit, and a one-line summary of the Tier-3 result; the E-dec and E-pred outputs
+had been committed but were not opened by that analyst. Family H tests the same contrast on a different population of image-caption pairs
+(SugarCrepe hard negatives on COCO images used nowhere else in this study). It was specified in SAP addendum A5 (draft 86064e57; final b32e72a1;
+revision r1 {sha}) before any hard-negative item was scored, approved by the first author (decision D0080), signed with conditions by the red team
+and implemented in audited code (pin {sha}). It reuses the primary family's corruptions, severities, threshold and arms. Its sample-size rule uses
+the gate's own unsigned discordance on 50 separate pilot images, because the primary family's sample-size proxy had predicted 47.5 discordant items
+in 500 against 1, 0 and 4 observed. Family H is the last confirmatory family added after the primary result; it has its own Holm correction, cannot
+change the primary result, and is reported whatever its outcome, including 'not run'."
+
+Governing rule: Must-not 1 (A5.9) applies to this paragraph; no other sentence of the paper gives a motive for H. The {sha} fields are the lead's.
 
 ## A5.15 Decisions (answered)
 
-Source for all four: Shlok, 2026-10-29 10:23 IST, "Yes, add it", with the reading recorded in `CONFIRM-EVENING-2026-10-28.md` section 14 (D0080,
-commit 80b06c00).
-- **D-H1 = go.** Family H is added.
-- **D-H2 = default (b): H never in the abstract** (nor in title or highlights; A5.9 placement).
-- **D-H3 = yes:** H3 and H4 run under the same guards and unattended rules already approved (CONFIRM item 2, card row A-2).
-- **D-H4 = default: patch and swap kept** in the H stages (same code path as M4; descriptive only on H).
+Source: Shlok, 2026-10-29 10:23:21 IST, "Yes, add it" (D0080, commit 80b06c00), answering a question that named the family, its place (after S2,
+before the suite) and "P stays the preregistered headline". CONFIRM-EVENING section 14 records the other three as the lead's reading ("since he
+gave no other instruction"). **Corrected status (r1, C5-5):**
+- **D-H1 = go**: Shlok's answer.
+- **D-H2 = H never in the abstract** (and the rest of A5.9's placement rule): the lead's default, standing unless Shlok vetoes it before the first H3
+  item; afterwards it can only be tightened (A5.1 stop rule).
+- **D-H3 = GPU under the approved guards**: unattended H runs need Shlok's own words about H before H3 runs unattended; without them H3 and H4 run
+  attended only (A5.0 item 5).
+- **D-H4 = patch and swap kept** in the H stages (same code path as M4; descriptive only on H): the lead's default, standing unless Shlok vetoes it
+  before the first H3 item.
+Dated ledger rows for D-H2 to D-H4 are the lead's (A5.0 item 5); until they exist, no document calls them Shlok's answers.
 
 ## A5.16 Assumptions and concerns (statistician)
 
@@ -470,7 +539,11 @@ commit 80b06c00).
 4. Exchangeability of H images with the calibration fold is an assumption; H-CAL can show a violation, not prove exchangeability.
 5. The estimand weights subsets about equally; it is neither SugarCrepe's natural mixture nor COCO's.
 6. The H3 stage reads signed GATE-M decisions into its run directory; only the module's unsigned output is used. Keeping H3 rows closed until the H4
-   analysis is committed is an honour rule (as the M1 firewall was).
+   analysis is committed is an honour rule (as the M1 firewall was); its scope, and the rule that signed H3 numbers are never reported when H4 is not
+   analysed, are fixed in A5.8 (C5-6).
+9. By the addendum's own figures H-NOGO and H-INC are the likely outcomes (P(GO) 0.32 at pi_d 0.04, power 0.31 at pi_d 0.06, theta 0.75), and the
+   paper then carries 13 unadjusted test families (red team F8). The cheapest readings of a positive (trimming of thin-margin items, a memorised
+   positive) are addressed only partly: H-M by shape, the clean-control clause of A5.9 by the clean images, U8 not at all.
 7. All GPU-hour figures are estimates from M4; the time rule uses named constants so that no one improvises.
 8. A p-value says nothing about novelty or practical importance; H does not change the novelty verdict (0.50, incremental).
 
@@ -480,14 +553,15 @@ commit 80b06c00).
 |---|---|---|---|
 | 2026-10-29 | Addendum A5 draft r0 (86064e57) | after P's NEGATIVE result and the A2.3 audit of PS | after P, PS, S-M, E-dec, E-pred, Tier-3 outcomes; before any H item |
 | 2026-10-29 | Addendum A5 final: approval D0080 recorded (D-H1 go, D-H2 never in abstract, D-H3 approved guards, D-H4 keep patch/swap); reconciled with implementation 336b31c6 (builder, `--folds-path`, `--family-run`); H3 runs the M4 stage via `h3_gonogo plan` files; H3 go/no-go module `h3_gonogo decide` writes `runs/P2-GATE-H3/family.json` (R1/R2/NO-GO, test_fold 300/200/0); `family` lists tested corruptions only; analysis by `analysis_m4` plus `h_strata`; changes table r0 -> final | Shlok's approval; coordinator's reconciliation brief | **after** P, PS, S-M, E-dec, E-pred and Tier-3 outcomes; **before** any H item; no H data exists |
+| 2026-10-29 | A5 revision r1: single placement rule (C5-1); full disclosure list, motive clause removed, Must-not 1 in Methods (C5-2); stop rule, placement and D-H2 only tightened (C5-3); LM/LA counts as primary description and a length rule that can fire (C5-4); D-H2 to D-H4 restated, unattended H runs need Shlok's words, time of writing corrected (C5-5); H3 firewall and no signed H3 numbers without an H4 analysis (C5-6); `decide` deadline, `G_max_headroom`, x4 bound recorded (C5-7); merge after S2 with byte-identical regeneration (C5-8) | red-team A5 signature (WITH CONDITIONS) | before any H item; no H data exists |
 
 ---
 
 ## Appendix H. Power and rule arithmetic (CPU, stdlib only)
 
 Unchanged from r0. Script `a5_power.py` (SHA-256 `a3d36ce7cb44d8fd22b32ec2075a388078f28d624a6ffc8496594a964703de81`), output `a5_power_output.txt`
-(SHA-256 `102141db6637ebad0e57c02cc861b430ff549545b5edf60596504db6dba794b4`); the lead committed copies with r0 (86064e57: "power script"); if not
-already there, copy to `analysis/paper2/gate/a5_power.py` and rerun into `runs/P2-GATE-A5/a5_power_output.txt`, checking both hashes. Method: exact
+(SHA-256 `102141db6637ebad0e57c02cc861b430ff549545b5edf60596504db6dba794b4`); committed by the lead with r0 as
+`runs/P2-GATE-A5/a5_power.py` and `runs/P2-GATE-A5/a5_power_output.txt` (86064e57); the auditor checks both hashes (LF convention). Method: exact
 two-sided McNemar conditional on n_d; n_d ~ Bin(n, pi_d), b | n_d ~ Bin(n_d, theta); rejection counted in the favourable direction at alpha' = 0.05/3;
 MDE on a 0.005 grid of theta.
 
