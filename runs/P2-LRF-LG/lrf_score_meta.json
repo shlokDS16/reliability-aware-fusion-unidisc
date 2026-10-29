@@ -1,0 +1,53 @@
+{
+ "conds": [
+  "clean",
+  "shot_noise3",
+  "impulse_noise3",
+  "speckle_noise3"
+ ],
+ "conds_absent_in_rows": [],
+ "crosscheck_max_abs_w_diff": 0.0,
+ "decision_rule": "Y = 1[sum_j w_j * Delta_j > 0]; tie = wrong; non-finite feature, weight, score or margin = error",
+ "hashes": {
+  "code_sha256": {
+   "data.py": "14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b",
+   "families.py": "1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e",
+   "lrf.py": "03ed472e1a3cd8bb2dc41f4a59d7b48f1561cd883012ac4434e08a5c37b9d6ec",
+   "run.py": "01c8dba6de377b18e5b483c2afb0b406ba6e38fd60c4ac3a896f4d4e245f767c"
+  },
+  "codebook_sha256": "ff15b9b5b362dc80f8a18f6e852e6e99478c0e8885646735ed16d1d80e3ae50b",
+  "decision_rule": "Y = 1[sum_j w_j * Delta_j > 0]; tie = wrong; non-finite feature, weight, score or margin = error",
+  "di_sha256": "f7744253a1b997b8b9f28d9b91348e8371f1ea1e3564f6c8bfc2f10aa5b42176",
+  "entry_points": {
+   "exp_p2/gate/lrf_score.py": "63f7096141638869fdcbc483a8902bae225503db95edc73f9569614645a85145",
+   "exp_p2/run_gate_lrf_rescore.py": "ff34c2b631c924e94d8f0ad95ca02fadd125a49829d30d31657f95f562140322",
+   "exp_p2/run_gate_m4.py": "e2d9a5ee9ceb2d33124de8cc1aeac4c84f5d6abbd7eccb59a0926eca527dab9f"
+  },
+  "model_sha256": "db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37",
+  "pinned_externally": true,
+  "pins_verified": [
+   "model_sha256",
+   "spec_sha256",
+   "code_sha256[data.py]",
+   "code_sha256[families.py]",
+   "code_sha256[lrf.py]",
+   "code_sha256[run.py]",
+   "scoring_code_sha256",
+   "entry_points[exp_p2/run_gate_m4.py]",
+   "entry_points[exp_p2/run_gate_lrf_rescore.py]",
+   "entry_points[exp_p2/gate/lrf_score.py]",
+   "decision_rule"
+  ],
+  "scoring_code_sha256": "63f7096141638869fdcbc483a8902bae225503db95edc73f9569614645a85145"
+ },
+ "model_name": "LRF (learned reliability-aware evidence fusion), logistic-GAM F1, RE-FROZEN at a fixed caption-slot length",
+ "n_items_rows": 300,
+ "n_items_skipped_no_arrays": 0,
+ "n_lines": 1200,
+ "positive_control": {
+  "n_checked": 1200,
+  "ok": true
+ },
+ "predictions_sha256": "a4626d783ce8f572a71f88afdffa09d14aa39d8ff8a046f449047b40146d33ef",
+ "run_dir": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-LRF-LG"
+}
