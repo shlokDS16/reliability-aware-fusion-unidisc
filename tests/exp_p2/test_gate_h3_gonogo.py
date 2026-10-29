@@ -248,7 +248,7 @@ def test_output_depends_on_the_gate_arm_only_through_the_unsigned_indicator(env)
         (env / rel).unlink()
     _write_rows(env, _rows(GO3, invalid=(45, 46), yg_noise=0.0))                                  # yg differs on the invalid items only
     _, b = g.decide("P2-GATE-H3", g.parse_now(EARLY), env)
-    strip = lambda d: {k: v for k, v in d.items() if k != "inputs"}                               # the input hash covers the raw rows, which do differ                   # noqa: E731
+    strip = lambda d: {k: v for k, v in d.items() if k not in ("inputs", "decide_record")}        # the input hash covers the raw rows, which do differ; the record holds file times       # noqa: E731
     assert strip(a) == strip(b) and a["inputs"]["items_sha256"] != b["inputs"]["items_sha256"]
     assert a["per_corruption"]["jpeg"]["n_valid"] == 48
 
@@ -304,3 +304,120 @@ def test_constants_are_those_of_the_addendum():
     assert (g.N_STAR, g.MIN_G, g.R1_G, g.SCALE_50_TO_300, g.MIN_VALID) == (43, 3, 8, 6, 45) and g.ALPHA_STEP1 == pytest.approx(0.05 / 3)
     assert g.FREEZE == datetime(2026, 10, 30, 18, 0, tzinfo=g.IST) and (g.W_H3, g.A_H3, g.W_H4_300, g.W_H4_200, g.A_H4, g.MARGIN_H) == (0.75, 0.5, 2.9, 1.8, 0.5, 2.0)
     assert g.H3_GID_RANGE == (bh.GID_OFFSET["head"], bh.GID_OFFSET["head"] + bh.N_H3 - 1) and config.REALISTIC == ("jpeg", "noise", "splice")
+
+
+# ------------------------------------------------------------------------------------------------ SAP A5 r1 (C5-6, C5-7)
+def test_decide_deadline_is_13_12_ist_and_the_start_bounds_are_unchanged():
+    assert g.decide_deadline() == datetime(2026, 10, 30, 13, 12, tzinfo=g.IST) and g.h3_start_deadline() == datetime(2026, 10, 30, 12, 27, tzinfo=g.IST)
+
+
+def test_decide_record_has_the_clock_the_last_row_time_the_gap_and_the_reason(env):
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    last = g.parse_now("2026-10-30T12:50")
+    code, doc = g.decide("P2-GATE-H3", g.parse_now("2026-10-30T13:30"), env, last_row=last, gap_reason="driver stop and relaunch")
+    rec = doc["decide_record"]
+    assert code == 0 and rec["gap_hours"] == pytest.approx(40 / 60) and rec["gap_over_A_H3"] is True and rec["gap_reason"] == "driver stop and relaunch"
+    assert rec["after_deadline"] is True and rec["deadline"] == "2026-10-30T13:12:00+05:30" and rec["h3_rows"] == 50 and rec["h3_complete"] is True and rec["decided_on_prefix"] is False
+    assert rec["last_h3_row_time"].startswith("2026-10-30T12:50") and rec["now"].startswith("2026-10-30T13:30")
+
+
+def test_a_short_gap_is_not_flagged_and_a_prefix_is_recorded_as_such(env):
+    g.plan(env)
+    _write_rows(env, _rows(GO3, n=47))
+    code, doc = g.decide("P2-GATE-H3", g.parse_now("2026-10-30T13:20"), env, last_row=g.parse_now("2026-10-30T13:00"))
+    rec = doc["decide_record"]
+    assert code == 0 and rec["gap_over_A_H3"] is False and rec["gap_reason"] is None and rec["h3_rows"] == 47 and rec["decided_on_prefix"] is True and rec["after_deadline"] is True
+    assert doc["per_corruption"]["jpeg"]["n_valid"] == 47                                       # the n_valid >= 45 condition applies to the prefix
+    assert doc["decide_record"]["last_h3_row_time"] is not None
+
+
+def test_the_default_last_row_time_is_the_file_modification_time(env):
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    t = g.last_row_time(env / "P2-GATE-H3" / "items.jsonl")
+    assert t is not None and abs((datetime.now(g.IST) - t).total_seconds()) < 600
+    assert g.last_row_time(env / "nope.jsonl") is None
+
+
+def test_g_max_headroom_is_the_largest_g_among_corruptions_with_headroom_and_enough_valid_items(env):
+    # jpeg: headroom, G = 2 (< 3, not tested); noise: no headroom (F- 1), G = 9; splice: headroom, G = 1
+    code, doc = _decide(env, dict(jpeg=dict(fm=3, fp=0, g=2), noise=dict(fm=1, fp=0, g=9), splice=dict(fm=2, fp=0, g=1)))
+    assert doc["n_rule"]["rule"] == "NO-GO" and doc["n_rule"]["G_max_headroom"] == 2 and doc["n_rule"]["G_star"] is None
+    _, doc = _decide_fresh(env, dict(noise=dict(fm=1, fp=0, g=9)))
+    assert doc["n_rule"]["G_max_headroom"] is None                                              # no corruption passes (a): the H-NOGO sentence takes variant (i)
+    _, doc = _decide_fresh(env, GO3)
+    assert doc["n_rule"]["G_max_headroom"] == 9 and doc["n_rule"]["G_star"] == 9
+
+
+def test_g_max_headroom_ignores_a_corruption_with_fewer_than_45_valid_items(env):
+    g.plan(env)
+    rows = _rows(dict(jpeg=dict(fm=3, fp=0, g=2), splice=dict(fm=3, fp=0, g=1)))
+    for r in rows[:6]:
+        r["conds"]["jpeg10"]["img"]["none"]["y"] = float("nan")                               # jpeg: 44 valid
+    _write_rows(env, rows)
+    _, doc = g.decide("P2-GATE-H3", g.parse_now(EARLY), env)
+    assert doc["n_rule"]["G_max_headroom"] == 1
+
+
+def test_bound_at_the_n_actually_run_is_x6_at_300_x4_at_200_and_absent_when_h4_is_not_run(env):
+    _, doc = _decide(env, GO3, now=EARLY)
+    pj = doc["per_corruption"]["jpeg"]
+    assert pj["bound_p_at_n"] == pytest.approx(g.bound_p(3, 0, 6)) and pj["projection_at_n"] == 9 * 6 and doc["per_corruption"]["splice"]["projection_at_n"] == 4 * 6
+    _, doc = _decide_fresh(env, GO3, now="2026-10-30T13:00")
+    pj = doc["per_corruption"]["jpeg"]
+    assert doc["n_rule"]["test_fold"] == 200 and pj["bound_p_at_n"] == pytest.approx(g.bound_p(3, 0, 4)) and pj["projection_at_n"] == 36 and pj["bound_p_at_n"] > g.bound_p(3, 0, 6)
+    assert pj["bound_p"] == pytest.approx(g.bound_p(3, 0))                                      # the GO rule itself stays at x6
+    assert doc["per_corruption"]["noise"]["bound_p_at_n"] == 1.0 and doc["per_corruption"]["noise"]["projection_at_n"] == 0
+    _, doc = _decide_fresh(env, GO3, now="2026-10-30T16:00")
+    assert all(v["bound_p_at_n"] is None and v["projection_at_n"] is None for v in doc["per_corruption"].values())
+
+
+def test_the_x4_bound_never_changes_the_go_rule(env):
+    # (2, 0) passes at x6 (p 0.0005) and the family keeps it at n = 200 although the x4 bound is weaker
+    _, doc = _decide(env, dict(jpeg=dict(fm=2, fp=0, g=5)), now="2026-10-30T13:00")
+    assert [f["corruption"] for f in doc["family"]] == ["jpeg"] and doc["n_rule"]["test_fold"] == 200 and doc["per_corruption"]["jpeg"]["bound_p_at_n"] == pytest.approx(g.bound_p(2, 0, 4))
+
+
+def test_stdout_stderr_and_logs_carry_no_signed_gate_quantity(env, capsys, caplog):
+    """C5-6: the module's own output (stdout, stderr, logging) shows only the unsigned count G*, the rule and the tested list; no b, c, accuracy or count by direction."""
+    import logging
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    with caplog.at_level(logging.DEBUG):
+        rc = g.main(["decide", "--now", EARLY, "--last-row-time", "2026-10-30T08:50"])
+    cap = capsys.readouterr()
+    assert rc == 0 and caplog.records == []
+    out = json.loads(cap.out)
+    assert set(out) == {"rule", "h_rule", "test_fold", "G_star", "tested", "status"} and out["G_star"] == 9 and out["tested"] == ["jpeg", "splice"]
+    text = (cap.out + cap.err).lower()
+    for bad in ("accuracy", "gate0.05", "gate_better", "\"b\"", "\"c\"", "wins", "losses", "f_minus", "f_plus", "net"):
+        assert bad not in text
+    assert cap.err == ""
+    # the error paths print no row value either
+    rc = g.main(["decide", "--now", EARLY])
+    err = capsys.readouterr().err
+    assert rc == 2 and err.startswith("STOP:") and "already exists" in err
+
+
+def test_a_long_gap_without_a_reason_is_noted_on_stderr_without_any_value(env, capsys):
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    assert g.main(["decide", "--now", EARLY, "--last-row-time", "2026-10-30T05:00"]) == 0
+    err = capsys.readouterr().err
+    assert "0.5 h" in err and "--gap-reason" in err and "G" not in err.replace("--gap-reason", "").replace("H3", "")
+
+
+def test_decide_reads_only_the_items_file_of_the_h3_run(env, monkeypatch):
+    """The module reads items.jsonl (via load_items), the plan family, folds files; it opens no per-chunk log, driver log or array."""
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    (env / "P2-GATE-H3" / "driver.log").write_text("SECRET-LOG")
+    (env / "P2-GATE-H3" / "stdout-chunk00.log").write_text("SECRET-STDOUT")
+    (env / "P2-GATE-H3" / "arrays").mkdir()
+    opened = []
+    orig_read_text, orig_read_bytes = Path.read_text, Path.read_bytes
+    monkeypatch.setattr(Path, "read_text", lambda self, *a, **k: (opened.append(self.name), orig_read_text(self, *a, **k))[1])
+    monkeypatch.setattr(Path, "read_bytes", lambda self, *a, **k: (opened.append(self.name), orig_read_bytes(self, *a, **k))[1])
+    g.decide("P2-GATE-H3", g.parse_now(EARLY), env)
+    assert not {"driver.log", "stdout-chunk00.log", "chunks.jsonl"} & set(opened) and "arrays" not in opened

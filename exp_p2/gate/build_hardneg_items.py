@@ -72,13 +72,13 @@ def load_sugarcrepe(directory: Path = SUGARCREPE_DIR) -> list[dict]:
         d = json.loads((directory / f"{s}.json").read_text(encoding="utf8"))
         for k in sorted(d, key=int):
             r = d[k]
-            rows.append(dict(subset=s, key=int(k), image_id=int(str(r["filename"]).split(".")[0]), caption=norm(r["caption"]), neg_caption=norm(r["negative_caption"])))
+            rows.append(dict(subset=s, key=int(k), filename=str(r["filename"]), image_id=int(str(r["filename"]).split(".")[0]), caption=norm(r["caption"]), neg_caption=norm(r["negative_caption"])))
     return rows
 
 
-def exclusion_ids(runs: Path | None = None, extra_files: tuple[str, ...] = OPTIONAL_ITEM_FILES) -> tuple[set[int], dict]:
+def exclusion_ids(runs: Path | None = None, extra_files: tuple[str, ...] = OPTIONAL_ITEM_FILES, by_source: dict | None = None) -> tuple[set[int], dict]:
     """Image ids of every existing pool. folds.json and both probe selection.json files are REQUIRED (data.probe_image_ids would silently skip a missing one); M1/M5 item files are read if present.
-    Returns (ids, report) with the number of ids per source and the sources that were absent."""
+    Returns (ids, report) with the number of ids per source and the sources that were absent. `by_source`, if given, is filled with the id set of every source (for the H-L7 samples)."""
     runs = Path(runs) if runs is not None else Path(common.RUNS)
     ids: set[int] = set()
     rep: dict = dict(sources={}, missing_optional=[])
@@ -90,6 +90,8 @@ def exclusion_ids(runs: Path | None = None, extra_files: tuple[str, ...] = OPTIO
         s = {int(it["image_id"]) for it in f.get(k, [])}
         rep["sources"][f"folds.{k}"] = len(s)
         ids |= s
+        if by_source is not None:
+            by_source[f"folds.{k}"] = s
     for rid in ("P2-PROBE-01", "P2-PROBE-02"):
         sp = runs / rid / "selection.json"
         if not sp.exists():
@@ -97,6 +99,8 @@ def exclusion_ids(runs: Path | None = None, extra_files: tuple[str, ...] = OPTIO
     p = data.probe_image_ids(runs)
     rep["sources"]["probe1+probe2"] = len(p)
     ids |= p
+    if by_source is not None:
+        by_source["probe1+probe2"] = set(p)
     for rid in extra_files:
         ip = runs / rid / "items.jsonl"
         if not ip.exists():
@@ -105,8 +109,29 @@ def exclusion_ids(runs: Path | None = None, extra_files: tuple[str, ...] = OPTIO
         s = {int(r["image_id"]) for r in common.read_jsonl(ip) if "image_id" in r}
         rep["sources"][rid] = len(s)
         ids |= s
+        if by_source is not None:
+            by_source[rid] = s
     rep["n_excluded_images"] = len(ids)
     return ids, rep
+
+
+def h_l6(rows: list[dict], excluded: set[int]) -> dict:
+    """H-L6 positive control: the number of SugarCrepe rows (whole release) whose image id matches an excluded set must be > 0, else the id format does not match and the exclusion filter proves nothing."""
+    n = sum(1 for r in rows if r["image_id"] in excluded)
+    return dict(n_rows_in_existing_pools=n, ok=bool(n > 0))
+
+
+def h_l7_samples(rows: list[dict], by_source: dict) -> list[dict]:
+    """H-L7: for cal, head, test, test_ext and probe, the smallest matched image id with the SugarCrepe file name and the COCO file name, for a hand check by the data-steward."""
+    by_id: dict[int, dict] = {}
+    for r in rows:
+        by_id.setdefault(r["image_id"], r)
+    out = []
+    for src in ("folds.cal", "folds.head", "folds.test", "folds.test_ext", "probe1+probe2"):
+        hit = sorted(i for i in by_source.get(src, ()) if i in by_id)
+        out.append(dict(source=src, n_matched=len(hit), image_id=hit[0] if hit else None, sugarcrepe_filename=by_id[hit[0]]["filename"] if hit else None,
+                        sugarcrepe_subset=by_id[hit[0]]["subset"] if hit else None, coco_file=f"val2017/{hit[0]:012d}.jpg" if hit else None))
+    return out
 
 
 def eligible_rows(rows: list[dict], excluded: set[int], n_tok_fn, tok_range=config.TOK_RANGE) -> tuple[list[dict], dict]:
@@ -204,15 +229,21 @@ def main(argv=None) -> int:
         if bad:
             print(f"STOP: SHA-256 mismatch against SHA256SUMS.txt: {bad}", file=sys.stderr)
             return 2
-        excluded, rep = exclusion_ids()
+        by_source: dict = {}
+        excluded, rep = exclusion_ids(by_source=by_source)
     except FileNotFoundError as e:
         print("STOP:", e, file=sys.stderr)
         return 2
     sums = {s: sha256_lf(d / f"{s}.json") for s in SUBSETS}
-    res = build(load_sugarcrepe(d), excluded, folds.hf_token_counter(a.slow), exclusion_report=rep, sha256=sums)
+    all_rows = load_sugarcrepe(d)
+    l6 = h_l6(all_rows, excluded)
+    if not l6["ok"]:
+        print("STOP: H-L6 positive control failed: no SugarCrepe image id matches any excluded set (id format mismatch)", file=sys.stderr)
+        return 2
+    res = build(all_rows, excluded, folds.hf_token_counter(a.slow), exclusion_report=dict(rep, h_l6=l6), sha256=sums)
     folds.save_folds(res, out)
     print(json.dumps(dict(path=str(out), sha1=res["meta"]["sha1"], sha256=hashlib.sha256(out.read_bytes()).hexdigest(), sizes=dict(head=len(res["head"]), test=len(res["test"])),
-                          per_subset=res["meta"]["per_subset"], row_filter=res["meta"]["row_filter"], missing_optional=rep["missing_optional"])))
+                          per_subset=res["meta"]["per_subset"], row_filter=res["meta"]["row_filter"], missing_optional=rep["missing_optional"], h_l6=l6, h_l7=h_l7_samples(all_rows, by_source))))
     return 0
 
 

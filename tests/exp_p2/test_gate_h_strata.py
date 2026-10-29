@@ -176,15 +176,107 @@ def test_label_mixed_harm_negative_inconclusive():
 
 
 # ------------------------------------------------------------------------------------------------ length rule (A5.7)
-def test_length_rule_adds_the_clause_only_for_an_opposite_signed_lm_estimate_with_ci_excluding_zero():
-    s = {"jpeg": dict(LM=dict(net=-0.08, ci95=[-0.15, -0.01])), "noise": dict(LM=dict(net=-0.08, ci95=[-0.15, 0.02])), "splice": dict(LM=dict(net=0.05, ci95=[0.01, 0.09]))}
-    an = _an(_per(jpeg=dict(b=9, c=1, gate_better=True, p_holm=0.01), noise=dict(b=9, c=1, gate_better=True, p_holm=0.01), splice=dict(b=9, c=1, gate_better=True, p_holm=0.01)))
+def _cnt(b, c, n, net, ci):
+    return dict(b=b, c=c, n=n, n_d=b + c, net=net, ci95=ci, p_unadjusted=0.5, exploratory=True)
+
+
+def _st(all_net, lm, la=None):
+    return dict(all=dict(net=all_net), LM=lm, LA=la or _cnt(9, 0, 86, 0.1, [0.04, 0.17]))
+
+
+def _rej(**kw):
+    return _an(_per(**{c: dict(gate_better=True, p_holm=0.01, **v) for c, v in kw.items()}))
+
+
+def test_length_rule_r1_gain_without_clause_only_if_lm_b_gt_c_and_the_lower_bound_exceeds_minus_d_h():
+    d = 0.06
+    s = {"jpeg": _st(d, _cnt(8, 2, 214, 0.028, [0.0, 0.056])),                                   # b_LM > c_LM and lower bound 0.0 > -0.06: no clause
+         "noise": _st(d, _cnt(2, 2, 214, 0.0, [-0.03, 0.03])),                                  # b_LM = c_LM: clause although the interval is narrow (effect carried by add_*)
+         "splice": _st(d, _cnt(9, 1, 214, 0.037, [-0.08, 0.1]))}                                # b_LM > c_LM but lower bound -0.08 <= -0.06: clause
+    an = _rej(jpeg=dict(b=20, c=2, delta=d), noise=dict(b=20, c=2, delta=d), splice=dict(b=20, c=2, delta=d))
     lr = hs.length_rule(s, an)
-    assert lr["jpeg"]["add_clause"] is True and lr["jpeg"]["clause"] == "not present on the length-matched subsets"
-    assert lr["noise"]["add_clause"] is False and lr["splice"]["add_clause"] is False                 # CI includes 0 / same sign
-    an2 = _an(_per(jpeg=dict(b=1, c=1, p_holm=1.0)))
-    assert hs.length_rule(s, an2)["jpeg"]["add_clause"] is False                                       # no rejection, no clause
-    assert hs.length_rule(None, an) == {} and hs.length_rule(s, None) == {}
+    assert lr["jpeg"]["add_clause"] is False and lr["jpeg"]["clause"] is None and lr["jpeg"]["length_mismatched"] is False
+    assert lr["noise"]["add_clause"] is True and lr["noise"]["length_mismatched"] is True
+    assert lr["noise"]["clause"] == "the gain was not shown on the length-matched subsets (b = 2, c = 2); it may be carried by the longer negatives of add_obj and add_att"
+    assert lr["splice"]["add_clause"] is True and "b = 9, c = 1" in lr["splice"]["clause"]
+    assert lr["jpeg"]["D_H"] == d and lr["jpeg"]["LA"]["b"] == 9 and lr["jpeg"]["LM"]["n"] == 214            # LM and LA counts are printed with the result
+
+
+def test_the_clause_fires_for_an_effect_carried_by_the_add_items_even_with_the_same_sign_in_lm():
+    """r1 (C5-4): the r0 rule needed an opposite-signed LM estimate with a CI excluding 0; now a same-signed but weak LM estimate is enough."""
+    s = {"jpeg": _st(0.08, _cnt(4, 3, 214, 0.005, [-0.09, 0.05]), la=_cnt(22, 1, 86, 0.24, [0.15, 0.33]))}
+    lr = hs.length_rule(s, _rej(jpeg=dict(b=26, c=4, delta=0.08)))
+    assert lr["jpeg"]["add_clause"] is True and lr["jpeg"]["LA"]["net"] == 0.24
+
+
+def test_length_rule_harm_rejection_has_the_signs_reversed():
+    d = -0.06
+    s = {"jpeg": _st(d, _cnt(1, 7, 214, -0.028, [-0.056, -0.01])),                              # c_LM > b_LM and upper bound -0.01 < 0.06: no clause
+         "noise": _st(d, _cnt(3, 3, 214, 0.0, [-0.03, 0.03])),                                 # c_LM = b_LM: clause
+         "splice": _st(d, _cnt(1, 7, 214, -0.028, [-0.1, 0.07]))}                              # upper bound 0.07 >= 0.06: clause
+    an = _an(_per(jpeg=dict(b=2, c=20, delta=d, p_holm=0.01), noise=dict(b=2, c=20, delta=d, p_holm=0.01), splice=dict(b=2, c=20, delta=d, p_holm=0.01)))
+    lr = hs.length_rule(s, an)
+    assert [lr[c]["rejected_harm"] for c in ("jpeg", "noise", "splice")] == [True, True, True] and not any(lr[c]["rejected_gain"] for c in lr)
+    assert [lr[c]["add_clause"] for c in ("jpeg", "noise", "splice")] == [False, True, True] and lr["noise"]["clause"].startswith("the loss was not shown")
+
+
+def test_length_rule_prints_counts_for_every_corruption_and_adds_no_clause_without_a_rejection():
+    s = {"jpeg": _st(0.0, _cnt(2, 3, 214, -0.005, [-0.03, 0.02])), "splice": _st(0.01, _cnt(0, 0, 214, 0.0, [0.0, 0.0]))}
+    lr = hs.length_rule(s, _an(_per(jpeg=dict(b=2, c=3, p_holm=1.0))))                          # splice untested in the analysis
+    assert set(lr) == {"jpeg", "splice"} and all(v["LM"] and v["LA"] and v["add_clause"] is False and v["clause"] is None for v in lr.values())
+    assert hs.length_rule(None, _rej(jpeg=dict(b=9, c=1, delta=0.1))) == {} and set(hs.length_rule(s, None)) == {"jpeg", "splice"}
+
+
+def test_label_carries_the_length_mismatched_suffix_when_the_clause_fires_for_a_rejected_corruption():
+    s = {"jpeg": _st(0.06, _cnt(2, 2, 214, 0.0, [-0.03, 0.03]))}
+    an = _rej(jpeg=dict(b=20, c=2, delta=0.06))
+    lr = hs.length_rule(s, an)
+    lab = hs.h_label(_an(an["primary"]["per_corruption"], sm={"jpeg": True}), _fam(), lr)
+    assert lab["label"] == "H-POS-M" and lab["label_full"] == "H-POS-M (length-mismatched)" and lab["length_mismatched"] == ["jpeg"]
+    ok = hs.h_label(_an(an["primary"]["per_corruption"], sm={"jpeg": True}), _fam(), {"jpeg": dict(length_mismatched=False)})
+    assert ok["label_full"] == "H-POS-M" and ok["length_mismatched"] == []
+    assert hs.h_label(_an(an["primary"]["per_corruption"], sm={"jpeg": True}), _fam())["label_full"] == "H-POS-M"          # old call signature still works
+
+
+def test_clean_control_clause_when_the_clean_ci_contains_d_h():
+    s = {"jpeg": _st(0.06, _cnt(8, 2, 214, 0.03, [0.0, 0.06])), "splice": _st(0.05, _cnt(8, 2, 214, 0.03, [0.0, 0.06]))}
+    an = _rej(jpeg=dict(b=20, c=2, delta=0.06), splice=dict(b=15, c=0, delta=0.05))
+    an["s_c"] = dict(delta=0.05, ci95=[0.0, 0.055])
+    cc = hs.clean_control(an, s)
+    assert cc["splice"]["add_clause"] is True and cc["splice"]["clause"].startswith("a gain of similar size on clean images is not excluded")
+    assert cc["jpeg"]["add_clause"] is False and cc["jpeg"]["clause"] is None                  # 0.06 is outside [0, 0.055]
+    assert hs.clean_control(None, s) == {} and hs.clean_control(_an(_per(jpeg=dict(b=1, c=1, p_holm=1.0))), s) == {}
+
+
+def test_h_nogo_label_carries_g_max_headroom_for_the_two_sentences():
+    fam = _fam("NO-GO", 0, (), "not tested (NO-GO)")
+    fam["n_rule"]["G_max_headroom"] = None
+    a = hs.h_label(None, fam)
+    assert a["label"] == "H-NOGO" and a["G_max_headroom"] is None and a["sentence_variant"] == "i"
+    fam["n_rule"]["G_max_headroom"] = 2
+    b = hs.h_label(None, fam)
+    assert b["G_max_headroom"] == 2 and b["sentence_variant"] == "ii"
+
+
+def test_h_strata_run_reads_no_h3_row_log_or_array(tmp_path, monkeypatch):
+    """C5-6: h_strata reads runs/P2-GATE-H3/family.json (the go/no-go inputs) and nothing else of the H3 directory."""
+    monkeypatch.setattr(common, "RUNS", tmp_path)
+    items = _items()
+    runs = _write_run(tmp_path, items)
+    fam = json.loads((runs / "P2-GATE-H3" / "family.json").read_text())
+    fam["family"] = [dict(corruption="jpeg", key="jpeg10")]
+    (runs / "P2-GATE-H3" / "family.json").write_text(json.dumps(fam))
+    for name in ("items.jsonl", "driver.log", "stdout-chunk00.log"):
+        (runs / "P2-GATE-H3" / name).write_text("SECRET")
+    (runs / "P2-GATE-H3" / "arrays").mkdir()
+    seen = []
+    o_text, o_bytes, o_jsonl = Path.read_text, Path.read_bytes, common.read_jsonl
+    monkeypatch.setattr(Path, "read_text", lambda self, *a, **k: (seen.append(str(self)), o_text(self, *a, **k))[1])
+    monkeypatch.setattr(Path, "read_bytes", lambda self, *a, **k: (seen.append(str(self)), o_bytes(self, *a, **k))[1])
+    monkeypatch.setattr(common, "read_jsonl", lambda p: (seen.append(str(p)), o_jsonl(p))[1])
+    assert hs.main(["--boot", "50"]) == 0
+    h3_read = [s for s in seen if "P2-GATE-H3" in s]
+    assert h3_read and all(s.endswith("family.json") for s in h3_read)
 
 
 # ------------------------------------------------------------------------------------------------ run / main
@@ -217,7 +309,7 @@ def test_main_writes_h_strata_json_with_label_strata_and_length_rule(tmp_path, m
     assert hs.main(["--boot", "200"]) == 0
     out = json.loads((runs / "P2-GATE-H4" / "h_strata.json").read_text())
     assert out["label"]["label"] == "H-POS-G" and out["family"] == ["jpeg10", "splice128"] and set(out["strata"]) == {"jpeg", "splice"}
-    assert out["length_rule"]["jpeg"]["add_clause"] is False and out["identity"]["folds_sha256"]["match"] is True and out["meta"]["h_strata_spawn_key"] == [33]
+    assert out["length_rule"]["jpeg"]["add_clause"] is True and out["label"]["label_full"] == "H-POS-G (length-mismatched)" and out["identity"]["folds_sha256"]["match"] is True and out["meta"]["h_strata_spawn_key"] == [33]
 
 
 def test_main_stops_on_an_identity_failure(tmp_path, monkeypatch, capsys):

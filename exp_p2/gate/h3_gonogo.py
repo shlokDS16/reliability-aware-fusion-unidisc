@@ -62,9 +62,10 @@ def code_commit() -> str:
         return "unknown"
 
 
-def bound_p(f_minus: int, f_plus: int) -> float:
-    """Exact two-sided McNemar p of (b, c) = (6 F-, 6 F+): the restore-clean power bound scaled from 50 to 300 items."""
-    b, c = SCALE_50_TO_300 * int(f_minus), SCALE_50_TO_300 * int(f_plus)
+def bound_p(f_minus: int, f_plus: int, scale: int = SCALE_50_TO_300) -> float:
+    """Exact two-sided McNemar p of (b, c) = (k F-, k F+): the restore-clean power bound scaled from 50 items. The GO rule uses k = 6 (50 to 300 items, as written in A5.5); the
+    descriptive bound at the n actually run uses k = n_H4 / 50 (6, or 4 at n = 200; A5.5a, C5-7)."""
+    b, c = int(scale) * int(f_minus), int(scale) * int(f_plus)
     ya, yb = np.array([1] * b + [0] * c, float), np.array([0] * b + [1] * c, float)
     return float(stats.mcnemar_exact(ya, yb)["p"])
 
@@ -136,7 +137,13 @@ def wilson_clean(rows: list[dict]) -> dict:
     return dict(k=k, n=n, wilson95=list(stats.wilson_ci(k, n, 0.95)) if n else [float("nan")] * 2)
 
 
-def build_family_doc(rows: list[dict], plan: dict, now: datetime, inputs: dict) -> tuple[dict, bool]:
+def g_max_headroom(per: dict) -> int | None:
+    """A5.5a (C5-7): the largest G_c over corruptions with n_valid_c >= 45 that pass (a) (decision headroom); None if there is none. Used only by the H-NOGO sentence."""
+    gs = [v["G"] for v in per.values() if v["n_valid"] >= MIN_VALID and v["headroom"]]
+    return max(gs) if gs else None
+
+
+def build_family_doc(rows: list[dict], plan: dict, now: datetime, inputs: dict, decide_record: dict | None = None) -> tuple[dict, bool]:
     """-> (family.json content, pilot_complete). Pilot incomplete = no corruption has n_valid >= 45 (rows missing or an H3 prefix that is too short): NO-GO, test_fold 0, status
     'not run (pilot incomplete)' (A5.5a: exit 2)."""
     per = evaluate(rows, plan["family"])
@@ -146,15 +153,21 @@ def build_family_doc(rows: list[dict], plan: dict, now: datetime, inputs: dict) 
     n_after, status = n_after_time_rule(n_by_rule, now)
     if not complete:
         status = "not run (pilot incomplete)"
+    k = n_after // 50 if n_after > 0 else None                                 # descriptive only (C5-7): 6 at n = 300, 4 at n = 200, none when H4 is not run
+    for v in per.values():
+        v["bound_p_at_n"] = bound_p(v["F_minus"], v["F_plus"], k) if k else None
+        v["projection_at_n"] = v["G"] * k if k else None
     by_corr = {f["corruption"]: f for f in plan["family"]}
     family = [dict(corruption=c, severity=by_corr[c]["severity"], key=by_corr[c]["key"], G_c=per[c]["G"], F_minus=per[c]["F_minus"], F_plus=per[c]["F_plus"]) for c in plus]
     excluded = [dict(corruption=c, reason=per[c]["reason"]) for c in config.REALISTIC if c in per and c not in plus]
     go = bool(plus and n_after > 0)
     doc = dict(endpoint="d", endpoint_note="H endpoint is Y; 'd' only satisfies run_gate_m4/analysis_m4 (S-Z secondary)", n_headroom_items=len(rows), family=family, excluded=excluded,
-               n_rule=dict(rule=rule, h_rule=h_rule, test_fold=n_after, G_star=g_star, N_star=N_STAR, min_G=MIN_G, r1_G=R1_G, scale_50_to_300=SCALE_50_TO_300, alpha_step1=0.016667,
+               n_rule=dict(rule=rule, h_rule=h_rule, test_fold=n_after, G_star=g_star, G_max_headroom=(g_max_headroom(per) if complete else None), N_star=N_STAR, min_G=MIN_G, r1_G=R1_G, scale_50_to_300=SCALE_50_TO_300, alpha_step1=0.016667,
                            min_valid=MIN_VALID, primary_endpoint="Y", primary_endpoint_code="Y", negative_reading_available=bool(n_after >= 240 and rule in ("R1", "R2")),
                            time_rule=dict(now=now.isoformat(), freeze=FREEZE.isoformat(), constants=dict(TIME_CONSTANTS), n_by_rule=n_by_rule, n_after_time=n_after, status=status)),
                go=go, downstream_claim_withdrawn=not go, per_corruption=per, clean_none_accuracy=wilson_clean(rows), inputs=inputs, spec=SPEC)
+    if decide_record is not None:
+        doc["decide_record"] = decide_record
     return doc, complete
 
 
@@ -192,8 +205,22 @@ def plan(runs: Path | None = None) -> dict:
 
 
 # ------------------------------------------------------------------------------------------------ decide
-def decide(h3_run: str = H3_RUN, now: datetime | None = None, runs: Path | None = None) -> tuple[int, dict]:
-    """-> (exit code, family.json content). 0 written; 2 pilot incomplete (file still written, NO-GO). Raises artifacts.WriteOnceError if the file exists."""
+def decide_deadline() -> datetime:
+    """A5.5a (C5-7): if H3 has not completed by this time, `decide` is run then on the completed prefix: the rule-1 start bound (12:27) plus W_H3 = Fri 30 Oct 2026 13:12 IST."""
+    return h3_start_deadline() + timedelta(hours=W_H3)
+
+
+def last_row_time(items_path: Path) -> datetime | None:
+    """Time of the last H3 row = the modification time of items.jsonl (the file is appended row by row; no row content is read for this)."""
+    try:
+        return datetime.fromtimestamp(Path(items_path).stat().st_mtime, IST)
+    except OSError:
+        return None
+
+
+def decide(h3_run: str = H3_RUN, now: datetime | None = None, runs: Path | None = None, *, last_row: datetime | None = None, gap_reason: str | None = None) -> tuple[int, dict]:
+    """-> (exit code, family.json content). 0 written; 2 pilot incomplete (file still written, NO-GO). Raises artifacts.WriteOnceError if the file exists.
+    The clock, the last H3 row's time, the gap, the A5.5a deadline and `gap_reason` are recorded in `decide_record` (a gap above A_H3 = 0.5 h is logged with its reason)."""
     now = now or datetime.now(IST)
     p = paths(runs)
     r = Path(runs) if runs is not None else Path(common.RUNS)
@@ -210,7 +237,12 @@ def decide(h3_run: str = H3_RUN, now: datetime | None = None, runs: Path | None 
             raise ValueError(f"row idx {row.get('idx')} (gid {row.get('gid')}, image {row.get('image_id')}) is not an H3 item of folds_hardneg.json")
     items_path = run_dir / "items.jsonl"
     inputs = dict(h3_run=h3_run, items_sha256=sha256_lf(items_path) if items_path.exists() else None, plan_family_sha256=sha256_lf(p["plan"]), folds_h3_sha256=sha256_lf(p["h3_folds"]), code_commit=code_commit())
-    doc, complete = build_family_doc(rows, plan_doc, now, inputs)
+    lr = last_row if last_row is not None else last_row_time(items_path)
+    gap_h = (now - lr).total_seconds() / 3600.0 if lr is not None else None
+    record = dict(now=now.isoformat(), last_h3_row_time=lr.isoformat() if lr is not None else None, gap_hours=gap_h, gap_over_A_H3=bool(gap_h is not None and gap_h > A_H3),
+                  gap_reason=gap_reason, h3_rows=len(rows), h3_complete=bool(len(rows) >= 50), deadline=decide_deadline().isoformat(), after_deadline=bool(now > decide_deadline()),
+                  decided_on_prefix=bool(len(rows) < 50))
+    doc, complete = build_family_doc(rows, plan_doc, now, inputs, record)
     run_dir.mkdir(parents=True, exist_ok=True)
     artifacts.write_once(out, json.dumps(doc, indent=1))
     return (0 if complete else 2), doc
@@ -223,17 +255,22 @@ def main(argv=None) -> int:
     d = sub.add_parser("decide")
     d.add_argument("--h3-run", default=H3_RUN)
     d.add_argument("--now", default=None, help="ISO 8601 (naive = IST); for tests only, otherwise the system clock in IST is used and recorded")
+    d.add_argument("--last-row-time", default=None, help="ISO 8601 (naive = IST); default: the modification time of items.jsonl")
+    d.add_argument("--gap-reason", default=None, help="why `decide` ran more than 0.5 h after the last H3 row (logged in decide_record)")
     a = ap.parse_args(argv)
     try:
         if a.cmd == "plan":
             res = plan()
             print(json.dumps(res, indent=1))
             return 0
-        code, doc = decide(a.h3_run, parse_now(a.now))
+        code, doc = decide(a.h3_run, parse_now(a.now), last_row=parse_now(a.last_row_time) if a.last_row_time else None, gap_reason=a.gap_reason)
     except (FileNotFoundError, ValueError, artifacts.WriteOnceError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2
     nr = doc["n_rule"]
+    rec = doc["decide_record"]
+    if rec["gap_over_A_H3"] and not rec["gap_reason"]:
+        print("NOTE: decide ran more than 0.5 h after the last H3 row; record the reason (--gap-reason)", file=sys.stderr)
     print(json.dumps(dict(rule=nr["rule"], h_rule=nr["h_rule"], test_fold=nr["test_fold"], G_star=nr["G_star"], tested=[f["corruption"] for f in doc["family"]], status=nr["time_rule"]["status"]), indent=1))
     return code
 

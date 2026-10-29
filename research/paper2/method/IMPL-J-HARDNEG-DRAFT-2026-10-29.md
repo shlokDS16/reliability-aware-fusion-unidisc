@@ -101,3 +101,25 @@ Tests run (CPU, one process): the new and changed files above plus test_gate_har
 5. `h_label`: "H-NOGO" needs rule NO-GO and an empty `family`; a pilot-incomplete file gives no label ("not run (pilot incomplete)", deviations box only), as A5.9 says.
 6. A5.8 says the identity check asserts that no image is shared with the M4 items; when `runs/P2-GATE-M4/items.jsonl` is absent the check is recorded as `checked: false` instead of failing (the file is untracked here; it exists in the main worktree).
 7. `ps_frozen.json` is read from the M3 run directory whatever `--family-run` is (unchanged code path).
+
+## 7. Update 2026-10-29 (later still): aligned to SAP A5 r1 (2f62f1df; red-team conditions C5-1 to C5-8)
+
+Merged `claude/frosty-clarke-209639` at 2f62f1df. The H3 rule, the validity 45, the thresholds and the bounds 12:27 / 12:36 / 13:42 are unchanged; the 13:12 deadline is new.
+
+| r1 item | code change |
+|---|---|
+| C5-4 length rule (`h_strata.length_rule`) | Replaced. LM and LA counts (b, c, n, n_d, net, 95% CI) are returned for every corruption, rejected or not. For a rejection with b > c the gain carries no length clause only if b_LM > c_LM **and** the LM lower 95% bound > -D_H; otherwise the clause "the gain was not shown on the length-matched subsets (b = .., c = ..); it may be carried by the longer negatives of add_obj and add_att" is added and `h_label` returns `label_full` with the suffix "(length-mismatched)". It can now fire for an effect carried by add_* even when the LM estimate has the same sign (tested). A harm rejection gets the sign-reversed rule (c_LM > b_LM and the LM upper bound < -D_H) with "loss" wording. D_H = the `delta` of `analysis_m4`'s primary entry. New `clean_control` gives the F8 clause (H-C 95% CI contains D_H) for each rejected-gain corruption. `h_label` also returns `G_max_headroom` and `sentence_variant` (i or ii) for H-NOGO. |
+| C5-6 H3 firewall | `h3_gonogo decide` reads only items.jsonl (through `load_items`), the plan family and the folds files; tests assert it opens no driver log, chunk log or array, and that stdout, stderr and logging carry only rule, h_rule, test_fold, unsigned G*, the tested list and the status (no b, c, accuracy, F-, F+ or count by direction). `h_strata.run` reads only `runs/P2-GATE-H3/family.json` of the H3 directory (tested by recording every file read). The rest of the firewall (nobody opens the H3 rows or logs) is procedural. |
+| C5-7 `decide` deadline | `decide_deadline()` = 13:12 IST (12:27 + W_H3). `decide` records, in a new top-level `decide_record`, the clock, the last H3 row's time (modification time of items.jsonl, or `--last-row-time`), the gap in hours, `gap_over_A_H3` (> 0.5 h) with `--gap-reason`, rows, completeness, the deadline, `after_deadline`, `decided_on_prefix`; a gap above 0.5 h without a reason prints a note on stderr (no value). The rule applies unchanged to a prefix. |
+| C5-7 `G_max_headroom` | In `n_rule`: the largest G_c over corruptions with n_valid >= 45 that pass (a); null if none (or pilot incomplete). |
+| C5-7 x4 bound | Per corruption `bound_p_at_n` (exact McNemar p of (k F-, k F+), k = n_H4 / 50: 6 at 300, 4 at 200) and `projection_at_n` (G x k); null when H4 is not run. Descriptive; the GO rule stays at x6 (tested: a (2, 0) pilot keeps the corruption at n = 200). |
+| A5.11 item 5 (not r1, was still open) | Builder: `h_l6` positive control (main stops if no SugarCrepe id matches an excluded set; dry run: 2,156 rows), `h_l7_samples` (printed in main's output: smallest matched id per cal, head, test, test_ext, probe with the SugarCrepe file name and the COCO file name, for the data-steward), H-L8 injected-leak test (a broken filter makes `folds.check_folds` stop the build). The items file is unchanged (sha1 6cae72d56505c1eb). |
+
+Tests: 265 passed (new and affected files; `test_gate_s2` not run): `test_gate_h3_gonogo` 36, `test_gate_h_strata` 23, `test_gate_hardneg_items` 23, plus the files listed in section 6.
+
+### r1 ambiguities and how they were resolved
+1. The new `decide_record` is a top-level key added to the file A5.5a says is written "exactly" as listed (the schema has no place for the clock, the last-row time and the gap). Readers ignore it. If the auditor wants the record elsewhere (for example a sidecar file), it is a one-line move.
+2. "Last H3 row's timestamp": rows carry no time field, so the modification time of items.jsonl is used (the file is appended row by row; reading it does not display a row). It can be overridden with `--last-row-time`.
+3. D_H in the length rule is the all-item net difference of the corruption's H test (`delta` of the analysis, else the stratified file's `all.net`); the rule compares the LM lower bound with -D_H using that point estimate, not its CI.
+4. "The label carries the suffix": if several rejected corruptions exist, the suffix is added when the clause fires for any of them and the list of corruptions is returned (`length_mismatched`); sentences are per corruption, so each sentence uses its own entry of `length_rule`.
+5. `bound_p_at_n` for n_H4 = 0 (NO-GO or cut by time) is null.

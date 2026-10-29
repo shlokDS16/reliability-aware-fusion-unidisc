@@ -216,3 +216,42 @@ def test_main_refuses_to_overwrite_an_existing_items_file(tmp_path, monkeypatch)
     out.write_text("{}")
     monkeypatch.setattr(common, "RUNS", tmp_path)
     assert bh.main(["--out", str(out)]) == 2 and out.read_text() == "{}"
+
+
+# ------------------------------------------------------------------------------------------------ leak check H-L6, H-L7, H-L8 (SAP A5.2, A5.11 item 5)
+def test_h_l6_positive_control_needs_at_least_one_matching_image_id():
+    rows = bh.load_sugarcrepe()
+    some = {rows[0]["image_id"], rows[100]["image_id"]}
+    ok = bh.h_l6(rows, some)
+    assert ok["ok"] is True and ok["n_rows_in_existing_pools"] >= 2
+    bad = bh.h_l6(rows, {-1})                                                  # an id format that never matches: the filter would prove nothing
+    assert bad == dict(n_rows_in_existing_pools=0, ok=False)
+
+
+def test_h_l7_samples_give_one_matched_id_per_source_with_both_file_names():
+    rows = bh.load_sugarcrepe()
+    ids = sorted({r["image_id"] for r in rows})
+    by_source = {"folds.cal": {ids[5], 1}, "folds.head": {ids[3]}, "folds.test": {ids[9], ids[2]}, "folds.test_ext": {2}, "probe1+probe2": {ids[7]}}
+    out = bh.h_l7_samples(rows, by_source)
+    assert [o["source"] for o in out] == ["folds.cal", "folds.head", "folds.test", "folds.test_ext", "probe1+probe2"]
+    assert out[0]["image_id"] == ids[5] and out[2]["image_id"] == ids[2] and out[3]["image_id"] is None and out[3]["n_matched"] == 0
+    for o in out:
+        if o["image_id"] is not None:
+            assert o["sugarcrepe_filename"] == f"{o['image_id']:012d}.jpg" and o["coco_file"] == f"val2017/{o['image_id']:012d}.jpg" and o["sugarcrepe_subset"] in SUBS
+
+
+def test_h_l8_an_injected_leak_makes_the_builder_fail(monkeypatch):
+    """If the exclusion filter were broken (a pool sharing an id with cal gets through), folds.check_folds inside build() stops the build."""
+    rows = _rows()
+    leak = {r["image_id"] for r in rows[::3]}
+    monkeypatch.setattr(bh, "eligible_rows", lambda rs, ex, fn, tr=config.TOK_RANGE: ([dict(r, n_tok=5, n_tok_neg=5) for r in rs], dict(total=len(rs), in_existing_pool=0, token_rule=0, same_caption=0, eligible_rows=len(rs))))
+    with pytest.raises(AssertionError, match="probe image"):
+        bh.build(rows, leak, N_TOK)
+    monkeypatch.undo()
+    assert bh.build(rows, leak, N_TOK)["head"]                                  # with the real filter the same call succeeds
+
+
+def test_exclusion_ids_can_return_the_per_source_sets(tmp_path):
+    by = {}
+    bh.exclusion_ids(_runs(tmp_path), by_source=by)
+    assert by["folds.test"] == {3} and by["probe1+probe2"] == {5, 6} and by["P2-GATE-M1"] == {7}

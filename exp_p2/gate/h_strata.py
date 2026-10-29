@@ -140,29 +140,66 @@ def strata_for(rows: list[dict], test_items: list[dict], family, n_boot: int = 1
 
 
 # ------------------------------------------------------------------------------------------------ label (A5.9) and length rule (A5.7)
+def _counts(e: dict) -> dict:
+    return {k: e[k] for k in ("b", "c", "n", "n_d", "net", "ci95")}
+
+
 def length_rule(strata: dict | None, analysis: dict | None) -> dict:
-    """Binding wording: if an H rejection with b > c is reported and the LM estimate of that corruption has the opposite sign with a 95 percent CI excluding 0, every sentence about that
-    rejection adds 'not present on the length-matched subsets'."""
+    """A5.7 length rule (r1, C5-4). The LM and LA counts are the primary description of every H result and are returned for EVERY corruption, rejected or not. For a rejection with
+    b > c (D_H > 0) the gain is stated WITHOUT a length clause only if, on the length-matched subsets, b_LM > c_LM and the lower 95 percent bound of the LM net difference is above -D_H
+    (the LM data exclude an opposite effect as large as the H estimate); otherwise the clause 'the gain was not shown on the length-matched subsets ...' is added and the label gets the
+    suffix '(length-mismatched)'. This can fire for an effect carried by the add_* items (LA) even when the LM estimate has the same sign. A harm rejection (c > b) gets the same rule with the
+    signs reversed (c_LM > b_LM and the upper 95 percent bound below -D_H, D_H < 0). The rule reads only counts and an interval printed for every result, so it cannot be applied selectively."""
     out = {}
-    if not strata or not analysis:
+    if not strata:
         return out
     for c, e in strata.items():
-        pc = analysis["primary"]["per_corruption"].get(c, {})
-        rej = bool(pc.get("gate_better"))
-        lm = e["LM"]
-        opposite = bool(rej and lm["net"] < 0 and lm["ci95"][1] < 0)
-        out[c] = dict(rejected_b_gt_c=rej, lm_net=lm["net"], lm_ci95=lm["ci95"], add_clause=opposite, clause="not present on the length-matched subsets" if opposite else None)
+        lm, la = e["LM"], e["LA"]
+        pc = (analysis or {}).get("primary", {}).get("per_corruption", {}).get(c, {})
+        d_h = pc.get("delta", e["all"]["net"]) if pc else e["all"]["net"]
+        gain = bool(pc.get("tested") and pc.get("gate_better"))
+        harm = bool(pc.get("tested") and pc.get("p_holm", 1.0) < 0.05 and pc.get("c", 0) > pc.get("b", 0))
+        ent = dict(LM=_counts(lm), LA=_counts(la), D_H=d_h, rejected_gain=gain, rejected_harm=harm, add_clause=False, clause=None, length_mismatched=False)
+        if gain:
+            ok = bool(lm["b"] > lm["c"] and lm["ci95"][0] > -d_h)
+            ent.update(add_clause=not ok, length_mismatched=not ok, clause=None if ok else f"the gain was not shown on the length-matched subsets (b = {lm['b']}, c = {lm['c']}); it may be carried by the longer negatives of add_obj and add_att")
+        elif harm:
+            ok = bool(lm["c"] > lm["b"] and lm["ci95"][1] < -d_h)
+            ent.update(add_clause=not ok, length_mismatched=not ok, clause=None if ok else f"the loss was not shown on the length-matched subsets (b = {lm['b']}, c = {lm['c']}); it may be carried by the longer negatives of add_obj and add_att")
+        out[c] = ent
     return out
 
 
-def h_label(analysis: dict | None, h3_family: dict) -> dict:
-    """The label of A5.9, mechanically. `analysis` = analysis_m4's analysis.json of P2-GATE-H4 (None when H4 was not run), `h3_family` = runs/P2-GATE-H3/family.json."""
+def clean_control(analysis: dict | None, strata: dict | None) -> dict:
+    """A5.9 (F8): every H-POS and H-MIXED sentence carries the clean-image control: if the 95 percent CI of the H-C net difference (s_c, GATE-M minus none on clean H4 images) contains D_H,
+    the clause 'a gain of similar size on clean images is not excluded, so the gain is not shown to be specific to the corruption' is added. One entry per rejected-gain corruption."""
+    if not analysis or not strata:
+        return {}
+    sc = analysis.get("s_c") or {}
+    ci = sc.get("ci95")
+    out = {}
+    for c, e in strata.items():
+        pc = analysis.get("primary", {}).get("per_corruption", {}).get(c, {})
+        if not (pc.get("tested") and pc.get("gate_better")) or not ci:
+            continue
+        d_h = pc.get("delta", e["all"]["net"])
+        contains = bool(ci[0] <= d_h <= ci[1])
+        out[c] = dict(D_H=d_h, clean_net=sc.get("delta"), clean_ci95=list(ci), add_clause=contains,
+                      clause="a gain of similar size on clean images is not excluded, so the gain is not shown to be specific to the corruption" if contains else None)
+    return out
+
+
+def h_label(analysis: dict | None, h3_family: dict, length: dict | None = None) -> dict:
+    """The label of A5.9, mechanically. `analysis` = analysis_m4's analysis.json of P2-GATE-H4 (None when H4 was not run), `h3_family` = runs/P2-GATE-H3/family.json, `length` = length_rule(...):
+    the suffix '(length-mismatched)' (A5.7) is added to the label when the length clause fires for a rejected corruption. Reads only the go/no-go inputs of H3 (C5-6), never an H3 row."""
     nr = h3_family.get("n_rule", {})
     status = nr.get("time_rule", {}).get("status")
     if status == "not run (pilot incomplete)":
         return dict(label=None, status="not run (pilot incomplete)", reasons=["deviations box only"])
     if nr.get("rule") == "NO-GO" and not h3_family.get("family"):
-        return dict(label="H-NOGO", status="H3 rule: no corruption tested", G_star=nr.get("G_star"), reasons=[e.get("reason") for e in h3_family.get("excluded", [])])
+        gmax = nr.get("G_max_headroom")                                          # A5.9: sentence (i) if None (no corruption with decision headroom), else (ii) with this count
+        return dict(label="H-NOGO", status="H3 rule: no corruption tested", G_star=nr.get("G_star"), G_max_headroom=gmax, sentence_variant="i" if gmax is None else "ii",
+                    reasons=[e.get("reason") for e in h3_family.get("excluded", [])])
     if analysis is None or int(nr.get("test_fold", 0)) <= 0:
         return dict(label=None, status="not run (cut by time)" if status == "cut by time" else "not run", reasons=["deviations box only"])
     per = analysis["primary"]["per_corruption"]
@@ -182,7 +219,9 @@ def h_label(analysis: dict | None, h3_family: dict) -> dict:
         lab = "H-NEG"
     else:
         lab = "H-INC"
-    return dict(label=lab, status="run", positive=pos, harm=harm, positive_split=split, h_cal_clause_required=bool(cal and lab.startswith("H-POS")), z_cal_critical=Z_CAL_NOTE)
+    mism = [c for c, v in (length or {}).items() if v.get("length_mismatched") and c in pos + harm]
+    return dict(label=lab, label_full=lab + (" (length-mismatched)" if mism else ""), length_mismatched=mism, status="run", positive=pos, harm=harm, positive_split=split,
+                h_cal_clause_required=bool(cal and lab.startswith("H-POS")), z_cal_critical=Z_CAL_NOTE)
 
 
 # ------------------------------------------------------------------------------------------------ main
@@ -196,8 +235,9 @@ def run(run_dir: Path, folds_path: Path, family_run_dir: Path, *, analysis_path:
     ap = Path(analysis_path) if analysis_path is not None else run_dir / "analysis.json"
     analysis = json.loads(ap.read_text(encoding="utf8")) if ap.exists() else None
     strata = strata_for(rows, test_items, fam["family"], n_boot)
+    length = length_rule(strata, analysis)
     return dict(meta=dict(seeds.meta(), h_strata_spawn_key=list(SEED_SPAWN_KEY), n_boot=n_boot, spec="SAP addendum A5, A5.7 to A5.9"), n_items=len(rows), n_duplicates_removed=n_dup, identity=ident,
-                family=[f["key"] for f in fam["family"]], strata=strata, length_rule=length_rule(strata, analysis), label=h_label(analysis, fam))
+                family=[f["key"] for f in fam["family"]], strata=strata, length_rule=length, clean_control=clean_control(analysis, strata), label=h_label(analysis, fam, length))
 
 
 def main(argv=None) -> int:
