@@ -31,6 +31,8 @@ On held-out clean pairs the realised flagged share was 0.0456 at $\alpha=0.05$ (
 of violation at any of the three levels (Section~\ref{ssec:res_cal}).
 On the unchanged tokens of corrupted images the false-alarm proportion was 0.036 to 0.044 for the realistic corruptions and 0.089 under
 swap, above $\alpha$.
+The conformal statement covers clean pairs only, so these proportions lie outside it; the audit of the positive control
+did not treat the 0.089 as a defect for that reason.
 Hypothesis: a token next to a replaced code is scored with damaged context and is flagged more often, as Section~\ref{ssec:calibration}
 anticipates.
 It would be falsified if, under swap, the false-alarm proportion of an unchanged token did not fall with its distance to the nearest
@@ -80,11 +82,32 @@ This is a property of these combiners on these cells, measured on the same evide
 primary result; when the gate's score is near chance, the comparison with the trimmed mean at the gate's flag count largely repeats the
 primary contrast (limit (c) of Table~\ref{tab:res_tier3}).
 
-\emph{The positive control was not met.}
-% run: P2-GATE-M4 (ps.*)
-On the two sanity corruptions the gate did not change accuracy detectably (Section~\ref{ssec:res_ps}); by the plan this reads ``pipeline defect suspected, audit triggered''.
-\todo{AUTHOR/RESULT: state the outcome of the audit. Until it is reported, a defect in the pipeline that computes the gated evidence
-cannot be excluded, and the paper says so here and in Section~\ref{ssec:limits}.}
+\emph{The positive control was not met; the audit it triggered found no defect.}
+% run: P2-GATE-M4 (ps.*); P2-A23-AUDIT
+On the two sanity corruptions the gate did not change accuracy detectably (Section~\ref{ssec:res_ps}): positive control not met; audit
+triggered (SAP A2.3); no defect found, with $n_d=4$ (patch) and $n_d=13$ (swap) discordant items.
+The audit covers the classes of error that the plan names and does not validate the pipeline; Section~\ref{ssec:res_ps} states what
+it cannot see.
+Nothing in the positive control is used in this paper to account for the primary result.
+
+\emph{Post hoc and descriptive: the decision headroom of the positive control.}
+% run: P2-A23-AUDIT (a23_ps_audit.json, per_condition.{patch,swap}); P2-GATE-M4 (ps.*)
+This paragraph was written after the outcome of PS was known, enters no test, and describes the task and the design of PS, not the
+gate.
+Without a gate, the sanity corruptions changed the decision on 5 of the 500 test items under patch (all five from right to wrong) and
+on 9 under swap (7 from right to wrong, 2 from wrong to right), that is on 0.010 and 0.018 of the items.
+With no losses, the exact two-sided McNemar test at the first Holm step (level 0.025) needs at least 7 wins; a gate that returned every
+item to its decision on the clean image would have given $b=5$, $c=0$, $p=0.0625$ under patch and $b=7$, $c=2$, $p=0.18$ under swap,
+and would not have reached that step.
+The changed-code arm, which uses the true set of replaced codes, did not either ($b=4$, $c=2$, $p=0.69$ under patch; $b=7$, $c=4$,
+$p=0.55$ under swap), and GATE-M made the same decision as that arm on 498 of the 500 items in each cell.
+The discordance between GATE-M and no gate was 0.008 under patch and 0.026 under swap, against the 0.05 to 0.20 that the power
+calculation of the plan assumed (AD.4, where it is marked as an assumption).
+At that discordance this test could not have rejected for a perfect gate, so the positive control, as designed, cannot separate a
+working pipeline from a broken one on these two corruptions; this is a property of the task, where replacing 64 or 154 codes rarely
+turns a correct decision into a wrong one, and of the design, which assumed more discordance than occurred, and not a statement about
+the method.
+The description is not used to account for the primary result, and the positive control is not read as met on this ground.
 
 \subsection{Where the work sits in information fusion}\label{ssec:disc_fit}
 \emph{What is fused.}
@@ -115,7 +138,7 @@ none scores input tokens with the likelihood of a generative model.
 fused (open check on the scope-fit question); settle the scope-fit question with the supervising professor before submission.}
 
 \subsection{Limitations}\label{ssec:limits}
-Except for the item on the positive control, the limitations below are fixed by the design and do not depend on the outcome.
+Except for the two items on the positive control, the limitations below are fixed by the design and do not depend on the outcome.
 \begin{itemize}
 \item \emph{One model, one data set.} All measurements of the primary family use UniDisc 1.4B and COCO val2017 images as tokenised
 by one tokenizer. A second, 4-bit quantised model was to enter only in family R, only if P had a rejection with $b>c$; P had none, so R
@@ -152,9 +175,16 @@ cover the image tokeniser (Section~\ref{ssec:data}, \ref{app:timefree}).
 \item \emph{Scope of the preregistered run.} Families S2 (re-infilling), B (two-way fusion) and R (second model) each have a status of
 run or not run, decided by time and by their gatekeeping rule and never by an outcome, and the paper reports that status.
 Caption corruption, the backbone authors' own re-infill recipe and the gating of caption tokens are not tested as families.
-\item \emph{Positive control not met.} The preregistered positive control on the sanity corruptions was not met, which triggers a
-pipeline audit (Section~\ref{ssec:res_ps}). \todo{AUTHOR/RESULT: outcome of the audit; until it is reported, a defect in the computation
-of the gated evidence is not excluded.}
+\item \emph{Positive control not met.} The preregistered positive control on the sanity corruptions was not met, which triggered a
+pipeline audit (Section~\ref{ssec:res_ps}); the audit found no defect. It was run after the outcome was known and covers the classes
+of error that the plan names. A recomputation from the stored arrays cannot see an error upstream of them, and the audit does not
+validate the pipeline. The conformal statement covers clean pairs only; on the unchanged tokens of swapped images the flag proportion
+was 0.089, above $\alpha$, which the audit recorded and did not count as a defect.
+\item \emph{Power assumption of the positive control.} The plan's power calculation for the positive control assumed a discordance of
+0.05 to 0.20 between the gated and the ungated decision. The realised values were 0.008 and 0.026 ($n_d=4$ and 13 of 500), and at
+that headroom the preregistered test could not have rejected even for a gate that restored every clean decision. The positive control
+therefore cannot separate a working pipeline from a broken one on these two corruptions. This is a property of the design and of the
+task, not of the method, and it is not used to account for the primary result.
 \item \emph{Hardware and missing data.} The GPU is a single laptop device that failed in earlier pilots. A crash leaves a prefix of the item
 list and the missing-item rule applies; a fold under 240 items is reported as incomplete.
 \item \emph{Narrow novelty.} Detecting and remasking corrupted input tokens, cross-modal remasking, risk-controlled thresholds for

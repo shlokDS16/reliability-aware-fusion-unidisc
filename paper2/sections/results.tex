@@ -255,9 +255,22 @@ The positive control repeats the primary test on the two sanity corruptions, wit
 Neither hypothesis was rejected, so the positive control was \emph{not met}.
 By the plan this reads ``pipeline defect suspected, audit triggered''; nothing was tuned.
 Both sanity corruptions lowered the clean accuracy of the test fold from 0.880 to 0.870 without a gate.
-\todo{AUTHOR/RESULT: outcome of the pipeline audit triggered by the positive control (date, scope, result); until it is reported, a
-pipeline defect is not excluded.}
+% run: P2-A23-AUDIT (research/paper2/prereg/A2.3-AUDIT-PS-2026-10-29.md; a23_ps_audit.json)
+The audit of the analysis plan (SAP, A2.3) was run on 29 October 2026, after the outcome of PS was known.
+It had four parts: the unit tests of the code that produced the run (584 passed, 5 skipped, none failed); the layout-null check and
+the tokenisation self-check recorded by the run itself; a code read of the path that produces PS for errors of sign, indexing and layout; and an exact
+recomputation of every PS quantity from the stored arrays of all 500 items, which found no mismatch.
+The result is: positive control not met; audit triggered (SAP A2.3); no defect found.
+The audit changed no number, rule, threshold or label.
+The realised discordance, which the plan requires to be printed with this result, was $n_d=4$ for patch and $n_d=13$ for swap
+(Table~\ref{tab:res_ps}).
+The finding of no defect is limited to the classes of error that the plan names and to the path from the stored arrays onwards: a
+recomputation from the stored arrays cannot see an error upstream of them, which the run's own records (a maximum absolute difference of 0.0 in the layout-null check and a tokenisation self-check equal to the
+reference) argue against but do not exclude.
+The audit is not read as a validation of the pipeline.
 The positive control says nothing about where the gate works.
+A post hoc, descriptive account of how much room for a change in the decision these two corruptions leave is in
+Section~\ref{ssec:disc_findings}; it enters no test.
 
 \begin{table}[!tbp]
 \centering

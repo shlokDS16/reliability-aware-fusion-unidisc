@@ -38,6 +38,11 @@ The code was audited in several rounds by a separate auditor, who found defects 
 final audited commit, and a delta audit covers the later change of two command-line flags.
 The hard-negative id mapping and leak check were signed off by a data steward.
 No signature says that the method works, and no reviewer read a GPU outcome.
+% run: P2-A23-AUDIT
+The pipeline audit that the positive control triggered (SAP A2.3) was carried out by a separate auditor on 29 October 2026, after the
+outcome of PS was known; its verdict is no defect found, and its record is
+\nolinkurl{research/paper2/prereg/A2.3-AUDIT-PS-2026-10-29.md} (data: \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}).
+Its descriptive account of the decision headroom is post hoc and is reported as such in Section~\ref{ssec:disc_findings}.
 
 \subsection{Families and wording rules}\label{app:families}
 Table~\ref{tab:families} lists the eleven test families and the three descriptive analyses.
@@ -95,9 +100,39 @@ with S2 partial is then possible.
 first author delegated the choice; the stricter reading of the outcome book was adopted before any value of the main test was read,
 so the framing ``when does input gating help'' stays out of the title, abstract, highlights, conclusion and the opening of the
 discussion, and the submission condition is unchanged with a status-only definition of ``informative''. Name who adopted it.}
-\item The main test stage stopped once on a chunk limit of the stage runner (not a guard stop) and resumed at the next item with the same
-item list; the coherence stage was interrupted by an operating-system restart and completed afterwards.
-\todo{AUTHOR: confirm wording and add the item counts from the operations log (CONFIRM-EVENING section 13).}
+% run: P2-GATE-M2 (chunks.jsonl, driver logs); operations record research/paper2/CONFIRM-EVENING-2026-10-28.md sections 10, 11, 13
+\item The calibration stage (300 items) stopped twice on the slow-item rule of the guard, with 106 and then 114 rows complete: an item
+took 3.0~s against a limit of twice a median of 1.5~s, and later 4.4~s against twice 1.8~s. Neither stop was a crash; the second coincided
+with host-side load while the GPU waited. On the first author's dated answers the stage was relaunched, first unchanged and then with a
+limit of three times the median item time and a floor of 2~s, and the same limit applies to every later stage except the second-model
+stages (row A-2). Guard settings decide only whether a run continues; the rows already stored were kept unchanged.
+% run: P2-GATE-M4 (driver logs)
+\item The main test stage (500 items) stopped once at 334 of 500 on the default limit of 12 chunks of the stage runner (reason ``max
+chunks reached''; not a guard stop and with no crash event) and was relaunched with a limit of 30 chunks, resuming at row 334 with the
+same item list and the same flags. The preregistered launch command did not print this setting; it is an operational setting and changes
+no output.
+% run: P2-GATE-M5 (driver logs, telemetry)
+\item During the coherence stage (100 items) the operating system restarted the laptop to install driver updates. The stage's process
+ended after one of 100 items. The system log records an update-initiated restart, with no kernel-power, bug-check, hardware-error or GPU-driver
+event, and the GPU driver version was unchanged, so this is not counted as a crash or a guard stop. The stage was continued afterwards on
+the first author's instruction and completed with 100 of 100 items; automatic updates were paused afterwards.
+\item The family order at the end of the schedule was FOIL before S2, which the plan allows if a fixed time inequality holds at the
+end of the coherence stage (A4.3.2); it held. A separate auditor read the code of both stages (lines 1 to 149 of the FOIL runner among
+others) and confirmed that no FOIL output can reach an S2 input. FOIL reads no output of the calibration, main-test, coherence, S2 or
+E-pred stages; it reads, and may add, layout-only null files in a shared cache directory that S2 never reads. The scored path of FOIL uses
+no random numbers: its only generators are local ones in the start-up checks and the bootstrap seed child used in its analysis. This is
+a reading of code and not a run, and the rule that the analysis of FOIL waits until the S2 table exists is procedural and not enforced
+by code.
+\item No second-model stage was run. The set P$^+$ of corruptions with a primary rejection and $b>c$ is empty, and by the plan
+(AD.7) family R is run only for P$^+$.
+% run: P2-S2-SELFCHECK-DIAG (figures from research/paper2/method/S2-SELFCHECK-DIAG-2026-10-29.md and card v4 row A-5)
+\item The smoke test of S2 stopped twice at the tokenisation self-check, before any item, because 0.9854 and then 0.9844 of the image
+tokens matched the reference where the rule requires 0.99 (the main-test stage gave 1.0). The cause was process-to-process
+nondeterminism of the autotuned TF32 convolutions in the image tokeniser: the same image gave 0.998 in one fresh process and 0.985 in
+another, with no S2 code involved. The self-check was changed to run with cuDNN autotuning off and deterministic algorithms on, with the
+previous settings restored afterwards; the 0.99 rule, the scoring and the sampler are unchanged (dated row A-5, code commit
+\texttt{8d1bee3a}, passed a delta audit). The check then passed. S2 reads the stored codes of the main-test stage and never tokenises an
+image afresh, so no S2 output depended on the check. The directories of the two failed smoke attempts are kept.
 \end{enumerate}
 
 \subsection{Dated amendments}\label{app:amend}
@@ -106,6 +141,8 @@ command-line flags of the stage runner and the guard settings recorded per chunk
 file or guard.
 Row A-2 appended a slow-item limit of three times the median item time, with a floor of two seconds, to every non-second-model
 stage, on the first author's dated answer; guard settings decide only whether a run continues and never change an item's output.
+Row A-5 moved the code pin to commit \texttt{8d1bee3a} for the S2 stage and later stages; it changed only the S2 runner, so that its
+unchanged self-check runs with deterministic convolution algorithms, and added one test (deviation list above).
 
 \subsection{Symbol crosswalk}\label{app:crosswalk}
 Table~\ref{tab:crosswalk} maps the symbols of the preregistration documents and code to the paper's.
@@ -224,6 +261,10 @@ Runs go in short checkpointed chunks under a guard that stops on memory, tempera
 abort ends the stage and is not retried until reviewed.
 % run: P2-PROBE-02
 An earlier detection pilot stopped after 20 complete items when the GPU session failed.
+% run: P2-S2-SELFCHECK-DIAG
+For reproducibility: image tokenisation in a fresh process runs with autotuned TF32 convolutions, and two processes can differ by up to
+about 1.5\,\% of the 1\,024 tokens of an image (self-check agreement 0.998 to 1.0 in earlier stages, 0.984 and 0.985 in the S2 smoke
+test); the stored codes of the main-test stage are the reference, and S2 reads them and does not tokenise images afresh.
 
 \section{Proof of Proposition~\ref{prop:snrcorr}}\label{app:snrcorr}
 Write $m_0=(1-\rho)m$ and $m_1=\rho m$ for the numbers of clean and corrupted tokens, $k_0=1-\phi_0$ and $k_1=1-\phi_1$ for the keep
