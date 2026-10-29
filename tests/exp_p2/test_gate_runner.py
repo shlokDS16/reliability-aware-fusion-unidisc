@@ -195,7 +195,10 @@ def test_stage_table_matches_the_modules_and_run_ids():
     import importlib
     for st, (mod, rid, n) in gate_driver.STAGES.items():
         m = importlib.import_module(mod)
-        if st != "p2" and hasattr(m, "RUN_ID"):                                  # run_probe2 predates RUN_ID; its default run id is the argparse default. Modules with several stages
+        if st in ("h3", "h4"):                                                  # family H runs the M3 / M4 modules under its own run ids and item counts (checked in tests/exp_p2/test_gate_hardneg_runners.py)
+            assert mod == {"h3": "exp_p2.run_gate_m3", "h4": "exp_p2.run_gate_m4"}[st]
+            continue
+        if st != "p2" and hasattr(m, "RUN_ID"):                                # run_probe2 predates RUN_ID; its default run id is the argparse default. Modules with several stages
             assert m.RUN_ID == rid                                              # (run_gate_foil, run_gate_omni_r) have no single RUN_ID: tests/exp_p2/test_gate_integration.py checks their per-stage run ids
         if n and "n_items" in getattr(m, "CONFIG", {}):
             assert m.CONFIG["n_items"] == n
