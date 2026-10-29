@@ -43,6 +43,12 @@ Author: statistician. Draft written 2026-10-29 from 14:20 IST (commit 71c78306).
 and before any re-scored, re-frozen, H or fresh-fold output exists. Precedence: A6 > A5 > A4 > ... > SAP body, only on the points listed. The
 A5.1 stop rule is amended once by "A5.1 amendment 1" (A5 r2), which admits Study 2 and nothing else.
 
+## Revision r2 (2026-10-29; clarification only; gate-auditor S-1 in `GATE-CODE-AUDIT-A6-LRF-2026-10-29.md`; before any L item, no L data exists)
+
+| Date | Point | Ruling |
+|---|---|---|
+| 2026-10-29 | Branch of a **partial prefix** that rejects L1 with one-sided p <= 0.025 (A6.4 "rejection stands" vs A6.12, which listed only "partial and not rejected" under C) | **Branch B**, the stricter reading, as `a6_analysis.py` `branch_of` already implements. "Partial prefix" is A6.4's definition: completed n < 0.8 n_L. Such a result is "confirmed at the preregistered one-sided 0.05 level" with "partial prefix (n of n_L)", in Results only, with no title, abstract or highlight gain claim, whatever its p. Reason: the headline threshold of C6-5 was set for the planned fold; a fold cut short by the clock is a deviation from the plan, so it may not carry the headline. A completed n >= 0.8 n_L is not a partial prefix and follows A6.12 unchanged (it prints "n of n_L"). Holm m = 2 over L3 and L4 after L1 is as A6.4 states (family L has m = 3 in total); unchanged. Nothing else in A6 changes. |
+
 ## Revision r1 (red-team signature "A5.1 amendment and A6 signature", C6-1 to C6-11; D0083)
 
 | Condition | Change in r1 | Where |
