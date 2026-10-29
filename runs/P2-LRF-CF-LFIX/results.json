@@ -1,0 +1,43 @@
+{
+ "arm": "F1 (cross-fitted) minus NONE; SEL = F1 because only F1 is fitted",
+ "b": 86,
+ "c": 28,
+ "condition": "noise0.1",
+ "delta_cf": 0.116,
+ "inputs": {
+  "code_sha256": {
+   "data.py": "14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b",
+   "families.py": "1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e",
+   "lrf.py": "03ed472e1a3cd8bb2dc41f4a59d7b48f1561cd883012ac4434e08a5c37b9d6ec",
+   "run.py": "01c8dba6de377b18e5b483c2afb0b406ba6e38fd60c4ac3a896f4d4e245f767c"
+  },
+  "crossfit_py_sha256": "d8ffc07f8951868770428dbd51a6fd0831d64ef865a9cd397d55b392caa05576",
+  "refrozen_object": "P2-LRF-FROZEN-LFIX",
+  "refrozen_object_commit": "24d36a8a25c11e5edf4371c924eb533e0dcd77f0",
+  "rescore_checks": {
+   "inv_tol": 0.0,
+   "invariance_max_abs_diff": 0.0,
+   "n_check": 5,
+   "ok": true,
+   "pc_tol": 1e-05,
+   "positive_control_max_abs_diff": 0.0,
+   "reason": "ok"
+  },
+  "rescore_config_sha256": "fbd3f495d3fa78bc2506c9d759ffa30a01e6a66ae5b8f63dc007320590293d86",
+  "rescored_arrays_digest": "038ded0724b33e4ff132ce9af4eefd7c115bf82fc834777be1e2f4d69cb68e90",
+  "source_run": "P2-LRF-RESCORE"
+ },
+ "label": "post hoc, exploratory; sets the n-rule only; never quoted as performance (A6.2 step 5, C6-8)",
+ "n": 500,
+ "pi_cf": 0.228,
+ "protocol": {
+  "family": "F1",
+  "final_seeds": 1,
+  "n_configs": 9,
+  "n_inner": 3,
+  "n_outer": 5,
+  "rmax": 40,
+  "root_seed": 20261029
+ },
+ "sec": 933.2
+}
