@@ -1,0 +1,33 @@
+{
+ "endpoint": "d",
+ "endpoint_note": "z* = sqrt(m) * d",
+ "family": [
+  {
+   "corruption": "jpeg",
+   "severity": 10,
+   "key": "jpeg10"
+  },
+  {
+   "corruption": "noise",
+   "severity": 0.1,
+   "key": "noise0.1"
+  },
+  {
+   "corruption": "splice",
+   "severity": 128,
+   "key": "splice128"
+  }
+ ],
+ "excluded": [],
+ "n_rule": {
+  "rule": "H3-pilot",
+  "test_fold": 50,
+  "primary_endpoint": "Y"
+ },
+ "go": true,
+ "spec": "SAP addendum A5, A5.5 and A5.5a",
+ "source": {
+  "m3_family_sha256": "63409d90c8265a0a10f9abd06886919adf64cae4fba5138d802d53e3961bee56",
+  "folds_hardneg_sha256": "bacab48a36900c87468ca8550b92b30fae7c78e921bf341f5384f304bdb00fb2"
+ }
+}
