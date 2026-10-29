@@ -1,0 +1,117 @@
+{
+ "conditions": [
+  "clean",
+  "jpeg10",
+  "noise0.1",
+  "splice128"
+ ],
+ "models": {
+  "clip": {
+   "id": "openai/clip-vit-large-patch14",
+   "licence": "MIT (OpenAI CLIP release)",
+   "revision": "32bd64288804d66eefd0ccbe215aa642df71cc41"
+  },
+  "siglip": {
+   "id": "google/siglip-so400m-patch14-384",
+   "licence": "Apache-2.0",
+   "revision": "9fdffc58afc957d1a03a25b10dba0329ab15c2a3"
+  }
+ },
+ "n_items": 5,
+ "note": "descriptive only: different models trained on different data; no test, no comparison with LRF; own table (A6.6)",
+ "pixel_parity": {
+  "agreement": {
+   "0:clean": 0.990234375,
+   "0:jpeg10": 0.9990234375,
+   "0:noise0.1": 0.9970703125,
+   "0:splice128": 0.9892578125,
+   "1:clean": 0.9951171875,
+   "1:jpeg10": 0.99609375,
+   "1:noise0.1": 0.9970703125,
+   "1:splice128": 0.99609375,
+   "2:clean": 0.9990234375,
+   "2:jpeg10": 0.9970703125,
+   "2:noise0.1": 0.998046875,
+   "2:splice128": 1.0,
+   "3:clean": 0.9951171875,
+   "3:jpeg10": 0.99609375,
+   "3:noise0.1": 0.9990234375,
+   "3:splice128": 0.9931640625,
+   "4:clean": 0.998046875,
+   "4:jpeg10": 1.0,
+   "4:noise0.1": 0.9990234375,
+   "4:splice128": 0.998046875
+  },
+  "min": 0.9892578125,
+  "ok": true,
+  "threshold": 0.98
+ },
+ "table": {
+  "clip": {
+   "clean": {
+    "acc": 1.0,
+    "n": 5
+   },
+   "jpeg10": {
+    "acc": 1.0,
+    "drop": 0.0,
+    "drop_ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 5
+   },
+   "noise0.1": {
+    "acc": 1.0,
+    "drop": 0.0,
+    "drop_ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 5
+   },
+   "splice128": {
+    "acc": 1.0,
+    "drop": 0.0,
+    "drop_ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 5
+   }
+  },
+  "siglip": {
+   "clean": {
+    "acc": 1.0,
+    "n": 5
+   },
+   "jpeg10": {
+    "acc": 1.0,
+    "drop": 0.0,
+    "drop_ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 5
+   },
+   "noise0.1": {
+    "acc": 1.0,
+    "drop": 0.0,
+    "drop_ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 5
+   },
+   "splice128": {
+    "acc": 1.0,
+    "drop": 0.0,
+    "drop_ci95": [
+     0.0,
+     0.0
+    ],
+    "n": 5
+   }
+  }
+ }
+}
