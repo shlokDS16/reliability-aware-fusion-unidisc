@@ -4,7 +4,7 @@ lower temperature limit). It never creates or deletes a hold file and never laun
 
     python -m exp_p2.gate.gate_driver --stage m2 [--run-id P2-GATE-M2] [--n 300]
 
-Stages: p2, m1-m5, s2; foil-fit, foil-test (family B, two runs); epred-fit (the E-pred fit chunk, after M3 and before M4); suite (imagecorruptions, exploratory); omni-timing, omni-r-cal, omni-r-pos,
+Stages: p2, m1-m5, s2; h3, h4 (family H, hard negatives, SAP A5); lrf-rescore, lrf-l1, lrf-lg (Study 2, SAP A6 r1); foil-fit, foil-test (family B, two runs); epred-fit (the E-pred fit chunk, after M3 and before M4); suite (imagecorruptions, exploratory); omni-timing, omni-r-cal, omni-r-pos,
 omni-r-test (Omni-Diffusion 8B, 4-bit, family R: the stage runs in the OMNI interpreter, gpu_guard.py in the project one). Order of use and exact commands: research/paper2/method/IMPL-E-INTEGRATION-2026-10-28.md.
 
 Completion is read from the row count, never from the exit code. Exit codes: 0 complete, 3 gate not open, 4 three temperature stops, 5 two chunks
@@ -57,7 +57,36 @@ STAGE_ARGS = {"foil-fit": ["--stage", "fit"], "foil-test": ["--stage", "test"], 
               "omni-r-cal": ["--stage", "cal"] + OMNI_FLAGS, "omni-r-pos": ["--stage", "pos"] + OMNI_FLAGS, "omni-r-test": ["--stage", "test"] + OMNI_FLAGS}      # forwarded before --extra
 STAGE_ENV = {st: {"HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1"} for st in STAGE_PY}      # lead decision T2/PM 2: HF_HUB_OFFLINE=1 for every Omni stage (assigned, so a shell's HF_HUB_OFFLINE=0 cannot win)
 STAGE_CHUNK_MIN = {st: (25.0, 25.0) for st in STAGE_PY}      # (first chunk, later chunks) in minutes: the 4-bit load is the long part (IMPL-C used --max-minutes 25 --soft-minutes 22); others keep 5 / 15
-MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0       # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
+# Family H (SAP addendum A5: hard negatives on fresh COCO images). Both stages run the M4 stage (run_gate_m4):
+#   H3 = the 50 H3 items (the derived file folds_hardneg_h3.json holds them under `test`), corruption family and n from the plan file runs/P2-GATE-H3-PLAN/family.json (h3_gonogo plan);
+#   H4 = the 300 H4 items (`test` of folds_hardneg.json), corruption family and n-rule from runs/P2-GATE-H3/family.json (h3_gonogo decide; test_fold 300, 200 or 0).
+HARDNEG_FOLDS = Path(common.RUNS) / "P2-HARDNEG-ITEMS" / "folds_hardneg.json"
+HARDNEG_FOLDS_H3 = Path(common.RUNS) / "P2-HARDNEG-ITEMS" / "folds_hardneg_h3.json"
+STAGES.update({"h3": ("exp_p2.run_gate_m4", "P2-GATE-H3", 50), "h4": ("exp_p2.run_gate_m4", "P2-GATE-H4", 300)})
+STAGE_ARGS.update({"h3": ["--folds-path", str(HARDNEG_FOLDS_H3), "--family-run", "P2-GATE-H3-PLAN"],
+                   "h4": ["--folds-path", str(HARDNEG_FOLDS), "--family-run", "P2-GATE-H3"]})       # forwarded before --extra, so --extra can still override
+# Study 2 (SAP addendum A6 r1, A6.10 run order: re-score M4 at L_FIX -> re-freeze -> L1 -> LG). All three stages are `run_gate_m4` / `run_gate_lrf_rescore` with the A6.11 options; nothing here changes a default of another stage.
+#   lrf-rescore  runs/P2-GATE-M4 (read only) -> runs/P2-LRF-RESCORE: B, s3, D, tbv at the fixed slot of 13 tokens for the 500 M4 items x 4 conditions (36 passes per item, no encoding), invariance + positive control on the first 5 items
+#   lrf-l1       the fresh fold runs/P2-LRF-FOLD/folds_lrf.json, family runs/P2-LRF-PLAN/family.json (P's three operating points, test_fold = n_L from the n-rule), `--layout-fix 13 --neg-len`, no sanity / denoised copies, tbv on
+#   lrf-lg       the first 300 fold items, family runs/P2-LRF-PLAN-LG/family.json (EMPTY family, test_fold 300): clean + shot_noise3, impulse_noise3, speckle_noise3 only, `--layout-fix 13`, tbv on
+# --n for lrf-l1 defaults to the n_L of runs/P2-LRF-PLAN/family.json (default_n); the explicit --max-chunks defaults are STAGE_MAX_CHUNKS. The memory and slow-item flags are NOT baked in (the thresholds are Shlok's to approve): pass LRF_MEM_SLOW through --extra,
+# exactly as the S2 run card does.
+LRF_FOLD = Path(common.RUNS) / "P2-LRF-FOLD" / "folds_lrf.json"
+LRF_MEM_SLOW = "--max-used-first-mib 11000 --max-used-mib 11000 --max-rise-mib 4500 --mem-frac 0.75 --slow-factor 3 --slow-min-s 2"      # the S2 run card values (row 8); the lead decides per stage
+LRF_L_FIX = "13"
+STAGES.update({"lrf-rescore": ("exp_p2.run_gate_lrf_rescore", "P2-LRF-RESCORE", 500), "lrf-l1": ("exp_p2.run_gate_m4", "P2-LRF-L1", 533), "lrf-lg": ("exp_p2.run_gate_m4", "P2-LRF-LG", 300)})
+STAGE_ARGS.update({"lrf-rescore": ["--slot-len", LRF_L_FIX],
+                   "lrf-l1": ["--folds-path", str(LRF_FOLD), "--family-run", "P2-LRF-PLAN", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX, "--neg-len"],
+                   "lrf-lg": ["--folds-path", str(LRF_FOLD), "--family-run", "P2-LRF-PLAN-LG", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX,
+                              "--extra-cells", "shot_noise3,impulse_noise3,speckle_noise3"]})
+STAGE_MAX_CHUNKS = {"lrf-rescore": 40, "lrf-l1": 60, "lrf-lg": 40}       # explicit, not the driver default 12 (which stopped M4 once, CONFIRM 13): about 2.5 h, 4.3 h and 2.25 h of wall time in 15-minute chunks, with 1.5x slack
+DEFAULT_MAX_CHUNKS = 12
+
+
+def resolve_max_chunks(stage: str, given: int | None) -> int:
+    """--max-chunks if given; else the explicit per-stage value of the lrf-* stages; else the driver default 12 (every other stage, unchanged)."""
+    return given if given is not None else STAGE_MAX_CHUNKS.get(stage, DEFAULT_MAX_CHUNKS)
+MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0      # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
 
 
 def build_cmd(stage_mod: str, run_id: str, n: int, mins: float, soft: float, duty: float, ch: int, log_dir: Path, max_temp: float, extra: list[str] | None = None, *,
@@ -86,6 +115,15 @@ def refusal_reason(log: Path, tail_bytes: int = 8192) -> str:
 
 def default_n(stage: str, fallback: int, runs: Path | None = None) -> int:
     """The item count when --n is not given. omni-r-test: the n_R recorded in runs/P2-OMNI-TIMING/omni_gate.json (the runner refuses a different --n), else the fallback 150."""
+    if stage == "lrf-l1":                                                       # the n-rule record's n_L, committed in runs/P2-LRF-PLAN/family.json as n_rule.test_fold (run_gate_m4 refuses any other --n)
+        p = Path(runs if runs is not None else common.RUNS) / "P2-LRF-PLAN" / "family.json"
+        try:
+            n = int(json.loads(p.read_text(encoding="utf8"))["n_rule"]["test_fold"])
+            if n > 0:
+                return n
+        except (OSError, ValueError, TypeError, KeyError):
+            pass
+        return fallback
     if stage == "omni-r-test":
         p = Path(runs if runs is not None else common.RUNS) / "P2-OMNI-TIMING" / "omni_gate.json"
         try:
@@ -106,7 +144,7 @@ def main(argv=None) -> int:
     ap.add_argument("--first-chunk-min", type=float, default=None, help="minutes for the first chunk (default 5; Omni stages 25)")
     ap.add_argument("--chunk-min", type=float, default=None, help="minutes for later chunks (default 15; Omni stages 25)")
     ap.add_argument("--wait-minutes", type=float, default=20.0)
-    ap.add_argument("--max-chunks", type=int, default=12)
+    ap.add_argument("--max-chunks", type=int, default=None, help=f"default {DEFAULT_MAX_CHUNKS}; the lrf-* stages have explicit defaults (STAGE_MAX_CHUNKS)")
     ap.add_argument("--max-temp", type=float, default=MAX_TEMP_DEFAULT)
     ap.add_argument("--allow-dirty", action="store_true", help="launch although exp_p2/ or tools/ has uncommitted changes (recorded in driver.log and passed to the stage)")
     ap.add_argument("--no-eventlog-check", action="store_true", help="skip the read-only Windows event-log check between chunks (not recommended)")
@@ -145,7 +183,8 @@ def main(argv=None) -> int:
         return EXIT_PIN
     n_stop, fails, pause = 0, 0, 30.0
     started = datetime.now()                                              # "since the run started" for the event-log check
-    for ch in range(a.max_chunks):
+    max_chunks = resolve_max_chunks(a.stage, a.max_chunks)
+    for ch in range(max_chunks):
         holds = hold.active_holds(run_id)                                 # re-check before every chunk: a hold can appear mid-campaign
         if holds:
             say("STOP: hold file appeared: " + "; ".join(str(h) for h in holds))
