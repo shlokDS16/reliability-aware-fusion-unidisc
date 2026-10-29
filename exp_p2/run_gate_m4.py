@@ -326,7 +326,12 @@ def main(argv=None):
         return runner.Counting(UniScorer(common.load_net()))
 
     def selfcheck(sc, items):
-        return sc.selfcheck(common.load_image(items[0]["image_id"]), items[0]["caption"])
+        # The self-check ONLY runs under deterministic cuDNN (flags restored on exit): the card row A-5 fix of run_gate_s2, ported after the Study 2 L1 self-check failed twice
+        # before any item (0.988, 0.989 < 0.99; runs/P2-LRF-L1.try1, .try2). Items are processed afterwards with the flags UniDisc set at load (benchmark on), exactly as M4 ran.
+        # The 0.99 rule (runner.selfcheck_passed) is unchanged. Imported lazily, as run_gate_lrf_rescore does, so nothing else of run_gate_s2 is touched.
+        from exp_p2.run_gate_s2 import deterministic_cudnn
+        with deterministic_cudnn():
+            return sc.selfcheck(common.load_image(items[0]["image_id"]), items[0]["caption"])
 
     def get_items(sc, run):
         f = load_folds(lambda c: len(sc.caption_ids(c)), a.folds_path)

@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\gate\gate_driver.py", line 260, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\gate\gate_driver.py", line 206, in main
+    say(f"chunk {ch}: {done}/{n_eff} done" + (f" (planned {n}, excluded {n - n_eff})" if n_eff != n else ""))
+  File "C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\exp_p2\gate\gate_driver.py", line 167, in say
+    with open(log, "a", encoding="utf8") as fh:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-LRF-L1\\driver.log'

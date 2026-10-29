@@ -304,3 +304,43 @@ def test_rescore_refuses_without_its_prerequisites(env):
     with pytest.raises(FileNotFoundError):
         rescore.check_prereqs(a, env)
     assert rescore.main(["--source-run", "nope"]) == 2
+
+
+def test_m4_selfcheck_runs_under_deterministic_cudnn_and_restores_the_flags(env, monkeypatch):
+    """Card row A-8 (port of the A-5 fix): run_gate_m4's self-check closure sees benchmark off / deterministic on, the production flags are restored afterwards
+    (also when the self-check raises), the item function handed to the runner is unchanged, and the 0.99 pass rule is unchanged."""
+    import torch
+    seen = {}
+    monkeypatch.setattr(runner, "run_items", lambda **kw: seen.update(kw) or 0)
+    sc = _sc()
+    _m4_prereqs(env, sc, [("jpeg", 10)])
+    monkeypatch.setattr(m4.pipeline, "require_frozen", lambda *a, **k: None)
+    monkeypatch.setattr(m4.ps_freeze, "check", lambda *a, **k: dict(params=dict(denoise_for=["jpeg", "noise"]), code_commit="x"))
+    monkeypatch.setattr(m4.ps_freeze, "sha256", lambda *a, **k: "x")
+    (env / "P2-GATE-M3" / "family.json").write_text(json.dumps(dict(endpoint="d", n_rule=dict(rule="R1", test_fold=300), family=[dict(corruption="jpeg", severity=10, key="jpeg10")])))
+    assert m4.main(["--n", "300"]) == 0
+    assert seen["process"] is m4.process
+    monkeypatch.setattr(m4.common, "load_image", lambda image_id: f"img{image_id}")
+
+    class _Rec:
+        def __init__(self, fail=False):
+            self.flags, self.fail = [], fail
+
+        def selfcheck(self, img, cap):
+            self.flags.append((torch.backends.cudnn.benchmark, torch.backends.cudnn.deterministic))
+            if self.fail:
+                raise RuntimeError("boom")
+            return dict(ids_equal=True, modality_equal=True, image_tokens_frac_equal=1.0)
+    old = (torch.backends.cudnn.benchmark, torch.backends.cudnn.deterministic)
+    try:
+        torch.backends.cudnn.benchmark, torch.backends.cudnn.deterministic = True, False          # what UniDisc's set_torch_defaults() leaves behind
+        rec = _Rec()
+        out = seen["selfcheck"](rec, [dict(image_id=7, caption="a cat")])
+        assert rec.flags == [(False, True)] and runner.selfcheck_passed(out)
+        assert (torch.backends.cudnn.benchmark, torch.backends.cudnn.deterministic) == (True, False)
+        with pytest.raises(RuntimeError):
+            seen["selfcheck"](_Rec(fail=True), [dict(image_id=1, caption="x")])
+        assert (torch.backends.cudnn.benchmark, torch.backends.cudnn.deterministic) == (True, False)
+    finally:
+        torch.backends.cudnn.benchmark, torch.backends.cudnn.deterministic = old
+    assert not runner.selfcheck_passed(dict(ids_equal=True, modality_equal=True, image_tokens_frac_equal=0.98828125))
