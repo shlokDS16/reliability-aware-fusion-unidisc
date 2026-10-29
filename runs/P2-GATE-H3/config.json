@@ -1,0 +1,68 @@
+{
+ "stage": "M4",
+ "fold": "test",
+ "n_items": 50,
+ "seed": 20261029,
+ "K": 8,
+ "alphas": [
+  0.05,
+  0.01,
+  0.1
+ ],
+ "n_geo_seeds": 3,
+ "denoise_for": [
+  "jpeg",
+  "noise"
+ ],
+ "sanity": [
+  "patch",
+  "swap"
+ ],
+ "duty": 0.5,
+ "spec": "research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4",
+ "mem_frac": 0.75,
+ "tbv": "auto",
+ "ps_params": {
+  "grid": 32,
+  "n_tokens": 1024,
+  "patch": 8,
+  "patch_rule": "max(2, grid // 4) = 8 on the 32 x 32 map",
+  "patch_share": 0.0625,
+  "swap_frac": 0.15,
+  "swap_n_positions": 154,
+  "vocab": 16384,
+  "token_rng_tag": {
+   "patch": 190,
+   "swap": 191
+  },
+  "rng": "np.random.default_rng([SEED_GATE, gid, tag])",
+  "seed_gate": 20261029,
+  "sanity_order": [
+   "patch",
+   "swap"
+  ],
+  "condition_order": "clean, each family corruption (with its denoised copy if in denoise_for), patch, swap",
+  "denoise_for": [
+   "jpeg",
+   "noise"
+  ],
+  "alphas": [
+   0.05,
+   0.01,
+   0.1
+  ]
+ },
+ "ps_frozen_sha256": "0ab90b8fcf928d277931889fbd447ad1a9c3b1bbf1dfb9c96ddb60e1ff289f59",
+ "ps_frozen_code_commit": "f6ad4c5608968be545e7d7e0fa55a892367eb520",
+ "folds_path": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-HARDNEG-ITEMS\\folds_hardneg_h3.json",
+ "folds_sha256": "ff0d35e5641d5cd6f73ea377c269c8331f2940388c291ab77510d64a13d5367f",
+ "family_run": "P2-GATE-H3-PLAN",
+ "run_id": "P2-GATE-H3",
+ "git_sha": "07a3c73e1ee38189563761cd43bf894a6dfc9921",
+ "created": "2026-10-29T19:00:35",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 6.72,
+  "free_commit_gb": 46.86
+ }
+}
