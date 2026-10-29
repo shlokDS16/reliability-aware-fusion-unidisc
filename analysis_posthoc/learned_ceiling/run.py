@@ -277,6 +277,17 @@ def analyse(ctx, fams):
         sel_choice.append(best)
         sel[folds[k]] = Y[best][folds[k]]
     Y["SEL"] = sel
+    # reference: inner-CV O1 of NONE and GM on the same inner folds (same criterion as the families' inner_o1)
+    inner_ref = {"NONE": [], "GM": []}
+    for k in range(N_OUTER):
+        train = np.setdiff1d(np.arange(N), folds[k])
+        sc = {"NONE": [], "GM": []}
+        for val in inner_folds(train, k):
+            T = fam.temperature(ctx.delta[np.setdiff1d(train, val)])
+            sc["NONE"].append(fam.o1_criterion(np.ones_like(ctx.delta[val]), ctx.delta[val], T))
+            sc["GM"].append(fam.o1_criterion((~ctx.gm[val]).astype(np.float32), ctx.delta[val], T))
+        for a_ in sc:
+            inner_ref[a_].append(float(np.mean(sc[a_])))
     zsnr, det, pdet = np.zeros((N, 4), bool), np.zeros((N, 4), bool), np.zeros((N, 4, data.M), np.float32)
     for k in range(N_OUTER):
         z = np.load(OUT / "ckpt" / f"REF_fold{k}.npz")
@@ -329,7 +340,7 @@ def analyse(ctx, fams):
                                           "ZSNR": "ORACLE: two-class matched filter max(mu_cz,0)/var_cz from training-fold moments, true z and corruption type",
                                           "CHG": "changed-code drop w = 1 - z (oracle)", "RESTORE-CLEAN": "the clean decision of the same item",
                                           "UNRESTRICTED": "vacuous: share of items with max_j Delta_j > 0"}),
-                   sel_choice=sel_choice, inner_o1=inner, seed_spread=seeds_acc, n_empty=n_empty,
+                   sel_choice=sel_choice, inner_o1=inner, inner_o1_reference=inner_ref,seed_spread=seeds_acc, n_empty=n_empty,
                    n_empty_reference=dict(GM=empties["GM"], CHG={data.COND[c]: int(empties["CHG"][:, c].sum()) for c in range(4)}),
                    results=res, detector_secondary=dict(caveat="K2 label circularity (D0074): z is defined after a VQ re-encode; descriptive only, no claim", table=det_tab),
                    multiplicity=dict(n_intervals=n_int, statement="no multiplicity adjustment; no p-values"),
