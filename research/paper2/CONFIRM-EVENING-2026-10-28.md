@@ -163,3 +163,4 @@ Shlok verbatim (excerpt): "This TMLR is not even q1 dude. Let's make paper 2 for
 
 ## 16. TNNLS route (Shlok 2026-10-29 14:14 IST)
 Shlok verbatim: "Two-three weeks is too much max by monday." Route B out; deadline Mon 2 Nov 2026 at the latest. Lead proceeds with Route C (recommended in-session after the learned-ceiling result bdc87e4e): learned reliability-aware evidence fusion (caption-withheld logistic-GAM token weights) as the new method, frozen on M4, confirmed on a fresh preregistered COCO fold (noise primary, held-out suite noise types, CLIP/SigLIP comparison), with the preregistered GATE study as motivation/analysis. Shlok may switch to Route A.
+Shlok 2026-10-29 14:15 IST, verbatim: "Even tuesday morning after reset can contribute." Read as: final work may continue to Tue 3 Nov 2026 morning, using the weekly usage reset (Mon 2 Nov ~22:30 IST); heavy review/polish passes are scheduled after the reset.
