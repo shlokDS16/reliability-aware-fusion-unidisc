@@ -1,0 +1,678 @@
+{
+ "cells": {
+  "P1": {
+   "cell": "P1",
+   "n_complete": 498,
+   "n_dropped_incomplete": 2,
+   "n_nonfinite_by_arm": {
+    "clean": 0,
+    "none": 0,
+    "chg": 2,
+    "gm": 0
+   },
+   "names": {
+    "T": "total corruption loss",
+    "U": "residual loss under the oracle gate",
+    "R": "realised recovery by GATE-M",
+    "V": "gap to the oracle gate"
+   },
+   "d_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.06119507345959759,
+      "ci95": [
+       0.047608101218766394,
+       0.07473454704312552
+      ],
+      "ci9833": [
+       0.04439007818174706,
+       0.07781239346343403
+      ]
+     },
+     "U": {
+      "mean": -0.0209199102736409,
+      "ci95": [
+       -0.06041960155903954,
+       0.01478653568649764
+      ],
+      "ci9833": [
+       -0.06948202905162283,
+       0.022244646585076334
+      ]
+     },
+     "R": {
+      "mean": 0.00895970183746661,
+      "ci95": [
+       0.007806719070860973,
+       0.010139706415544661
+      ],
+      "ci9833": [
+       0.007543569808746842,
+       0.010443067137121656
+      ]
+     },
+     "V": {
+      "mean": 0.07315528189577188,
+      "ci95": [
+       0.03548572363060865,
+       0.11488596562312876
+      ],
+      "ci9833": [
+       0.027738007720105904,
+       0.12426451215509357
+      ]
+     }
+    },
+    "shares": {
+     "U": -0.3418561183271185,
+     "R": 0.14641214285627116,
+     "V": 1.1954439754708472
+    },
+    "identity_max_abs_error_items": 3.885780586188048e-16,
+    "identity_in_all_resamples": true,
+    "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+   },
+   "accuracy_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.04417670682730924,
+      "ci95": [
+       0.018072289156626505,
+       0.07028112449799197
+      ],
+      "ci9833": [
+       0.012048192771084338,
+       0.07630522088353414
+      ]
+     },
+     "U": {
+      "mean": 0.12449799196787148,
+      "ci95": [
+       0.08835341365461848,
+       0.1606425702811245
+      ],
+      "ci9833": [
+       0.08032128514056225,
+       0.1686746987951807
+      ]
+     },
+     "R": {
+      "mean": -0.002008032128514056,
+      "ci95": [
+       -0.006024096385542169,
+       0.0
+      ],
+      "ci9833": [
+       -0.008032128514056224,
+       0.0
+      ]
+     },
+     "V": {
+      "mean": -0.0783132530120482,
+      "ci95": [
+       -0.11646586345381527,
+       -0.040160642570281124
+      ],
+      "ci9833": [
+       -0.12248995983935743,
+       -0.0321285140562249
+      ]
+     }
+    },
+    "shares": {
+     "U": 2.818181818181818,
+     "R": -0.04545454545454545,
+     "V": -1.7727272727272727
+    },
+    "identity_max_abs_error_items": 0.0,
+    "identity_in_all_resamples": true,
+    "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+   },
+   "interval": {
+    "kind": "paired percentile bootstrap over items, items resampled jointly",
+    "n_boot": 10000,
+    "levels": [
+     95.0,
+     98.33
+    ]
+   },
+   "n_items_in_cell": 500
+  },
+  "P2": {
+   "cell": "P2",
+   "n_complete": 500,
+   "n_dropped_incomplete": 0,
+   "n_nonfinite_by_arm": {
+    "clean": 0,
+    "none": 0,
+    "chg": 0,
+    "gm": 0
+   },
+   "names": {
+    "T": "total corruption loss",
+    "U": "residual loss under the oracle gate",
+    "R": "realised recovery by GATE-M",
+    "V": "gap to the oracle gate"
+   },
+   "d_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.11935313084141745,
+      "ci95": [
+       0.09852219232193511,
+       0.14112345552942163
+      ],
+      "ci9833": [
+       0.09410696159334923,
+       0.14621314633753565
+      ]
+     },
+     "U": {
+      "mean": 0.03285924132937149,
+      "ci95": [
+       -0.005689309807938337,
+       0.07837419507535623
+      ],
+      "ci9833": [
+       -0.011810099011538398,
+       0.08952789708701878
+      ]
+     },
+     "R": {
+      "mean": 0.0038109471522606918,
+      "ci95": [
+       0.0029712500574902837,
+       0.004683174035959537
+      ],
+      "ci9833": [
+       0.0027960891144638944,
+       0.004872995007748736
+      ]
+     },
+     "V": {
+      "mean": 0.08268294235978527,
+      "ci95": [
+       0.042105589898796654,
+       0.1164575082686157
+      ],
+      "ci9833": [
+       0.03291408748854782,
+       0.12307592519755094
+      ]
+     }
+    },
+    "shares": {
+     "U": 0.2753110965562439,
+     "R": 0.03193001411353201,
+     "V": 0.6927588893302241
+    },
+    "identity_max_abs_error_items": 4.440892098500626e-16,
+    "identity_in_all_resamples": true,
+    "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+   },
+   "accuracy_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.204,
+      "ci95": [
+       0.166,
+       0.244
+      ],
+      "ci9833": [
+       0.156,
+       0.254
+      ]
+     },
+     "U": {
+      "mean": 0.134,
+      "ci95": [
+       0.098,
+       0.172
+      ],
+      "ci9833": [
+       0.09,
+       0.1790167000000001
+      ]
+     },
+     "R": {
+      "mean": 0.0,
+      "ci95": [
+       0.0,
+       0.0
+      ],
+      "ci9833": [
+       0.0,
+       0.0
+      ]
+     },
+     "V": {
+      "mean": 0.07,
+      "ci95": [
+       0.036,
+       0.106
+      ],
+      "ci9833": [
+       0.028,
+       0.114
+      ]
+     }
+    },
+    "shares": {
+     "U": 0.6568627450980393,
+     "R": 0.0,
+     "V": 0.34313725490196084
+    },
+    "identity_max_abs_error_items": 0.0,
+    "identity_in_all_resamples": true,
+    "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+   },
+   "interval": {
+    "kind": "paired percentile bootstrap over items, items resampled jointly",
+    "n_boot": 10000,
+    "levels": [
+     95.0,
+     98.33
+    ]
+   },
+   "n_items_in_cell": 500
+  },
+  "P3": {
+   "cell": "P3",
+   "n_complete": 500,
+   "n_dropped_incomplete": 0,
+   "n_nonfinite_by_arm": {
+    "clean": 0,
+    "none": 0,
+    "chg": 0,
+    "gm": 0
+   },
+   "names": {
+    "T": "total corruption loss",
+    "U": "residual loss under the oracle gate",
+    "R": "realised recovery by GATE-M",
+    "V": "gap to the oracle gate"
+   },
+   "d_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.020321158795888358,
+      "ci95": [
+       0.01716595346326461,
+       0.02349772835591856
+      ],
+      "ci9833": [
+       0.016573736922789756,
+       0.024248998187797244
+      ]
+     },
+     "U": {
+      "mean": -0.005323505618895101,
+      "ci95": [
+       -0.009164546057741129,
+       -0.001493744543481571
+      ],
+      "ci9833": [
+       -0.009962997448560057,
+       -0.0006533350382983211
+      ]
+     },
+     "R": {
+      "mean": 0.007804490625604794,
+      "ci95": [
+       0.006869745937030962,
+       0.008780394988382609
+      ],
+      "ci9833": [
+       0.0066680790624304665,
+       0.008983137569122451
+      ]
+     },
+     "V": {
+      "mean": 0.017840173789178668,
+      "ci95": [
+       0.013637549978339243,
+       0.02194543615791228
+      ],
+      "ci9833": [
+       0.012615117249299555,
+       0.022899238798216686
+      ]
+     }
+    },
+    "shares": {
+     "U": -0.2619686048598873,
+     "R": 0.3840573612949622,
+     "V": 0.8779112435649253
+    },
+    "identity_max_abs_error_items": 1.3877787807814457e-17,
+    "identity_in_all_resamples": true,
+    "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+   },
+   "accuracy_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.004,
+      "ci95": [
+       -0.006,
+       0.014
+      ],
+      "ci9833": [
+       -0.008,
+       0.016
+      ]
+     },
+     "U": {
+      "mean": 0.0,
+      "ci95": [
+       -0.016,
+       0.016
+      ],
+      "ci9833": [
+       -0.02,
+       0.02
+      ]
+     },
+     "R": {
+      "mean": -0.004,
+      "ci95": [
+       -0.012,
+       0.004
+      ],
+      "ci9833": [
+       -0.014,
+       0.004
+      ]
+     },
+     "V": {
+      "mean": 0.008,
+      "ci95": [
+       -0.006,
+       0.024
+      ],
+      "ci9833": [
+       -0.01,
+       0.026
+      ]
+     }
+    },
+    "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+    "identity_max_abs_error_items": 0.0,
+    "identity_in_all_resamples": true,
+    "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+   },
+   "interval": {
+    "kind": "paired percentile bootstrap over items, items resampled jointly",
+    "n_boot": 10000,
+    "levels": [
+     95.0,
+     98.33
+    ]
+   },
+   "n_items_in_cell": 500
+  },
+  "PS1": {
+   "cell": "PS1",
+   "n_complete": 500,
+   "n_dropped_incomplete": 0,
+   "n_nonfinite_by_arm": {
+    "clean": 0,
+    "none": 0,
+    "chg": 0,
+    "gm": 0
+   },
+   "names": {
+    "T": "total corruption loss",
+    "U": "residual loss under the oracle gate",
+    "R": "realised recovery by GATE-M",
+    "V": "gap to the oracle gate"
+   },
+   "d_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.01873255899832284,
+      "ci95": [
+       0.01624297435822767,
+       0.021214890005810248
+      ]
+     },
+     "U": {
+      "mean": 0.0018764782517361246,
+      "ci95": [
+       0.0001322461036232656,
+       0.003640185627632907
+      ]
+     },
+     "R": {
+      "mean": 0.022078972619370488,
+      "ci95": [
+       0.019595405948685408,
+       0.024572523254854088
+      ]
+     },
+     "V": {
+      "mean": -0.005222891872783776,
+      "ci95": [
+       -0.006471500900789476,
+       -0.003951761294248437
+      ]
+     }
+    },
+    "shares": {
+     "U": 0.10017201877779373,
+     "R": 1.1786415631386644,
+     "V": -0.27881358191645844
+    },
+    "identity_max_abs_error_items": 6.938893903907228e-18,
+    "identity_in_all_resamples": true,
+    "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+   },
+   "accuracy_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.01,
+      "ci95": [
+       0.002,
+       0.02
+      ]
+     },
+     "U": {
+      "mean": 0.006,
+      "ci95": [
+       -0.006,
+       0.018
+      ]
+     },
+     "R": {
+      "mean": 0.0,
+      "ci95": [
+       -0.008,
+       0.008
+      ]
+     },
+     "V": {
+      "mean": 0.004,
+      "ci95": [
+       0.0,
+       0.01
+      ]
+     }
+    },
+    "shares": {
+     "U": 0.6,
+     "R": 0.0,
+     "V": 0.4
+    },
+    "identity_max_abs_error_items": 0.0,
+    "identity_in_all_resamples": true,
+    "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+   },
+   "interval": {
+    "kind": "paired percentile bootstrap over items, items resampled jointly",
+    "n_boot": 10000,
+    "levels": [
+     95.0
+    ]
+   },
+   "n_items_in_cell": 500
+  },
+  "PS2": {
+   "cell": "PS2",
+   "n_complete": 500,
+   "n_dropped_incomplete": 0,
+   "n_nonfinite_by_arm": {
+    "clean": 0,
+    "none": 0,
+    "chg": 0,
+    "gm": 0
+   },
+   "names": {
+    "T": "total corruption loss",
+    "U": "residual loss under the oracle gate",
+    "R": "realised recovery by GATE-M",
+    "V": "gap to the oracle gate"
+   },
+   "d_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.043331518549274146,
+      "ci95": [
+       0.039049238688716466,
+       0.047839024007201865
+      ]
+     },
+     "U": {
+      "mean": -0.00040425439053508923,
+      "ci95": [
+       -0.0015667130809116445,
+       0.000784982568211208
+      ]
+     },
+     "R": {
+      "mean": 0.0545547045368133,
+      "ci95": [
+       0.04929397665133623,
+       0.059825720691776704
+      ]
+     },
+     "V": {
+      "mean": -0.010818931597004063,
+      "ci95": [
+       -0.01284247558233029,
+       -0.008805644788118603
+      ]
+     }
+    },
+    "shares": {
+     "U": -0.009329338183137848,
+     "R": 1.2590074468490362,
+     "V": -0.2496781086658984
+    },
+    "identity_max_abs_error_items": 1.3877787807814457e-17,
+    "identity_in_all_resamples": true,
+    "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+   },
+   "accuracy_scale": {
+    "tau": {
+     "T": {
+      "mean": 0.01,
+      "ci95": [
+       -0.002,
+       0.022
+      ]
+     },
+     "U": {
+      "mean": 0.004,
+      "ci95": [
+       -0.004,
+       0.012
+      ]
+     },
+     "R": {
+      "mean": 0.006,
+      "ci95": [
+       -0.008,
+       0.02
+      ]
+     },
+     "V": {
+      "mean": 0.0,
+      "ci95": [
+       -0.006,
+       0.006
+      ]
+     }
+    },
+    "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+    "identity_max_abs_error_items": 0.0,
+    "identity_in_all_resamples": true,
+    "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+   },
+   "interval": {
+    "kind": "paired percentile bootstrap over items, items resampled jointly",
+    "n_boot": 10000,
+    "levels": [
+     95.0
+    ]
+   },
+   "n_items_in_cell": 500
+  }
+ },
+ "absent": {},
+ "n_cells": 5,
+ "n_absent": 0,
+ "label": "secondary, descriptive; no hypothesis test, no p-value, no multiplicity statement, not a family (AD.2, AB.2); no causal clause (AB.1)",
+ "limits": "U and V are relative to the changed-code label (encoder-instability label, not an evidence oracle). U contains a composition effect: the removed positions carry different evidence from the rest. V mixes false alarms, misses, variance trimming and gate shape; V < 0 with a CI excluding 0 voids any detection reading (AB.2). No causal clause.",
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile",
+  "seed_name": "edec",
+  "seed_spawn_position": 28
+ },
+ "n_items": 500,
+ "n_duplicates_removed": 0,
+ "allow_partial_in_analysis_json": false,
+ "selftest": {
+  "identity_ok": true,
+  "assertion_trips_on_broken_split": true,
+  "shares_rule_ok": true,
+  "complete_case_count_ok": true,
+  "ci9833_only_for_P_cells": true,
+  "all_ok": true
+ }
+}
