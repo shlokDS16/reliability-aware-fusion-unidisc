@@ -21,6 +21,7 @@ Y is the image-direction decision on ALL 1,024 repaired tokens, ties wrong. Ever
 with the clean codes (descriptive, never 'restoration'), peak_gb and seconds (runner), n_rows. Repaired codes of every draw are saved in arrays/ (int16); images are decoded only in `--figures` mode."""
 from __future__ import annotations
 
+import contextlib
 import json
 import sys
 import time
@@ -270,6 +271,36 @@ def process_fig(sc, it, ctx):
     return dict(files=files, roles=meta), {}
 
 
+# ------------------------------------------------------------------------------------------------ self-check (S2 path only)
+@contextlib.contextmanager
+def deterministic_cudnn():
+    """cuDNN benchmark off and deterministic on for the duration of the block; the previous values are restored on exit (also on an exception).
+    Why (runs/P2-S2-SELFCHECK-DIAG, research/paper2/method/S2-SELFCHECK-DIAG-2026-10-29.md): unidisc_setup.build_model calls UniDisc's set_torch_defaults(), which sets
+    cudnn.benchmark = True with TF32 convolutions. The two tokeniser inputs of UniScorer.selfcheck are bitwise equal but differ in the batch stride, so each call site is
+    benchmarked separately and may get a different TF32 convolution algorithm; a few VQ codebook near-ties then flip and image_tokens_frac_equal varies by process
+    (0.985 to 1.0 on the same image). With deterministic cuDNN both paths agree 100% and reproduce M4's stored clean_codes and M4's selfcheck.json values exactly.
+    TF32 precision is NOT changed (full fp32 moves the codes 1.4% away from M4's stored codes). S2 items never call the VQ encoder (they read M4's stored codes), so
+    restoring the flags after the self-check leaves every S2 measurement path as it was."""
+    try:
+        import torch
+    except ImportError:
+        yield
+        return
+    cd = torch.backends.cudnn
+    old = (cd.benchmark, cd.deterministic)
+    try:
+        cd.benchmark, cd.deterministic = False, True
+        yield
+    finally:
+        cd.benchmark, cd.deterministic = old
+
+
+def selfcheck_deterministic(sc, items_):
+    """The runner's layout/tokeniser self-check (UniScorer.selfcheck on the first S2 item, pass rule runner.selfcheck_passed unchanged), run under deterministic cuDNN."""
+    with deterministic_cudnn():
+        return sc.selfcheck(common.load_image(items_[0]["image_id"]), items_[0]["caption"])
+
+
 # ------------------------------------------------------------------------------------------------ main
 def main(argv=None, *, process_wrap=None, load=None):
     """`process_wrap(process) -> process` and `load` are hooks for `run_gate_s2_smoke` (the firewalled smoke strips every outcome from the row) and for tests; production passes neither."""
@@ -327,11 +358,8 @@ def main(argv=None, *, process_wrap=None, load=None):
         return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=lambda sc, run: fig_items, process=process_fig, make_ctx=make_fig_ctx, soft_minutes=a.soft_minutes, duty=a.duty,
                                 limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=None, watchdog_factory=runner.default_watchdog, allow_dirty=a.allow_dirty)
 
-    def selfcheck(sc, items_):
-        return sc.selfcheck(common.load_image(items_[0]["image_id"]), items_[0]["caption"])
-
     return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=lambda sc, run: items, process=(process_wrap(process) if process_wrap else process), make_ctx=make_ctx_factory(a), soft_minutes=a.soft_minutes, duty=a.duty,
-                            limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck, watchdog_factory=runner.default_watchdog, allow_dirty=a.allow_dirty)
+                            limit=a.limit, guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck_deterministic, watchdog_factory=runner.default_watchdog, allow_dirty=a.allow_dirty)
 
 
 if __name__ == "__main__":
