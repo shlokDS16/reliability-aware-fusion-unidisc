@@ -1,0 +1,138 @@
+% main.tex -- Paper 2, IEEE Transactions on Neural Networks and Learning Systems (Full Paper), IEEEtran journal mode.
+% Build skeleton created 2026-10-29. NO PAPER CONTENT: every section is an \input stub with TODO comments.
+% Requirements and their sources: research/paper2/tnnls/TNNLS-CHECKLIST-2026-10-29.md  (read it before editing the layout).
+%
+% Switches (set near the top of this file):
+%   \anontrue / \anonfalse   double-anonymous review build (default: anonymous) vs. camera-ready with authors, funding, biographies.
+%                            The CIS page says double-anonymous, the Xplore page says reviewers know the authors (checklist C1).
+%   \placeholdertrue / false \nocite{*} so the placeholder PDF lists the whole reference file (tests blue links, column balance).
+%                            Set to false as soon as real \cite commands exist.
+%
+% Limits (CIS Information for Authors, section H): Full Paper 10 pages free, hard maximum 15 pages (USD 200 per page above 10),
+% supplement excluded from the count. Abstract 150-250 words, no abbreviations or maths; 4-5 Index Terms.
+\documentclass[journal]{IEEEtran}
+
+% ---- switches -----------------------------------------------------------------------------------
+\newif\ifanon      \anontrue
+\newif\ifplaceholder \placeholdertrue
+
+% ---- packages -----------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}                 % Type 1 fonts, embedded in the PDF (journal requires all fonts embedded)
+\usepackage{amsmath,amssymb,amsthm}  % IEEE Mathematics Guide: numbered equations, consecutive numbering
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}   % Input/Output/Data blocks; build up across the paper
+\usepackage{cite}                    % IEEEtran's recommended citation grouping [1]-[3]
+\usepackage{microtype}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do.\do=\do_\do?\do\&\do\%\do\#}   % let long DOI/URL strings break in a 3.5 in column
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,filecolor=blue,
+            bookmarksnumbered=true,pdfusetitle,breaklinks=true]{hyperref}   % all links blue (Shlok, memory: paper-presentation-rules)
+\usepackage[capitalise,nameinlink]{cleveref}   % after hyperref
+\crefname{figure}{Fig.}{Figs.}          % IEEE: "Fig. 1", abbreviation also at sentence start
+\Crefname{figure}{Fig.}{Figs.}
+\crefname{table}{Table}{Tables}
+\crefformat{equation}{(#2#1#3)}
+\crefmultiformat{equation}{(#2#1#3)}{ and~(#2#1#3)}{, (#2#1#3)}{, and~(#2#1#3)}
+\crefname{algocf}{Algorithm}{Algorithms}
+\crefname{section}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+
+\interdisplaylinepenalty=2500        % IEEEtran recommendation for amsmath
+\hyphenation{op-tical net-works semi-conduc-tor}
+\emergencystretch=2em
+
+% ---- theorem environments (amsthm). IEEEtran supplies IEEEproof; amsthm's proof is also fine. -----
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% ---- project macros -----------------------------------------------------------------------------
+% \todo marks an open fact: [AUTHOR: ...] = fact only the authors can supply; [RESULT: ...] = result that does not exist yet.
+% All \todo items must be resolved before submission (the build prints a count).
+\newcommand{\todo}[1]{{\color{red}\textbf{[#1]}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ind}{\mathbb{1}}
+\newcommand{\Var}{\operatorname{Var}}
+% anonymised link: shown as plain text in the anonymous build, a real link in the camera-ready build
+\newcommand{\anonlink}[2]{\ifanon\textit{[link withheld for double-anonymous review]}\else\href{#1}{#2}\fi}
+
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}\SetKwInOut{Data}{Data}
+\SetKwProg{Fn}{Function}{:}{}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+
+\begin{document}
+
+% ---- title and authors ---------------------------------------------------------------------------
+% TODO(title): descriptive, no "new"/"novel", no maths symbols, Title Case (checklist section 2). Working title placeholder only.
+\title{[AUTHOR: title, to be set when the method and claim are frozen]}
+
+\ifanon
+  \author{Anonymous authors for double-anonymous review%
+  \thanks{Manuscript submitted to the IEEE Transactions on Neural Networks and Learning Systems.}}
+\else
+  % Camera-ready / non-anonymous: first footnote carries dates, corresponding author, FULL financial support, affiliations, e-mails.
+  % TODO: add \IEEEmembership{Member, IEEE} after a name only if that author is an IEEE member (affiliate grades are not listed).
+  \author{Shlok~Kumar~Goenka and [AUTHOR: supervising professor, full name]%
+  \thanks{[AUTHOR: funding statement or ``This research received no external funding.'']}%
+  \thanks{(Corresponding author: [AUTHOR: corresponding author].)}%
+  \thanks{The authors are with [AUTHOR: school or department], Vellore Institute of Technology, Vellore 632014, Tamil Nadu, India (e-mail: [AUTHOR: e-mails]).}%
+  \thanks{[AUTHOR: ORCID of each author is entered in the Author Portal; it is not printed in the PDF unless the template asks.]}}
+\fi
+% IEEEtran journal mode: running head (page numbers sit in the head). Anonymous build keeps the head free of author names.
+\markboth{IEEE Transactions on Neural Networks and Learning Systems}{Anonymous: [AUTHOR: short title]}
+
+\maketitle
+
+% ---- abstract and index terms --------------------------------------------------------------------
+% TODO(abstract): ONE paragraph, 150-250 words, no abbreviations, footnotes, references or equations; write last.
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+% TODO(index terms): 4-5 terms, alphabetical, first word capitalised, from the IEEE Thesaurus where possible.
+\begin{IEEEkeywords}
+[AUTHOR: index term 1], [AUTHOR: index term 2], [AUTHOR: index term 3], [AUTHOR: index term 4].
+\end{IEEEkeywords}
+
+% ---- body ----------------------------------------------------------------------------------------
+\input{sections/introduction}      % I   Introduction
+\input{sections/related}           % II  Related Work
+\input{sections/preliminaries}     % III Preliminaries
+\input{sections/method}            % IV  Method
+\input{sections/theory}            % V   Theory
+\input{sections/setup}             % VI  Experimental Setup
+\input{sections/results}           % VII Results
+\input{sections/discussion}        % VIII Discussion and Limitations
+\input{sections/conclusion}        % IX  Conclusion
+
+% ---- appendix (counts toward the 15-page limit; put long material in supplement/supplement.tex instead) ----
+\appendices
+\input{sections/appendix}
+
+% ---- Declaration of Generative AI Use ------------------------------------------------------------
+% Shlok's rule: AI use is mentioned ONLY in this section, and there is NO Acknowledgment section.
+% IEEE's rule (CIS Information for Authors K; Author Center submission policies) puts the disclosure in Acknowledgments and asks
+% for a citation to the AI system in the affected sections. The conflict is recorded as C2 in the checklist; not resolved here.
+\input{sections/declaration}
+
+% ---- references ----------------------------------------------------------------------------------
+\ifplaceholder\nocite{*}\fi
+\bibliographystyle{IEEEtran}
+\bibliography{references-ieee}      % generated from references.bib by scripts/prepare_bib.py (DOI/arXiv -> url, links print blue)
+
+% ---- biographies and photos: final (non-anonymous) stage only -----------------------------------
+\ifanon\else\input{back/biographies}\fi
+
+\end{document}

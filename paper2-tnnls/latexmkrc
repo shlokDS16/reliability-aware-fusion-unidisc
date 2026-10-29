@@ -1,0 +1,5 @@
+# latexmkrc for paper2-tnnls. `latexmk -pdf main` is self-sufficient: it regenerates references-ieee.bib first.
+$pdf_mode = 1;
+$bibtex_use = 2;                       # run bibtex when needed, delete .bbl only on `latexmk -C`
+$pdflatex = 'pdflatex -interaction=nonstopmode -file-line-error -synctex=1 %O %S';
+system("python -I scripts/prepare_bib.py");

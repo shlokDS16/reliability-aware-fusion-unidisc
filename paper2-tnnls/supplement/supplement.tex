@@ -1,0 +1,37 @@
+% supplement.tex -- supplementary material for the TNNLS submission (uploaded as a separate PDF labelled "supplementary").
+% Excluded from the 15-page limit (CIS Information for Authors, section H). Accepted formats: TXT, DOC(X), PDF (Author Center).
+% Reviewers are not required to read it: the main paper must stand alone. Anonymous: no author names or links.
+% Build: see ../build.sh  (latexmk -pdf -cd supplement/supplement.tex)
+\documentclass[journal]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,breaklinks=true]{hyperref}
+\usepackage[capitalise]{cleveref}
+\newcommand{\todo}[1]{{\color{red}\textbf{[#1]}}}
+\renewcommand{\thesection}{S\arabic{section}}   % S1, S2, ... so references to the main paper stay unambiguous
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+\title{Supplementary Material for [AUTHOR: title]}
+\author{Anonymous authors}
+\maketitle
+
+\section{Additional Results}
+% TODO(supplement): comparison tables, ablations, per-corruption breakdowns, additional algorithm boxes, extended proofs,
+% protocol and deviation log. Cross-reference the main paper as "Section IV of the main paper" in words (no \cref across files).
+\todo{TODO: supplementary content}
+
+\section{Reproducibility}
+% TODO(supplement): environment, seeds, commands, README content (description, size, platform, environment, components, setup,
+% run instructions, output description, contact -- Author Center "Creating a README File"). Anonymised links only.
+\todo{TODO: reproducibility details}
+
+\end{document}
