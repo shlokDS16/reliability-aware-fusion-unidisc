@@ -4,7 +4,7 @@ lower temperature limit). It never creates or deletes a hold file and never laun
 
     python -m exp_p2.gate.gate_driver --stage m2 [--run-id P2-GATE-M2] [--n 300]
 
-Stages: p2, m1-m5, s2; h3, h4 (family H, hard negatives, draft); foil-fit, foil-test (family B, two runs); epred-fit (the E-pred fit chunk, after M3 and before M4); suite (imagecorruptions, exploratory); omni-timing, omni-r-cal, omni-r-pos,
+Stages: p2, m1-m5, s2; h3, h4 (family H, hard negatives, SAP A5); foil-fit, foil-test (family B, two runs); epred-fit (the E-pred fit chunk, after M3 and before M4); suite (imagecorruptions, exploratory); omni-timing, omni-r-cal, omni-r-pos,
 omni-r-test (Omni-Diffusion 8B, 4-bit, family R: the stage runs in the OMNI interpreter, gpu_guard.py in the project one). Order of use and exact commands: research/paper2/method/IMPL-E-INTEGRATION-2026-10-28.md.
 
 Completion is read from the row count, never from the exit code. Exit codes: 0 complete, 3 gate not open, 4 three temperature stops, 5 two chunks
@@ -57,11 +57,14 @@ STAGE_ARGS = {"foil-fit": ["--stage", "fit"], "foil-test": ["--stage", "test"], 
               "omni-r-cal": ["--stage", "cal"] + OMNI_FLAGS, "omni-r-pos": ["--stage", "pos"] + OMNI_FLAGS, "omni-r-test": ["--stage", "test"] + OMNI_FLAGS}      # forwarded before --extra
 STAGE_ENV = {st: {"HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1"} for st in STAGE_PY}      # lead decision T2/PM 2: HF_HUB_OFFLINE=1 for every Omni stage (assigned, so a shell's HF_HUB_OFFLINE=0 cannot win)
 STAGE_CHUNK_MIN = {st: (25.0, 25.0) for st in STAGE_PY}      # (first chunk, later chunks) in minutes: the 4-bit load is the long part (IMPL-C used --max-minutes 25 --soft-minutes 22); others keep 5 / 15
-# Family H (hard negatives on fresh COCO images; DRAFT, pending the lead's go/no-go): H3 = the headroom stage (run_gate_m3, 50 'head' items), H4 = the main test (run_gate_m4, 300 'test' items).
-# Both read the committed runs/P2-HARDNEG-ITEMS/folds_hardneg.json (built by exp_p2/gate/build_hardneg_items.py); H4 reads the corruption family and the n-rule from H3's own family.json.
+# Family H (SAP addendum A5: hard negatives on fresh COCO images). Both stages run the M4 stage (run_gate_m4):
+#   H3 = the 50 H3 items (the derived file folds_hardneg_h3.json holds them under `test`), corruption family and n from the plan file runs/P2-GATE-H3-PLAN/family.json (h3_gonogo plan);
+#   H4 = the 300 H4 items (`test` of folds_hardneg.json), corruption family and n-rule from runs/P2-GATE-H3/family.json (h3_gonogo decide; test_fold 300, 200 or 0).
 HARDNEG_FOLDS = Path(common.RUNS) / "P2-HARDNEG-ITEMS" / "folds_hardneg.json"
-STAGES.update({"h3": ("exp_p2.run_gate_m3", "P2-GATE-H3", 50), "h4": ("exp_p2.run_gate_m4", "P2-GATE-H4", 300)})
-STAGE_ARGS.update({"h3": ["--folds-path", str(HARDNEG_FOLDS)], "h4": ["--folds-path", str(HARDNEG_FOLDS), "--family-run", "P2-GATE-H3"]})       # forwarded before --extra, so --extra can still override
+HARDNEG_FOLDS_H3 = Path(common.RUNS) / "P2-HARDNEG-ITEMS" / "folds_hardneg_h3.json"
+STAGES.update({"h3": ("exp_p2.run_gate_m4", "P2-GATE-H3", 50), "h4": ("exp_p2.run_gate_m4", "P2-GATE-H4", 300)})
+STAGE_ARGS.update({"h3": ["--folds-path", str(HARDNEG_FOLDS_H3), "--family-run", "P2-GATE-H3-PLAN"],
+                   "h4": ["--folds-path", str(HARDNEG_FOLDS), "--family-run", "P2-GATE-H3"]})       # forwarded before --extra, so --extra can still override
 MAX_TEMP_DEFAULT, GUARD_EVERY_S = 80.0, 1.0      # crash diagnosis section 5: '--max-temp 80', telemetry every 1 s
 
 

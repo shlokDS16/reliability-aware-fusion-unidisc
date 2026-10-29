@@ -64,6 +64,8 @@ def check_n_against_rule(n: int | None, runs: Path | None = None, family_run: st
     small (audit M3). Returns the effective n. The rule is read from `family_run`'s family.json (M3 unless family H names its own headroom run); the check cannot be skipped."""
     fam = pipeline.load_json(Path(runs if runs is not None else common.RUNS) / family_run / "family.json")
     want = int(fam.get("n_rule", {}).get("test_fold", 300))
+    if want <= 0:                                                                  # family H: h3_gonogo writes test_fold 0 for NO-GO / cut by time; no --n (not even 0) may start the test
+        raise ValueError(f"the committed n-rule ({fam.get('n_rule', {}).get('rule')}) has test fold {want}: the test is not run")
     eff = n if n is not None else CONFIG["n_items"]
     if eff != want:
         raise ValueError(f"--n {eff} does not match the committed n-rule ({fam.get('n_rule', {}).get('rule')}: test fold {want}); run with --n {want}")

@@ -188,11 +188,13 @@ def test_main_runs_end_to_end_up_to_the_loop_with_family_h_options(env, monkeypa
 
 # ------------------------------------------------------------------------------------------------ gate_driver stages
 def test_the_h_stages_are_in_the_table_and_nothing_else_changed():
-    assert gate_driver.STAGES["h3"] == ("exp_p2.run_gate_m3", H3, 50) and gate_driver.STAGES["h4"] == ("exp_p2.run_gate_m4", H4, 300)
+    assert gate_driver.STAGES["h3"] == ("exp_p2.run_gate_m4", H3, 50) and gate_driver.STAGES["h4"] == ("exp_p2.run_gate_m4", H4, 300)
     assert gate_driver.STAGES["m3"] == ("exp_p2.run_gate_m3", "P2-GATE-M3", 100) and gate_driver.STAGES["m4"] == ("exp_p2.run_gate_m4", "P2-GATE-M4", 300)
     assert "m3" not in gate_driver.STAGE_ARGS and "m4" not in gate_driver.STAGE_ARGS and "m5" not in gate_driver.STAGE_ARGS
     fp = str(gate_driver.HARDNEG_FOLDS)
-    assert gate_driver.STAGE_ARGS["h3"] == ["--folds-path", fp] and gate_driver.STAGE_ARGS["h4"] == ["--folds-path", fp, "--family-run", H3]
+    fp3 = str(gate_driver.HARDNEG_FOLDS_H3)       # SAP A5.11 delta 1: H3 runs the M4 stage on the derived H3 file under the plan family
+    assert gate_driver.STAGE_ARGS["h3"] == ["--folds-path", fp3, "--family-run", "P2-GATE-H3-PLAN"] and gate_driver.STAGE_ARGS["h4"] == ["--folds-path", fp, "--family-run", H3]
+    assert gate_driver.HARDNEG_FOLDS_H3.parts[-2:] == ("P2-HARDNEG-ITEMS", "folds_hardneg_h3.json")
     assert gate_driver.HARDNEG_FOLDS.parts[-2:] == ("P2-HARDNEG-ITEMS", "folds_hardneg.json")
 
 
@@ -204,9 +206,9 @@ def test_the_h_stages_launch_a_command_their_runner_parses(stage, driver, monkey
     i = cmd.index("--")
     assert cmd[i + 3] == gate_driver.STAGES[stage][0]
     ns = _parse_with_the_runner(monkeypatch, cmd[i + 3], cmd[i + 4:])
-    assert ns.run_id == (H3 if stage == "h3" else H4) and ns.n == (50 if stage == "h3" else 300) and ns.resume and ns.folds_path == str(gate_driver.HARDNEG_FOLDS)
-    if stage == "h4":
-        assert ns.family_run == H3
+    assert ns.run_id == (H3 if stage == "h3" else H4) and ns.n == (50 if stage == "h3" else 300) and ns.resume
+    assert ns.folds_path == str(gate_driver.HARDNEG_FOLDS_H3 if stage == "h3" else gate_driver.HARDNEG_FOLDS)
+    assert ns.family_run == ("P2-GATE-H3-PLAN" if stage == "h3" else H3)
     assert (common.RUNS / ns.run_id).is_dir()
 
 
