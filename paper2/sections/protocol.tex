@@ -3,7 +3,8 @@
 % Precedence: SAP Addendum A4 > A3b > A3 > A2b > A2 > A1 > SAP body > card v4 > v3 > spec v2.
 % Pins, the family table with its wording rules, the deviations box and the amendment log are in Appendix A (appendix.tex).
 % Numbers in this file come from the preregistration documents (design values) or from runs/P2-PROBE-01, runs/P2-GATE-CPU and
-% runs/P2-UNIDISC-KEYCHECK. No GATE outcome of the main run exists.
+% runs/P2-UNIDISC-KEYCHECK. The protocol text was fixed before the main run; the only edits after it (2026-10-29) are the status line of
+% Section ssec:tier3 and the c>b wording of ssec:tests aligned with A4.2.1 (no claim in favour of the gate from a rejection with c>b).
 
 The protocol was fixed before any outcome of the main run existed.
 It is recorded in a preregistration card (version 4), a statistical analysis plan (SAP) with its addenda, and a method
@@ -186,8 +187,8 @@ only ``a gate built on the masked-likelihood score improved image-direction veri
 Attribution to detection needs the mechanism family: if GATE-M against the geometry-matched random gate is not rejected, the
 improvement is ``not distinguishable from masking the same shape elsewhere, and therefore not attributable to detection beyond mask
 geometry''.
-A rejection with $c>b$ is reported as ``GATE-M reduced verification accuracy'' and counts against the gate; with rejections of both
-kinds the outcome is \emph{mixed}.
+A rejection with $c>b$ is reported as ``GATE-M reduced verification accuracy'', and no claim in favour of the gate is made from it;
+with rejections of both kinds the outcome is \emph{mixed}.
 The outcome is \emph{negative} if no hypothesis is rejected and, for every corruption with an operating point, the 90\,\% paired
 bootstrap interval of the net accuracy difference lies inside $(-0.05,+0.05)$ with at least 240 completed items; it is
 \emph{inconclusive} otherwise.
@@ -270,7 +271,8 @@ that is not distinguishable counts against the added value of the detector only 
 For the two graded weights, a higher accuracy counts against discarding tokens, not against the detector.
 The comparison is exploratory (Tier 3): it has its own Results subsection after the preregistered families, it is absent from the
 title, abstract, highlights, conclusion and contributions, and it cannot explain, qualify or rescue a primary result.
-It has not been run.
+It was run once, after the primary analysis was committed (Section~\ref{ssec:res_expl}), with the direction of every contrast read from
+an exact interval for the discordant items (Addendum A4, revision r3).
 
 \subsection{Two-way fusion and the text direction (family B)}\label{ssec:fusionprotocol}
 Family B asks whether the score-level fusion of the two directions, with weights fitted on separate fit pairs (Eq.~\eqref{eq:lda}) and

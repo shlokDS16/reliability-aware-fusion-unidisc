@@ -1,6 +1,7 @@
 % introduction.tex -- card v4 scope (eleven test families; P is the only headline family, SAP Addendum A4 Part 2 binds the wording of
-% the contribution list). Outcome-neutral: no GATE outcome exists when this is written. The only measured result quoted is the
-% detection table of run P2-GATE-M1 (secondary family S-D, wording of decision D0074).
+% the contribution list). Drafted outcome-neutral on 2026-10-28; on 2026-10-29 the contribution list was completed for the label NEG
+% of P (A4.2.4 items 3 and 5). Measured results quoted: the detection table of run P2-GATE-M1 (secondary family S-D, wording of
+% decision D0074), the label sentence of P and the clean false-alarm check (run P2-GATE-M4).
 % Must-not-claim list (NOVELTY-REAUDIT-GATE section 7; NOVELTY-CHECK-INFFUS section 4, items 10 to 13) is respected: no "first" claim,
 % no "decision-level" for the gate, no sentence about Zhou and Lu that only their full text could support.
 
@@ -76,8 +77,7 @@ This paper does not claim to be the first to detect or remask corrupted input to
 model, the first risk-controlled threshold for vision-language errors, or the first masked-likelihood or null-normalised
 generative score.
 The gate is the object of measurement here, not an asset whose merit is assumed.
-Every outcome clause below is a preregistered hypothesis, and each numbered item corresponds to a result that the preregistered
-analysis delivers whatever it finds.
+Each numbered item corresponds to a result that the preregistered analysis delivered whatever it found.
 \begin{enumerate}
 \item \emph{The measured object} (Section~\ref{sec:method}). We specify an input-level source-validation gate for a pretrained
 unified masked diffusion model: each image token is scored by the model's own masked likelihood with the caption withheld, and
@@ -89,7 +89,9 @@ sum; it is an approximation because image tokens are dependent, and it is not li
 \item \emph{A preregistered test} (Sections~\ref{sec:protocol} and~\ref{ssec:res_primary}). An exact McNemar test with Holm
 correction over three realistic corruptions, with the sample size fixed by a blind headroom rule, of whether withholding the
 flagged tokens changes image-direction verification accuracy, with controls for mask geometry, texture and pixel denoising.
-% A4.2.4 item 3: at submission append the label sentence of the outcome book (first clause of the opening of Section 6.1).
+% A4.2.4 item 3, label NEG: the first clause of the opening of Section 6.1 (A4.2.3). run: P2-GATE-M4 (outcome.label = negative)
+The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
+from gating under JPEG quality~10, Gaussian noise with $\sigma=0.10$ and a $128$-pixel splice.
 \item \emph{Token detection, measured} (Section~\ref{ssec:res_det}).
 % run: P2-GATE-M1
 At the token level the gate's score separates code-level random replacements (AUROC 0.961 for a patch, 0.955 for swapped codes)
@@ -100,10 +102,12 @@ In the preregistered comparison it is below a texture score whose sign was chose
 preregistered falsifier for the score was met.
 \item \emph{Calibration, checked} (Section~\ref{ssec:res_cal}). We check the clean false-alarm statement on held-out clean test
 pairs.
-\item \emph{Secondary families, reported as run or not run} (Sections~\ref{ssec:families} and~\ref{sec:results}). Re-infilling of
-the flagged tokens (S2), two-way fusion on a hard-negative set (B) and a second, quantised model (R) each have their own
-family, label and status, and none can rescue or explain the primary result.
-% A4.2.4 item 6: at submission list only the families whose status is "run"; omit this item if none ran.
+% run: P2-GATE-M4 (calibration.fap_check.per_alpha.0.05)
+At $\alpha=0.05$ the realised flagged share was 0.0456 (95\,\% interval 0.0442 to 0.0470), with no evidence of violation.
+% A4.2.4 item 6: list only those of S2 and B whose status is "run, formal" or "run, descriptive", with that status; omit the item if
+% neither ran. R was not run (gatekept: no primary rejection with b>c), so it is not listed.
+\item \todo{RESULT (A4.2.4 item 6): \emph{Secondary families} (Sections~\ref{ssec:res_s2} and~\ref{ssec:res_text}): name only those
+of re-infilling (S2) and two-way fusion on hard negatives (B) that ran, with their status; delete this item if neither ran.}
 \end{enumerate}
 The scope is one pretrained 1.4B model, one image-caption dataset, three realistic image corruptions in the primary family and
 two sanity corruptions in a separate positive control (PS).

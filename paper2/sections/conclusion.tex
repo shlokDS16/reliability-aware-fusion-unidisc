@@ -1,19 +1,18 @@
-% conclusion.tex -- 3 to 5 sentences, same numbers as the paper, limits in one sentence, future work in one sentence, no new claim.
-% Placeholders only: no result exists. Under a null, inconclusive or harm label of the primary family, no clause draws on PS, S2, B, R,
-% E-dec, E-pred, the suite, detection or the exploratory comparison to explain, qualify or predict it (SAP AB.1). Not contradicting
-% Section "Limitations" is checked at the end.
+% conclusion.tex -- label NEG of P (SAP Addendum A4, A4.2.3). Five sentences, same numbers as the paper, limits in one sentence, future
+% work in one sentence, no new claim. No clause draws on PS, S2, B, R, E-dec, E-pred, the suite, detection or the exploratory
+% comparison to explain, qualify or predict the primary result (SAP AB.1); calibration and detection are stated with their family labels
+% and without a connective to the primary result. "when does input gating help" is not used (D18 reading 1).
+% run: P2-GATE-M4 (primary.per_corruption.*.ci90; calibration.realised_fap_clean.0.05); P2-GATE-M1 (table.{jpeg,noise}.q.mean)
 
-\todo{RESULT, sentence 1: the question and the measurement, stated as in the first contribution and scoped to one pretrained model, one
-data set and the image direction.}
-
-\todo{RESULT, sentence 2: the label of the primary family and the primary contrast per corruption, with the number, interval and the
-wording of the outcome book (SAP Addendum A4, Part 2).}
-
-\todo{RESULT, sentence 3: the calibration result (realised false-alarm proportion and verdict) and the detection measurement, each with its
-family label.}
-
-\todo{RESULT, sentence 4: limits in one sentence (one model, one data set, the weaker of two statistics, a narrow guarantee, secondary
-families reported as run or not run).}
-
-\todo{AUTHOR, sentence 5: future work in one sentence (a second backbone; a finetuned variant of the observed-position score; the
-combination of the gate with a reliability-weighted evidence sum).}
+We measured, in a preregistered test on one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) and COCO image-caption
+pairs, whether withholding the image tokens that the model's own masked likelihood flags, with a threshold set by conformal risk
+control on clean pairs, changes image-direction verification under image corruption.
+The test excludes an improvement or a loss of more than five percentage points in verification accuracy from gating under JPEG
+quality~10, Gaussian noise with $\sigma=0.10$ and a $128$-pixel splice (90\,\% intervals of the net change between $-0.010$ and
+$0.002$; $n=500$); it does not show that gating has no effect.
+On held-out clean pairs the realised flagged share was 0.046 against a target of 0.05, with no evidence of violation; separately, in
+the secondary detection family, the gate's score was near chance at finding the codes that JPEG and noise change (AUROC 0.561 and 0.503).
+These are measurements on one model, one data set, one severity per corruption and the weaker of two verification statistics, with a
+guarantee that covers clean pairs only; re-infilling and two-way fusion are reported as run or not run \todo{RESULT: S2 and B status}.
+\todo{AUTHOR: confirm the future-work sentence.} The next measurements are a second backbone, a damage label that does not depend on
+which codes the tokenizer changes, and graded reliability weights inside the evidence sum, each preregistered in the same way.

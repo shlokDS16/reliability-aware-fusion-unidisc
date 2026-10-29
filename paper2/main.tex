@@ -1,11 +1,14 @@
 % main.tex -- Paper 2, Elsevier Information Fusion (research article), elsarticle template.
-% Status: outcome-independent parts drafted on 2026-10-28; no GATE result exists yet.
+% Status: outcome-independent parts drafted on 2026-10-28; results of P, PS, S-M, S-Z, S-DN, S-C, S-D2, E-dec, E-pred, Tier 3 and the
+% coherence check written on 2026-10-29 from runs/P2-GATE-M2 to M5 (label of P: negative). S2, B and the suite pending; R not run.
 % Layout option: the Guide for Authors does not name the elsarticle option and measures pages on the final template.
 % "preprint,12pt" is the single-column review layout; switch to "5p,twocolumn" to estimate the final page count (limit 35).
 \documentclass[preprint,12pt]{elsarticle}
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{adjustbox}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
@@ -40,9 +43,9 @@
 
 \begin{frontmatter}
 
-% Title is provisional and written last. It is the outcome-neutral question title QT of SAP Addendum A4 (Part 2, A4.2.3), the title that
-% every label without a rejection with b>c uses; a positive label replaces it with the title of that label. It names the model and
-% carries no fusion, repair or improvement claim and no selling word ("calibrated" is not one, A4.2.2; red-team condition C4).
+% Title for the label NEG: the question title QT of SAP Addendum A4 (A4.2.3), verbatim. It names the model and carries no fusion,
+% repair or improvement claim and no selling word (A4.2.2; red-team condition C4); "when does input gating help" is not used (D18
+% reading 1, decisions D0076-D0077).
 \title{Does masked-likelihood token gating help image-direction verification under image corruption? A preregistered test in UniDisc}
 
 \author[vit]{Shlok Kumar Goenka}
@@ -55,27 +58,37 @@
 \cortext[cor]{[AUTHOR: corresponding author, postal address and published e-mail]}
 
 \begin{abstract}
-% Provisional abstract, at most 250 words once the \todo items are filled. No citations, no fusion or repair claim (C4).
-% The result sentence comes from the outcome book of SAP Addendum A4 (Part 2) for the label that the committed files give; secondary
-% families are stated only with their family label, and none draws a causal clause for a null in P (AB.1).
-A unified masked diffusion model treats every observed token as certain, although the tokens of a real input can be damaged
-by compression, noise or splicing.
-This paper asks whether a pretrained model can flag damaged image tokens with its own masked likelihood, and whether withholding
-the flagged tokens changes a caption-verification decision.
-Each image token is scored by its masked likelihood inside the image with the caption withheld.
-A threshold is set by conformal risk control on clean image-caption pairs, so that the expected proportion of clean
-tokens flagged is at most a chosen level.
-Flagged tokens are removed from an additive image-to-caption evidence statistic.
-The test is preregistered, uses one pretrained 1.4B model with no network finetuning, and compares the gate
-with no gate, with random masks of the same size and shape, with cheap non-generative detectors and with a pixel denoiser.
-Re-infilling, two-way fusion and a second model are secondary families, each reported under its own label as run or not run.
-\todo{RESULT: the result sentence of the outcome book for the label of the primary family, the realised false-alarm proportion with
-its interval, the detection result with its family label, and one sentence on scope (one model, one data set).}
+% Label NEG (SAP Addendum A4, A4.2.3; runs/P2-GATE-M4/analysis.json outcome.label = negative, rule R2). The result sentence, the
+% "not 'GATE-M has no effect'" sentence and the scope sentence {S} follow the outcome book near-verbatim. No citations, no fusion or
+% repair claim (C4). No clause draws on PS, S-D, E-dec, E-pred, S2, B, R, the suite or Tier 3 to explain the null (AB.1, D18 reading 1).
+% 232 words (whitespace tokens) without the S2/B placeholder; the placeholder sentence must keep the total at or under 250.
+% run: P2-GATE-M4 (primary.per_corruption.*.{delta,ci90,n}; calibration.realised_fap_clean.0.05); P2-GATE-M1 (table.{jpeg,noise}.q.mean)
+Unified masked diffusion models treat every visible token as certain, although real inputs can be damaged.
+We ask whether withholding the image tokens that a pretrained model finds unlikely changes a caption-verification decision.
+Each image token is scored by its masked likelihood with the caption withheld, a threshold from conformal risk control on clean pairs
+bounds the expected flagged share of a clean pair's tokens at 0.05, and the gate (GATE-M) drops flagged tokens from an additive
+evidence sum.
+Test, sample size and outcome wording were preregistered (exact McNemar, Holm over three corruptions).
+In the preregistered test no improvement was detected under JPEG quality 10, Gaussian noise with $\sigma=0.1$ and a 128-pixel splice;
+for each tested corruption the 90\,\% CI of the net accuracy change lay inside $\pm0.05$ ($-0.002$, $-0.006$ to $0.000$; $0.000$,
+$0.000$ to $0.000$; $-0.004$, $-0.010$ to $0.002$; $n=500$ each), so an improvement larger than 0.05 is excluded and a loss larger than
+0.05 is excluded.
+This is not a finding that GATE-M has no effect.
+The scope is one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) on COCO image-caption pairs with a random other
+caption as the negative.
+On held-out clean pairs the flagged share was 0.046 (95\,\% CI 0.044 to 0.047): no evidence of violation.
+A secondary detection family found the gate's score near chance on JPEG and noise (area under the ROC curve 0.561 and 0.503).
+\todo{RESULT: one sentence of at most 13 words giving the status of re-infilling (S2) and two-way fusion (B), each with its family
+label, as run or not run; no causal clause.}
 \end{abstract}
 
 \begin{highlights}
-% 3 to 5 items, at most 85 characters each; the working copy is highlights.txt. No fusion or repair claim (C4).
-\item \todo{RESULT: see highlights.txt; written after the results are frozen}
+% Label NEG. Highlight 1 and 2 verbatim from SAP Addendum A4 (A4.2.3 NEG; A4.2.2 item 6, "{k} corruptions" form); 3 and 4 state no
+% secondary result as a gain and draw no causal clause (AB.1). Lengths (characters with spaces): 77, 75, 63, 77; working copy highlights.txt.
+\item Gains or losses above 5 points from token gating excluded under 3 corruptions
+\item Preregistered test in one model (UniDisc 1.4B), one severity per corruption
+\item Measures a clean false-alarm share of 0.046 at a target of 0.05
+\item Finds the gate's likelihood score near chance on JPEG and noise token changes
 \end{highlights}
 
 \begin{keyword}
