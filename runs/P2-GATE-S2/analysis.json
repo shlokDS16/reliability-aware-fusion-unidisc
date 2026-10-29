@@ -1,0 +1,475 @@
+{
+ "family": "S2",
+ "holm_m": 2,
+ "comparator": "random-gate best-of-4 re-infill",
+ "sampler_note": "the sampler differs from UniDisc's in order, schedule and guidance",
+ "disclosure": "In I-GATE the four draws share one position set; in I-RAND4 each draw has its own random set; best-of-4 by chain log-likelihood therefore selects over position sets as well as noise in I-RAND4 and over noise only in I-GATE; the direction of the net bias is not established.",
+ "note_rand_worse_than_none": "re-infilling clean positions with caption-masked prior samples destroys real caption evidence, so I-RAND4 may be worse than NONE, and the contrast then indexes in part how many clean tokens each set touches (AB.4 item 2, A3b.2 item 4)",
+ "n_min": 120,
+ "n_nominal": 300,
+ "per_cell": {
+  "patch": {
+   "b": 3,
+   "c": 0,
+   "n_d": 3,
+   "n": 300,
+   "n_dropped": 0,
+   "p": 0.25,
+   "p_mid": 0.125,
+   "acc_a": 0.8766666666666667,
+   "acc_b": 0.8666666666666667,
+   "delta": 0.01,
+   "ci95": [
+    0.0,
+    0.023333333333333334
+   ],
+   "ci9833": [
+    0.0,
+    0.02666666666666667
+   ],
+   "ci90": [
+    0.0,
+    0.02
+   ],
+   "equivalent_within_0p05": true,
+   "theta": 1.0,
+   "theta_cp95": [
+    0.29240177382128674,
+    1.0
+   ],
+   "key": "patch",
+   "n_completed": 300,
+   "n_g0": 0,
+   "n_g0_discordant": 0,
+   "mean_g": 97.11,
+   "desc": {
+    "igate_vs_none": {
+     "b": 2,
+     "c": 1,
+     "n_d": 3,
+     "n": 300,
+     "acc_a": 0.8766666666666667,
+     "acc_b": 0.8733333333333333,
+     "delta": 0.0033333333333333335,
+     "ci95": [
+      -0.006666666666666667,
+      0.013333333333333334
+     ],
+     "theta": 0.6666666666666666
+    },
+    "igate_vs_m": {
+     "b": 2,
+     "c": 1,
+     "n_d": 3,
+     "n": 300,
+     "acc_a": 0.8766666666666667,
+     "acc_b": 0.8733333333333333,
+     "delta": 0.0033333333333333335,
+     "ci95": [
+      -0.006666666666666667,
+      0.013333333333333334
+     ],
+     "theta": 0.6666666666666666
+    },
+    "irand_vs_none": {
+     "b": 0,
+     "c": 2,
+     "n_d": 2,
+     "n": 300,
+     "acc_a": 0.8666666666666667,
+     "acc_b": 0.8733333333333333,
+     "delta": -0.006666666666666667,
+     "ci95": [
+      -0.016666666666666666,
+      0.0
+     ],
+     "theta": 0.0
+    },
+    "igate_vs_ichg": {
+     "b": 1,
+     "c": 3,
+     "n_d": 4,
+     "n": 300,
+     "acc_a": 0.8766666666666667,
+     "acc_b": 0.8833333333333333,
+     "delta": -0.006666666666666667,
+     "ci95": [
+      -0.02,
+      0.006666666666666667
+     ],
+     "theta": 0.25
+    },
+    "draw_level_accuracy_igate_minus_irand": {
+     "diff": 0.0025,
+     "lo": -0.004166666666666667,
+     "hi": 0.011666666666666667,
+     "n": 300,
+     "n_dropped": 0
+    },
+    "all_four_correct_igate_minus_irand": {
+     "diff": 0.006666666666666667,
+     "lo": 0.0,
+     "hi": 0.016666666666666666,
+     "n": 300,
+     "n_dropped": 0
+    },
+    "kept_draw_igate_minus_irand": {
+     "diff": 0.01,
+     "lo": 0.0,
+     "hi": 0.023333333333333334,
+     "n": 300,
+     "n_dropped": 0
+    },
+    "token_agreement_with_clean_codes": {
+     "igate_agree_changed": 0.00140625,
+     "igate_agree_set": 0.0014489909538978466,
+     "irand_agree_changed": 0.0,
+     "irand_agree_set": 0.031088300977297503,
+     "ichg_agree_changed": 0.0067708333333333336,
+     "ichg_agree_set": 0.0067708333333333336,
+     "note": "descriptive; share of truly changed tokens (agree_changed) or of re-infilled positions (agree_set) whose code equals the original clean code; not restoration (AB.4 item 5)"
+    },
+    "gate_recall_mean": 0.7509763558201058,
+    "gate_precision_mean_over_g_ge_1": 0.5088629786004477,
+    "s2_y_differs_from_m4": {
+     "none": 0,
+     "gate": 0,
+     "note": "S2 recomputes Y(NONE) and Y(M) from its own two caption-only passes; a difference from M4's stored value is a bf16 near-tie, counted"
+    }
+   },
+   "label": "S2-patch",
+   "tested": true,
+   "p_used": 0.25,
+   "p_holm": 0.5,
+   "kept_draw_rejects": false,
+   "location_claim_eligible": false,
+   "location_supported": false,
+   "location_refuted": false,
+   "draw_level_excludes_0_same_side": false,
+   "repair_helps_claim": false,
+   "reading": "inconclusive",
+   "sentence": "no evidence that the flagged set is better placed than a random one under this sampler",
+   "note_v": "I-GATE is not better than NONE (95 percent interval not above 0) and the cell is not rejected: there is no claim that repair helps (AB.4 item 2.v)",
+   "table_note": [
+    "In I-GATE the four draws share one position set; in I-RAND4 each draw has its own random set; best-of-4 by chain log-likelihood therefore selects over position sets as well as noise in I-RAND4 and over noise only in I-GATE; the direction of the net bias is not established.",
+    "Re-infilling clean positions with caption-masked prior samples destroys real caption evidence, so I-RAND4 may be worse than NONE, and the contrast then indexes in part how many clean tokens each set touches.",
+    "Kept draw = highest chain log-likelihood, caption masked (A3.2 item 1 (b))."
+   ],
+   "may_not_claim": [
+    "anything about UniDisc's own re-infill",
+    "re-masking as a mechanism",
+    "the gate's detection (a flagged set that scores better may simply contain fewer clean, evidence-bearing tokens)",
+    "that location does not matter if S2 is inconclusive",
+    "a causal clause in the title, abstract, highlights or conclusion (AB.1 item 2)"
+   ],
+   "partial_prefix": null,
+   "sensitivity_first150": {
+    "exists": true,
+    "label": "sensitivity (SAP n = 150), not confirmatory, not in the Holm set",
+    "n_positions": 150,
+    "n_completed_in_prefix": 150,
+    "b": 1,
+    "c": 0,
+    "n_d": 1,
+    "p": 1.0,
+    "delta": 0.006666666666666667,
+    "ci95": [
+     0.0,
+     0.02
+    ],
+    "sens_rejects": false,
+    "primary_rejects": false,
+    "mde_at_this_n": {
+     "0.05": null,
+     "0.1": 0.079,
+     "0.15": 0.099,
+     "0.2": 0.114
+    },
+    "sensitive_to_n": false
+   }
+  },
+  "splice": {
+   "b": 1,
+   "c": 2,
+   "n_d": 3,
+   "n": 300,
+   "n_dropped": 0,
+   "p": 1.0,
+   "p_mid": 0.625,
+   "acc_a": 0.8766666666666667,
+   "acc_b": 0.88,
+   "delta": -0.0033333333333333335,
+   "ci95": [
+    -0.016666666666666666,
+    0.006666666666666667
+   ],
+   "ci9833": [
+    -0.016666666666666666,
+    0.01
+   ],
+   "ci90": [
+    -0.013333333333333334,
+    0.006666666666666667
+   ],
+   "equivalent_within_0p05": true,
+   "theta": 0.3333333333333333,
+   "theta_cp95": [
+    0.008403758659612643,
+    0.9057006759497539
+   ],
+   "key": "splice128",
+   "n_completed": 300,
+   "n_g0": 0,
+   "n_g0_discordant": 0,
+   "mean_g": 46.45333333333333,
+   "desc": {
+    "igate_vs_none": {
+     "b": 1,
+     "c": 2,
+     "n_d": 3,
+     "n": 300,
+     "acc_a": 0.8766666666666667,
+     "acc_b": 0.88,
+     "delta": -0.0033333333333333335,
+     "ci95": [
+      -0.016666666666666666,
+      0.006666666666666667
+     ],
+     "theta": 0.3333333333333333
+    },
+    "igate_vs_m": {
+     "b": 2,
+     "c": 1,
+     "n_d": 3,
+     "n": 300,
+     "acc_a": 0.8766666666666667,
+     "acc_b": 0.8733333333333333,
+     "delta": 0.0033333333333333335,
+     "ci95": [
+      -0.006666666666666667,
+      0.016666666666666666
+     ],
+     "theta": 0.6666666666666666
+    },
+    "irand_vs_none": {
+     "b": 0,
+     "c": 0,
+     "n_d": 0,
+     "n": 300,
+     "acc_a": 0.88,
+     "acc_b": 0.88,
+     "delta": 0.0,
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "theta": NaN
+    },
+    "igate_vs_ichg": {
+     "b": 1,
+     "c": 4,
+     "n_d": 5,
+     "n": 300,
+     "acc_a": 0.8766666666666667,
+     "acc_b": 0.8866666666666667,
+     "delta": -0.01,
+     "ci95": [
+      -0.02666666666666667,
+      0.0033333333333333335
+     ],
+     "theta": 0.2
+    },
+    "draw_level_accuracy_igate_minus_irand": {
+     "diff": 0.0008333333333333334,
+     "lo": -0.0033333333333333335,
+     "hi": 0.006666666666666667,
+     "n": 300,
+     "n_dropped": 0
+    },
+    "all_four_correct_igate_minus_irand": {
+     "diff": -0.0033333333333333335,
+     "lo": -0.01,
+     "hi": 0.0,
+     "n": 300,
+     "n_dropped": 0
+    },
+    "kept_draw_igate_minus_irand": {
+     "diff": -0.0033333333333333335,
+     "lo": -0.016666666666666666,
+     "hi": 0.006666666666666667,
+     "n": 300,
+     "n_dropped": 0
+    },
+    "token_agreement_with_clean_codes": {
+     "igate_agree_changed": 7.115877469506264e-05,
+     "igate_agree_set": 0.0006927984506177117,
+     "irand_agree_changed": 0.00036197619391545327,
+     "irand_agree_set": 0.035836550427458556,
+     "ichg_agree_changed": 0.010635490045477456,
+     "ichg_agree_set": 0.010635490045477456,
+     "note": "descriptive; share of truly changed tokens (agree_changed) or of re-infilled positions (agree_set) whose code equals the original clean code; not restoration (AB.4 item 5)"
+    },
+    "gate_recall_mean": 0.05075588192661761,
+    "gate_precision_mean_over_g_ge_1": 0.2616368031421729,
+    "s2_y_differs_from_m4": {
+     "none": 0,
+     "gate": 0,
+     "note": "S2 recomputes Y(NONE) and Y(M) from its own two caption-only passes; a difference from M4's stored value is a bf16 near-tie, counted"
+    }
+   },
+   "label": "S2-splice",
+   "tested": true,
+   "p_used": 1.0,
+   "p_holm": 1.0,
+   "kept_draw_rejects": false,
+   "location_claim_eligible": false,
+   "location_supported": false,
+   "location_refuted": false,
+   "draw_level_excludes_0_same_side": false,
+   "repair_helps_claim": false,
+   "reading": "inconclusive",
+   "sentence": "no evidence that the flagged set is better placed than a random one under this sampler",
+   "note_v": "I-GATE is not better than NONE (95 percent interval not above 0) and the cell is not rejected: there is no claim that repair helps (AB.4 item 2.v)",
+   "table_note": [
+    "In I-GATE the four draws share one position set; in I-RAND4 each draw has its own random set; best-of-4 by chain log-likelihood therefore selects over position sets as well as noise in I-RAND4 and over noise only in I-GATE; the direction of the net bias is not established.",
+    "Re-infilling clean positions with caption-masked prior samples destroys real caption evidence, so I-RAND4 may be worse than NONE, and the contrast then indexes in part how many clean tokens each set touches.",
+    "Kept draw = highest chain log-likelihood, caption masked (A3.2 item 1 (b))."
+   ],
+   "may_not_claim": [
+    "anything about UniDisc's own re-infill",
+    "re-masking as a mechanism",
+    "the gate's detection (a flagged set that scores better may simply contain fewer clean, evidence-bearing tokens)",
+    "that location does not matter if S2 is inconclusive",
+    "a causal clause in the title, abstract, highlights or conclusion (AB.1 item 2)"
+   ],
+   "partial_prefix": null,
+   "sensitivity_first150": {
+    "exists": true,
+    "label": "sensitivity (SAP n = 150), not confirmatory, not in the Holm set",
+    "n_positions": 150,
+    "n_completed_in_prefix": 150,
+    "b": 0,
+    "c": 2,
+    "n_d": 2,
+    "p": 0.5,
+    "delta": -0.013333333333333334,
+    "ci95": [
+     -0.03333333333333333,
+     0.0
+    ],
+    "sens_rejects": false,
+    "primary_rejects": false,
+    "mde_at_this_n": {
+     "0.05": null,
+     "0.1": 0.079,
+     "0.15": 0.099,
+     "0.2": 0.114
+    },
+    "sensitive_to_n": false
+   }
+  }
+ },
+ "completeness": {
+  "planned_n": 300,
+  "completed_n": 300,
+  "prefix_ok": true,
+  "below_80_percent": false
+ },
+ "label": "secondary family S2 (MUST experiment, not part of P); the claim-bearing cell is S2-splice (AD.5)",
+ "forbidden_wording": [
+  "improves verification",
+  "restoration",
+  "fidelity",
+  "perceptual quality",
+  "the string 'G.1' in the title, abstract, highlights, figure titles or the S2 table header (A3b.2 item 1); use: random-gate best-of-4 re-infill",
+  "a location claim from a kept-draw rejection whose draw-level interval does not exclude 0 on the same side (A3b.1 item 2)",
+  "describing a prefix-based result as an n = 300 result (A3b.6 item 5)"
+ ],
+ "seed_info": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ },
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile",
+  "allow_partial": false,
+  "n_duplicates_removed": 0,
+  "plan": {
+   "planned": 300,
+   "excluded": 0,
+   "n_requested": 300
+  }
+ }
+}
