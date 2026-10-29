@@ -1,0 +1,497 @@
+% method.tex -- source: research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md (v1 where v2 says unchanged).
+% The only empirical numbers in this file are the M1 detection values quoted in Section "gate statistic" (run P2-GATE-M1, K2 wording).
+% The only guarantee stated is the one the SAP (section 6) allows.
+% Notation: symbols follow the SAP and exp_p2/gate/theory.py. Four letters with a second meaning were disambiguated in this revision
+% (groups Gamma_k, sample count n_draw, empirical calibration risk F_cal, SNR flag probabilities phi_0, phi_1); crosswalk in Appendix A.
+% Propositions: Prop. 1 (calibration) is conformal risk control applied, not a contribution; the marginalisation property is
+% the standard denoiser property, not a contribution (must-not-claim items 5 and 6).
+% Prop. 2 (correlated-token gating) is theory (D0078, D0079); it is never used to explain an E-pred result; Props. 1 and 3 of the theory addendum are not used here.
+
+This section defines the notation, the scores, the calibrated gate, the evidence statistic and seven algorithms.
+Each algorithm calls the earlier ones, and Algorithm~\ref{alg:gate} composes all of them.
+The method has three steps.
+Each input token is \emph{scored} by its masked log-likelihood inside its own modality with the other modality withheld.
+Tokens whose score is improbable for clean inputs, at a threshold set on clean data, are \emph{gated}.
+The decision then \emph{fuses} evidence from the tokens that remain (GATE-M, the marginalise arm), or from tokens re-infilled by
+the model (GATE-I, the impute arm; the SAP calls it I-GATE).
+Cost is counted in network passes, listed per quantity in Appendix~\ref{app:diag}.
+One design rule organises the three steps: evidence that is tested must not be used to gate (Section~\ref{ssec:separation}).
+The denoiser is used through one conditional only, the probability of a token given a visible subset, called with no time
+input; Section~\ref{ssec:data} and Appendix~\ref{app:timefree} state what is checked about that property for the released
+checkpoint.
+
+\subsection{Setting and notation}\label{ssec:notation}
+A unified masked discrete diffusion model with absorbing-state masking is given a sequence of caption tokens and image tokens.
+The network $p_\theta$ maps a partly masked sequence to a categorical distribution at every masked position.
+A pair is $x=(t,v)$ with caption tokens $t=(t_1,\dots,t_n)$ and image tokens $v=(v_1,\dots,v_m)$.
+The modalities are $a,b\in\{T,I\}$ with $a\neq b$.
+Table~\ref{tab:notation} lists the symbols.
+All log-likelihoods are in nats, computed as an \fp{} log-softmax of the logits restricted to the vocabulary of the scored
+modality.
+
+\begin{table}[t]
+\centering
+\caption{Notation. Symbols follow the preregistration documents and the analysis code. A letter with a second use appears in a
+separate row. Symbols used only in the protocol are defined there.}
+\label{tab:notation}
+\footnotesize
+\begin{tabular}{p{0.27\linewidth}p{0.63\linewidth}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$x=(t,v)$ & one pair of caption tokens $t$ ($n$ tokens) and image tokens $v$ ($m=1\,024$ tokens) \\
+$\tilde x=(\tilde t,\tilde v)$, $v^\circ$ & the observed, possibly corrupted pair; the tokens of the clean image \\
+$Z_j=\ind[\tilde v_j\neq v^\circ_j]$ & corrupted-token label (used only for evaluation) \\
+$\mask$, $\varnothing^a$ & the mask token ($\mask$ means ``unknown''); all tokens of modality $a$ masked \\
+$a,b\in\{T,I\}$ & scored modality and the other modality (text, image) \\
+$p_\theta(x_j=\cdot\mid\cdot)$ & categorical of the network at masked position $j$ \\
+$\Pi_K=\{\Gamma_1,\dots,\Gamma_K\}$ & random partition of the positions of modality $a$ into $K$ complementary groups; $k(j)$ is the group of $j$ \\
+$A_j,B_j,C_j,D_j$ & four context levels of Eq.~\eqref{eq:levels}; $D_j[y]$ is the vector over codes $y$ and $D_j=D_j[x_j]$ \\
+$q_j$, $u_j$ & hypothesis-free intra-modal evidence $B_j-D_j$ and suspicion $u_j=-q_j$ \\
+$\alpha$, $\hat\tau$, $\widehat F_{\rm cal}$ & target false-alarm level, calibrated threshold, empirical calibration risk (Eq.~\ref{eq:crc}) \\
+$G$, $R$ & gated (flagged) set and reliable set, the complement of $G$ \\
+$c$, $c^+$, $c^-$ & a candidate caption, the true caption and a wrong caption \\
+$\Lambda^c_j[y]$ & log-probability of image code $y$ at position $j$ with the image fully masked and caption $c$ visible \\
+$\Delta_j$, $\bar\Delta_R$, $Y_R$ & per-token paired evidence, its mean over $R$, and the decision $\ind[\bar\Delta_R>0]$ (Eq.~\ref{eq:delta}) \\
+$d_R$, $z_R$ & size-normalised evidence ratio and evidence $z$-score over $R$ (Eq.~\ref{eq:dz}) \\
+$S_r$, $n_{\rm draw}$ & number of re-infill steps and of independent re-infill draws \\
+$S$, $\rho$, $\mu,\sigma^2$, $\mu_c,\sigma^2_c$ & additive statistic $\sum_jI_j\Delta_j$; corrupted fraction; mean and variance of $\Delta_j$ on clean and on corrupted tokens (Eqs.~\ref{eq:mean}--\ref{eq:snr}) \\
+$\phi_0$, $\phi_1$ & probability that a clean, respectively a corrupted, token is flagged in the signal-to-noise analysis; $\hat\phi_0,\hat\phi_1$ their observed values (called $\alpha$, $\beta$, $\alpha_{\rm obs}$, $\beta_{\rm obs}$ in the preregistration and the code) \\
+$\gamma_0$, $\gamma_1$, $\gamma_{01}$ & correlation of $\Delta_j$ and $\Delta_k$, $j\neq k$, for two clean tokens, two corrupted tokens, and one of each (Proposition~\ref{prop:snrcorr}; theory only) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Masked scores}\label{ssec:scores}
+For a token $j$ of modality $a$ with observed value $x_j$, four context levels are distinguished.
+Let $\Gamma_{k(j)}$ be the group of $j$ in a partition $\Pi_K$, and let $x^a_{-\Gamma}$ denote the tokens of modality $a$ outside $\Gamma$.
+\begin{align}
+A_j &= \log p_\theta\big(x_j\mid x^a_{-\Gamma_{k(j)}},\,x^b\big), &
+B_j &= \log p_\theta\big(x_j\mid x^a_{-\Gamma_{k(j)}},\,\varnothing^b\big),\notag\\
+C_j &= \log p_\theta\big(x_j\mid \varnothing^a,\,x^b\big), &
+D_j &= \log p_\theta\big(x_j\mid \varnothing^a,\,\varnothing^b\big).
+\label{eq:levels}
+\end{align}
+$A_j$ uses the rest of the own modality and the other modality; $B_j$ uses the own modality only; $C_j$ uses the other
+modality only; $D_j$ uses nothing and is the position marginal.
+By subtraction, the total pointwise mutual information splits in two ways,
+\begin{align}
+A_j-D_j&=\underbrace{(B_j-D_j)}_{q_j:\ \text{intra-modal}}+\underbrace{(A_j-B_j)}_{\text{cross-modal given own context}}\notag\\
+&=\underbrace{(A_j-C_j)}_{\text{intra-modal given }b}+\underbrace{(C_j-D_j)}_{\text{cross-modal}}.
+\label{eq:pmi}
+\end{align}
+The quantity $q_j=B_j-D_j$ asks whether token $j$ is consistent with the rest of its own modality, relative to how likely
+the value is at that position anyway.
+It never sees the other modality, and therefore never sees the hypothesis that will be tested.
+The cross-modal term $C_j-D_j$ is the decision evidence.
+All four levels come from one primitive, Algorithm~\ref{alg:maskedscore}.
+
+\begin{algorithm}[t]
+\caption{\textsc{MaskedScore}: log-likelihood of target tokens under a mask pattern}\label{alg:maskedscore}
+\Input{sequence $x$; target positions $P$; extra masked positions $X$; vocabulary slice $[lo,hi)$ of the targets}
+\Output{$\lambda_j=\log p_\theta(x_j\mid\cdot)$ and $\pi^{\max}_j=\max_y p_\theta(y\mid\cdot)$ for $j\in P$}
+\Fn{\textsc{MaskedScore}$(x,P,X,[lo,hi))$}{
+  $\tilde x\leftarrow x$; set $\tilde x_P\leftarrow\mask$ and $\tilde x_X\leftarrow\mask$\;
+  $\ell\leftarrow$ logits of $\tilde x$ \Comment*[r]{one network pass; batched with others}
+  \For{$j\in P$}{
+    $\eta_j\leftarrow\mathrm{logsoftmax}_{\fp}\big(\ell_{j,[lo,hi)}\big)$\;
+    $\lambda_j\leftarrow\eta_j[x_j-lo]$ and $\pi^{\max}_j\leftarrow\exp\max\eta_j$\;
+  }
+  \Return $(\lambda,\pi^{\max})$\;
+}
+\end{algorithm}
+
+\subsection{The gate statistic and the evidence-separation rule}\label{ssec:separation}
+Two regimes are fixed per task before any run.
+In the regime with \emph{no trusted reference} (detection, verification, matching), neither modality may be used to judge
+the other, because the cross-modal relation is what is being tested.
+In the regime with a \emph{trusted reference} (repair with a known clean caption), the trusted modality may be used in the gate,
+as a predicted state is used in an innovation gate of tracking.
+The paper studies the first regime.
+
+\emph{Evidence-separation rule:} in the first regime, the gate may use only statistics computed with the other modality
+masked, that is $B_j$ and $D_j$.
+A gate that used $A_j$ with a candidate caption visible would give each candidate a different evidence set, and a gate that removed
+low cross-modal-evidence caption words would remove exactly the words that make a wrong caption wrong.
+The gate statistic is therefore
+\begin{equation}
+u_j=-q_j=-(B_j-D_j),
+\label{eq:suspicion}
+\end{equation}
+where a larger $u_j$ means a more suspicious token.
+The division by the position marginal $D_j$ is the optimal normalisation in one idealised case only: if a corrupted value is
+drawn from the model's own position marginal independently of context, $q_j$ is the Neyman--Pearson statistic, whereas for
+a uniform alternative, that is for corruptions that replace tokens by uniform random codes, the plain likelihood $B_j$ is.
+Neither case is assumed to hold for JPEG, noise or splice, whose changed codes depend on the content, and no proposition about
+detection power is claimed for them.
+The null normalisation is therefore not assumed to improve detection, and the measurement does not show that it does.
+% run: P2-GATE-M1
+On the two uniform-code corruptions plain-$B$ has a slightly higher mean per-item AUROC than $q$ (patch 0.964 against 0.961,
+swap 0.960 against 0.955), and on JPEG and noise the two differ by less than 0.01 (0.560 against 0.561, and 0.511 against 0.503;
+no paired test was run on these two corruptions); Section~\ref{ssec:res_det} reports the full table.
+Detection of content-dependent damage is an empirical question (Section~\ref{sec:protocol}).
+The score $A_j-B_j$ without the null term cancels the own-context surprise of a corrupted token, because the term appears in
+both $A_j$ and $B_j$; it is kept only as a control.
+
+On the text side the gating unit is a word, that is a word-initial piece and its continuation pieces, and the suspicion of a
+word is the maximum of the suspicions of its pieces (equivalently, the minimum of their $q$), following the idea that
+multi-piece words need a word-level score~\citep{kauf2023plwl2r}.
+Gating a word masks all its pieces.
+
+\begin{algorithm}[t]
+\caption{\textsc{ReliabilityScores}: suspicion of every token of one modality}\label{alg:reliability}
+\Input{observed pair $\tilde x$; modality $a$; number of groups $K$; seed}
+\Output{suspicion vector $u$ over the positions of $a$}
+\Fn{\textsc{ReliabilityScores}$(\tilde x,a,K,\mathrm{seed})$}{
+  draw a partition $\Pi_K$ of the positions of $a$ from the seed\;
+  \For{$k=1,\dots,K$}{
+    $B_{\Gamma_k}\leftarrow$ \textsc{MaskedScore}$(\tilde x,\ \Gamma_k,\ \text{positions of }b,\ \text{slice of }a)$ \Comment*[r]{$b$ withheld}
+  }
+  $D\leftarrow$ \textsc{MaskedScore}$(\tilde x,\ \text{all of }a,\ \text{all of }b,\ \text{slice of }a)$ \Comment*[r]{layout only; cached}
+  $u_j\leftarrow-(B_j-D_j)$ for every position $j$ of $a$\;
+  \lIf{$a=T$}{aggregate $u$ to words by the maximum over the pieces of a word}
+  \Return $u$\;
+}
+\end{algorithm}
+
+\subsection{Calibration by conformal risk control}\label{ssec:calibration}
+The threshold is set on a calibration set $\mathcal D_{\rm cal}$ of $n_{\rm cal}$ clean pairs, disjoint by image from every other fold.
+``Clean'' means images as distributed in the data set and passed through the tokenizer; corruption labels are relative to
+that tokenisation.
+For item $i$ with $m_i$ gating units and suspicions $u_{ij}$, the false-alarm proportion at threshold $\tau$ is
+\begin{equation}
+L_i(\tau)=\frac1{m_i}\sum_{j=1}^{m_i}\ind\big[u_{ij}>\tau\big]\in[0,1],
+\label{eq:loss}
+\end{equation}
+which is non-increasing in $\tau$.
+Define the empirical calibration risk $\widehat F_{\rm cal}(\tau)=n_{\rm cal}^{-1}\sum_i L_i(\tau)$ and the threshold
+\begin{equation}
+\hat\tau=\inf\Big\{\tau:\ \frac{n_{\rm cal}}{n_{\rm cal}+1}\,\widehat F_{\rm cal}(\tau)+\frac1{n_{\rm cal}+1}\le\alpha\Big\},
+\label{eq:crc}
+\end{equation}
+with $\hat\tau=+\infty$ if the set is empty, so that nothing is flagged.
+A token is flagged when $u_{ij}>\hat\tau$ with a strict inequality.
+
+\begin{proposition}[calibration guarantee; conformal risk control applied]\label{prop:crc}
+Let the calibration items and a new clean test item be exchangeable as items, and let $L_i$ be defined by
+Eq.~\eqref{eq:loss}, with scores that have no ties.
+Then $\E\big[L_{\rm test}(\hat\tau)\big]\le\alpha$.
+\end{proposition}
+\noindent\emph{Proof.} The loss is bounded by one and non-increasing in the threshold, so the statement is Theorem~1 of
+conformal risk control~\citep{angelopoulos2024crc} with bound $B=1$. \qed
+
+\paragraph{Wording and scope of the guarantee.}
+The statement made in this paper, and no stronger one, is: the threshold is calibrated so that, for a clean test pair
+exchangeable with the calibration pairs, the expected proportion of its tokens that are flagged is at most $\alpha$.
+Three details keep the statement true in practice.
+The bound is over items, so tokens inside an item need not be exchangeable or independent and positions may have different
+score distributions.
+Ties, which arise from \texttt{bf16} logits, are broken by an independent uniform jitter $\epsilon\sim U(0,\epsilon_0)$ added to
+calibration and test scores, with $\epsilon_0$ below the smallest non-zero gap between distinct calibration scores, computed
+and not chosen.
+The statistic, $K$, $\alpha$ and the fold sizes are fixed before any test item is scored, because choosing them from calibration
+or test items would break exchangeability.
+The guarantee is marginal over the draw of the calibration set, so one realised calibration set may lie above $\alpha$ on a
+finite test set.
+
+\paragraph{What is not guaranteed.}
+There is no bound on detection power: calibration controls false alarms on clean items only.
+There is no bound on false alarms among the clean tokens of a \emph{corrupted} item, whose neighbours see contaminated context
+and can be flagged more often; that rate is measured and reported (Section~\ref{sec:protocol}).
+There is no guarantee under shift between calibration and test, such as another data set, caption style, resolution or
+tokenizer.
+Iterating the gate by re-scoring after masking breaks monotonicity in $\tau$, so the bound would not apply to it.
+Words such as ``certified'' or ``provably reliable'' are not used for this gate.
+
+\begin{algorithm}[t]
+\caption{\textsc{CalibrateThreshold}}\label{alg:calibrate}
+\Input{calibration set $\mathcal D_{\rm cal}$; modality $a$; level $\alpha$; $K$; seed rule}
+\Data{clean pairs only, disjoint from all other folds}
+\Output{threshold $\hat\tau$ and jitter scale $\epsilon_0$, stored with the hash of the item list, $K$, seed and statistic name}
+\Fn{\textsc{CalibrateThreshold}$(\mathcal D_{\rm cal},a,\alpha,K)$}{
+  \For{each item $i$ in $\mathcal D_{\rm cal}$}{
+    $u_i\leftarrow$ \textsc{ReliabilityScores}$(x_i,a,K,\mathrm{seed}_i)$\;
+  }
+  $\epsilon_0\leftarrow$ a value below the smallest non-zero gap between distinct pooled scores\;
+  add independent jitter $\epsilon_{ij}\sim U(0,\epsilon_0)$ to every $u_{ij}$\;
+  evaluate $\widehat F_{\rm cal}(\tau)$ at every distinct pooled value and return the smallest $\tau$ satisfying Eq.~\eqref{eq:crc}\;
+}
+\end{algorithm}
+
+\subsection{Gating}\label{ssec:gate}
+The gate applies the frozen threshold to the suspicions of an observed pair.
+Algorithm~\ref{alg:gate_set} computes the gated set $G$ and the reliable set $R$ with the same $K$, seed rule and statistic as
+in calibration.
+No iteration is used.
+
+\begin{algorithm}[t]
+\caption{\textsc{Gate} (uses Algorithms~\ref{alg:reliability} and~\ref{alg:calibrate})}\label{alg:gate_set}
+\Input{observed pair $\tilde x$; modality $a$; frozen $\hat\tau$ and $\epsilon_0$; $K$}
+\Output{gated set $G$, reliable set $R$, suspicion $u$}
+\Fn{\textsc{Gate}$(\tilde x,a,\hat\tau,\epsilon_0,K)$}{
+  $u\leftarrow$ \textsc{ReliabilityScores}$(\tilde x,a,K,\mathrm{seed})$\;
+  add independent jitter $\epsilon_j\sim U(0,\epsilon_0)$ to every $u_j$\;
+  $G\leftarrow\{j:u_j>\hat\tau\}$; $R\leftarrow$ complement of $G$\;
+  \Return $(G,R,u)$\;
+}
+\end{algorithm}
+
+\subsection{Withholding flagged tokens: GATE-M (marginalise)}\label{ssec:marginalise}
+Masking a flagged token tells the network that its value is unknown.
+For a network that equals the Bayes-optimal denoiser of the absorbing-state objective, masking the set $G$ marginalises it:
+for a masked target $j\notin G$,
+\begin{equation}
+p_\theta(x_j\mid x_R,\,x_G=\mask)=\sum_{x_G}p(x_j\mid x_R,x_G)\,p(x_G\mid x_R)=p(x_j\mid x_R).
+\label{eq:marginalise}
+\end{equation}
+This is the standard property of such denoisers~\citep{ou2025radd}, not a contribution.
+A real network approximates it.
+Structured patterns, such as a contiguous block of masked image tokens together with a fully masked caption, are rare under
+random per-token masking, so the amortisation error may be larger there; a coherence test on the real model is part of the
+protocol (Section~\ref{sec:protocol}).
+
+When the set $G$ is selected from the observed values, Eq.~\eqref{eq:marginalise} is not enough.
+Let $Y$ be the quantity to infer, for example the caption hypothesis.
+Using $p(Y\mid\tilde v_R)$ equals the Bayes answer under the corruption model when four conditions hold:
+(i) $R$ contains no corrupted token;
+(ii) corrupted values carry no information about the clean values, which holds for replacement by uniform random codes
+and fails for JPEG and noise;
+(iii) corruption locations are independent of the content, which fails where changed codes concentrate in regions in which the
+tokenizer is unstable;
+(iv) no clean token is in $G$, or the clean tokens in $G$ are uninformative about $Y$.
+The gate selects on the observed values, so the missingness is informative~\citep{rubin1976inference}.
+Each violation has a cost: residual corrupted evidence in (i), discarded signal in (ii) because a noisy copy would call for a
+denoising posterior and not for marginalisation, a wrong distribution $p(v_G\mid v_R)$ for selected positions in (iii), and lost
+clean evidence at rate $\alpha$ in (iv).
+The conditions therefore favour withholding for corruptions that satisfy (ii) and (iii) and are least favourable, possibly
+not at all, for JPEG and noise; this is stated in advance and is not an account of any result.
+
+\subsection{Image-direction evidence}\label{ssec:evidence}
+The decision studied is paired verification: for one image, does the true caption $c^+$ explain the image better than a wrong
+caption $c^-$.
+The image-direction evidence uses one pass per caption with all image tokens masked and the caption visible.
+Let $\Lambda^c_j[y]$ be the log-probability of code $y$ at image position $j$ in that pass, so that
+\begin{equation}
+\Delta_j=\Lambda^{c^+}_j[\tilde v_j]-\Lambda^{c^-}_j[\tilde v_j],\qquad
+\bar\Delta_R=\frac1{|R|}\sum_{j\in R}\Delta_j,\qquad
+Y_R=\ind\big[\bar\Delta_R>0\big].
+\label{eq:delta}
+\end{equation}
+The position marginal $D_j$ cancels in the difference for a fixed image, so $\Delta_j=(C_j(c^+)-D_j)-(C_j(c^-)-D_j)$.
+For a single candidate the per-caption evidence is $E_{I\leftarrow T}(c)=|R|^{-1}\sum_{j\in R}\big(\Lambda^{c}_j[\tilde v_j]-D_j[\tilde v_j]\big)$, and
+$\bar\Delta_R=E_{I\leftarrow T}(c^+)-E_{I\leftarrow T}(c^-)$.
+The logits of this pass do not depend on the image, which enters only through the gathered entries.
+Hence all arms that differ in the set $R$ (no gate, gate, random gates, a changed-code gate, a denoised copy) reuse the same two
+passes per item.
+Ties and an empty set count as wrong, $Y=0$.
+Two continuous summaries are used in the secondary analyses,
+\begin{equation}
+d_R=\frac{\bar\Delta_R}{s_R},\qquad z_R=\sqrt{|R|}\,d_R,
+\label{eq:dz}
+\end{equation}
+where $s_R$ is the sample standard deviation of $\Delta_j$ over $R$.
+The ratio $d_R$ rises when tokens with extreme per-token evidence are removed for any reason, which is why a random gate and
+an uncertainty-ranked gate of equal size are reported next to it.
+
+\begin{algorithm}[t]
+\caption{\textsc{ImageEvidence} (GATE-M; uses Algorithms~\ref{alg:maskedscore} and~\ref{alg:gate_set})}\label{alg:evidence}
+\Input{observed image tokens $\tilde v$; candidate captions $c_1,\dots,c_N$; reliable set $R$ from \textsc{Gate} or another arm; cached position marginal $D$}
+\Output{$E_{I\leftarrow T}(c_k)$ for every candidate and, for a pair $(c^+,c^-)$, the paired quantities $Y_R$, $\bar\Delta_R$, $d_R$}
+\Fn{\textsc{ImageEvidence}$(\tilde v,\{c_k\},R)$}{
+  \For{each candidate $c_k$}{
+    $\Lambda^{c_k}\leftarrow$ \textsc{MaskedScore} with all image tokens masked and $c_k$ visible, keeping the \fp{} log-probabilities over all image codes at all $m$ positions\Comment*[r]{one pass; reusable by every arm}
+    $E_{I\leftarrow T}(c_k)\leftarrow\frac1{|R|}\sum_{j\in R}\big(\Lambda^{c_k}_j[\tilde v_j]-D_j[\tilde v_j]\big)$\;
+  }
+  \lIf{$N=2$}{$\Delta_j\leftarrow\Lambda^{c^+}_j[\tilde v_j]-\Lambda^{c^-}_j[\tilde v_j]$ for $j\in R$; \Return $\big(\ind[\bar\Delta_R>0],\ \bar\Delta_R,\ \bar\Delta_R/s_R\big)$}
+  \Return $\{E_{I\leftarrow T}(c_k)\}$\;
+}
+\end{algorithm}
+
+\paragraph{Analysis: when does withholding help an additive statistic?}\label{par:snr}
+Consider the statistic $S=\sum_j I_j\Delta_j$ over $m$ tokens, with $I_j\in\{0,1\}$ the indicator that token $j$ is kept.
+Under an independent-token approximation, clean tokens have mean $\mu$ and variance $\sigma^2$ and are kept with probability
+$1-\phi_0$, corrupted tokens have mean $\mu_c$ and variance $\sigma_c^2$ and are kept with probability $1-\phi_1$, and a fraction
+$\rho$ of tokens is corrupted.
+Then
+\begin{align}
+\E S&=m\big[(1-\rho)(1-\phi_0)\mu+\rho(1-\phi_1)\mu_c\big],\label{eq:mean}\\
+\Var S&=m\Big[(1-\rho)\big\{(1-\phi_0)\sigma^2+\phi_0(1-\phi_0)\mu^2\big\}\notag\\
+&\qquad+\rho\big\{(1-\phi_1)\sigma_c^2+\phi_1(1-\phi_1)\mu_c^2\big\}\Big].\label{eq:var}
+\end{align}
+The no-gate case is $\phi_0=\phi_1=0$, and the gate raises $\E S/\sqrt{\Var S}$ if the ratio after exceeds the ratio before.
+For $\mu_c=0$ this reduces to
+\begin{equation}
+\rho\,\sigma_c^2\,(\phi_1-2\phi_0+\phi_0^2)\;>\;\phi_0(1-\phi_0)(1-\rho)\,(\sigma^2+\mu^2).
+\label{eq:snr}
+\end{equation}
+Three consequences are stated in advance.
+A necessary condition is $\phi_1>2\phi_0-\phi_0^2$.
+A random gate has $\phi_1=\phi_0$, for which the left side is negative, so it lowers the ratio.
+On a clean item ($\rho=0$) any gate with $\phi_0>0$ lowers the ratio slightly.
+The model is an approximation, since neighbouring tokens are correlated, and $\mu_c$ need not be zero even for random codes: a
+caption that makes the predicted image distribution flatter gives random codes a higher probability.
+The protocol estimates $\rho,\mu,\sigma^2,\mu_c,\sigma_c^2$ and the observed flag rates $\hat\phi_0,\hat\phi_1$ per corruption from
+the per-token terms, and reports in how many corruptions the sign of the plug-in change of the ratio agrees with the sign of the
+observed net accuracy difference (descriptive family E-pred, Section~\ref{ssec:families}); it is not a test and enters no claim
+about the primary result.
+E-pred uses Eqs.~\eqref{eq:mean}--\eqref{eq:var} as committed, and Proposition~\ref{prop:snrcorr} below is neither used by it nor
+used to explain or interpret any E-pred result, agreeing or not.
+
+\paragraph{Correlated tokens.}\label{par:snrcorr}
+Eqs.~\eqref{eq:mean}--\eqref{eq:snr} treat the per-token terms as independent, which is an approximation for image tokens.
+The following statement replaces independence by an exchangeable correlation within and between the two classes of tokens.
+It is theory under stated assumptions and is not evaluated on the model.
+The new symbols are $\gamma_0$, $\gamma_1$ and $\gamma_{01}$, the correlations of two clean, two corrupted, and one clean and one
+corrupted token.
+
+\begin{proposition}[withholding with exchangeably correlated tokens]\label{prop:snrcorr}
+Condition on the corruption labels, so that $(1-\rho)m$ tokens are clean and $\rho m$ are corrupted, with the moments
+$\mu,\sigma^2,\mu_c,\sigma_c^2$ and the keep probabilities $1-\phi_0$, $1-\phi_1$ of Eqs.~\eqref{eq:mean}--\eqref{eq:var}.
+Assume (a) that for $j\neq k$ the correlation of $\Delta_j$ and $\Delta_k$ is $\gamma_0$ if both tokens are clean, $\gamma_1$ if both
+are corrupted and $\gamma_{01}$ otherwise, with values for which the covariance matrix is positive semi-definite; and (b) that the
+keep indicators $I_j$ are independent of each other and of every $\Delta_k$.
+Then $\E S$ is given by Eq.~\eqref{eq:mean}, and, under (a) and (b),
+\begin{equation}
+\begin{aligned}
+\Var S={}&V+(1-\rho)m\big((1-\rho)m-1\big)(1-\phi_0)^2\gamma_0\sigma^2\\
+&+\rho m(\rho m-1)(1-\phi_1)^2\gamma_1\sigma_c^2\\
+&+2\rho(1-\rho)m^2(1-\phi_0)(1-\phi_1)\gamma_{01}\sigma\sigma_c,
+\end{aligned}
+\label{eq:varcorr}
+\end{equation}
+where $V$ is the right side of Eq.~\eqref{eq:var}.
+If moreover $\mu_c=0$ and $\E S>0$ with and without the gate, the gate raises $\E S/\sqrt{\Var S}$ if and only if
+\begin{equation}
+\begin{aligned}
+&\rho\,\sigma_c^2\Big[(\phi_1-2\phi_0+\phi_0^2)\\
+&\qquad+(\rho m-1)\,\gamma_1\,(\phi_1-\phi_0)(2-\phi_0-\phi_1)\Big]\\
+&\quad+2\rho(1-\rho)\,m\,\gamma_{01}\,\sigma\sigma_c\,(1-\phi_0)(\phi_1-\phi_0)\\
+&\qquad>\;(1-\rho)\,\phi_0(1-\phi_0)\,(\sigma^2+\mu^2).
+\end{aligned}
+\label{eq:snrcorr}
+\end{equation}
+Consequently:
+(i) $\gamma_0$ does not enter Eq.~\eqref{eq:snrcorr}, and at $\gamma_1=\gamma_{01}=0$ it is Eq.~\eqref{eq:snr};
+(ii) a gate with $\phi_1=\phi_0$, such as a random gate, lowers the ratio for every admissible correlation, and if $\gamma_{01}\ge0$ every
+gate with $\phi_1\le\phi_0$ lowers it;
+(iii) where $\phi_1>\phi_0$, a larger $\gamma_1$ or $\gamma_{01}$ can only turn a decrease of the ratio into an increase, so positive
+correlation among corrupted tokens, or between clean and corrupted tokens, enlarges the region of $(\phi_0,\phi_1)$ in which the gate
+raises the ratio, and as $(\rho m-1)\gamma_1\to\infty$ that region tends to $\{\phi_1>\phi_0\}$;
+(iv) if $\gamma_{01}<0$, a gate that flags only clean tokens can raise the ratio;
+(v) unlike Eq.~\eqref{eq:snr}, the condition depends on $m$.
+\end{proposition}
+
+\noindent\emph{Proof sketch.} Each of the $m(m-1)$ ordered pairs of distinct tokens adds $\E I_j\,\E I_k\,\mathrm{Cov}(\Delta_j,\Delta_k)$
+to $\Var S$, which gives the three correlation terms of Eq.~\eqref{eq:varcorr}.
+With $\mu_c=0$ the gate multiplies $\E S$ by $1-\phi_0$, so it raises the ratio if and only if
+$(1-\phi_0)^2\,\Var S|_{\phi_0=\phi_1=0}>\Var S$; the clean-pair terms scale by $(1-\phi_0)^2$ on both sides and cancel, and the
+remaining terms, divided by $m$, give Eq.~\eqref{eq:snrcorr}.
+Appendix~\ref{app:snrcorr} gives the full proof. \qed
+
+At zero correlation the statement is the independent-token analysis above: Eq.~\eqref{eq:varcorr} reduces to Eq.~\eqref{eq:var} and
+Eq.~\eqref{eq:snrcorr} to Eq.~\eqref{eq:snr}.
+Correlation therefore moves the gating frontier in the way (ii)--(iv) state, and independence is an approximation whose effect on the
+frontier is of that kind and not of a fixed sign.
+The ratio in Proposition~\ref{prop:snrcorr} is the signal-to-noise ratio of the sum.
+If the per-token terms are jointly Gaussian, the accuracy $P(S>0)$ given the flags is $\Phi$ of the conditional ratio, which the
+unconditional ratio approximates; without joint Gaussianity no statement about accuracy follows, and a gate can raise the ratio while
+lowering the accuracy.
+Assumption (b) is an approximation for GATE, whose flags are computed from the same token values as the evidence.
+With correlation the ratio no longer grows like $\sqrt m$: it tends to a limit set by the shared component of the per-token terms.
+
+\subsection{Text-direction evidence and conditioning arms}\label{ssec:text}
+The text direction scores the caption tokens given the image.
+With caption $c$ fully masked and the image visible, the evidence is the sum over caption tokens of the log-probability minus the same pass with the image
+masked,
+\begin{equation}
+E_{T\leftarrow I}(c)=\sum_{j}\big(C_j-D_j\big),
+\label{eq:text}
+\end{equation}
+where the image tokens in the gated set $G$ are masked in the first pass.
+This is a conditioning arm in which the network, and not the arithmetic of a sum, withholds the flagged tokens.
+In the exploratory analyses the statistic is the mean per-token value.
+
+\subsection{Re-infilling flagged tokens: GATE-I (impute)}\label{ssec:reinfill}
+Instead of leaving flagged tokens masked, the model can fill them in.
+Algorithm~\ref{alg:reinfill} samples $n_{\rm draw}$ completions in $S_r$ steps, unmasking at step $s$ the next $k_s$ positions
+of a random order drawn up front, and keeps the draw with the highest chain log-likelihood under the model itself, with the
+caption masked (best of $n_{\rm draw}$; GATE-I).
+The sampler is unguided and samples each position from the softmax at temperature one; it is the sampler fixed in the analysis plan
+and not the sampler of the backbone's authors.
+A hybrid variant that keeps only filled values whose recorded probability reaches $\kappa$ is described in the specification
+and is not part of any preregistered family.
+If the filled tokens are generated with the candidate caption visible, the evidence for that caption is biased upward.
+Writing $\hat v_G\sim p(v_G\mid v_R,c)$, Bayes' rule gives
+\begin{align}
+\E\big[\log p(c\mid v_R,\hat v_G)\big]&=\log p(c\mid v_R)+\mathrm{KL}\big(p(v_G\mid v_R,c)\,\|\,p(v_G\mid v_R)\big)\notag\\
+&\ge\log p(c\mid v_R),
+\label{eq:leak}
+\end{align}
+so every candidate receives a non-negative bonus equal to how strongly it constrains the filled region, which need not favour the
+true caption.
+The rule is therefore to re-infill with the caption masked and to run the caption-visible variant only as a leakage control.
+With exact sampling from $p(v_G\mid v_R)$, the expectation of $p(c\mid v_R,\hat v_G)$ equals $p(c\mid v_R)$, so GATE-I
+is unbiased for GATE-M in the probability domain; in the log domain an $n_{\rm draw}$-sample estimate is biased downward by
+Jensen's inequality and adds sampling variance.
+Marginalising and imputing are not compared as a test: the preregistered re-infill family S2 compares the repaired flagged set
+with repairing an equal-size random set (Section~\ref{ssec:families}).
+
+\begin{algorithm}[t]
+\caption{\textsc{ReInfill} (GATE-I; uses Algorithms~\ref{alg:maskedscore} and~\ref{alg:gate_set})}\label{alg:reinfill}
+\Input{observed image tokens $\tilde v$; gated set $G$; steps $S_r$; draws $n_{\rm draw}$; seed}
+\Output{the kept completed image $\hat v$ and the $n_{\rm draw}$ draws}
+\Fn{\textsc{ReInfill}$(\tilde v,G,S_r,n_{\rm draw},\mathrm{seed})$}{
+  \For{$\ell=1,\dots,n_{\rm draw}$}{
+    $y\leftarrow\tilde v$ with $y_G\leftarrow\mask$; caption masked \Comment*[r]{caption masked: no leakage}
+    draw a random order of $G$ from the seed; $\mathrm{chain}_\ell\leftarrow0$\;
+    \For{$s=1,\dots,S_r$}{
+      $U\leftarrow$ positions of $G$ still masked in $y$; $k_s\leftarrow\lceil|U|/(S_r-s+1)\rceil$\;
+      $\pi_j\leftarrow p_\theta(\cdot\mid y)$ for $j\in U$ \Comment*[r]{one pass, via \textsc{MaskedScore}}
+      take the next $k_s$ positions of $U$ in the drawn order; sample $y_j\sim\pi_j$; $\mathrm{chain}_\ell\mathrel{+}=\log\pi_j(y_j)$\;
+    }
+    $\hat v^{(\ell)}\leftarrow y$\;
+  }
+  \Return the draw $\hat v^{(\ell)}$ with the largest $\mathrm{chain}_\ell$ and the set of all draws\;
+}
+\end{algorithm}
+
+\subsection{Two-way evidence fusion}\label{ssec:fusion}
+For a candidate $c$ there are two directional statistics, $E_{T\leftarrow I}(c)$ of Eq.~\eqref{eq:text} and the image-direction
+evidence of Eq.~\eqref{eq:delta}.
+Inverse-variance weighting is not used, because the two statistics estimate different quantities on different scales, share
+one network and are deterministic for a given input under full masking.
+The fusion rule is reported in three steps on the paired differences $\Delta^{\rm pair}=(\Delta_T,\Delta_I)^\top$ with
+$\Delta_d=E_d(c^+)-E_d(c^-)$:
+(1) each direction alone;
+(2) an unfitted Stouffer sum, with each paired margin standardised by its standard deviation on calibration items and the sum
+divided by $\sqrt{2+2\hat r}$, where $\hat r$ is the calibration correlation;
+(3) Fisher's linear discriminant,
+\begin{equation}
+\hat\omega=\hat\Sigma_{\Delta}^{-1}\hat\mu_{\Delta},\qquad F(c)=\hat\omega_T\,E_{T\leftarrow I}(c)+\hat\omega_I\,E_{I\leftarrow T}(c),
+\label{eq:lda}
+\end{equation}
+with the weights fitted on pairs disjoint from the test pairs and frozen before the test fold.
+The fusion therefore has two fitted weights, which is why the paper says ``no network finetuning'' and not ``training-free''.
+The sum of per-token log-likelihood ratios in Eq.~\eqref{eq:delta} is the fusion rule of distributed detection~\citep{chair1986optimal}, which
+equals the global log-likelihood ratio only for sources that are independent given the hypothesis.
+Image tokens are not independent, so independence is an approximation here; Proposition~\ref{prop:snrcorr} states how correlation
+moves the gating frontier, and it does not make the sum optimal.
+The sum is used as a standard statistic and not as an optimal one.
+Whether a fusion gain can be tested depends on the clean accuracy of the best single direction (Section~\ref{sec:protocol}).
+
+\begin{algorithm}[t]
+\caption{\textsc{GateVerify}: gated cross-modal verification (composes Algorithms~\ref{alg:maskedscore}--\ref{alg:reinfill})}\label{alg:gate}
+\Input{observed pair $\tilde v$ and candidates $c_1,\dots,c_N$; frozen $\hat\tau_I,\epsilon_0$; fusion weights $\hat\omega$; arm $\in\{$none, GATE-M, GATE-I$\}$}
+\Output{a score $F(c_k)$ per candidate and a decision}
+\Fn{\textsc{GateVerify}$(\tilde v,\{c_k\},\hat\tau_I,\hat\omega,\text{arm})$}{
+  $(G,R,u)\leftarrow$ \textsc{Gate}$(\tilde v,I,\hat\tau_I,\epsilon_0,K)$ \Comment*[r]{once per image; caption masked, hypothesis-free}
+  \lIf{arm $=$ none}{$G\leftarrow\varnothing$; $R\leftarrow\{1,\dots,m\}$}
+  \If{arm $=$ GATE-I}{$\hat v\leftarrow$ \textsc{ReInfill}$(\tilde v,G,S_r,n_{\rm draw},\mathrm{seed})$; $\tilde v\leftarrow\hat v$; $R\leftarrow\{1,\dots,m\}$}
+  $\{E_{I\leftarrow T}(c_k)\}\leftarrow$ \textsc{ImageEvidence}$(\tilde v,\{c_k\},R)$\;
+  \For{each candidate $c_k$}{
+    $E_{T\leftarrow I}(c_k)\leftarrow$ \textsc{MaskedScore} on the caption, caption fully masked, image visible with the tokens of $G$ masked (GATE-M)\;
+    $F(c_k)\leftarrow\hat\omega_T E_{T\leftarrow I}(c_k)+\hat\omega_I E_{I\leftarrow T}(c_k)$\;
+  }
+  \Return $\{F(c_k)\}$ and the decision (argmax, or a threshold for unpaired verification)\;
+}
+\end{algorithm}

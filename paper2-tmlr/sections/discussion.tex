@@ -1,0 +1,167 @@
+% discussion.tex -- Findings written 2026-10-29 for the label NEG of P (SAP Addendum A4, A4.2.3: opening of 6.1 near-verbatim).
+% The fusion-context and limitations subsections are outcome-independent and drafted from the preregistration (card v4, SAP, A4).
+% No sentence in this file draws on PS, S2, B, R, E-dec, E-pred, the suite, detection or the exploratory comparison to explain, qualify
+% or predict the primary result (AB.1). The phrase "when does input gating help" is not used (D18 reading 1, decisions D0076-D0077);
+% after the opening, the question of when gating can help is discussed only through the closed-form condition and the P table.
+% Proposition 2 (correlated tokens) is not used on E-pred (D0078); Proposition 1 of the theory addendum is not used (D0078-D0079).
+
+\subsection{Findings}\label{ssec:disc_findings}
+% run: P2-GATE-M4 (analysis.json primary.*)
+The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
+from gating under JPEG quality~10, Gaussian noise with $\sigma=0.10$ and a $128$-pixel splice, for this model and these severities; it
+does not show that gating has no effect.
+
+The primary table shows how narrow the measured change is: in 500 items the gate changed the decision once under JPEG, never under
+noise and four times under splice (Table~\ref{tab:res_primary}).
+The exclusion of $\pm0.05$ is a statement about these discordances at the threshold calibrated for $\alpha=0.05$, at one severity per
+corruption, in one model and on one data set.
+It says nothing about a gate that flags a larger share of tokens, about stronger corruptions, or about another model or task, none of
+which was tested.
+Section~\ref{ssec:evidence} gives, under independent tokens, the condition on the hit and false-alarm rates under which discarding
+flagged tokens raises the signal-to-noise ratio of an additive evidence sum (Eq.~\eqref{eq:snr}).
+The condition states what a gate would have to achieve; it is an approximation for dependent image tokens, the test was not designed to
+check it, and we do not use it to account for the result.
+
+The remaining findings are separate measurements, each under its own family label, and none of them is an account of the primary result.
+For each we give the observation, a hypothesis for it, and what would falsify the hypothesis.
+
+\emph{The clean false-alarm statement held; the flags on corrupted images are not covered by it.}
+% run: P2-GATE-M4 (calibration.*)
+On held-out clean pairs the realised flagged share was 0.0456 at $\alpha=0.05$ (95\,\% interval 0.0442 to 0.0470), with no evidence
+of violation at any of the three levels (Section~\ref{ssec:res_cal}).
+On the unchanged tokens of corrupted images the false-alarm proportion was 0.036 to 0.044 for the realistic corruptions and 0.089 under
+swap, above $\alpha$.
+Hypothesis: a token next to a replaced code is scored with damaged context and is flagged more often, as Section~\ref{ssec:calibration}
+anticipates.
+It would be falsified if, under swap, the false-alarm proportion of an unchanged token did not fall with its distance to the nearest
+replaced code; this was not measured.
+
+\emph{The gate's score was near chance at finding the codes that JPEG and noise change.}
+% run: P2-GATE-M1; P2-GATE-M4 (s_d2.*, calibration.per_condition.*)
+On the detection items and again on the test items (families S-D and S-D2) the per-item AUROC of $q$ was 0.561 under JPEG and 0.503 and
+0.509 under noise, below a texture score whose sign was chosen on the data; under noise the hit rate of the gate (0.033) was below its
+false-alarm proportion on unchanged tokens (0.036).
+Hypothesis, the label-circularity concern of Section~\ref{ssec:limits}: JPEG quality~10 and noise change more than nine in ten codes of
+an image (Table~\ref{tab:res_flags}), so a changed code marks where the tokenizer is unstable more than where the image is damaged, and a
+texture score tracks that instability.
+It would be falsified if $q$ stayed at chance against a damage label defined in the pixel domain, for example the reconstruction error
+of each token's patch, under which texture had no advantage; this was not measured.
+
+\emph{A pixel denoiser restored most of the accuracy lost to noise.}
+% run: P2-GATE-M4 (s_dn.*, c1_test.accuracy)
+Under noise the denoised copy reached 0.852 against 0.676 without a gate and 0.880 on clean images, and it gave higher verification
+accuracy than GATE-M (family S-DN, Section~\ref{ssec:res_dn}); under JPEG no difference was detected, with a denoiser setting that
+lowers JPEG image quality.
+Hypothesis: noise of this strength is largely removed in the pixel domain before tokenisation, so the tokens of the denoised image are
+close to the clean ones.
+It would be falsified if the share of codes that differ from the clean tokenisation were not lower for the denoised noisy images than for
+the noisy ones; this was not measured.
+The denoiser is a measured comparator, not part of the gate, and one setting was used.
+
+\emph{Withholding every changed code lowered accuracy under JPEG.}
+% run: P2-GATE-M4 (mechanism.jpeg10.y.changed_code_minus_none; edec.json cells.P1; calibration.per_condition.jpeg10.prop4.rho)
+The changed-code gate, which keeps only the codes that the corruption left unchanged, lowered accuracy under JPEG by 0.084 and raised it
+under noise by 0.070 (Table~\ref{tab:res_mech}); in E-dec the gap to this oracle was negative under JPEG with an interval that excludes
+zero, which by the plan voids any detection reading of that cell (Section~\ref{ssec:res_edec}).
+Hypothesis: under JPEG this gate decides on about four percent of the tokens of an image, and the sum over so few tokens is noisier than
+the sum over all of them, which is the composition effect named in the plan.
+It would be falsified if keeping a random set of the same small size, instead of the unchanged codes, did not lower accuracy by a similar
+amount; this was not measured.
+
+\emph{Exploratory: no detector-free combiner was above the hard gate on a realistic corruption.}
+% run: P2-GATE-M4 (tier3_fusion.json)
+In the exploratory comparison (Section~\ref{ssec:res_expl}; Tier~3, intervals only), the hard gate gave higher verification accuracy
+than the median and the 20\,\% trimmed mean under JPEG and splice; the data do not show a difference between the hard gate and the
+trimmed mean at the gate's flag count on any realistic corruption, nor between the hard gate and the median or the 20\,\% trimmed mean
+under noise, with bounds at most 0.05, which counts by the pre-stated rule as a finding against the added value of the detector on those
+cells.
+Discarding the flagged tokens and discounting or weighting them were not distinguishable on any realistic corruption.
+This is a property of these combiners on these cells, measured on the same evidence as the primary test, and not an account of the
+primary result; when the gate's score is near chance, the comparison with the trimmed mean at the gate's flag count largely repeats the
+primary contrast (limit (c) of Table~\ref{tab:res_tier3}).
+
+\emph{The positive control was not met.}
+% run: P2-GATE-M4 (ps.*)
+On the two sanity corruptions the gate did not change accuracy detectably (Section~\ref{ssec:res_ps}); by the plan this reads ``pipeline defect suspected, audit triggered''.
+\todo{AUTHOR/RESULT: state the outcome of the audit. Until it is reported, a defect in the pipeline that computes the gated evidence
+cannot be excluded, and the paper says so here and in Section~\ref{ssec:limits}.}
+
+\subsection{Where the work sits in information fusion}\label{ssec:disc_fit}
+\emph{What is fused.}
+The 1\,024 image tokens of one image are 1\,024 sources.
+Each reports a log-likelihood ratio between two candidate captions, and the decision sums them; a second, text-direction statistic can
+be fused with that sum at score level (family B).
+\emph{At what level.}
+At the input: the gate acts on the sources before the evidence sum, not on the output decision, which is why the paper speaks of
+input-level source validation.
+\emph{Where reliability enters.}
+Only through a zero-one weight in the sum (GATE-M) or through replacement of the flagged values by a model draw (GATE-I).
+The weight is computed from within-modality evidence alone, and its threshold is set on clean data at a fixed false-alarm level, as in
+CFAR detection.
+\emph{What is not claimed.}
+The paper claims no new fusion rule.
+The additive rule is optimal only for sources that are independent given the hypothesis, which image tokens are not, and the hard
+weight is not claimed to be the best way to use a reliability estimate; graded weights and robust aggregation are the standard
+alternatives, and Section~\ref{ssec:tier3} states the exploratory comparison with them.
+
+The calibrated gate of \citet{zhou2027burden} and the gate studied here answer different questions.
+As described in the abstract of Zhou and Lu, theirs decides which of two recognisers to believe for one test instance; the gate
+here decides which input tokens to withhold before two directions of image-text evidence are combined.
+The two could be stacked, but this is not tested.
+Evidential fusion~\citep{shao2024ddef,huang2025evidential} and conformal prediction sets on a fusion network~\citep{wang2025multistage}
+are other uses of reliability and of distribution-free calibration in Information Fusion that we found; as far as their abstracts describe,
+none scores input tokens with the likelihood of a generative model.
+\todo{AUTHOR: after the results are frozen, give the abstract and Figure~1 caption to a reader with no project context and ask what is
+fused (open check on the scope-fit question); settle the scope-fit question with the supervising professor before submission.}
+
+\subsection{Limitations}\label{ssec:limits}
+Except for the item on the positive control, the limitations below are fixed by the design and do not depend on the outcome.
+\begin{itemize}
+\item \emph{One model, one data set.} All measurements of the primary family use UniDisc 1.4B and COCO val2017 images as tokenised
+by one tokenizer. A second, 4-bit quantised model was to enter only in family R, only if P had a rejection with $b>c$; P had none, so R
+was not run. No statement is made for other models, resolutions, caption styles or data sets.
+\item \emph{Contamination is unknown.} Whether the evaluation images were in the training data of the model or of the tokenizer was not
+established, and it could make clean pairs easier than unseen ones. The same applies, with more force, to the hard-negative set,
+whose true captions are COCO captions.
+\item \emph{Narrow guarantee.} The calibration bounds the expected false-alarm proportion on clean, exchangeable test pairs. It gives
+no bound on detection power, none on the clean tokens of corrupted items, and none under shift. Unlike a selective-risk bound on
+the harm of an action, as described for \citet{zhou2027burden}, it says nothing about the harm or the power of the gate
+on corrupted inputs. The realised proportion on one finite test set can lie above $\alpha$ because the statement is marginal over the
+calibration draw.
+\item \emph{Corruptions and labels.} Corruption labels are relative to the tokenisation of the clean image, so a ``clean'' token
+may already carry compression artefacts of the original photograph. Changed codes under JPEG and noise concentrate where the tokenizer
+is unstable, so the label may track tokenizer instability more than damage: a texture rival that wins against this label is not
+thereby shown to explain the corruption effect, and the changed-code gate is not an upper bound for these corruptions.
+\item \emph{Comparators chosen on the data.} The best cheap rival is selected among about nine candidates, with both signs admitted, which
+biases the detection contrast against the gate. The rival's sign could not be fixed blind (Section~\ref{ssec:prereg}).
+\item \emph{Pixel denoiser.} One setting was used for all corruptions; it was chosen after one exploratory evaluation on 20 images and
+harms JPEG images, so the denoising contrast on JPEG favours the gate.
+\item \emph{Variance not in the intervals.} Intervals cover item sampling. They do not cover variation across mask partitions, corruption
+draws, jitter seeds or models, because no training seeds exist and only one corruption draw is made per image. Eleven test families
+are run with no multiplicity control across them.
+\item \emph{A constructed task.} The primary decision is a two-way caption match on the weaker of the two available statistics, with
+random negatives (Section~\ref{ssec:task}). It measures how an image-direction statistic tolerates damage and says nothing about
+what a gate adds to a verifier that uses the stronger text direction; only family B addresses the two-direction setting, and it may be
+untestable at the ceiling or not run.
+\item \emph{A hard gate and dependent tokens.} The gate is binary, and the evidence sum and the signal-to-noise analysis assume
+independent tokens, which neighbouring image tokens are not. Graded and robust alternatives are examined only in an exploratory
+comparison (Section~\ref{ssec:tier3}), which is not a test and is subject to its own limits.
+\item \emph{Time input and checkpoint.} The scorer calls the denoiser without a time input; that this is the intended path was checked
+for the released configuration and checkpoint only, the training weight of whole-modality masks is unknown, and the key check does not
+cover the image tokeniser (Section~\ref{ssec:data}, Appendix~\ref{app:timefree}).
+\item \emph{Scope of the preregistered run.} Families S2 (re-infilling), B (two-way fusion) and R (second model) each have a status of
+run or not run, decided by time and by their gatekeeping rule and never by an outcome, and the paper reports that status.
+Caption corruption, the backbone authors' own re-infill recipe and the gating of caption tokens are not tested as families.
+\item \emph{Positive control not met.} The preregistered positive control on the sanity corruptions was not met, which triggers a
+pipeline audit (Section~\ref{ssec:res_ps}). \todo{AUTHOR/RESULT: outcome of the audit; until it is reported, a defect in the computation
+of the gated evidence is not excluded.}
+\item \emph{Hardware and missing data.} The GPU is a single laptop device that failed in earlier pilots. A crash leaves a prefix of the item
+list and the missing-item rule applies; a fold under 240 items is reported as incomplete.
+\item \emph{Narrow novelty.} Detecting and remasking corrupted input tokens, cross-modal remasking, risk-controlled thresholds for
+vision-language errors, including gates that decide between whole predictions~\citep{zhou2027burden}, and masked-likelihood scores
+each have precedents (Section~\ref{sec:related}). The claim is a measurement of their composition on one model, and it holds only as
+far as the measured results go.
+\item \emph{Concurrent work.} A search for concurrent work was last run on 28 October 2026; unpublished or under-review work is not
+visible, and the closest paper in Information Fusion~\citep{zhou2027burden} was compared from its abstract and preview only.
+\todo{AUTHOR: repeat the search once before submission, and read the full text of Zhou and Lu.}
+\end{itemize}

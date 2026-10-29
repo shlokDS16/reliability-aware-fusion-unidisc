@@ -1,0 +1,127 @@
+% introduction.tex -- card v4 scope (eleven test families; P is the only headline family, SAP Addendum A4 Part 2 binds the wording of
+% the contribution list). Drafted outcome-neutral on 2026-10-28; on 2026-10-29 the contribution list was completed for the label NEG
+% of P (A4.2.4 items 3 and 5). Measured results quoted: the detection table of run P2-GATE-M1 (secondary family S-D, wording of
+% decision D0074), the label sentence of P and the clean false-alarm check (run P2-GATE-M4).
+% Must-not-claim list (NOVELTY-REAUDIT-GATE section 7; NOVELTY-CHECK-INFFUS section 4, items 10 to 13) is respected: no "first" claim,
+% no "decision-level" for the gate, no sentence about Zhou and Lu that only their full text could support.
+
+Input-token gating asks which of the observed tokens given to a model should be withheld before the model reasons from
+them.
+The question arises for any model that reads a sequence of discrete tokens as evidence, and it is sharp for masked
+discrete diffusion models.
+A masked diffusion model is trained to predict any masked token from any visible subset of the sequence, and the mask
+token means ``unknown''~\citep{austin2021d3pm,sahoo2024mdlm,ou2025radd}.
+Every token that is visible is therefore treated as certain.
+This is acceptable for a clean training sequence.
+It is a weakness when the input comes from a pipeline that compresses, adds noise to, crops, splices or mislabels the data,
+because a single wrong visible token is used with the same confidence as a correct one.
+Unified models extend the setting to two or more modalities in one token sequence~\citep{swerdlow2025unidisc,yang2025mmada,li2025lavida,shi2025muddit}.
+In such a model a damaged image token can change what the model concludes about a caption, and the reverse.
+
+\paragraph{Why this is a fusion problem.}
+Each image token and each caption token is a source that reports a value, and the model combines them.
+The paired decision studied here, whether a caption describes an image, sums per-token log-likelihood ratios over the 1\,024
+image tokens of one image.
+That is the rule used to fuse local decisions in distributed detection, in which each source is weighted by its reliability
+before a global threshold is applied~\citep{chair1986optimal,tenney1981detection}; it is optimal for sources that are independent
+given the hypothesis, which image tokens are not, so here it is an approximation (Section~\ref{ssec:limits}).
+Imperfect and spurious data are a first-order difficulty of multisensor fusion~\citep{khaleghi2013multisensor,vempaty2013byzantine},
+a survey in Information Fusion organises multimodal fusion on low-quality data into noisy, incomplete, imbalanced and quality-varying
+settings~\citep{zhang2026lowquality}, and evidential fusion methods discount each modality by an estimated
+reliability~\citep{shao2024ddef,huang2025evidential}.
+Classical practice also checks each source for a fault and isolates the faulty ones before fusing~\citep{willsky1976survey,gao2015survey},
+and sets the detection threshold from clean data so that the false-alarm rate stays at a chosen value, as in constant false-alarm
+rate (CFAR) detection~\citep{finn1968adaptive,rohling1983cfar}.
+Here the image tokens are the sources, the masked denoiser is the model of what a healthy source looks like, and the gate is the
+fault detector that runs before the evidence is summed.
+We call this input-level source validation: the gate acts on the sources before the evidence sum, not on the output decision.
+The paper proposes no new fusion rule; it specifies a gate, a threshold with a stated guarantee, and a preregistered measurement
+of whether withholding the flagged tokens changes the decision.
+
+\paragraph{A measured failure case.}
+The gate helps only if the model's own masked likelihood separates damaged tokens from intact ones, and a detection measurement
+made before the main test shows that it does so for one kind of damage and not for another.
+% run: P2-GATE-M1
+Tokens replaced by uniform random codes are separated almost perfectly (mean per-item AUROC 0.961 for a replaced patch and 0.955
+for swapped codes), whereas the score is close to chance on JPEG compression (0.561) and Gaussian noise (0.503), where the changed
+codes depend on the image content.
+This is a measurement of the score in a secondary family (S-D, Section~\ref{ssec:res_det}); it does not enter the headline test and
+is not used to interpret it.
+
+\paragraph{What exists and what is missing.}
+Many recent methods remask tokens in a masked diffusion model.
+Most act on tokens that the sampler itself produced: they remask low-confidence commitments, learn a quality score, or
+perturb the context to find brittle tokens
+\citep{wang2025remdm,kim2025prism,schiff2026proseco,huang2025remedi,zhai2026core,yao2026remask,lezama2022tokencritic}.
+In multimodal masked diffusion models the same idea has been applied to the model's own generations, with cross-modal
+confidence as the trigger~\citep{ouyang2026freecorrection,le2026co2jump}.
+Work on corrupted \emph{input} tokens is thinner.
+Trust but Verify~\citep{jhingran2026trustverify} detects corrupted conditioning tokens in a text-only masked diffusion model,
+re-noises them to the mask state and refills them; it needs a finetune, uses a hand-set threshold, and has no second modality.
+Conformal risk control has been used with masking-derived scores to flag erroneous caption words given an image, with a
+CLIP-based score and a threshold calibrated on labelled foil data~\citep{gomes2025crc}.
+In Information Fusion, \citet{zhou2027burden} describe, in their abstract, a keep-or-override gate between two
+vision-language recognisers whose threshold is chosen with a Clopper--Pearson bound on harmful overwrites; its unit is a whole
+prediction rather than an input token.
+The authors of UniDisc show repair of corrupted image-caption pairs by random masking and best-of-$n$ re-infilling in one
+qualitative figure~\citep{swerdlow2025unidisc}.
+Section~\ref{sec:related} gives the precise differences.
+Three things are missing from this picture.
+No measurement separates a gate that finds damaged tokens from a mask that merely has the same shape.
+No threshold for input tokens carries a stated bound on the false-alarm proportion on clean inputs.
+And no comparison shows whether withholding flagged tokens helps a cross-modal decision more than cheap non-generative
+detectors or a pixel denoiser do.
+
+\paragraph{Contributions, stated as a measurement.}
+This paper does not claim to be the first to detect or remask corrupted input tokens, the first to remask in a unified
+model, the first risk-controlled threshold for vision-language errors, or the first masked-likelihood or null-normalised
+generative score.
+The gate is the object of measurement here, not an asset whose merit is assumed.
+Each numbered item corresponds to a result that the preregistered analysis delivered whatever it found.
+\begin{enumerate}
+\item \emph{The measured object} (Section~\ref{sec:method}). We specify an input-level source-validation gate for a pretrained
+unified masked diffusion model: each image token is scored by the model's own masked likelihood with the caption withheld, and
+the flag threshold is set by conformal risk control on clean pairs so that the expected flagged share of a clean pair's tokens is
+at most $\alpha$.
+\item \emph{A closed-form condition} (Section~\ref{ssec:evidence}). Under an independent-token approximation, we give the condition
+on the false-alarm and hit rates under which discarding flagged tokens raises the signal-to-noise ratio of an additive evidence
+sum; it is an approximation because image tokens are dependent, and it is not linked to any result of the primary test.
+\item \emph{A preregistered test} (Sections~\ref{sec:protocol} and~\ref{ssec:res_primary}). An exact McNemar test with Holm
+correction over three realistic corruptions, with the sample size fixed by a blind headroom rule, of whether withholding the
+flagged tokens changes image-direction verification accuracy, with controls for mask geometry, texture and pixel denoising.
+% A4.2.4 item 3, label NEG: the first clause of the opening of Section 6.1 (A4.2.3). run: P2-GATE-M4 (outcome.label = negative)
+The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
+from gating under JPEG quality~10, Gaussian noise with $\sigma=0.10$ and a $128$-pixel splice.
+\item \emph{Token detection, measured} (Section~\ref{ssec:res_det}).
+% run: P2-GATE-M1
+At the token level the gate's score separates code-level random replacements (AUROC 0.961 for a patch, 0.955 for swapped codes)
+but is near chance on JPEG and Gaussian noise (0.561 and 0.503).
+On noise it is below a one-pass score without finetuning (0.607; the marginal 95\,\% intervals, 0.493--0.513 and 0.597--0.618, do
+not overlap; no paired test was run), and on JPEG the two overlap (0.561, 0.547--0.575, against 0.581, 0.569--0.593).
+In the preregistered comparison it is below a texture score whose sign was chosen on the same items (0.756 and 0.768), so the
+preregistered falsifier for the score was met.
+\item \emph{Calibration, checked} (Section~\ref{ssec:res_cal}). We check the clean false-alarm statement on held-out clean test
+pairs.
+% run: P2-GATE-M4 (calibration.fap_check.per_alpha.0.05)
+At $\alpha=0.05$ the realised flagged share was 0.0456 (95\,\% interval 0.0442 to 0.0470), with no evidence of violation.
+% A4.2.4 item 6: list only those of S2 and B whose status is "run, formal" or "run, descriptive", with that status; omit the item if
+% neither ran. R was not run (gatekept: no primary rejection with b>c), so it is not listed.
+\item \todo{RESULT (A4.2.4 item 6): \emph{Secondary families} (Sections~\ref{ssec:res_s2} and~\ref{ssec:res_text}): name only those
+of re-infilling (S2) and two-way fusion on hard negatives (B) that ran, with their status; delete this item if neither ran.}
+\end{enumerate}
+The scope is one pretrained 1.4B model, one image-caption dataset, three realistic image corruptions in the primary family and
+two sanity corruptions in a separate positive control (PS).
+The primary endpoint is the image-direction statistic, which has headroom on clean pairs; the text direction is near ceiling
+there, and Section~\ref{ssec:task} states what this choice limits.
+Caption corruption is not tested.
+
+\todo{AUTHOR: Figure 1 (motivation, page 1--2) is being prepared separately from committed run arrays.}
+
+\paragraph{Roadmap.}
+Section~\ref{sec:related} places the work against the closest methods.
+Section~\ref{sec:method} defines the scores, the calibrated gate, the evidence statistic and the algorithms.
+Section~\ref{sec:protocol} gives the data, folds, corruptions, arms, controls, the families and the reading of the primary test;
+the preregistration record and the deviations are in Appendix~\ref{app:prereg}.
+Section~\ref{sec:results} reports the results family by family, Section~\ref{sec:discussion} discusses them with the limitations,
+and Section~\ref{sec:conclusion} concludes.
+Appendix~\ref{app:timefree} gives the evidence that the model has no time input in the released configuration.

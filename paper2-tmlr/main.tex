@@ -1,0 +1,128 @@
+% main.tex -- Paper 2, TMLR-format port (anonymised double-blind submission version).
+% Source of the content: ../paper2/sections/*.tex (Elsevier Information Fusion version, unchanged). This is a format port, not a rewrite:
+% every number and claim is as in ../paper2/. See PORT-NOTES.md for every TMLR rule applied and every anonymisation.
+% Build: latexmk -pdf main.tex   (run inside paper2-tmlr/)
+\documentclass[10pt]{article}
+% Submission mode: no option. [accepted] and [preprint] de-anonymise and must NOT be used for the submission.
+\usepackage{tmlr}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{adjustbox}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{microtype}
+\usepackage{seqsplit}
+\usepackage{placeins}
+\emergencystretch=3em
+% lmodern has no small-caps italic; use upright small caps where \textsc falls inside italic text.
+\input{t1lmr.fd}
+\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub*lmr/m/sc}{}
+\DeclareFontShape{T1}{lmr}{b}{scit}{<->ssub*lmr/b/sc}{}
+\usepackage{hyperref}
+\usepackage{url}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+% Figures are referenced from the Elsevier version's folder, not copied.
+\graphicspath{{../paper2/}}
+
+% ---- project macros (as in the Elsevier version) ----------------------------------------------
+% \todo marks every open fact. [AUTHOR: ...] = a fact only the authors can supply; [RESULT: ...] = a place for a result
+% that does not exist yet. All \todo items must be resolved or deleted before submission.
+\newcommand{\todo}[1]{{\color{red}\textbf{[#1]}}}
+\newcommand{\mask}{\mathsf{M}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\ind}{\mathbb{1}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\fp}{\texttt{fp32}}
+
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}\SetKwInOut{Data}{Data}
+\SetKwProg{Fn}{Function}{:}{}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}
+
+% ---- float placement ---------------------------------------------------------------------------
+% Floats are placed near their first reference (here / top / bottom / page) and flushed at the end of every section, so that no
+% float is queued past the section that introduces it.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+
+% Authors must not appear in the submitted version (hidden by the tmlr package in submission mode).
+\title{Does masked-likelihood token gating help image-direction verification under image corruption? A preregistered test in UniDisc}
+\author{Anonymous authors}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% Same text as ../paper2/main.tex (label NEG). Highlights and keywords of the Elsevier version are not part of the TMLR format.
+% run: P2-GATE-M4 (primary.per_corruption.*.{delta,ci90,n}; calibration.realised_fap_clean.0.05); P2-GATE-M1 (table.{jpeg,noise}.q.mean)
+Unified masked diffusion models treat every visible token as certain, although real inputs can be damaged.
+We ask whether withholding the image tokens that a pretrained model finds unlikely changes a caption-verification decision.
+Each image token is scored by its masked likelihood with the caption withheld, a threshold from conformal risk control on clean pairs
+bounds the expected flagged share of a clean pair's tokens at 0.05, and the gate (GATE-M) drops flagged tokens from an additive
+evidence sum.
+Test, sample size and outcome wording were preregistered (exact McNemar, Holm over three corruptions).
+In the preregistered test no improvement was detected under JPEG quality 10, Gaussian noise with $\sigma=0.1$ and a 128-pixel splice;
+for each tested corruption the 90\,\% CI of the net accuracy change lay inside $\pm0.05$ ($-0.002$, $-0.006$ to $0.000$; $0.000$,
+$0.000$ to $0.000$; $-0.004$, $-0.010$ to $0.002$; $n=500$ each), so an improvement larger than 0.05 is excluded and a loss larger than
+0.05 is excluded.
+This is not a finding that GATE-M has no effect.
+The scope is one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) on COCO image-caption pairs with a random other
+caption as the negative.
+On held-out clean pairs the flagged share was 0.046 (95\,\% CI 0.044 to 0.047): no evidence of violation.
+A secondary detection family found the gate's score near chance on JPEG and noise (area under the ROC curve 0.561 and 0.503).
+\todo{RESULT: one sentence of at most 13 words giving the status of re-infilling (S2) and two-way fusion (B), each with its family
+label, as run or not run; no causal clause.}
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+\input{sections/introduction}
+\FloatBarrier
+
+\section{Related work}\label{sec:related}
+\input{sections/related}
+\FloatBarrier
+
+\section{Method}\label{sec:method}
+\input{sections/method}
+\FloatBarrier
+
+\section{Experimental protocol}\label{sec:protocol}
+\input{sections/protocol}
+\FloatBarrier
+
+\section{Results}\label{sec:results}
+\input{sections/results}
+\FloatBarrier
+
+\section{Discussion and limitations}\label{sec:discussion}
+\input{sections/discussion}
+\FloatBarrier
+
+\section{Conclusion}\label{sec:conclusion}
+\input{sections/conclusion}
+
+% Unnumbered end sections (third-level headings, as in the TMLR template): artefact availability; declaration of generative AI use.
+\input{sections/declarations}
+
+\bibliographystyle{tmlr}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}
