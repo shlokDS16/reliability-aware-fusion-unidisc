@@ -52,6 +52,28 @@ unchanged). Written 2026-10-29 between Shlok's answer (10:23:21 IST) and the lea
 **only on the points listed here**. Family P, PS, S-M, S-Z, S-DN, S-D, S-D2, S-C, S2, B, R, E-dec, E-pred, the suite, the outcome book of A4.2 and
 every earlier rule stand unchanged.
 
+## Revision r2 (2026-10-29): A5.1 amendment 1 (red-team text, signed with conditions C6-1 to C6-11)
+
+| Date | Change | Source | Before/after outcome data? |
+|---|---|---|---|
+| 2026-10-29 | The C5-3 stop rule of A5.1 is amended **once**, by the text below, copied verbatim from the red team's signature (`RED-TEAM-SIGNOFF-2026-10-28.md`, section "A5.1 amendment and A6 signature", commit `0ea9cf33`; item 7's wording is editable, its substance binding; A6 r1 A6.13 is the edited item 7). It admits Study 2 (A6 r1) and nothing else | red team C6-1 to C6-11; D0083 (`5ff2c0d7`) | before any H item and before any Study 2 item; no H, re-scored, re-frozen or fresh-fold output exists |
+
+> **A5.1 amendment 1 (2026-10-29; red-team signed with conditions C6-1 to C6-11; written before any H item and before any Study 2 item).**
+> 1. The C5-3 stop rule is amended once. Exactly one further confirmatory study is admitted after the P outcome: Study 2 (Addendum A6 r1), a test of one frozen method (LRF; the single object named under C6-1 and pinned under C6-2) on a fresh COCO val2017 fold. Its families are L, L-NI, L-LEN and LG as defined in A6 r1, and no others.
+> 2. After this amendment, family H and Study 2 are the last confirmatory families of Paper 2. No further family, study, population, fold, method, model, corruption, refit or re-freeze receives alpha, for any reason: an L1 or H outcome, a change of route (D0082 Route A or B) or venue, or a reviewer request before acceptance. Any later analysis is Tier 3, labelled "added after the primary, family H and Study 2 results", listed in the deviations box, and kept out of the title, abstract, highlights, conclusion, contribution list, cover letter and repository front matter. This amendment cannot itself be amended to admit another family. A second amendment of the stop rule removes the confirmatory label from every post-P family: H and Study 2 then become Tier 3.
+> 3. Timing. This amendment and A6 r1 are committed before the first H3 item. If an H3 item exists before both commits, this amendment is void, and A6's tests are Tier 3 (CIs only, LRF never "confirmed").
+> 4. Multiplicity. P (Holm, m 3), H (Holm, m 3), L (fixed sequence, m 4), L-NI (m 1), L-LEN (m 1) and LG (Holm, m 3) are separate families, each at 0.05. Nothing is pooled or contrasted across P, H and Study 2. The paper prints the family count (17) and 1 - 0.95^17 = 0.58, with "no adjustment across families". P keeps its A4.2 sentences under every H and Study 2 outcome. AB.1 extends to Study 2 word for word.
+> 5. Run order: S2 -> H3 -> H4 -> L1 -> LG -> baselines -> suite. The order and the A5.12 and A6.10 bounds and cut order depend only on time and on whether audited code is ready. No stage is started, delayed, cut, repeated or extended because of an outcome of another stage. A missed H bound is final: H is "not run", even if GPU time later becomes free.
+> 6. Placement rules of A5.9 and A6.12, and A6 as a whole, may only be tightened after the first H3 item or the first L item, whichever comes first.
+> 7. Disclosure (Methods, once, and the deviations box): "Study 2 was added after Study 1 had been analysed (primary result negative), when the target venue changed. The method it tests (LRF) was designed post hoc on Study 1's 500 test items. Before the design, Study 1's primary and secondary results, its positive-control audit, its exploratory comparators and an exploratory learned-weighting analysis had all been seen. In that analysis four learned-weighting families were compared and a logistic generalised additive model was selected; two other method designs were considered and not pursued. The configuration was frozen (SHA-256 {model}, commit {c}) before any Study 2 image was selected. Study 2 was preregistered (Addendum A6 r1, commit {c}) with a rule that no further confirmatory study would be added. All LRF numbers on Study 1's items are post hoc and exploratory. Study 2 tests a different method on different images and does not bear on Study 1's conclusion." No sentence in the paper gives Study 1's result as the reason for LRF's design (AB.1).
+
+**Notes on the amendment as applied (no change to its substance).**
+- Item 4: A6 r1 removes L2 (red-team C6-3/K4), so family L has three hypotheses (fixed sequence L1 -> Holm{L3, L4}) instead of four. This is a
+  tightening; the family count (17) is unchanged.
+- Item 5: under D0083 (C6-1 option (a)), the preparation stages "re-score M4 at L_FIX -> re-freeze (with the cross-fit, fold build and n-rule)" run
+  between H4 and L1 (A6 r1 A6.10). They carry no alpha and are bound by the same outcome-blind clock rules.
+- Item 7: A6 r1 A6.13 is the edited wording (it names F1-F4, SEL, SCER, CANAL, Routes A and B, as C6-7 requires).
+
 ## Revision r1 (2026-10-29, red-team A5 signature, conditions C5-1 to C5-8; before any H item)
 
 | Condition | Change in r1 | Where |
@@ -126,7 +148,7 @@ If any condition is not met by the time rule of A5.12, family H is "not run" and
   is pooled, and no sentence says or implies that the gate helps "on hard negatives but not on random ones" or "when the task is hard" (D18 reading 1
   also bars "when does input gating help" from those places).
 - **It is not a replication of P** and not a SugarCrepe benchmark score (different protocol, stratified sample, corrupted images, likelihood decision).
-- **Stop rule (C5-3).** H is the **last confirmatory family** added to Paper 2 after the P outcome. Any later post-P analysis has no alpha and no
+- **Stop rule (C5-3; amended once by r2, "A5.1 amendment 1", which admits Study 2 of A6 r1 and nothing else).** H is the **last confirmatory family** added to Paper 2 after the P outcome. Any later post-P analysis has no alpha and no
   family: it is Tier 3 exploratory, labelled "added after the primary and family H results", and listed in the deviations box. The placement rule of
   A5.9 and D-H2 may only be **tightened** after the first H3 item, never loosened, and D-H2 cannot change once any H output exists (including
   `runs/P2-GATE-H3/family.json`).
@@ -554,6 +576,7 @@ Dated ledger rows for D-H2 to D-H4 are the lead's (A5.0 item 5); until they exis
 | 2026-10-29 | Addendum A5 draft r0 (86064e57) | after P's NEGATIVE result and the A2.3 audit of PS | after P, PS, S-M, E-dec, E-pred, Tier-3 outcomes; before any H item |
 | 2026-10-29 | Addendum A5 final: approval D0080 recorded (D-H1 go, D-H2 never in abstract, D-H3 approved guards, D-H4 keep patch/swap); reconciled with implementation 336b31c6 (builder, `--folds-path`, `--family-run`); H3 runs the M4 stage via `h3_gonogo plan` files; H3 go/no-go module `h3_gonogo decide` writes `runs/P2-GATE-H3/family.json` (R1/R2/NO-GO, test_fold 300/200/0); `family` lists tested corruptions only; analysis by `analysis_m4` plus `h_strata`; changes table r0 -> final | Shlok's approval; coordinator's reconciliation brief | **after** P, PS, S-M, E-dec, E-pred and Tier-3 outcomes; **before** any H item; no H data exists |
 | 2026-10-29 | A5 revision r1: single placement rule (C5-1); full disclosure list, motive clause removed, Must-not 1 in Methods (C5-2); stop rule, placement and D-H2 only tightened (C5-3); LM/LA counts as primary description and a length rule that can fire (C5-4); D-H2 to D-H4 restated, unattended H runs need Shlok's words, time of writing corrected (C5-5); H3 firewall and no signed H3 numbers without an H4 analysis (C5-6); `decide` deadline, `G_max_headroom`, x4 bound recorded (C5-7); merge after S2 with byte-identical regeneration (C5-8) | red-team A5 signature (WITH CONDITIONS) | before any H item; no H data exists |
+| 2026-10-29 | A5 revision r2: A5.1 amendment 1 (red-team text verbatim): exactly one further confirmatory study (Study 2, A6 r1) admitted; H and Study 2 are the last confirmatory families; void if an H3 item precedes the commits of the amendment and A6 r1; run order S2 -> H3 -> H4 -> (re-score, re-freeze) -> L1 -> LG -> baselines -> suite | red-team signature "A5.1 amendment and A6 signature" (0ea9cf33); D0083 | before any H item and any Study 2 item |
 
 ---
 
