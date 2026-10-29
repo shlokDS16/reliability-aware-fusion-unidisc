@@ -1,0 +1,67 @@
+{
+ "stage": "M4",
+ "fold": "test",
+ "n_items": 450,
+ "seed": 20261029,
+ "K": 8,
+ "alphas": [
+  0.05,
+  0.01,
+  0.1
+ ],
+ "n_geo_seeds": 3,
+ "denoise_for": [],
+ "sanity": [],
+ "duty": 0.5,
+ "spec": "research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4",
+ "mem_frac": 0.75,
+ "tbv": "on",
+ "ps_params": {
+  "grid": 32,
+  "n_tokens": 1024,
+  "patch": 8,
+  "patch_rule": "max(2, grid // 4) = 8 on the 32 x 32 map",
+  "patch_share": 0.0625,
+  "swap_frac": 0.15,
+  "swap_n_positions": 154,
+  "vocab": 16384,
+  "token_rng_tag": {
+   "patch": 190,
+   "swap": 191
+  },
+  "rng": "np.random.default_rng([SEED_GATE, gid, tag])",
+  "seed_gate": 20261029,
+  "sanity_order": [
+   "patch",
+   "swap"
+  ],
+  "condition_order": "clean, each family corruption (with its denoised copy if in denoise_for), patch, swap",
+  "denoise_for": [
+   "jpeg",
+   "noise"
+  ],
+  "alphas": [
+   0.05,
+   0.01,
+   0.1
+  ]
+ },
+ "ps_frozen_sha256": null,
+ "ps_frozen_code_commit": null,
+ "folds_path": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-LRF-FOLD\\folds_lrf.json",
+ "folds_sha256": "a545a83ec881988cc81d40c3598fcb4be6292a59d2c835e4cce6e72d3d71f1de",
+ "family_run": "P2-LRF-PLAN",
+ "neg_len": true,
+ "caption_slot_len": 13,
+ "codebook_sha256": "ff15b9b5b362dc80f8a18f6e852e6e99478c0e8885646735ed16d1d80e3ae50b",
+ "dcache_di_file": "DI_n013.npy",
+ "dcache_di_sha256": "f7744253a1b997b8b9f28d9b91348e8371f1ea1e3564f6c8bfc2f10aa5b42176",
+ "run_id": "P2-LRF-L1",
+ "git_sha": "2bb1ba0995973fabf4e41f249f84da366bd26f83",
+ "created": "2026-10-29T21:17:57",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 6.1,
+  "free_commit_gb": 43.86
+ }
+}
