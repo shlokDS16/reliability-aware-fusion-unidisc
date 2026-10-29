@@ -1,0 +1,1408 @@
+{
+ "fold": "test",
+ "n_cells": 8,
+ "cells": {
+  "pixelate2": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 0,
+    "c": 0,
+    "n_d": 0,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.82,
+    "acc_b": 0.82,
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "theta": NaN
+   },
+   "net_difference": 0.0,
+   "acc_clean": 0.8,
+   "acc_none": 0.82,
+   "acc_gm": 0.82,
+   "acc_chg": 0.8,
+   "mean_n_changed": 870.75,
+   "mean_n_flag": 51.01,
+   "flag_precision": 0.9176632032934718,
+   "flag_recall": 0.05375825437840942,
+   "edec": {
+    "cell": "pixelate2",
+    "n_complete": 100,
+    "n_dropped_incomplete": 0,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 0,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.010397794771805455,
+       "ci95": [
+        -0.007281945939261903,
+        0.028254681127986524
+       ]
+      },
+      "U": {
+       "mean": -0.03455618574092481,
+       "ci95": [
+        -0.06352517040763989,
+        -0.004910441154332518
+       ]
+      },
+      "R": {
+       "mean": 0.007150541188441284,
+       "ci95": [
+        0.004808096581999342,
+        0.009588646506844654
+       ]
+      },
+      "V": {
+       "mean": 0.03780343932428897,
+       "ci95": [
+        0.009977073429703257,
+        0.06525615004514403
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 5.551115123125783e-17,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": -0.02,
+       "ci95": [
+        -0.07,
+        0.03
+       ]
+      },
+      "U": {
+       "mean": 0.0,
+       "ci95": [
+        -0.05,
+        0.05
+       ]
+      },
+      "R": {
+       "mean": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ]
+      },
+      "V": {
+       "mean": -0.02,
+       "ci95": [
+        -0.08,
+        0.04
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": 0
+  },
+  "pixelate4": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 0,
+    "c": 0,
+    "n_d": 0,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.76,
+    "acc_b": 0.76,
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "theta": NaN
+   },
+   "net_difference": 0.0,
+   "acc_clean": 0.8,
+   "acc_none": 0.76,
+   "acc_gm": 0.76,
+   "acc_chg": 0.73,
+   "mean_n_changed": 986.91,
+   "mean_n_flag": 50.87,
+   "flag_precision": 0.9785728327108315,
+   "flag_recall": 0.050440263043235956,
+   "edec": {
+    "cell": "pixelate4",
+    "n_complete": 100,
+    "n_dropped_incomplete": 0,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 0,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.033004017238613306,
+       "ci95": [
+        0.005553015133225311,
+        0.0600216319221093
+       ]
+      },
+      "U": {
+       "mean": -0.05627760711979218,
+       "ci95": [
+        -0.12069567104689492,
+        0.0075967991957847005
+       ]
+      },
+      "R": {
+       "mean": 0.006608061654521083,
+       "ci95": [
+        0.004539210107607438,
+        0.008712627722878003
+       ]
+      },
+      "V": {
+       "mean": 0.08267356270388442,
+       "ci95": [
+        0.021776318968236612,
+        0.14462933929742336
+       ]
+      }
+     },
+     "shares": {
+      "U": -1.7051744553675048,
+      "R": 0.20021991888884152,
+      "V": 2.5049545364786634
+     },
+     "identity_max_abs_error_items": 1.1102230246251565e-16,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.04,
+       "ci95": [
+        -0.03,
+        0.11
+       ]
+      },
+      "U": {
+       "mean": 0.07,
+       "ci95": [
+        -0.02,
+        0.16
+       ]
+      },
+      "R": {
+       "mean": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ]
+      },
+      "V": {
+       "mean": -0.03,
+       "ci95": [
+        -0.12,
+        0.06
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": 0
+  },
+  "defocus_blur2": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 0,
+    "c": 0,
+    "n_d": 0,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.82,
+    "acc_b": 0.82,
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "theta": NaN
+   },
+   "net_difference": 0.0,
+   "acc_clean": 0.8,
+   "acc_none": 0.82,
+   "acc_gm": 0.82,
+   "acc_chg": 0.84,
+   "mean_n_changed": 967.95,
+   "mean_n_flag": 52.15,
+   "flag_precision": 0.9720038350910835,
+   "flag_recall": 0.05236840745906297,
+   "edec": {
+    "cell": "defocus_blur2",
+    "n_complete": 100,
+    "n_dropped_incomplete": 0,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 0,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.015630549849829124,
+       "ci95": [
+        -0.025357656105581192,
+        0.05779100781794842
+       ]
+      },
+      "U": {
+       "mean": -0.054987581147308846,
+       "ci95": [
+        -0.10630297449818034,
+        -0.005399156641222232
+       ]
+      },
+      "R": {
+       "mean": 0.00863062146004448,
+       "ci95": [
+        0.0060933360356279125,
+        0.01125484634107071
+       ]
+      },
+      "V": {
+       "mean": 0.06198750953709346,
+       "ci95": [
+        0.013326380851267895,
+        0.11048630500372697
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 8.326672684688674e-17,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": -0.02,
+       "ci95": [
+        -0.09,
+        0.05
+       ]
+      },
+      "U": {
+       "mean": -0.04,
+       "ci95": [
+        -0.11,
+        0.03
+       ]
+      },
+      "R": {
+       "mean": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ]
+      },
+      "V": {
+       "mean": 0.02,
+       "ci95": [
+        -0.05,
+        0.09
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": 0
+  },
+  "defocus_blur4": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 1,
+    "c": 0,
+    "n_d": 1,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.76,
+    "acc_b": 0.75,
+    "delta": 0.01,
+    "ci95": [
+     0.0,
+     0.03
+    ],
+    "theta": 1.0
+   },
+   "net_difference": 0.01,
+   "acc_clean": 0.8,
+   "acc_none": 0.75,
+   "acc_gm": 0.76,
+   "acc_chg": 0.78,
+   "mean_n_changed": 1015.99,
+   "mean_n_flag": 35.77,
+   "flag_precision": 0.9966452334358401,
+   "flag_recall": 0.035088928040630324,
+   "edec": {
+    "cell": "defocus_blur4",
+    "n_complete": 93,
+    "n_dropped_incomplete": 7,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 7,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.01316808826206556,
+       "ci95": [
+        -0.05245788071899255,
+        0.08063854437714317
+       ]
+      },
+      "U": {
+       "mean": -0.2848327028932652,
+       "ci95": [
+        -0.43832971768792806,
+        -0.14029693879402308
+       ]
+      },
+      "R": {
+       "mean": 0.0043395372473810576,
+       "ci95": [
+        0.002520744270385075,
+        0.006212506601468091
+       ]
+      },
+      "V": {
+       "mean": 0.2936612539079496,
+       "ci95": [
+        0.1517445098629644,
+        0.44279465321790173
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 3.3306690738754696e-16,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.03225806451612903,
+       "ci95": [
+        -0.06451612903225806,
+        0.12903225806451613
+       ]
+      },
+      "U": {
+       "mean": -0.021505376344086023,
+       "ci95": [
+        -0.11827956989247312,
+        0.07526881720430108
+       ]
+      },
+      "R": {
+       "mean": 0.010752688172043012,
+       "ci95": [
+        0.0,
+        0.03225806451612903
+       ]
+      },
+      "V": {
+       "mean": 0.043010752688172046,
+       "ci95": [
+        -0.053763440860215055,
+        0.13978494623655913
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": 1
+  },
+  "fog2": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 0,
+    "c": 1,
+    "n_d": 1,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.76,
+    "acc_b": 0.77,
+    "delta": -0.01,
+    "ci95": [
+     -0.03,
+     0.0
+    ],
+    "theta": 0.0
+   },
+   "net_difference": -0.01,
+   "acc_clean": 0.8,
+   "acc_none": 0.77,
+   "acc_gm": 0.76,
+   "acc_chg": 0.78,
+   "mean_n_changed": 916.31,
+   "mean_n_flag": 46.84,
+   "flag_precision": 0.9222886421861657,
+   "flag_recall": 0.04714561665811789,
+   "edec": {
+    "cell": "fog2",
+    "n_complete": 100,
+    "n_dropped_incomplete": 0,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 0,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.04943686956346355,
+       "ci95": [
+        0.005891614385703097,
+        0.09498895592977537
+       ]
+      },
+      "U": {
+       "mean": 0.03852027843971159,
+       "ci95": [
+        0.002291740558109707,
+        0.07433304054476188
+       ]
+      },
+      "R": {
+       "mean": 0.005192281870953981,
+       "ci95": [
+        0.003075559506306862,
+        0.007337721272392669
+       ]
+      },
+      "V": {
+       "mean": 0.005724309252797963,
+       "ci95": [
+        -0.039100952432178794,
+        0.05039393675944709
+       ]
+      }
+     },
+     "shares": {
+      "U": 0.7791811815726315,
+      "R": 0.10502853268831064,
+      "V": 0.11579028573905757
+     },
+     "identity_max_abs_error_items": 5.551115123125783e-17,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.03,
+       "ci95": [
+        -0.04,
+        0.1
+       ]
+      },
+      "U": {
+       "mean": 0.02,
+       "ci95": [
+        -0.05,
+        0.1
+       ]
+      },
+      "R": {
+       "mean": -0.01,
+       "ci95": [
+        -0.03,
+        0.0
+       ]
+      },
+      "V": {
+       "mean": 0.02,
+       "ci95": [
+        -0.06,
+        0.1
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": -1
+  },
+  "fog4": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 0,
+    "c": 1,
+    "n_d": 1,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.8,
+    "acc_b": 0.81,
+    "delta": -0.01,
+    "ci95": [
+     -0.03,
+     0.0
+    ],
+    "theta": 0.0
+   },
+   "net_difference": -0.01,
+   "acc_clean": 0.8,
+   "acc_none": 0.81,
+   "acc_gm": 0.8,
+   "acc_chg": 0.72,
+   "mean_n_changed": 963.89,
+   "mean_n_flag": 57.22,
+   "flag_precision": 0.9626004893393918,
+   "flag_recall": 0.05714344997873201,
+   "edec": {
+    "cell": "fog4",
+    "n_complete": 100,
+    "n_dropped_incomplete": 0,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 0,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.08036277220243453,
+       "ci95": [
+        0.039601505867477876,
+        0.12287207645791456
+       ]
+      },
+      "U": {
+       "mean": 0.06490812639752971,
+       "ci95": [
+        0.01339584953256146,
+        0.12065954709465072
+       ]
+      },
+      "R": {
+       "mean": 0.0067728561008507035,
+       "ci95": [
+        0.004087246138157354,
+        0.009569979284816585
+       ]
+      },
+      "V": {
+       "mean": 0.008681789704054086,
+       "ci95": [
+        -0.05575429478529536,
+        0.07179172783785961
+       ]
+      }
+     },
+     "shares": {
+      "U": 0.8076889910420907,
+      "R": 0.08427852742299406,
+      "V": 0.10803248153491497
+     },
+     "identity_max_abs_error_items": 1.3877787807814457e-16,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": -0.01,
+       "ci95": [
+        -0.07,
+        0.05
+       ]
+      },
+      "U": {
+       "mean": 0.08,
+       "ci95": [
+        0.0,
+        0.16
+       ]
+      },
+      "R": {
+       "mean": -0.01,
+       "ci95": [
+        -0.03,
+        0.0
+       ]
+      },
+      "V": {
+       "mean": -0.08,
+       "ci95": [
+        -0.17,
+        0.01
+       ]
+      }
+     },
+     "shares": "undefined (lower 95 percent bound of tau_T does not exceed 0, or tau_T is numerically zero)",
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": -1
+  },
+  "impulse_noise2": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 1,
+    "c": 0,
+    "n_d": 1,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.61,
+    "acc_b": 0.6,
+    "delta": 0.01,
+    "ci95": [
+     0.0,
+     0.03
+    ],
+    "theta": 1.0
+   },
+   "net_difference": 0.01,
+   "acc_clean": 0.8,
+   "acc_none": 0.6,
+   "acc_gm": 0.61,
+   "acc_chg": 0.64,
+   "mean_n_changed": 984.56,
+   "mean_n_flag": 43.39,
+   "flag_precision": 0.9622032726434663,
+   "flag_recall": 0.04240472901600715,
+   "edec": {
+    "cell": "impulse_noise2",
+    "n_complete": 99,
+    "n_dropped_incomplete": 1,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 1,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.13532406265244545,
+       "ci95": [
+        0.08852004018411319,
+        0.1828196991527755
+       ]
+      },
+      "U": {
+       "mean": 0.04317272178598101,
+       "ci95": [
+        -0.05097711662394307,
+        0.13343970675937117
+       ]
+      },
+      "R": {
+       "mean": 0.004047807311190001,
+       "ci95": [
+        0.0017601336709566595,
+        0.006386541435387664
+       ]
+      },
+      "V": {
+       "mean": 0.08810353355527446,
+       "ci95": [
+        0.018764995168583615,
+        0.16175070144407486
+       ]
+      }
+     },
+     "shares": {
+      "U": 0.3190321140214514,
+      "R": 0.029911955286075303,
+      "V": 0.6510559306924735
+     },
+     "identity_max_abs_error_items": 1.1102230246251565e-16,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.20202020202020202,
+       "ci95": [
+        0.1111111111111111,
+        0.29292929292929293
+       ]
+      },
+      "U": {
+       "mean": 0.16161616161616163,
+       "ci95": [
+        0.08080808080808081,
+        0.24242424242424243
+       ]
+      },
+      "R": {
+       "mean": 0.010101010101010102,
+       "ci95": [
+        0.0,
+        0.030303030303030304
+       ]
+      },
+      "V": {
+       "mean": 0.030303030303030304,
+       "ci95": [
+        -0.04040404040404041,
+        0.10101010101010101
+       ]
+      }
+     },
+     "shares": {
+      "U": 0.8,
+      "R": 0.05,
+      "V": 0.15
+     },
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": 1
+  },
+  "impulse_noise4": {
+   "n_items": 100,
+   "gm_vs_none": {
+    "b": 0,
+    "c": 0,
+    "n_d": 0,
+    "n": 100,
+    "n_dropped": 0,
+    "acc_a": 0.55,
+    "acc_b": 0.55,
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "theta": NaN
+   },
+   "net_difference": 0.0,
+   "acc_clean": 0.8,
+   "acc_none": 0.55,
+   "acc_gm": 0.55,
+   "acc_chg": 0.54,
+   "mean_n_changed": 1008.9,
+   "mean_n_flag": 36.87,
+   "flag_precision": 0.9810143748304855,
+   "flag_recall": 0.03585092675190802,
+   "edec": {
+    "cell": "impulse_noise4",
+    "n_complete": 93,
+    "n_dropped_incomplete": 7,
+    "n_nonfinite_by_arm": {
+     "clean": 0,
+     "none": 0,
+     "chg": 7,
+     "gm": 0
+    },
+    "names": {
+     "T": "total corruption loss",
+     "U": "residual loss under the oracle gate",
+     "R": "realised recovery by GATE-M",
+     "V": "gap to the oracle gate"
+    },
+    "d_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.16530438615490167,
+       "ci95": [
+        0.1021679653827166,
+        0.23042356330865055
+       ]
+      },
+      "U": {
+       "mean": -14.795680227271557,
+       "ci95": [
+        -44.50203730765324,
+        0.13703435825789262
+       ]
+      },
+      "R": {
+       "mean": 0.0019365267928151807,
+       "ci95": [
+        -0.0007470754462798493,
+        0.0048228134887207215
+       ]
+      },
+      "V": {
+       "mean": 14.959048086633643,
+       "ci95": [
+        0.03770980090778223,
+        44.651238284498255
+       ]
+      }
+     },
+     "shares": {
+      "U": -89.50567236254082,
+      "R": 0.011714914757316366,
+      "V": 90.4939574477835
+     },
+     "identity_max_abs_error_items": 1.4299672557172016e-13,
+     "identity_in_all_resamples": true,
+     "note": "d = mean/sd of the per-token evidence, z* = 32 d"
+    },
+    "accuracy_scale": {
+     "tau": {
+      "T": {
+       "mean": 0.22580645161290322,
+       "ci95": [
+        0.12903225806451613,
+        0.3225806451612903
+       ]
+      },
+      "U": {
+       "mean": 0.22580645161290322,
+       "ci95": [
+        0.12903225806451613,
+        0.3333333333333333
+       ]
+      },
+      "R": {
+       "mean": 0.0,
+       "ci95": [
+        0.0,
+        0.0
+       ]
+      },
+      "V": {
+       "mean": 0.0,
+       "ci95": [
+        -0.08602150537634409,
+        0.08602150537634409
+       ]
+      }
+     },
+     "shares": {
+      "U": 1.0,
+      "R": 0.0,
+      "V": 0.0
+     },
+     "identity_max_abs_error_items": 0.0,
+     "identity_in_all_resamples": true,
+     "note": "A = mean Y on the same complete-case items; tau_T = A_clean - A_none"
+    },
+    "interval": {
+     "kind": "paired percentile bootstrap over items, items resampled jointly",
+     "n_boot": 10000,
+     "levels": [
+      95.0
+     ]
+    }
+   },
+   "sign_observed": 0
+  }
+ },
+ "label": "Tier 3, exploratory. No p-value enters a claim; no multiplicity statement (AD.9)",
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ },
+ "choice": "the four types and two severities were chosen by kind from a package of fifteen types with no recorded rationale: researcher choice (AB.8)",
+ "epred_suite": {
+  "cells": {
+   "defocus_blur2": {
+    "cell": "defocus_blur2",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 0,
+    "c_cnt": 0,
+    "n": 100,
+    "net_difference": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "o": null,
+    "o_star": null,
+    "evaluable": false,
+    "agree": null,
+    "excluded_reason": "b = c_cnt: no observed sign (counted, excluded)"
+   },
+   "defocus_blur4": {
+    "cell": "defocus_blur4",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 1,
+    "c_cnt": 0,
+    "n": 100,
+    "net_difference": 0.01,
+    "ci95": [
+     0.0,
+     0.03
+    ],
+    "o": 1,
+    "o_star": null,
+    "evaluable": true,
+    "agree": false,
+    "excluded_reason": null
+   },
+   "fog2": {
+    "cell": "fog2",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 0,
+    "c_cnt": 1,
+    "n": 100,
+    "net_difference": -0.01,
+    "ci95": [
+     -0.03,
+     0.0
+    ],
+    "o": -1,
+    "o_star": null,
+    "evaluable": true,
+    "agree": true,
+    "excluded_reason": null
+   },
+   "fog4": {
+    "cell": "fog4",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 0,
+    "c_cnt": 1,
+    "n": 100,
+    "net_difference": -0.01,
+    "ci95": [
+     -0.03,
+     0.0
+    ],
+    "o": -1,
+    "o_star": null,
+    "evaluable": true,
+    "agree": true,
+    "excluded_reason": null
+   },
+   "impulse_noise2": {
+    "cell": "impulse_noise2",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 1,
+    "c_cnt": 0,
+    "n": 100,
+    "net_difference": 0.01,
+    "ci95": [
+     0.0,
+     0.03
+    ],
+    "o": 1,
+    "o_star": null,
+    "evaluable": true,
+    "agree": false,
+    "excluded_reason": null
+   },
+   "impulse_noise4": {
+    "cell": "impulse_noise4",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 0.9993,
+    "group": "suite",
+    "b": 0,
+    "c_cnt": 0,
+    "n": 100,
+    "net_difference": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "o": null,
+    "o_star": null,
+    "evaluable": false,
+    "agree": null,
+    "excluded_reason": "b = c_cnt: no observed sign (counted, excluded)"
+   },
+   "pixelate2": {
+    "cell": "pixelate2",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 0,
+    "c_cnt": 0,
+    "n": 100,
+    "net_difference": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "o": null,
+    "o_star": null,
+    "evaluable": false,
+    "agree": null,
+    "excluded_reason": "b = c_cnt: no observed sign (counted, excluded)"
+   },
+   "pixelate4": {
+    "cell": "pixelate4",
+    "s": -1,
+    "s_text": "-",
+    "stability_share_same_sign": 1.0,
+    "group": "suite",
+    "b": 0,
+    "c_cnt": 0,
+    "n": 100,
+    "net_difference": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "o": null,
+    "o_star": null,
+    "evaluable": false,
+    "agree": null,
+    "excluded_reason": "b = c_cnt: no observed sign (counted, excluded)"
+   }
+  },
+  "A": 2,
+  "K_eval": 4,
+  "cp95": [
+   0.067585986488543,
+   0.932414013511457
+  ],
+  "cells_evaluable": [
+   "defocus_blur4",
+   "fog2",
+   "fog4",
+   "impulse_noise2"
+  ],
+  "excluded": {
+   "defocus_blur2": "b = c_cnt: no observed sign (counted, excluded)",
+   "impulse_noise4": "b = c_cnt: no observed sign (counted, excluded)",
+   "pixelate2": "b = c_cnt: no observed sign (counted, excluded)",
+   "pixelate4": "b = c_cnt: no observed sign (counted, excluded)"
+  },
+  "agreement_where_observed_interval_excludes_0": {
+   "A": 0,
+   "K": 0,
+   "cells": [],
+   "note": "descriptive column o_c*"
+  },
+  "rivals": {
+   "always +": {
+    "A": 2,
+    "K_eval": 4
+   },
+   "- for every cell (the P-cell rule applied to the pixel-corruption suite cells)": {
+    "A": 2,
+    "K_eval": 4
+   }
+  },
+  "sentence": "the sign of the plug-in SNR change agreed with the sign of the net accuracy difference in 2 of 4 cells (95 percent Clopper-Pearson interval [0.068, 0.932])",
+  "reachability_of_withdrawn_test": {
+   "K_eval": 4,
+   "min_attainable_p": 0.0625,
+   "could_reject_at_alpha": false,
+   "status": "family E withdrawn by AB.3: no test is run"
+  },
+  "refutation_rule_met_for_cells": [],
+  "formal_test": null,
+  "formal_test_note": "no test, no p-value, no alpha (AB.3 item 1)",
+  "label": "exploratory, suite cells only; never pooled with AD.3 (the P and PS cells); no p-value, no test (AB.3 item 2, AB.8)",
+  "produced": true
+ },
+ "epred_suite_signs": {
+  "pixelate2": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "pixelate4": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "defocus_blur2": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "defocus_blur4": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "fog2": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "fog4": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "impulse_noise2": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "impulse_noise4": {
+   "sign": -1,
+   "sign_text": "-",
+   "reason_no_sign": null,
+   "n_items": 100,
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0007,
+    "share_minus": 0.9993,
+    "share_tie": 0.0,
+    "share_same_sign": 0.9993,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  }
+ }
+}
