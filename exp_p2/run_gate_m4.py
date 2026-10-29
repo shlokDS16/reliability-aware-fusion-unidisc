@@ -37,6 +37,44 @@ from exp_p2.run_gate_m3 import load_folds, rung_rng                             
 RUN_ID = "P2-GATE-M4"
 M2_RUN, M3_RUN, M1_RUN = "P2-GATE-M2", "P2-GATE-M3", "P2-GATE-M1"
 SANITY_ALL = ("patch", "swap")            # family PS (SAP AD.4); order = condition order, patch first so that its condition index does not change
+
+# ---- A6.11 options (SAP addendum A6; all default off, and with every one absent the stage is byte-identical to before)
+EXTRA_TYPES = ("gaussian_noise", "shot_noise", "impulse_noise", "speckle_noise")       # imagecorruptions names allowed in --extra-cells; the index below makes the seed independent of the order given
+PAD_ID = 0                                                                              # content of a fixed caption slot: irrelevant (every caption-withheld pass masks the caption positions), only the count matters
+
+
+def extra_cell_index(name: str, severity: int) -> int:
+    """Cell index of the item-derived seed `suite.corruption_seed(gid, index)` of an extra cell. Fixed by kind and severity (never by the position in --extra-cells); 1000+ keeps it clear of suite.CELLS (0-7)."""
+    return 1000 + 10 * EXTRA_TYPES.index(name) + int(severity)
+
+
+def parse_extra_cells(text: str | None) -> tuple[tuple[str, str, int], ...]:
+    """'shot_noise3,impulse_noise3' -> (('shot_noise3', 'shot_noise', 3), ...) in the order given (duplicates dropped). Type must be one of EXTRA_TYPES, severity 1-5 (package scale)."""
+    out, seen = [], set()
+    for t in str(text or "").split(","):
+        t = t.strip()
+        if not t or t in seen:
+            continue
+        name = t.rstrip("0123456789")
+        sev = t[len(name):]
+        if name not in EXTRA_TYPES or not sev or not 1 <= int(sev) <= 5:
+            raise ValueError(f"unknown extra cell {t!r}; expected <type><severity 1-5> with type in {EXTRA_TYPES}")
+        seen.add(t)
+        out.append((t, name, int(sev)))
+    return tuple(out)
+
+
+def _suite():
+    """Lazy import: the imagecorruptions suite module (and what it imports) is loaded only when --extra-cells is used."""
+    from exp_p2.gate import suite
+    return suite
+
+
+def slot_tokens(n: int) -> list[int]:
+    """The fixed caption slot of `--caption-slot-len n`: n PAD tokens (the caption-withheld passes mask them; only the count shifts the image positions)."""
+    return [PAD_ID] * int(n)
+
+
 CONFIG = dict(stage="M4", fold="test", n_items=config.N_TEST, seed=config.SEED_GATE, K=config.K, alphas=list(config.ALPHAS), n_geo_seeds=config.N_GEO_SEEDS,
               denoise_for=list(config.DENOISE_FOR), sanity=list(SANITY_ALL), duty=0.5, spec="research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4")
 
@@ -101,7 +139,13 @@ def make_ctx_factory(a, runs: Path | None = None):
         checks.l10_once(sc, run)
         grid = int(round(sc.L_I ** 0.5))
         ps_freeze.assert_runtime(grid, max(2, grid // 4))                                   # SAP AB.7 item 2 / A3.3 item 3: token map 32 and patch 8 at run time (code audit part 1, M-2)
-        return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, 500), grid=grid,
+        extra = parse_extra_cells(getattr(a, "extra_cells", None))
+        slot = getattr(a, "caption_slot_len", None)
+        gate_true = bool(getattr(a, "gate_true_layout", False))
+        if gate_true and not slot:
+            raise ValueError("--gate-true-layout needs --caption-slot-len")
+        return SimpleNamespace(run=run, dcache=pipeline.dcache_for(), thr=thr, family=family, eps0=eps0, fold=folds.test_items(f, max(500, len(f["test"]) + len(f.get("test_ext", [])))), grid=grid,
+                               extra_cells=extra, ic=(_suite().load_package() if extra else None), neg_len=bool(getattr(a, "neg_len", False)), slot_len=(int(slot) if slot else None), gate_true=gate_true,
                                patch=max(2, grid // 4), codebook=(np.load(cbp) if cbp.exists() else None), tbv=tbv_enabled(a.tbv, runs_),
                                denoise_for=tuple(a.denoise_for.split(",")) if a.denoise_for else (),
                                sanity=parse_sanity(getattr(a, "sanity", "patch")))     # main() always sets --sanity (default patch,swap); a bare namespace keeps the pre-swap behaviour
@@ -125,7 +169,19 @@ def build_conditions(sc, it, pil, clean, ctx) -> list[dict]:
     for name in getattr(ctx, "sanity", ("patch",)):
         tc = corruptions.apply_token(name, clean, corruptions.token_rng(config.SEED_GATE, gid, name), grid=ctx.grid, patch=ctx.patch, swap_frac=config.SWAP_FRAC, vocab=IMG_VOCAB)
         conds.append(dict(name=name, kind="token", codes=tc, pix=None, corr=name))
+    for key, ename, esev in getattr(ctx, "extra_cells", ()):                                  # A6.11 item 4: appended LAST, so no earlier condition index (and no earlier jitter stream) moves
+        suite = _suite()
+        img = suite.apply_corruption(ename, esev, pil, suite.corruption_seed(gid, extra_cell_index(ename, esev)), ctx.ic)
+        conds.append(dict(name=key, kind="pixel", codes=sc.encode(img), pix=np.asarray(img), corr=ename, extra=True))
     return conds
+
+
+def _neg_len_caption(it: dict) -> str:
+    """The length-matched negative of an item (`--neg-len`, A6.7): the item field `neg_caption_len`, caption TEXT (the fold builder writes it); a missing or non-string field stops the run."""
+    c = it.get("neg_caption_len")
+    if not isinstance(c, str) or not c:
+        raise ValueError(f"--neg-len needs the item field 'neg_caption_len' (caption text); item idx {it.get('idx')} has {c!r}")
+    return c
 
 
 def process(sc, it, ctx):
@@ -138,6 +194,15 @@ def process(sc, it, ctx):
     groups = pipeline.item_groups(sc, gid, K)
     a0 = config.ALPHA_PRIMARY
     row, arrays = dict(gid=gid, image_id=it["image_id"], caption=it["caption"], neg_caption=it["neg_caption"], n_tok=len(cap_tok), n_tok_neg=len(neg_tok), conds={}), {}
+    slot_len, gate_true = getattr(ctx, "slot_len", None), getattr(ctx, "gate_true", False)
+    gate_tok = slot_tokens(slot_len) if slot_len else cap_tok                                         # --caption-slot-len: B, D, s3, tbv (and the flags) are laid out at a FIXED slot length
+    lam_negL = None
+    if getattr(ctx, "neg_len", False):                                                                # --neg-len (A6.7): one extra pass, Lambda of the length-matched negative
+        negL_tok = sc.caption_ids(_neg_len_caption(it))
+        lam_negL = scores.full_image_lp(sc, sc.build(negL_tok, clean), caption_masked=False)
+        row.update(neg_caption_len=it["neg_caption_len"], n_tok_neg_len=len(negL_tok))
+    if slot_len:
+        row.update(slot_len=int(slot_len), gate_layout=("true" if gate_true else "fixed"))
     G_of: dict[str, np.ndarray] = {}
     for ci, c in enumerate(conds):
         name, codes = c["name"], c["codes"]
@@ -145,12 +210,19 @@ def process(sc, it, ctx):
         z = np.zeros(sc.L_I, bool) if c["kind"] == "clean" else arms.changed_code_gate(clean, codes)
         cr = dict(kind=c["kind"], n_changed=int(z.sum()), img={}, txt={}, gate={})
         arrays[f"{name}_codes"], arrays[f"{name}_z"], arrays[f"{name}_delta"] = codes.astype(np.int16), z, delta
+        deltaL = None
+        if lam_negL is not None:
+            deltaL = pipeline.image_delta(lam_pos, lam_negL, codes)                                     # a gather at the stored codes, no pass
+            arrays[f"{name}_deltaL"] = deltaL
         if c["kind"] == "denoise":
             cr["img"]["denoised"] = pipeline.compact(evidence.evidence_from_delta(delta))
+            if deltaL is not None:
+                cr["imgL"] = {"denoised": pipeline.compact(evidence.evidence_from_delta(deltaL))}
             row["conds"][name] = cr
             continue
-        gs = pipeline.gate_scores(sc, cap_tok, codes, groups, ctx.dcache, K)                           # 8 passes (+ cached null)
-        uj = cal.jitter(gs["u"], ctx.eps0, arms.arm_rng(config.SEED_GATE, gid, ci, arms.ARM_TAG["jitter"], 0))
+        gs = pipeline.gate_scores(sc, gate_tok, codes, groups, ctx.dcache, K)                          # 8 passes (+ cached null)
+        gg = pipeline.gate_scores(sc, cap_tok, codes, groups, ctx.dcache, K) if gate_true else gs       # --gate-true-layout: the flags and size-matched arms stay at the true layout (8 extra passes)
+        uj = cal.jitter(gg["u"], ctx.eps0, arms.arm_rng(config.SEED_GATE, gid, ci, arms.ARM_TAG["jitter"], 0))
         flags = {al: uj > t.tau for al, t in ctx.thr.items()}
         G = flags[a0]
         G_of[name] = G
@@ -160,7 +232,7 @@ def process(sc, it, ctx):
             arrays[f"{name}_flag{al:g}"] = f
             cr["gate"][f"{al:g}"] = dict(n_flag=int(f.sum()), n_tp=int((f & z).sum()), n_corrupted=int(z.sum()), n_fp_on_clean_tokens=int((f & ~z).sum()))
         if ctx.tbv:                                                                                     # 1 pass
-            tb = scores.tbv_score_raw_logits(sc, sc.build(cap_tok, codes))
+            tb = scores.tbv_score_raw_logits(sc, sc.build(gate_tok, codes))
             arrays[f"{name}_tbv"] = tb
             cr["tbv"] = baselines.copy_through_stat(tb)
         k = int(G.sum())
@@ -170,11 +242,13 @@ def process(sc, it, ctx):
         for r in range(config.N_GEO_SEEDS):
             arm_G[f"geo{r}"] = arms.geometry_matched_gate(G, ctx.grid, arms.arm_rng(config.SEED_GATE, gid, ci, arms.ARM_TAG["geo"], r))
             arm_G[f"scat{r}"] = arms.scattered_gate(k, sc.L_I, arms.arm_rng(config.SEED_GATE, gid, ci, arms.ARM_TAG["scattered"], r))
-        arm_G["topkB"], arm_G["topks3"] = arms.topk_gate(-gs["B"].astype(np.float64), k), arms.topk_gate(gs["s3"], k)
+        arm_G["topkB"], arm_G["topks3"] = arms.topk_gate(-gg["B"].astype(np.float64), k), arms.topk_gate(gg["s3"], k)
         if c["kind"] != "clean":
             arm_G["chg"] = z
         cr["img"] = {an: pipeline.compact(evidence.arm_summary(delta, g)) for an, g in arm_G.items()}
-        if c["kind"] in ("clean", "pixel"):                                                             # text direction: clean + family only
+        if deltaL is not None:
+            cr["imgL"] = {an: pipeline.compact(evidence.arm_summary(deltaL, arm_G[an])) for an in ("none", f"gate{a0:g}")}
+        if c["kind"] in ("clean", "pixel") and not c.get("extra"):                                                             # text direction: clean + family only
             names = ["none", "gate"] + ([] if c["kind"] == "clean" else ["geo0", "chg"])
             gate_list = [None, G] + ([] if c["kind"] == "clean" else [arm_G["geo0"], z])
             cr["txt"] = dict(zip(names, pipeline.text_direction(sc, cap_tok, neg_tok, codes, gate_list, ctx.dcache)))
@@ -191,6 +265,10 @@ def main(argv=None):
     ap.add_argument("--sanity", default=",".join(SANITY_ALL), help="token-level sanity conditions of family PS (SAP AD.4: both are always tested, m = 2); dropping one makes its PS cell 'not run', p = 1")
     ap.add_argument("--folds-path", default=None, help="family H only: folds file to take the test items from (default: runs/P2-GATE-FOLDS/folds.json); must exist, is never built")
     ap.add_argument("--family-run", default=M3_RUN, help="family H only: headroom run whose family.json gives the corruption family and the n-rule (default P2-GATE-M3); the n check is never skipped")
+    ap.add_argument("--neg-len", action="store_true", help="A6.7: also score the length-matched negative (item field neg_caption_len): one extra pass per item, stores <cond>_deltaL and row imgL; default off")
+    ap.add_argument("--extra-cells", default="", help="A6.5: comma list of extra imagecorruptions pixel cells appended after the sanity conditions, e.g. shot_noise3,impulse_noise3,speckle_noise3 (type + severity 1-5); default none")
+    ap.add_argument("--caption-slot-len", type=int, default=None, help="LRF re-freeze: lay out B, D, s3, tbv (and the gate flags) with a FIXED masked caption slot of this many tokens (13) instead of the true caption length; Lambda and Delta are unchanged; default off")
+    ap.add_argument("--gate-true-layout", action="store_true", help="with --caption-slot-len: keep the GATE flags and the size-matched arms at the TRUE layout (8 extra passes per gated condition), so GATE-M is the preregistered one")
     a = ap.parse_args(argv)
     try:                                                                  # all prerequisites are checked BEFORE the model is touched
         load_prereqs(None, a.family_run)
@@ -199,6 +277,11 @@ def main(argv=None):
         if a.folds_path and not Path(a.folds_path).exists():
             raise FileNotFoundError(f"--folds-path {a.folds_path} does not exist")
         sanity = parse_sanity(a.sanity)
+        parse_extra_cells(a.extra_cells)
+        if a.caption_slot_len is not None and a.caption_slot_len < 1:
+            raise ValueError("--caption-slot-len must be a positive token count")
+        if a.gate_true_layout and not a.caption_slot_len:
+            raise ValueError("--gate-true-layout needs --caption-slot-len")
         ps_doc = None
         if sanity:                                                        # ps_frozen.json is written and committed before the first M4 item (AD.4, AD.12 step 2, A3.3 item 1, AB.8)
             ps_doc = ps_freeze.check(Path(common.RUNS))
@@ -213,6 +296,9 @@ def main(argv=None):
     if a.folds_path or a.family_run != M3_RUN:                            # recorded only for family H, so the config of every existing run id is unchanged
         import hashlib
         cfg.update(folds_path=a.folds_path, folds_sha256=(hashlib.sha256(Path(a.folds_path).read_bytes()).hexdigest() if a.folds_path else None), family_run=a.family_run)
+
+    opts = {k: v for k, v in (("neg_len", a.neg_len or None), ("extra_cells", a.extra_cells or None), ("caption_slot_len", a.caption_slot_len), ("gate_true_layout", a.gate_true_layout or None)) if v}
+    cfg.update(opts)                                                      # recorded only when an A6 option is on, so the config of every existing run id is unchanged
 
     def load():
         from exp_p2.scoring import UniScorer
