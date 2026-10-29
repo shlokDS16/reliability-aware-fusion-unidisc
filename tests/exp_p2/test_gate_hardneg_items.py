@@ -251,6 +251,34 @@ def test_h_l8_an_injected_leak_makes_the_builder_fail(monkeypatch):
     assert bh.build(rows, leak, N_TOK)["head"]                                  # with the real filter the same call succeeds
 
 
+def test_h_l4_foil_pool_overlap_is_asserted_and_counted():
+    """FX-1: no H image is in the FOIL pool (family B); the count is recorded in the file's meta."""
+    rows = _rows()
+    clean = bh.build(rows, set(), N_TOK, foil_ids={1, 2, 3})
+    assert clean["meta"]["h_l4"] == dict(checked=True, n_foil_pool_images=3, n_overlap=0)
+    assert bh.build(rows, set(), N_TOK)["meta"]["h_l4"] == dict(checked=False)
+    assert bh.build(rows, set(), N_TOK, foil_ids={1})["meta"]["sha1"] == clean["meta"]["sha1"]            # the check does not change the items
+    leaked = clean["test"][5]["image_id"]
+    with pytest.raises(AssertionError, match="H-L4"):
+        bh.build(rows, set(), N_TOK, foil_ids={leaked, 1})
+    with pytest.raises(AssertionError, match="H-L4"):
+        bh.h_l4(clean["head"], {clean["head"][0]["image_id"]})
+
+
+def test_foil_pool_ids_read_fit_and_test_and_a_missing_pool_stops_the_builder(tmp_path, monkeypatch):
+    d = tmp_path / "P2-GATE-FOIL"
+    d.mkdir()
+    (d / "pool.json").write_text(json.dumps(dict(fit=[dict(image_id=11)], test=[dict(image_id=12), dict(image_id="13")], counts={})))
+    assert bh.foil_pool_ids(tmp_path) == {11, 12, 13}
+    with pytest.raises(FileNotFoundError, match="H-L4"):
+        bh.foil_pool_ids(tmp_path / "nowhere")
+    monkeypatch.setattr(common, "RUNS", tmp_path)
+    monkeypatch.setattr(bh, "verify_sha256", lambda d=None: [])
+    monkeypatch.setattr(bh, "exclusion_ids", lambda runs=None, extra_files=(), by_source=None: ({1}, dict(sources={}, missing_optional=[])))
+    (d / "pool.json").unlink()
+    assert bh.main(["--out", str(tmp_path / "out.json")]) == 2 and not (tmp_path / "out.json").exists()
+
+
 def test_exclusion_ids_can_return_the_per_source_sets(tmp_path):
     by = {}
     bh.exclusion_ids(_runs(tmp_path), by_source=by)

@@ -121,6 +121,22 @@ def h_l6(rows: list[dict], excluded: set[int]) -> dict:
     return dict(n_rows_in_existing_pools=n, ok=bool(n > 0))
 
 
+def foil_pool_ids(runs: Path | None = None) -> set[int]:
+    """Image ids of the family B (FOIL) pool: `fit` and `test` of runs/P2-GATE-FOIL/pool.json. Raises FileNotFoundError if the file is missing (H-L4 is an assertion, not optional)."""
+    p = (Path(runs) if runs is not None else Path(common.RUNS)) / "P2-GATE-FOIL" / "pool.json"
+    if not p.exists():
+        raise FileNotFoundError(f"{p} missing: H-L4 (disjoint from the FOIL pool) needs it")
+    d = json.loads(p.read_text(encoding="utf8"))
+    return {int(it["image_id"]) for k in ("fit", "test") for it in d.get(k, [])}
+
+
+def h_l4(items: list[dict], foil_ids: set[int]) -> dict:
+    """H-L4 (FX-1): no H item image is in the FOIL pool; raises AssertionError with the count otherwise. Returns the count record."""
+    shared = sorted({int(it["image_id"]) for it in items} & set(foil_ids))
+    assert not shared, f"H-L4: {len(shared)} H image ids are in the FOIL pool, e.g. {shared[:5]}"
+    return dict(checked=True, n_foil_pool_images=len(foil_ids), n_overlap=0)
+
+
 def h_l7_samples(rows: list[dict], by_source: dict) -> list[dict]:
     """H-L7: for cal, head, test, test_ext and probe, the smallest matched image id with the SugarCrepe file name and the COCO file name, for a hand check by the data-steward."""
     by_id: dict[int, dict] = {}
@@ -200,7 +216,7 @@ def to_items(rows: list[dict], fold: str) -> list[dict]:
 
 
 def build(rows: list[dict], excluded: set[int], n_tok_fn, *, n_h3: int = N_H3, n_h4: int = N_H4, seed=SELECT_SEED, tok_range=config.TOK_RANGE, exclusion_report: dict | None = None,
-          sha256: dict | None = None) -> dict:
+          sha256: dict | None = None, foil_ids: set[int] | None = None) -> dict:
     """The folds-schema dict: head = H3, test = H4, cal and test_ext empty."""
     elig, why = eligible_rows(rows, excluded, n_tok_fn, tok_range)
     h3, h4, info = select(elig, n_h3, n_h4, seed)
@@ -210,6 +226,7 @@ def build(rows: list[dict], excluded: set[int], n_tok_fn, *, n_h3: int = N_H3, n
                cal=[], head=to_items(h3, "head"), test=to_items(h4, "test"), test_ext=[])
     out["meta"]["sha1"] = hashlib.sha1(json.dumps({k: out[k] for k in ("cal", "head", "test", "test_ext")}, sort_keys=True).encode()).hexdigest()[:16]
     folds.check_folds(out, excluded)                       # duplicates inside a fold, overlap between folds, overlap with any existing pool, duplicate gids
+    out["meta"]["h_l4"] = h_l4(out["head"] + out["test"], foil_ids) if foil_ids is not None else dict(checked=False)      # the FOIL pool lies inside folds.json (0 outside), so this is normally 0 by construction
     return out
 
 
@@ -231,6 +248,7 @@ def main(argv=None) -> int:
             return 2
         by_source: dict = {}
         excluded, rep = exclusion_ids(by_source=by_source)
+        foil_ids = foil_pool_ids()
     except FileNotFoundError as e:
         print("STOP:", e, file=sys.stderr)
         return 2
@@ -240,10 +258,10 @@ def main(argv=None) -> int:
     if not l6["ok"]:
         print("STOP: H-L6 positive control failed: no SugarCrepe image id matches any excluded set (id format mismatch)", file=sys.stderr)
         return 2
-    res = build(all_rows, excluded, folds.hf_token_counter(a.slow), exclusion_report=dict(rep, h_l6=l6), sha256=sums)
+    res = build(all_rows, excluded, folds.hf_token_counter(a.slow), exclusion_report=dict(rep, h_l6=l6), sha256=sums, foil_ids=foil_ids)
     folds.save_folds(res, out)
     print(json.dumps(dict(path=str(out), sha1=res["meta"]["sha1"], sha256=hashlib.sha256(out.read_bytes()).hexdigest(), sizes=dict(head=len(res["head"]), test=len(res["test"])),
-                          per_subset=res["meta"]["per_subset"], row_filter=res["meta"]["row_filter"], missing_optional=rep["missing_optional"], h_l6=l6, h_l7=h_l7_samples(all_rows, by_source))))
+                          per_subset=res["meta"]["per_subset"], row_filter=res["meta"]["row_filter"], missing_optional=rep["missing_optional"], h_l6=l6, h_l4=res["meta"]["h_l4"], h_l7=h_l7_samples(all_rows, by_source))))
     return 0
 
 

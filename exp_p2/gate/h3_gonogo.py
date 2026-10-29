@@ -221,7 +221,9 @@ def last_row_time(items_path: Path) -> datetime | None:
 def decide(h3_run: str = H3_RUN, now: datetime | None = None, runs: Path | None = None, *, last_row: datetime | None = None, gap_reason: str | None = None) -> tuple[int, dict]:
     """-> (exit code, family.json content). 0 written; 2 pilot incomplete (file still written, NO-GO). Raises artifacts.WriteOnceError if the file exists.
     The clock, the last H3 row's time, the gap, the A5.5a deadline and `gap_reason` are recorded in `decide_record` (a gap above A_H3 = 0.5 h is logged with its reason)."""
-    now = now or datetime.now(IST)
+    system_now = datetime.now(IST)
+    now_source = "--now" if now is not None else "system"                     # FX-2: an override must be distinguishable from the clock afterwards
+    now = now or system_now
     p = paths(runs)
     r = Path(runs) if runs is not None else Path(common.RUNS)
     run_dir = r / h3_run
@@ -237,9 +239,10 @@ def decide(h3_run: str = H3_RUN, now: datetime | None = None, runs: Path | None 
             raise ValueError(f"row idx {row.get('idx')} (gid {row.get('gid')}, image {row.get('image_id')}) is not an H3 item of folds_hardneg.json")
     items_path = run_dir / "items.jsonl"
     inputs = dict(h3_run=h3_run, items_sha256=sha256_lf(items_path) if items_path.exists() else None, plan_family_sha256=sha256_lf(p["plan"]), folds_h3_sha256=sha256_lf(p["h3_folds"]), code_commit=code_commit())
+    last_row_source = "--last-row-time" if last_row is not None else ("mtime" if last_row_time(items_path) is not None else "unavailable")
     lr = last_row if last_row is not None else last_row_time(items_path)
     gap_h = (now - lr).total_seconds() / 3600.0 if lr is not None else None
-    record = dict(now=now.isoformat(), last_h3_row_time=lr.isoformat() if lr is not None else None, gap_hours=gap_h, gap_over_A_H3=bool(gap_h is not None and gap_h > A_H3),
+    record = dict(now=now.isoformat(), now_source=now_source, system_clock_at_decide=system_now.isoformat(), last_row_source=last_row_source, last_h3_row_time=lr.isoformat() if lr is not None else None, gap_hours=gap_h, gap_over_A_H3=bool(gap_h is not None and gap_h > A_H3),
                   gap_reason=gap_reason, h3_rows=len(rows), h3_complete=bool(len(rows) >= 50), deadline=decide_deadline().isoformat(), after_deadline=bool(now > decide_deadline()),
                   decided_on_prefix=bool(len(rows) < 50))
     doc, complete = build_family_doc(rows, plan_doc, now, inputs, record)
@@ -263,7 +266,7 @@ def main(argv=None) -> int:
             res = plan()
             print(json.dumps(res, indent=1))
             return 0
-        code, doc = decide(a.h3_run, parse_now(a.now), last_row=parse_now(a.last_row_time) if a.last_row_time else None, gap_reason=a.gap_reason)
+        code, doc = decide(a.h3_run, parse_now(a.now) if a.now else None, last_row=parse_now(a.last_row_time) if a.last_row_time else None, gap_reason=a.gap_reason)
     except (FileNotFoundError, ValueError, artifacts.WriteOnceError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2

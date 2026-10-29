@@ -123,3 +123,8 @@ Tests: 265 passed (new and affected files; `test_gate_s2` not run): `test_gate_h
 3. D_H in the length rule is the all-item net difference of the corruption's H test (`delta` of the analysis, else the stratified file's `all.net`); the rule compares the LM lower bound with -D_H using that point estimate, not its CI.
 4. "The label carries the suffix": if several rejected corruptions exist, the suffix is added when the clause fires for any of them and the list of corruptions is returned (`length_mismatched`); sentences are per corruption, so each sentence uses its own entry of `length_rule`.
 5. `bound_p_at_n` for n_H4 = 0 (NO-GO or cut by time) is null.
+
+## 8. Audit fixes FX-1 and FX-2 (gate-auditor, b2725e57)
+
+- FX-1: `build_hardneg_items` now asserts H-L4 (`foil_pool_ids` reads fit and test of runs/P2-GATE-FOIL/pool.json, required; `h_l4` raises AssertionError on any shared image) and records `meta.h_l4` (real run: 540 FOIL pool images, 0 overlap; content sha1 still 6cae72d56505c1eb). `main` prints it; a missing pool stops the build. Tests added.
+- FX-2: `decide_record` gains `now_source` ("system" or "--now"), `system_clock_at_decide` and `last_row_source` ("mtime", "--last-row-time" or "unavailable"); `main` passes `now` only when `--now` is given. Tests added.

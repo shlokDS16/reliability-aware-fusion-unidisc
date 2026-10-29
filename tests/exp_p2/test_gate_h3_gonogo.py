@@ -322,6 +322,38 @@ def test_decide_record_has_the_clock_the_last_row_time_the_gap_and_the_reason(en
     assert rec["last_h3_row_time"].startswith("2026-10-30T12:50") and rec["now"].startswith("2026-10-30T13:30")
 
 
+def test_decide_record_states_the_source_of_now_and_of_the_last_row_time(env):
+    """FX-2: an override of the clock or of the last-row time must be distinguishable from the system values afterwards."""
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    _, doc = g.decide("P2-GATE-H3", g.parse_now(EARLY), env, last_row=g.parse_now("2026-10-30T08:40"))
+    rec = doc["decide_record"]
+    assert rec["now_source"] == "--now" and rec["last_row_source"] == "--last-row-time" and rec["now"].startswith("2026-10-30T09:00")
+    assert abs((datetime.now(g.IST) - datetime.fromisoformat(rec["system_clock_at_decide"])).total_seconds()) < 600 and rec["system_clock_at_decide"] != rec["now"]
+    (env / "P2-GATE-H3" / "family.json").unlink()
+    _, doc = g.decide("P2-GATE-H3", None, env)                                                # no override: system clock and the file's mtime
+    rec = doc["decide_record"]
+    assert rec["now_source"] == "system" and rec["last_row_source"] == "mtime" and rec["now"] == rec["system_clock_at_decide"]
+    (env / "P2-GATE-H3" / "family.json").unlink()
+    (env / "P2-GATE-H3" / "items.jsonl").unlink()
+    _, doc = g.decide("P2-GATE-H3", None, env)
+    assert doc["decide_record"]["last_row_source"] == "unavailable" and doc["decide_record"]["last_h3_row_time"] is None
+
+
+def test_main_passes_overrides_only_when_the_flags_are_given(env, capsys):
+    g.plan(env)
+    _write_rows(env, _rows(GO3))
+    assert g.main(["decide", "--now", EARLY, "--last-row-time", "2026-10-30T08:50"]) == 0
+    capsys.readouterr()
+    rec = json.loads((env / "P2-GATE-H3" / "family.json").read_text())["decide_record"]
+    assert rec["now_source"] == "--now" and rec["last_row_source"] == "--last-row-time"
+    (env / "P2-GATE-H3" / "family.json").unlink()
+    assert g.main(["decide"]) in (0, 2)
+    capsys.readouterr()
+    rec = json.loads((env / "P2-GATE-H3" / "family.json").read_text())["decide_record"]
+    assert rec["now_source"] == "system" and rec["last_row_source"] == "mtime"
+
+
 def test_a_short_gap_is_not_flagged_and_a_prefix_is_recorded_as_such(env):
     g.plan(env)
     _write_rows(env, _rows(GO3, n=47))
