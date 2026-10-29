@@ -164,3 +164,9 @@ Shlok verbatim (excerpt): "This TMLR is not even q1 dude. Let's make paper 2 for
 ## 16. TNNLS route (Shlok 2026-10-29 14:14 IST)
 Shlok verbatim: "Two-three weeks is too much max by monday." Route B out; deadline Mon 2 Nov 2026 at the latest. Lead proceeds with Route C (recommended in-session after the learned-ceiling result bdc87e4e): learned reliability-aware evidence fusion (caption-withheld logistic-GAM token weights) as the new method, frozen on M4, confirmed on a fresh preregistered COCO fold (noise primary, held-out suite noise types, CLIP/SigLIP comparison), with the preregistered GATE study as motivation/analysis. Shlok may switch to Route A.
 Shlok 2026-10-29 14:15 IST, verbatim: "Even tuesday morning after reset can contribute." Read as: final work may continue to Tue 3 Nov 2026 morning, using the weekly usage reset (Mon 2 Nov ~22:30 IST); heavy review/polish passes are scheduled after the reset.
+
+## 17. D-H2, unattended H/Study 2 GPU runs, CLIP/SigLIP download (Shlok 2026-10-29 ~18:50 IST)
+Questions put (this session, multiple-choice card) and Shlok's selected answers, verbatim:
+1. "Family H (SugarCrepe hard negatives) is a late-added test. Keep it out of the title, abstract, highlights and conclusion (results section and supplement only)?" -> **"Yes, keep it out (Recommended)"**. D-H2 settled: H never in title, abstract, highlights or conclusion.
+2. "Can the GPU stages for H3/H4 and Study 2 (rescore, about 2.5 h; L1, about 4 h; LG) run unattended overnight and over the weekend under the same guards (memory cap, 3x / 2 s slow-item stop, crash-log halt)?" -> **"Yes, unattended (Recommended)"**. Any guard stop or crash-log event still halts the GPU until Shlok answers.
+3. "Can I download CLIP ViT-L/14 and SigLIP checkpoints (about 2-4 GB total from Hugging Face) for the descriptive baselines in Study 2?" -> **"Yes, download (Recommended)"**. Download in daytime, resumable, not near 23:00 / 00:15 IST.
