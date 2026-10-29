@@ -647,3 +647,201 @@ The A5.15 statement that the four D-H answers are Shlok's answers (F5); A5.9 pla
 ## Residual risks the signature does not cover
 
 Single model; U8 contamination (COCO val2017 positives); selected subset of val2017 (exchangeability is an assumption, H-CAL can only refute it); LLM-written negatives with possible residual text cues; 13 families without adjustment; the honour-rule firewalls (lead, statistician) are assertions, not attestations; GPU stability (eight crashes since 10-14, S2 still running); I did not read the code, the IMPL-J report or any output. Judgement, not measured: H adds a small chance of a reportable positive (about 0.05, mostly H-POS-G) and a high chance of H-NOGO or H-INC; it does not change my estimate of a defensible positive headline claim (about 0.05 to 0.08).
+
+---
+
+# A5.1 amendment and A6 signature (red team, 2026-10-29, on SAP addendum A6 DRAFT, commit 71c78306, and the freeze commit bf2edd7c; CPU only)
+
+Read: `research/CONTRACT.md`; `SAP-ADDENDUM-A6-LRF-2026-10-29.md` in full; A5 r1 sections A5.0 and A5.1 and the r1 table (C5-3); my A5 signature above; `LEARNED-CEILING-REPORT-2026-10-29.md` in full; `LRF-FROZEN-2026-10-29.md` (front matter, sections 3 and 4); `runs/P2-LRF-FROZEN/spec.json`, `freeze_check.json`, `hpo.json` (head), `diagnostics.json` (feature ranking head, `length_checks`); `CONFIRM-EVENING` sections 14 to 16; `decisions.jsonl` D0080 to D0082; code: `exp_p2/run_gate_m4.py` 97, 100-165; `exp_p2/gate/pipeline.py` 30-58; `exp_p2/gate/scores.py` 82-110; `exp_p2/gate/baselines.py` 29-37; `analysis_posthoc/learned_ceiling/lrf.py` 40-80, `data.py` 55-90. Checked (E4, CPU, stdlib/numpy): `tier3_fusion.json` noise0.1 arm accuracies; the image ids of all 14 `runs/P2-*/items.jsonl` files against `folds.json`, probe-1/2 and M1; `git ls-files` for the M1 codebook and the D cache; exact McNemar power at n 520 (0.730 at Delta 0.05, 0.863 at 0.06, 0.370 at 0.03, size 0.041 at alpha 0.05; script in the session scratchpad `rt_power.py`). Not read: the TNNLS design notes and Codex review, any S2, FOIL, suite or H output, the A6 power script. Opened no fresh-fold or H file (none exists).
+
+## Verdict: SIGN WITH CONDITIONS (C6-1 to C6-11); confidence 0.6 that this is the right call
+
+(1) The A5.1 stop rule may be amended **once**, before the first H3 item, to admit Study 2; text below. (2) A6 is signed as a design **only** with the conditions. One finding (K1) is **fatal as written**: the tested object reads the true caption's length at test time, and A6 lets L1 alone license "confirmed". It is resolved only by the dated ledger row of C6-1; until then the gate is blocked. Eight findings are major, five minor. The rest of A6 is sound: fresh images, gid-keyed corruption seeds, a hash-pinned object, exact tests, fixed-sequence logic, prespecified wording for every branch including the null, and an honest power statement (I reproduced the L1 numbers).
+
+## (1) The A5.1 stop rule: decision and the text I sign
+
+**Decision.** Admissible once, for three reasons. First, no H data exist, so admitting Study 2 now exploits no H outcome. Second, Study 2 tests a new object on new images, so it cannot change P's alpha. Third, the information it uses (P, PS, Tier 3, the learned ceiling) is disclosed. Against it: C5-3 was written so that post-P analyses stay Tier 3, and A6 promotes exactly such a Tier-3 result (bdc87e4e) to a confirmatory family (K8). This is acceptable once, with full disclosure, and never again. The amendment binds only if C6-1 to C6-11 are dated rows before the first H3 item (C6-9 states which may come later).
+
+**Amendment text (signed as written; wording of item 7 editable, substance binding):**
+
+> **A5.1 amendment 1 (2026-10-29; red-team signed with conditions C6-1 to C6-11; written before any H item and before any Study 2 item).**
+> 1. The C5-3 stop rule is amended once. Exactly one further confirmatory study is admitted after the P outcome: Study 2 (Addendum A6 r1), a test of one frozen method (LRF; the single object named under C6-1 and pinned under C6-2) on a fresh COCO val2017 fold. Its families are L, L-NI, L-LEN and LG as defined in A6 r1, and no others.
+> 2. After this amendment, family H and Study 2 are the last confirmatory families of Paper 2. No further family, study, population, fold, method, model, corruption, refit or re-freeze receives alpha, for any reason: an L1 or H outcome, a change of route (D0082 Route A or B) or venue, or a reviewer request before acceptance. Any later analysis is Tier 3, labelled "added after the primary, family H and Study 2 results", listed in the deviations box, and kept out of the title, abstract, highlights, conclusion, contribution list, cover letter and repository front matter. This amendment cannot itself be amended to admit another family. A second amendment of the stop rule removes the confirmatory label from every post-P family: H and Study 2 then become Tier 3.
+> 3. Timing. This amendment and A6 r1 are committed before the first H3 item. If an H3 item exists before both commits, this amendment is void, and A6's tests are Tier 3 (CIs only, LRF never "confirmed").
+> 4. Multiplicity. P (Holm, m 3), H (Holm, m 3), L (fixed sequence, m 4), L-NI (m 1), L-LEN (m 1) and LG (Holm, m 3) are separate families, each at 0.05. Nothing is pooled or contrasted across P, H and Study 2. The paper prints the family count (17) and 1 - 0.95^17 = 0.58, with "no adjustment across families". P keeps its A4.2 sentences under every H and Study 2 outcome. AB.1 extends to Study 2 word for word.
+> 5. Run order: S2 -> H3 -> H4 -> L1 -> LG -> baselines -> suite. The order and the A5.12 and A6.10 bounds and cut order depend only on time and on whether audited code is ready. No stage is started, delayed, cut, repeated or extended because of an outcome of another stage. A missed H bound is final: H is "not run", even if GPU time later becomes free.
+> 6. Placement rules of A5.9 and A6.12, and A6 as a whole, may only be tightened after the first H3 item or the first L item, whichever comes first.
+> 7. Disclosure (Methods, once, and the deviations box): "Study 2 was added after Study 1 had been analysed (primary result negative), when the target venue changed. The method it tests (LRF) was designed post hoc on Study 1's 500 test items. Before the design, Study 1's primary and secondary results, its positive-control audit, its exploratory comparators and an exploratory learned-weighting analysis had all been seen. In that analysis four learned-weighting families were compared and a logistic generalised additive model was selected; two other method designs were considered and not pursued. The configuration was frozen (SHA-256 {model}, commit {c}) before any Study 2 image was selected. Study 2 was preregistered (Addendum A6 r1, commit {c}) with a rule that no further confirmatory study would be added. All LRF numbers on Study 1's items are post hoc and exploratory. Study 2 tests a different method on different images and does not bear on Study 1's conclusion." No sentence in the paper gives Study 1's result as the reason for LRF's design (AB.1).
+
+## (2) Findings on A6
+
+**K1 (fatal as written). The tested object reads the true caption's length, and L1 alone can license "confirmed".**
+- Every caption-withheld feature is computed on a sequence built from the **true** caption's tokens:
+  - `run_gate_m4.py:142`: `gate_scores(sc, cap_tok, ...)`.
+  - `pipeline.py:32-34`: B and s3 are computed on `sc.build(cap_tok, codes)`, and D comes from the cache keyed by `len(cap_tok)`.
+  - `run_gate_m4.py:153`: tbv on `sc.build(cap_tok, codes)`.
+- The content is masked, but the length is not. The frozen report measures the channel: the length of c+ is recoverable from item feature summaries (cross-validated R^2 0.41; permutation null max 0.019, p 0.005; `diagnostics.json` `length_checks`).
+- B and tbv were not re-scored at the other length. tbv has the largest per-feature contribution SD in the diagnostics (0.70).
+- Clean and splice128 show a leak-shaped stratum pattern (difference 0.045, p 0.15 and 0.16). The frozen report itself concludes "as frozen, LRF is not order-blind by construction" and recommends a length-neutral re-freeze (LRF-FROZEN section 3).
+- The fresh-fold L1 run computes features in the same way (A6.11 item 2 reuses `run_gate_m4`), and the true caption always occupies the scored slot. So L1 tests a decision rule that receives a label-dependent input at test time.
+- A6.7 makes the only clean test (L-LEN, where c+ and c-_L have equal length and the rule becomes order-symmetric) a wording clause, not a condition for "confirmed".
+- A reviewer who reads Methods or the code will call the method non-deployable and the confirmation leaky, whatever the size of the leak.
+- The cheapest alternative explanation of a positive L1 is not excluded by design.
+
+**K2 (major). Which object A6 tests is unresolved, and resolving it opens a fork.**
+- A6.2 names "the model in `runs/P2-LRF-FROZEN/`" (sha ca5c4e2f), while the frozen report recommends a re-freeze at L_FIX = 13.
+- If the M4 items are re-scored, the protocol is re-fitted and the re-frozen model's M4 accuracy is then looked at before one of the two objects is chosen, that choice is selection on M4 outcomes.
+- A6 does not say which object is tested, who chooses, by when, or on what information.
+
+**K3 (major). Inputs of the frozen features are not pinned, and a missing input fails silently.**
+- nbr is the top-ranked feature in `diagnostics.json`, and it needs `runs/P2-GATE-M1/codebook.npy`. D needs `runs/P2-GATE-DCACHE/DI_n*.npy`. Both are untracked in git (`git ls-files` returns nothing).
+- The frozen hash set (`spec.json` `code_sha256`, `model_sha256`) covers only `data.py`, `families.py`, `lrf.py` and the model.
+- `baselines.neighbour_codebook_distance` returns NaN when the codebook is absent (`baselines.py:31-32`). `lrf.raw_from_npz` and `infer_item` (`lrf.py:41-73`) have no finiteness check, so NaN weights give `decision=False`, which is counted "wrong".
+- An L1 run from a checkout without these files would turn into a non-confirmation silently. A6.3 already says some steps must run in the main worktree.
+
+**K4 (major). L2 is L1 restated, and its sentence sits next to AB.1.**
+- On the M4 items GATE-M and NONE are identical on noise0.1: both 0.676, with the same b/c of 85/34 against SEL (learned-ceiling report, table).
+- L2 is therefore close to a duplicate of L1. A confirmed L2 would turn one finding into two sentences, and it unlocks L3 and L4 at no cost.
+- Its template, "LRF also exceeded the masked-likelihood gate", is the closest sentence in A6 to "LRF fixes GATE" (A6.1 item 2).
+
+**K5 (major). The route record contradicts AB.1.**
+- `CONFIRM-EVENING` section 16 says "with the preregistered GATE study as motivation/analysis"; D0082 says "GATE preregistered study kept as analysis".
+- A method paper that presents a null for hard gating and then a learned soft weighting reads as problem and solution, whatever its individual sentences say. A6.12 controls sentences, but it does not control section order, figures or tables.
+- The natural motivating sentence of a soft-fusion paper ("hard gating discards useful evidence") is A6.1's own example of a barred sentence. The writer team will meet this rule on page 1.
+
+**K6 (major). The headline is at an effective two-sided 0.10, and it is the paper's second headline attempt.**
+- P (Holm at 0.05) failed. L1 is a second confirmatory headline at one-sided 0.05.
+- Under a global null, the chance that at least one of the two headlines is a false positive is about 1 - 0.95 x 0.95 = 0.0975 (derived).
+- A6 prints the 0.025 flag but lets a title or abstract gain claim rest on 0.025 < p <= 0.05.
+
+**K7 (major). Rescue routes remain open if L1 is not confirmed.**
+- LG, L-LEN and L-NI are not gatekept by L1. The LG row lets "under {type} (held out, severity 3) LRF raised accuracy" appear in Results after an L1 failure.
+- D0082 says "Shlok may switch to Route A". A switch after L1 data would choose the paper's method on L1's outcome.
+- The titles for the two branches are not fixed in A6.
+- With F2 on Mon 18:00 and submission on Tue morning, text drafted on the assumption that L1 is confirmed is the likely failure mode.
+
+**K8 (major). A Tier-3 result is promoted, and the disclosure lists what was seen but not what was tried.**
+- Had the learned ceiling been null there would be no A6, so the paper adds a confirmatory study because an exploratory analysis looked good. The fresh fold makes L1 valid, but paper-level honesty needs the candidates as well as the results.
+- A6.1 lists the results seen. It does not list the candidates considered: F1 to F4 and SEL; SCER and CANAL, for which a novelty audit exists, `research/paper2/tnnls/NOVELTY-AUDIT-SCER-CANAL-2026-10-29.md`; Routes A and B.
+
+**K9 (major). Power and the winner's curse.**
+- I verified power 0.73 at Delta 0.05 and 0.37 at 0.03.
+- The +0.102 belongs to the cross-fitted procedure, with per-fold HPO. The frozen object, refitted on all 500 items, has **no** out-of-sample estimate at all.
+- `freeze_check.json` in-sample accuracies (noise0.1 0.788) are training accuracy.
+- With L-LEN as a co-primary (C6-1 option b), joint power falls. As an assumption-laden illustration, L-LEN alone at n 460, pi_d 0.30, Delta 0.05 has power 0.59.
+- A null is likely to be inconclusive, not negative. A6.3 already says so.
+
+**K10 (minor). The L-NI margin was chosen after the clean CI was seen.**
+- 0.03 was set after the M4 clean CI (-0.024 to +0.030) and the in-sample clean 0.90 had been seen.
+- Three points is a 25 percent relative increase in clean error (0.12 to 0.15).
+- A6 calls the margin "fixed now" but does not say it was chosen after this was seen.
+
+**K11 (minor). "Held-out noise" overstates what LG tests.**
+- Shot and speckle noise are close relatives of additive Gaussian noise. Impulse noise is the only structurally different cell.
+- Severity 3 is not matched to sigma 0.1.
+- Power is 0.54 at pi_d 0.20 and Delta 0.06.
+- "Held-out noise family" will be read as a generalisation test that the design cannot deliver.
+
+**K12 (minor). The exclusion list is enumerated, not a union.**
+- My check (E4): all image ids in the 14 `runs/P2-*/items.jsonl` files lie in `folds.json`, probe-1, probe-2 or M1, so the A6.3 list is complete today.
+- The rule is still an enumerated list. Runs added before the fold build (S2 completion, the suite, `P2-SUITE-SMOKE` images) are covered only if someone remembers them.
+
+**K13 (minor). The CLIP and SigLIP comparison.**
+- Printing "drops" side by side invites a robustness ranking that A6 bans in words.
+- The clean-accuracy gap to CLIP and SigLIP on random COCO negatives is not measured here (unknown). If it is large, the reader's question becomes "why not use CLIP?", which is a significance problem for TNNLS, not a validity one.
+
+**K14 (minor for A6, major for TNNLS). LRF has no novelty audit.**
+- The only audit in `research/paper2/tnnls/` covers SCER and CANAL.
+- D0081's "something not in existence" is unverified for a logistic-GAM token weighting of likelihood-ratio evidence. This is unknown, not shown to be false.
+
+## (3) What a TNNLS reviewer or an AI evaluator will call circular
+
+1. **The features see the label's length** (K1). This is the one objection that is true as the object stands.
+2. **"Your preregistered test set became your training set, and then you preregistered again."** This is not circular if three things hold: the commit order is object, then A6 r1, then fold build, then first L item; nothing on the fresh fold is fitted; and nothing is added afterwards (C6-1, C6-9, the amendment). It reads as circular if any M4-item LRF number appears beside P's GATE numbers in a main-text table or figure (C6-4), or if the in-sample numbers are quoted (C6-8).
+3. **"Hard gating fails, so we propose soft learned gating."** This is AB.1 by structure (K5).
+4. **"The second confirmation is the first one again."** This is L2 (K4).
+5. **"One corruption, one severity, one model, one negative rule; same pipeline."** L1 replicates on a new image sample; it does not show that the method generalises. The A6.12 scope sentence covers this only if every LRF sentence carries it.
+6. **The same team designs, freezes, builds the fold, runs and analyses.** This is mitigated by hashes, the auditor and the data-steward. The firewalls on what was read are still statements, not attestations (A6.0 item 6).
+
+**Cheapest alternative explanations of a positive L1, in order:**
+- (i) A caption-length channel through the layout of c+ (K1).
+- (ii) A Gaussian-noise detector built into nbr and tbv. LRF may be a learned version of "down-weight noise-damaged codes", which is unlikely to be new. The exploratory comparators argue partly against a trivial rule: median 0.678, 20 percent trimmed mean 0.682, soft gates 0.676, DET 0.712, CHG oracle 0.746, against SEL 0.778. These numbers are on M4 only, and no single-feature rule was tried.
+- (iii) The particular noise realisations, which are fresh per gid, so this is mitigated.
+
+The cheapest explanation of a null: power 0.73 at half the exploratory effect, or winner's-curse shrinkage beyond half.
+
+## Conditions (dated ledger rows by the lead; before the first H3 item unless stated)
+
+- **C6-1 (K1, K2; resolves the fatal).** A6 r1 names exactly one tested object, by a rule fixed now:
+  - **(a)** The L_FIX = 13 re-freeze of LRF-FROZEN section 3:
+    - The invariance check gives max abs diff 0 on 5 items x 4 conditions.
+    - The protocol is unchanged, and the new sha is committed before the fold build.
+    - The choice of (a) is declared **before** any re-frozen M4 accuracy is computed. Any such numbers are reported as exploratory whatever they show.
+    - Model ca5c4e2f is never scored on fresh items.
+  - **(b)** Otherwise, model ca5c4e2f:
+    - "Confirmed", "validated" and any title, abstract or conclusion gain claim require **both** L1 and L-LEN to be rejected with b > c (an intersection-union test; no alpha split).
+    - Every LRF sentence says "with caption-withheld scores laid out at the true caption's length; not order-blind".
+    - The frozen report's length-stratum analysis (its step 5) is printed beside L1.
+    - If L-LEN is "not run", LRF is "not confirmed (length control not run)".
+  - Whether (a) applies is decided by a clock time stated in the row: (a) only if its commit exists by that time, else (b). Nothing else enters the choice.
+- **C6-2 (K3).** The object's hash set adds `codebook.npy`, every `DI_n*.npy` the fold can use, and the scoring entry point. The scorer refuses to run when any feature or weight is non-finite, and verifies all hashes at start in the checkout that runs. The gate-auditor tests the NaN path.
+- **C6-3 (K4).** Every L2 sentence prints GATE-M versus NONE on noise0.1 beside it. L2 never appears in the title, abstract, highlights or conclusion, and is never worded as LRF "outperforming" or "improving on" gating.
+- **C6-4 (K5).** A dated row supersedes "GATE study as motivation" (CONFIRM section 16, D0082):
+  - Study 1 is not the motivation of LRF in any paper text.
+  - No section, figure or table arranges Study 1 and Study 2 as problem and solution.
+  - No table or figure puts LRF numbers (fresh or M4) beside GATE-M results on the M4 items outside the supplement's exploratory section.
+  - The chronology appears once, in Methods (amendment item 7).
+- **C6-5 (K6).** A title, abstract or highlight gain claim needs one-sided p <= 0.025 for L1. If 0.025 < p <= 0.05, the result is "confirmed at the preregistered one-sided 0.05 level" in Results only. If L1 is in the abstract, the L-NI sentence is in the abstract too.
+- **C6-6 (K7).**
+  - If L1 is not confirmed (or a partial prefix is not rejected), L3, L4, L-LEN, LG and L-NI appear only in Results, with the L1 non-confirmation in the same paragraph, and nowhere in the title, abstract, highlights, conclusion or cover letter.
+  - A6 r1 fixes the title for each L1 branch now.
+  - Route and venue are fixed before the first L item. A later switch does not remove Study 2 from the paper.
+- **C6-7 (K8).** The disclosure of amendment item 7 is used, naming every candidate considered (F1 to F4, SEL, SCER, CANAL).
+- **C6-8 (K9).** A6 r1 states that the frozen object has no out-of-sample estimate. `freeze_check.json` and in-sample accuracies are never quoted as performance.
+- **C6-9 (timing).**
+  - A6 r1, with C6-1 to C6-8 and C6-10 to C6-11 in its text, is committed before the first H3 item; after that it may only be tightened.
+  - The C6-1 object commit, the A6.0 item 6 statement and the C6-2 hashes come before the fold build.
+  - The fold build comes before the first L item.
+  - Git order is the evidence.
+- **C6-10 (K12).** L0 checks disjointness against the union of image ids in every `runs/P2-*` items, selection and pool file present at build time, plus all SugarCrepe images, not against an enumerated list. The data-steward's L7 record states that union.
+- **C6-11 (K10, K11).** LG is worded "other noise types (shot, impulse, speckle; imagecorruptions severity 3)", never "held-out noise family". L-NI states that its margin was fixed after the M4 clean interval had been seen.
+
+## Not signed
+
+- A6.7 as a safeguard under option (b) without the C6-1 conjunction (K1).
+- The A6.12 L2 row as written (K4).
+- The LG and L-LEN rows as usable after an L1 failure without C6-6 (K7).
+- A6.1 as the public disclosure (K8).
+- CONFIRM section 16's "GATE study as motivation" (K5).
+
+## What would make me withdraw this signature
+
+- Any refit, re-freeze, threshold or feature change after the first L item.
+- A choice between the C6-1 objects made after re-frozen M4 accuracies were seen.
+- A fold build commit earlier than the object commit.
+- Any Study 2 output read before its run is complete.
+- A family, study or method added after this amendment.
+- A route switch used to drop an L1 null.
+- Any sentence, section order or figure linking LRF to the P null.
+- An M4-item LRF number outside the "post hoc, exploratory" label.
+
+## Results that would force rejection of a claim made from A6
+
+- L1 one-sided p > 0.05 or b <= c: no LRF gain claim anywhere. Under option (b): L-LEN not rejected with b > c: no "confirmed".
+- Any hash mismatch, a non-finite feature, the L6 count zero, L7 unsigned, or a broken commit order: nothing from Study 2 is confirmatory.
+- Under (b), a gain present only in the true-caption-longer stratum: the length reading wins and no method claim stands.
+- L-NI not shown while L1 is in the abstract: "a clean-image loss of up to three points is not excluded" goes in the abstract.
+- L3 or L4 rejected with c > b: a harm sentence is mandatory wherever the L1 gain appears.
+- Baseline pixel parity not shown: no CLIP or SigLIP number in the main text.
+
+## Residual risks the signature does not cover
+
+- One model, one severity per corruption, one negative rule.
+- UniDisc and the CLIP and SigLIP pretraining may include COCO (unknown).
+- The firewall statements are honour rules.
+- GPU stability (eight crashes on record) makes "not run" the most likely failure.
+- I did not read the TNNLS designs, the A6 power script or any code beyond the lines listed.
+- LRF's novelty is unaudited (K14).
+- Judgement, not measured: if C6-1(a) is met, a defensible LRF headline has probability of about 0.4 to 0.55 (power at a plausible shrunk effect, times the chance the effect is real). Under (b) it is lower.
+
+**Ledger.** No rows added: the brief allows edits to this file only. Under the red-team rules, the fatal K1 blocks the gate until the orchestrator records the C6-1 resolution in `decisions.jsonl`.
