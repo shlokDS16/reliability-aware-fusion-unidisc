@@ -261,6 +261,11 @@ def test_the_hf_scorer_does_not_touch_the_network_without_approval(monkeypatch, 
     import huggingface_hub.constants as hc
     monkeypatch.setattr(hc, "HF_HUB_CACHE", str(hub), raising=False)
     monkeypatch.setattr(hc, "HUGGINGFACE_HUB_CACHE", str(hub), raising=False)
+    # transformers reads its default cache_dir from a module global set at import (transformers/utils/hub.py, TRANSFORMERS_CACHE), so the
+    # env vars above miss it once the real cache holds the pinned weights; point it at the empty cache too (test-only, card row A-9)
+    import transformers.utils.hub as th
+    for name in ("TRANSFORMERS_CACHE", "PYTORCH_TRANSFORMERS_CACHE", "PYTORCH_PRETRAINED_BERT_CACHE"):
+        monkeypatch.setattr(th, name, str(hub), raising=False)
     for k in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE"):
         monkeypatch.delenv(k, raising=False)
     import socket
