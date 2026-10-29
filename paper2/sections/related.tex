@@ -11,8 +11,9 @@ Absorbing-state discrete diffusion~\cite{austin2021d3pm,lou2024sedd} was simplif
 \cite{sahoo2024mdlm} and scaled~\cite{nie2025llada}.
 A masked diffusion denoiser models the conditional distribution of a clean token given the unmasked context~\cite{ou2025radd},
 which is the property the gate score uses.
-Masked image-token generation~\cite{chang2022maskgit} and unified text-image models~\cite{swerdlow2025unidisc,yang2025mmada,li2025lavida,shi2025muddit}
-put several modalities in one sequence.
+Masked image-token generation~\cite{chang2022maskgit} and unified text-image models~\cite{swerdlow2025unidisc,yang2025mmada,shi2025muddit}
+put several modalities in one sequence; multimodal diffusion language models such as LaViDa~\cite{li2025lavida} add a vision encoder to a
+diffusion language model.
 UniDisc, the backbone used here, is trained to mask all tokens of a modality with some probability, so that a modality
 likelihood with the other modality withheld exists~\cite{swerdlow2025unidisc}.
 The appendix of that paper demonstrates repair of overlaid and mismatched image-caption pairs by random masking of both
@@ -55,7 +56,7 @@ Because the finetune is what makes the observed-position probability informative
 
 In vision-language models, uncertainty-guided dropout decoding masks visual tokens that are uncertain under a
 logit-lens projection, with hand-set drop probabilities and without a calibrated threshold~\cite{fang2025dropout}.
-A self-purification defence masks visual tokens of high saliency at inference to remove backdoor behaviour~\cite{wan2026disp}.
+A self-purification defence masks the visual tokens of highest saliency to purify poisoned training responses before finetuning~\cite{wan2026disp}.
 Neither evaluates detection of corrupted tokens against known labels.
 
 \paragraph{Masked-likelihood scores, null-normalised scores and calibrated thresholds.}
@@ -104,24 +105,24 @@ This paper & Input image tokens of a given pair & Masked likelihood in own modal
 \paragraph{Source validation before fusion.}
 The classical background is outside machine learning.
 Failure detection and isolation~\cite{willsky1976survey,gao2015survey}, CFAR thresholding~\cite{finn1968adaptive,rohling1983cfar,diao2024radar},
-and decision fusion with weighted reliabilities~\cite{chair1986optimal,kittler1998combining} are the vocabulary the method
+decision fusion with weighted reliabilities~\cite{chair1986optimal}, and combination rules for classifiers~\cite{kittler1998combining} are the vocabulary the method
 borrows.
-Selecting the set of tokens to keep by looking at their values makes the missingness informative~\cite{rubin1976inference};
+Withholding a set of tokens selected by looking at their own values makes the missingness informative~\cite{rubin1976inference};
 Section~\ref{sec:method} states the conditions under which withholding a data-selected set is still the right treatment.
 
 Work in this journal treats unreliable inputs mostly by weighting them.
-Evidential fusion methods attach a reliability to each modality and discount it before the modalities are combined with
-Dempster's rule~\cite{shao2024ddef,huang2025evidential}; discounting is the soft counterpart of withholding a source, and
+Evidential fusion methods attach an estimated importance~\cite{shao2024ddef} or reliability~\cite{huang2025evidential} to each modality
+and combine the modalities with Dempster--Shafer theory; the reliability version discounts each modality before Dempster's rule
+\cite{huang2025evidential}. Discounting is the soft counterpart of withholding a source, and
 Section~\ref{ssec:tier3} states a pre-specified exploratory comparison of the hard gate with it.
 A survey of multimodal fusion on low-quality data lists noisy and quality-varying inputs among its four settings~\cite{zhang2026lowquality}.
 Two recent papers in the journal bound the risk of trusting a source at the level of a whole decision.
 As described in its abstract, Zhou and Lu~\cite{zhou2027burden} replace a default vision-language prediction by a challenger's
-only when a Dempster--Shafer evidence score clears a threshold chosen with a Clopper--Pearson bound on harmful overwrites, and Wang
-et al.~\cite{wang2025multistage} attach split conformal prediction sets to a text-and-tabular fusion network to flag predictions
-for human review.
+only when a Dempster--Shafer evidence score clears a calibrated threshold, with Clopper--Pearson bounds used to set the operating
+point, and Wang et al.~\cite{wang2025multistage} use a conformal prediction method on a text-and-tabular fusion network to flag
+unreliable predictions for human review. \todo{AUTHOR: verify against full text via VIT e-gateway}
 % corrigendum 10.1016/j.inffus.2025.103287 to Wang et al.: content not read; only the abstract-level statement above is used.
-Both act on the output of a recogniser or classifier; as far as their abstracts, and for Wang et al.\ their conformal-prediction
-section, describe, neither scores the individual input tokens of one modality, and neither uses the likelihood of a generative
+Both act on the output of a recogniser or classifier; as far as their abstracts describe, neither scores the individual input tokens of one modality, and neither uses the likelihood of a generative
 model.
 The present gate differs in its unit (an input token, before any fusion), its score (the masked likelihood of the token inside its
 own modality with the other modality withheld) and its guarantee (a conformal-risk-control threshold calibrated on clean pairs,

@@ -128,10 +128,10 @@ weight is not claimed to be the best way to use a reliability estimate; graded w
 alternatives, and Section~\ref{ssec:tier3} states the exploratory comparison with them.
 
 The calibrated gate of Zhou and Lu~\cite{zhou2027burden} and the gate studied here answer different questions.
-As described in the abstract of Zhou and Lu, theirs decides which of two recognisers to believe for one test instance; the gate
+As described in the abstract of Zhou and Lu, theirs decides whether to keep a default prediction or override it with a challenger's for one test instance; the gate
 here decides which input tokens to withhold before two directions of image-text evidence are combined.
 The two could be stacked, but this is not tested.
-Evidential fusion~\cite{shao2024ddef,huang2025evidential} and conformal prediction sets on a fusion network~\cite{wang2025multistage}
+Evidential fusion~\cite{shao2024ddef,huang2025evidential} and conformal prediction on a fusion network~\cite{wang2025multistage}
 are other uses of reliability and of distribution-free calibration in this journal that we found; as far as their abstracts describe,
 none scores input tokens with the likelihood of a generative model.
 \todo{AUTHOR: after the results are frozen, give the abstract and Figure~1 caption to a reader with no project context and ask what is
@@ -147,8 +147,8 @@ was not run. No statement is made for other models, resolutions, caption styles 
 established, and it could make clean pairs easier than unseen ones. The same applies, with more force, to the hard-negative set,
 whose true captions are COCO captions.
 \item \emph{Narrow guarantee.} The calibration bounds the expected false-alarm proportion on clean, exchangeable test pairs. It gives
-no bound on detection power, none on the clean tokens of corrupted items, and none under shift. Unlike a selective-risk bound on
-the harm of an action, as described for Zhou and Lu~\cite{zhou2027burden}, it says nothing about the harm or the power of the gate
+no bound on detection power, none on the clean tokens of corrupted items, and none under shift. Unlike a bound on
+the harm of overriding a prediction, such as a calibrated gate like that of Zhou and Lu~\cite{zhou2027burden} may give \todo{AUTHOR: verify against full text via VIT e-gateway}, it says nothing about the harm or the power of the gate
 on corrupted inputs. The realised proportion on one finite test set can lie above $\alpha$ because the statement is marginal over the
 calibration draw.
 \item \emph{Corruptions and labels.} Corruption labels are relative to the tokenisation of the clean image, so a ``clean'' token

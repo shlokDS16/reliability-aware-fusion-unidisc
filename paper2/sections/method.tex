@@ -259,7 +259,7 @@ and fails for JPEG and noise;
 (iii) corruption locations are independent of the content, which fails where changed codes concentrate in regions in which the
 tokenizer is unstable;
 (iv) no clean token is in $G$, or the clean tokens in $G$ are uninformative about $Y$.
-The gate selects on the observed values, so the missingness is informative~\cite{rubin1976inference}.
+The gate selects on the values of the tokens it withholds, so the missingness is informative~\cite{rubin1976inference}.
 Each violation has a cost: residual corrupted evidence in (i), discarded signal in (ii) because a noisy copy would call for a
 denoising posterior and not for marginalisation, a wrong distribution $p(v_G\mid v_R)$ for selected positions in (iii), and lost
 clean evidence at rate $\alpha$ in (iv).

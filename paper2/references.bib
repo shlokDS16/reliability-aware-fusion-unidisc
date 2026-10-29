@@ -1,4 +1,4 @@
-% references-draft.bib  (Paper 2, Elsevier Information Fusion, elsarticle-num, limit 50; this file: 49 entries)
+% references-draft.bib  (Paper 2, Elsevier Information Fusion, elsarticle-num, limit 50; this file: 55 entries)
 % Drafted 2026-10-28 by lit-scout. Every field was seen in Crossref, the arXiv API, OpenAlex, a proceedings page or a
 % publisher/index page on 2026-10-28; see REFERENCES-DRAFT-2026-10-28.md for the source and the claim-check level of each entry.
 % Fields not seen are left out (no invented volume, pages or DOI). arXiv-only entries carry the arXiv id and version.
@@ -276,28 +276,6 @@
 }
 
 % ---------------------------------------------------------------- E. image-text matching metrics, datasets, masked-likelihood scoring
-@inproceedings{hessel2021clipscore,
-  author    = {Hessel, Jack and Holtzman, Ari and Forbes, Maxwell and Le Bras, Ronan and Choi, Yejin},
-  title     = {{CLIPScore}: A reference-free evaluation metric for image captioning},
-  booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
-  year      = {2021},
-  pages     = {7514--7528},
-  doi       = {10.18653/v1/2021.emnlp-main.595},
-  note      = {arXiv:2104.08718}
-}
-
-@inproceedings{radford2021clip,
-  author    = {Radford, Alec and Kim, Jong Wook and Hallacy, Chris and Ramesh, Aditya and Goh, Gabriel and Agarwal, Sandhini and Sastry, Girish and Askell, Amanda and Mishkin, Pamela and Clark, Jack and Krueger, Gretchen and Sutskever, Ilya},
-  title     = {Learning transferable visual models from natural language supervision},
-  booktitle = {Proceedings of the 38th International Conference on Machine Learning},
-  series    = {Proceedings of Machine Learning Research},
-  volume    = {139},
-  year      = {2021},
-  pages     = {8748--8763},
-  url       = {https://proceedings.mlr.press/v139/radford21a.html},
-  note      = {arXiv:2103.00020}
-}
-
 @incollection{lin2014coco,
   author    = {Lin, Tsung-Yi and Maire, Michael and Belongie, Serge and Hays, James and Perona, Pietro and Ramanan, Deva and Doll{\'a}r, Piotr and Zitnick, C. Lawrence},
   title     = {Microsoft {COCO}: Common objects in context},
@@ -555,4 +533,36 @@
   volume  = {135},
   pages   = {104437},
   doi     = {10.1016/j.inffus.2026.104437}
+}
+
+% ---------------------------------------------------------------- added 2026-10-29 from CITATION-AUDIT-2026-10-29 (section 5)
+@inproceedings{li2026omnidiffusion,
+  author    = {Li, Lijiang and Long, Zuwei and Shen, Yunhang and Gao, Heting and Cao, Haoyu and Sun, Xing and Shan, Caifeng and He, Ran and Fu, Chaoyou},
+  title     = {Omni-Diffusion: Unified multimodal understanding and generation with masked discrete diffusion},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {306},
+  year      = {2026},
+  pages     = {68853--68867},
+  url       = {https://proceedings.mlr.press/v306/li26dv.html},
+  note      = {arXiv:2603.06577}
+}
+
+@inproceedings{shekhar2017foil,
+  author    = {Shekhar, Ravi and Pezzelle, Sandro and Klimovich, Yauhen and Herbelot, Aur{\'e}lie and Nabi, Moin and Sangineto, Enver and Bernardi, Raffaella},
+  title     = {{FOIL} it! {Find} one mismatch between image and language caption},
+  booktitle = {Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  year      = {2017},
+  pages     = {255--265},
+  doi       = {10.18653/v1/P17-1024},
+  note      = {arXiv:1705.01359}
+}
+
+@misc{michaelis2019imagecorruptions,
+  author        = {Michaelis, Claudio and Mitzkus, Benjamin and Geirhos, Robert and Rusak, Evgenia and Bringmann, Oliver and Ecker, Alexander S. and Bethge, Matthias and Brendel, Wieland},
+  title         = {Benchmarking robustness in object detection: Autonomous driving when winter is coming},
+  year          = {2019},
+  eprint        = {1907.07484},
+  archivePrefix = {arXiv},
+  note          = {arXiv:1907.07484v2; the imagecorruptions package, commit c959e659c9}
 }

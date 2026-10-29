@@ -15,7 +15,8 @@ Every token that is visible is therefore treated as certain.
 This is acceptable for a clean training sequence.
 It is a weakness when the input comes from a pipeline that compresses, adds noise to, crops, splices or mislabels the data,
 because a single wrong visible token is used with the same confidence as a correct one.
-Unified models extend the setting to two or more modalities in one token sequence~\cite{swerdlow2025unidisc,yang2025mmada,li2025lavida,shi2025muddit}.
+Unified models extend the setting to two or more modalities in one token sequence~\cite{swerdlow2025unidisc,yang2025mmada,shi2025muddit}; multimodal diffusion language models such as
+LaViDa~\cite{li2025lavida} add a vision encoder to a diffusion language model.
 In such a model a damaged image token can change what the model concludes about a caption, and the reverse.
 
 \paragraph{Why this is a fusion problem.}
@@ -25,10 +26,11 @@ image tokens of one image.
 That is the rule used to fuse local decisions in distributed detection, in which each source is weighted by its reliability
 before a global threshold is applied~\cite{chair1986optimal,tenney1981detection}; it is optimal for sources that are independent
 given the hypothesis, which image tokens are not, so here it is an approximation (Section~\ref{ssec:limits}).
-Imperfect and spurious data are a first-order difficulty of multisensor fusion~\cite{khaleghi2013multisensor,vempaty2013byzantine},
+Imperfect and spurious data are a first-order difficulty of multisensor fusion~\cite{khaleghi2013multisensor}, as is falsified data
+at a fusion centre~\cite{vempaty2013byzantine},
 a survey in this journal organises multimodal fusion on low-quality data into noisy, incomplete, imbalanced and quality-varying
-settings~\cite{zhang2026lowquality}, and evidential fusion methods discount each modality by an estimated
-reliability~\cite{shao2024ddef,huang2025evidential}.
+settings~\cite{zhang2026lowquality}, and evidential fusion methods weigh each modality by an estimated importance~\cite{shao2024ddef} or discount it by a learned
+reliability~\cite{huang2025evidential}.
 Classical practice also checks each source for a fault and isolates the faulty ones before fusing~\cite{willsky1976survey,gao2015survey},
 and sets the detection threshold from clean data so that the false-alarm rate stays at a chosen value, as in constant false-alarm
 rate (CFAR) detection~\cite{finn1968adaptive,rohling1983cfar}.
@@ -60,9 +62,9 @@ Trust but Verify~\cite{jhingran2026trustverify} detects corrupted conditioning t
 re-noises them to the mask state and refills them; it needs a finetune, uses a hand-set threshold, and has no second modality.
 Conformal risk control has been used with masking-derived scores to flag erroneous caption words given an image, with a
 CLIP-based score and a threshold calibrated on labelled foil data~\cite{gomes2025crc}.
-In this journal, Zhou and Lu~\cite{zhou2027burden} describe, in their abstract, a keep-or-override gate between two
-vision-language recognisers whose threshold is chosen with a Clopper--Pearson bound on harmful overwrites; its unit is a whole
-prediction rather than an input token.
+In this journal, Zhou and Lu~\cite{zhou2027burden} describe, in their abstract, a gate that keeps a default
+vision-language prediction unless a challenger's Dempster--Shafer evidence score clears a calibrated threshold, with Clopper--Pearson
+bounds used to set the operating point; its unit is a whole prediction rather than an input token. \todo{AUTHOR: verify against full text via VIT e-gateway}
 The authors of UniDisc show repair of corrupted image-caption pairs by random masking and best-of-$n$ re-infilling in one
 qualitative figure~\cite{swerdlow2025unidisc}.
 Section~\ref{sec:related} gives the precise differences.
