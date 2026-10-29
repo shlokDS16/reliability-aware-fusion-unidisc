@@ -66,7 +66,7 @@ STAGES.update({"h3": ("exp_p2.run_gate_m4", "P2-GATE-H3", 50), "h4": ("exp_p2.ru
 STAGE_ARGS.update({"h3": ["--folds-path", str(HARDNEG_FOLDS_H3), "--family-run", "P2-GATE-H3-PLAN"],
                    "h4": ["--folds-path", str(HARDNEG_FOLDS), "--family-run", "P2-GATE-H3"]})       # forwarded before --extra, so --extra can still override
 # Study 2 (SAP addendum A6 r1, A6.10 run order: re-score M4 at L_FIX -> re-freeze -> L1 -> LG). All three stages are `run_gate_m4` / `run_gate_lrf_rescore` with the A6.11 options; nothing here changes a default of another stage.
-#   lrf-rescore  runs/P2-GATE-M4 (read only) -> runs/P2-GATE-M4-LFIX: B, s3, D, tbv at the fixed slot of 13 tokens for the 500 M4 items x 4 conditions (36 passes per item, no encoding), invariance + positive control on the first 5 items
+#   lrf-rescore  runs/P2-GATE-M4 (read only) -> runs/P2-LRF-RESCORE: B, s3, D, tbv at the fixed slot of 13 tokens for the 500 M4 items x 4 conditions (36 passes per item, no encoding), invariance + positive control on the first 5 items
 #   lrf-l1       the fresh fold runs/P2-LRF-FOLD/folds_lrf.json, family runs/P2-LRF-PLAN/family.json (P's three operating points, test_fold = n_L from the n-rule), `--layout-fix 13 --neg-len`, no sanity / denoised copies, tbv on
 #   lrf-lg       the first 300 fold items, family runs/P2-LRF-PLAN-LG/family.json (EMPTY family, test_fold 300): clean + shot_noise3, impulse_noise3, speckle_noise3 only, `--layout-fix 13`, tbv on
 # --n for lrf-l1 defaults to the n_L of runs/P2-LRF-PLAN/family.json (default_n); the explicit --max-chunks defaults are STAGE_MAX_CHUNKS. The memory and slow-item flags are NOT baked in (the thresholds are Shlok's to approve): pass LRF_MEM_SLOW through --extra,
@@ -74,7 +74,7 @@ STAGE_ARGS.update({"h3": ["--folds-path", str(HARDNEG_FOLDS_H3), "--family-run",
 LRF_FOLD = Path(common.RUNS) / "P2-LRF-FOLD" / "folds_lrf.json"
 LRF_MEM_SLOW = "--max-used-first-mib 11000 --max-used-mib 11000 --max-rise-mib 4500 --mem-frac 0.75 --slow-factor 3 --slow-min-s 2"      # the S2 run card values (row 8); the lead decides per stage
 LRF_L_FIX = "13"
-STAGES.update({"lrf-rescore": ("exp_p2.run_gate_lrf_rescore", "P2-GATE-M4-LFIX", 500), "lrf-l1": ("exp_p2.run_gate_m4", "P2-LRF-L1", 533), "lrf-lg": ("exp_p2.run_gate_m4", "P2-LRF-LG", 300)})
+STAGES.update({"lrf-rescore": ("exp_p2.run_gate_lrf_rescore", "P2-LRF-RESCORE", 500), "lrf-l1": ("exp_p2.run_gate_m4", "P2-LRF-L1", 533), "lrf-lg": ("exp_p2.run_gate_m4", "P2-LRF-LG", 300)})
 STAGE_ARGS.update({"lrf-rescore": ["--slot-len", LRF_L_FIX],
                    "lrf-l1": ["--folds-path", str(LRF_FOLD), "--family-run", "P2-LRF-PLAN", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX, "--neg-len"],
                    "lrf-lg": ["--folds-path", str(LRF_FOLD), "--family-run", "P2-LRF-PLAN-LG", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX,

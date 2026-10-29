@@ -27,7 +27,7 @@ LRF_STAGES = ("lrf-rescore", "lrf-l1", "lrf-lg")
 
 # ------------------------------------------------------------------------------------------------ driver stages
 def test_lrf_stages_are_in_the_table_and_nothing_existing_changed():
-    assert gate_driver.STAGES["lrf-rescore"] == ("exp_p2.run_gate_lrf_rescore", "P2-GATE-M4-LFIX", 500)
+    assert gate_driver.STAGES["lrf-rescore"] == ("exp_p2.run_gate_lrf_rescore", "P2-LRF-RESCORE", 500)
     assert gate_driver.STAGES["lrf-l1"][:2] == ("exp_p2.run_gate_m4", "P2-LRF-L1") and gate_driver.STAGES["lrf-lg"] == ("exp_p2.run_gate_m4", "P2-LRF-LG", 300)
     assert gate_driver.STAGES["m4"] == ("exp_p2.run_gate_m4", "P2-GATE-M4", 300) and gate_driver.STAGES["h4"][1] == "P2-GATE-H4"
     assert "lrf-rescore" in json.dumps(sorted(gate_driver.STAGES)) and gate_driver.STAGE_ARGS["h3"][0] == "--folds-path"
@@ -110,7 +110,9 @@ def test_n_rule_cap_clamp_floor_and_fallback():
 
 def test_n_rule_cli_writes_once(tmp_path, capsys):
     out = tmp_path / "n_rule.json"
-    assert lrf_nrule.main(["--delta-cf", "0.102", "--pi-cf", "0.238", "--out", str(out)]) == 0
+    cf = tmp_path / "cf.json"
+    cf.write_text(json.dumps(dict(condition="noise0.1", n=500, b=85, c=34, delta_cf=51 / 500, pi_cf=119 / 500)))
+    assert lrf_nrule.main(["--cf-results", str(cf), "--out", str(out)]) == 0
     assert json.loads(out.read_text())["n_L"] == 533 and json.loads(capsys.readouterr().out.strip().splitlines()[-1])["n_L"] == 533
     assert lrf_nrule.main(["--not-committed", "--out", str(out)]) == 2                      # refuses to overwrite
     assert lrf_nrule.main(["--not-committed"]) == 0

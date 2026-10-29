@@ -197,8 +197,9 @@ def test_lg_absent_cell_enters_holm_as_p_one_and_short_prefix_is_descriptive():
 def test_run_is_byte_identical_on_rerun_and_reads_only_the_predictions(tmp_path):
     p1, p2 = _write(tmp_path, _lines(gain=0.12), "l1.jsonl"), _write(tmp_path, _lg_lines(), "lg.jsonl")
     out1, out2 = tmp_path / "a.json", tmp_path / "b.json"
-    assert A.main(["--l1", str(p1), "--lg", str(p2), "--out", str(out1)]) == 0
-    assert A.main(["--l1", str(p1), "--lg", str(p2), "--out", str(out2)]) == 0
+    assert A.main(["--l1", str(p1), "--lg", str(p2), "--out", str(out1)]) == 2 and not out1.exists()          # no n_L given: refused, no silent default
+    assert A.main(["--l1", str(p1), "--lg", str(p2), "--out", str(out1), "--n-l", "520"]) == 0
+    assert A.main(["--l1", str(p1), "--lg", str(p2), "--out", str(out2), "--n-l", "520"]) == 0
     assert out1.read_bytes() == out2.read_bytes()
     res = json.loads(out1.read_text())
     assert set(res) == {"meta", "family_L", "family_LG", "multiplicity_note"} and res["meta"]["spawn_key"] == [34] and res["meta"]["n_boot"] == 10000 and res["meta"]["n_l"] == 520

@@ -10,11 +10,11 @@ Tests (item = the unit; complete case: an item enters a test only if both arms o
   L3,L4  LRF vs NONE on jpeg10 and splice128, exact TWO-sided, Holm over m = 2 at 0.05, only if L1 is confirmed
   L-NI   clean, LRF minus NONE, non-inferiority margin 0.03: shown iff the lower bound of the two-sided 90 percent paired percentile bootstrap CI exceeds -0.03 (always computed)
   L-LEN  noise0.1 with the length-matched negative (y_*_L), LRF vs NONE, one-sided exact, alpha 0.05, items whose c-_L differs in token count excluded and counted (always computed)
-  LG     held-out noise cells (shot, impulse, speckle at severity 3), LRF vs NONE per cell, one-sided exact, Holm over the PREREGISTERED m = 3 (an absent cell enters as p = 1), first 300 items; completed n < 240: descriptive only
+  LG     other noise types (shot, impulse, speckle; severity 3) (shot, impulse, speckle at severity 3), LRF vs NONE per cell, one-sided exact, Holm over the PREREGISTERED m = 3 (an absent cell enters as p = 1), first 300 items; completed n < 240: descriptive only
 A not-reached test is "not tested (gatekept)" and is still printed descriptively. Descriptive additions: GATE-M vs NONE per LG cell, the clean-to-corrupted drop of NONE per cell, and the preregistered length-stratum secondary (LRF-FROZEN report
 section 3 item 5: LRF minus NONE on noise0.1 by true caption shorter / equal / longer than the negative, and the longer-minus-shorter difference with a 95 percent CI).
 Every test reports b, c, n_d, n, both accuracies, the net difference with paired percentile bootstrap CIs at 90 and 95 percent (10,000 resamples), the Clopper-Pearson CI of b/n_d, exact one- and two-sided p and mid-p.
-Seeds: numpy.random.SeedSequence(20261028, spawn_key=(34,)) spawned into the fixed SEED_SLOTS (33 is h_strata's, 32 tier3_fusion's); the output is byte-identical on rerun. Labels follow A6.12: partial prefix when the completed n is below 0.8 n_L (n_L from --n-l or the n-rule record; 520 if neither is given)."""
+Seeds: numpy.random.SeedSequence(20261028, spawn_key=(34,)) spawned into the fixed SEED_SLOTS (33 is h_strata's, 32 tier3_fusion's); the output is byte-identical on rerun. Labels follow A6.12: partial prefix when the completed n is below 0.8 n_L (n_L from --n-rule or --n-l, one of them required)."""
 from __future__ import annotations
 
 import argparse
@@ -357,7 +357,7 @@ def main(argv=None) -> int:
     ap.add_argument("--l1", default=None)
     ap.add_argument("--lg", default=None)
     ap.add_argument("--out", default=None)
-    ap.add_argument("--n-l", type=int, default=None, help="n_L of the committed n-rule record (default 520, the rule's fallback)")
+    ap.add_argument("--n-l", type=int, default=None, help="n_L of the committed n-rule record (required unless --n-rule is given)")
     ap.add_argument("--n-rule", default=None, help="JSON with key n_L (the n-rule record, exp_p2/gate/lrf_nrule.py)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args(argv)
@@ -367,7 +367,10 @@ def main(argv=None) -> int:
         return 0 if st["ok"] else 1
     if not a.l1:
         ap.error("--l1 is required")
-    n_l = a.n_l if a.n_l else (int(json.loads(Path(a.n_rule).read_text(encoding="utf8"))["n_L"]) if a.n_rule else N_PLANNED_DEFAULT)
+    if not (a.n_l or a.n_rule):
+        print("STOP: --n-rule (the committed n-rule record) or --n-l is required; there is no silent default (audit)", file=sys.stderr)
+        return 2
+    n_l = a.n_l if a.n_l else int(json.loads(Path(a.n_rule).read_text(encoding="utf8"))["n_L"])
     res = run(Path(a.l1), Path(a.lg) if a.lg else None, n_l)
     out = Path(a.out) if a.out else Path(a.l1).with_name("a6_analysis.json")
     out.write_text(json.dumps(res, indent=1, sort_keys=True), encoding="utf8")

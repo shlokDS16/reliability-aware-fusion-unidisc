@@ -1,4 +1,4 @@
-"""A6.3 fresh fold for the confirmatory test of LRF (SAP addendum A6, DRAFT): builds runs/P2-LRF-FOLD/{folds_lrf.json, manifest.json, leak_check.json}. CPU only, no model, no GPU.
+"""A6.3 fresh fold for the confirmatory test of LRF (SAP addendum A6 r1): builds runs/P2-LRF-FOLD/{folds_lrf.json, manifest.json, leak_check.json}. CPU only, no model, no GPU.
 
     python -m exp_p2.gate.build_lrf_fold [--out-dir PATH] [--slow] [--n 533]        # refuses to overwrite; build it in the main worktree so that every runs/P2-* file is read (A6 r1: 533-list, n_L is a prefix chosen by the n-rule)
 

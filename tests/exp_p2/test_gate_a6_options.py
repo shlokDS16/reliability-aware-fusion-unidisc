@@ -256,7 +256,7 @@ def _rescore(env, sc, slot):
     a = SimpleNamespace(source_run="P2-GATE-M4", slot_len=slot, conds=",".join(rescore.CONDS), family_run="P2-GATE-M3")
     rescore.check_prereqs(a, env)
     items = rescore.source_items(env, "P2-GATE-M4")
-    return runner.run_items(run_id=f"LFIX{slot}", cfg=rescore.build_cfg(a, env, len(items)), load=lambda: sc, get_items=lambda s, r: items, process=rescore.process, make_ctx=rescore.make_ctx_factory(a, env),
+    return runner.run_items(run_id=f"RS{slot}", cfg=rescore.build_cfg(a, env, len(items)), load=lambda: sc, get_items=lambda s, r: items, process=rescore.process, make_ctx=rescore.make_ctx_factory(a, env),
                             duty=1.0, soft_minutes=30)
 
 
@@ -266,21 +266,21 @@ def test_rescore_at_the_true_length_reproduces_the_source_and_at_another_length_
     assert _rescore(env, sc, 6) == 0                                           # captions have 6 tokens -> a fixed slot of 6 is the true layout
     for idx in range(3):
         src = dict(np.load(env / "P2-GATE-M4" / "arrays" / f"item{idx:04d}.npz"))
-        new = dict(np.load(env / "LFIX6" / "arrays" / f"item{idx:04d}.npz"))
+        new = dict(np.load(env / "RS6" / "arrays" / f"item{idx:04d}.npz"))
         keys = {f"{n}_{k}" for n in rescore.CONDS for k in ("codes", "z", "delta", "B", "D", "s3", "tbv", "tex", "nbr", "flag0.05", "flag0.01", "flag0.1")}
         assert set(new) == keys                                                # only what LRF needs (and the flags data.load reads)
         _same({k: src[k] for k in keys}, new)                                  # incl. the flags: same condition index, same jitter stream
-    rows = common.read_jsonl(env / "LFIX6" / "items.jsonl")
+    rows = common.read_jsonl(env / "RS6" / "items.jsonl")
     assert [r["conds"]["noise0.1"]["cond_index"] for r in rows] == [3, 3, 3] and [r["conds"]["splice128"]["cond_index"] for r in rows] == [5, 5, 5]      # noise0.1 follows jpeg10_dn / splice128 follows noise0.1_dn
     assert all(r["n_rows"] == 36 for r in rows[1:]) or all(r["n_rows"] >= 36 for r in rows)                                       # 4 conditions x (8 B + 1 tbv) (+ invariance passes for the first items)
     assert rows[0]["invariance_max_abs_diff"] == 0.0 and all(r["invariance_max_abs_diff"] == 0.0 for r in rows)
     assert all(r["positive_control_max_abs_diff"] == 0.0 and r["checks_ok"] is True for r in rows)       # A6.2 step 2: scored at the true length, the entry point reproduces the stored M4 B, s3, D, tbv
     assert set(rows[0]["positive_control"]) == set(rescore.CONDS)
-    cfg = json.loads((env / "LFIX6" / "config.json").read_text())
+    cfg = json.loads((env / "RS6" / "config.json").read_text())
     assert cfg["dcache_di_file"] == "DI_n006.npy" and "codebook_sha256" in cfg and cfg["dcache_di_sha256"] is not None         # hashes of the untracked inputs recorded in config.json
     assert _rescore(env, sc, 9) == 0
     src = dict(np.load(env / "P2-GATE-M4" / "arrays" / "item0001.npz"))
-    new = dict(np.load(env / "LFIX9" / "arrays" / "item0001.npz"))
+    new = dict(np.load(env / "RS9" / "arrays" / "item0001.npz"))
     for n in rescore.CONDS:
         for k in ("codes", "z", "delta", "tex", "nbr"):
             assert _eq(src[f"{n}_{k}"], new[f"{n}_{k}"])

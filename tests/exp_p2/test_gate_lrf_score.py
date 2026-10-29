@@ -36,7 +36,7 @@ def _make_frozen(tmp_path, seed=0, knots=3):
     fz_dir.mkdir(exist_ok=True)
     np.savez(fz_dir / "model.npz", a=rng.normal(0, 0.3, F), b=np.array(0.2), c=rng.normal(0, 0.1, (F, knots)), knots=np.sort(rng.normal(0, 1, (F, knots)), axis=1), mu=rng.normal(0, 1, F),
              sd=rng.uniform(0.5, 2, F), feature_names=np.array(names))
-    spec = dict(name="fake LRF", features=names, model_sha256=ls.sha256_file(fz_dir / "model.npz"), code_sha256={f: ls.sha256_file(code / f) for f in ("data.py", "families.py", "lrf.py")})
+    spec = dict(name="fake LRF", caption_slot_len=13, features=names, model_sha256=ls.sha256_file(fz_dir / "model.npz"), code_sha256={f: ls.sha256_file(code / f) for f in ("data.py", "families.py", "lrf.py")})
     (fz_dir / "spec.json").write_text(json.dumps(spec))
     return fz_dir, code, names
 
@@ -80,7 +80,7 @@ def test_load_frozen_verifies_and_exposes_the_documented_format(tmp_path):
     fz_dir, code, names = _make_frozen(tmp_path)
     fz = ls.load_frozen(fz_dir, code)
     assert fz["feature_names"] == names and fz["a"].shape == (35,) and fz["c"].shape == fz["knots"].shape == (35, 3)
-    assert fz["hashes"]["model_sha256"] == ls.sha256_file(fz_dir / "model.npz") and fz["hashes"]["pinned_externally"] is False and len(fz["hashes"]["scoring_code_sha256"]) == 64
+    assert fz["hashes"]["model_sha256"] == ls.sha256_file(fz_dir / "model.npz") and fz["hashes"]["pinned_externally"] is False and fz["hashes"]["pins_verified"] == [] and len(fz["hashes"]["scoring_code_sha256"]) == 64
     assert ls.load_frozen(fz_dir, code, pins=dict(model_sha256=fz["hashes"]["model_sha256"], code_sha256=fz["hashes"]["code_sha256"], decision_rule=ls.DECISION_RULE,
                                                    scoring_code_sha256=ls.this_code_sha256()))["hashes"]["pinned_externally"] is True
 
@@ -306,9 +306,9 @@ def test_cli_end_to_end_and_refusal(tmp_path, monkeypatch):
     monkeypatch.setattr(common, "RUNS", runs)
     spec = json.loads((fz_dir / "spec.json").read_text())
     pins_ok = tmp_path / "pins_ok.json"
-    pins_ok.write_text(json.dumps(dict(in_pins, code_sha256=spec["code_sha256"])))       # the A6.0 item 2 row for this fake object
+    pins_ok.write_text(json.dumps(dict(in_pins, model_sha256=spec["model_sha256"], code_sha256=spec["code_sha256"])))       # the A6.0 item 2 row for this fake object
     base = ["--run-id", "P2-LRF-L1", "--frozen-dir", str(fz_dir), "--code-dir", str(code)]
-    assert ls.main(base) == 2                                                    # the default pins are the r1 table: this fake object and its inputs do not match
+    assert ls.main(base) == 2                                                    # no pins file: refused (audit F1)
     assert ls.main(base + ["--pins", str(pins_ok)]) == 0 and (run / "predictions.jsonl").exists()
     meta = json.loads((run / "lrf_score_meta.json").read_text())
     assert meta["hashes"]["codebook_sha256"] == in_pins["codebook_sha256"] and meta["hashes"]["di_sha256"] == in_pins["di_sha256"] and "exp_p2/gate/lrf_score.py" in meta["hashes"]["entry_points"]
@@ -330,3 +330,73 @@ def test_crosscheck_is_none_when_the_freeze_module_is_not_importable(tmp_path):
     d = _arrays(np.random.default_rng(5), conds=("clean",))
     res = ls.crosscheck(fz, d, "clean")
     assert res is None or res < 1e-9          # None on this branch (lrf.py is committed with the freeze); a small number where the freeze code is importable
+
+
+# ------------------------------------------------------------------------------------------------ audit F1: the pins file is required; the retired object is refused; no unverified claim of external pinning
+def test_a_pins_file_with_the_model_hash_is_required(tmp_path, monkeypatch):
+    fz_dir, code, _ = _make_frozen(tmp_path)
+    run, _ = _run(tmp_path, n=2)
+    runs, in_pins = _inputs(tmp_path, run)
+    monkeypatch.setattr(common, "RUNS", runs)
+    spec = json.loads((fz_dir / "spec.json").read_text())
+    base = ["--run-id", "P2-LRF-L1", "--frozen-dir", str(fz_dir), "--code-dir", str(code)]
+    assert ls.main(base) == 2 and not (run / "predictions.jsonl").exists()                   # no --pins
+    no_model = tmp_path / "no_model.json"
+    no_model.write_text(json.dumps(dict(in_pins, code_sha256=spec["code_sha256"])))
+    assert ls.main(base + ["--pins", str(no_model)]) == 2 and not (run / "predictions.jsonl").exists()      # a pins file without model_sha256
+    ok = tmp_path / "ok.json"
+    ok.write_text(json.dumps(dict(in_pins, model_sha256=spec["model_sha256"], code_sha256=spec["code_sha256"])))
+    assert ls.main(base + ["--pins", str(ok)]) == 0
+    meta = json.loads((run / "lrf_score_meta.json").read_text())
+    assert meta["hashes"]["pinned_externally"] is True and "model_sha256" in meta["hashes"]["pins_verified"]
+
+
+def test_pinned_externally_is_claimed_only_for_what_was_verified(tmp_path):
+    fz_dir, code, _ = _make_frozen(tmp_path)
+    h = ls.load_frozen(fz_dir, code, pins=dict(decision_rule=ls.DECISION_RULE))["hashes"]
+    assert h["pinned_externally"] is False and h["pins_verified"] == ["decision_rule"]      # a pins dict without the model hash does not make the model externally pinned
+    spec = json.loads((fz_dir / "spec.json").read_text())
+    h = ls.load_frozen(fz_dir, code, pins=dict(model_sha256=spec["model_sha256"], spec_sha256=ls.sha256_file(fz_dir / "spec.json"), scoring_code_sha256=ls.this_code_sha256(),
+                                               entry_points=ls.entry_point_hashes(), code_sha256=spec["code_sha256"], decision_rule=ls.DECISION_RULE))["hashes"]
+    assert h["pinned_externally"] is True
+    assert {"model_sha256", "spec_sha256", "scoring_code_sha256", "decision_rule", "code_sha256[data.py]", "entry_points[exp_p2/gate/lrf_score.py]"} <= set(h["pins_verified"])
+    with pytest.raises(ls.HashMismatch, match="spec_sha256"):
+        ls.load_frozen(fz_dir, code, pins=dict(model_sha256=spec["model_sha256"], spec_sha256="0" * 64))
+    with pytest.raises(ls.HashMismatch, match="entry_points"):
+        ls.load_frozen(fz_dir, code, pins=dict(model_sha256=spec["model_sha256"], entry_points={"exp_p2/gate/lrf_score.py": "0" * 64}))
+
+
+def test_the_retired_object_is_refused_with_or_without_pins(tmp_path, monkeypatch):
+    fz_dir, code, _ = _make_frozen(tmp_path)
+    monkeypatch.setattr(ls, "RETIRED_MODEL_SHA256", ls.sha256_file(fz_dir / "model.npz"))     # make this fake model "the retired one"
+    with pytest.raises(ls.HashMismatch, match="retired"):
+        ls.load_frozen(fz_dir, code)
+    with pytest.raises(ls.HashMismatch, match="retired"):
+        ls.load_frozen(fz_dir, code, pins=dict(model_sha256=ls.sha256_file(fz_dir / "model.npz")))
+    monkeypatch.undo()
+    assert ls.RETIRED_MODEL_SHA256 == "ca5c4e2fc5c6635a051a7c3a11f7b9e555fe9f6e2ce329825a80cb9b4bca1e65"
+
+
+def test_the_committed_retired_object_is_refused_by_the_cli(tmp_path, monkeypatch):
+    retired = ROOT / "runs" / "P2-LRF-FROZEN"
+    if not (retired / "model.npz").exists():
+        pytest.skip("the retired object is not in this checkout")
+    run, _ = _run(tmp_path, n=1)
+    runs, in_pins = _inputs(tmp_path, run)
+    monkeypatch.setattr(common, "RUNS", runs)
+    pins = tmp_path / "p.json"
+    pins.write_text(json.dumps(dict(in_pins, model_sha256=ls.RETIRED_MODEL_SHA256)))
+    assert ls.main(["--run-id", "P2-LRF-L1", "--frozen-dir", str(retired), "--pins", str(pins)]) == 2 and not (run / "predictions.jsonl").exists()
+
+
+def test_a_spec_that_is_not_at_the_fixed_slot_is_refused(tmp_path):
+    fz_dir, code, _ = _make_frozen(tmp_path)
+    spec = json.loads((fz_dir / "spec.json").read_text())
+    spec.pop("caption_slot_len")
+    (fz_dir / "spec.json").write_text(json.dumps(spec))
+    with pytest.raises(ls.HashMismatch, match="caption_slot_len"):
+        ls.load_frozen(fz_dir, code)
+    spec["caption_slot_len"] = 12
+    (fz_dir / "spec.json").write_text(json.dumps(spec))
+    with pytest.raises(ls.HashMismatch, match="caption_slot_len"):
+        ls.load_frozen(fz_dir, code)

@@ -1,6 +1,6 @@
 """LRF re-freeze stage (coordinator addendum to A6.11; LRF-FROZEN report section 3): re-score the caption-withheld scores of the existing M4 items at a FIXED caption-slot length (L_FIX = 13) into a new run id, storing only what LRF needs.
 
-    python -m exp_p2.run_gate_lrf_rescore --resume --soft-minutes 12.5 [--limit N] [--n 500] [--source-run P2-GATE-M4] [--slot-len 13] [--run-id P2-GATE-M4-LFIX]
+    python -m exp_p2.run_gate_lrf_rescore --resume --soft-minutes 12.5 [--limit N] [--n 500] [--source-run P2-GATE-M4] [--slot-len 13] [--run-id P2-LRF-RESCORE]
 
 What is re-used and what is re-scored. The source run (default runs/P2-GATE-M4) already holds, per item and condition, the corrupted token codes, the changed-code labels z, the paired evidence Delta (caption visible, own
 lengths: unchanged by the fixed slot), the patch texture `tex` and the neighbour codebook distance `nbr` (both depend on pixels and codes only). Those are copied as stored: nothing is re-encoded and no Lambda pass is made.
@@ -31,16 +31,17 @@ from exp_p2 import common                                                       
 from exp_p2.gate import arms, calibrate as cal, config, pipeline, runner, scores   # noqa: E402
 from exp_p2.run_gate_m4 import input_hashes, load_prereqs, slot_tokens, M3_RUN                    # noqa: E402
 
-RUN_ID = "P2-GATE-M4-LFIX"
+RUN_ID = "P2-LRF-RESCORE"
 SOURCE_RUN = "P2-GATE-M4"
 L_FIX = 13                                                                          # the M4 median true-caption length (LRF-FROZEN report section 3)
 CONDS = ("clean", "jpeg10", "noise0.1", "splice128")                                # = analysis_posthoc.learned_ceiling.data.COND
 INV_ITEMS = 5
 PC_TOL = 1e-5                                                                       # A6.2 step 2: positive control at the TRUE length reproduces the stored M4 B, s3, D, tbv within this (GPU arithmetic)
+INV_TOL_AUDITOR = 1e-6                                                              # only with --auditor-row <id> (the gate-auditor's dated row, before any re-frozen output exists); any larger difference stops Study 2
 INV_TOL = 0.0                                                                       # A6.2 step 3: invariance is exact; a looser bound (1e-6) is only the gate-auditor's, by a dated row before any re-frozen output exists
 COPIED = ("codes", "z", "delta", "tex", "nbr")                                      # read from the source arrays, not recomputed
-CONFIG = dict(stage="M4-LFIX", source_run=SOURCE_RUN, slot_len=L_FIX, conds=list(CONDS), seed=config.SEED_GATE, K=config.K, n_items=500,
-              spec="research/paper2/posthoc/LRF-FROZEN-2026-10-29.md section 3 (length-neutral layout); SAP addendum A6 (DRAFT)")
+CONFIG = dict(stage="LRF-RESCORE", source_run=SOURCE_RUN, slot_len=L_FIX, conds=list(CONDS), seed=config.SEED_GATE, K=config.K, n_items=500,
+              spec="research/paper2/posthoc/LRF-FROZEN-2026-10-29.md section 3 (length-neutral layout); SAP addendum A6 r1 (A6.2 steps 1-3)")
 
 
 def fit_slot(tokens: list[int], n: int) -> list[int]:
@@ -70,6 +71,42 @@ def invariance(sc, gs_pad: dict, cap_tok, neg_tok, codes, groups, dcache, n: int
         for k in ("B", "D", "s3", "tbv"):
             out[f"{tag}_{k}"] = float(np.abs(np.asarray(g[k], np.float64) - np.asarray(gs_pad[k], np.float64)).max())
     return out
+
+
+class ChecksFailed(RuntimeError):
+    """The invariance check (A6.2 step 3) or the positive control (step 2) failed on one of the first INV_ITEMS items: the stage stops with a non-zero exit, the failing item writes no row and no arrays, and nothing downstream (re-freeze, cross-fit) may read this run."""
+
+
+def check_rows(run_dir: Path, *, inv_tol: float = INV_TOL, pc_tol: float = PC_TOL, conds=CONDS, n_check: int = INV_ITEMS, slot_len: int = L_FIX) -> dict:
+    """The A6.2 step 2 and 3 gate, read from the committed rows of the re-score run: items 0..n_check-1 must exist, hold every condition in `invariance` and `positive_control`, and satisfy invariance <= inv_tol and positive control <= pc_tol;
+    the run's config must say slot_len. Returns dict(ok, reason, ...); never raises on a failed check (used by the stage's --check and by the re-freeze)."""
+    run_dir = Path(run_dir)
+    out = dict(ok=False, inv_tol=inv_tol, pc_tol=pc_tol, n_check=n_check, invariance_max_abs_diff=None, positive_control_max_abs_diff=None)
+    try:
+        cfg = json.loads((run_dir / "config.json").read_text(encoding="utf8"))
+    except (OSError, ValueError):
+        return dict(out, reason=f"{run_dir / 'config.json'} missing or unreadable")
+    if cfg.get("slot_len") != slot_len:
+        return dict(out, reason=f"config slot_len {cfg.get('slot_len')!r} != {slot_len}")
+    rows = {r["idx"]: r for r in common.read_jsonl(run_dir / "items.jsonl")}
+    missing = [i for i in range(n_check) if i not in rows]
+    if missing:
+        return dict(out, reason=f"rows of items {missing} missing")
+    inv, pcs = [], []
+    for i in range(n_check):
+        r = rows[i]
+        if not (set(conds) <= set(r.get("invariance", {})) and set(conds) <= set(r.get("positive_control", {}))):
+            return dict(out, reason=f"item {i}: invariance or positive control missing for some of {list(conds)}")
+        inv.append(r["invariance_max_abs_diff"])
+        pcs.append(r["positive_control_max_abs_diff"])
+    out.update(invariance_max_abs_diff=max(inv), positive_control_max_abs_diff=max(pcs))
+    if not (all(np.isfinite(inv)) and all(np.isfinite(pcs))):
+        return dict(out, reason="non-finite check value")
+    if out["invariance_max_abs_diff"] > inv_tol:
+        return dict(out, reason=f"invariance {out['invariance_max_abs_diff']} > {inv_tol}")
+    if out["positive_control_max_abs_diff"] > pc_tol:
+        return dict(out, reason=f"positive control {out['positive_control_max_abs_diff']} > {pc_tol}")
+    return dict(out, ok=True, reason="ok")
 
 
 def positive_control(sc, src: dict, name: str, cap_tok, codes, groups, dcache) -> float:
@@ -106,7 +143,11 @@ def process(sc, it, ctx):
         row["invariance_max_abs_diff"] = max(v for d in inv.values() for v in d.values())
         row["positive_control"] = pc
         row["positive_control_max_abs_diff"] = max(pc.values())
-        row["checks_ok"] = bool(row["invariance_max_abs_diff"] <= INV_TOL and row["positive_control_max_abs_diff"] <= PC_TOL)
+        tol = getattr(ctx, "inv_tol", INV_TOL)
+        row["checks_ok"] = bool(row["invariance_max_abs_diff"] <= tol and row["positive_control_max_abs_diff"] <= PC_TOL)
+        if not row["checks_ok"]:
+            raise ChecksFailed(f"item {it['idx']}: invariance {row['invariance_max_abs_diff']} (tolerance {tol}), positive control {row['positive_control_max_abs_diff']} (tolerance {PC_TOL}): "
+                               "STOP, nothing is fitted or re-frozen on this run (A6.2 steps 2-3)")
     if isinstance(rows0, int):
         row["n_rows"] = int(sc.rows) - rows0
     return row, arrays
@@ -124,7 +165,7 @@ def make_ctx_factory(a, runs: Path | None = None):
                 raise KeyError(f"condition {name} not in the source row of item {it['idx']} ({keys})")
             return keys.index(name)
         return SimpleNamespace(run=run, runs=runs_, dcache=pipeline.dcache_for(), thr=thr, eps0=eps0, source_run=a.source_run, slot_len=int(a.slot_len),
-                               conds=tuple(c for c in a.conds.split(",") if c), cond_index=cond_index)
+                               conds=tuple(c for c in a.conds.split(",") if c), cond_index=cond_index, inv_tol=(INV_TOL_AUDITOR if getattr(a, "auditor_row", None) else INV_TOL))
     return make_ctx
 
 
@@ -154,7 +195,7 @@ def check_prereqs(a, runs: Path | None = None) -> None:
 def build_cfg(a, runs: Path, n_items: int) -> dict:
     """The run's config.json content: the stage constants, the options, and the SHA-256 of the codebook and of the D-cache file of the slot (A6.2 hash set; None if a file is missing)."""
     return dict(CONFIG, n_items=n_items, source_run=a.source_run, slot_len=a.slot_len, conds=[c for c in a.conds.split(",") if c], duty=getattr(a, "duty", None), mem_frac=getattr(a, "mem_frac", None),
-                **input_hashes(Path(runs), a.slot_len))
+                auditor_row=getattr(a, "auditor_row", None), **input_hashes(Path(runs), a.slot_len))
 
 
 def main(argv=None) -> int:
@@ -163,7 +204,13 @@ def main(argv=None) -> int:
     ap.add_argument("--slot-len", type=int, default=L_FIX, help="fixed caption-slot length in tokens (LRF-FROZEN report: 13, the M4 median)")
     ap.add_argument("--conds", default=",".join(CONDS), help="conditions to re-score (default: the four LRF training conditions)")
     ap.add_argument("--family-run", default=M3_RUN)
+    ap.add_argument("--auditor-row", default=None, help="id of the gate-auditor's dated row accepting an invariance difference of at most 1e-6 (A6.2 step 3); without it the invariance must be exactly 0")
+    ap.add_argument("--check", action="store_true", help="read the committed rows of --run-id and print/return the A6.2 step 2-3 gate (exit 0 = pass, 1 = fail); runs nothing")
     a = ap.parse_args(argv)
+    if a.check:
+        res = check_rows(Path(common.RUNS) / a.run_id, inv_tol=(INV_TOL_AUDITOR if a.auditor_row else INV_TOL), slot_len=a.slot_len)
+        print(json.dumps(dict(res, auditor_row=a.auditor_row)))
+        return 0 if res["ok"] else 1
     try:
         check_prereqs(a)
     except (FileNotFoundError, ValueError) as e:
