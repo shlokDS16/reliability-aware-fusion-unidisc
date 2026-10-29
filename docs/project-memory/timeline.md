@@ -46,3 +46,8 @@ in `claude/`. End-of-session routine runs before any session finishes.
 - MDLM reproduced (-0.50%). EXP-002 demoted (coupling negligible at N = 1024). EXP-001 signed after five review rounds, implemented, and stopped at its construct gate: under plain sampling UniDisc's joint text-image completions carry no image-specific link (D0016).
 - EXP-003 (plain vs guided consistency) preregistered, signed and launched unattended under the GPU guard.
 - Incidents: two laptop crashes under sustained GPU load (gpu_guard introduced); Codex usage exhausted by per-call sessions (tools fixed); a network outage interrupted agents (resumed).
+
+## 2026-10-29 evening to 2026-10-30 03:30 IST (Paper 2 lead, overnight, unattended GPU per Shlok D0085)
+- Study 2 confirmatory stages ran and were analysed once each: L1 (450 items) confirmed, branch A (noise0.1 b 58, c 27, one-sided p 0.00051); L3 jpeg10 not rejected; L4 splice128 rejected at Holm 0.049; L-NI shown; L-LEN rejected. LG (300 items): all three other-noise cells rejected (Holm 0.00046 to 0.029). Gate-auditor PASS WITH FIXES on both families (fixes applied).
+- CLIP/SigLIP baselines (descriptive, CPU): 0.996-1.000 on every condition; pixel parity passed (min 0.986). Exploratory suite: GATE-M within one item of NONE in all 8 cells.
+- Code pin 1871fe7d -> 84be25c4 (card A-9, test-only, delta audit PASS). No guard stop, no crash all night.
