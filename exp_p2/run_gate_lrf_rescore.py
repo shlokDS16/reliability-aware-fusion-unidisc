@@ -10,8 +10,10 @@ GATE-M flags (`<cond>_flag<alpha>`) are re-derived from the fixed-layout u with 
 arm of the source run is untouched. They are stored because analysis_posthoc.learned_ceiling.data.load reads `flag0.05`; they are not an input of LRF.
 
 Stored per item (arrays/itemNNNN.npz, the key names data.load reads): `<cond>_{codes,z,delta,B,D,s3,tbv,tex,nbr,flag0.05,flag0.01,flag0.1}` for the conditions in --conds (default clean, jpeg10, noise0.1, splice128).
-Invariance check (L10-style, before any outcome): for the first INV_ITEMS items and every condition, B, D, s3 and tbv are recomputed with the slot filled by the c+ tokens and by the c- tokens (padded or cut to L_FIX)
-and compared with the PAD slot; the maximum absolute differences are written into the item row (`invariance`) and must be 0.
+Invariance check (A6.2 step 3, L10-style, before any outcome): for the first INV_ITEMS items and every condition, B, D, s3 and tbv are recomputed with the slot filled by the c+ tokens and by the c- tokens (padded or cut to L_FIX)
+and compared with the PAD slot; the maximum absolute differences are written into the item row (`invariance`, `invariance_max_abs_diff`) and must be 0.
+Positive control (A6.2 step 2): for the same items and conditions the scores are also computed at the item's TRUE caption length and compared with the stored source arrays (`positive_control`, `positive_control_max_abs_diff`, tolerance PC_TOL = 1e-5);
+the run's config.json records the SHA-256 of runs/P2-GATE-M1/codebook.npy and of the D-cache file DI_n<slot>.npy (A6.2 hash set).
 The source run's arrays are only read."""
 from __future__ import annotations
 
@@ -27,13 +29,15 @@ sys.path.insert(0, str(ROOT))
 
 from exp_p2 import common                                                          # noqa: E402
 from exp_p2.gate import arms, calibrate as cal, config, pipeline, runner, scores   # noqa: E402
-from exp_p2.run_gate_m4 import load_prereqs, slot_tokens, M3_RUN                    # noqa: E402
+from exp_p2.run_gate_m4 import input_hashes, load_prereqs, slot_tokens, M3_RUN                    # noqa: E402
 
 RUN_ID = "P2-GATE-M4-LFIX"
 SOURCE_RUN = "P2-GATE-M4"
 L_FIX = 13                                                                          # the M4 median true-caption length (LRF-FROZEN report section 3)
 CONDS = ("clean", "jpeg10", "noise0.1", "splice128")                                # = analysis_posthoc.learned_ceiling.data.COND
 INV_ITEMS = 5
+PC_TOL = 1e-5                                                                       # A6.2 step 2: positive control at the TRUE length reproduces the stored M4 B, s3, D, tbv within this (GPU arithmetic)
+INV_TOL = 0.0                                                                       # A6.2 step 3: invariance is exact; a looser bound (1e-6) is only the gate-auditor's, by a dated row before any re-frozen output exists
 COPIED = ("codes", "z", "delta", "tex", "nbr")                                      # read from the source arrays, not recomputed
 CONFIG = dict(stage="M4-LFIX", source_run=SOURCE_RUN, slot_len=L_FIX, conds=list(CONDS), seed=config.SEED_GATE, K=config.K, n_items=500,
               spec="research/paper2/posthoc/LRF-FROZEN-2026-10-29.md section 3 (length-neutral layout); SAP addendum A6 (DRAFT)")
@@ -68,6 +72,12 @@ def invariance(sc, gs_pad: dict, cap_tok, neg_tok, codes, groups, dcache, n: int
     return out
 
 
+def positive_control(sc, src: dict, name: str, cap_tok, codes, groups, dcache) -> float:
+    """Max abs difference between B, s3, D, tbv scored at the item's TRUE caption length and the stored source arrays (the entry point reproduces M4 when the slot is the true length)."""
+    g = fixed_layout_scores(sc, list(cap_tok), codes, groups, dcache)
+    return max(float(np.abs(np.asarray(g[k], np.float64) - np.asarray(src[f"{name}_{k}"], np.float64)).max()) for k in ("B", "s3", "D", "tbv") if f"{name}_{k}" in src)
+
+
 def process(sc, it, ctx):
     gid, K = it["gid"], config.K
     rows0 = getattr(sc, "rows", None)
@@ -76,7 +86,7 @@ def process(sc, it, ctx):
     groups = pipeline.item_groups(sc, gid, K)
     slot = slot_tokens(ctx.slot_len)
     row, arrays = dict(gid=gid, image_id=it["image_id"], n_tok=len(cap_tok), slot_len=int(ctx.slot_len), source_run=ctx.source_run, conds={}), {}
-    inv = {}
+    inv, pc = {}, {}
     for name in ctx.conds:
         codes = src[f"{name}_codes"].astype(np.int64)
         gs = fixed_layout_scores(sc, slot, codes, groups, ctx.dcache, K)
@@ -90,9 +100,13 @@ def process(sc, it, ctx):
         row["conds"][name] = dict(cond_index=int(ci), n_flag=int(flags[config.ALPHA_PRIMARY].sum()))
         if it["idx"] < INV_ITEMS:
             inv[name] = invariance(sc, gs, cap_tok, neg_tok, codes, groups, ctx.dcache, ctx.slot_len)
+            pc[name] = positive_control(sc, src, name, cap_tok, codes, groups, ctx.dcache)
     if inv:
         row["invariance"] = inv
         row["invariance_max_abs_diff"] = max(v for d in inv.values() for v in d.values())
+        row["positive_control"] = pc
+        row["positive_control_max_abs_diff"] = max(pc.values())
+        row["checks_ok"] = bool(row["invariance_max_abs_diff"] <= INV_TOL and row["positive_control_max_abs_diff"] <= PC_TOL)
     if isinstance(rows0, int):
         row["n_rows"] = int(sc.rows) - rows0
     return row, arrays
@@ -137,6 +151,12 @@ def check_prereqs(a, runs: Path | None = None) -> None:
         raise ValueError(f"--conds {bad} not in {CONDS}")
 
 
+def build_cfg(a, runs: Path, n_items: int) -> dict:
+    """The run's config.json content: the stage constants, the options, and the SHA-256 of the codebook and of the D-cache file of the slot (A6.2 hash set; None if a file is missing)."""
+    return dict(CONFIG, n_items=n_items, source_run=a.source_run, slot_len=a.slot_len, conds=[c for c in a.conds.split(",") if c], duty=getattr(a, "duty", None), mem_frac=getattr(a, "mem_frac", None),
+                **input_hashes(Path(runs), a.slot_len))
+
+
 def main(argv=None) -> int:
     ap = runner.base_parser(RUN_ID, None)
     ap.add_argument("--source-run", default=SOURCE_RUN, help="run whose items, codes, z, delta, tex and nbr are re-used (read only)")
@@ -150,7 +170,7 @@ def main(argv=None) -> int:
         print("STOP:", e, file=sys.stderr)
         return 2
     n_src = len(source_items(Path(common.RUNS), a.source_run))
-    cfg = dict(CONFIG, n_items=a.n or n_src, source_run=a.source_run, slot_len=a.slot_len, conds=[c for c in a.conds.split(",") if c], duty=a.duty, mem_frac=a.mem_frac)
+    cfg = build_cfg(a, Path(common.RUNS), a.n or n_src)
 
     def load():
         from exp_p2.scoring import UniScorer

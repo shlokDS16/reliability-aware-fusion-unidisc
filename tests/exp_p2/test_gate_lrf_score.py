@@ -150,15 +150,15 @@ def test_weights_equal_an_independent_evaluation_of_the_frozen_formula(tmp_path)
     assert np.array_equal(ls.weights(fz, d2, "noise0.1"), w)
 
 
-def test_decision_rule_ties_and_zero_weights_are_wrong():
+def test_decision_rule_ties_are_wrong_and_non_finite_is_an_error():
     w = np.full(M, 0.5)
     assert ls.decide(w, np.full(M, 0.1))["y"] == 1 and ls.decide(w, np.full(M, -0.1))["y"] == 0
     assert ls.decide(w, np.zeros(M))["y"] == 0                                  # tie
     d = np.zeros(M)
     d[0], d[1] = 1.0, -1.0
     assert ls.decide(np.full(M, 0.5), d)["y"] == 0                              # exact cancellation: tie
-    r = ls.decide(np.zeros(M), np.full(M, 1.0))
-    assert r["y"] == 0 and np.isnan(r["margin"])                                # all-zero weights
+    with pytest.raises(ls.NonFinite):                                           # all-zero weights: margin 0/0 is non-finite -> an error, never a "wrong" decision (A6 r1, C6-2)
+        ls.decide(np.zeros(M), np.full(M, 1.0))
     r = ls.decide(np.concatenate([np.ones(1), np.zeros(M - 1)]), np.concatenate([[2.0], np.full(M - 1, -5.0)]))
     assert r["y"] == 1                                                          # only the weighted tokens count
 
@@ -229,16 +229,99 @@ def test_write_predictions_is_deterministic_and_refuses_to_overwrite(tmp_path):
     assert meta["predictions_sha256"] == ls.sha256_file(out) and meta["positive_control"]["ok"]
 
 
+def _inputs(tmp_path, run, codebook=b"codebook bytes", di=b"di bytes"):
+    """Tiny stand-ins for the two untracked inputs and the run's config.json record of their hashes (A6.2 hash set)."""
+    runs = tmp_path / "runs"
+    (runs / "P2-GATE-M1").mkdir(parents=True, exist_ok=True)
+    (runs / "P2-GATE-DCACHE").mkdir(parents=True, exist_ok=True)
+    (runs / "P2-GATE-M1" / "codebook.npy").write_bytes(codebook)
+    (runs / "P2-GATE-DCACHE" / "DI_n013.npy").write_bytes(di)
+    cb, dh = ls.sha256_file(runs / "P2-GATE-M1" / "codebook.npy"), ls.sha256_file(runs / "P2-GATE-DCACHE" / "DI_n013.npy")
+    (run / "config.json").write_text(json.dumps(dict(codebook_sha256=cb, dcache_di_sha256=dh, dcache_di_file="DI_n013.npy")))
+    return runs, dict(codebook_sha256=cb, di_sha256=dh, di_file="DI_n013.npy")
+
+
+def test_default_pins_are_the_r1_table():
+    assert ls.EXPECTED_CODEBOOK_SHA256.startswith("ff15b9b5") and ls.EXPECTED_DI_N013_SHA256.startswith("f7744253")
+    assert ls.DEFAULT_PINS["code_sha256"]["data.py"].startswith("14421ffb") and ls.DEFAULT_PINS["code_sha256"]["families.py"].startswith("1c49827d")
+    assert ls.FROZEN_DIR.name == "P2-LRF-FROZEN-LFIX"                           # the retired model (runs/P2-LRF-FROZEN) is never the default
+
+
+def test_run_inputs_are_hashed_on_disk_and_against_the_runs_config(tmp_path):
+    run, _ = _run(tmp_path, n=1)
+    runs, pins = _inputs(tmp_path, run)
+    assert ls.verify_run_inputs(run, runs, pins)["codebook_sha256"] == pins["codebook_sha256"]
+    with pytest.raises(ls.HashMismatch, match="pinned"):                         # the on-disk file differs from the pinned table
+        ls.verify_run_inputs(run, runs, dict(pins, codebook_sha256="0" * 64))
+    (runs / "P2-GATE-M1" / "codebook.npy").unlink()                              # missing codebook
+    with pytest.raises(ls.HashMismatch, match="codebook.npy missing"):
+        ls.verify_run_inputs(run, runs, pins)
+    (runs / "P2-GATE-M1" / "codebook.npy").write_bytes(b"codebook bytes")
+    (runs / "P2-GATE-DCACHE" / "DI_n013.npy").unlink()                           # missing DI_n013
+    with pytest.raises(ls.HashMismatch, match="DI_n013.npy missing"):
+        ls.verify_run_inputs(run, runs, pins)
+    (runs / "P2-GATE-DCACHE" / "DI_n013.npy").write_bytes(b"di bytes")
+    (run / "config.json").write_text(json.dumps(dict(codebook_sha256=pins["codebook_sha256"], dcache_di_sha256="1" * 64)))     # the GPU run recorded another D cache
+    with pytest.raises(ls.HashMismatch, match="recorded dcache_di_sha256"):
+        ls.verify_run_inputs(run, runs, pins)
+    (run / "config.json").unlink()                                               # no record at all
+    with pytest.raises(ls.HashMismatch, match="recorded"):
+        ls.verify_run_inputs(run, runs, pins)
+
+
+def test_non_finite_anywhere_is_an_error_never_a_wrong_decision(tmp_path):
+    fz_dir, code, _ = _make_frozen(tmp_path)
+    fz = ls.load_frozen(fz_dir, code)
+    for key in ("B", "D", "s3", "tbv", "tex", "nbr"):
+        d = _arrays(np.random.default_rng(8), conds=("noise0.1",))
+        d[f"noise0.1_{key}"][17] = np.nan
+        with pytest.raises(ls.NonFinite):
+            ls.score_item(fz, d, "noise0.1")
+    d = _arrays(np.random.default_rng(8), conds=("noise0.1",))
+    d["noise0.1_B"][3] = np.inf
+    with pytest.raises(ls.NonFinite):
+        ls.weights(fz, d, "noise0.1")
+    d = _arrays(np.random.default_rng(8), conds=("noise0.1",), with_L=True)
+    d["noise0.1_delta"][5] = np.nan
+    with pytest.raises(ls.NonFinite, match="delta"):
+        ls.score_item(fz, d, "noise0.1")
+    d = _arrays(np.random.default_rng(8), conds=("noise0.1",), with_L=True)
+    d["noise0.1_deltaL"][5] = np.inf
+    with pytest.raises(ls.NonFinite, match="deltaL"):
+        ls.score_item(fz, d, "noise0.1", with_L=True)
+    with pytest.raises(ls.NonFinite):
+        ls.decide(np.full(M, np.nan), np.ones(M))
+    run, _ = _run(tmp_path, n=3)                                                 # a poisoned stored item stops the whole run
+    d = dict(np.load(run / "arrays" / "item0001.npz"))
+    d["jpeg10_tbv"][0] = np.nan
+    np.savez(run / "arrays" / "item0001.npz", **d)
+    with pytest.raises(ls.NonFinite):
+        ls.score_run(run, fz)
+
+
 def test_cli_end_to_end_and_refusal(tmp_path, monkeypatch):
     fz_dir, code, _ = _make_frozen(tmp_path)
     run, _ = _run(tmp_path, n=3)
-    monkeypatch.setattr(common, "RUNS", tmp_path / "runs")
-    assert ls.main(["--run-id", "P2-LRF-L1", "--frozen-dir", str(fz_dir), "--code-dir", str(code)]) == 0 and (run / "predictions.jsonl").exists()
-    assert ls.main(["--run-id", "P2-LRF-L1", "--frozen-dir", str(fz_dir), "--code-dir", str(code)]) == 2          # exists
-    pins = tmp_path / "pins.json"
-    pins.write_text(json.dumps(dict(model_sha256="1" * 64)))
-    assert ls.main(["--run-id", "P2-LRF-L1", "--frozen-dir", str(fz_dir), "--code-dir", str(code), "--pins", str(pins), "--force"]) == 2     # hash mismatch: refuses, writes nothing new
-    assert ls.main(["--run-id", "P2-LRF-L1", "--frozen-dir", str(tmp_path / "nope"), "--code-dir", str(code), "--force"]) == 2
+    runs, in_pins = _inputs(tmp_path, run)
+    monkeypatch.setattr(common, "RUNS", runs)
+    spec = json.loads((fz_dir / "spec.json").read_text())
+    pins_ok = tmp_path / "pins_ok.json"
+    pins_ok.write_text(json.dumps(dict(in_pins, code_sha256=spec["code_sha256"])))       # the A6.0 item 2 row for this fake object
+    base = ["--run-id", "P2-LRF-L1", "--frozen-dir", str(fz_dir), "--code-dir", str(code)]
+    assert ls.main(base) == 2                                                    # the default pins are the r1 table: this fake object and its inputs do not match
+    assert ls.main(base + ["--pins", str(pins_ok)]) == 0 and (run / "predictions.jsonl").exists()
+    meta = json.loads((run / "lrf_score_meta.json").read_text())
+    assert meta["hashes"]["codebook_sha256"] == in_pins["codebook_sha256"] and meta["hashes"]["di_sha256"] == in_pins["di_sha256"] and "exp_p2/gate/lrf_score.py" in meta["hashes"]["entry_points"]
+    assert ls.main(base + ["--pins", str(pins_ok)]) == 2                         # exists
+    bad = tmp_path / "pins_bad.json"
+    bad.write_text(json.dumps(dict(in_pins, code_sha256=spec["code_sha256"], model_sha256="1" * 64)))
+    assert ls.main(base + ["--pins", str(bad), "--force"]) == 2                  # hash mismatch: refuses
+    assert ls.main(["--run-id", "P2-LRF-L1", "--frozen-dir", str(tmp_path / "nope"), "--code-dir", str(code), "--pins", str(pins_ok), "--force"]) == 2
+    d = dict(np.load(run / "arrays" / "item0002.npz"))                           # a NaN in a stored array: the CLI stops (exit 2), nothing is written
+    d["noise0.1_nbr"][4] = np.nan
+    np.savez(run / "arrays" / "item0002.npz", **d)
+    before = (run / "predictions.jsonl").read_bytes()
+    assert ls.main(base + ["--pins", str(pins_ok), "--force"]) == 2 and (run / "predictions.jsonl").read_bytes() == before
 
 
 def test_crosscheck_is_none_when_the_freeze_module_is_not_importable(tmp_path):

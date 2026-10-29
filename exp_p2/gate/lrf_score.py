@@ -11,7 +11,7 @@ The frozen object (A6.2) is `runs/P2-LRF-FROZEN/` (written by analysis_posthoc/l
 Features are built by the frozen feature code (data.engineer, loaded from the verified file by path); the GAM weights are evaluated here in numpy (same formula as lrf.weights_from_raw, `--crosscheck` compares against it
 when analysis_posthoc.learned_ceiling.lrf is importable).
 
-Decision rule (A6.2): w_j = sigmoid(f(x_j)); Y_LRF = 1[sum_j w_j * Delta_j > 0]; a tie (sum exactly 0) or a weight vector that is all zero counts as wrong. Delta is the stored `<cond>_delta` (the primary negative); with the
+Decision rule (A6.2): w_j = sigmoid(f(x_j)); Y_LRF = 1[sum_j w_j * Delta_j > 0]; a tie (sum exactly 0) counts as wrong. Any non-finite feature, weight, Delta, score or margin (an all-zero weight vector included) raises NonFinite and stops the scorer (A6 r1, C6-2): it is never a "wrong" decision. Delta is the stored `<cond>_delta` (the primary negative); with the
 length-matched negative of A6.7 the stored `<cond>_deltaL` is scored with the SAME weights (they never see a negative).
 
 Output `runs/<run-id>/predictions.jsonl`, one line per item and condition (items in committed order): idx, gid, image_id, condition, n_tok, n_tok_neg, y_none, y_gatem, y_lrf, m_none, m_gatem, m_lrf (the margins), and with
@@ -34,9 +34,9 @@ sys.path.insert(0, str(ROOT))
 from exp_p2 import common                                                  # noqa: E402
 from exp_p2.gate import config, evidence                                    # noqa: E402
 
-FROZEN_DIR = ROOT / "runs" / "P2-LRF-FROZEN"
+FROZEN_DIR = ROOT / "runs" / "P2-LRF-FROZEN-LFIX"           # A6 r1: the object is the LRF re-frozen at L_FIX = 13; model ca5c4e2f (runs/P2-LRF-FROZEN) is retired and never scored on fresh items
 CODE_DIR = ROOT / "analysis_posthoc" / "learned_ceiling"
-DECISION_RULE = "Y = 1[sum_j w_j * Delta_j > 0]; tie or all-zero weights = wrong"
+DECISION_RULE = "Y = 1[sum_j w_j * Delta_j > 0]; tie = wrong; non-finite feature, weight, score or margin = error"
 L1_CONDS = ("clean", "jpeg10", "noise0.1", "splice128")
 LG_CONDS = ("clean", "shot_noise3", "impulse_noise3", "speckle_noise3")
 GATE_ARM = f"gate{config.ALPHA_PRIMARY:g}"                                  # "gate0.05"
@@ -45,6 +45,18 @@ NEEDED = ("B", "D", "s3", "tbv", "tex", "nbr", "delta", f"flag{config.ALPHA_PRIM
 
 class HashMismatch(RuntimeError):
     """A pinned hash of the frozen object differs: A6.2 forbids scoring."""
+
+
+class NonFinite(ValueError):
+    """A non-finite feature, weight, score or margin (A6.2, C6-2): the scorer stops; it is never counted as a wrong decision. The cause is a pipeline defect (card v3 section 17); nothing is refitted."""
+
+
+# A6.2 hash table (r1), raw bytes. The re-frozen model.npz / spec.json hashes come from the A6.0 item 2 row (--pins); lrf.py may be the re-freeze version (also via --pins).
+EXPECTED_CODEBOOK_SHA256 = "ff15b9b5b362dc80f8a18f6e852e6e99478c0e8885646735ed16d1d80e3ae50b"      # runs/P2-GATE-M1/codebook.npy (nbr; untracked)
+EXPECTED_DI_N013_SHA256 = "f7744253a1b997b8b9f28d9b91348e8371f1ea1e3564f6c8bfc2f10aa5b42176"        # runs/P2-GATE-DCACHE/DI_n013.npy (D at L_FIX; untracked)
+DEFAULT_PINS = dict(code_sha256={"data.py": "14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b", "families.py": "1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e"},
+                    codebook_sha256=EXPECTED_CODEBOOK_SHA256, di_sha256=EXPECTED_DI_N013_SHA256, di_file="DI_n013.npy", decision_rule=DECISION_RULE)
+ENTRY_POINTS = ("exp_p2/run_gate_m4.py", "exp_p2/run_gate_lrf_rescore.py", "exp_p2/gate/lrf_score.py")      # "the L_FIX scoring entry points" of the A6.2 table; their hashes are recorded in the meta for the pin row
 
 
 def sha256_file(p: Path) -> str:
@@ -109,6 +121,31 @@ def load_frozen(frozen_dir: Path | str = FROZEN_DIR, code_dir: Path | str = CODE
     return dict(fz, spec=spec, engineer=mod.engineer, feature_names=names, hashes=hashes)
 
 
+def verify_run_inputs(run_dir: Path, runs_dir: Path, pins: dict) -> dict:
+    """A6.2 hash set, the untracked inputs: the M1 codebook (nbr) and the D-cache file of the fixed slot (D). Both are hashed on disk in this checkout AND compared with what the GPU run recorded in its config.json
+    (`codebook_sha256`, `dcache_di_sha256`); a missing file, a missing record or any difference raises HashMismatch. Returns the verified values."""
+    runs_dir, run_dir = Path(runs_dir), Path(run_dir)
+    out = {}
+    files = {"codebook_sha256": runs_dir / "P2-GATE-M1" / "codebook.npy", "di_sha256": runs_dir / config.DCACHE_RUN_ID / pins["di_file"]}
+    for key, p in files.items():
+        if not p.exists():
+            raise HashMismatch(f"{p} missing: LRF's features need it (A6.2 hash set)")
+        got = sha256_file(p)
+        if got != pins[key]:
+            raise HashMismatch(f"{p} sha256 {got} != pinned {pins[key]}")
+        out[key] = got
+    cfgp = run_dir / "config.json"
+    rec = json.loads(cfgp.read_text(encoding="utf8")) if cfgp.exists() else {}
+    for key, rk in (("codebook_sha256", "codebook_sha256"), ("di_sha256", "dcache_di_sha256")):
+        if rec.get(rk) != out[key]:
+            raise HashMismatch(f"{cfgp}: recorded {rk} {rec.get(rk)!r} != verified {out[key]} (the run must record the hashes of its inputs, runs run with --layout-fix do)")
+    return out
+
+
+def entry_point_hashes() -> dict:
+    return {rel: sha256_lf(ROOT / rel) for rel in ENTRY_POINTS if (ROOT / rel).exists()}
+
+
 # ---------------------------------------------------------------- inference (numpy)
 def raw_from_arrays(d, cond: str) -> dict:
     """The 7 raw caption-withheld scores of one condition, shapes [1, 1, 1024] (as the frozen feature code expects)."""
@@ -117,7 +154,7 @@ def raw_from_arrays(d, cond: str) -> dict:
                ltex=np.log1p(np.maximum(np.asarray(d[f"{cond}_tex"]), 0)).astype(np.float32), nbr=np.asarray(d[f"{cond}_nbr"], np.float32))
     for k, v in raw.items():
         if not np.isfinite(v).all():
-            raise ValueError(f"non-finite values in {cond}_{k}")
+            raise NonFinite(f"non-finite values in {cond}_{k}")
     return {k: v.reshape(1, 1, -1) for k, v in raw.items()}
 
 
@@ -133,15 +170,25 @@ def weights(fz: dict, d, cond: str) -> np.ndarray:
     """w_j in (0, 1) for the 1024 tokens of one stored condition."""
     X = fz["engineer"](raw_from_arrays(d, cond))
     Xs = ((X - fz["mu"]) / fz["sd"]).astype(np.float64)
-    return (1.0 / (1.0 + np.exp(-gam_f(fz, Xs))))[0, 0]
+    if not np.isfinite(Xs).all():
+        raise NonFinite(f"non-finite engineered feature for {cond}")
+    w = (1.0 / (1.0 + np.exp(-gam_f(fz, Xs))))[0, 0]
+    if not np.isfinite(w).all():
+        raise NonFinite(f"non-finite weight for {cond}")
+    return w
 
 
 def decide(w: np.ndarray, delta: np.ndarray) -> dict:
-    """Y_LRF and its margin. A tie (score exactly 0) and an all-zero weight vector are wrong."""
-    w = np.asarray(w, np.float64)
-    s = float((w * np.asarray(delta, np.float64)).sum())
+    """Y_LRF and its margin. A tie (score exactly 0) is wrong. Any non-finite weight, Delta, score or margin (an all-zero weight vector included: its margin is 0/0) raises NonFinite (C6-2)."""
+    w, d = np.asarray(w, np.float64), np.asarray(delta, np.float64)
+    if not (np.isfinite(w).all() and np.isfinite(d).all()):
+        raise NonFinite("non-finite weight or Delta")
+    s = float((w * d).sum())
     sw = float(w.sum())
-    return dict(score=s, y=int(s > 0 and sw > 0), margin=(s / sw if sw > 0 else float("nan")))
+    margin = s / sw if sw > 0 else float("nan")
+    if not (np.isfinite(s) and np.isfinite(margin)):
+        raise NonFinite(f"non-finite score or margin (score {s}, weight sum {sw})")
+    return dict(score=s, y=int(s > 0), margin=margin)
 
 
 def arm_y(delta: np.ndarray, flag: np.ndarray | None) -> tuple[int, float]:
@@ -160,6 +207,8 @@ def score_item(fz: dict, d, cond: str, with_L: bool = False) -> dict:
     out = {}
     for tag, key in (("", "delta"),) + ((("_L", "deltaL"),) if with_L else ()):
         delta = d[f"{cond}_{key}"]
+        if not np.isfinite(np.asarray(delta, np.float64)).all():
+            raise NonFinite(f"non-finite values in {cond}_{key}")
         yn, mn = arm_y(delta, None)
         yg, mg = arm_y(delta, flag)
         r = decide(w, delta)
@@ -244,15 +293,20 @@ def main(argv=None) -> int:
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--crosscheck", action="store_true")
     a = ap.parse_args(argv)
+    run_dir = Path(common.RUNS) / a.run_id
     try:
-        pins = json.loads(Path(a.pins).read_text(encoding="utf8")) if a.pins else None
+        pins = json.loads(Path(a.pins).read_text(encoding="utf8")) if a.pins else {}
+        user = pins
+        pins = dict(DEFAULT_PINS, **{k: v for k, v in user.items() if k != "code_sha256"})                                     # the r1 table unless the A6.0 item 2 row says otherwise
+        pins["code_sha256"] = dict(DEFAULT_PINS["code_sha256"], **(user.get("code_sha256") or {}))
         fz = load_frozen(a.frozen_dir, a.code_dir, pins)
-    except (HashMismatch, FileNotFoundError, ValueError) as e:
+        verified = verify_run_inputs(run_dir, Path(common.RUNS), pins)
+        conds = tuple(c for c in a.conds.split(",") if c)
+        lines, meta = score_run(run_dir, fz, conds, n_items=a.n)
+    except (HashMismatch, FileNotFoundError, NonFinite, ValueError) as e:
         print("STOP:", e, file=sys.stderr)
         return 2
-    run_dir = Path(common.RUNS) / a.run_id
-    conds = tuple(c for c in a.conds.split(",") if c)
-    lines, meta = score_run(run_dir, fz, conds, n_items=a.n)
+    meta["hashes"] = dict(meta["hashes"], codebook_sha256=verified["codebook_sha256"], di_sha256=verified["di_sha256"], entry_points=entry_point_hashes())
     if a.crosscheck:
         d = dict(np.load(run_dir / "arrays" / f"item{lines[0]['idx']:04d}.npz"))
         meta["crosscheck_max_abs_w_diff"] = crosscheck(fz, d, lines[0]["condition"])

@@ -81,14 +81,14 @@ def test_l1_confirmed_and_the_fixed_sequence_reaches_l2_l3_l4(tmp_path):
     l1 = res["L1"]
     assert l1["rejected"] and l1["label"] == "confirmed" and l1["sided"] == "one" and l1["b"] > l1["c"] and l1["n"] == 520 and l1["passes_two_sided_005"]
     assert l1["ci95"][0] < l1["net"] < l1["ci95"][1] and l1["ci90"][0] > l1["ci95"][0] and l1["cp95_b_over_nd"][0] < l1["b"] / l1["n_d"] <= l1["cp95_b_over_nd"][1]
-    assert res["L2"]["status"] == "tested" and res["L2"]["rejected"] and res["L2"]["b"] == l1["b"]     # y_gatem equals y_none in this fixture, so L2 is rejected like L1
+    assert "L2" not in res                                                       # r1: L2 (LRF vs GATE-M) is removed
     assert res["L3"]["status"] == "tested" and res["L4"]["status"] == "tested" and res["partial_label"] is None
 
 
 def test_fixed_sequence_stops_when_l1_is_not_confirmed(tmp_path):
     res = A.analyse_l(_lines(gain=0.0, seed=3))
     assert res["L1"]["label"] == "not confirmed" and not res["L1"]["rejected"]
-    for k in ("L2", "L3", "L4"):
+    for k in ("L3", "L4"):
         assert res[k]["status"] == "not tested (gatekept)" and res[k]["descriptive"] is not None
     assert res["L-NI"]["margin"] == 0.03 and res["L-LEN"]["label"] in ("rejected", "not rejected")      # always computed
 
@@ -99,9 +99,34 @@ def test_l3_l4_are_two_sided_holm_and_can_declare_a_harm():
         if l["condition"] == "splice128" and l["y_none"] == 1 and l["idx"] % 3 == 0:        # LRF breaks a third of the correct items on splice128
             l["y_lrf"] = 0
     res = A.analyse_l(ls)
-    assert res["L2"]["rejected"] and res["L4"]["status"] == "tested" and res["L4"]["sided"] == "two"
+    assert res["L1"]["rejected"] and res["L4"]["status"] == "tested" and res["L4"]["sided"] == "two"
     assert res["L4"]["harm"] and not res["L4"]["rejected"] and res["L4"]["p_holm"] >= res["L4"]["p_two"] - 1e-15
     assert res["L3"]["p_holm"] >= res["L3"]["p_two"] - 1e-15 and not res["L3"]["harm"]
+
+
+def test_branch_is_chosen_mechanically_from_l1():
+    a = A.analyse_l(_lines(gain=0.2, seed=11))
+    assert a["L1"]["p_one"] <= 0.025 and a["branch"]["branch"] == "A" and a["L1"]["headline_p_le_0025"]
+    mid = A.branch_of(dict(rejected=True, p_one=0.04, label="confirmed"))
+    assert mid["branch"] == "B"
+    assert A.branch_of(dict(rejected=True, p_one=0.01, label="confirmed, partial prefix (300 of 520)"))["branch"] == "B"      # partial: never a headline claim
+    assert A.analyse_l(_lines(gain=0.0, seed=3))["branch"]["branch"] == "C"
+    assert A.branch_of(dict(rejected=False, p_one=0.5, label="inconclusive, partial prefix (300 of 520)"))["branch"] == "C"
+    assert A.branch_of(dict(status="not run"))["branch"] == "D"
+
+
+def test_gate_m_on_the_fresh_fold_is_a_descriptive_supplement_only():
+    res = A.analyse_l(_lines(gain=0.15))
+    sup = res["supplement_gatem_vs_none"]
+    assert set(sup) == {"clean", "jpeg10", "noise0.1", "splice128"} and all(v["descriptive_only"] and "p" not in v and "p_one" not in v for v in sup.values())
+    assert "L2" not in res and not any("gatem" in k and k != "supplement_gatem_vs_none" for k in res)           # no LRF-versus-GATE-M number anywhere
+
+
+def test_the_partial_threshold_follows_n_l():
+    assert A.label_partial(420, 520) is None and A.label_partial(415, 520) == "partial prefix (415 of 520)"
+    assert A.label_partial(420, 533) == "partial prefix (420 of 533)" and A.label_partial(427, 533) is None          # 0.8 * 533 = 426.4
+    res = A.analyse_l(_lines(n=420, gain=0.0, seed=6), n_l=533)
+    assert res["partial_label"] == "partial prefix (420 of 533)" and res["L1"]["label"].startswith("inconclusive")
 
 
 def test_partial_prefix_labels():
@@ -176,7 +201,12 @@ def test_run_is_byte_identical_on_rerun_and_reads_only_the_predictions(tmp_path)
     assert A.main(["--l1", str(p1), "--lg", str(p2), "--out", str(out2)]) == 0
     assert out1.read_bytes() == out2.read_bytes()
     res = json.loads(out1.read_text())
-    assert set(res) == {"meta", "family_L", "family_LG", "multiplicity_note"} and res["meta"]["spawn_key"] == [34] and res["meta"]["n_boot"] == 10000
+    assert set(res) == {"meta", "family_L", "family_LG", "multiplicity_note"} and res["meta"]["spawn_key"] == [34] and res["meta"]["n_boot"] == 10000 and res["meta"]["n_l"] == 520
+    assert res["family_LG"]["wording"] == "other noise types (shot, impulse, speckle; imagecorruptions severity 3)"
+    nr = tmp_path / "n_rule.json"
+    nr.write_text(json.dumps(dict(n_L=533)))
+    assert A.main(["--l1", str(p1), "--n-rule", str(nr), "--out", str(tmp_path / "c.json")]) == 0
+    assert json.loads((tmp_path / "c.json").read_text())["meta"]["n_l"] == 533
     assert res["meta"]["l1_predictions_sha256"] == A.hashlib.sha256(p1.read_bytes()).hexdigest()
 
 
@@ -187,6 +217,7 @@ def test_seed_slots_are_fixed_children_of_the_documented_root():
     kids = np.random.SeedSequence(A.ROOT_SEED, spawn_key=A.SPAWN_KEY).spawn(len(A.SEED_SLOTS))
     assert np.random.default_rng(kids[0]).integers(0, 10 ** 9) == A._rng("L1").integers(0, 10 ** 9)
     assert len(set(A.SEED_SLOTS)) == len(A.SEED_SLOTS)
+    assert A.SEED_SLOTS[A.SEED_SLOTS.index("BASELINES")] == "BASELINES" and A.SEED_SLOTS.index("BASELINES") == len(A.SEED_SLOTS) - 1 and A.SEED_SLOTS[1] == "L2_removed"      # appended last; no earlier child moved
 
 
 def test_cli_selftest_flag(capsys):

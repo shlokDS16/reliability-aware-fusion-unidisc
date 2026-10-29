@@ -205,3 +205,55 @@ def test_cli_refuses_to_overwrite_and_a_failed_prerequisite_stops(tmp_path, monk
     (out / "folds_lrf.json").unlink()
     assert blf.main([]) == 2                                                    # no folds.json / probes under the temp RUNS: STOP, nothing written
     assert not (out / "folds_lrf.json").exists()
+
+
+# ------------------------------------------------------------------------------------------------ A6 r1: 533-list and the union exclusions (C6-10)
+def test_r1_default_is_the_533_item_list_and_n_l_is_a_prefix():
+    assert blf.N_L == 533
+    caps, cats = _world(n_img=1500)
+    excl = set().union(*_sources(caps).values())
+    full = blf.build(caps, cats, excl, N_TOK, n=533)
+    pre = blf.build(caps, cats, excl, N_TOK, n=520)
+    assert [it["image_id"] for it in full["test"]][:520] == [it["image_id"] for it in pre["test"]]
+    assert [it["caption"] for it in full["test"]][:520] == [it["caption"] for it in pre["test"]]
+    assert len(full["test"]) == 533 and full["test"][-1]["gid"] == 8532
+
+
+def _make_runs(tmp_path):
+    runs = tmp_path / "runs"
+    def w(rel, obj, jsonl=False):
+        p = runs / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(("".join(json.dumps(o) + "\n" for o in obj)) if jsonl else json.dumps(obj))
+    w("P2-GATE-FOLDS/folds.json", dict(cal=[dict(image_id=1)], head=[dict(image_id=2)], test=[dict(image_id=3)], test_ext=[dict(image_id=4)]))
+    w("P2-PROBE-01/selection.json", dict(items=[dict(image_id=5)]))
+    w("P2-PROBE-02/selection.json", dict(items=[dict(image_id=6)]))
+    w("P2-GATE-M1/items.jsonl", [dict(image_id=7)], True)
+    w("P2-GATE-M5/items.jsonl", [dict(image_id=8)], True)
+    w("P2-GATE-FOIL/pool.json", dict(fit=[dict(image_id=9)], test=[dict(image_id=10)]))
+    w("P2-GATE-S2/items.jsonl", [dict(image_id=11, idx=0), dict(image_id=12, idx=1)], True)
+    w("P2-GATE-SUITE/items.jsonl", [dict(image_id=13)], True)
+    w("P2-SUITE-SMOKE/smoke.json", dict(image_ids=[14]))                         # not one of the discovered names: not read
+    w("P2-HARDNEG-ITEMS/folds_hardneg.json", dict(cal=[], head=[dict(image_id=15)], test=[dict(image_id=16)], test_ext=[]))
+    w("P2-GATE-S2/arrays/notes.json", dict(image_id=99))                          # not a discovered name either
+    w("P2-LRF-FOLD/items.jsonl", [dict(image_id=17)], True)                       # the builder's own directory is never a source
+    w("P2-GATE-M3/items.jsonl", [dict(image_id=18, rungs={"jpeg10": dict(image_id=19)})], True)       # nested ids are read too
+    w("other-run/items.jsonl", [dict(image_id=20)], True)                         # not a runs/P2-* directory
+    return runs
+
+
+def test_union_exclusions_read_every_p2_items_selection_and_pool_file(tmp_path):
+    runs = _make_runs(tmp_path)
+    found = blf.discover_sources(runs)
+    ids = set().union(*found.values())
+    assert ids == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 18, 19}
+    assert "P2-LRF-FOLD/items.jsonl" not in found and "other-run/items.jsonl" not in found and "P2-SUITE-SMOKE/smoke.json" not in found
+    assert found["P2-GATE-FOLDS/folds.json"] == {1, 2, 3, 4} and found["P2-GATE-S2/items.jsonl"] == {11, 12}
+
+
+def test_collect_sources_adds_the_discovered_files_and_lists_them_in_the_report(tmp_path):
+    runs = _make_runs(tmp_path)
+    src, rep = blf.collect_sources(runs, bh.SUGARCREPE_DIR)
+    assert src["file:P2-GATE-S2/items.jsonl"] == {11, 12} and src["folds.cal"] == {1} and "sugarcrepe" in src
+    assert rep["discovered_files"]["P2-GATE-SUITE/items.jsonl"] == 1 and rep["n_union"] == len(set().union(*src.values()))
+    assert {11, 12, 13, 15, 16, 18, 19} <= set().union(*src.values())            # beyond the named groups of the draft

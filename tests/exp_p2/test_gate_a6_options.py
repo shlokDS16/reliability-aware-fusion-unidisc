@@ -1,4 +1,4 @@
-"""A6.11 runner options of run_gate_m4 (--neg-len, --extra-cells, --caption-slot-len, --gate-true-layout) and the LRF re-score stage (run_gate_lrf_rescore). CPU, fake scorer (4 x 4 token map), temp dirs.
+"""A6.11 runner options of run_gate_m4 (--neg-len, --extra-cells, --layout-fix / --caption-slot-len, --gate-true-layout) and the LRF re-score stage (run_gate_lrf_rescore). CPU, fake scorer (4 x 4 token map), temp dirs.
 Central properties: with every option absent the stage is byte-identical to the pre-A6 code (parity against the module as committed before A6); the options add arrays and rows without moving any existing one."""
 import importlib.util
 import json
@@ -105,6 +105,10 @@ def test_the_config_of_a_default_run_has_no_a6_keys(env, monkeypatch):
     seen.clear()
     m4.main(["--n", "300", "--neg-len", "--caption-slot-len", "13", "--extra-cells", "shot_noise3"])
     assert seen["cfg"]["neg_len"] is True and seen["cfg"]["caption_slot_len"] == 13 and seen["cfg"]["extra_cells"] == "shot_noise3"
+    assert {"codebook_sha256", "dcache_di_sha256", "dcache_di_file"} <= set(seen["cfg"]) and seen["cfg"]["dcache_di_file"] == "DI_n013.npy"      # the A6.2 hash set is recorded in config.json
+    seen.clear()
+    m4.main(["--n", "300", "--layout-fix", "13"])                              # the r1 name of the option (A6.11 item 3); --caption-slot-len is its alias
+    assert seen["cfg"]["caption_slot_len"] == 13
 
 
 def test_option_validation():
@@ -252,7 +256,7 @@ def _rescore(env, sc, slot):
     a = SimpleNamespace(source_run="P2-GATE-M4", slot_len=slot, conds=",".join(rescore.CONDS), family_run="P2-GATE-M3")
     rescore.check_prereqs(a, env)
     items = rescore.source_items(env, "P2-GATE-M4")
-    return runner.run_items(run_id=f"LFIX{slot}", cfg=dict(rescore.CONFIG, n_items=len(items)), load=lambda: sc, get_items=lambda s, r: items, process=rescore.process, make_ctx=rescore.make_ctx_factory(a, env),
+    return runner.run_items(run_id=f"LFIX{slot}", cfg=rescore.build_cfg(a, env, len(items)), load=lambda: sc, get_items=lambda s, r: items, process=rescore.process, make_ctx=rescore.make_ctx_factory(a, env),
                             duty=1.0, soft_minutes=30)
 
 
@@ -270,6 +274,10 @@ def test_rescore_at_the_true_length_reproduces_the_source_and_at_another_length_
     assert [r["conds"]["noise0.1"]["cond_index"] for r in rows] == [3, 3, 3] and [r["conds"]["splice128"]["cond_index"] for r in rows] == [5, 5, 5]      # noise0.1 follows jpeg10_dn / splice128 follows noise0.1_dn
     assert all(r["n_rows"] == 36 for r in rows[1:]) or all(r["n_rows"] >= 36 for r in rows)                                       # 4 conditions x (8 B + 1 tbv) (+ invariance passes for the first items)
     assert rows[0]["invariance_max_abs_diff"] == 0.0 and all(r["invariance_max_abs_diff"] == 0.0 for r in rows)
+    assert all(r["positive_control_max_abs_diff"] == 0.0 and r["checks_ok"] is True for r in rows)       # A6.2 step 2: scored at the true length, the entry point reproduces the stored M4 B, s3, D, tbv
+    assert set(rows[0]["positive_control"]) == set(rescore.CONDS)
+    cfg = json.loads((env / "LFIX6" / "config.json").read_text())
+    assert cfg["dcache_di_file"] == "DI_n006.npy" and "codebook_sha256" in cfg and cfg["dcache_di_sha256"] is not None         # hashes of the untracked inputs recorded in config.json
     assert _rescore(env, sc, 9) == 0
     src = dict(np.load(env / "P2-GATE-M4" / "arrays" / "item0001.npz"))
     new = dict(np.load(env / "LFIX9" / "arrays" / "item0001.npz"))

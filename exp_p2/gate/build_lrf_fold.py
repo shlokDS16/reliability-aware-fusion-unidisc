@@ -1,6 +1,6 @@
 """A6.3 fresh fold for the confirmatory test of LRF (SAP addendum A6, DRAFT): builds runs/P2-LRF-FOLD/{folds_lrf.json, manifest.json, leak_check.json}. CPU only, no model, no GPU.
 
-    python -m exp_p2.gate.build_lrf_fold [--out-dir PATH] [--slow] [--n 520]        # refuses to overwrite; build it in the main worktree so that the M1 and M5 item files are read
+    python -m exp_p2.gate.build_lrf_fold [--out-dir PATH] [--slow] [--n 533]        # refuses to overwrite; build it in the main worktree so that every runs/P2-* file is read (A6 r1: 533-list, n_L is a prefix chosen by the n-rule)
 
 Output `folds_lrf.json` has the schema of folds.json (`test` = the ordered list of n_L items; `cal`, `head`, `test_ext` empty) so the pinned runners read it with --folds-path.
 Per item: idx, gid (8000 + idx), image_id, caption (c+), n_tok, the primary negative of the M4 rule (neg_idx, neg_image_id, neg_caption, neg_restricted, n_tok_neg) and the length-matched negative c-_L of A6.7:
@@ -8,7 +8,8 @@ neg_caption_len (caption TEXT, read by run_gate_m4 --neg-len), neg_len_idx, neg_
 
 Selection (deterministic given the seed and the input files; no model outcome is read):
   universe   COCO val2017 images with a caption, an instance annotation and (in the CLI) a file in val2017.zip
-  excluded   folds.json cal, head, test, test_ext; probe-1 and probe-2 selection.json; M1 and M5 item files; the FOIL pool (fit, test); every image of the SugarCrepe release; the family-H item file if present
+  excluded   (C6-10) the UNION of image ids in every runs/P2-*/items.jsonl, selection.json, pool.json and folds*.json present at build time (folds.json cal, head, test, test_ext; probes 1 and 2; M1, M5, S2, FOIL, the suite and its smoke,
+             H if present), plus every image of the SugarCrepe release; the manifest lists every file read and its count
   c+         per image, one caption chosen uniformly (seeded) among its captions with 5 to 32 UniDisc tokens; images with none are excluded and counted
   order      a seeded permutation of the eligible images; the first n_L are the fold (idx 0 to n_L - 1)
   c-         folds.assign_negatives, unchanged, with the whole list as one block (a caption of another item whose image shares no annotated category; fallback as in folds.py)
@@ -34,7 +35,7 @@ from exp_p2 import common                                                  # noq
 from exp_p2.gate import build_hardneg_items as bh, config, data, foil, folds   # noqa: E402
 
 RUN_ID = "P2-LRF-FOLD"
-N_L = 520
+N_L = 533                                         # A6 r1 A6.3: the list holds the budget cap; the n-rule (exp_p2/gate/lrf_nrule.py) picks a prefix n_L in [400, 533]
 GID_OFFSET = 8000                                  # folds 0-2499, family B (FOIL) 4000/5000, family H 6000/7000, this fold 8000+
 SELECT_SEED = [config.SEED_GATE, 10]
 CATEGORY_GROUPS = ("folds.cal", "folds.head", "folds.test", "folds.test_ext", "probe1+probe2")      # the five groups of L7 (as FOIL L6/L7 and H-L7)
@@ -227,6 +228,50 @@ def zip_image_ids() -> set[int]:
         return {int(Path(n).stem) for n in z.namelist() if n.startswith("val2017/") and n.endswith(".jpg")}
 
 
+DISCOVER_NAMES = ("items.jsonl", "selection.json", "pool.json")
+OWN_RUN_DIRS = (RUN_ID,)                           # this builder's own output directory is never an exclusion source
+
+
+def _collect_ids(obj, out: set) -> None:
+    """Every integer under a key `image_id` (and every integer in a list under `image_ids`), at any depth."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k == "image_id" and isinstance(v, int) and not isinstance(v, bool):
+                out.add(int(v))
+            elif k == "image_ids" and isinstance(v, list):
+                out.update(int(x) for x in v if isinstance(x, int) and not isinstance(x, bool))
+            else:
+                _collect_ids(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _collect_ids(v, out)
+
+
+def discover_sources(runs: Path) -> dict[str, set[int]]:
+    """C6-10: every `runs/P2-*/**/{items.jsonl, selection.json, pool.json}` and `folds*.json` file -> its image ids, keyed by the path relative to `runs` (forward slashes). Files without ids (empty or other formats) map to an empty set
+    and are listed in the manifest all the same. This builder's own output directory is skipped."""
+    runs = Path(runs)
+    found: dict[str, set[int]] = {}
+    for d in sorted(runs.glob("P2-*")):
+        if not d.is_dir() or d.name in OWN_RUN_DIRS:
+            continue
+        for f in sorted(d.rglob("*")):
+            if not f.is_file() or not (f.name in DISCOVER_NAMES or (f.name.startswith("folds") and f.suffix == ".json")):
+                continue
+            ids: set[int] = set()
+            try:
+                if f.suffix == ".jsonl":
+                    for line in f.read_text(encoding="utf8").splitlines():
+                        if line.strip():
+                            _collect_ids(json.loads(line), ids)
+                else:
+                    _collect_ids(json.loads(f.read_text(encoding="utf8")), ids)
+            except (OSError, ValueError):
+                ids = set()
+            found[f.relative_to(runs).as_posix()] = ids
+    return found
+
+
 def collect_sources(runs: Path, sugarcrepe_dir: Path, allow_missing_optional: bool = False) -> tuple[dict[str, set[int]], dict]:
     """Every excluded image set, by name (folds.cal ... probe1+probe2, P2-GATE-M1, P2-GATE-M5, foil.pool, sugarcrepe, hardneg.h if its file exists) plus the report. M1 and M5 item files and the FOIL pool are required
     unless allow_missing_optional (tests); a missing required folds.json or probe file always raises FileNotFoundError."""
@@ -250,7 +295,12 @@ def collect_sources(runs: Path, sugarcrepe_dir: Path, allow_missing_optional: bo
         h = json.loads(hp.read_text(encoding="utf8"))
         by_source["hardneg.h"] = {int(it["image_id"]) for k in ("head", "test") for it in h.get(k, [])}
     rep["sugarcrepe_n_images"] = len(by_source["sugarcrepe"])
+    disc = discover_sources(runs)
+    rep["discovered_files"] = {k: len(v) for k, v in disc.items()}
+    for k, v in disc.items():
+        by_source[f"file:{k}"] = v
     rep["n_ids_per_source"] = {k: len(v) for k, v in by_source.items()}
+    rep["n_union"] = len(set().union(*by_source.values()))
     return by_source, rep
 
 
@@ -276,7 +326,7 @@ def main(argv=None) -> int:
         return 2
     excluded = set().union(*sources.values())
     fold = build(common.load_captions(), image_cats, excluded, folds.hf_token_counter(a.slow), n=a.n, available=available)
-    universe = {i for i in available if i in image_cats}
+    universe = set(available)                                                   # L6/L7 match ids against every image of val2017.zip (some excluded files hold ids without an instance annotation)
     try:
         log = leak_check(fold, sources, universe, image_cats=image_cats, val_ids=available)
     except LeakCheckFailed as e:
@@ -289,8 +339,8 @@ def main(argv=None) -> int:
         return 2
     out_dir.mkdir(parents=True, exist_ok=True)
     folds.save_folds(fold, targets[0])
-    manifest = dict(meta=fold["meta"], exclusion=rep, folds_lrf_sha256=hashlib.sha256(targets[0].read_bytes()).hexdigest(), code="exp_p2/gate/build_lrf_fold.py", created=time.strftime("%Y-%m-%dT%H:%M:%S"),
-                    spec="research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.3")
+    manifest = dict(meta=fold["meta"], exclusion=rep, files_read={k: len(v) for k, v in sources.items()}, folds_lrf_sha256=hashlib.sha256(targets[0].read_bytes()).hexdigest(), code="exp_p2/gate/build_lrf_fold.py", created=time.strftime("%Y-%m-%dT%H:%M:%S"),
+                    spec="research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md r1 A6.3")
     targets[1].write_text(json.dumps(manifest, indent=1), encoding="utf8")
     targets[2].write_text(json.dumps(log, indent=1), encoding="utf8")
     print(json.dumps(dict(path=str(targets[0]), sha1=fold["meta"]["sha1"], sha256=manifest["folds_lrf_sha256"], n=len(fold["test"]), universe=fold["meta"]["universe"], length_matching=fold["meta"]["length_matching"],

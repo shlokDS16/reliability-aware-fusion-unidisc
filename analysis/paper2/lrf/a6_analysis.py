@@ -1,19 +1,20 @@
-"""SAP addendum A6 analysis (A6.4 to A6.9, A6.12 labels): reads ONLY the predictions files written by exp_p2/gate/lrf_score.py and writes a6_analysis.json. CPU, numpy + stdlib (+ scipy for the Clopper-Pearson interval).
+"""SAP addendum A6 r1 analysis (A6.4 to A6.8, A6.12 labels and branch titles): reads ONLY the predictions files written by exp_p2/gate/lrf_score.py and writes a6_analysis.json. CPU, numpy + stdlib (+ scipy for the Clopper-Pearson interval).
 
-    python -m analysis.paper2.lrf.a6_analysis --l1 runs/P2-LRF-L1/predictions.jsonl [--lg runs/P2-LRF-LG/predictions.jsonl] [--out runs/P2-LRF-L1/a6_analysis.json]
+    python -m analysis.paper2.lrf.a6_analysis --l1 runs/P2-LRF-L1/predictions.jsonl [--lg runs/P2-LRF-LG/predictions.jsonl] [--n-l 533 | --n-rule runs/P2-LRF-PLAN/n_rule.json] [--out runs/P2-LRF-L1/a6_analysis.json]
     python -m analysis.paper2.lrf.a6_analysis --selftest
 
 Tests (item = the unit; complete case: an item enters a test only if both arms of the test have a prediction for it):
-  L1     LRF vs NONE on noise0.1, exact ONE-sided McNemar, alpha 0.05, confirmed iff p <= 0.05 and b > c (also reported: passes one-sided 0.025 = "would also pass a two-sided 0.05 test")
-  L2     LRF vs GATE-M on noise0.1, one-sided exact, alpha 0.05, only if L1 is confirmed (fixed sequence)
-  L3,L4  LRF vs NONE on jpeg10 and splice128, exact TWO-sided, Holm over m = 2 at 0.05, only if L2 is rejected with b > c
+  L1     LRF vs NONE on noise0.1, exact ONE-sided McNemar, alpha 0.05, confirmed iff p <= 0.05 and b > c. Headline (C6-5): a gain claim in title, abstract or highlights needs one-sided p <= 0.025 (branch A); 0.025 < p <= 0.05 is
+         branch B (Results only); not confirmed, or partial and not rejected, is branch C (branch D, "not run", is decided outside this script).
+  L2     REMOVED in r1 (it restated L1: GATE-M = NONE on noise0.1 in M4). GATE-M on the fresh fold is a descriptive supplement block (GATE-M vs NONE only; no LRF-versus-GATE-M number anywhere).
+  L3,L4  LRF vs NONE on jpeg10 and splice128, exact TWO-sided, Holm over m = 2 at 0.05, only if L1 is confirmed
   L-NI   clean, LRF minus NONE, non-inferiority margin 0.03: shown iff the lower bound of the two-sided 90 percent paired percentile bootstrap CI exceeds -0.03 (always computed)
   L-LEN  noise0.1 with the length-matched negative (y_*_L), LRF vs NONE, one-sided exact, alpha 0.05, items whose c-_L differs in token count excluded and counted (always computed)
   LG     held-out noise cells (shot, impulse, speckle at severity 3), LRF vs NONE per cell, one-sided exact, Holm over the PREREGISTERED m = 3 (an absent cell enters as p = 1), first 300 items; completed n < 240: descriptive only
 A not-reached test is "not tested (gatekept)" and is still printed descriptively. Descriptive additions: GATE-M vs NONE per LG cell, the clean-to-corrupted drop of NONE per cell, and the preregistered length-stratum secondary (LRF-FROZEN report
 section 3 item 5: LRF minus NONE on noise0.1 by true caption shorter / equal / longer than the negative, and the longer-minus-shorter difference with a 95 percent CI).
 Every test reports b, c, n_d, n, both accuracies, the net difference with paired percentile bootstrap CIs at 90 and 95 percent (10,000 resamples), the Clopper-Pearson CI of b/n_d, exact one- and two-sided p and mid-p.
-Seeds: numpy.random.SeedSequence(20261028, spawn_key=(34,)) spawned into the fixed SEED_SLOTS (33 is h_strata's, 32 tier3_fusion's); the output is byte-identical on rerun. Labels follow A6.12: partial prefix when the completed n is below 416 of 520."""
+Seeds: numpy.random.SeedSequence(20261028, spawn_key=(34,)) spawned into the fixed SEED_SLOTS (33 is h_strata's, 32 tier3_fusion's); the output is byte-identical on rerun. Labels follow A6.12: partial prefix when the completed n is below 0.8 n_L (n_L from --n-l or the n-rule record; 520 if neither is given)."""
 from __future__ import annotations
 
 import argparse
@@ -29,9 +30,11 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 ROOT_SEED, SPAWN_KEY = 20261028, (34,)
-SEED_SLOTS = ("L1", "L2", "L3", "L4", "LNI", "LLEN", "LG_shot_noise3", "LG_impulse_noise3", "LG_speckle_noise3", "LG_drop", "LEN_STRATA", "LEN_STRATA_DIFF", "DESC")
+SEED_SLOTS = ("L1", "L2_removed", "L3", "L4", "LNI", "LLEN", "LG_shot_noise3", "LG_impulse_noise3", "LG_speckle_noise3", "LG_drop", "LEN_STRATA", "LEN_STRATA_DIFF", "DESC", "BASELINES")
 N_BOOT = 10000
-N_PLANNED, N_PARTIAL = 520, 416              # A6.4: below 416 (80 percent of 520) the result is labelled "partial prefix"
+N_PLANNED_DEFAULT = 520                      # A6.3: n_L when the n-rule record is not given (the rule's own fallback value)
+PARTIAL_SHARE = 0.8                          # A6.4: completed n below 0.8 n_L: rejection stands as "partial prefix (n of n_L)", non-rejection is "inconclusive (partial)"
+HEADLINE_ALPHA = 0.025                       # C6-5
 LG_CELLS = ("shot_noise3", "impulse_noise3", "speckle_noise3")
 LG_N, LG_MIN_N = 300, 240
 NI_MARGIN = 0.03
@@ -140,8 +143,20 @@ def arms(cond_rows: dict[int, dict], a: str, b: str, idx: list[int] | None = Non
     return ids, np.array([cond_rows[i][a] for i in ids], float), np.array([cond_rows[i][b] for i in ids], float)
 
 
-def label_partial(n: int) -> str | None:
-    return f"partial prefix ({n} of {N_PLANNED})" if n < N_PARTIAL else None
+def label_partial(n: int, n_l: int = N_PLANNED_DEFAULT) -> str | None:
+    return f"partial prefix ({n} of {n_l})" if n < PARTIAL_SHARE * n_l else None
+
+
+def branch_of(l1: dict) -> dict:
+    """Branch of A6.12 chosen mechanically from L1 (D, 'Study 2 not run', is decided outside this script)."""
+    if l1.get("status") == "not run":
+        return dict(branch="D", title_rule="Study 2 not run")
+    partial = "partial" in l1.get("label", "")
+    if l1["rejected"] and not partial and l1["p_one"] <= HEADLINE_ALPHA:
+        return dict(branch="A", title_rule="L1 confirmed with one-sided p <= 0.025")
+    if l1["rejected"]:
+        return dict(branch="B", title_rule="L1 confirmed with 0.025 < p <= 0.05" + (" (partial prefix: Results only)" if partial else ""))
+    return dict(branch="C", title_rule="L1 not confirmed, or partial and not rejected")
 
 
 # ------------------------------------------------------------------------------------------------ the analysis
@@ -149,11 +164,11 @@ def not_tested(reason: str, desc: dict | None) -> dict:
     return dict(status="not tested (gatekept)", reason=reason, descriptive=desc)
 
 
-def analyse_l(lines: list[dict]) -> dict:
+def analyse_l(lines: list[dict], n_l: int = N_PLANNED_DEFAULT) -> dict:
     by = by_condition(lines)
-    out: dict = dict(n_items_by_condition={c: len(v) for c, v in by.items()})
+    out: dict = dict(n_items_by_condition={c: len(v) for c, v in by.items()}, n_l=n_l)
     n1 = len(by.get("noise0.1", {}))
-    partial = label_partial(n1)
+    partial = label_partial(n1, n_l)
     # L1
     if "noise0.1" not in by:
         out["L1"] = dict(status="not run", label="not run")
@@ -161,12 +176,10 @@ def analyse_l(lines: list[dict]) -> dict:
     _, ya, yb = arms(by["noise0.1"], "y_lrf", "y_none")
     l1 = paired_test(ya, yb, "L1", sided="one")
     l1["label"] = ("confirmed" if l1["rejected"] else "not confirmed") if not partial else (("confirmed, " if l1["rejected"] else "inconclusive, ") + partial)
+    l1["headline_p_le_0025"] = bool(l1["rejected"] and l1["p_one"] <= HEADLINE_ALPHA and not partial)
     out["L1"] = l1
-    # L2 (gatekept by L1)
-    _, ya, yb = arms(by["noise0.1"], "y_lrf", "y_gatem")
-    l2 = paired_test(ya, yb, "L2", sided="one")
-    out["L2"] = dict(l2, status="tested") if l1["rejected"] else not_tested("L1 not confirmed", l2)
-    # L3, L4 (gatekept by L2)
+    out["branch"] = branch_of(l1)
+    # L3, L4 (gatekept by L1; L2 was removed in r1)
     l34 = {}
     for name, cond, slot in (("L3", "jpeg10", "L3"), ("L4", "splice128", "L4")):
         if cond in by:
@@ -181,15 +194,14 @@ def analyse_l(lines: list[dict]) -> dict:
             l34[k]["p_holm"] = h
             l34[k]["rejected"] = bool(h <= ALPHA and l34[k]["b"] > l34[k]["c"])
             l34[k]["harm"] = bool(h <= ALPHA and l34[k]["c"] > l34[k]["b"])
-    reached = bool(l1["rejected"] and out["L2"].get("rejected"))
     for k, v in l34.items():
-        out[k] = dict(v, status="tested") if reached else not_tested("L1 or L2 not rejected", v)
+        out[k] = dict(v, status="tested") if l1["rejected"] else not_tested("L1 not confirmed", v)
     # L-NI (always)
     if "clean" in by:
         _, ya, yb = arms(by["clean"], "y_lrf", "y_none")
         ni = paired_test(ya, yb, "LNI", sided="one")
         lo90 = ni["ci90"][0]
-        ni.update(margin=NI_MARGIN, lower90=lo90, non_inferior=bool(lo90 is not None and lo90 > -NI_MARGIN), label=("shown" if (lo90 is not None and lo90 > -NI_MARGIN) else "not shown"))
+        ni.update(margin=NI_MARGIN, margin_note="the margin was fixed after the M4 clean interval (-0.024 to +0.030) and the in-sample clean accuracy had been seen (C6-11)", lower90=lo90, non_inferior=bool(lo90 is not None and lo90 > -NI_MARGIN), label=("shown" if (lo90 is not None and lo90 > -NI_MARGIN) else "not shown"))
         out["L-NI"] = ni
     else:
         out["L-NI"] = dict(status="not run")
@@ -204,7 +216,18 @@ def analyse_l(lines: list[dict]) -> dict:
     else:
         out["L-LEN"] = dict(status="not run", label="not run: a caption-length channel was not tested on fresh data")
     out["length_strata"] = length_strata(by.get("noise0.1", {}))
+    out["supplement_gatem_vs_none"] = supplement_gatem(by)
     out["partial_label"] = partial
+    return out
+
+
+def supplement_gatem(by: dict) -> dict:
+    """Supplement-only, descriptive (A6.4, C6-3): the fresh-fold GATE-M arm (at L_FIX, M2 threshold calibrated at the true layout, no guarantee) against NONE, per condition. No LRF-versus-GATE-M number is computed anywhere."""
+    out = {}
+    for c, rows in sorted(by.items()):
+        ids, g, n_ = arms(rows, "y_gatem", "y_none")
+        b, cc = mcnemar_counts(g, n_)
+        out[c] = dict(n=len(ids), acc_gatem=float(g.mean()) if len(ids) else None, acc_none=float(n_.mean()) if len(ids) else None, b=b, c=cc, descriptive_only=True)
     return out
 
 
@@ -276,13 +299,14 @@ def analyse_lg(lines: list[dict]) -> dict:
     return out
 
 
-def run(l1_path: Path, lg_path: Path | None = None) -> dict:
-    res = dict(meta=dict(spec="research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.4 to A6.9 (DRAFT)", root_seed=ROOT_SEED, spawn_key=list(SPAWN_KEY), seed_slots=list(SEED_SLOTS), n_boot=N_BOOT, interval="percentile",
+def run(l1_path: Path, lg_path: Path | None = None, n_l: int = N_PLANNED_DEFAULT) -> dict:
+    res = dict(meta=dict(spec="research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md r1 A6.4 to A6.8", n_l=n_l, root_seed=ROOT_SEED, spawn_key=list(SPAWN_KEY), seed_slots=list(SEED_SLOTS), n_boot=N_BOOT, interval="percentile",
                       numpy_version=np.__version__, l1_predictions_sha256=hashlib.sha256(Path(l1_path).read_bytes()).hexdigest()))
-    res["family_L"] = analyse_l(load_predictions(l1_path))
+    res["family_L"] = analyse_l(load_predictions(l1_path), n_l)
     if lg_path is not None:
         res["meta"]["lg_predictions_sha256"] = hashlib.sha256(Path(lg_path).read_bytes()).hexdigest()
         res["family_LG"] = analyse_lg(load_predictions(lg_path))
+        res["family_LG"]["wording"] = "other noise types (shot, impulse, speckle; imagecorruptions severity 3)"
     res["multiplicity_note"] = "no multiplicity adjustment across families; the family of every claim is stated beside it (A6.8)"
     return res
 
@@ -314,8 +338,8 @@ def selftest(n_sim: int = 2000) -> dict:
         return ls
     a_gain, a_null = analyse_l(lines(True)), analyse_l(lines(False))
     out["seq_gain_L1_confirmed"] = bool(a_gain["L1"]["rejected"])
-    out["seq_gain_L2_tested"] = a_gain["L2"].get("status") == "tested"
-    out["seq_null_L2_gatekept"] = a_null["L2"].get("status") == "not tested (gatekept)" and a_null["L3"].get("status") == "not tested (gatekept)"
+    out["seq_gain_L3_L4_tested"] = a_gain["L3"].get("status") == "tested" and a_gain["L4"].get("status") == "tested" and "L2" not in a_gain
+    out["seq_null_L3_L4_gatekept"] = a_null["L3"].get("status") == "not tested (gatekept)" and a_null["L4"].get("status") == "not tested (gatekept)"
     # L-NI on synthetic data: LRF = NONE except a 1-point loss -> bound above -0.03; a 6-point loss -> below
     def ni(loss: float, n: int = 520) -> bool:
         yn = (r.random(n) < 0.8).astype(int)
@@ -324,7 +348,7 @@ def selftest(n_sim: int = 2000) -> dict:
         ls = [dict(idx=i, gid=i, image_id=i, condition="clean", n_tok=10, n_tok_neg=10, y_none=int(yn[i]), y_gatem=int(yn[i]), y_lrf=int(yl[i])) for i in range(n)]
         return analyse_l(ls + [dict(l, condition="noise0.1") for l in ls])["L-NI"]["non_inferior"]
     out["ni_small_loss_shown"], out["ni_large_loss_not_shown"] = ni(0.01), (not ni(0.12))
-    out["ok"] = bool(out["size_ok"] and out["tail_ok"] and out["seq_gain_L1_confirmed"] and out["seq_gain_L2_tested"] and out["seq_null_L2_gatekept"] and out["ni_small_loss_shown"] and out["ni_large_loss_not_shown"])
+    out["ok"] = bool(out["size_ok"] and out["tail_ok"] and out["seq_gain_L1_confirmed"] and out["seq_gain_L3_L4_tested"] and out["seq_null_L3_L4_gatekept"] and out["ni_small_loss_shown"] and out["ni_large_loss_not_shown"])
     return out
 
 
@@ -333,6 +357,8 @@ def main(argv=None) -> int:
     ap.add_argument("--l1", default=None)
     ap.add_argument("--lg", default=None)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--n-l", type=int, default=None, help="n_L of the committed n-rule record (default 520, the rule's fallback)")
+    ap.add_argument("--n-rule", default=None, help="JSON with key n_L (the n-rule record, exp_p2/gate/lrf_nrule.py)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args(argv)
     if a.selftest:
@@ -341,10 +367,11 @@ def main(argv=None) -> int:
         return 0 if st["ok"] else 1
     if not a.l1:
         ap.error("--l1 is required")
-    res = run(Path(a.l1), Path(a.lg) if a.lg else None)
+    n_l = a.n_l if a.n_l else (int(json.loads(Path(a.n_rule).read_text(encoding="utf8"))["n_L"]) if a.n_rule else N_PLANNED_DEFAULT)
+    res = run(Path(a.l1), Path(a.lg) if a.lg else None, n_l)
     out = Path(a.out) if a.out else Path(a.l1).with_name("a6_analysis.json")
     out.write_text(json.dumps(res, indent=1, sort_keys=True), encoding="utf8")
-    print(json.dumps(dict(out=str(out), L1=res["family_L"].get("L1", {}).get("label"))))
+    print(json.dumps(dict(out=str(out), L1=res["family_L"].get("L1", {}).get("label"), branch=res["family_L"].get("branch", {}).get("branch"))))
     return 0
 
 

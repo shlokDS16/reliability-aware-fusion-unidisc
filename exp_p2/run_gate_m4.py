@@ -70,6 +70,25 @@ def _suite():
     return suite
 
 
+def sha256_file(p: Path) -> str | None:
+    import hashlib
+    p = Path(p)
+    if not p.exists():
+        return None
+    h = hashlib.sha256()
+    with open(p, "rb") as fh:
+        for blk in iter(lambda: fh.read(1 << 22), b""):
+            h.update(blk)
+    return h.hexdigest()
+
+
+def input_hashes(runs: Path, slot_len: int) -> dict:
+    """SHA-256 (raw bytes) of the two untracked inputs of the LRF features under a fixed slot (A6.2 hash set): the M1 codebook (nbr) and the D-cache null of length `slot_len` (D). None when a file is missing; the scorer treats that as an error."""
+    runs = Path(runs)
+    di = runs / config.DCACHE_RUN_ID / f"DI_n{int(slot_len):03d}.npy"
+    return dict(codebook_sha256=sha256_file(runs / M1_RUN / "codebook.npy"), dcache_di_file=di.name, dcache_di_sha256=sha256_file(di))
+
+
 def slot_tokens(n: int) -> list[int]:
     """The fixed caption slot of `--caption-slot-len n`: n PAD tokens (the caption-withheld passes mask them; only the count shifts the image positions)."""
     return [PAD_ID] * int(n)
@@ -267,7 +286,7 @@ def main(argv=None):
     ap.add_argument("--family-run", default=M3_RUN, help="family H only: headroom run whose family.json gives the corruption family and the n-rule (default P2-GATE-M3); the n check is never skipped")
     ap.add_argument("--neg-len", action="store_true", help="A6.7: also score the length-matched negative (item field neg_caption_len): one extra pass per item, stores <cond>_deltaL and row imgL; default off")
     ap.add_argument("--extra-cells", default="", help="A6.5: comma list of extra imagecorruptions pixel cells appended after the sanity conditions, e.g. shot_noise3,impulse_noise3,speckle_noise3 (type + severity 1-5); default none")
-    ap.add_argument("--caption-slot-len", type=int, default=None, help="LRF re-freeze: lay out B, D, s3, tbv (and the gate flags) with a FIXED masked caption slot of this many tokens (13) instead of the true caption length; Lambda and Delta are unchanged; default off")
+    ap.add_argument("--layout-fix", "--caption-slot-len", dest="caption_slot_len", type=int, default=None, help="A6 r1 (A6.11 item 3; alias --caption-slot-len): LRF re-freeze: lay out B, D, s3, tbv (and the gate flags) with a FIXED masked caption slot of this many tokens (13) instead of the true caption length; Lambda and Delta are unchanged; default off")
     ap.add_argument("--gate-true-layout", action="store_true", help="with --caption-slot-len: keep the GATE flags and the size-matched arms at the TRUE layout (8 extra passes per gated condition), so GATE-M is the preregistered one")
     a = ap.parse_args(argv)
     try:                                                                  # all prerequisites are checked BEFORE the model is touched
@@ -299,6 +318,8 @@ def main(argv=None):
 
     opts = {k: v for k, v in (("neg_len", a.neg_len or None), ("extra_cells", a.extra_cells or None), ("caption_slot_len", a.caption_slot_len), ("gate_true_layout", a.gate_true_layout or None)) if v}
     cfg.update(opts)                                                      # recorded only when an A6 option is on, so the config of every existing run id is unchanged
+    if a.caption_slot_len:                                                # A6.2 hash set: the untracked inputs of the LRF features are hashed into config.json; the scorer compares them with the pinned table
+        cfg.update(input_hashes(Path(common.RUNS), a.caption_slot_len))
 
     def load():
         from exp_p2.scoring import UniScorer
