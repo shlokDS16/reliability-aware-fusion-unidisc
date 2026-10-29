@@ -142,3 +142,52 @@ Smaller fixes (with the same commit):
 - **Exclusion coverage.** `C:\Users\Shlok\AppData\Local\Temp\claude\C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-frosty-clarke-209639\859c4d92-4b84-49ba-bcb9-d1cabe9c75dc\scratchpad\audit_a6\exclusion_scan.py`. It skips S2, H3, H4, HARDNEG and LRF directories.
 - **Hashes (sha256).** The blobs of `data.py`, `families.py` and `lrf.py` at 70a06284 equal the A6.2 table (14421ffb, 1c49827d, 03ed472e). The CRLF checkout differs in raw bytes; the scorer accepts LF-normalised files and has a test for it. The main worktree's `codebook.npy` (ff15b9b5...), `DI_n013.npy` (f7744253...) and `P2-LRF-FROZEN/model.npz` (ca5c4e2f...) match.
 - **n-rule power.** It reproduces Appendix A6: 0.730 and 0.863 at n 520; at n 533, 0.74 and 0.63 at Delta 0.05 and 0.87 and 0.79 at 0.06. The rule clamps correctly: Delta 0.102 gives 533; Delta 0.30 with pi 0.40 gives 400; Delta <= 0.02 gives 533.
+
+---
+
+## Delta F1-F6 (2026-10-29, 16:58 IST): PASS WITH FIXES at `fe1fce2c`
+
+**Audited SHA:** `fe1fce2c` (branch `worktree-agent-aec5b3a0e0fa71ebc`, clean tree; merges `704042f5`, SAP A6 r2). Scope: `git diff 70a06284 fe1fce2c -- exp_p2 tools tests analysis` (14 files; nothing under `tools/` or `analysis_posthoc/` changed), checked against F1-F6 above, SAP A6 r1 + r2 and the implementer's addendum 3 (`research/paper2/method/IMPL-K-A6-LRF-2026-10-29.md` lines 156-175). No S2, H or new-run output was opened. No code edited, nothing committed, no ledger rows added.
+
+**Verdict.** No criterion is `missing`; two are `partly`. The code may be used for each stage only after the fix that gates that stage (D1 before `lrf-rescore`, D2 before `crossfit`) has landed. A narrow gate-auditor check of each fix is enough (the scratch test below, inverted, plus a refusal test for D2); a full re-audit is not needed.
+
+| Fix | Status | Evidence (file:line at fe1fce2c) |
+|---|---|---|
+| F1 scorer pins | **met** | `--pins` is required and must give `model_sha256` (`lrf_score.py:324-328`). Retired `ca5c4e2f` refused with or without pins (`:61, 93-94`). A spec with `caption_slot_len` != 13 is refused (`:97`). The optional pin keys are each verified when given: `spec_sha256`, `code_sha256`, `scoring_code_sha256`, `entry_points`, `decision_rule` (`:114-133`). `pinned_externally` is true only if the model hash was verified (`:135`); the meta lists `pins_verified`. Docstring and default `--frozen-dir` now name `P2-LRF-FROZEN-LFIX` (`:3-14, 41`). Auditor check on the real committed `runs/P2-LRF-FROZEN` (main worktree): refused by `load_frozen` without pins and with the retired hash pinned; the CLI without `--pins` exits 2. |
+| F2 re-freeze entry | **met** | `analysis/paper2/lrf/refreeze.py`. It reads only `--src` (default `P2-LRF-RESCORE`) and writes a new `P2-LRF-FROZEN-LFIX`. It refuses an existing output, the retired directory and any path inside the source (`:58-70`), and refuses unless `check_rows` passes and all 500 arrays exist. The protocol calls the unchanged `run.successive_halving`, `ss(7)` mask, `FROZEN_KEY` 99, F1GAM(40, 9) and final seed `ss(4,99,0,0)` (`:80-86`), the same calls as `lrf.freeze()` (`lrf.py:87-104`). The parity test against `lrf.freeze()` with the paths swapped passes (`test_gate_a6_fixes.py:153`). No `insample_accuracy`, `none_accuracy`, `freeze_check.json` or `insample_weights.npz`; the `acc` entries are popped from the HPO log (`:91-92`). The printed line holds hashes and the numpy-vs-torch weight difference only (`:121`). The spec records L_FIX, the source run, the arrays digest, the rescore config sha and the shas of data/families/lrf/run.py and of refreeze.py (`:104-107`). |
+| F3 gate enforced | **partly** | Met in part:<br>- `ChecksFailed` is raised before the failing item writes a row or arrays (`run_gate_lrf_rescore.py:146-150`), and the runner logs `item_error` and re-raises, so the chunk exits non-zero (`runner.py:199-201`).<br>- `--check` and `check_rows` behave as specified (`:80-109, 210-213`), with 1e-6 only under `--auditor-row`.<br>**Gap (D1):** the failure is not sticky. `gate_driver` relaunches after any non-guard, non-hold exit and stops only after two chunks without progress (`gate_driver.py:230-252`). The relaunch re-runs the failing item. If the check passes on retry (arithmetic non-determinism), the stage completes, and `check_rows` (which reads only `items.jsonl`) reports ok even though a `ChecksFailed` event is on record. Auditor test `audit_a6/test_delta_f3_retry.py`: chunk 0 raised at item 2; the relaunch returned 0 with 6 rows and `check_rows` ok. A6.2 step 3 says a larger difference "stops Study 2", so this breaks it. |
+| F4 cross-fit + n-rule | **partly** | The protocol is conformant:<br>- `crossfit.folds(500)` equals `run.outer_folds()` (tested), fi = 0 as in the learned-ceiling `main`, the checkpoints come from the unchanged `run.run_family_fold`, and `run.OUT` and `N_ITEMS` are restored in `finally` (`crossfit.py:59-70`).<br>- NONE is `delta.mean(-1) > 0`, as in `run.analyse`. b, c, `delta_cf` = (b-c)/n and `pi_cf` = (b+c)/n are for noise0.1 only (`:71-76`), with input hashes and refusal to overwrite `results.json`.<br>- `lrf_nrule --cf-results` reads the file, checks `delta_cf` and `pi_cf` against b, c, n, and records its sha. `--out` with hand-typed values is refused (`lrf_nrule.py:53-65, 88-90`); `--not-committed` gives 520.<br>**Gap (D2):** A6.10 places the cross-fit after the object commit, and the cross-fit computes the L_FIX protocol's out-of-fold accuracy contrast on M4. Nothing stops it from running before `P2-LRF-FROZEN-LFIX` is committed, and an early run leaves no git trace (git order is A6.0's evidence). |
+| F5 plan files | **met** | `exp_p2/gate/lrf_plan.py`. L1 plan: endpoint d, the M3 family, which must equal P's three operating points in order (`:36-41`; the committed `runs/P2-GATE-M3/family.json` matches), and `test_fold` = n_L from the n-rule record (400-533). LG plan: an empty family with `test_fold` 300. It refuses to overwrite (`:66-69`), records input shas, and `check_consistent` ties n_L across the n-rule record, the plan, the driver and `a6_analysis --n-rule` (tested). `run_gate_m4.load_prereqs`/`check_n_against_rule` read exactly `endpoint`, `family[].corruption/severity` and `n_rule.test_fold`. |
+| F6 run id | **met** | `P2-LRF-RESCORE` in `run_gate_lrf_rescore.py:34` and `gate_driver.py:77`. `git grep M4-LFIX fe1fce2c -- exp_p2 analysis tools tests analysis_posthoc` finds only the negative assertion in the test. |
+| Smaller fixes | **met** (one cosmetic) | `a6_analysis` refuses without `--n-rule`/`--n-l` (`:370-372`), and "DRAFT" is removed. The LG docstring now repeats itself: "(shot, impulse, speckle; severity 3) (shot, impulse, speckle at severity 3)" (`a6_analysis.py:13`). |
+| Byte-identity, all new options absent | **met** | `run_gate_m4.py` is unchanged since 70a06284. The predecessor's 20 checks were re-run at fe1fce2c (rows and arrays against b5b41d90 and 8d1bee3a, 3 option sets x 3 fold shapes, the driver tables of every old stage, runner/re-score feature parity): **20 passed**. |
+
+**Ruling on `inner_cv_o1` (A6.2 step 4): allowed.**
+- Step 4 bars "accuracy of the re-frozen model". `inner_cv_o1` is the mean O1 surrogate loss of the selected configuration on inner validation folds. It is neither an accuracy nor a quantity of the re-frozen (all-items) model.
+- It is the protocol's own selection criterion (`run.py:90-97`). Step 4 requires that protocol "unchanged", and the first freeze recorded the same field.
+- `refreeze.py` does not print it.
+- Conditions:
+  - it and the per-config `o1` in `hpo.json` are never quoted as performance (C6-8);
+  - the A6.0 item 2 row cites hashes only;
+  - the object commit is unconditional (only the A6.10 clock can stop it).
+
+**Required fixes (small; code only):**
+- **D1 (F3; before `lrf-rescore` starts).** Make a check failure terminal.
+  - `check_rows` must return not ok if the run's `chunks.jsonl` has any `item_error` naming `ChecksFailed`.
+  - The stage must refuse to start or resume a run with such an event, with an exit in `REFUSAL_EXITS`, so the driver stops after the "no progress" rule instead of retrying.
+  - A re-run is a new run id beside the original (card v3 section 17).
+  - Test: `test_delta_f3_retry.py` with its final assertion inverted.
+- **D2 (F4; before `crossfit` runs).** `crossfit` must refuse unless `runs/P2-LRF-FROZEN-LFIX/model.npz` and `spec.json` are tracked at HEAD and match the working files, and it must record that commit SHA in `results.json`. Test the refusal.
+
+**Recommended (not blocking):**
+- `--auditor-row` should be validated against an existing dated ledger row and copied into the re-freeze spec. Today any string is accepted, and the spec keeps only `inv_tol`.
+- `crossfit` should write its input digest into the output at start and refuse stale `ckpt/` files from another source. Today it resumes any existing `F1_fold*.npz`.
+- `from_cf_results` should also check `protocol.family == "F1"`, `n == 500` and `inputs.source_run == "P2-LRF-RESCORE"`.
+- The scorer should require `spec_sha256` and `entry_points` in the pins file, not only verify them when present.
+- Fix the duplicated LG docstring.
+- **R2 carries more weight now.** A6.2 step 3 names deterministic cuDNN for the invariance check, and no code on this path sets it (no `cudnn`/`deterministic` in `run_gate_lrf_rescore.py`, `runner.py`, `scoring.py`). With D1 a transient difference becomes a Study 2 stop, so run the stage under `run_gate_s2.deterministic_cudnn()`.
+
+**Checks run:**
+- **Full suite.** `tests/exp_p2` at fe1fce2c, BelowNormal priority: **799 passed, 5 skipped** (`test_omni_stack.py`, module not available, as before), 438 s. That is just over the 7-minute guide; the whole suite was run, not a sample. Log: `C:\Users\Shlok\AppData\Local\Temp\claude\C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-frosty-clarke-209639\859c4d92-4b84-49ba-bcb9-d1cabe9c75dc\scratchpad\pytest_full_delta.out`.
+- **Auditor tests.** `...\scratchpad\audit_a6\test_audit_byte_identity.py` (20 passed) and `...\scratchpad\audit_a6\test_delta_f3_retry.py` (it passes, which demonstrates the gap): 21 passed in 70 s. Log: `...\scratchpad\delta_audit_scratch.out`.
+- **Retired-object refusal.** A CLI and `load_frozen` check on the main worktree's `runs/P2-LRF-FROZEN` (hash comparison only; no item scored).
