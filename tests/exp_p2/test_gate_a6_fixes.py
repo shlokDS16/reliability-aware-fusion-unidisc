@@ -48,7 +48,7 @@ def test_f3_a_failed_invariance_stops_the_stage_and_leaves_no_row_or_arrays(env,
     ev = [e for e in common.read_jsonl(env / "RS6" / "chunks.jsonl") if e.get("event") == "item_error"]
     assert ev and "ChecksFailed" in ev[0]["error"]
     res = rescore.check_rows(env / "RS6", slot_len=6)
-    assert res["ok"] is False and "missing" in res["reason"]
+    assert res["ok"] is False and "ChecksFailed event" in res["reason"]
 
 
 def test_f3_a_failed_positive_control_stops_the_stage(env, monkeypatch):
@@ -99,6 +99,30 @@ def test_f3_the_auditor_row_option_sets_the_stage_tolerance(env, monkeypatch):
     a.auditor_row = None
     assert rescore.make_ctx_factory(a, env)(sc, env / "x").inv_tol == 0.0
     assert rescore.build_cfg(a, env, 3)["auditor_row"] is None
+
+
+def _git(repo, *args):
+    import subprocess
+    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=True)
+    return r.stdout.strip()
+
+
+def _committed_object(repo: Path, commit=True):
+    """A throw-away git repository holding a (fake) re-frozen object runs/P2-LRF-FROZEN-LFIX/{model.npz, spec.json}."""
+    repo.mkdir(parents=True)
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.email", "t@example.org")
+    _git(repo, "config", "user.name", "t")
+    _git(repo, "config", "core.autocrlf", "false")
+    obj = repo / "runs" / "P2-LRF-FROZEN-LFIX"
+    obj.mkdir(parents=True)
+    (obj / "model.npz").write_bytes(b"model bytes")
+    (obj / "spec.json").write_bytes(b'{"caption_slot_len": 13}\n')
+    (repo / "README").write_text("x")
+    _git(repo, "add", "-A")
+    if commit:
+        _git(repo, "commit", "-q", "-m", "object")
+    return repo, obj
 
 
 # ------------------------------------------------------------------------------------------------ F2 and F4: synthetic re-scored run
@@ -230,12 +254,14 @@ def test_f4_crossfit_writes_the_noise_result_the_n_rule_reads(tmp_path, mods):
     n = 10
     src = _fake_rescore_run(tmp_path, n, seed=3)
     out = tmp_path / "cf"
+    repo, obj = _committed_object(tmp_path / "gitrepo")
     old_out = lrun.OUT
-    res = cf.crossfit(src, out, n_items=n, rmax=SMALL_R, n_cfg=SMALL_N, log=lambda m: None)
+    res = cf.crossfit(src, out, n_items=n, rmax=SMALL_R, n_cfg=SMALL_N, log=lambda m: None, frozen_dir=obj, repo=repo)
     assert lrun.OUT == old_out and lrun.N_ITEMS == 500                                           # the learned-ceiling module's globals are restored; runs/P2-POSTHOC-LEARNED untouched
     assert (out / "results.json").exists() and len(list((out / "ckpt").glob("F1_fold*.npz"))) == 5
     r = json.loads((out / "results.json").read_text())
     assert r["condition"] == "noise0.1" and r["n"] == n and r["b"] + r["c"] <= n and r["delta_cf"] == pytest.approx((r["b"] - r["c"]) / n) and r["pi_cf"] == pytest.approx((r["b"] + r["c"]) / n)
+    assert r["inputs"]["refrozen_object_commit"] == _git(repo, "rev-parse", "HEAD") and r["inputs"]["refrozen_object"] == "P2-LRF-FROZEN-LFIX"        # the commit of the object is recorded
     assert set(r["inputs"]) >= {"rescored_arrays_digest", "rescore_config_sha256", "code_sha256", "crossfit_py_sha256", "source_run"} and r["protocol"]["family"] == "F1"
     assert set(r) >= {"label"} and not any(k.startswith("acc") for k in r)                       # noise0.1 only: no other condition is looked at
     # recompute b and c from the checkpoints
@@ -246,10 +272,10 @@ def test_f4_crossfit_writes_the_noise_result_the_n_rule_reads(tmp_path, mods):
     none = np.stack([np.load(src / "arrays" / f"item{i:04d}.npz")["noise0.1_delta"].mean() > 0 for i in range(n)])
     assert (int((y & ~none).sum()), int((~y & none).sum())) == (r["b"], r["c"])
     with pytest.raises(cf.rf.RefreezeRefused, match="exists"):       # cf imports refreeze as a package module, a different class object than this file's rf
-        cf.crossfit(src, out, n_items=n, rmax=SMALL_R, n_cfg=SMALL_N)
+        cf.crossfit(src, out, n_items=n, rmax=SMALL_R, n_cfg=SMALL_N, frozen_dir=obj, repo=repo)
     bad = _fake_rescore_run(tmp_path / "bad", n, pc=1e-3)
     with pytest.raises(cf.rf.RefreezeRefused, match="gate"):
-        cf.crossfit(bad, tmp_path / "cf2", n_items=n, rmax=SMALL_R, n_cfg=SMALL_N)
+        cf.crossfit(bad, tmp_path / "cf2", n_items=n, rmax=SMALL_R, n_cfg=SMALL_N, frozen_dir=obj, repo=repo)
     assert not (tmp_path / "cf2" / "results.json").exists()
     # the n-rule reads that file and records its hash; hand-typed numbers cannot make a record
     rec_path = tmp_path / "n_rule.json"
@@ -340,3 +366,136 @@ def test_f5_main_stops_on_bad_inputs(tmp_path, monkeypatch):
     _m3(tmp_path, (("jpeg", 10),))
     _nrec(tmp_path, 470)
     assert lrf_plan.main([]) == 2 and not (runs / "P2-LRF-PLAN" / "family.json").exists() and not (runs / "P2-LRF-PLAN-LG" / "family.json").exists()
+
+
+# ------------------------------------------------------------------------------------------------ D1: a failed check is final; deterministic cuDNN on the re-score path
+def test_d1_a_checks_failed_event_is_final_and_cannot_be_retried_into_a_pass(env, monkeypatch):
+    sc = _sc()
+    _source_run(env, sc, 5)
+    real = rescore.invariance
+    monkeypatch.setattr(rescore, "invariance", lambda *a, **k: {"pos_B": 1e-3})
+    with pytest.raises(rescore.ChecksFailed):
+        _rescore(env, sc, 6)
+    monkeypatch.setattr(rescore, "invariance", real)                                      # the retry would now pass the check ...
+    assert "ChecksFailed" in rescore.failed_event(env / "RS6")
+    with pytest.raises(rescore.ChecksFailed, match="final"):                                # ... but the runner refuses to resume this run id
+        _rescore(env, sc, 6)
+    assert common.read_jsonl(env / "RS6" / "items.jsonl") == [] and not (env / "RS6" / "arrays" / "item0000.npz").exists()
+    res = rescore.check_rows(env / "RS6", slot_len=6)
+    assert res["ok"] is False
+    # even with passing rows written by hand next to the event, check_rows stays not ok
+    good = rescore.CONDS
+    rows = [dict(idx=i, invariance={c: {"pos_B": 0.0} for c in good}, invariance_max_abs_diff=0.0, positive_control={c: 0.0 for c in good}, positive_control_max_abs_diff=0.0) for i in range(5)]
+    (env / "RS6" / "items.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    res = rescore.check_rows(env / "RS6", slot_len=6)
+    assert res["ok"] is False and "ChecksFailed event" in res["reason"] and "new run id" in res["reason"]
+    # a new run id beside it works
+    sc2 = _sc()
+    assert rescore.failed_event(env / "RS9") is None and _rescore(env, sc2, 9) == 0 and rescore.failed_event(env / "RS9") is None
+
+
+def test_d1_the_stage_main_refuses_a_run_with_the_event_and_the_driver_treats_it_as_a_refusal(env, monkeypatch):
+    sc = _sc()
+    _source_run(env, sc, 5)
+    monkeypatch.setattr(rescore, "invariance", lambda *a, **k: {"pos_B": 1e-3})
+    with pytest.raises(rescore.ChecksFailed):
+        _rescore(env, sc, 6)
+    monkeypatch.undo()
+    monkeypatch.setattr(common, "RUNS", env)
+    calls = []
+    monkeypatch.setattr(runner, "run_items", lambda **kw: calls.append(kw) or 0)
+    assert rescore.main(["--run-id", "RS6", "--slot-len", "6"]) == 2 and not calls                      # STOP before the model is touched
+    assert 2 in gate_driver.REFUSAL_EXITS                                                                 # the driver reports the reason and its no-progress rule ends the campaign
+    assert rescore.main(["--run-id", "RSnew", "--slot-len", "6"]) == 0 and len(calls) == 1               # a fresh id is not blocked
+
+
+def test_d1_deterministic_cudnn_wraps_process_and_selfcheck_and_restores(env, monkeypatch):
+    torch = pytest.importorskip("torch")
+    cd = torch.backends.cudnn
+    old = (cd.benchmark, cd.deterministic)
+    cd.benchmark, cd.deterministic = True, False                                           # what UniDisc's set_torch_defaults() leaves behind
+    seen = []
+    try:
+        wrapped = rescore.deterministic(lambda x: seen.append((cd.benchmark, cd.deterministic)) or x + 1)
+        assert wrapped(1) == 2 and seen == [(False, True)] and (cd.benchmark, cd.deterministic) == (True, False)
+        def boom():
+            raise RuntimeError("x")
+        with pytest.raises(RuntimeError):
+            rescore.deterministic(boom)()
+        assert (cd.benchmark, cd.deterministic) == (True, False)                           # restored also on an exception
+        # main hands the runner the wrapped process and self-check
+        sc = _sc()
+        _source_run(env, sc, 5)
+        monkeypatch.setattr(common, "RUNS", env)
+        monkeypatch.setattr(common, "load_image", lambda iid: None)
+        captured = {}
+        monkeypatch.setattr(runner, "run_items", lambda **kw: captured.update(kw) or 0)
+        assert rescore.main(["--run-id", "RSdet", "--slot-len", "6"]) == 0
+        assert captured["process"].__wrapped__ is rescore.process and captured["selfcheck"].__wrapped__ is not None
+        flags = []
+        fake_sc = type("S", (), {"selfcheck": lambda self, img, cap: flags.append((cd.benchmark, cd.deterministic)) or {}})()
+        captured["selfcheck"](fake_sc, [dict(image_id=1, caption="a b")])
+        assert flags == [(False, True)] and (cd.benchmark, cd.deterministic) == (True, False)
+    finally:
+        cd.benchmark, cd.deterministic = old
+
+
+# ------------------------------------------------------------------------------------------------ D2: the cross-fit needs the committed re-frozen object
+def test_d2_object_commit_requires_a_tracked_unchanged_object(tmp_path, mods):
+    rf, cf = mods
+    repo, obj = _committed_object(tmp_path / "ok")
+    sha = cf.object_commit(obj, repo)
+    assert sha == _git(repo, "rev-parse", "HEAD")
+    with pytest.raises(cf.rf.RefreezeRefused, match="missing"):
+        cf.object_commit(tmp_path / "ok" / "runs" / "nope", repo)
+    repo2, obj2 = _committed_object(tmp_path / "untracked", commit=False)
+    with pytest.raises(cf.rf.RefreezeRefused, match="differs|failed"):                       # staged but never committed: HEAD does not exist / blob absent
+        cf.object_commit(obj2, repo2)
+    repo3 = tmp_path / "notracked"
+    repo3.mkdir()
+    _git(repo3, "init", "-q")
+    _git(repo3, "config", "user.email", "t@example.org")
+    _git(repo3, "config", "user.name", "t")
+    (repo3 / "README").write_text("x")
+    _git(repo3, "add", "-A")
+    _git(repo3, "commit", "-q", "-m", "x")
+    o3 = repo3 / "runs" / "P2-LRF-FROZEN-LFIX"
+    o3.mkdir(parents=True)
+    (o3 / "model.npz").write_bytes(b"m")
+    (o3 / "spec.json").write_text("{}")
+    with pytest.raises(cf.rf.RefreezeRefused, match="not tracked"):
+        cf.object_commit(o3, repo3)
+    (obj / "model.npz").write_bytes(b"model bytes CHANGED")
+    with pytest.raises(cf.rf.RefreezeRefused, match="differs from its committed version"):
+        cf.object_commit(obj, repo)
+    (obj / "model.npz").write_bytes(b"model bytes")
+    (obj / "spec.json").write_bytes(b'{"caption_slot_len": 13}\r\n')                           # a CRLF checkout of the same text is accepted
+    assert cf.object_commit(obj, repo) == sha
+    elsewhere = tmp_path / "elsewhere" / "P2-LRF-FROZEN-LFIX"
+    elsewhere.mkdir(parents=True)
+    (elsewhere / "model.npz").write_bytes(b"model bytes")
+    (elsewhere / "spec.json").write_bytes(b"{}")
+    with pytest.raises(cf.rf.RefreezeRefused, match="not inside"):
+        cf.object_commit(elsewhere, repo)
+    assert cf.object_commit(obj, repo / "runs") == sha                                        # the repository root is found from a subdirectory
+
+
+def test_d2_crossfit_refuses_without_the_committed_object_and_writes_nothing(tmp_path, mods):
+    rf, cf = mods
+    src = _fake_rescore_run(tmp_path, 10, seed=5)
+    out = tmp_path / "cf"
+    repo, obj = _committed_object(tmp_path / "r", commit=False)
+    with pytest.raises(cf.rf.RefreezeRefused):
+        cf.crossfit(src, out, n_items=10, rmax=SMALL_R, n_cfg=SMALL_N, frozen_dir=obj, repo=repo)
+    with pytest.raises(cf.rf.RefreezeRefused, match="missing"):
+        cf.crossfit(src, out, n_items=10, rmax=SMALL_R, n_cfg=SMALL_N, frozen_dir=tmp_path / "nowhere", repo=repo)
+    assert not out.exists()                                                                 # refused before anything was computed or written
+
+
+def test_d2_the_cli_exits_non_zero_with_the_reason_on_stderr(tmp_path, mods, monkeypatch, capsys):
+    rf, cf = mods
+    src = _fake_rescore_run(tmp_path, 6, seed=6)
+    monkeypatch.setattr(common, "RUNS", tmp_path / "runs")
+    assert cf.main(["--src", str(src), "--out", str(tmp_path / "cf")]) == 2
+    err = capsys.readouterr().err
+    assert err.startswith("STOP:") and ("missing" in err or "not inside" in err) and not (tmp_path / "cf").exists()

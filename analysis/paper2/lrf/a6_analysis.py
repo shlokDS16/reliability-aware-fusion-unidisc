@@ -10,7 +10,7 @@ Tests (item = the unit; complete case: an item enters a test only if both arms o
   L3,L4  LRF vs NONE on jpeg10 and splice128, exact TWO-sided, Holm over m = 2 at 0.05, only if L1 is confirmed
   L-NI   clean, LRF minus NONE, non-inferiority margin 0.03: shown iff the lower bound of the two-sided 90 percent paired percentile bootstrap CI exceeds -0.03 (always computed)
   L-LEN  noise0.1 with the length-matched negative (y_*_L), LRF vs NONE, one-sided exact, alpha 0.05, items whose c-_L differs in token count excluded and counted (always computed)
-  LG     other noise types (shot, impulse, speckle; severity 3) (shot, impulse, speckle at severity 3), LRF vs NONE per cell, one-sided exact, Holm over the PREREGISTERED m = 3 (an absent cell enters as p = 1), first 300 items; completed n < 240: descriptive only
+  LG     other noise types (shot, impulse, speckle; imagecorruptions severity 3), LRF vs NONE per cell, one-sided exact, Holm over the PREREGISTERED m = 3 (an absent cell enters as p = 1), first 300 items; completed n < 240: descriptive only
 A not-reached test is "not tested (gatekept)" and is still printed descriptively. Descriptive additions: GATE-M vs NONE per LG cell, the clean-to-corrupted drop of NONE per cell, and the preregistered length-stratum secondary (LRF-FROZEN report
 section 3 item 5: LRF minus NONE on noise0.1 by true caption shorter / equal / longer than the negative, and the longer-minus-shorter difference with a 95 percent CI).
 Every test reports b, c, n_d, n, both accuracies, the net difference with paired percentile bootstrap CIs at 90 and 95 percent (10,000 resamples), the Clopper-Pearson CI of b/n_d, exact one- and two-sided p and mid-p.

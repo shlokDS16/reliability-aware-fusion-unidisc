@@ -17,6 +17,8 @@ the run's config.json records the SHA-256 of runs/P2-GATE-M1/codebook.npy and of
 The source run's arrays are only read."""
 from __future__ import annotations
 
+import contextlib
+import functools
 import json
 import sys
 from pathlib import Path
@@ -73,6 +75,33 @@ def invariance(sc, gs_pad: dict, cap_tok, neg_tok, codes, groups, dcache, n: int
     return out
 
 
+def failed_event(run_dir: Path) -> str | None:
+    """A ChecksFailed `item_error` event in the run's chunks.jsonl (written by the runner when the A6.2 step 2-3 gate failed), or None. Such a failure is FINAL for this run (audit D1): a relaunch must not retry it into a pass;
+    a defect is handled by a rerun under a NEW run id beside the original (card v3 section 17)."""
+    for e in common.read_jsonl(Path(run_dir) / "chunks.jsonl"):
+        if e.get("event") == "item_error" and "ChecksFailed" in str(e.get("error", "")):
+            return str(e.get("error"))[:300]
+    return None
+
+
+@contextlib.contextmanager
+def deterministic_cudnn_ctx():
+    """cuDNN benchmark off and deterministic on (A6.2 step 3, the S2 self-check fix 3ceb73e8), restored on exit. It is `run_gate_s2.deterministic_cudnn` itself (same code, same reason: UniDisc's set_torch_defaults()
+    leaves cudnn.benchmark on, which makes the VQ encoder and the passes vary by process); imported lazily so that nothing else of run_gate_s2 is touched."""
+    from exp_p2.run_gate_s2 import deterministic_cudnn
+    with deterministic_cudnn():
+        yield
+
+
+def deterministic(fn):
+    """`fn` run under deterministic cuDNN: the re-score `process` and `selfcheck` (the model is loaded before the first call, so the flags UniDisc set at load are overridden for the duration of each call)."""
+    @functools.wraps(fn)
+    def wrapped(*a, **k):
+        with deterministic_cudnn_ctx():
+            return fn(*a, **k)
+    return wrapped
+
+
 class ChecksFailed(RuntimeError):
     """The invariance check (A6.2 step 3) or the positive control (step 2) failed on one of the first INV_ITEMS items: the stage stops with a non-zero exit, the failing item writes no row and no arrays, and nothing downstream (re-freeze, cross-fit) may read this run."""
 
@@ -88,6 +117,9 @@ def check_rows(run_dir: Path, *, inv_tol: float = INV_TOL, pc_tol: float = PC_TO
         return dict(out, reason=f"{run_dir / 'config.json'} missing or unreadable")
     if cfg.get("slot_len") != slot_len:
         return dict(out, reason=f"config slot_len {cfg.get('slot_len')!r} != {slot_len}")
+    ev = failed_event(run_dir)
+    if ev:
+        return dict(out, reason=f"a ChecksFailed event is on record in chunks.jsonl ({ev}): the failure is final for this run, rerun under a new run id")
     rows = {r["idx"]: r for r in common.read_jsonl(run_dir / "items.jsonl")}
     missing = [i for i in range(n_check) if i not in rows]
     if missing:
@@ -155,6 +187,9 @@ def process(sc, it, ctx):
 
 def make_ctx_factory(a, runs: Path | None = None):
     def make_ctx(sc, run):
+        ev = failed_event(run)
+        if ev:
+            raise ChecksFailed(f"{run} holds a ChecksFailed event ({ev}): a failed A6.2 step 2-3 check is final; start a new run id")
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
         thr, _fam, eps0 = load_prereqs(runs_, getattr(a, "family_run", None) or M3_RUN)
         src_rows = {r["idx"]: r for r in common.read_jsonl(runs_ / a.source_run / "items.jsonl")}
@@ -213,9 +248,12 @@ def main(argv=None) -> int:
         return 0 if res["ok"] else 1
     try:
         check_prereqs(a)
+        ev = failed_event(Path(common.RUNS) / a.run_id)
+        if ev:
+            raise ValueError(f"run {a.run_id} holds a ChecksFailed event ({ev}): final (A6.2 steps 2-3); rerun under a NEW run id beside it (card v3 section 17)")
     except (FileNotFoundError, ValueError) as e:
         print("STOP:", e, file=sys.stderr)
-        return 2
+        return 2                                                             # in gate_driver.REFUSAL_EXITS: the driver reports the reason and stops after the no-progress rule
     n_src = len(source_items(Path(common.RUNS), a.source_run))
     cfg = build_cfg(a, Path(common.RUNS), a.n or n_src)
 
@@ -230,8 +268,8 @@ def main(argv=None) -> int:
         items = source_items(Path(common.RUNS), a.source_run)
         return items[:a.n] if a.n else items
 
-    return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=get_items, process=process, make_ctx=make_ctx_factory(a), soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit,
-                            guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=selfcheck, watchdog_factory=runner.default_watchdog, allow_dirty=a.allow_dirty)
+    return runner.run_items(run_id=a.run_id, cfg=cfg, load=load, get_items=get_items, process=deterministic(process), make_ctx=make_ctx_factory(a), soft_minutes=a.soft_minutes, duty=a.duty, limit=a.limit,
+                            guards=runner.guards_from_args(a), mem_frac=a.mem_frac, selfcheck=deterministic(selfcheck), watchdog_factory=runner.default_watchdog, allow_dirty=a.allow_dirty)
 
 
 if __name__ == "__main__":
