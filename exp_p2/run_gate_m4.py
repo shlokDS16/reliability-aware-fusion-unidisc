@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT))
 from exp_p2 import common                                                          # noqa: E402
 from exp_p2.scoring import IMG_VOCAB                                                # noqa: E402
 from exp_p2.gate import arms, baselines, calibrate as cal, checks, config, corruptions, evidence, folds, pipeline, ps_freeze, runner, scores   # noqa: E402
-from exp_p2.run_gate_m3 import rung_rng                                              # noqa: E402
+from exp_p2.run_gate_m3 import load_folds, rung_rng                                  # noqa: E402  (load_folds: default folds.json, or an explicit family-H file that must exist)
 
 RUN_ID = "P2-GATE-M4"
 M2_RUN, M3_RUN, M1_RUN = "P2-GATE-M2", "P2-GATE-M3", "P2-GATE-M1"
@@ -41,16 +41,17 @@ CONFIG = dict(stage="M4", fold="test", n_items=config.N_TEST, seed=config.SEED_G
               denoise_for=list(config.DENOISE_FOR), sanity=list(SANITY_ALL), duty=0.5, spec="research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4")
 
 
-def load_prereqs(runs: Path | None = None) -> tuple[dict, list[tuple[str, object]], float]:
-    """-> (alpha -> Threshold for statistic q, family [(corruption, severity)], eps0). Raises FileNotFoundError with the command to run if missing."""
+def load_prereqs(runs: Path | None = None, family_run: str = M3_RUN) -> tuple[dict, list[tuple[str, object]], float]:
+    """-> (alpha -> Threshold for statistic q, family [(corruption, severity)], eps0). Raises FileNotFoundError with the command to run if missing.
+    `family_run` (default M3) names the headroom run whose family.json is read; only family H (hard negatives, `--family-run P2-GATE-H3`) passes another one."""
     runs = Path(runs) if runs is not None else Path(common.RUNS)
-    tp, fp = runs / M2_RUN / "threshold.json", runs / M3_RUN / "family.json"
-    for p, cmd in ((tp, "python -m exp_p2.gate.fit_threshold --run-id P2-GATE-M2"), (fp, "python -m exp_p2.gate.headroom --run-id P2-GATE-M3")):
+    tp, fp = runs / M2_RUN / "threshold.json", runs / family_run / "family.json"
+    for p, cmd in ((tp, "python -m exp_p2.gate.fit_threshold --run-id P2-GATE-M2"), (fp, f"python -m exp_p2.gate.headroom --run-id {family_run}")):
         if not p.exists():
             raise FileNotFoundError(f"{p} missing; create it with: {cmd}")
     fam = pipeline.load_json(fp)
     if fam.get("endpoint") != "d":
-        raise ValueError(f"{fp} does not record \"endpoint\": \"d\"; it is invalid for the SAP (Addendum 1). Re-run: python -m exp_p2.gate.headroom --run-id P2-GATE-M3 --endpoint d")
+        raise ValueError(f"{fp} does not record \"endpoint\": \"d\"; it is invalid for the SAP (Addendum 1). Re-run: python -m exp_p2.gate.headroom --run-id {family_run} --endpoint d")
     t = pipeline.load_json(tp)
     thr = {float(k): cal.Threshold.from_json(v) for k, v in t["thresholds"].items()}
     assert len({round(v.eps0, 15) for v in thr.values()}) == 1, "thresholds must share one eps0 (one calibration set)"
@@ -58,11 +59,13 @@ def load_prereqs(runs: Path | None = None) -> tuple[dict, list[tuple[str, object
     return thr, family, next(iter(thr.values())).eps0
 
 
-def check_n_against_rule(n: int | None, runs: Path | None = None) -> int:
+def check_n_against_rule(n: int | None, runs: Path | None = None, family_run: str = M3_RUN) -> int:
     """--n must equal the committed n-rule (family.json n_rule.test_fold: R1 and R3 300, R2 500, NO-GO 300); a forgotten --n 500 under R2 would run a test fold that SAP 4.6 says is too
-    small (audit M3). Returns the effective n."""
-    fam = pipeline.load_json(Path(runs if runs is not None else common.RUNS) / M3_RUN / "family.json")
+    small (audit M3). Returns the effective n. The rule is read from `family_run`'s family.json (M3 unless family H names its own headroom run); the check cannot be skipped."""
+    fam = pipeline.load_json(Path(runs if runs is not None else common.RUNS) / family_run / "family.json")
     want = int(fam.get("n_rule", {}).get("test_fold", 300))
+    if want <= 0:                                                                  # family H: h3_gonogo writes test_fold 0 for NO-GO / cut by time; no --n (not even 0) may start the test
+        raise ValueError(f"the committed n-rule ({fam.get('n_rule', {}).get('rule')}) has test fold {want}: the test is not run")
     eff = n if n is not None else CONFIG["n_items"]
     if eff != want:
         raise ValueError(f"--n {eff} does not match the committed n-rule ({fam.get('n_rule', {}).get('rule')}: test fold {want}); run with --n {want}")
@@ -90,8 +93,8 @@ def parse_sanity(text: str) -> tuple[str, ...]:
 def make_ctx_factory(a, runs: Path | None = None):
     def make_ctx(sc, run):
         runs_ = Path(runs) if runs is not None else Path(common.RUNS)
-        thr, family, eps0 = load_prereqs(runs_)
-        f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+        thr, family, eps0 = load_prereqs(runs_, getattr(a, "family_run", None) or M3_RUN)
+        f = load_folds(lambda c: len(sc.caption_ids(c)), getattr(a, "folds_path", None))
         pipeline.check_fold_tokens(sc, f, run)                                              # exclusions were applied in get_items; this repeats the check for the record
         pipeline.require_frozen(runs_)
         cbp = runs_ / M1_RUN / "codebook.npy"
@@ -186,11 +189,15 @@ def main(argv=None):
     ap.add_argument("--tbv", choices=["auto", "on", "off"], default="auto", help="TbV-score (non-finetuned) pass, raw logits; auto = on only if M1 found no copy-through (U7)")
     ap.add_argument("--denoise-for", default=",".join(config.DENOISE_FOR), help="comma list of family corruptions that get a denoised copy ('' = none)")
     ap.add_argument("--sanity", default=",".join(SANITY_ALL), help="token-level sanity conditions of family PS (SAP AD.4: both are always tested, m = 2); dropping one makes its PS cell 'not run', p = 1")
+    ap.add_argument("--folds-path", default=None, help="family H only: folds file to take the test items from (default: runs/P2-GATE-FOLDS/folds.json); must exist, is never built")
+    ap.add_argument("--family-run", default=M3_RUN, help="family H only: headroom run whose family.json gives the corruption family and the n-rule (default P2-GATE-M3); the n check is never skipped")
     a = ap.parse_args(argv)
     try:                                                                  # all prerequisites are checked BEFORE the model is touched
-        load_prereqs()
+        load_prereqs(None, a.family_run)
         pipeline.require_frozen()
-        check_n_against_rule(a.n)
+        check_n_against_rule(a.n, None, a.family_run)
+        if a.folds_path and not Path(a.folds_path).exists():
+            raise FileNotFoundError(f"--folds-path {a.folds_path} does not exist")
         sanity = parse_sanity(a.sanity)
         ps_doc = None
         if sanity:                                                        # ps_frozen.json is written and committed before the first M4 item (AD.4, AD.12 step 2, A3.3 item 1, AB.8)
@@ -203,6 +210,9 @@ def main(argv=None):
         return 2
     cfg = dict(CONFIG, n_items=a.n, duty=a.duty, mem_frac=a.mem_frac, tbv=a.tbv, denoise_for=a.denoise_for.split(",") if a.denoise_for else [], sanity=list(sanity),
                ps_params=ps_freeze.params(), ps_frozen_sha256=(ps_freeze.sha256(Path(common.RUNS)) if ps_doc else None), ps_frozen_code_commit=(ps_doc or {}).get("code_commit"))
+    if a.folds_path or a.family_run != M3_RUN:                            # recorded only for family H, so the config of every existing run id is unchanged
+        import hashlib
+        cfg.update(folds_path=a.folds_path, folds_sha256=(hashlib.sha256(Path(a.folds_path).read_bytes()).hexdigest() if a.folds_path else None), family_run=a.family_run)
 
     def load():
         from exp_p2.scoring import UniScorer
@@ -212,7 +222,7 @@ def main(argv=None):
         return sc.selfcheck(common.load_image(items[0]["image_id"]), items[0]["caption"])
 
     def get_items(sc, run):
-        f = folds.ensure_folds(lambda c: len(sc.caption_ids(c)))
+        f = load_folds(lambda c: len(sc.caption_ids(c)), a.folds_path)
         rep = pipeline.check_fold_tokens(sc, f, run)                                        # SAP A2.1: out-of-range captions are excluded, counted, not replaced
         items = folds.test_items(f, a.n if a.n and a.n > len(f["test"]) else None)         # base 300; the extension (items 301-500) only if --n asks for it (SAP R2)
         if a.n and a.n > len(items):

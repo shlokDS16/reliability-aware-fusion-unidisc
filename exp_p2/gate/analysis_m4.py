@@ -608,6 +608,7 @@ def main(argv=None) -> int:
     ap.add_argument("--run-id", default="P2-GATE-M4")
     ap.add_argument("--family-run", default="P2-GATE-M3")
     ap.add_argument("--m2-run", default="P2-GATE-M2")
+    ap.add_argument("--folds-path", default=None, help="family H only: folds file the run took its test items from (default: runs/P2-GATE-FOLDS/folds.json)")
     ap.add_argument("--endpoint", choices=["d", "z"], default="d", help="S-Z endpoint; d is the SAP default (Addendum 1), z only as sensitivity")
     ap.add_argument("--frozen", default=str(Path(common.RUNS) / "P2-GATE-M1" / "detection_frozen.json"))
     ap.add_argument("--codefreq", default=str(Path(common.RUNS) / "P2-GATE-M2" / "codefreq.npy"))
@@ -637,7 +638,11 @@ def main(argv=None) -> int:
     frozen_meta = {k: fdoc.get(k) for k in ("partial", "closed_k", "closed_nq", "min_n")}
     codefreq = baselines.CodeFreq(np.load(cp)) if cp.exists() else None
     test_fold = int(fam.get("n_rule", {}).get("test_fold", 300))
-    planned = folds.test_items(json.loads(folds.folds_path().read_text(encoding="utf8")), test_fold if test_fold > 300 else None)[:test_fold]
+    fpath = Path(a.folds_path) if a.folds_path else folds.folds_path()                  # family H passes its own file; the default is the one used so far
+    if a.folds_path and not fpath.exists():
+        print(f"--folds-path {fpath} does not exist", file=sys.stderr)
+        return 2
+    planned = folds.test_items(json.loads(fpath.read_text(encoding="utf8")), test_fold if test_fold > 300 else None)[:test_fold]
     try:
         rule = fam.get("n_rule", {}).get("rule", "R1")
         if a.rule and a.rule != rule:
