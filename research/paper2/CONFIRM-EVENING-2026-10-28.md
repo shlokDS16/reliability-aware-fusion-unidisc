@@ -170,3 +170,8 @@ Questions put (this session, multiple-choice card) and Shlok's selected answers,
 1. "Family H (SugarCrepe hard negatives) is a late-added test. Keep it out of the title, abstract, highlights and conclusion (results section and supplement only)?" -> **"Yes, keep it out (Recommended)"**. D-H2 settled: H never in title, abstract, highlights or conclusion.
 2. "Can the GPU stages for H3/H4 and Study 2 (rescore, about 2.5 h; L1, about 4 h; LG) run unattended overnight and over the weekend under the same guards (memory cap, 3x / 2 s slow-item stop, crash-log halt)?" -> **"Yes, unattended (Recommended)"**. Any guard stop or crash-log event still halts the GPU until Shlok answers.
 3. "Can I download CLIP ViT-L/14 and SigLIP checkpoints (about 2-4 GB total from Hugging Face) for the descriptive baselines in Study 2?" -> **"Yes, download (Recommended)"**. Download in daytime, resumable, not near 23:00 / 00:15 IST.
+
+## 18. Operations log (continued from section 13; no decision needed)
+- 2026-10-29 18:45 IST: GPU idle (0 MiB, 50 C), code pin 725a1b5a clean, pre-launch check (card 1.4 at the A-6 pin) passes; AC on.
+- 2026-10-29 ~18:50 IST: free RAM 3.2 GB, then 1.0-2.9 GB (psutil available 2.3 GB): another session's CPU job (Computer Networks paper 2, `analysis/incidents/replay.py`, 5 workers, `--min-free-gb 3.5`, started 18:14) holds about 7.5 GB private. GPU launch held until free RAM >= 6 GB (the M2 stop of 21:45 on 28 Oct coincided with 4.15 GB free). That session was messaged at ~18:55 to keep >= 6 GB free and off the GPU until Mon 2 Nov.
+- 2026-10-29 18:54 IST: family H preconditions complete (card v4 row A-7, commits 8f1c338e, 3ecb55cb, 46e96660). Next: row 9 (S2 figures), then H3.
