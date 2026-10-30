@@ -94,3 +94,34 @@ PDFs, README, licences; no model weights, no COCO images, no third-party PDFs).
 Publish the Zenodo draft (the DOI goes live), make the GitHub repository public after the third-party-file decision above,
 add biographies and photos (switch `\biostrue` in `main.tex`), and add the paper's own DOI to the Zenodo record under
 Related works ("Is supplement to").
+
+## Step 4. Anonymized link for reviewers (5 minutes; Shlok chose this on 2026-10-30)
+
+Reviewers get a link to an anonymized copy instead of the real repository or DOI. I pushed a Paper 2-only snapshot to the
+branch **`review-snapshot`** of the private repository: 747 files (code, preregistrations, run results, paper sources),
+every name, e-mail, username, institution and place already replaced by `ANONYMIZED`, committed by "Anonymous", and checked
+(text files and the text of all 11 PDFs: no identifier left). Built by `python tools/make_review_snapshot.py OUT_DIR`.
+
+1. Open **https://anonymous.4open.science** and log in with GitHub (shlokDS16). Allow the access it asks for (it must read
+   the private repository).
+2. Click **Anonymize** (or "Anonymize your repository").
+3. Repository: `https://github.com/shlokDS16/reliability-aware-fusion-unidisc`. **Branch: `review-snapshot`** (not `main`).
+4. Repository ID (the link name): `tnnls-lrf-review` (any neutral name; no names).
+5. Terms to anonymize (one per line, a second safety net; the snapshot is already masked):
+   ```
+   shlokDS16
+   Shlok
+   Goenka
+   Subramaniyaswamy
+   Vairavasundaram
+   Balaji
+   Vellore
+   VIT
+   reliability-aware-fusion-unidisc
+   ```
+6. Options: keep "Update the anonymized repository" off (the snapshot is fixed); expiry: after the review period (or none).
+7. Create it and open the link (`https://anonymous.4open.science/r/tnnls-lrf-review`). Check that the README shows and no
+   name appears. **Send me the link.**
+
+If the site cannot read the private repository: tell me; the same snapshot then goes to the portal as a supplementary zip
+("anonymized code and data for review"), and the review copy says so instead of giving a link.

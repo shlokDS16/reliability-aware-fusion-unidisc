@@ -125,18 +125,18 @@ Diffusion models, hypothesis testing, information fusion, multimodal learning.
 % ---- appendix: none. The proof of prop:snrcorr (former Appendix A, sections/appendix.tex) moved to supplement S-II
 % (lead decision, clarity edit 2, 2026-10-30); sections/appendix.tex is kept as a record and is not input.
 
-% ---- Acknowledgment (camera-ready only; IEEE heading, unnumbered; text from Shlok 2026-10-30, D0104) -----------------------------
-% Funding is in the first footnote, as IEEE requires ("listed here and not in the Acknowledgment"). AI use is NOT mentioned here
-% (Shlok's rule: AI only in the Declaration below). The anonymous review build omits the Acknowledgment.
-\ifanon\else
-\section*{Acknowledgment}
-The authors thank Vellore Institute of Technology, Vellore, for providing support to carry out this research work.
-\fi
-
-% ---- Declaration of Generative AI Use ------------------------------------------------------------
-% Shlok's rule: AI use is mentioned ONLY in this section (interim text D0101). IEEE's rule puts the disclosure in the Acknowledgment;
-% the conflict is recorded as C2 in the checklist.
+% ---- Reproducibility and Data Availability (unnumbered) -----------------------------------------
 \input{sections/declaration}
+
+% ---- Acknowledgment (IEEE heading, unnumbered; before the References) ---------------------------
+% Shlok, chat 2026-10-30: AI use is disclosed here, as IEEE/TNNLS requires (CIS Information for Authors, section K: "shall be
+% disclosed in the acknowledgements section"); the separate Declaration of Generative AI Use section is removed. The AI sentence
+% (interim text D0101) appears in both builds; the thanks to VIT (D0104) only in the author build, since it identifies the authors.
+% Funding stays in the first footnote ("listed here and not in the Acknowledgment").
+\section*{Acknowledgment}
+\ifanon\else The authors thank Vellore Institute of Technology, Vellore, for providing support to carry out this research work. \fi
+The authors used Claude (Anthropic) to improve the language and grammar of the manuscript.
+The authors reviewed and edited all content and take full responsibility for it.
 
 % ---- references ----------------------------------------------------------------------------------
 \ifplaceholder\nocite{*}\fi
