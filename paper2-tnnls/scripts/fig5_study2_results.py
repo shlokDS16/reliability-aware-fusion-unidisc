@@ -43,7 +43,7 @@ def make_axes(x0, w, nrows, xlim, ticks):
     ax.axvline(0, color=C["ink"], lw=0.8, zorder=1)
     ax.set_xticks(ticks)
     ax.set_xticklabels([("0" if t == 0 else (MINUS if t < 0 else "") + f"{abs(t):.2f}") for t in ticks])
-    ax.set_xlabel("Net accuracy change, with minus without weights")
+    ax.set_xlabel("net accuracy change, with minus without weights")
     ax.spines["left"].set_visible(False)
     ax.tick_params(axis="y", length=0)
     ax.set_yticks(range(nrows))
@@ -65,17 +65,17 @@ for i, (_, _, rec, emph) in enumerate(ROWS_A):
     bar(axa, i, *rec["ci95"], rec["net"], "D", emph)
 
 axb = make_axes(0.735, 0.225, 1, (-0.05, 0.08), [-0.04, 0, 0.04, 0.08])
-axb.set_xlabel("Net accuracy change, with minus without")
+axb.set_xlabel("net accuracy change, with minus without")
 axb.set_yticklabels([f"L-NI: clean images\n90% interval"], linespacing=1.12)
-bar(axb, 0, *NI["ci90"], NI["net"], "s", False)
+bar(axb, 0, *NI["ci90"], NI["net"], "D", False)
 m = -NI["margin"]
 axb.plot([m, m], [-0.45, 0.45], color=C["verm"], lw=1.0, ls=(0, (3, 1.6)), zorder=2)
 
 top = BOT + 3 * H_ROW + 0.25
-fig.text(0.005, top / H_FIG, "(a) Family L, fresh fold, $n=450$; 95% interval", fontsize=S.FS + 0.5, fontweight="bold", va="center")
-fig.text(0.545, top / H_FIG, "(b) L-NI: non-inferiority, $n=450$", fontsize=S.FS + 0.5, fontweight="bold", va="center")
+fig.text(0.005, top / H_FIG, "(a)", fontsize=S.FS + 1, fontweight="bold", va="center")
+fig.text(0.545, top / H_FIG, "(b)", fontsize=S.FS + 1, fontweight="bold", va="center")
 handles = [
-    Line2D([], [], marker="D", ms=5.2, mfc="white", mec=C["green"], mew=1.0, color=C["green"], lw=1.2, label="net change and interval"),
+    Line2D([], [], marker="D", ms=5.2, mfc="white", mec=C["green"], mew=1.0, color=C["green"], lw=1.2, label="net change; bar: 95% interval in (a), 90% in (b)"),
     Line2D([], [], color=C["verm"], lw=1.0, ls=(0, (3, 1.6)), label=f"non-inferiority margin ({MINUS}{NI['margin']:.2f})"),
 ]
 fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.01), ncol=2, frameon=False, handlelength=2.2, columnspacing=2.5, borderaxespad=0.0)

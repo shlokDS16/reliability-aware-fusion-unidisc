@@ -77,3 +77,14 @@ def save(fig, name: str) -> None:
 
 def panel_letter(ax, s: str, dx: float = -0.02, dy: float = 1.02) -> None:
     ax.text(dx, dy, s, transform=ax.transAxes, fontsize=FS + 1, fontweight="bold", va="bottom", ha="right")
+
+
+def trace(name: str, script: str, payload: dict) -> None:
+    """Write the values a figure plots to runs/P2-PAPER-FIGS/<name>.json with the script and style SHA-256 (traceability, rule 0.1)."""
+    import time
+    out = RUNS / "P2-PAPER-FIGS"
+    out.mkdir(exist_ok=True)
+    rec = dict(figure=name, script=f"paper2-tnnls/scripts/{script}", script_sha256=sha256(HERE / script),
+               figstyle_sha256=sha256(HERE / "figstyle.py"), created_unix=time.time(), cpu_only=True, **payload)
+    with open(out / f"{name}.json", "w", encoding="utf-8") as fh:
+        json.dump(rec, fh, indent=1)

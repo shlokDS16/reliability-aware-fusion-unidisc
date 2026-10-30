@@ -1,0 +1,48 @@
+{
+ "figure": "fig_gate_method",
+ "script": "paper2-tnnls/scripts/fig_gate_method.py",
+ "script_sha256": "f164728e870362f89cab387dbf4260c148b70493425a5252576b669f5c5cc9de",
+ "figstyle_sha256": "600aa0830a9d18f927f2455e721df7037fdba80c4e0df880867ac910681a929f",
+ "created_unix": 1793337606.7311723,
+ "cpu_only": true,
+ "source": "runs/P2-GATE-M4/analysis.json calibration.fap_check.per_alpha.*, calibration.split_replication; runs/P2-GATE-M2/threshold.json n_cal",
+ "points": [
+  {
+   "alpha": 0.01,
+   "F": 0.006416015625,
+   "lo": 0.006148388671875,
+   "hi": 0.0066875,
+   "n_test": 500,
+   "n_cal": 300,
+   "Z_cal": -16.124955425772395
+  },
+  {
+   "alpha": 0.05,
+   "F": 0.045623046875,
+   "lo": 0.044240234375,
+   "hi": 0.047037109375,
+   "n_test": 500,
+   "n_cal": 300,
+   "Z_cal": -3.5926402880086603
+  },
+  {
+   "alpha": 0.1,
+   "F": 0.0956484375,
+   "lo": 0.092808544921875,
+   "hi": 0.098505859375,
+   "n_test": 500,
+   "n_cal": 300,
+   "Z_cal": -1.7625887717468716
+  }
+ ],
+ "split_replication": {
+  "alpha": 0.05,
+  "reps": 2000,
+  "mean_F_minus_alpha": -0.003130161132812503,
+  "q025": -0.005506103515625005,
+  "q975": -0.0006249023437500011,
+  "label": "exploratory; descriptive only"
+ },
+ "critical_value": 2.13,
+ "schematic": "no data; token patterns drawn with numpy seed 5"
+}

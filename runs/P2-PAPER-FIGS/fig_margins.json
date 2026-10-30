@@ -1,0 +1,46 @@
+{
+ "figure": "fig_margins",
+ "script": "paper2-tnnls/scripts/fig_margins.py",
+ "script_sha256": "fe9276e70332da5920b2e41d0f6955695b75f797f187276684ec9eb557e5a5f4",
+ "figstyle_sha256": "600aa0830a9d18f927f2455e721df7037fdba80c4e0df880867ac910681a929f",
+ "created_unix": 1793337727.6880124,
+ "cpu_only": true,
+ "source": "runs/P2-LRF-L1/predictions.jsonl (fields condition, idx, m_none, m_lrf, y_none, y_lrf); a6_analysis.json family_L.{L1,L-NI}.{b,c,n}",
+ "cells": {
+  "noise0.1": {
+   "family": "L1",
+   "n": 450,
+   "b": 58,
+   "c": 27,
+   "both_correct": 303,
+   "both_wrong": 62,
+   "pearson_r": 0.7581983003497683,
+   "m_none_range": [
+    -0.645767052192241,
+    0.9896073285490274
+   ],
+   "m_lrf_range": [
+    -0.5796374906770563,
+    1.2548842672745433
+   ]
+  },
+  "clean": {
+   "family": "L-NI",
+   "n": 450,
+   "b": 27,
+   "c": 13,
+   "both_correct": 386,
+   "both_wrong": 24,
+   "pearson_r": 0.8729752591176855,
+   "m_none_range": [
+    -0.5334150227718055,
+    1.1946478167083114
+   ],
+   "m_lrf_range": [
+    -0.4357380932213148,
+    1.6498648534409788
+   ]
+  }
+ },
+ "label": "descriptive"
+}
