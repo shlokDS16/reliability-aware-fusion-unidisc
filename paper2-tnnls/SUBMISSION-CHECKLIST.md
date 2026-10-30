@@ -28,8 +28,9 @@ Files to upload (review stage; the review upload is the PDF):
   Thesaurus (free access by request form).
 - Anonymous review: the PDF has no author names, no funding line, no "submitted to the IEEE" notice; the repository link is withheld.
 - Do not post a preprint (arXiv/TechRxiv) before the review decision unless you choose to (it would break double-anonymous review).
-- Quality record: red team SIGN WITH CONDITIONS (conditions above); number audits PASS WITH FIXES (fixes applied; about 660 + 1,800
-  values traced to run files); Codex review round 2 found no arithmetic or statistical error. The hostile area-chair score is 4/10
+- Quality record: red team SIGN WITH CONDITIONS (conditions above; its non-author conditions are met: DOCX regenerated and
+  must-not scanned, family H contribution sentence fixed); number audits PASS WITH FIXES (fixes applied; about 660 + 1,800
+  values traced to run files; incremental audit 2 findings F1 and N6 closed on 2026-10-30); Codex review round 2 found no arithmetic or statistical error. The hostile area-chair score is 4/10
   ("reject and resubmit"): the weaknesses are scope (one model, one dataset, one noise severity; the method was trained on the tested
   noise level), incremental novelty next to Petryk et al. (WACV 2024), and practical significance next to near-ceiling CLIP/SigLIP.
   These are stated in the paper's Limitations; they can only be removed by new confirmatory work (a second backbone or a corruption
