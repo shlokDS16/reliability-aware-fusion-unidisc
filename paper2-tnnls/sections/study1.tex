@@ -246,6 +246,10 @@ The preregistered falsifier for the score was therefore met, and this paper make
 accurately than cheap methods.
 The labels mark codes that the tokeniser changed, which a texture score can anticipate without any reference to the evidence; the
 rival's higher AUROC is read as a sign of this label circularity, not as evidence about any corruption effect.
+% run: runs/P2-GATE-M1/analysis.json:table.{jpeg,noise}.{q,tex_neg}.{mean,lo,hi} (rival tex_neg, i.e. patch texture with sign -1: 0.7558 [0.7429, 0.7676], 0.7681 [0.7597, 0.7765]; q: 0.5613 [0.5473, 0.5750], 0.5028 [0.4925, 0.5134]); paired_q_vs_best_cheap.{jpeg,noise}.{best_cheap,rival_sign (= -1),diff_mean,ci95} (-0.1945 [-0.2141, -0.1748], -0.2653 [-0.2782, -0.2527]); n = 197, 198
+On the detection items, where the rival and its sign were chosen, the rival (patch variance, sign $-1$) had an AUROC of 0.756 (95\% interval 0.743 to 0.768) under JPEG
+and 0.768 (0.760 to 0.776) under noise, against 0.561 (0.547 to 0.575) and 0.503 (0.493 to 0.513) for the score; the paired difference, score minus rival, was $-0.195$
+($-0.214$ to $-0.175$) and $-0.265$ ($-0.278$ to $-0.253$), and the choice on the same items favours the rival.
 
 \subsubsection{Mechanism and the remaining secondary families}
 % run: runs/P2-GATE-M4/analysis.json:s_m.per_corruption.{jpeg,noise,splice}.tested (all false)

@@ -1403,7 +1403,7 @@ LRF. Descriptive; no interval.}
 
 \vspace{2pt}
 \parbox{\textwidth}{\scriptsize As Table~\ref{M-tab:compare} of the main paper, with the difference from the unweighted sum (accuracy minus the unweighted sum; 95\% paired percentile bootstrap
-interval, 10\,000 resamples). Intervals are marginal and unadjusted; the rows other than the unweighted sum and LRF are exploratory, and the intervals of the A-* rows, the combiners, and the denoise
+interval, 10\,000 resamples). Intervals are marginal and unadjusted; the rows other than the unweighted sum and LRF are exploratory, and the intervals of the ablation rows, the median and trimmed mean, and the denoise
 rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed before the fold was opened. Source: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json},
 \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
 \end{table}
@@ -1444,6 +1444,12 @@ the lowest and highest of the eight knots of its feature; the effect range is th
 \item Fig.~\ref{M-fig:qualitative} (three fresh-fold items): \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative.json} (selection rule, items, colour scales, attribution);
 \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (\nolinkurl{y_none}, \nolinkurl{y_lrf}, condition \nolinkurl{noise0.1}); \nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,8}.npz}
 (SHA-256 in the figure's trace file); the noisy pixels are regenerated with the runner's corruption call and seeds; script \nolinkurl{paper2-tnnls/scripts/fig_qualitative.py}.
+% run: runs/P2-PAPER-FIGS/fig_qualitative_licences.json:items[*].{coco_val2017_image_id,licence,flickr_url}
+Images: COCO val2017 (Lin et al., 2014; cited in the main paper), Flickr, licences as listed; the noisy panels are modified.
+Image 335177: Attribution-NonCommercial-ShareAlike (CC BY-NC-SA 2.0), \nolinkurl{http://farm4.staticflickr.com/3444/3821042011_c741061caa_z.jpg};
+image 520324: Attribution-ShareAlike (CC BY-SA 2.0), \nolinkurl{http://farm2.staticflickr.com/1254/5130147192_a2f29e8ea1_z.jpg};
+image 224724: Attribution-NonCommercial (CC BY-NC 2.0), \nolinkurl{http://farm4.staticflickr.com/3543/3544616491_7cdec47006_z.jpg}
+(record: \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative_licences.json}).
 \item Algorithm~\ref{M-alg:lrf} (decision rule of the frozen LRF): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{family}, \nolinkurl{n_features}, \nolinkurl{caption_slot_len}, \nolinkurl{preprocessing}).
 \item Table~\ref{M-tab:compare} (comparison with alternative aggregation rules, exploratory) and \cref{stab:compare}: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}
 (\nolinkurl{runs/P2-LRF-DN/dn_analysis.json} for the denoise rows once it exists); script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.

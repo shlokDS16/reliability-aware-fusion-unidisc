@@ -58,9 +58,9 @@ Each item was delivered regardless of the outcome; items 1 and 2 belong to Study
 source-validation gate for a pretrained unified masked diffusion model: each image token is scored by the model's own masked likelihood
 with the caption withheld, and the flag threshold is set by conformal risk control on clean pairs so that the expected flagged share of a
 clean pair's tokens is at most $\alpha$.
-Under an independent-token approximation, we give the condition on the false-alarm and hit rates under which discarding flagged tokens
-raises the signal-to-noise ratio of an additive evidence sum; it is an approximation because image tokens are dependent, is extended to
-exchangeably correlated tokens in supplement S-II, and is linked to no result (\cref{sec:study1-method}).
+Under an independent-token approximation, we state the closed-form condition on the false-alarm and hit rates under which discarding flagged
+tokens raises the signal-to-noise ratio of an additive evidence sum (\cref{sec:study1-method}) and prove it in supplement S-II; it is an
+approximation because image tokens are dependent, supplement S-II extends it to exchangeably correlated tokens, and it is linked to no result.
 \item \emph{The preregistered test and its checks} (exact McNemar, Holm over three realistic corruptions, and $n$ fixed by a headroom rule).
 % run: runs/P2-GATE-M4/analysis.json:outcome.label (= negative); A4.2.3 NEG 6.1 opening, first clause
 The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy

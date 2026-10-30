@@ -12,10 +12,13 @@ panel (c) token-weight maps dropped from the paper (the real-image figure fig_qu
     arrays_manifest.json sha256 before use). Items are chosen by position only, never by outcome.
 
 Reads: runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}, runs/P2-LRF-L1/{items.jsonl,arrays_manifest.json,arrays/item0000..0002.npz}.
-Writes (traceability): runs/P2-PAPER-FIGS/fig4_pd_curves.json, fig4_token_weights.npz, fig4_meta.json (script sha256 included).
+Writes (traceability): runs/P2-PAPER-FIGS/fig4_pd_curves.json, fig4_token_weights.npz, fig4_meta_2026-10-31.json (script sha256 included; a NEW dated file, never the committed fig4_meta.json, which
+is the record of the earlier run and must not be edited in place: red-team F15).
 Output: paper2-tnnls/figures/fig4_study2_weights.pdf (+ png preview). CPU only (CUDA_VISIBLE_DEVICES is emptied before torch is imported).
 """
 from __future__ import annotations
+
+META_NAME = "fig4_meta_2026-10-31.json"
 
 import json
 import os
@@ -98,7 +101,7 @@ meta = dict(
     colour_scale=dict(vmin=float(vmin), vmax=float(vmax), norm="PowerNorm gamma 0.5 (square root)", rule="shared minimum and maximum of the six maps (three items, clean and noisy)"),
     numpy=np.__version__, created_unix=time.time(), cpu_only=True, cuda_visible_devices=os.environ.get("CUDA_VISIBLE_DEVICES"),
 )
-json.dump(meta, open(OUT / "fig4_meta.json", "w", encoding="utf-8"), indent=1)
+json.dump(meta, open(OUT / META_NAME, "w", encoding="utf-8"), indent=1)
 
 # ---- figure ----------------------------------------------------------------------------------------------------------------------
 # group names are those of tables/tab_features_main.tex; titles use its notation (B_j, r_j, log(1+v_j), ...)
@@ -150,7 +153,7 @@ Q = knots.shape[1]
 json.dump(dict(meta, panel_a=dict(group_counts=GCOUNT, model_sha256_prefix=MODEL_SHA[:8], knots_per_feature=int(Q),
                                   inputs_never_used_printed=["Delta", "captions", "condition identity"],
                                   schematic="no data; weight grid drawn with numpy seed 7")),
-          open(OUT / "fig4_meta.json", "w", encoding="utf-8"), indent=1)
+          open(OUT / META_NAME, "w", encoding="utf-8"), indent=1)
 
 W_MM, HA = S.COL2 * 25.4, 44.0
 H = HA / 25.4

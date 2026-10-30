@@ -5,11 +5,11 @@ Outputs (complete tabular environments, booktabs; caption drafts are `% CAPTION 
 Every number is read from a committed file, never typed:
   NONE and LRF   runs/P2-LRF-L1/a6_analysis.json family_L.{L1 (noise), L3 (jpeg10), L4 (splice128), L-NI (clean)}.{acc_b, acc_a, net, ci95, n}
   A-UNL, A-SF, A-LIN, A-S-BD, A-MIL   runs/P2-LRF-ABL-SCORE/ablation_analysis.json rows[id].cells.<L1 cell>.{acc, vs_NONE.{d, ci95}}  (NONE/LRF accuracies asserted equal to the a6 file)
-  MED, TM20, TM-G   runs/P2-LRF-E2/combiners.json cells.<cond>.arms.<arm>.{acc, vs_NONE.{diff, ci95}}   (E2, CPU)
+  MED, TM20   runs/P2-LRF-E2/combiners.json cells.<cond>.arms.<arm>.{acc, vs_NONE.{diff, ci95}}   (E2, CPU; the file also holds a third arm, TM-G, that is not read: removed from the paper's Table IV by ruling D0108)
   DN+NONE, DN+LRF  runs/P2-LRF-DN/dn_analysis.json cells.<cond>.arms.{"DN+NONE","DN+LRF"}.{acc, vs_NONE.{diff, ci95}}, conditions noise0.1 and jpeg10 only (E1, GPU);
                    the same layout as combiners.json. If the file is absent, or a cell is absent from it, the cell is printed as "pending". No other layout is read.
-Emphasis: bold = highest accuracy in the column, underline = second highest (distinct value; ties share the mark), over all rows that have a number in that column.
-This is a descriptive reading of one sample, not a test. Intervals: 95% paired percentile bootstrap over items, 10,000 resamples, unadjusted; they come from three
+Emphasis (ruling D0109, 2026-10-31): italics = highest accuracy in the column (ties share the mark), over all rows that have a number in that column; no bold, no underline, no
+second-best mark (bold means "null rejected" in this paper). This is a descriptive reading of one sample, not a test. Intervals: 95% paired percentile bootstrap over items, 10,000 resamples, unadjusted; they come from three
 different runs (a6_analysis, ablation_analysis, E2), each with its own resampling seed. Not in this table (Addendum A6.4, A6.6): CLIP, SigLIP, the fresh-fold GATE-M arm.
 Run: "<repo>/.venv/Scripts/python.exe" -I paper2-tnnls/scripts/tab_baselines.py   (CPU)"""
 from __future__ import annotations
@@ -31,13 +31,14 @@ COLS = [("noise", "Noise 0.1", "L1", "L1_noise0.1", "noise0.1"),
         ("clean", "Clean", "L-NI", "L1_clean", "clean")]
 DAG = r"$^{\dagger}$"
 # (id, compact name, source), in the order of the plan; blocks separated by a rule
+# Row labels are plain method names (the names Fig. 7 / fig_ablation.py uses; red-team F12); the ids are only dictionary keys of the run files.
 BLOCKS = [
-    [("NONE", r"Unweighted sum (NONE)" + DAG, "a6")],
-    [("A-UNL", r"Rank weight on $s_3$ (A-UNL)", "abl"), ("MED", "Median", "e2"), ("TM20", r"20\% trimmed mean", "e2"), ("TM-G", "Trimmed at gate count", "e2")],
-    [("A-SF", "Single feature (A-SF)", "abl"), ("A-LIN", "Linear logit (A-LIN)", "abl"), ("A-S-BD", r"GAM, $B$ and $D$ only (A-S-BD)", "abl"),
-     ("A-MIL", "Attention-MIL pooling (A-MIL)", "abl")],
+    [("NONE", r"Unweighted sum" + DAG, "a6")],
+    [("A-UNL", "Unlearned rank weight", "abl"), ("MED", "Median", "e2"), ("TM20", r"20\% trimmed mean", "e2")],
+    [("A-SF", "Single feature (selected)", "abl"), ("A-LIN", "Linear logit, 35 features", "abl"), ("A-S-BD", r"Additive, from $B$ and $D$ only", "abl"),
+     ("A-MIL", "Attention pooling (MIL style)", "abl")],
     [("LRF", r"LRF (frozen)" + DAG, "a6")],
-    [("DN+NONE", "Denoise, then NONE", "dn"), ("DN+LRF", "Denoise, then LRF", "dn")],
+    [("DN+NONE", "Denoise, then unweighted sum", "dn"), ("DN+LRF", "Denoise, then LRF", "dn")],
 ]
 
 
@@ -81,15 +82,15 @@ def cell_value(rid: str, src: str, col, a6, abl, e2, dn):
 
 
 def marks(values: dict) -> dict:
-    """values: {(rid, colkey): cell or None} -> {(rid, colkey): 1 (best) | 2 (second) | 0}. Ranking by the integer number of correct items (acc * n), distinct values."""
+    """values: {(rid, colkey): cell or None} -> {(rid, colkey): 1 (highest in the column) | 0}. By the integer number of correct items (acc * n); ties share the mark (D0109)."""
     out = {}
     for col in COLS:
         ks = {k[0]: round(v["acc"] * N) for k, v in values.items() if k[1] == col[0] and v is not None}
         for rid, k in ks.items():
             assert abs(k / N - values[(rid, col[0])]["acc"]) < 1e-9, (rid, col[0])
-        top = sorted(set(ks.values()), reverse=True)[:2]
+        top = max(ks.values())
         for rid, k in ks.items():
-            out[(rid, col[0])] = 1 if k == top[0] else 2 if len(top) > 1 and k == top[1] else 0
+            out[(rid, col[0])] = 1 if k == top else 0
     return out
 
 
@@ -97,7 +98,7 @@ def fmt_acc(v, mk):
     if v is None:
         return "pending"
     s = f"{v['acc']:.3f}"
-    return bold(s) if mk == 1 else (r"\underline{" + s + "}" if mk == 2 else s)
+    return r"\textit{" + s + "}" if mk == 1 else s
 
 
 def fmt_diff(v):
@@ -110,13 +111,14 @@ def fmt_diff(v):
 
 CAPTION_MAIN = (r"Accuracy of the image-direction rule on the 450 fresh-fold images when the per-token evidence is combined in different ways "
                 r"(exploratory comparison). $^{\dagger}$Fixed before the fold was opened (unweighted sum and the frozen LRF); every other row was specified and scored "
-                r"after the preregistered Study~2 results, so ranks among them are post hoc. Bold: highest accuracy in the column; underlined: second highest; ties share "
-                r"the mark. The marks are a descriptive reading of one sample, not a test; differences with intervals are in supplement S-VII. Median, trimmed mean and trimmed at gate count (as many tokens trimmed per tail as half the gate flagged; the gate itself is not scored here) combine the same per-token evidence without a learned weight. Denoise: "
-                r"non-local-means denoising of the image before scoring (Study~1 setting), noise and JPEG only. CLIP and SigLIP (Table~\ref{tab:baselines}) and the "
-                r"fresh-fold hard-gate arm are not in this table (Addendum A6).")
-CAPTION_FULL = (r"As the comparison table, with the difference from the unweighted sum (accuracy minus NONE, 95\% paired percentile bootstrap interval, 10\,000 "
-                r"resamples). Intervals are marginal and unadjusted; the rows other than NONE and LRF are exploratory, and the intervals of the A-* rows, the combiners and "
-                r"the denoise rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed before the fold was opened.")
+                r"after the preregistered Study~2 results. Italics: highest accuracy in the column (ties share the mark). The marks are descriptive, mark one sample, and are not a test; "
+                r"only the unweighted rule and LRF were fixed before the fold was opened. 4 of the 10 learned refits of the exploratory ablation are shown, chosen after the fold was scored; "
+                r"all 10 are in supplement S-VII, with differences and intervals. Median: the median of the per-token evidence is positive; 20\% trimmed mean: the mean of the evidence "
+                r"after the lowest and highest 0.2m values are removed is positive (m tokens). Unlearned rank weight: weight 1 minus the within-image percentile rank of the token's uncertainty "
+                r"(one minus the largest predicted probability with the caption masked). Denoise: non-local-means denoising before scoring (setting fixed in advance), noise and JPEG only.")
+CAPTION_FULL = (r"As the comparison table, with the difference from the unweighted sum (accuracy minus the unweighted sum, 95\% paired percentile bootstrap interval, 10\,000 "
+                r"resamples). Intervals are marginal and unadjusted; the rows other than the unweighted sum and LRF are exploratory, and the intervals of the ablation rows, the median "
+                r"and trimmed mean, and the denoise rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed before the fold was opened.")
 
 
 def build():
@@ -142,17 +144,17 @@ def main():
     # ------------------------------------------------------------------ compact
     head = ["Method"] + [c[1] for c in COLS]
     lines = [f"% tab_baselines.tex: generated by paper2-tnnls/scripts/tab_baselines.py from committed runs/ files. Do not edit by hand.",
-             "% exploratory (plan E3); n = 450 fresh-fold images per column; accuracy only; bold = highest, underline = second highest in the column (descriptive, not a test)",
-             "% dagger: fixed before the fold was opened (NONE, frozen LRF); all other rows post hoc. CLIP, SigLIP and the fresh-fold GATE-M arm are not here (Addendum A6.4, A6.6).",
+             "% exploratory (plan E3); n = 450 fresh-fold images per column; accuracy only; italics = highest in the column (descriptive, not a test; D0109)",
+             "% dagger: fixed before the fold was opened (unweighted sum, frozen LRF); all other rows post hoc.",
              f"% DN rows: {'read from runs/' + DN if have_dn else 'runs/' + DN + ' absent: printed as pending'}; DN covers noise 0.1 and JPEG 10 only",
              r"\begin{tabular}{@{}lcccc@{}}", r"\toprule", " & ".join(head) + r" \\", r"\midrule"]
     full = [f"% tab_baselines_full.tex: generated by paper2-tnnls/scripts/tab_baselines.py from committed runs/ files. Do not edit by hand.",
-            "% exploratory (plan E3); n = 450; accuracy and accuracy minus NONE with its 95% paired percentile bootstrap interval (unadjusted); marks as in tab_baselines.tex",
+            "% exploratory (plan E3); n = 450; accuracy and accuracy minus the unweighted sum with its 95% paired percentile bootstrap interval (unadjusted); italic marks as in tab_baselines.tex",
             f"% DN rows: {'read from runs/' + DN if have_dn else 'runs/' + DN + ' absent: printed as pending'}; DN covers noise 0.1 and JPEG 10 only",
             r"\begin{tabular}{@{}lcrcrcrcr@{}}", r"\toprule",
             " & " + " & ".join(rf"\multicolumn{{2}}{{c}}{{{c[1]}}}" for c in COLS) + r" \\",
             r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}",
-            "Method & " + " & ".join("Acc. & Diff.\\ from NONE (95\\% interval)" for _ in COLS) + r" \\", r"\midrule"]
+            "Method & " + " & ".join("Acc. & Diff.\\ from unweighted (95\\% interval)" for _ in COLS) + r" \\", r"\midrule"]
     for bi, blk in enumerate(BLOCKS):
         if bi:
             lines.append(r"\midrule")

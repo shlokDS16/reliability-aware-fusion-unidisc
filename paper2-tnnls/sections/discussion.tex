@@ -61,6 +61,8 @@ No ablation and no comparison with other aggregation rules was preregistered; \c
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (V-G values: A-LIN, A-S-BD, A-S-s3, A-MIL against LRF on the L1 cell, intervals containing 0); red-team condition V2-2(d), A16
 In that ablation, simpler weightings fitted on the design items (a linear logit, the features from $B$ and $D$ alone, the features from
 the uncertainty of the $B$ pass alone, and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN].cells.{L1_noise0.1,L1_jpeg10,L1_splice128,L1_clean}.{acc (= 0.7911, 0.8844, 0.9311, 0.9200),vs_NONE.{d,ci95}} (noise 0.058 [0.020, 0.096]; JPEG 0.036 [0.007, 0.064]; splice 0.036 [0.011, 0.062]; clean 0.033 [0.009, 0.060]); references_accuracy.LRF (0.8022, 0.8644, 0.9267, 0.9178); runs/P2-LRF-L1/a6_analysis.json:family_L.L3.{net,ci95,p_holm} (JPEG: no difference detected)
+The linear logit on the same 35 features was at or above the frozen LRF in three of the four conditions (accuracies in \cref{tab:compare}) and above the unweighted rule with a 95\% interval excluding zero in all four, including JPEG (difference 0.036, 0.007 to 0.064), where the preregistered test of LRF detected no difference.
 
 % D0097: category-disjoint negatives (exp_p2/gate/folds.py assign_negatives; runs/P2-LRF-FOLD/folds_lrf.json neg_restricted 533 of 533)
 \emph{Both studies.} All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category with the test image).
@@ -97,5 +99,5 @@ supersede the main reference-encoder file's field ``pixel\_parity: not run''.
 (6) The reference-encoder download was 5.2~GB, against about 2 to 4~GB quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.
 (8) ``No output was read before its run was complete'' rests on the operations log.
-(9) The exploratory ablation and the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}; plan committed before any value was computed) were added at writing.
+(9) The exploratory ablation, the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}, \cref{tab:compare}; plan committed before any value was computed), and the qualitative figure (\cref{fig:qualitative}; selection rule fixed after the confirmatory result) were added at writing, as exploratory additions.
 Supplement S-I gives each item in full with its record.\par}

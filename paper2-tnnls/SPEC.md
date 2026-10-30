@@ -1,5 +1,16 @@
 # Paper 2 build spec v2: IEEE TNNLS Full Paper (lead, 2026-10-30)
 
+> **SPEC v2.3 (2026-10-31).** Lead rulings after the red team on the Mask-DiFuser presentation pass
+> (`research/paper2/tnnls/REDTEAM-MASKDIFUSER-PASS-2026-10-30.md`), ledger rows D0107-D0110, binding on top of v2.2:
+> - D0107: Proposition 2 with Fig. 3 and the token-detection Fig. 5 stay in the supplement (overrides rule 4 of section 4); A4.2.2 item 2 is met by one
+>   main-text sentence (IV-C4) giving the M1 rival's sign, AUROC with CI and the paired difference to the gate score.
+> - D0108: Study 2's Table IV and Section V-H carry no Study 1 object: no trimmed-at-gate-count row, no "gate" clause, median and 20% trimmed mean by
+>   formula only, the denoiser described by its operation, no CLIP/SigLIP pointer (A6.6, A6.12, rule 3).
+> - D0109: Table IV has no bold or underline; italics mark the highest value per column, descriptive, no second-best mark; only the unweighted rule
+>   and LRF were fixed before the fold was opened.
+> - D0110: the Table IV caption states that 4 of the 10 learned refits are shown, chosen after the fold was scored (all 10 in S-VII); VI-C states that
+>   the linear logit on the same features was at or above LRF in three of four columns and above the unweighted rule with an interval excluding zero in all four.
+
 v2 implements red-team conditions RS-1 to RS-12 (`research/paper2/tnnls/REDTEAM-SPEC-2026-10-30.md`, verdict on v1: DO NOT SIGN)
 and decisions D0090-D0094. v1 is in git history (b5dd8a05). This file is the contract for every writer, figure, citation and review
 agent. Read `research/CONTRACT.md` first. Facts and numbers come only from committed `runs/` files and the preregistration documents.
