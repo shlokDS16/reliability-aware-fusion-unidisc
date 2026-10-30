@@ -197,6 +197,7 @@ Four image-disjoint sets were drawn from COCO val2017~\cite{lin2014coco} by imag
 headroom (100), test (300, with an ordered extension to 500 if the sample-size rule asks for it), and the 200 items of an earlier
 detection pilot, which form the detection set.
 The 494 image ids of the two pilots are excluded from the new folds.
+% run: runs/P2-PAPER-TABLES/negatives_check.json:study1.{n_items (= 500), n_category_disjoint (= 500), n_fallback (= 0)}
 The wrong caption of an item is a caption of another image that shares no annotated COCO category with the true image, fixed once per
 item and shared by every arm and corruption.
 

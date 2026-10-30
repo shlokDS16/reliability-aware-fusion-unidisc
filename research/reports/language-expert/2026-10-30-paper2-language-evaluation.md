@@ -266,3 +266,14 @@ Locations are file:line in the revised files (line numbers of the supplement did
 - Hidden characters: all `.tex` and `.bib` files are pure ASCII.
 - Abstract word count unchanged (247; only a comma added).
 - Nothing committed.
+
+## 7. Round 2 (decision D0105), 2026-10-30
+
+Applied: B1-B10, B13-B18, B20-B23, B25-B31, B33, B34 ("dataset" only). B19 and B24 were defined because sources exist
+(B19: `paper2/sections/appendix.tex` app:cost, "one row of a batch"; B24: SAP Addendum A4, FOIL-first rule item 3). Held:
+B11, B12, B32. Details, number and reference changes, and the cuts that hold the main paper at 15 pages are in
+`paper2-tnnls/drafts/integrity-diff-language.md`, section "Round 2". Points to note:
+- The abstract used the pre-ruled R8/F1 valve (alpha clause to Results; 248 words). Its B2 is "three percentage points" only.
+- B31 changes status wording that SAP A4.2.5 item 6 prescribes ("gatekept: P+ empty"); applied under D0105, and the supplement
+  status map keeps the prescribed text. B30 keeps the F7 limits in the Tier-3 table caption (A4.2.5 item 5).
+- Four sentences that repeated content kept elsewhere were removed, and six widow lines were trimmed.

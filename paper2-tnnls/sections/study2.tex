@@ -127,6 +127,7 @@ The fold was built after the object commit: 533 COCO val2017 images in a seeded 
 after the exclusions of \cref{sec:setting-data} (2\,526 image ids, some outside the captioned set) and the removal of images without
 instance annotations.
 % run: runs/P2-LRF-FOLD/folds_lrf.json:test[*].neg_restricted (533 of 533 true); manifest.json:length_matching.n_unrestricted (= 0)
+% run: runs/P2-PAPER-TABLES/negatives_check.json:study2.{n_items (= 533), n_category_disjoint (= 533), n_fallback (= 0)}
 Each image has one seeded true caption of 5 to 32 tokens, a wrong caption drawn by the preregistered derangement rule (a random caption of
 another fold image sharing no annotated COCO category with it), and a second, length-matched wrong caption drawn under the same
 category rule.

@@ -155,3 +155,47 @@ One, in the non-anonymous build only: `declaration.tex` line 12 `[AUTHOR: exact 
 ## Required before the gate can tick
 
 N1 (value), N2 (dangling audit disclosure), N3 (wording). N4 to N6 are provenance and header fixes.
+
+---
+
+# Incremental audit 2, 2026-10-30: HEAD fd191fdd against 9268e34b
+
+Scope: new figures `fig_gate_method` (Fig. 2), `fig_detection` (Fig. 5), `fig_margins` (supplement), `fig_ablation` (Fig. 8), the redesigned `fig4_study2_weights` (Fig. 6) and the changed `fig5_study2_results` (Fig. 7); their captions; the tables moved to the supplement; the language review's edits (rounds 1 and 2); cross-references; the abstract. PDFs at HEAD: main 15 pp., supplement 18 pp., 0 "??" in either text extract; the working tree is clean against HEAD.
+Verdict: **PASS WITH FIXES** (no number mismatch; the earlier findings N1 to N5 are closed; one residual pointer item F1 and one unchanged provenance note N6).
+Ledger rows added: 0. Nothing was edited.
+
+## What was checked and how
+
+| Item | Method | Result |
+|---|---|---|
+| Plotted values of the four new figures | `runs/P2-PAPER-FIGS/fig_detection.json`, `fig_gate_method.json`, `fig_margins.json`, `fig_ablation.json` compared by script (scratch `figjson_check.py`) with `P2-GATE-M1/analysis.json` (q, TbV, rival means and intervals, paired differences), `P2-GATE-M4/analysis.json` (`calibration.fap_check.per_alpha.*` F, bootstrap interval, Z; `split_replication`; `s_d2`), `P2-LRF-L1/a6_analysis.json` (b, c, n of L1 and L-NI), `P2-LRF-ABL-SCORE/ablation_analysis.json` (acc, d, ci95 of all 21 rows on the L1 noise cell) | 0 differences. 48 detection values, 3 calibration points plus the split replication, margins counts (b + c + both correct + both wrong = 450 in both cells: 58, 27, 303, 62 and 27, 13, 386, 24), 21 ablation rows |
+| PNGs read | Figs 2, 5, 6, 7, 8 and the supplement margin figure were viewed. Visible numbers: Fig. 2 n_cal = 300, alpha 0.01/0.05/0.10, share and share-minus-alpha points (-0.0036, -0.0044, -0.0044) and the open re-split marker (-0.0031); Fig. 5 n = 200, 200, 197, 198 and the signs and AUROC positions of q, TbV and the rival, open diamonds at about -0.198 and -0.258; Fig. 6(a) group counts 7, 3, 8, 4, 6, 6, 1 = 35, `db7fdb4e` and the sum limit 8; Fig. 7 p = 0.0005, 0.382, 0.049, margin -0.03; Fig. 8 row order and signs; margin figure b = 58, c = 27, b = 27, c = 13 | all agree with the run files |
+| Fig. 6(b) | `fig4_meta.json`: shown features rank_B, nb3mean_ltex, tbv, itemsd_ltex, itemsd_nbr, nbr (ranges 0.349, 0.179, 0.171, 0.170, 0.168, 0.100; the next is rad at 0.089), items 0, 1, 2 in file order | matches the caption "six of 35 with the largest effect range", "first three items by position" |
+| Captions (Figs 2 to 8, supplement margin figure) | Every number against the sources above: n_cal 300, 500 test pairs, 10 000 resamples, 2 000 re-splits (`reps = 2000`), 492 and 497 items, Holm p = 0.0004, n = 450, margin -0.03, 90 % and 95 % intervals | all correct |
+| Abstract | Whitespace word count 248 (limit 250). All numbers equal the source abstract of the first audit, except that the clause "at the preregistered one-sided level 0.05" was dropped (the ruled overflow valve R8/F1, language report round 2); the one-sided level 0.05 stays in V-D ("preregistered one-sided $\alpha=0.05$") | PASS; the numbers 0.733, 0.802, 0.069, 0.029, 0.109, 0.0005, 0.009, 0.053, 0.002/0.006/0.004/0.010, 500, 450, 1.4 billion are unchanged |
+| Language-review number changes (`drafts/integrity-diff-language.md`) | Independent multiset of number tokens in prose of every section file, 9268e34b vs HEAD (scratch `numdiff.py`) | Differences are exactly the intended ones: abstract lost 0.05 (R8/F1); B2 "three percentage points (0.03 in accuracy)" gained 0.03 in introduction, V-D and conclusion (equals `family_L.L-NI.margin = 0.03`); B15 "sigma = 0.10" to 0.1; B16 merged 0.05 clause; B22 and B23 p-values written out (speckle 0.006, 0.011, 0.011; impulse "both 0.029", two-sided 0.058) equal the JSON (0.00568, 0.01135, 0.01135; 0.02903, 0.02903, 0.05806); calibration statistic and flagged-share numbers moved from the Results text to Fig. 2 and S-II (they still appear in S-II Tables S-cal and S-flags: -3.59, 2.13, 0.036 to 0.044, 0.089); detection numbers moved into Fig. 5 (the introduction still gives 0.961, 0.955, 0.561, 0.503); ablation interval numbers moved from the text into Fig. 8 and S-VII (1 672 table values were already verified at 9268e34b) |
+| M1 and N1 to N5 | Re-read at HEAD | N1 closed (supplement now says 5.2 GB); N2 closed (no "see the Declaration" remains; the text says "automated audits run in the authors' own pipeline (not independent reviews)"); N3 closed (the glance table is status only, restored to the status-map wording "not run (gatekept: P+ empty)", "headroom not met; H4 not run"; the sentence "lists every family" is gone); N4 closed (`runs/P2-GATE-M1/env-lock.txt` tracked, commit 39062dcf); N5 closed (the three table headers now name `tab_status_map.py`, `tab_glance.py`, `tab_tests_full.py`, which exist); the Tier-3 sentence of M1 in the main text now reads that the median and trimmed-mean combiners are reported in S-II, no contradicted claim |
+| Glance and status words after the rewording | Decision words re-derived from the run files at 9268e34b are unchanged; the new "run, formal" statuses for L1, L3, L4, L-NI, L-LEN, LG and S-D/S-D2 merge match `n` and `tested` fields | agree |
+| Notation changes (language review and notation pass) | tau_j to v_j (patch pixel variance), the feature score q_j to r_j in the feature tables, the pair length n to ell in III-A, "gatekept" to "conditional on" in the Study 1 text | consistent between Fig. 6(b) titles, the main feature text, S-IV feature table and the supplement; the detection score keeps q_j = -u_j; the feature code names (`q`, `nb3mean_q`) in S-IV tables are the code names |
+
+## Cross-references (no dangling Table, Fig. or section pointer in the printed text)
+
+- Numbering at HEAD (from `main.aux`): Fig. 1 measurement, Fig. 2 gate method, Fig. 3 frontier, Fig. 4 family P, Fig. 5 detection, Fig. 6 weights, Fig. 7 Study 2 results, Fig. 8 ablation; Table I glance, Table II Study 2, Table III reference encoders. Every `\cref` in main and supplement resolves (0 "??" in both PDFs).
+- Hard-coded section pointers in main prose to the supplement all land on the right section: S-I (pins, plans, deviations, time input, protocol details), S-II (family P table, headroom, calibration and flags, PS table, detection values, equal-size gates, denoising, E-dec and E-pred, suite, Tier-3, cost, proof of Proposition 2), S-III (family H), S-IV (full tests with mid-p, margin figure, n rule, feature table, weight-model search), S-VI (reference encoders and pixel parity), S-VII (ablation). Checked one by one for 41 pointers.
+- Supplement pointers to main figures and tables, from the PDF text: "Fig. 4 of the main paper" (family P intervals), "Fig. 5" (detection values), "Fig. 3" (frontier in the proof), "Fig. 6(a)" (feature groups), "Fig. 6" (shape functions), "Table II" (counts b and c), and the sources list: Fig. 1, 2, 3, 4, 5, 6, 7, 8, Table II and Table III. Each is the figure or table it names.
+- Section pointers "Section IV-C", "Sections IV-A and IV-B", "Section V-A", "Section V-B", "Section III" in the supplement are correct for the HEAD section numbering.
+
+## Findings
+
+| ID | Location | Printed | Status |
+|---|---|---|---|
+| F1 | `supplement.tex` sources list (S-VIII, lines 1305, 1309, 1318, 1329 at HEAD): "Family P table (Table S5; former main Table I)", "positive control (former main Table II)", "Feature groups (... former main feature table)", "item-level margins (... former main ...)"; and the printed footnote "Moved from the main paper" under the family P table | "former main Table I", "former main Table II" | Dangling for a reviewer: the main paper now has Table I = glance and Table II = Study 2 families, and the earlier layout was never seen by the reader. Remove the "former main ..." and "moved from the main paper" phrases. Not a number error. |
+| N6 (unchanged) | "category-disjoint negatives" for Study 1 (abstract, IV-C, Conclusion, VI-C) | Verified from `folds_lrf.json` for Study 2 (533 of 533, both wrong captions); for Study 1 the rule is documented in `exp_p2/gate/folds.py` line 7 and the protocol text, but no run key carries it | E3 (code reading), not E4. Cite a key or verify against the fold annotations if the claim is to be stated as measured. |
+
+## `\todo` at fd191fdd
+
+`declaration.tex` was reduced earlier; `main.tex` now carries one camera-ready-only `\todo{AUTHOR: corresponding author, as for Paper 1}` in the non-anonymous author block, plus the repository URL and archive DOI todo in `declaration.tex` (non-anonymous build only). None is visible in the anonymous PDF.
+
+## Required before the gate can tick
+
+F1 (remove "former main Table ..." phrases). N6 is a provenance wording note, not a number defect. No value mismatch exists in the abstract, text, tables, figures or supplement at fd191fdd within the scope audited.

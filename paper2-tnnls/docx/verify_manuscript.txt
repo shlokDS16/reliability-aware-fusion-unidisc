@@ -4,58 +4,66 @@ PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\f
 sections: 2
   section 0: columns=1 widths_twips=[] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
   section 1: columns=2 widths_twips=['5040', '5040'] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
-paragraph styles (outside tables): Text=102, References=64, Heading2=19, Equation=15, Heading1=9, TableTitle=6, TableNote=3, FigureImage=2, FigureCaption=2, Title=1, Authors=1, Abstract=1, IndexTerms=1, ReferenceHead=1
-tables=9 (floating=6) drawings=5 OMML math zones=426 equation paragraphs=15 numbered=15 sequence_ok=True
-hyperlinks=231 (internal 167, external 64) bookmarks=148 internal links without bookmark=0 []
+paragraph styles (outside tables): Text=97, References=64, Heading2=19, Equation=15, Heading1=9, TableTitle=4, FigureImage=4, FigureCaption=4, TableNote=2, Title=1, Authors=1, Abstract=1, IndexTerms=1, ReferenceHead=1
+tables=7 (floating=5) drawings=8 OMML math zones=349 equation paragraphs=15 numbered=15 sequence_ok=True
+hyperlinks=229 (internal 165, external 64) bookmarks=148 internal links without bookmark=0 []
 leftover sentinels: 0 []
 paragraphs with a raw LaTeX command left: 0 []
 undefined reference markers: 0 []
 headings: 29 (H1 9, H2 19)
 reference entries: 64
-table labels: ['TABLE\xa0I', 'TABLE\xa0II', 'TABLE\xa0III', 'TABLE\xa0IV', 'TABLE\xa0V', 'TABLE\xa0VI']; figure captions: ['Fig.\xa01. Imag', 'Fig.\xa02 draws', 'Fig.\xa02. Mode', 'Fig.\xa03. Fami', 'Fig.\xa04. Froz', 'Fig.\xa05. Fami']
+table labels: ['TABLE\xa0I', 'TABLE\xa0II', 'TABLE\xa0III']; figure captions: ['Fig.\xa01. Imag', 'Fig.\xa02. Stud', 'Fig.\xa03 draws', 'Fig.\xa03. Mode', 'Fig.\xa04. Fami', 'Fig.\xa05. Stud', 'Fig.\xa06. Stud', 'Fig.\xa07. Fami', 'Fig.\xa08. Stud']
 == text comparison with pdftotext
-tokens: pdf=15607 docx=15143
-word recall (PDF words found in DOCX, multiset): 0.9653
-5-gram match rate (PDF 5-grams present in DOCX): 0.8971
-prose words (>= 3 letters): pdf=10480 docx=10296; recall 0.9799
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9439
-prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 21; of these 13 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 8 contain words absent from the DOCX
-   CONTENT-MISSING?  absent words tokenise | and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption vi
-   CONTENT-MISSING?  absent words corrup, tions | and swap corrup run formal tions detection changed
+tokens: pdf=15465 docx=14732
+word recall (PDF words found in DOCX, multiset): 0.9478
+5-gram match rate (PDF 5-grams present in DOCX): 0.8856
+prose words (>= 3 letters): pdf=10496 docx=10168; recall 0.9664
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9341
+prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 22; of these 10 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 12 contain words absent from the DOCX
+   CONTENT-MISSING?  absent words tokenise | noise with true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens m
    CONTENT-MISSING?  absent words min | items pone bin ptwo min min pone bin the
-   CONTENT-MISSING?  absent words corruptedtoken | raises esg var corruptedtoken withholding probability and only ratio raised above each curve independent consequently does
+   CONTENT-MISSING?  absent words corrup, tions | and swap corrup run formal tions detection changed
+   CONTENT-MISSING?  absent words ltest, nominal | raises esg var calibration before any test item clean pairs ncal uij test pair image tokens conformal risk control share uij level flagged withheld flagged shar
+   CONTENT-MISSING?  absent words corruptedtoken | corrupted items and only ratio raised above each curve independent corruptedtoken withholding probability consequently does
    CONTENT-MISSING?  absent words cleantoken, lowered | condition depends random gate ratio lowered for every gate cleantoken withholding probability proof sketch
    CONTENT-MISSING?  absent words urve | above each esg urve var proposition shaded withholding raises and independent
-   CONTENT-MISSING?  absent words akxjk, ckl, xjk | weight maps sigm akxjk ckl xjk tkl where sigm
-   CONTENT-MISSING?  absent words dev, neighbour, ranbkj, std | and second ranbkj withinimage rank neighbour mean log neighbourhood onepass logprobability token scores image std dev log image standard deviation image std dev
-PDF token spans not found in DOCX: 150 (>= 6 tokens: 29; tokens in them: 564)
-   MISSING?  under the true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption visible caption token image
+   CONTENT-MISSING?  absent words plain | combination reached gate score onepass tbv score rival sign chosen same items patch codes rival plain same items frozen rival test items swap codes rival plain 
+   CONTENT-MISSING?  absent words akxjk, ckl, xjk | basis sigm akxjk ckl xjk tkl where sigm
+   CONTENT-MISSING?  absent words withinimage, zscore | audits run pertoken features token scores position neighbourhood withinimage rank image mean image standard deviation image zscore input uses caption the condit
+   CONTENT-MISSING?  absent words akxjk, ckl, dev, neighbour, ranbkj, std, xjk | additive model hinge basis akxjk ckl xjk tkl frozen before any test image ranbkj neighbour mean log onepass logprobability clean image std dev log image std dev
+   CONTENT-MISSING?  absent words attention, formula, imagelevel, neighbour, withinimage | parity option frozen lrf refitted and unlearned weightings linear logit features from and only uncertainty pass only onepass score only patch texture only neigh
+PDF token spans not found in DOCX: 146 (>= 6 tokens: 33; tokens in them: 830)
+   MISSING?  0 1 true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption visible caption token image token
+   MISSING?  is j cj v j jc v j 1 the
    MISSING?  is positive m s j y s 0 2 j 1 with a
-   MISSING?  not run pairs study 2 l1 l3 l4 lni llen lg learned weights
    MISSING?  items pone pr bin nd 1 2 b ptwo min 1 2 min pone pr bin nd 1 2 b 3
+   MISSING?  not run pairs study 2 l1 l3 l4 lni llen lg learned weights
    MISSING?  threshold is 1m li m uij 0 1 5 j 1 which does
    MISSING?  with fcal nca1l i li the threshold is inf ncal ncal 1 fcal 1 ncal 1 6
    MISSING?  the evidence m sg ij j yg sg 0 7 j 1 with a
    MISSING?  8 and var sg v 1 m 1 m 1
-   MISSING?  raises esg var sg if 1 corruptedtoken withholding probability and only if c2 1 2 0 20 m 1 1 1
-   MISSING?  2 2 0 6 ratio raised above each curve g 0 independent g 1 g 4 consequently i
-   MISSING?  on m 0 4 0 2 0 0 g 16 1 0 random gate 1 0 ratio lowered for every gate if 01 0 0 1 0 2 0 3 0 4 0 5 0 cleantoken withholding probability proof sketch
+   MISSING?  raises esg var sg if a calibration before any test item clean pairs ncal 300 uij test pair image tokens j 1 m uj dj bj conformal risk control li share of uij at level flagged withheld ij 0 ij uj flagg
+   MISSING?  corrupted items and only if c2 1 2 0 02 1 ratio raised above each curve g 0 independent 1 corruptedtoken withholding probability m 1 1 1
+   MISSING?  on m 0 8 g 1 0 6 g 4 0 4 0 2 0 0 g 16 1 0 random gate 1 0 ratio lowered for every gate if 01 0 0 1 0 2 0 3 0 4 0 5 0 cleantoken withholding probability proof sketch
    MISSING?  0 2 var sg 0 1 0 var sg the cleanpair
    MISSING?  above each esg c urve 1 var sg b 0 c g 0 01 of proposition
    MISSING?  2 2 raises 1 and g m 1 1 0
-   MISSING?  c results net change 90 interval 95 interval 0 05 margin p1 jpeg
-   MISSING?  10 p2 noise 0 1 p3 splice 128 px 0 05 0 05 net accuracy change gatem minus no gate fig 3
-   MISSING?  8 codes swap 15 of codes jpeg quality 10 noise 0 1 200 0
-   MISSING?  weight maps 35 q wj sigm 0 akxjk ckl xjk tkl 13 k 1 k 1 l 1 where sigm
+   MISSING?  b c net change 90 interval 95 interval 0 05 margin p1 jpeg
+   MISSING?  10 p2 noise 0 1 p3 splice 128 px 0 05 0 05 net accuracy change gatem minus no gate fig 4
+   MISSING?  0 876 gate score q onepass tbv score rival sign chosen on same items a patch 8 8 codes n 200 rival plain b b same items b frozen rival test items b swap 15 of codes n 200 rival plain b jpeg quality 10
+   MISSING?  hinge basis 35 q wj sigm 0 akxjk ckl xjk tkl 13 k 1 k 1 l 1 where sigm
    MISSING?  margin are m ylrf wj j 0 j 1 m j wj j 14 j wj with a
-   MISSING?  a second a 0 4 ranbkj of withinimage rank neighbour mean of log 1 vj neighbourhood onepass logprobability token scores image std dev of log 1 vj image standard deviation image std dev of neighbour dis
-   MISSING?  f x 0 2 weight wj squareroot scale 0 0 0 25 0 50 0 75 feature value feature value b 0 clean item 1 noise 5 4 3 feature value feature value clean item 2 noise 0 15 0 20 feature value 1 2 1 4 feature va
+   MISSING?  audits run a pertoken features xj 35 token scores 7 position 3 neighbourhood 8 withinimage rank 4 image mean 6 image standard deviation 6 image zscore 1 no input uses j
+   MISSING?  or the condition logistic additive model hinge basis f xj 0 akxjk k ckl xjk tkl k l 1 frozen before any test image sha256 db7fdb4e b c ranbkj of neighbour mean of log 1 vj onepass logprobability 0 25 
    MISSING?  0 1 l3 jpeg quality 10 l4 splice 128 px lni clean images llen noise
    MISSING?  449 0 733 0 849 0 896 0 887 0 708 0 802 0 864 0 927 0 918 0 784 58 27
    MISSING?  120 0 0005 0 191 0 012 0 0004 0 382 0 049 0 001 confirmed onesided 0 382 not rejected 0 024 rejected holm noninferior lower
    MISSING?  300 0 673 300 0 700 300 0 697 0 767 0 750 0 757 43 15
-   MISSING?  preregistered level a family l fresh fold n 450 95 interval b lni noninferiority n 450 l1 noise 0 1 onesided p 0 0005 l3 jpeg quality 10 holm p 0 382 l4 splice 128 px holm p 0 049 0 05 0 10 net accura
+   MISSING?  the first a b l1 noise 0 1 onesided p 0 0005 l3 jpeg quality 10 holm p 0 382 l4 splice 128 px holm p 0 049 0 05 0 10 net accuracy change with minus without weights net change bar 95 interval in a 90 i
    MISSING?  clean images gaussian noise 0 1 jpeg quality 10 splice 128
    MISSING?  0 007 0 998 0 998 1 000 1 000 0
    MISSING?  items 300 shot noise severity 3 impulse noise severity 3 speckle noise severity 3 0 997 1 000 0 997 1 000
+   MISSING?  parity option frozen lrf refitted and unlearned weightings linear logit 35 features from
+   MISSING?  and d only uncertainty of b pass only onepass score only patch texture only neighbour distance only grid position only single feature selected attention pooling mil style unlearned rank weight knockou
+   MISSING?  and d uncertainty of b pass onepass score patch texture neighbour distance grid position by source token scores position by formula neighbourhood withinimage rank imagelevel 0 10 0 05 0 05 accuracy di
 DOCX prose paragraphs (no math) with < 60% of 5-grams in the PDF: 0

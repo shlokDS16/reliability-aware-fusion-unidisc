@@ -3,25 +3,25 @@ PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\f
 == structure
 sections: 1
   section 0: columns=1 widths_twips=[] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
-paragraph styles (outside tables): Text=97, TableTitle=54, Heading2=24, TableNote=11, Heading1=8, Equation=2, Title=1, Authors=1
-tables=27 (floating=0) drawings=0 OMML math zones=1166 equation paragraphs=2 numbered=0 sequence_ok=True
-hyperlinks=33 (internal 33, external 0) bookmarks=77 internal links without bookmark=0 []
+paragraph styles (outside tables): Text=103, TableTitle=58, Heading2=27, TableNote=21, Heading1=8, Equation=2, Title=1, Authors=1, FigureImage=1, FigureCaption=1
+tables=29 (floating=0) drawings=1 OMML math zones=1241 equation paragraphs=2 numbered=0 sequence_ok=True
+hyperlinks=42 (internal 42, external 0) bookmarks=86 internal links without bookmark=0 []
 leftover sentinels: 0 []
 paragraphs with a raw LaTeX command left: 0 []
 undefined reference markers: 0 []
-headings: 32 (H1 8, H2 24)
+headings: 35 (H1 8, H2 27)
 reference entries: 0
-table labels: ['TABLE\xa0S1', 'TABLE\xa0S2', 'TABLE\xa0S3', 'TABLE\xa0S4', 'TABLE\xa0S5', 'TABLE\xa0S6', 'TABLE\xa0S7', 'TABLE\xa0S8', 'TABLE\xa0S9', 'TABLE\xa0S10', 'TABLE\xa0S11', 'TABLE\xa0S12', 'TABLE\xa0S13', 'TABLE\xa0S14', 'TABLE\xa0S15', 'TABLE\xa0S16', 'TABLE\xa0S17', 'TABLE\xa0S18', 'TABLE\xa0S19', 'TABLE\xa0S20', 'TABLE\xa0S21', 'TABLE\xa0S22', 'TABLE\xa0S23', 'TABLE\xa0S24', 'TABLE\xa0S25', 'TABLE\xa0S26', 'TABLE\xa0S27']; figure captions: ['Fig.\xa01 (conc', 'Fig.\xa02 (theo', 'Fig.\xa03 (fami', 'Fig.\xa04 (froz', 'Fig.\xa05 (fami']
+table labels: ['TABLE\xa0S1', 'TABLE\xa0S2', 'TABLE\xa0S3', 'TABLE\xa0S4', 'TABLE\xa0S5', 'TABLE\xa0S6', 'TABLE\xa0S7', 'TABLE\xa0S8', 'TABLE\xa0S9', 'TABLE\xa0S10', 'TABLE\xa0S11', 'TABLE\xa0S12', 'TABLE\xa0S13', 'TABLE\xa0S14', 'TABLE\xa0S15', 'TABLE\xa0S16', 'TABLE\xa0S17', 'TABLE\xa0S18', 'TABLE\xa0S19', 'TABLE\xa0S20', 'TABLE\xa0S21', 'TABLE\xa0S22', 'TABLE\xa0S23', 'TABLE\xa0S24', 'TABLE\xa0S25', 'TABLE\xa0S26', 'TABLE\xa0S27', 'TABLE\xa0S28', 'TABLE\xa0S29']; figure captions: ['Fig.\xa0S1 show', 'Fig.\xa0S1. Stu', 'Fig.\xa01 (conc', 'Fig.\xa03 (theo', 'Fig.\xa04 (fami', 'Fig.\xa02 (gate', 'Fig.\xa05 (toke', 'Fig.\xa06 (froz', 'Fig.\xa07 (fami', 'Fig.\xa0S1 (ite', 'Fig.\xa08 (expl']
 == text comparison with pdftotext
-tokens: pdf=16136 docx=16064
-word recall (PDF words found in DOCX, multiset): 0.9911
-5-gram match rate (PDF 5-grams present in DOCX): 0.7832
-prose words (>= 3 letters): pdf=7928 docx=7925; recall 0.9980
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9253
-prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 28; of these 26 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 2 contain words absent from the DOCX
+tokens: pdf=17127 docx=16992
+word recall (PDF words found in DOCX, multiset): 0.9881
+5-gram match rate (PDF 5-grams present in DOCX): 0.7879
+prose words (>= 3 letters): pdf=8468 docx=8445; recall 0.9955
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9245
+prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 31; of these 29 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 2 contain words absent from the DOCX
    CONTENT-MISSING?  absent words dec | manifest hash dec draft commit revision commit final revision
    CONTENT-MISSING?  absent words aware, edge | eight neighbours edge tbv ltex nbr aware token excluded
-PDF token spans not found in DOCX: 192 (>= 6 tokens: 58; tokens in them: 828)
+PDF token spans not found in DOCX: 205 (>= 6 tokens: 63; tokens in them: 832)
    MISSING?  tier3 comparators addendum a5 family h fold file hardnegative pool
    MISSING?  model npz specification spec json tuning record hpo json feature code data py modelfamily code families py fitting code lrf py codebook untracked cached position
    MISSING?  lrf json sha256 db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37 9d196d7189dc5b6a2d6d80ed694314c6ed323cac59b0300c42c073a6e40db4b5 63cd79442078414726b327eef76e1e1397b3db1b7c3222449705a3
@@ -31,26 +31,31 @@ PDF token spans not found in DOCX: 192 (>= 6 tokens: 58; tokens in them: 828)
    MISSING?  denoising detection 3 3 2 as in the protocol z sdn outofsample detection clean control 2 2 1 sd s d2 sc h hm
    MISSING?  after the 3 see siii primary result l l1 exact
    MISSING?  tested noise severity 3 types edec p fold epred suite intervals or
-   MISSING?  rho corruption jpeg quality 10 noise 0 10 splice 128 px patch sanity swap sanity changed share 0 961 0 928 0 227 0 062 0 150 hit rate 0 061 0 033 0 049 0 750 0 859 falsealarm proportion 0 037 0 036 0 
-   MISSING?  002 0 001 0 009 0 007 scattered 0 002
-   MISSING?  011 0 002 gatem minus plainb topk s3 topk 0 000
-   MISSING?  006 0 016 0 002 changedcode 0 082 0 044
-   MISSING?  036 0 008 0 022 0 006 changedcode minus none 0 084 0 122 0 046 0 070 0 036 0 104 0 004
+   MISSING?  quality 10 noise 0 10 splice 128 px 0 961 0 928 0 227 0 061 0 033 0 049 0 037 0 036 0 044 0 976 0 922 0 248 patch sanity swap sanity 0 062 0 150 0 750 0 859 0 050 0 089 0 498 0 631
+   MISSING?  8 codes swap 15 of codes jpeg quality 10 noise 0 1 200 0
+   MISSING?  s3 topk changedcode changedcode minus none jpeg noise splice 0 000
+   MISSING?  006 0 084 0 122 0 046 0 070 0 036 0 104 0 004
+   MISSING?  sign oc o c agree jpeg p1 noise p2 splice p3
+   MISSING?  004 0 012 0 004 none none yes none excluded b c none yes sc committed
    MISSING?  sign of b c for gatem against none o c the same
-   MISSING?  004 0 012 0 004 none none yes none excluded b c none yes g coherence
    MISSING?  pixelate 2 pixelate 4 defocus blur 2 defocus blur 4 fog 2 fog 4 impulse noise 2 impulse noise 4 0 82
    MISSING?  0 1 m0 1 1 1 m1 1 0 1 1 and 021 m0m1 1 m0 1 0 1 m1 1 1 variance
-   MISSING?  m1 c2 k02 k1 m1 1 1 k02 k12 with k02 k1 1 2 0 20 and k02 k12 1 0
-   MISSING?  c2 12 2c m0 m0 1 02 0 2 m1 m1 1 12 1
-   MISSING?  95 bound jpeg quality 10 med tmg tm20 softg softa gm 0
-   MISSING?  mdd 0 027 b 0 023 mdd 0 021 b 0 011 mdd 0 022 noise 0 10 med tmg tm20 softg softa gm 0
-   MISSING?  mdd 0 025 b 0 014 b 0 034 b 0 007 mdd 0 024 splice 128
+   MISSING?  m1 c2 k02 k1 m1 1 1 k02 k12 with k02 k1 1 2 0 02 and k02 k12 1 0
+   MISSING?  exact 95 jpeg quality 10 med tmg tm20 softg softa gm 0
+   MISSING?  2660 787 bound mdd 0 027 b 0 023 mdd 0 021 b 0 011 mdd 0 022 reading below gm n d below gm n d n d
+   MISSING?  mdd 0 025 b 0 014 b 0 034 b 0 007 mdd 0
    MISSING?  022 0 0010 273 0 0000 708 0 0000 247 0 1581 000 0 3490
-   MISSING?  mdd 0 024 b 0 017 mdd 0 020 b 0 014 mdd 0 020 clean pairs
-   MISSING?  0 019 reading below gm n d below gm n d n d n d n d n d identical n d below gm n d below gm n d n d below gm n d below gm n d n d
-   MISSING?  0 030 exact 95 0 0160 383 0 0250 556 0 0160 383 0 3900 940 0 0010 238 0 0020 339 0 0000 218 0 0940 992 0 5160 979 bound mdd 0 022 mdd 0 018 mdd 0 022 b 0 007 mdd 0 018 mdd 0 025 mdd 0 021 mdd 0 021 b 
+   MISSING?  mdd 0 024 b 0 017 mdd 0 020 b 0 014 mdd 0
+   MISSING?  below gm n d below gm n d n d
+   MISSING?  0 019 below gm n d below gm n d n d
+   MISSING?  0 024 exact 95 0 0160 383 0 0250 556 0 0160 383 0 3900 940 bound mdd 0 022 mdd 0 018 mdd 0 022 b 0 007 mdd 0 018 reading below gm n d below gm identical n d
+   MISSING?  030 0 0010 238 0 0020 339 0 0000 218 0 0940 992 0 5160
+   MISSING?  mdd 0 025 mdd 0 021 mdd 0 021 b 0 017 mdd 0 019 below gm below gm below gm n d above gm
+   MISSING?  c2 12 2c m0 m0 1 02 0 2 m1 m1 1 12 1
    MISSING?  decision rule test performed downstream claim hnogo no withdrawn in
-   MISSING?  0 896 0 889 0 847 0 727 0 893 21 01 03 01 table s21
+   MISSING?  preregistered hypothesis margin with lrf m correct only with lrf correct only without same decision a b gaussian noise 0
+   MISSING?  n 450 clean images n 450 1 5 b 58 b 27 0 5 0 5 c 27 0 5 0 0 5 1 1 5 margin no weighting c 13 0 5 0 0 5 1 1 5 margin no weighting fig s1
+   MISSING?  0 896 0 889 0 847 0 727 0 893 21 01 03 01 table s23
    MISSING?  05 1 not measured 8 2 8 2 not measured
    MISSING?  masked rj bj dj s3 1 maxy p y of
    MISSING?  nb3mean b row 1 2 2 col 1 2 2 nb3mean s3 nb3mean k
@@ -77,7 +82,4 @@ PDF token spans not found in DOCX: 192 (>= 6 tokens: 58; tokens in them: 828)
    MISSING?  033 0 002 0 078 kofitem 0 029 0 022 0 051 0 004
    MISSING?  107 0 037 0 123 0 013 0 057 0 050
    MISSING?  097 0 000 0 087 0 017 0 063 0 037 0 070
-   MISSING?  080 0 023 0 117 0 027 0 117 0 083 0 087 0 003
-   MISSING?  133 0 037 0 137 0 023 0 090 0 050 0 053 0 003
-   MISSING?  113 0 030 0 117 0 023 0 090 0 050 0 053 0 003
 DOCX prose paragraphs (no math) with < 60% of 5-grams in the PDF: 0
