@@ -15,6 +15,17 @@ In this paper, \emph{image-text verification} means this image-direction decisio
 caption is chosen if the observed image tokens are, summed over tokens, more probable under it than under a wrong caption
 (\cref{sec:setting}).
 
+% Fig. 1: defined on page 1 so it floats to the top of page 2; main.tex blocks double-column floats on page 1 only (dbltopnum = 0 after maketitle), so it can never sit above the title (lead fix 2026-10-30).
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig1_measurement.pdf}
+\caption{Image-text verification by per-token evidence in a masked diffusion model (conceptual drawing with a fixed token pattern; no
+data). A possibly damaged image is tokenised; with the image tokens masked and each caption visible, the model gives the evidence
+$\Delta_j$, the log-probability ratio of the observed image token under the true and a wrong caption, and the unweighted sum
+$S=\sum_j\Delta_j$ chooses the true caption if $S>0$.}
+\label{fig:measurement}
+\end{figure*}
+
 Generative models are already used as scorers in this way.
 Diffusion classifiers compare conditional denoising errors across labels~\cite{li2023diffusionclassifier,clark2023zeroshot}, image-text
 matching has been scored by a conditional error normalised by the unconditional one~\cite{krojer2023diffusionitm}, and the authors of
@@ -28,15 +39,6 @@ The problem studied here is how the per-token likelihood evidence of a unified m
 when the image is damaged before tokenisation, and whether a fixed rule applied to that evidence changes the decision
 (\cref{fig:measurement}).
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{figures/fig1_measurement.pdf}
-\caption{Image-text verification by per-token evidence in a masked diffusion model (conceptual drawing with a fixed token pattern; no
-data). A possibly damaged image is tokenised; with the image tokens masked and each caption visible, the model gives the evidence
-$\Delta_j$, the log-probability ratio of the observed image token under the true and a wrong caption, and the unweighted sum
-$S=\sum_j\Delta_j$ chooses the true caption if $S>0$.}
-\label{fig:measurement}
-\end{figure*}
 
 Two questions about this evidence were each preregistered (\cref{sec:setting-tests}), with their own plan, test images and decision
 rule.

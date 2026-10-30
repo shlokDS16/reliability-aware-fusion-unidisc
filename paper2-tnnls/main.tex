@@ -95,6 +95,8 @@
 \markboth{IEEE Transactions on Neural Networks and Learning Systems}{IEEE Transactions on Neural Networks and Learning Systems}   % no invented short title (D0092)
 
 \maketitle
+% No double-column float on the title page (IEEE layout): \@dbltopnum is reset at every new page, so this affects page 1 only.
+\makeatletter\global\@dbltopnum\z@\makeatother
 
 % ---- abstract and index terms --------------------------------------------------------------------
 % TODO(abstract): ONE paragraph, 150-250 words, no abbreviations, footnotes, references or equations; write last.
