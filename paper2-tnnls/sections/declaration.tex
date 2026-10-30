@@ -1,7 +1,40 @@
+% declaration.tex -- unnumbered back matter before the References (writer W1, 2026-10-30).
+% (1) Reproducibility and Data Availability: SPEC v2.2 section 9 (claims nothing beyond the listed facts; F16).
+% (2) Declaration of Generative AI Use: SPEC rule 6, D0093 (the ONLY place AI use is mentioned; no Acknowledgment section). Written so
+%     that it can be moved unchanged into an Acknowledgment if the editor asks (checklist C2): it names each system and version, the
+%     roles, the sections affected and the level of use (IEEE Author Center, AI-generated content policy). Codex model name from
+%     research/paper2/tnnls/codex/SESSION.txt. Facts only the authors can confirm are marked \todo{AUTHOR: ...}.
+
+\section*{Reproducibility and Data Availability}
+The code, the preregistration documents (cards, analysis plans and their addenda), the hash pins, the stored predictions and the analysis
+outputs are kept in one version-controlled repository
+(\anonlink{https://github.com/shlokDS16}{repository}\ifanon\else\ \todo{AUTHOR: exact repository URL and archive DOI}\fi);
+% TODO(AUTHOR): replace the \anonlink target with the exact repository URL (and an archive DOI) before the camera-ready build.
+for review, an anonymised mirror is provided that preserves the commit times and hashes on which the definition of ``preregistered'' in
+\cref{sec:setting-tests} rests.
+The per-item arrays are not tracked; their SHA-256 manifests are committed.
+The software environment was recorded after the runs.
+The images and captions are the public COCO val2017 split~\cite{lin2014coco}, and the model is the released UniDisc
+checkpoint~\cite{swerdlow2025unidisc} at the snapshot pinned in supplement S-I.
+
 \section*{Declaration of Generative AI Use}
-% Shlok's decision: this is the ONLY place AI use is mentioned; there is no Acknowledgment section (checklist C2 records the conflict
-% with IEEE, which wants the disclosure in Acknowledgments and a citation to the AI system in the affected sections).
-% To satisfy IEEE's content requirement the text must: identify each AI system (name and version), identify which parts of the work
-% used it (text, figures, code, analysis scripts, literature work), and explain briefly the level of use.
-\todo{AUTHOR: name and version of each generative AI system used; the parts of the work for which it was used (text, figures, code,
-analysis); the level of use; and the statement that the authors reviewed and take responsibility for all content}
+The authors used generative AI systems in this work.
+The systems were Claude Opus~5.5, Claude Sonnet~5.5 and Claude Haiku~5.5 (Anthropic), run as agents through Claude Code, and Codex
+(OpenAI; model recorded in the session log as \texttt{gpt-6-luna}), used to review plans and drafts.
+\todo{AUTHOR: confirm that this list of systems and versions is complete for every stage of the work, and give the Claude Code and Codex
+client versions if the editor requires them.}
+They were used in four roles.
+(i) Drafting and editing the text of every section, the abstract, the figure and table captions, the appendix and the supplement.
+(ii) Writing the experiment code, the analysis scripts and the figure scripts, and producing the figures and tables from the committed
+run files.
+(iii) Literature search and the verification of every reference against Crossref, arXiv, OpenAlex or the publisher's record.
+(iv) The scripted and agent-run audits named in the paper: the red team (adversarial review of the plans, results and text), the
+gate-auditor (commit order, hash checks, code audits and reconciliation of every number with the run files), the data-steward (fold
+construction and leak checks) and the statistician (analysis plans, statistical checks and the ruling on the abstract).
+The sections affected are therefore all sections, the appendix, the supplement, the figures and the tables.
+The level of use was substantial: the systems wrote first drafts of the text and code and ran the audits, and the authors directed the
+work, set the research questions and approved the preregistration documents and the decisions recorded in them.
+\todo{AUTHOR: confirm the level-of-use sentence, in particular which decisions the authors made and approved themselves.}
+No AI system generated data: every reported number comes from runs of the stated model on the stated images.
+The audits listed above were run by AI agents inside the authors' own pipeline, not by outside reviewers.
+The authors reviewed all content and take full responsibility for it.
