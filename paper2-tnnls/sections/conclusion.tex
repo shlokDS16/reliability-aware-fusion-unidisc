@@ -11,14 +11,14 @@ from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$, and a 128-p
 not show that gating has no effect.
 % D0097: category-disjoint negatives
 The result is for one pretrained model of 1.4B parameters with category-disjoint negatives (a random caption of an image sharing no
-annotated COCO category).
+annotated COCO category with the test image).
 
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.{acc_b (= 0.7333), acc_a (= 0.8022), net (= 0.0689), ci95 (= [0.0289, 0.1089]), p_one (= 0.000508)}; family_L.L-LEN.label (= rejected)
-% run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.0089, 0.0533]), non_inferior (= true)}; runs/P2-LRF-PLAN/n_rule.json:n_L (= 450)
+% run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.0089, 0.0533]), margin (= 0.03), non_inferior (= true)}; runs/P2-LRF-PLAN/n_rule.json:n_L (= 450)
 Study~2 tested one frozen learned reliability-aware fusion of token evidence on a fresh preregistered fold.
 Under Gaussian noise with $\sigma=0.1$ it raised image-direction verification accuracy from 0.733 without reliability weighting to 0.802
 (net 0.069, 95\% interval 0.029 to 0.109; exact one-sided McNemar $p=0.0005$), including with length-matched negatives, and on clean
-images it lost no more than three points (90\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory
+images it lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory
 clean interval had been seen.
 This holds for one model, on 450 COCO images not used to design or fit the method, at one severity; the weighting was trained on the
 tested corruption, and no preregistered test shows that its gain is specific to that corruption.

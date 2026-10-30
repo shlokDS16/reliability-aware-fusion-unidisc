@@ -18,7 +18,7 @@ The backbone runs in \texttt{bf16}, and every log-probability is a 32-bit log-so
 scored modality.
 UniDisc's denoiser has no time input in the released configuration: time conditioning is off, the official inference configuration
 passes a null noise level, the backbone builds no timestep embedder without time conditioning, and the released checkpoint contains no
-time-embedding weights; the scorer uses the authors' null-sigma inference path.
+time-embedding weights. The scorer uses the authors' null-sigma inference path.
 This is a property of the released configuration and checkpoint, read in the authors' code at a pinned commit, and not a statement about
 UniDisc in general (evidence and limits in supplement S-I).
 
@@ -60,11 +60,11 @@ An item is one image with its true caption and one wrong caption, the caption of
 is drawn.
 Test images are fresh in a defined sense: each study's test images are disjoint, by COCO image id, from every image that was used to
 calibrate, fit, or design its rule.
-The test fold of Study~2 also excludes every image used anywhere in the project and every image of the
-SugarCrepe release.
+The test fold of Study~2 also excludes every image used anywhere in the project and every
+SugarCrepe image.
 \subsection{Tests, Multiplicity, and Preregistration}\label{sec:setting-tests}
 Every test compares two decision rules on the same $n$ items.
-Let $b$ be the number of items that the rule under test decides correctly and the reference rule decides wrongly, and $c$ the reverse.
+Let $b$ be the number of items that the rule under test decides correctly and the reference rule wrongly, and $c$ the reverse.
 The net accuracy change is $(b-c)/n$, and the exact McNemar test~\cite{mcnemar1947} conditions on the $n_d=b+c$ discordant items:
 \begin{align}
 p_{\rm one}&=\Pr\big[\mathrm{Bin}(n_d,\tfrac12)\ge b\big],\notag\\
@@ -88,8 +88,9 @@ under a global null with independent families, the chance of at least one false 
 \input{tables/tab_families_glance}
 
 \vspace{2pt}
-\parbox{\columnwidth}{\scriptsize Status only; each study's Results give the outcomes. The two blocks are separate preregistered
-studies; supplement S-II maps every Study~1 family.}
+\parbox{\columnwidth}{\scriptsize The two blocks are separate preregistered
+studies; supplement S-II maps every Study~1 family. ``Gatekept: P+ empty'' means that the family was to be tested only on
+corruptions where family~P rejected its null, and P rejected none.}
 \end{table}
 
 \emph{Preregistered} has one meaning in this paper: a dated analysis-plan addendum was committed to a version-controlled repository

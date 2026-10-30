@@ -37,8 +37,9 @@ LRF applies this construction to the per-token evidence of a unified masked diff
 image token to a non-negative weight, and the decision is the sign of the weighted evidence.
 
 \paragraph*{Features}
-Each token has 35 features in the seven groups of \cref{fig:lrf_weights}(a) (formulas in supplement S-IV); the seven token scores are
-five from the model with the caption masked, a patch texture, and a codebook-neighbour distance, and the other groups summarise them.
+Each token has 35 features in the seven groups of \cref{fig:lrf_weights}(a) (formulas in supplement S-IV).
+One group holds seven token scores (five computed by the model with the caption masked, a patch-texture score, and a codebook-neighbour
+distance), one holds the token's grid position, and the other five summarise the scores over a neighbourhood or the image.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:inputs_never_used (Delta, Lambda, captions, z, condition identity)
 No feature uses $\Delta_j$, the caption-visible log-probabilities, the captions, the corruption labels, or the identity of the condition.
 Features are standardised with the means and standard deviations of the design tokens.
@@ -168,10 +169,10 @@ one-sided $\alpha=0.05$), including with length-matched negatives
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-LEN.{n,acc_b,acc_a,net,ci95,p_one,n_excluded_length_mismatch,label}
 (0.708 to 0.784, net 0.076, 0.033 to 0.120; one-sided $p=0.0004$; $n=449$, one item excluded for a length mismatch).
 L1 is therefore confirmed.
-This is in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not used to design or fit
+This result holds in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not used to design or fit
 the method, with Gaussian noise at one severity.
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{acc_b (= 0.8867),acc_a (= 0.9178),net,ci90,lower90,margin,non_inferior,margin_note}
-On clean images LRF lost no more than three points (90\% interval of the net change 0.009 to 0.053); the margin was fixed after an
+On clean images LRF lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053); the margin was fixed after an
 exploratory clean interval had been seen.
 The clean-image estimate, descriptive, was positive (0.887 without weighting, 0.918 with; net 0.031); superiority on clean images was not a
 preregistered hypothesis.
@@ -180,7 +181,7 @@ Supplement S-IV plots the discordant items of L1 and of the clean cell by margin
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L3.{net,ci95,p_holm}
 Under JPEG quality~10 no difference was detected (net 0.016, 95\% interval $-0.013$ to $0.044$; Holm-adjusted $p=0.382$).
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L4.{acc_b,acc_a,net,ci95,p_two,p_holm (= 0.0486)}
-Under the 128-pixel splice LRF raised accuracy from 0.896 to 0.927 (net 0.031, 0.007 to 0.058); the Holm-adjusted $p$ is 0.049, a margin of
+Under the 128-pixel splice LRF raised accuracy from 0.896 to 0.927 (net 0.031, 0.007 to 0.058); the Holm-adjusted $p$ is 0.049,
 0.001 below the 0.05 level (unadjusted two-sided $p=0.024$).
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.*.harm (all false); runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.*.harm (all false)
 No tested condition showed a reduction: the lowest 95\% bound was $-0.013$, under JPEG.
@@ -195,9 +196,9 @@ Shot and speckle noise are close relatives of Gaussian noise, impulse noise is t
 matched to $\sigma=0.1$; no claim is made about corruption types not tested.
 On these types ($n=300$ each), each LG hypothesis was rejected with $b>c$.
 Under shot noise accuracy rose from 0.673 to 0.767 (net 0.093, 0.047 to 0.143; one-sided $p=0.0002$, Holm-adjusted $p=0.0005$, two-sided
-$p=0.0003$), and under speckle noise from 0.697 to 0.757 (net 0.060, 0.017 to 0.103; one-sided 0.006, Holm-adjusted 0.011, two-sided 0.011).
+$p=0.0003$), and under speckle noise from 0.697 to 0.757 (net 0.060, 0.017 to 0.103; one-sided $p=0.006$, Holm-adjusted $p=0.011$, two-sided $p=0.011$).
 Under impulse noise it rose from 0.700 to 0.750 (net 0.050), and the 95\% interval has lower bound 0.0 (0.000 to 0.100).
-The one-sided and Holm-adjusted $p$ are 0.029 and the two-sided $p$ is 0.058, so this cell would not pass a two-sided 0.05 test, and no
+The one-sided and Holm-adjusted $p$-values are both 0.029, and the two-sided $p$ is 0.058, so this cell would not pass a two-sided 0.05 test, and no
 two-sided claim is made for it.
 The three cells are reported separately and are not pooled.
 
@@ -231,7 +232,7 @@ Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{-LG}; t
 % run: runs/P2-LRF-L1/items.jsonl:n_rows, seconds, peak_gb (67 rows, median 8.0 s, max 8.2 GB); runs/P2-LRF-LG/items.jsonl (42 rows, 5.0 s)
 The fresh-fold pass, which computes the unweighted rule for four conditions and stores the inputs of LRF, used 67 network rows and a median of 8.0~s per item on one 12~GB laptop GPU, with a peak memory of 8.2~GB; the stage of the other noise
 types used 42 rows and 5.0~s per item (supplement S-IV).
-LRF adds no network row; its weights and decision are computed from the stored arrays on the CPU, and that time was not recorded.
+LRF adds no network row; its weights and decision are computed from the stored arrays on the CPU and were not timed.
 
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
 \begin{figure}[!t]
@@ -262,7 +263,6 @@ Among knockouts, the intervals for the features from $B$ and $D$ and for the nei
 codebook-neighbour-distance features above it; every other group's interval contained zero.
 Setting a group to its mean gives inputs that the model did not see together in fitting; an interval away from zero shows that the frozen
 model's decisions depend on those inputs, not that the group alone detects anything.
-This comparison was added after the Study~2 results and is not a test.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:seed_spread.{max_range_over_variants_and_cells (= 0.030),seed0_is_prefixed (= true)}; K (= 336)
 Across the three refit seeds, the range of fresh-fold accuracy was at most 0.030 in every variant and cell; seed 0 was fixed before any
 fresh item and is not the best of three.

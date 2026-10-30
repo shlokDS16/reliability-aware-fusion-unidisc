@@ -51,7 +51,7 @@ Photographic Experts Group (JPEG) compression, Gaussian noise, and a pixel splic
 verification accuracy on fresh images under Gaussian noise?
 
 \paragraph*{Contributions}
-Each item was delivered whatever the analysis found; items 1 and 2 are Study~1, item 3 is Study~2.
+Each item was delivered regardless of the outcome; items 1 and 2 belong to Study~1, and item 3 to Study~2.
 % Regrouped under D0098 (at most four bullets; every A4.2.4 element kept in substance; no bullet links the studies).
 \begin{enumerate}
 \item \emph{A measured gate and a closed-form condition.} We specify, and treat as the object of measurement, an input-level
@@ -59,24 +59,26 @@ source-validation gate for a pretrained unified masked diffusion model: each ima
 with the caption withheld, and the flag threshold is set by conformal risk control on clean pairs so that the expected flagged share of a
 clean pair's tokens is at most $\alpha$.
 Under an independent-token approximation, we give the condition on the false-alarm and hit rates under which discarding flagged tokens
-raises the signal-to-noise ratio of an additive evidence sum, stated as an approximation because image tokens are dependent, with an
-extension to exchangeably correlated tokens (\cref{prop:snrcorr}); it is linked to no result (\cref{sec:study1-method}).
+raises the signal-to-noise ratio of an additive evidence sum.
+The condition is stated as an approximation because image tokens are dependent, and it is extended to exchangeably correlated tokens
+(\cref{prop:snrcorr}); it is linked to no result (\cref{sec:study1-method}).
 \item \emph{The preregistered test and its checks} (exact McNemar, Holm over three realistic corruptions, and $n$ fixed by a headroom rule).
 % run: runs/P2-GATE-M4/analysis.json:outcome.label (= negative); A4.2.3 NEG 6.1 opening, first clause
 The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
 from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$, and a 128-pixel splice.
 % run: runs/P2-GATE-M1/analysis.json:table.{patch,swap,jpeg,noise}.q.{mean,lo,hi}; table.{jpeg,noise}.tbv.{mean,lo,hi}; table.{jpeg,noise}.tex_neg.mean; falsifier.falsified (= true)
-At the token level the gate's score separates code-level random replacements (area under the receiver operating characteristic
-curve, AUROC, 0.961 for a patch, 0.955 for swapped codes) but is near chance on JPEG and Gaussian noise (0.561 and 0.503); on noise
-it is below a one-pass score without finetuning (marginal intervals, descriptive; no paired test), on JPEG the two overlap, and in the
-preregistered comparison it is below a texture score whose sign was chosen on the same items, so the preregistered falsifier for the
-score was met (\cref{fig:detection}).
+At the token level, the gate's score separates code-level random replacements, with an area under the receiver operating
+characteristic curve (AUROC) of 0.961 for a patch and 0.955 for swapped codes, but is near chance on JPEG and Gaussian noise (0.561 and
+0.503).
+On noise it is below a one-pass score without finetuning (marginal intervals, descriptive; no paired test), and on JPEG the two overlap.
+In the preregistered comparison it is below a texture score whose sign was chosen on the same items, so the preregistered falsifier for
+the score was met (\cref{fig:detection}).
 We check the clean false-alarm statement on held-out clean test pairs.
-Re-infilling of the flagged tokens and the score-level combination of the two directions on foil captions: run, formal.
+Re-infilling of the flagged tokens and the score-level combination of the two directions on foil captions were run as formal tests.
 % run: runs/P2-GATE-H3/family.json:n_rule.h_rule (= H-NOGO); go (= false); n_headroom_items (= 50); A5.9 placement 4 (status only, prefix)
 In a separately labelled family added after the primary result was known (family H: SugarCrepe hard negatives~\cite{hsieh2023sugarcrepe}
-on 50 Common Objects in Context (COCO) images not used elsewhere; Holm over the same three corruptions): run; headroom not met, its test
-stage not run (\cref{sec:study1-protocol,sec:study1-results}).
+on 50 Common Objects in Context (COCO) images not used elsewhere; Holm over the same three corruptions) was run; its headroom condition was not met, so its
+test stage was not run (\cref{sec:study1-protocol,sec:study1-results}).
 \item \emph{A frozen weighting and its preregistered confirmation.} Learned reliability-aware fusion (LRF) is a logistic generalised
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:{features (35 names), n_items (= 500)}; HASHES.json:new.* (model.npz db7fdb4e...)
 additive model that maps 35 caption-withheld features of each image token to a non-negative weight on its evidence, fitted on 500 design
@@ -85,9 +87,9 @@ images, frozen, and pinned by SHA-256 before any test image was selected.
 On a fresh preregistered fold, the frozen LRF raised image-direction verification accuracy under Gaussian noise ($\sigma=0.1$) from 0.733
 without reliability weighting to 0.802 (exact one-sided McNemar $p=0.0005$), including with length-matched negatives; on clean images it
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.0089, 0.0533]), margin (= 0.03), non_inferior (= true), margin_note}; runs/P2-LRF-PLAN/n_rule.json:n_L (= 450)
-lost no more than three points (90\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory clean interval
+lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory clean interval
 had been seen.
-This is in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not
+This result holds in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not
 used to design or fit the method, with Gaussian noise at one severity.
 Two image-text encoders are scored on the same items for reference, without comparison, and the cost is reported
 (\cref{sec:study2}).
@@ -99,5 +101,5 @@ reported (\cref{sec:deviations}; supplement S-I, S-II, and S-IV).
 This paper reports two preregistered measurements on one model and does not run a race between verifiers.
 Its object is the evidence that a unified masked diffusion model computes about its own inputs, and each question asks, by an exact
 paired test, whether a rule fixed in advance changes the decision on images the rule never saw.
-Not claimed: a verifier that ranks with dedicated encoders; any result for another model, data set, severity, or kind of negative
-caption; that the learned weights track reliability or corruption; that either study bears on the other.
+The paper does not claim a verifier that ranks with dedicated encoders; any result for another model, dataset, severity, or kind of
+negative caption; that the learned weights track reliability or corruption; or that either study bears on the other.

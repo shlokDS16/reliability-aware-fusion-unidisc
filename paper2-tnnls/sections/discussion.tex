@@ -29,7 +29,7 @@ L1 shows that one frozen weighting, hash-pinned before any test image was chosen
 Gaussian noise with $\sigma=0.1$ on 450 COCO images that played no part in its design or fit, passing an exact paired test at the
 preregistered level and holding with length-matched negative captions.
 It does not show that the weighting works on a corruption it was not trained on, that its weights follow the reliability of a token,
-or that the effect carries to another model, data set, or severity.
+or that the effect carries to another model, dataset, or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
 Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (1) a reweighting that helps
 whatever the condition; (2) a supervised fit to the training corruption; (3) a single noise-sensitive feature, such as the
@@ -37,8 +37,6 @@ codebook-neighbour distance or the one-pass observed-position score, which \cref
 ablation of \cref{sec:study2-ablation} bears only as an exploratory result; (4) a limited reach to other noise types, since the
 impulse-noise interval starts at 0.0; and (5) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
 A second backbone or a corruption held out of training would settle these questions; neither was run.
-The paper measures the evidence that the model computes about its own inputs; it makes no claim of a verifier that ranks with dedicated
-encoders, and the two reference encoders are near ceiling on these items (\cref{sec:study2-reference}).
 
 \subsection{Limitations}\label{sec:limitations}
 \emph{Study 1.} One model and one severity per corruption were tested.
@@ -46,7 +44,7 @@ encoders, and the two reference encoders are near ceiling on these items (\cref{
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486); runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.p_two (= 0.058)
 % run: runs/P2-LRF-L1.try1/selfcheck.json:image_tokens_frac_equal (= 0.98828125); runs/P2-LRF-L1.try2/selfcheck.json:image_tokens_frac_equal (= 0.9892578125)
 % run: runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.min (= 0.986328125)
-\emph{Study 2.} One model, one data set, and one severity per corruption were tested.
+\emph{Study 2.} One model, one dataset, and one severity per corruption were tested.
 LRF was trained on the tested corruption (Gaussian noise with $\sigma=0.1$ was a training condition), so L1 tests new images, not a new
 corruption.
 No preregistered test separates corruption-specific weighting from a generic gain, since the clean-image and splice estimates were also
@@ -65,9 +63,8 @@ In that ablation, simpler weightings fitted on the design items (a linear logit,
 the uncertainty of the $B$ pass alone, and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
 
 % D0097: category-disjoint negatives (exp_p2/gate/folds.py assign_negatives; runs/P2-LRF-FOLD/folds_lrf.json neg_restricted 533 of 533)
-\emph{Both studies.} All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category).
-The preregistration is self-hosted in the sense of
-\cref{sec:setting-tests}, and the audits were automated audits run in the authors' own pipeline (not independent reviews).
+\emph{Both studies.} All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category with the test image).
+The preregistration is self-hosted (\cref{sec:setting-tests}), and the audits were run automatically in the authors' own pipeline (not independent reviews).
 
 \subsection{Deviations From the Plans}\label{sec:deviations}
 {\small
@@ -78,7 +75,7 @@ read, before any main-test value or exploratory comparator output existed; the i
 (2) Outcome-label wording was fixed before the primary result, with a dated record of the null wording and of the reading adopted where
 card and plan differed on a rejection against the gate.
 (3) The time-input statement rests on a code reading at a pinned commit and a key check; its table moved to the supplement.
-(4) Family~B ran before the re-infilling family under the plan's fixed time inequality.
+(4) Family~B ran before the re-infilling family under the plan's fixed time inequality (a scheduling rule; supplement S-I).
 (5) Family~H has its own disclosure and amendment items; one decision row was committed after its pilot driver started and before any
 pilot row existed.
 (6) The effective-$n$ record of the re-infilling figure carries a reason text written at analysis time.

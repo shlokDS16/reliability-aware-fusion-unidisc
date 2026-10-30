@@ -110,7 +110,7 @@ For $\mu_c=0$ and $\E S_{\rm G}>0$, the gate raises $\E S_{\rm G}/\sqrt{\Var S_{
 \label{eq:snr}
 \end{equation}
 \end{lemma}
-\noindent\emph{Proof.} $\Var(I_j\Delta_j)=k\sigma_z^2+k(1-k)\mu_z^2$ with $k$ the keep probability of the token's class; sum over
+\noindent\emph{Proof.} $\Var(I_j\Delta_j)=k\sigma_z^2+k(1-k)\mu_z^2$, where $z$ is the token's class (clean or corrupted), $\mu_z$ and $\sigma_z^2$ are the moments of that class and $k$ is its keep probability; sum over
 tokens. The condition is \cref{prop:snrcorr} below at zero correlation. \qed
 
 Three consequences follow.
@@ -204,8 +204,8 @@ item and shared by every arm and corruption.
 Each realistic corruption has two severities (rungs), walked in order from the one defined in \cref{sec:setting-corruptions}.
 Two sanity corruptions replace tokens by uniform random codes (one $8\times8$ patch of the token grid; 15\% of tokens) and form the
 positive control.
-On the 100 headroom items, with no gate flag computed, the first rung at which the size-normalised evidence falls under corruption and
-recovers under the changed-code gate, which keeps exactly the tokens whose code did not change, is the operating point.
+On the 100 headroom items, with no gate flag computed, the operating point is the first rung at which the size-normalised evidence falls
+under corruption and recovers under the changed-code gate; this gate keeps exactly the tokens whose code did not change.
 The largest headroom discordance $D^\ast$ between the changed-code gate and no gate then sets the test size by a pre-written rule.
 The decision file was committed before the first test item was scored.
 
@@ -215,7 +215,7 @@ The controls are a geometry-matched random gate (the flag mask shifted on the to
 the changed-code gate, a pixel denoiser, and GATE-M on clean images (supplement S-II).
 Token detection is measured against changed-code labels by per-item AUROC.
 Cheap rivals are admitted in both orientations, so the rival and its sign are chosen on the data; a one-pass observed-position score of
-the non-finetuned backbone (the TbV score, named after Trust but Verify~\cite{jhingran2026trustverify}) is reported beside them.
+the non-finetuned backbone (TbV, after Trust but Verify~\cite{jhingran2026trustverify}) is reported beside them.
 
 \paragraph*{Families and reading rules}
 The primary family P has three hypotheses, one per realistic corruption at its operating point.
@@ -230,7 +230,7 @@ The percentile interval has zero width whenever no pair is discordant (counts in
 Each secondary family has its own level 0.05 (sizes, tests, and wording rules in supplement S-I).
 The positive control PS repeats the P test on the two sanity corruptions (Holm over two); a pass reads ``the pipeline is not broken''.
 A mechanism test (GATE-M against the geometry-matched gate) and a second-model family run only on a corruption with a primary rejection
-with $b>c$. \Cref{tab:glance} lists the families reported in the main text with their status; supplement S-II maps all of them.
+with $b>c$.
 
 \subsection{Results}\label{sec:study1-results}
 Bootstrap intervals use 10\,000 resamples, accuracy is image-direction verification accuracy, a cell is bold only when its
@@ -241,16 +241,16 @@ preregistered test rejected, and there is no adjustment across families (\cref{s
 The first rung of every realistic corruption passed the headroom rule, and $D^\ast=19$ selected 500 test items with the correctness
 endpoint (supplement S-II gives the headroom statistics).
 % run: runs/P2-GATE-M4/analysis.json:primary.per_corruption.{jpeg,noise,splice}.{delta,ci90,n}; outcome.label (= negative)
-In the preregistered test no improvement was detected under JPEG quality~10, Gaussian noise with $\sigma=0.10$, or a $128$-pixel splice.
+In the preregistered test no improvement was detected under JPEG quality~10, Gaussian noise with $\sigma=0.1$, or a 128-pixel splice.
 For each tested corruption the 90\% interval of the net accuracy change lay inside $\pm0.05$: $-0.002$ ($-0.006$ to $0.000$) under JPEG,
-$0.000$ ($0.000$ to $0.000$) under noise, and $-0.004$ ($-0.010$ to $0.002$) under splice, with $n=500$ each, so an improvement larger than
-0.05 is excluded and a loss larger than 0.05 is excluded.
+$0.000$ ($0.000$ to $0.000$) under noise, and $-0.004$ ($-0.010$ to $0.002$) under splice, with $n=500$ each, so an improvement or a loss larger
+than 0.05 is excluded.
 This does not show that the gate has no effect.
 % D0097: scope wording of A4.2.2 item 7 tightened (category-disjoint negatives; exp_p2/gate/folds.py assign_negatives)
 It holds in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters) on COCO image-caption pairs with a random caption of
 an image sharing no annotated COCO category (category-disjoint) as the negative, at one severity per corruption.
 % run: runs/P2-GATE-M4/analysis.json:completeness.*; outcome.label
-By the pre-stated rule the label of family P is \emph{negative}: no hypothesis was rejected after Holm correction over three, and every
+By the pre-stated rule the label of family P is \emph{negative}: no hypothesis was rejected after Holm correction over the three hypotheses, and every
 corruption had an operating point and 500 completed items, with no caption-token exclusion and no empty or non-finite evidence.
 \Cref{fig:p_result} shows the intervals; the full test, with $b$, $c$, $n_d$, the 98.33\% Holm-level intervals, and the exact bounds, is
 the family P table in supplement S-II.
@@ -304,7 +304,7 @@ On the detection items, where the rival and its sign were selected, $q$ also lie
 The preregistered falsifier for the score was therefore met, and this paper makes no claim that the score detects corrupted codes more
 accurately than cheap methods.
 The labels mark codes that the tokeniser changed, which a texture score can anticipate without any reference to the evidence; the
-rival's win is read as this label-circularity concern, not as an account of any corruption effect.
+rival's higher AUROC is read as a sign of this label circularity, not as evidence about any corruption effect.
 
 \begin{figure}[!t]
 \centering
@@ -322,7 +322,7 @@ items; Holm-adjusted $p=0.0004$ for both, the resolution floor of 10\,000 resamp
 
 \subsubsection{Mechanism and the remaining secondary families}
 % run: runs/P2-GATE-M4/analysis.json:s_m.per_corruption.{jpeg,noise,splice}.tested (all false)
-No hypothesis of the mechanism test was tested, and the second-model family was not run, because both are gatekept by a primary rejection with
+No hypothesis of the mechanism test was tested, and the second-model family was not run, because both are conditional on a primary rejection with
 $b>c$.
 % run: runs/P2-GATE-M4/analysis.json:mechanism.{jpeg10,noise0.1,splice128}.y.*, s_z.*, s_dn.*; edec.json; epred_score.json; P2-GATE-M5/coherence.json
 The equal-size gates, the evidence-ratio and pixel-denoising families, the descriptive families (including E-pred), and the denoiser's
@@ -374,5 +374,5 @@ at two severities, 100 test items each; intervals only), no cell's 95\% interval
 
 \subsubsection{Cost}
 % run: runs/P2-GATE-M4/items.jsonl:n_rows, seconds, peak_gb (median 84 rows, 11.2 s, max 8.2 GB)
-The main-test pass, which computes every arm of Study~1 at once, used a median of 84 network rows and 11.2~s per item on one
+The main-test pass, which computes every arm of Study~1 at once, used a median of 84 network rows (one row is one input sequence in a forward-pass batch) and 11.2~s per item on one
 12~GB laptop GPU, with a peak memory of 8.2~GB (supplement S-II).

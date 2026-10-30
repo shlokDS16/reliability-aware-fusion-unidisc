@@ -8,7 +8,7 @@ Family & What it tests & Status \\
 % run: block heading
 \multicolumn{3}{@{}l}{\textit{Study 1}} \\
 % run: runs/P2-GATE-M4/analysis.json completeness.completed_n (= 500)
-P & GATE-M against no gate under JPEG, noise and splice & run, formal \\
+P & GATE-M against no gate under JPEG, noise, and splice & run, formal \\
 % run: runs/P2-GATE-M4/analysis.json s_c.n
 S-C & GATE-M against no gate on clean images & run, formal \\
 % run: runs/P2-GATE-M4/analysis.json ps.holm_m
@@ -16,7 +16,7 @@ PS & pipeline check on patch and swap corruptions & run, formal \\
 % run: runs/P2-GATE-M1/analysis.json n_items; runs/P2-GATE-M4/analysis.json s_d2.per_corruption.*.tested
 S-D, S-D2 & detection of changed tokens against cheap scores (detection and test items) & run, formal \\
 % run: runs/P2-GATE-M4/analysis.json s_m.per_corruption.*.tested (all false)
-S-M & GATE-M against the geometry-matched random gate & not run (gatekept) \\
+S-M & GATE-M against the geometry-matched random gate & not run (gatekept: P+ empty) \\
 % run: runs/P2-GATE-S2/analysis.json completeness, per_cell.*.tested
 S2 & re-infill of flagged tokens against random re-infill & run, formal \\
 % run: runs/P2-GATE-FOIL/analysis.json status, partial
@@ -37,6 +37,6 @@ L-NI & clean images against the non-inferiority margin & run, formal \\
 % run: runs/P2-LRF-L1/a6_analysis.json family_L.L-LEN.n
 L-LEN & L1 with length-matched wrong captions & run, formal \\
 % run: runs/P2-LRF-LG/a6_analysis.json family_LG.cells.*.n (= 300)
-LG & the same under shot, impulse and speckle noise, severity 3 (three cells) & run, formal \\
+LG & the same under shot, impulse, and speckle noise, severity 3 (three cells) & run, formal \\
 \bottomrule
 \end{tabular}

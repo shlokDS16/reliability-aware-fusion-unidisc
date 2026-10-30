@@ -1,6 +1,7 @@
 """Main-text table "Families at a glance" (column width): two separate blocks, Study 1 and Study 2; family, what it tests in plain words,
 and its STATUS only (D0102, amends D0096; red-team re-check R1). The status vocabulary is that of the supplement status map
-(SAP A4.2.5 item 6): "run, formal", "not run (gatekept)", "headroom not met; H4 not run". No outcome word appears anywhere (no
+(SAP A4.2.5 item 6): "run, formal", "headroom not met; H4 not run"; the plan's "not run (gatekept: P+ empty)" is printed verbatim (lead 2026-10-30, A4.2.5 item 6; explained in the table note)
+(language-review B31 reverted). No outcome word appears anywhere (no
 "bounded null", "confirmed", "rejected", "not rejected", "shown"), no number, no interval and no cross-study row; outcomes are in each
 study's Results. Every status is checked against the run file that carries it (assertions), so a changed run changes the build.
 Sources: runs/P2-GATE-M4/analysis.json, runs/P2-GATE-M1/analysis.json, runs/P2-GATE-S2/analysis.json, runs/P2-GATE-FOIL/analysis.json,
@@ -20,7 +21,7 @@ LG = S.jload("P2-LRF-LG/a6_analysis.json")
 FL, FG = L1["family_L"], LG["family_LG"]["cells"]
 assert FL == LG["family_L"]
 MP = "runs/P2-GATE-M4/analysis.json"
-RUN, GATED, H_STATUS = "run, formal", "not run (gatekept)", "headroom not met; H4 not run"
+RUN, GATED, H_STATUS = "run, formal", "not run (gatekept: P+ empty)", "headroom not met; H4 not run"
 
 # ---- Study 1 statuses (checked against the run files; same rules as scripts/tab_status_map.py) ------------------------------------
 assert M4["completeness"]["completed_n"] == 500                                         # P: run, formal
@@ -33,7 +34,7 @@ assert FB["status"] == "tested" and FB["partial"] is False                      
 assert H3["go"] is False and H3["n_rule"]["h_rule"] == "H-NOGO"                        # H: headroom not met; H4 not run
 assert not (S.RUNS / "P2-GATE-H4").exists()
 S1 = [
-    ("P", "GATE-M against no gate under JPEG, noise and splice", RUN, f"{MP} completeness.completed_n (= 500)"),
+    ("P", "GATE-M against no gate under JPEG, noise, and splice", RUN, f"{MP} completeness.completed_n (= 500)"),
     ("S-C", "GATE-M against no gate on clean images", RUN, f"{MP} s_c.n"),
     ("PS", "pipeline check on patch and swap corruptions", RUN, f"{MP} ps.holm_m"),
     ("S-D, S-D2", "detection of changed tokens against cheap scores (detection and test items)", RUN,
@@ -56,7 +57,7 @@ S2R = [
     ("L4", "the same under a 128 px splice", RUN, f"{LP} family_L.L4.n"),
     ("L-NI", "clean images against the non-inferiority margin", RUN, f"{LP} family_L.L-NI.n"),
     ("L-LEN", "L1 with length-matched wrong captions", RUN, f"{LP} family_L.L-LEN.n"),
-    ("LG", "the same under shot, impulse and speckle noise, severity 3 (three cells)", RUN, f"{LGP} family_LG.cells.*.n (= 300)"),
+    ("LG", "the same under shot, impulse, and speckle noise, severity 3 (three cells)", RUN, f"{LGP} family_LG.cells.*.n (= 300)"),
 ]
 r1 = [row([f, w, d], [src]) for f, w, d, src in S1]
 r2 = [row([f, w, d], [src]) for f, w, d, src in S2R]

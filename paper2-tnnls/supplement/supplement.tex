@@ -228,12 +228,13 @@ committed and read, before any main-test value or Tier-3 output existed.
 (3) The outcome book of Addendum A4 fixed the wording of every label before the primary result existed.
 On 28 October 2026 at about 18:40 UTC the first author delegated the choice of how the submission condition reads under a null primary
 result; under that delegation the stricter reading (no question-form framing in the title, abstract, highlights, conclusion, or the opening of
-the Study 1 discussion) was adopted within the authors' study pipeline under that delegation at 18:42 UTC, before any value of the main test was
-read (decision records D0076 and D0077; D0077 corrects D0076's wording: the author's message delegated the choice and did not itself choose a
-reading).
+the Study 1 discussion) was adopted within the authors' study pipeline at 18:42 UTC, before any value of the main test was
+read. Decision records D0076 and D0077 document this; D0077 corrects D0076's wording (the author's message delegated the choice and did
+not itself choose a reading).
 (4) The time-input statement rests on a code reading at the pinned commit (above) and on the key check.
 (5) Family~B ran before the re-infilling family S2, which the plan allows when a fixed time inequality holds at the end of the coherence
-stage; it held.
+stage (the current time plus the planned duration of the re-infilling stage and fixed margins had to fall before a deadline fixed in
+Addendum A4); it held.
 A code reading showed that no output of family~B can reach an input of S2; the rule that B is analysed only after the S2 table exists
 is procedural, and it was followed (analysis commit \texttt{10e6bc0f}).
 
@@ -249,7 +250,7 @@ by the auditor; the second-model stage never ran.
 over-flag sensitivity to $n$, never under-flag it, and it enters no claim.
 \item The firewall for the S2 smoke test is an honour rule.
 \item The swap and patch parameters are stored in one frozen file that stands for two files named in the plan.
-\item The chance bar for the sanity corruptions is called blind on the lead's assertion that no detection-pilot output from item 26 on
+\item The chance bar for the sanity corruptions is called blind on the lead analyst's assertion that no detection-pilot output from item 26 on
 was read; the first author's written co-attestation of not having looked at those outputs is dated before the analysis ran.
 \item Where the card forbids any claim from a rejection with $c>b$ and the plan prescribes ``reduced verification accuracy'', the plan
 governs, and no claim in favour of the gate is made from such a rejection.
@@ -309,7 +310,7 @@ are recorded in the reference-encoder audit.
 \resizebox{\textwidth}{!}{\input{../tables/tab1_familyP}}
 
 \vspace{2pt}
-\parbox{\textwidth}{\scriptsize Moved from the main paper (edit 6; A4.2.5 keeps the P table and its 98.33\% interval, the P-only summary figure stays in the main text). $b$: items that GATE-M answers correctly and the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$;
+\parbox{\textwidth}{\scriptsize Moved from the main paper (A4.2.5 keeps the P table and its 98.33\% interval, the P-only summary figure stays in the main text). $b$: items that GATE-M answers correctly and the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$;
 net difference $=(b-c)/n$. Paired percentile bootstrap intervals (10\,000 resamples) at 90\% (the level of the preregistered
 decision), 95\% and 98.33\% (the Holm level of the smallest-$p$ step); zero width when $n_d=0$. $p$: exact two-sided McNemar;
 $p_{\rm Holm}$: Holm over the three corruptions. The exact Clopper--Pearson 95\% bound on the absolute net change was added at
@@ -343,13 +344,7 @@ rule uses the size-normalised ratio.
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{Headroom check on the 100 headroom items (no gate flag computed). $n_v$: items with all values; $T_1$, $T_2$: paired
-$t$ statistics of clean minus corrupted and changed-code gate minus corrupted, on $d_R$; a rung passes if $n_v\ge90$, $T_1\ge2$ and
-$T_2\ge2$, and the first passing rung is the operating point. $D_c$: items whose correctness differs between the changed-code gate
-and no gate. Changed codes: mean number of the 1\,024 codes that differ from the clean tokenisation. Accuracy drop: clean minus
-corrupted accuracy without a gate. Rungs after a passing first rung were computed but not used. No interval is reported, so nothing is
-bold. $D^\ast=\max(19,18,2)=19$ over the operating points gives rule R2 ($18\le D^\ast<29$): 500 test items, endpoint $Y$.
-Source: \nolinkurl{runs/P2-GATE-M3/family.json}, keys \nolinkurl{rungs.*} and \nolinkurl{n_rule.*}.}
+\caption{Headroom Check on the 100 Headroom Items (No Gate Flag Computed)}
 \label{stab:headroom}
 \footnotesize
 \begin{adjustbox}{max width=\textwidth}
@@ -366,17 +361,22 @@ Splice, 192 px & 100 & 7.93 & 7.34 & yes & 3 & 387.7 & 0.03 & -- \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize $n_v$: items with all values; $T_1$, $T_2$: paired
+$t$ statistics of clean minus corrupted and changed-code gate minus corrupted, on $d_R$; a rung passes if $n_v\ge90$, $T_1\ge2$, and
+$T_2\ge2$, and the first passing rung is the operating point. $D_c$: items whose correctness differs between the changed-code gate
+and no gate. Changed codes: mean number of the 1\,024 codes that differ from the clean tokenisation. Accuracy drop: clean minus
+corrupted accuracy without a gate. Rungs after a passing first rung were computed but not used. No interval is reported, so nothing is
+bold. $D^\ast=\max(19,18,2)=19$ over the operating points gives rule R2 ($18\le D^\ast<29$): 500 test items, endpoint $Y$.
+Source: \nolinkurl{runs/P2-GATE-M3/family.json}, keys \nolinkurl{rungs.*} and \nolinkurl{n_rule.*}.}
 \end{table}
 
 \subsection{Calibration and Flags}
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{Clean false-alarm check on the 500 clean test pairs. $\hat F$: mean over items of the flagged share of an item's 1\,024
-tokens; interval: percentile bootstrap 95\% over items (10\,000 resamples). $\hat F_{\rm cal}$: flagged share on the 300 calibration
-pairs at the fitted threshold. $Z_{\rm cal}$: calibration statistic of Section S-I; a violation is flagged above 2.13. Nothing
-is bold (no interval of a difference). Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys
-\nolinkurl{calibration.fap_check.per_alpha.*}; \nolinkurl{runs/P2-GATE-M2/threshold.json}, keys \nolinkurl{thresholds.*.r_hat}.}
+\caption{Clean False-Alarm Check on the 500 Clean Test Pairs}
 \label{stab:cal}
 \footnotesize
 \begin{tabular}{ccccc}
@@ -388,16 +388,18 @@ $\alpha$ & $\hat F_{\rm cal}$ & $\hat F$ (test) [95\%] & $Z_{\rm cal}$ & Reading
 0.10 & 0.0970 & 0.0956 $[0.0928,\,0.0985]$ & $-1.76$ & no evidence of violation \\
 \bottomrule
 \end{tabular}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize $\hat F$: mean over items of the flagged share of an item's 1\,024
+tokens; interval: percentile bootstrap 95\% over items (10\,000 resamples). $\hat F_{\rm cal}$: flagged share on the 300 calibration
+pairs at the fitted threshold. $Z_{\rm cal}$: calibration statistic of Section S-I; a violation is flagged above 2.13. Nothing
+is bold (no interval of a difference). Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys
+\nolinkurl{calibration.fap_check.per_alpha.*}; \nolinkurl{runs/P2-GATE-M2/threshold.json}, keys \nolinkurl{thresholds.*.r_hat}.}
 \end{table}
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{Flags of the gate at $\alpha=0.05$ on the corrupted test images, token level, pooled over the 500 items. Changed share: share of
-tokens whose code differs from the clean tokenisation ($\rho$). Hit rate: share of changed tokens flagged. False-alarm proportion:
-share of unchanged tokens of corrupted items flagged (not covered by the guarantee). Precision: share of flagged tokens that changed.
-Point estimates; no interval was computed, so nothing is bold. Patch and swap are the sanity corruptions of the positive control.
-Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{calibration.per_condition.*.{precision,recall,fap_on_clean_tokens}}
-and \nolinkurl{calibration.per_condition.*.prop4.rho}.}
+\caption{Flags of the Gate at $\alpha=0.05$ on the Corrupted Test Images (Token Level, Pooled Over the 500 Items)}
 \label{stab:flags}
 \footnotesize
 \begin{tabular}{lcccc}
@@ -412,6 +414,14 @@ Patch (sanity) & 0.062 & 0.750 & 0.050 & 0.498 \\
 Swap (sanity) & 0.150 & 0.859 & 0.089 & 0.631 \\
 \bottomrule
 \end{tabular}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Changed share: share of
+tokens whose code differs from the clean tokenisation ($\rho$). Hit rate: share of changed tokens flagged. False-alarm proportion:
+share of unchanged tokens of corrupted items flagged (not covered by the guarantee). Precision: share of flagged tokens that changed.
+Point estimates; no interval was computed, so nothing is bold. Patch and swap are the sanity corruptions of the positive control.
+Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{calibration.per_condition.*.{precision,recall,fap_on_clean_tokens}}
+and \nolinkurl{calibration.per_condition.*.prop4.rho}.}
 \end{table}
 % run: runs/P2-GATE-M4/analysis.json:calibration.split_replication.*; c1_test.*
 In 2\,000 random re-splits of calibration and test items at $\alpha=0.05$ (exploratory), the mean of $\hat F-\alpha$ was $-0.0031$, with 2.5
@@ -474,10 +484,7 @@ lowered accuracy relative to no gate under JPEG ($-0.084$, $-0.122$ to $-0.046$)
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{Equal-size gates on the 500 test items: accuracy of GATE-M minus each comparison gate, and of the changed-code gate minus no
-gate, with paired percentile bootstrap 95\% intervals over items (10\,000 resamples). Geometry-matched and scattered random gates are
-averaged over three seeds per item. Descriptive (exploratory); no $p$-value. Bold: the 95\% interval excludes zero.
-Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{mechanism.{jpeg10,noise0.1,splice128}.y.*}.}
+\caption{Equal-Size Gates on the 500 Test Items}
 \label{stab:mech}
 \footnotesize
 \begin{adjustbox}{max width=\textwidth}
@@ -496,6 +503,12 @@ Splice & $-0.001$ & $-0.004$ & $\mathbf{-0.008}$ & $-0.006$ & $-0.008$ & $0.004$
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Accuracy of GATE-M minus each comparison gate, and of the changed-code gate minus no
+gate, with paired percentile bootstrap 95\% intervals over items (10\,000 resamples). Geometry-matched and scattered random gates are
+averaged over three seeds per item. Descriptive (exploratory); no $p$-value. Bold: the 95\% interval excludes zero.
+Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{mechanism.{jpeg10,noise0.1,splice128}.y.*}.}
 \end{table}
 
 % run: runs/P2-GATE-M4/analysis.json:s_z.*; mechanism.<cell>.d.*
@@ -530,11 +543,7 @@ The correlated-token proposition of the main paper is not used to interpret E-pr
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{E-dec on the accuracy scale, primary cells (descriptive; no test). $T$: clean minus corrupted accuracy without a gate; $U$:
-residual loss under the oracle (changed-code) gate; $R$: realised recovery by GATE-M; $V$: gap to the oracle gate; $T=U+R+V$.
-Paired percentile bootstrap 95\% intervals over items, items resampled jointly (10\,000 resamples). $n$: complete items (two JPEG items
-have no finite changed-code value). Bold: the 95\% interval excludes zero. Source: \nolinkurl{runs/P2-GATE-M4/edec.json}, keys
-\nolinkurl{cells.{P1,P2,P3}.accuracy_scale.tau.*}.}
+\caption{E-dec on the Accuracy Scale, Primary Cells (Descriptive; No Test)}
 \label{stab:edec}
 \footnotesize
 \begin{adjustbox}{max width=\textwidth}
@@ -551,16 +560,18 @@ Splice (P3) & 500 & $0.004$ & $0.000$ & $-0.004$ & $0.008$ \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize $T$: clean minus corrupted accuracy without a gate; $U$:
+residual loss under the oracle (changed-code) gate; $R$: realised recovery by GATE-M; $V$: gap to the oracle gate; $T=U+R+V$.
+Paired percentile bootstrap 95\% intervals over items, items resampled jointly (10\,000 resamples). $n$: complete items (two JPEG items
+have no finite changed-code value). Bold: the 95\% interval excludes zero. Source: \nolinkurl{runs/P2-GATE-M4/edec.json}, keys
+\nolinkurl{cells.{P1,P2,P3}.accuracy_scale.tau.*}.}
 \end{table}
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{E-pred, primary cells (descriptive; family E withdrawn, no test). $s_c$: committed sign of the plug-in signal-to-noise change
-(the independent-token condition of Lemma 1 of the main paper) from the fit chunk, with the share of fit resamples giving the same sign; $o_c$: sign of $b-c$ for GATE-M against
-none; $o_c^\ast$: the same sign only where the 95\% paired bootstrap interval of the net difference excludes zero. Net difference with
-its paired percentile bootstrap 95\% interval over items. Agreement $A/K_{\rm eval}=2/2$ (Clopper--Pearson 95\% interval 0.158 to
-1.000); rival rules: ``always $+$'' 0/2, ``$-$ for primary cells, $+$ for positive-control cells'' 2/2. No estimate is bold: no
-interval excludes zero. Positive-control cells are reported in the text. Source: \nolinkurl{runs/P2-GATE-M4/epred_score.json}, keys \nolinkurl{cells.{P1,P2,P3}} and \nolinkurl{P}.}
+\caption{E-pred, Primary Cells (Descriptive; Family E Withdrawn, No Test)}
 \label{stab:epred}
 \footnotesize
 \begin{adjustbox}{max width=\textwidth}
@@ -577,6 +588,14 @@ Splice (P3) & $-$ & 1.000 & 1 & 3 & $-0.004$ & $-$ & none & yes \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize $s_c$: committed sign of the plug-in signal-to-noise change
+(the independent-token condition of Lemma 1 of the main paper) from the fit chunk, with the share of fit resamples giving the same sign; $o_c$: sign of $b-c$ for GATE-M against
+none; $o_c^\ast$: the same sign only where the 95\% paired bootstrap interval of the net difference excludes zero. Net difference with
+its paired percentile bootstrap 95\% interval over items. Agreement $A/K_{\rm eval}=2/2$ (Clopper--Pearson 95\% interval 0.158 to
+1.000); rival rules: ``always $+$'' 0/2, ``$-$ for primary cells, $+$ for positive-control cells'' 2/2. No estimate is bold: no
+interval excludes zero. Positive-control cells are reported in the text. Source: \nolinkurl{runs/P2-GATE-M4/epred_score.json}, keys \nolinkurl{cells.{P1,P2,P3}} and \nolinkurl{P}.}
 \end{table}
 
 \subsection{Coherence of the Denoiser Across Mask Patterns}
@@ -745,21 +764,11 @@ sanity corruption and is not a finding about the realistic corruptions.
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{Exploratory (Tier 3): the hard gate GM (GATE-M) against detector-free combiners (MED: median; TM-G: trimmed mean removing
-$\lfloor g_i/2\rfloor$ tokens from each tail, $g_i$ the gate's flag count; TM20: 20\% trimmed mean), discounting of the gate-flagged
-tokens (SOFT-G) and reliability weighting of every token (SOFT-A), on the same $\Delta_j$ and items ($n=500$ per cell; primary cells and
-the clean cell). Acc.: accuracy of the comparator. $b$/$c$: items right only under the comparator / only under GM. $\Delta$: comparator
-minus GM with its percentile bootstrap 95\% interval (descriptive; 10\,000 resamples, one index matrix per cell). Exact: Clopper--Pearson
-95\% interval for $b/n_d$, which gives the reading. Bound: $B$ (exact 95\% upper bound on the discordance rate) for $n_d<10$, MDD for
-$n_d\ge10$. Reading: above or below GM, not distinguishable (n.d.), or identical; $\dagger$: counts as a finding against the added value
-of the detector (n.d.\ or identical for a detector-free combiner with bound at most 0.05; primary cells only). Bold: the exact interval excludes one half. 72 intervals in this
-comparison; no $p$-value and no multiplicity adjustment. Limits: (a) no sign-aware detector-free estimator is computed, because the
+\caption{Exploratory (Tier 3): The Hard Gate GM (GATE-M) Against Detector-Free Combiners, Discounting, and Reliability Weighting of the Same Evidence. Limits: (a) no sign-aware detector-free estimator is computed, because the
 direction in which a corruption moves $\Delta_j$ is defined by the true caption and such a combiner would use the label; (b) SOFT-G's
 weights lie token by token between GM's and no gate's, so it is not reliability weighting of every token; (c) when the gate's score is
 near chance the flagged count is close to the false-alarm count, so TM-G approximates no gate trimmed at about that count and TM-G
-minus GM largely repeats the primary contrast; (d) at this $n$ many contrasts are uninformative, as the bound shows. Source:
-\nolinkurl{runs/P2-GATE-M4/tier3_fusion.json}, keys \nolinkurl{cells.*.arms}, \nolinkurl{cells.*.contrasts.*_minus_GM},
-\nolinkurl{clean.arms}, \nolinkurl{clean.contrasts}.}
+minus GM largely repeats the primary contrast; (d) at this $n$ many contrasts are uninformative, as the bound shows.}
 \label{stab:tier3}
 \footnotesize
 \begin{adjustbox}{max width=\textwidth}
@@ -797,14 +806,23 @@ Cell & Comparator & Acc. & $b$/$c$ & $n_d$ & $\Delta$ [95\%, descriptive] & Exac
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Detector-free combiners: MED, median; TM-G, trimmed mean removing $\lfloor g_i/2\rfloor$ tokens from each tail, $g_i$ the gate's
+flag count; TM20, 20\% trimmed mean. SOFT-G: discounting of the gate-flagged tokens; SOFT-A: reliability weighting of every token.
+All on the same $\Delta_j$ and items ($n=500$ per cell; primary cells and the clean cell). Acc.: accuracy of the comparator. $b$/$c$: items right only under the comparator / only under GM. $\Delta$: comparator
+minus GM with its percentile bootstrap 95\% interval (descriptive; 10\,000 resamples, one index matrix per cell). Exact: Clopper--Pearson
+95\% interval for $b/n_d$, which gives the reading. Bound: $B$ (exact 95\% upper bound on the discordance rate) for $n_d<10$, MDD for
+$n_d\ge10$. Reading: above or below GM, not distinguishable (n.d.), or identical; $\dagger$: counts as a finding against the added value
+of the detector (n.d.\ or identical for a detector-free combiner with bound at most 0.05; primary cells only). Bold: the exact interval excludes one half. 72 intervals in this
+comparison; no $p$-value and no multiplicity adjustment. Source:
+\nolinkurl{runs/P2-GATE-M4/tier3_fusion.json}, keys \nolinkurl{cells.*.arms}, \nolinkurl{cells.*.contrasts.*_minus_GM},
+\nolinkurl{clean.arms}, \nolinkurl{clean.contrasts}.}
 \end{table}
 % Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
 \begin{table}[!htbp]
 \centering
-\caption{Exploratory (Tier 3), positive-control cells only (pipeline check; never pooled with or shown beside the primary cells).
-Columns, comparators, bound, reading, and bold rule as in Table~\ref{stab:tier3}; $n=500$ per cell; ``against added value'' is not
-read on these cells. Source: \nolinkurl{runs/P2-GATE-M4/tier3_fusion.json}, keys \nolinkurl{ps_cells.{patch,swap}.arms} and
-\nolinkurl{ps_cells.{patch,swap}.contrasts.*_minus_GM}.}
+\caption{Exploratory (Tier 3), Positive-Control Cells Only}
 \label{stab:tier3_ps}
 \footnotesize
 \begin{adjustbox}{max width=\textwidth}
@@ -828,6 +846,11 @@ Cell & Comparator & Acc. & $b$/$c$ & $n_d$ & $\Delta$ [95\%, descriptive] & Exac
 \bottomrule
 \end{tabular}
 \end{adjustbox}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Pipeline check; never pooled with or shown beside the primary cells. Columns, comparators, bound, reading, and bold rule as in Table~\ref{stab:tier3}; $n=500$ per cell; ``against added value'' is not
+read on these cells. Source: \nolinkurl{runs/P2-GATE-M4/tier3_fusion.json}, keys \nolinkurl{ps_cells.{patch,swap}.arms} and
+\nolinkurl{ps_cells.{patch,swap}.contrasts.*_minus_GM}.}
 \end{table}
 
 \paragraph*{Theory reference for Study 1's soft comparators; not used in Study 2}
@@ -887,8 +910,7 @@ two statements are not jointly applicable.
 % run: downstream_claim_withdrawn (= true), inputs.code_commit (= 5e6380b1)
 In a separately labelled family added after the primary result was known (family H: SugarCrepe hard negatives on 50 pilot COCO images
 not used elsewhere; Holm over the same three corruptions), the pre-written pilot rule found no corruption with decision headroom on 50
-pilot images, so the family's test was not run.
-The family's test (H4) was not run, and nothing is stated about the gate on hard negatives.
+pilot images, so the family's test (H4) was not run, and nothing is stated about the gate on hard negatives.
 \Cref{stab:H} gives the recorded decision; the item values of the pilot are in \nolinkurl{runs/P2-GATE-H3/family.json} and are not
 interpreted here.
 
@@ -916,7 +938,7 @@ mechanism and calibration sections, the positive-control audit, and a one-line s
 had been committed but were not opened by that analyst.
 Family~H tests the same contrast on a different population of image-caption pairs (SugarCrepe hard negatives on COCO images used nowhere
 else in this study).
-It was specified in SAP Addendum A5 (draft \texttt{86064e57}; final \texttt{b32e72a1}; revision r1 \texttt{2f62f1df}) before any
+It was specified in Addendum A5 of the statistical analysis plan (draft \texttt{86064e57}; final \texttt{b32e72a1}; revision r1 \texttt{2f62f1df}) before any
 hard-negative item was scored, approved by the first author (decision D0080), signed with conditions by the adversarial review, and implemented in
 audited code (commit \texttt{5e6380b1}).
 It reuses the primary family's corruptions, severities, threshold, and arms.
@@ -1147,7 +1169,7 @@ The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was wri
 was committed before any variant was fitted or scored.
 \emph{Disclosure.} When the plan was written, its author had seen the fresh-fold results of the frozen LRF and of the unweighted rule,
 an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (main paper,
-Fig.~4); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
+Fig.~\ref{M-fig:lrf_weights}); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
 the list was committed.
 Every listed variant is reported; no variant was selected and scored again, and the tested object of Study~2 stays the frozen LRF.
 
