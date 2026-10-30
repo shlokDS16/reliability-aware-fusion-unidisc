@@ -6,6 +6,6 @@ import subprocess
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-for s in ("fig1_measurement", "fig2_theory", "fig3_study1_P", "fig4_study2_weights", "fig5_study2_results", "tab1_familyP", "tab_detection", "tab_H", "tab1_study1", "tab2_study2", "tab3_baselines", "tab_features", "tab4_cost"):
+for s in ("fig1_measurement", "fig2_theory", "fig3_study1_P", "fig4_study2_weights", "fig5_study2_results", "tab1_familyP", "tab_detection", "tab_H", "tab_status_map", "tab_glance", "tab_tests_full", "tab2_study2", "tab3_baselines", "tab_features", "tab4_cost"):
     print("==", s, flush=True)
     subprocess.run([sys.executable, str(HERE / f"{s}.py")], cwd=HERE, check=True)

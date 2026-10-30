@@ -16,7 +16,7 @@ It concerns this gate at its preregistered level $\alpha=0.05$, one severity per
 nothing about other levels, stronger corruptions, models or tasks, none of which was tested.
 
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.*.contrasts.* (exploratory; Section IV-C)
-The exploratory Tier-3 comparison of the hard gate with five combiners of the same evidence is reported in \cref{sec:study1-results} and
+The exploratory comparison of the hard gate with five combiners of the same evidence is reported in \cref{sec:study1-results} and
 supplement S-II; it describes the combiners and is not an account of the primary result.
 
 % run: runs/P2-GATE-H3/family.json:{n_headroom_items (= 50), n_rule.h_rule (= H-NOGO), n_rule.G_max_headroom (= null), go (= false)}
@@ -33,13 +33,19 @@ preregistered level and holding with length-matched negative captions.
 It does not show that the weighting works on a corruption it was not trained on, that its weights follow the reliability of a token,
 or that the effect carries to another model, data set or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
-Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (i) a reweighting that helps
-whatever the condition; (ii) a supervised fit to the training corruption; (iii) a single noise-sensitive feature, such as the
-codebook-neighbour distance or the one-pass observed-position score, which \cref{fig:lrf_weights} cannot separate and the exploratory
-ablation of \cref{sec:study2-ablation} bears on only as an exploratory result; (iv) a limited reach to other noise types, since the
-impulse-noise interval starts at 0.0; and (v) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
+Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}:
+\begin{enumerate}
+\item a reweighting that helps whatever the condition;
+\item a supervised fit to the training corruption;
+\item a single noise-sensitive feature, such as the codebook-neighbour distance or the one-pass observed-position score, which
+\cref{fig:lrf_weights} cannot separate and the exploratory ablation of \cref{sec:study2-ablation} bears on only as an exploratory result;
+\item a limited reach to other noise types, since the impulse-noise interval starts at 0.0;
+\item an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
+\end{enumerate}
 A second backbone, a corruption held out of training and a preregistered comparison with simpler weighting rules on fresh images are the
 tests that would settle these questions; none was run.
+The paper measures the evidence that the model computes about its own inputs; it makes no claim of a verifier that ranks with dedicated
+encoders, and the two reference encoders are near ceiling on these items (\cref{sec:study2-reference}).
 
 \subsection{Limitations}\label{sec:limitations}
 \emph{Study 1.} One model and one severity per corruption were tested.
@@ -57,19 +63,25 @@ The clean-image margin of L-NI was fixed after an exploratory clean interval had
 Whether COCO images were in the pretraining data of UniDisc, its tokeniser, CLIP or SigLIP is unknown.
 Each image has one corruption realisation and one mask seed, so the intervals cover item sampling only.
 A fresh tokenisation of the same pixels in another process need not reproduce the stored codes: it agreed on 98.8\,\% and 98.9\,\% of
-image tokens in the two stopped self-checks of card row A-8, and on at least 98.6\,\% in the pixel-parity runs.
+image tokens in the two stopped self-checks (supplement S-I, Study~2 deviation 1), and on at least 98.6\,\% in the pixel-parity runs.
 The reference encoders almost solve this matching task (\cref{sec:study2-reference}); this paper makes no claim of a verifier that ranks
 with them.
 No ablation was preregistered; \cref{sec:study2-ablation} is exploratory.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (V-G values: A-LIN, A-S-BD, A-S-s3, A-MIL against LRF on the L1 cell, intervals containing 0); red-team condition V2-2(d), A16
+In that ablation, simpler weightings fitted on the design items (a linear logit, the features from $B$ and $D$ alone, the features from
+$s_3$ alone and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
 
-\emph{Both studies.} All results are for random-caption negatives. The preregistration is self-hosted in the sense of
+% D0097: category-disjoint negatives (exp_p2/gate/folds.py assign_negatives; runs/P2-LRF-FOLD/folds_lrf.json neg_restricted 533 of 533)
+\emph{Both studies.} All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category).
+The preregistration is self-hosted in the sense of
 \cref{sec:setting-tests}, and the audits were agent-run (see the Declaration).
 
 \subsection{Deviations From the Plans}\label{sec:deviations}
 {\small
 \noindent\emph{Study 1:}
-(1) The Tier-3 comparators, parameters and fallback seed were fixed in an addendum committed before the main run's headroom decision;
-their intervals carry no $p$-value and no multiplicity adjustment.
+(1) The exploratory comparators of the hard gate, their parameters and the fallback seed were fixed in an addendum committed before the main run's headroom decision;
+the reading rules for few discordant items (its revisions r2 and r3) were added after the headroom decision file was committed and
+read, before any main-test value or exploratory comparator output existed; the intervals carry no $p$-value and no multiplicity adjustment.
 (2) Outcome-label wording was fixed before the primary result, with a dated record of the null wording and of the reading adopted where
 card and plan differed on a rejection against the gate.
 (3) The time-input statement rests on a code reading at a pinned commit and a key check; its table moved to the supplement.
@@ -80,16 +92,19 @@ pilot row existed.
 (7) The data steward did not collect the image ids of negatives and mismatches separately (no analysis uses them), and its check left
 some run files outside the excluded classes unopened.
 (8) The exact Clopper--Pearson bounds of \cref{tab:familyP} were added at writing (\nolinkurl{runs/P2-PAPER-BOUNDS}, descriptive).
+% run: runs/P2-GATE-M1/env-lock.txt and runs/P2-GATE-M4/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt (SPEC section 8; red-team A14)
+(9) The environment lock files of the detection and main-test stages are empty; the environment was recorded after the runs.
 \emph{Study 2:}
-(1) The L1 stage stopped twice at its tokenisation self-check before any item; card row A-8 moved the code pin, and row A-9 changed one
-test only.
+(1) The L1 stage stopped twice at its tokenisation self-check before any item; a dated amendment moved the code pin, and a second
+changed one test only.
 (2) The scorer's pin file was written while L1 ran, with every value copied from records committed before L1.
 (3) The environment lock files of the design, re-score, L1 and other-noise stages are empty; the environment was recorded after the runs,
 and the corruption package's commit was verified from it.
 (4) Item arrays are untracked with committed SHA-256 manifests; hashes appear in CRLF and LF forms of the same content.
 (5) The pixel-parity files were moved unchanged from a wrong output directory with no prior hash (audit-time hashes are recorded); they
 supersede the field ``pixel\_parity: not run'' of the main reference-encoder file.
-(6) The reference-encoder download was larger than the size quoted to the first author.
+% run: runs/P2-ENV/hf_cache_sizes.json:total_gb_decimal (= 5.229); D0100
+(6) The reference-encoder download was 5.2~GB, against about 2 to 4~GB quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.
 (8) ``No output was read before its run was complete'' rests on the operations log.
 (9) The exploratory ablation was added at writing.

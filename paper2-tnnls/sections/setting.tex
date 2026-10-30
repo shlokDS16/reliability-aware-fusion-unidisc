@@ -71,13 +71,27 @@ p_{\rm one}&=\Pr\big[\mathrm{Bin}(n_d,\tfrac12)\ge b\big],\notag\\
 p_{\rm two}&=\min\big\{1,\ 2\min\big(p_{\rm one},\,\Pr[\mathrm{Bin}(n_d,\tfrac12)\le b]\big)\big\}.
 \label{eq:mcnemar}
 \end{align}
-The one-sided form of \eqref{eq:mcnemar} is used where a plan states a direction in advance, and the two-sided form otherwise; each study
-lists which.
+The one-sided form of \eqref{eq:mcnemar} is used only for hypotheses with a preregistered direction, and every other test is two-sided.
 Within a family of hypotheses the familywise level 0.05 is held by Holm's step-down procedure~\cite{holm1979sequentially}.
 Intervals for the net accuracy change are paired percentile bootstrap intervals over items.
-% run: SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.7 (17 families; 1 - 0.95^17 = 0.58); runs/P2-LRF-L1/a6_analysis.json:multiplicity_note
+% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.7 (plan constant: 17 families; 1 - 0.95^17 = 0.5819) (pointer per D0100; number audit M7)
 The paper contains 17 preregistered families across the two studies, each tested at its own level with no adjustment across families;
 under a global null with independent families, the chance of at least one false rejection is $1-0.95^{17}=0.58$.
+\Cref{tab:glance} lists the families with their preregistered decisions only; each study's estimates are in its own section.
+
+\begin{table}[!t]
+\centering
+\caption{Preregistered Families at a Glance (Decision Words Only)}
+\label{tab:glance}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\input{tables/tab_families_glance}
+
+\vspace{2pt}
+\parbox{\columnwidth}{\scriptsize No estimate or interval; the two blocks are separate preregistered studies. Bounded null: the negative
+label of family P (changes beyond $\pm0.05$ excluded). Shown: the non-inferiority statement of L-NI. Holm: rejected after Holm within
+the family.}
+\end{table}
 
 \emph{Preregistered} has one meaning in this paper: a dated analysis-plan addendum was committed to a version-controlled repository
 before the first test item was scored, with the tested object pinned by hash, and the order of the commits is the evidence; no

@@ -20,12 +20,12 @@ learned-weighting analysis had all been seen.
 In that analysis four learned-weighting families (a logistic generalised additive model, gradient-boosted trees, a multilayer perceptron
 and a grid model) were compared, and the logistic generalised additive model was selected by inner cross-validation.
 Two other method designs and two other project routes were considered and not pursued.
-A first freeze was found to read the true caption's length through the layout of its inputs; the method was therefore re-scored and
-re-frozen at a fixed caption-slot length, a choice declared before any re-frozen result existed.
+A first freeze was found to read the true caption's length through the layout of its inputs; the caption slot was therefore fixed, and
+the method was re-scored and re-frozen at that slot length, a choice declared before any re-frozen result existed.
 Before the re-freeze the analysts had also seen the result table of Study~1's re-infilling family, the result of its family~B and the
 code of the decision rule of its family~H; the re-freeze protocol itself had been fixed earlier and was not changed.
 The configuration was frozen (SHA-256 \texttt{db7fdb4e\ldots}, commit \texttt{24d36a8a}) before any Study~2 image was selected.
-Study~2 was preregistered (Addendum A6 r1, commit \texttt{941a260b}) with a rule that no further confirmatory study would be added.
+Study~2 was preregistered (a dated addendum to the analysis plan, commit \texttt{941a260b}) with a rule that no further confirmatory study would be added.
 All LRF numbers on Study~1's items are post hoc and exploratory and appear only in supplement S-IV.
 Study~2 tests a different method on different images and does not bear on Study~1's conclusion.
 
@@ -107,9 +107,12 @@ outcome), clean (left) and under Gaussian noise with standard deviation 0.1 (rig
 \paragraph*{Fresh fold and sample size}
 % run: runs/P2-LRF-FOLD/manifest.json:meta.{n_excluded (= 2526),universe.n_eligible_images (= 2449)}; builder_report.json:n (= 533)
 The fold was built after the object commit: 533 COCO val2017 images in a seeded order, drawn from the 2\,449 eligible images that remain
-after the exclusions of \cref{sec:setting-data} (2\,526 images).
-Each image has one seeded true caption of 5 to 32 tokens, a wrong caption of another image chosen by the preregistered derangement rule, and a
-second, length-matched wrong caption.
+after the exclusions of \cref{sec:setting-data} (2\,526 image ids, some outside the captioned set) and the removal of images without
+instance annotations.
+% run: runs/P2-LRF-FOLD/folds_lrf.json:test[*].neg_restricted (533 of 533 true); manifest.json:length_matching.n_unrestricted (= 0)
+Each image has one seeded true caption of 5 to 32 tokens, a wrong caption drawn by the preregistered derangement rule (a random caption of
+another fold image sharing no annotated COCO category with it), and a second, length-matched wrong caption drawn under the same
+category rule.
 The fold, its eight-check leak test (with an injected leak as positive control) and the code passed scripted and agent-run audits (see
 the Declaration) before the first item.
 % run: runs/P2-LRF-PLAN/n_rule.json:{n_L (= 450),rule,reason}; runs/P2-LRF-PLAN/family.json:n_rule.test_fold (= 450)
@@ -136,9 +139,12 @@ matched to $\sigma=0.1$.
 Per the operations log, no output was read before its run was complete.
 
 \subsection{Results}\label{sec:study2-results}
-% run: runs/P2-LRF-L1/a6_analysis.json:multiplicity_note; SAP A6.7 (17 families, 1 - 0.95^17 = 0.58)
+% run: runs/P2-LRF-L1/a6_analysis.json:multiplicity_note (no adjustment across families); 17 families: SAP-ADDENDUM-A6 A6.7 (D0100)
 \Cref{tab:study2} gives every preregistered test and \cref{fig:lrf_results} the family-L intervals; each family is at its own level, with
 no adjustment across families (\cref{sec:setting-tests}).
+% run: runs/P2-LRF-L1/a6_analysis.json:family_L.*.{n_d,ci90,cp95_b_over_nd,p_mid_one,p_mid_two}; runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.* (table tables/supp_tests_full_study2.tex)
+The remaining quantities that the plan reports with every test ($n_d$, 90\,\% intervals, the Clopper--Pearson interval of $b/n_d$ and
+the mid-$p$ values) are in supplement S-IV.
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.{acc_b (= 0.7333),acc_a (= 0.8022),net,ci95,p_one,label (= confirmed)}; branch.branch (= A)
 On a fresh preregistered fold, the frozen LRF raised image-direction verification accuracy under Gaussian noise ($\sigma=0.1$) from 0.733
 without reliability weighting to 0.802 (net 0.069, 95\,\% interval 0.029 to 0.109; exact one-sided McNemar $p=0.0005$; preregistered
@@ -151,11 +157,11 @@ the method, with Gaussian noise at one severity.
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{acc_b (= 0.8867),acc_a (= 0.9178),net,ci90,lower90,margin,non_inferior,margin_note}
 On clean images LRF lost no more than three points (90\,\% interval of the net change 0.009 to 0.053); the margin was fixed after an
 exploratory clean interval had been seen.
-The clean-image estimate was positive (0.887 without weighting, 0.918 with; net 0.031); superiority on clean images was not a
+The clean-image estimate, descriptive, was positive (0.887 without weighting, 0.918 with; net 0.031); superiority on clean images was not a
 preregistered hypothesis.
 
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L3.{net,ci95,p_holm}
-Under JPEG quality~10 no difference was detected (net 0.016, 95\,\% interval $-0.013$ to $0.044$; Holm-adjusted $p=0.38$).
+Under JPEG quality~10 no difference was detected (net 0.016, 95\,\% interval $-0.013$ to $0.044$; Holm-adjusted $p=0.382$).
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L4.{acc_b,acc_a,net,ci95,p_two,p_holm (= 0.0486)}
 Under the 128-pixel splice LRF raised accuracy from 0.896 to 0.927 (net 0.031, 0.007 to 0.058); the Holm-adjusted $p$ is 0.049, a margin of
 0.001 below the 0.05 level (unadjusted two-sided $p=0.024$).
@@ -165,7 +171,10 @@ No tested condition showed a reduction: the lowest 95\,\% bound was $-0.013$, un
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.shot_noise3.{acc_b,acc_a,net,ci95,p_one,p_holm,p_two}
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.speckle_noise3.{acc_b,acc_a,net,ci95,p_one,p_holm,p_two}
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.{acc_b,acc_a,net,ci95,p_one,p_holm,p_two}
-On the other noise types (shot, impulse, speckle; imagecorruptions severity 3; $n=300$ each), each LG hypothesis was rejected with $b>c$.
+% D0099 (factual sentence; not a held-out or transfer claim): runs/P2-LRF-FROZEN-LFIX/spec.json:training_conditions (= clean, jpeg10, noise0.1, splice128)
+None of the three other noise types (shot, impulse, speckle; imagecorruptions severity 3) was a training condition of the frozen
+weighting (training conditions: clean, JPEG quality~10, Gaussian noise 0.1, 128-pixel splice).
+On these types ($n=300$ each), each LG hypothesis was rejected with $b>c$.
 Under shot noise accuracy rose from 0.673 to 0.767 (net 0.093, 0.047 to 0.143; one-sided $p=0.0002$, Holm-adjusted $p=0.0005$, two-sided
 $p=0.0003$), and under speckle noise from 0.697 to 0.757 (net 0.060, 0.017 to 0.103; one-sided 0.006, Holm-adjusted 0.011, two-sided 0.011).
 Under impulse noise it rose from 0.700 to 0.750 (net 0.050), and the 95\,\% interval has lower bound 0.0 (0.000 to 0.100).
@@ -241,7 +250,7 @@ the frozen LRF to its design-item mean (differences are variant minus LRF; posit
 Under Gaussian noise (L1 items), the paired difference from the frozen LRF was $-0.011$ [$-0.031$, 0.009] for a linear logit on the same
 35 features and $-0.002$ [$-0.033$, 0.029] for weighting by the features computed from $B$ and $D$ alone.
 It was $-0.033$ [$-0.071$, 0.004] for the features from $s_3$ alone and $-0.009$ [$-0.044$, 0.027] for attention-weighted pooling in the
-style of gated attention MIL~\cite{ilse2018attention}; an interval that contains zero does not show that the difference is zero.
+style of gated attention MIL~\cite{ilse2018attention} (reading of intervals in supplement S-VII).
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-S-tbv,A-S-ltex,A-S-nbr,A-S-pos,A-SF,A-UNL].cells.L1_noise0.1.vs_LRF.ci95 (upper bound < 0)
 The interval lay below zero for the weightings computed from tbv, ltex, nbr or position alone and for an unlearned rank weight on $s_3$.
 It also lay below zero for a single-feature weight (feature \texttt{rad}, chosen from 35 candidate features by the inner-fold objective on

@@ -1,6 +1,8 @@
 % abstract.tex -- writer W1, 2026-10-30. Text = statistician's candidate (research/paper2/tnnls/ABSTRACT-RULING-2026-10-30.md, rows R1-R12)
 % with fallback F4 applied (L-NI interval labelled "of the net change"). Word count (whitespace split, R12): 247. One paragraph, no
 % abbreviation, symbol, equation or citation (R9, R10). No sentence links the studies; no harm clause; no family H content.
+% Edit 3 (clarity-editor, 2026-10-30): setting sentence shortened (Codex response-02 rewrite 1); negative scope per D0097
+% (category-disjoint: exp_p2/gate/folds.py assign_negatives); "fit the frozen weighting" (Codex section 3, "design" kept). Still 247 words.
 % Numbers (all comments, outside the abstract text):
 % run: runs/P2-GATE-M4/analysis.json:primary.per_corruption.jpeg.{delta (= -0.002), ci90 (= [-0.006, 0.0]), n (= 500)}
 % run: runs/P2-GATE-M4/analysis.json:primary.per_corruption.noise.{delta (= 0.0), ci90 (= [0.0, 0.0]), n (= 500)}
@@ -9,16 +11,16 @@
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-LEN.{label (= rejected), b (= 67), c (= 33)} (licenses "including with length-matched negatives")
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.00889, 0.05333]), margin (= 0.03), non_inferior (= true)}
 % Model size 1.4 billion parameters: runs/P2-UNIDISC-KEYCHECK/keycheck.json:model_n_param_elements (= 1406870785).
-Unified masked diffusion models verify captions against images, but received images may be damaged; we report two separately
-preregistered studies in one pretrained model of this kind (UniDisc, 1.4 billion parameters) on Common Objects in Context image-caption
-pairs. In the first, a gate discards low-likelihood image tokens. In the preregistered test no improvement was detected under Joint
+We report two separately preregistered studies of image-text verification under image damage in one pretrained unified masked
+diffusion model (UniDisc, 1.4 billion parameters) on Common Objects in Context image-caption pairs. In the first, a gate discards low-likelihood image tokens. In the preregistered test no improvement was detected under Joint
 Photographic Experts Group compression at quality 10, Gaussian noise with standard deviation 0.1 and a 128-pixel splice; for each
 tested corruption the 90 percent confidence interval of the net accuracy change lay inside plus or minus 0.05 (\textminus0.002,
 \textminus0.006 to 0.000; 0.000, 0.000 to 0.000; \textminus0.004, \textminus0.010 to 0.002; 500 pairs each), so an improvement or a
-loss larger than 0.05 is excluded. This does not show that the gate has no effect. Each negative is a random other caption. In the
+loss larger than 0.05 is excluded. This does not show that the gate has no effect. Each negative is a random caption of an image sharing no annotated object category.
+In the
 second, on a fresh preregistered fold, a frozen learned reliability-aware fusion of token evidence raised image-direction verification
 accuracy under Gaussian noise with standard deviation 0.1 from 0.733 without reliability weighting to 0.802 (net 0.069, 95 percent
 confidence interval 0.029 to 0.109; exact McNemar test at the preregistered one-sided level 0.05, probability value 0.0005), including
 with length-matched negatives. On clean images it lost no more than three points (90 percent confidence interval of the net change
 0.009 to 0.053); the margin was fixed after an exploratory clean interval had been seen. This is on 450 validation-split images not
-used to design or fit the method, at that one severity.
+used to design or fit the frozen weighting, at that one severity.

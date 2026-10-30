@@ -98,11 +98,42 @@ meta = dict(
 json.dump(meta, open(OUT / "fig4_meta.json", "w", encoding="utf-8"), indent=1)
 
 # ---- figure ----------------------------------------------------------------------------------------------------------------------
-GROUP = lambda n: ("position" if n in ("row", "col", "rad") else "neighbourhood" if n.startswith(("nb3", "nb5")) else "rank" if n.startswith("rank_")
-                   else "item-level" if n.startswith("item") else "token score")
-GSTYLE = {"token score": (C["green"], "-"), "position": (C["orange"], (0, (5, 1.5))), "neighbourhood": (C["purple"], (0, (2.5, 1.2))),
-          "rank": (C["verm"], (0, (1, 1.2))), "item-level": ("#444444", (0, (6, 1.5, 1.5, 1.5)))}
-H = 3.45
+# group names are those of tables/tab_features_main.tex; titles use its notation (B_j, q_j, log(1+tau_j), ...)
+def GROUP(n):
+    if n in ("row", "col", "rad"):
+        return "position"
+    if n.startswith(("nb3", "nb5")):
+        return "neighbourhood"
+    if n.startswith("rank_"):
+        return "within-image rank"
+    if n.startswith("itemmean_"):
+        return "image mean"
+    if n.startswith("itemsd_"):
+        return "image standard deviation"
+    if n == "itemz_q":
+        return "image z-score"
+    return "token scores"
+
+
+GSTYLE = {"token scores": (C["green"], "-"), "position": (C["orange"], (0, (5, 1.5))), "neighbourhood": (C["purple"], (0, (2.5, 1.2))),
+          "within-image rank": (C["verm"], (0, (1, 1.2))), "image mean": (C["blue"], (0, (3, 1, 1, 1))),
+          "image standard deviation": ("#444444", (0, (6, 1.5, 1.5, 1.5))), "image z-score": (C["sky"], (0, (4, 2)))}
+BASE = {"B": r"$B_j$", "D": r"$D_j$", "q": r"$q_j$", "s3": r"$1-\max_y p(y)$", "tbv": "one-pass\nlog-probability", "ltex": r"$\log(1+\tau_j)$",
+        "nbr": "neighbour\ndistance"}
+PREFIX = {"rank_": "rank of", "nb3mean_": "neighbour mean of", "nb3min_": "neighbour minimum of", "nb5mean_": r"$5\times5$ mean of",
+          "itemmean_": "image mean of", "itemsd_": "image std. dev. of", "itemz_": "image z-score of"}
+
+
+def pretty(n):
+    for pre, txt in PREFIX.items():
+        if n.startswith(pre):
+            return txt + "\n" + BASE[n[len(pre):]].replace("\n", " ")
+    if n in BASE:
+        return BASE[n]
+    return {"row": "grid row", "col": "grid column", "rad": "distance from centre"}[n]
+
+
+H = 3.68
 fig = plt.figure(figsize=(S.COL2, H))
 ylo = min(curves[k]["w"].min() for k in top)
 yhi = max(curves[k]["w"].max() for k in top)
@@ -116,8 +147,7 @@ for i, k in enumerate(top):
     ax.plot(curves[k]["x_orig"], curves[k]["w"], color=col, ls=ls, lw=1.6)
     ax.plot(mu[k] + sd[k] * knots[k], np.full(8, ylo - 0.5 * pad), ls="none", marker="|", ms=3.5, color=C["grey"], clip_on=False, zorder=1)
     ax.axhline(float(1 / (1 + np.exp(-0.0))), lw=0)
-    ax.set_title(f"{names[k]}", fontsize=S.FS, pad=14)
-    ax.text(0.5, 1.03, GROUP(names[k]), transform=ax.transAxes, ha="center", va="bottom", fontsize=S.FS, color=C["grey"], style="italic")
+    ax.set_title(pretty(names[k]), fontsize=S.FS, pad=3, linespacing=1.05)
     ax.set_xlabel("feature value", labelpad=1.0)
     ax.locator_params(axis="x", nbins=3)
     if i > 0:
@@ -125,7 +155,14 @@ for i, k in enumerate(top):
     axes_a.append(ax)
 axes_a[0].set_ylim(ylo - 2 * pad, yhi + pad)
 axes_a[0].set_ylabel(r"weight $w=\sigma(f(x))$")
-fig.text(0.004, 0.975, "(a)", fontsize=S.FS + 1, fontweight="bold", va="top")
+fig.text(0.004, 0.985, "(a)", fontsize=S.FS + 1, fontweight="bold", va="top")
+from matplotlib.lines import Line2D
+shown = []
+for k in top:
+    if GROUP(names[k]) not in shown:
+        shown.append(GROUP(names[k]))
+fig.legend(handles=[Line2D([], [], color=GSTYLE[g][0], ls=GSTYLE[g][1], lw=1.6, label=g) for g in shown], loc="upper center", bbox_to_anchor=(0.5, 1.0),
+           ncol=len(shown), frameon=False, handlelength=2.6, columnspacing=1.6, borderaxespad=0.1)
 
 side = 0.118
 side_in = side * S.COL2
