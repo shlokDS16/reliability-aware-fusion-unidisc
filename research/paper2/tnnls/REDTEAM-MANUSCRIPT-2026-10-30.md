@@ -494,3 +494,188 @@ training. It can only be exploratory.
 ## Ledger
 
 No rows added. R1 is fatal and blocks the gate until the orchestrator records a resolution (amend D0096).
+
+---
+
+# Final sign-off 2026-10-30 (red team, on HEAD ede2c05b; rebuilt here with `bash build.sh`)
+
+The build exited with code 0. main.pdf has 15 pages and supplement.pdf 17. The build's column check found
+"pages with an empty column region: 0 of 15". The two `\todo` hits are in a comment and in the non-anonymous branch of
+the Reproducibility link, so neither prints in the review build. Read for this sign-off:
+- D0102 and D0103;
+- `tables/tab_families_glance.tex` and the printed Table I;
+- V-D (the LG paragraph) and IV-C9;
+- every sentence about the audits in main and supplement.
+
+The must-not scan was re-run on pdftotext of both PDFs. The DOCX was not scanned.
+
+## Verdict: SIGN WITH CONDITIONS (confidence 0.8)
+
+**R1: RESOLVED.** Main Table I is now "Preregistered Families Reported in the Main Text (Status Only)".
+- **Status column.** It holds status words only ("run, formal"; "not run (gatekept)"; "headroom not met; H4 not run").
+  It contains no outcome word: no "bounded null", "confirmed", "rejected", "not rejected" or "shown", and no estimate,
+  interval or p-value.
+- **Two separate blocks.** "Study 1" and "Study 2" are labelled blocks, divided by a rule, with no row that crosses
+  them.
+- **Caption.** "Status only; each study's Results give the outcomes. The two blocks are separate preregistered studies."
+- **Rules.** The table is now the A4.2.5 item 6 status map. H appears by status only, which A5.9 placement 2 allows.
+  P, PS and S-D share the map by status only, so items 3-4 are not engaged. A status map carries no outcome, so it
+  cannot set the studies up as problem and solution (C6-4).
+- **Residual inference.** "L3, L4: run, formal" shows that the gatekeeping passed, so a reader can infer that L1 was
+  confirmed. This is accepted: it is a status the plan defines, not an outcome word.
+
+**R2: RESOLVED.** The C6-11 caveat follows the D0099 sentence in the same paragraph, before the LG results. It reads:
+"Shot and speckle noise are close relatives of Gaussian noise, impulse noise is the structurally different cell, and
+severity 3 is not matched to σ = 0.1; no claim is made about corruption types not tested."
+
+**R3, R4, R6: RESOLVED.**
+- R3: IV-C9 points to S-II for the median and trimmed-mean combiners; the one main-text Tier-3 contrast keeps its exact
+  bounds.
+- R4: "predict" now occurs only in Table S3's list of banned words and inside the E-pred table.
+- R6: not re-read in full; the change is recorded in integrity-diff-edit4.md.
+
+**Must-not rescan: no true violation in main or supplement.** The only changed counts are:
+- "independent": the new negated audit phrase (below);
+- "headroom": the status word for H in Table I.
+
+**F17 question, "automated audits run in the authors' own pipeline (not independent reviews)": ACCEPTABLE.** F17 and
+SPEC rule 5 bar *claiming* independence ("never 'independent' for any check run by the authors' pipeline"). The negated
+form says the opposite: it discloses that the checks were not independent, which is exactly what F17 was meant to
+protect. It also contains no "AI", so rule 6 holds. Wherever "independent" appears beside an audit, it must keep this
+negated form; any unnegated use is barred. One wording note, not a defect: "automated" understates checks that were
+adversarial reviews by agents. That gap belongs to R5.
+
+## Conditions
+
+1. **R5, open author item (D0101); blocks submission, not this build.**
+   - The Declaration says Claude was used "to improve the language and grammar of the manuscript".
+   - The record shows agent-written code, analysis scripts, figures and drafts, agent-run audits, and one delegated
+     decision (S-I G(3), now worded "adopted within the authors' study pipeline under that delegation").
+   - D0103 removed the literal contradictions, but the body now describes automated audits and a pipeline decision that
+     the Declaration does not cover.
+   - Before submission the authors must settle a Declaration that covers this, with the matching body wording. The
+     full-disclosure draft is in drafts/declaration-full-disclosure-draft.tex.
+   - My signature does not extend to the interim Declaration.
+2. Run the must-not scan on the DOCX before upload (SPEC rule 5).
+3. Minor items carried, none blocking:
+   - A9: q_j is still shared between Table IV and Study 1's score.
+   - A10: σ and n are overloaded.
+   - The duplicated "link withheld" clause in the Reproducibility paragraph.
+
+## Hostile AC score (unchanged): reject and resubmit, 4/10, confidence 4/5
+
+The compliance work is now sound. Acceptance still turns on W1 (practical significance), W2 (one model, trained on the
+tested corruption) and W3 (incremental, made sharper by Petryk et al. and the ablation). None of these can be fixed in
+text.
+
+## Ledger
+
+No rows added. No fatal finding is open. R5 stays with the authors (D0101).
+
+---
+
+# Final check after figures and language review, 2026-10-30 (red team, on HEAD fd191fdd; rebuilt here with `bash build.sh`)
+
+The build exited with code 0. main.pdf has 15 pages and supplement.pdf 18. The column-gap check reports "0 of 15". The
+review build is anonymous: no author, affiliation or repository string appears; the only pattern hits are "ViT" and
+"clip-vit". Fig. 1 is now on page 2; page 1 holds the title, abstract and the start of the text.
+
+What I read:
+- the eight main figures as PNG, and every figure caption from the source;
+- D0104 and D0105;
+- the language report, section 4 (B1-B34) and section 7 (round 2), with every applied binding-text edit checked in the
+  PDF text;
+- the glance table.
+
+The must-not scan was re-run on pdftotext of both PDFs. The DOCX was not scanned; the language report says it predates
+these edits.
+
+## Verdict: SIGN WITH CONDITIONS (confidence 0.8). No fatal or major finding.
+
+### New figures against C6-4, A4.2.5, A5.9, A6.12 and SPEC rule 3
+
+| Figure | Check | Result |
+|---|---|---|
+| Fig. 2: gate method schematic and calibration check (IV-A) | Study 1 symbols only (u_j, I_j, S_G, τ̂); Δ_j cited from Fig. 1. No LRF, no w_j, no P result. Panels (b) and (c) are S-C, the clean flagged share against α, and the caption limits the check to clean pairs. The "guarantee ... (checked in b, c)" box is the one permitted guarantee. The open marker is the exploratory re-split from `runs/P2-GATE-M4/analysis.json` `calibration.split_replication`, a committed analysis output labelled exploratory. | **PASS.** Minor: the caption calls it a "re-split replication"; "replication" is barred only for family H, but "re-split check" removes any confusion. |
+| Fig. 3: theory frontier | Unchanged: no data, theory label, no measured point (A4.2.5 item 7). | PASS |
+| Fig. 4: family P | P only, with A4.2.5 item 1 styling. The caption points to the P table in supplement S-II for counts. The discordance appears as numbers only in that table (A5.9 must-not 1 is met). | PASS. Minor: the main text now has no b/c/n_d next to the degenerate [0, 0] noise interval. That is permitted (RS-11 is met in the supplement), but a reviewer will ask. |
+| Fig. 5: detection (replaces the table) | Not on the P canvas; the caption says "descriptive of the gate's score; not part of family P". The M1 rival appears with name and sign, AUROC with 95% CI, same-item selection flagged as optimistic, and S-D2 frozen-rival rows (A4.2.2 item 2). | PASS |
+| Fig. 6: LRF schematic, weight shapes and maps (V-B) | Study 2 symbols only (x_j, f, w_j = sigm(f), Σ w_jΔ_j); no I_j, u_j or gate; features by group and formula; frozen hash shown. The maps carry "Descriptive; not evidence that the weights track corruption". | **PASS.** Note: Fig. 2 and Fig. 6 use the same box-and-arrow grammar ("sum → decision"). They sit in separate sections, use separate symbols and do not cross-reference each other, so no hard-versus-soft canvas exists. Do not place them side by side in any later layout or slide. |
+| Fig. 7: family L and L-NI | Unchanged. No LG pooling (LG appears only in the table). No GATE-M. | PASS |
+| Fig. 8: exploratory ablation forest (V-G) | The caption says "exploratory (added after the primary, family H, and Study 2 results; intervals only, no test)", "variant minus the frozen LRF", "positive favours the variant", and "marginal, dependent, and unadjusted". The canvas has no better/worse words and no Study 1 object. L1 cell only, with the other cells pointed to. | PASS |
+| Fig. S1: margins, noise and clean panels (S-IV) | Caption: "descriptive; no test"; the clean panel says "descriptive only, and superiority on clean images was not a preregistered hypothesis". The two axes are comparable means (S/m and M). b and c match Table II. | PASS |
+| Glance table (main Table I) | Status words only. "not run (gatekept: P+ empty)" is the A4.2.5 item 6 text. Separate Study 1 and Study 2 blocks. | PASS (R1 stays resolved) |
+
+### D0105 language clarifications: no veto
+
+Each applied edit was checked for substance (claim, number, interval, scope, decision rule):
+- **B1**: the comparison set "with the test image" is added; the scope is unchanged.
+- **B2**: "three percentage points (0.03 in accuracy)"; the abstract says "three percentage points". Same quantity.
+- **B3**: "This result holds ..." in place of "This is ..."; the scope wording is intact.
+- **B16** and **B21-B23**: typography and p-labels only.
+- **B29** and **B33**: duplicated clauses removed.
+- **B18**, as applied: "read as a sign of this label circularity, not as evidence about any corruption effect" is
+  accepted. The report's suggested "is attributed to this label circularity" would have been **vetoed**, because it
+  turns the A4.2.2 item 2 concern into an explanation; it was not applied.
+- **Abstract alpha clause**: moved to Results under the pre-ruled R8/F1 valve (248 words). The abstract keeps "exact
+  one-sided McNemar test, probability value 0.0005"; Results keeps "preregistered one-sided α = 0.05". Accepted.
+- **B31**: correctly reverted to the A4.2.5 item 6 text.
+
+One defect introduced by B7, minor but inside binding text:
+- **L1 (minor). Location:** contribution 2, the family H status sentence, which now reads "In a separately labelled
+  family added after the primary result was known (family H: ...; Holm over the same three corruptions) was run; its
+  headroom condition was not met ...".
+- **Problem:** the mandatory A5.9 prefix "In a ... family ... (...)," now runs into "was run" with no subject, so the
+  sentence is ungrammatical.
+- **Fix:** keep the prefix verbatim with its comma and give the clause a subject: "In a separately labelled family added
+  after the primary result was known (family H: ...), the pre-written pilot rule found no corruption with decision
+  headroom on 50 pilot images, so the family's test was not run (Sections IV-B and IV-C)." This is the A5.9 H-NOGO (i)
+  sentence already used in IV-C8, now in status form.
+
+### Must-not rescan (fd191fdd)
+
+Main: no true violation. New hits:
+- "replicat-" once, in the Fig. 2 caption (exploratory re-split; not H). Minor; see the Fig. 2 row.
+- "calibrat-", "guarantee" and "I_j": Study 1 figure captions.
+- "better": family B's preregistered descriptor ("better single direction"), and the S2 sentence "no evidence that the
+  flagged set is better placed than a random one". That sentence is negated, inside Study 1, with no LRF arc. Not a
+  violation.
+- "independent": still only negated for audits, or mathematical.
+- "AI": only in the Declaration.
+
+Supplement: no true violation. The new "superiority" hits are all negated (margins caption and text). "predicted"
+appears only inside the E-pred table and in Table S3's list of banned words.
+
+## Conditions
+
+1. **R5, open author item (D0101); unchanged.** The interim Declaration ("language and grammar") is narrower than the
+   AI use the paper's own text implies (automated audits; a decision taken in the pipeline under delegation). It blocks
+   submission, not this build. My signature does not cover the Declaration.
+2. Regenerate the DOCX from this build and run the must-not scan on it (SPEC rule 5; language report section 5, item 5).
+3. Before submission: L1 (the contribution-2 H sentence). Optionally the "re-split check" wording.
+4. Concern outside compliance (D0104), for Shlok to confirm:
+   - The camera-ready author list is "as Paper 1": Goenka, Vairavasundaram, Balaji G N.
+   - The pasted contributions line names Sam Navin M.
+   - The user-level record lists other co-authors for the earlier papers.
+   - The byline must be confirmed before the non-anonymous build. Nothing of this appears in the review build.
+
+## Hostile AC score: unchanged at reject and resubmit, 4/10, confidence 4/5
+
+The figures move presentation from weak to good:
+- each study now has a method schematic;
+- the calibration check is visible;
+- detection is readable at a glance;
+- the ablation forest is the clearest exhibit in the paper.
+
+A TNNLS reviewer would now rate clarity at about 4/5, up from about 3/5. They do not move the decision:
+- W1 (practical significance: 0.733 to 0.802 on category-disjoint negatives, against encoders at 0.996-1.000) is
+  unchanged.
+- W2 (one model; trained on the tested corruption) is unchanged.
+- Fig. 8 puts W3 in plain view: a linear logit, B-and-D-only features and attention pooling all sit on the zero line
+  beside the frozen LRF.
+
+The missing experiment is unchanged: a second backbone, or a corruption held out of LRF's training.
+
+## Ledger
+
+No rows added. No fatal finding is open.

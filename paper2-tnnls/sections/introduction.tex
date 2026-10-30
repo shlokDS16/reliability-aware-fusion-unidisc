@@ -77,8 +77,8 @@ We check the clean false-alarm statement on held-out clean test pairs.
 Re-infilling of the flagged tokens and the score-level combination of the two directions on foil captions were run as formal tests.
 % run: runs/P2-GATE-H3/family.json:n_rule.h_rule (= H-NOGO); go (= false); n_headroom_items (= 50); A5.9 placement 4 (status only, prefix)
 In a separately labelled family added after the primary result was known (family H: SugarCrepe hard negatives~\cite{hsieh2023sugarcrepe}
-on 50 Common Objects in Context (COCO) images not used elsewhere; Holm over the same three corruptions) was run; its headroom condition was not met, so its
-test stage was not run (\cref{sec:study1-protocol,sec:study1-results}).
+on 50 Common Objects in Context (COCO) images not used elsewhere; Holm over the same three corruptions), the headroom stage was run;
+its headroom condition was not met, so the test stage was not run (\cref{sec:study1-protocol,sec:study1-results}).
 \item \emph{A frozen weighting and its preregistered confirmation.} Learned reliability-aware fusion (LRF) is a logistic generalised
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:{features (35 names), n_items (= 500)}; HASHES.json:new.* (model.npz db7fdb4e...)
 additive model that maps 35 caption-withheld features of each image token to a non-negative weight on its evidence, fitted on 500 design
