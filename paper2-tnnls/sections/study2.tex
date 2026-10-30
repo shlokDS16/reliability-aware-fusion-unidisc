@@ -113,8 +113,8 @@ instance annotations.
 Each image has one seeded true caption of 5 to 32 tokens, a wrong caption drawn by the preregistered derangement rule (a random caption of
 another fold image sharing no annotated COCO category with it), and a second, length-matched wrong caption drawn under the same
 category rule.
-The fold, its eight-check leak test (with an injected leak as positive control) and the code passed scripted and agent-run audits (see
-the Declaration) before the first item.
+The fold, its eight-check leak test (with an injected leak as positive control) and the code passed automated audits run in the
+authors' own pipeline (not independent reviews) before the first item.
 % run: runs/P2-LRF-PLAN/n_rule.json:{n_L (= 450),rule,reason}; runs/P2-LRF-PLAN/family.json:n_rule.test_fold (= 450)
 A preregistered power rule, committed before the first item, fixed the test size as a prefix of the ordered list, so it could not select
 items: $n_L=450$ (its inputs are in supplement S-IV).
@@ -174,6 +174,8 @@ No tested condition showed a reduction: the lowest 95\,\% bound was $-0.013$, un
 % D0099 (factual sentence; not a held-out or transfer claim): runs/P2-LRF-FROZEN-LFIX/spec.json:training_conditions (= clean, jpeg10, noise0.1, splice128)
 None of the three other noise types (shot, impulse, speckle; imagecorruptions severity 3) was a training condition of the frozen
 weighting (training conditions: clean, JPEG quality~10, Gaussian noise 0.1, 128-pixel splice).
+Shot and speckle noise are close relatives of Gaussian noise, impulse noise is the structurally different cell, and severity 3 is not
+matched to $\sigma=0.1$; no claim is made about corruption types not tested.
 On these types ($n=300$ each), each LG hypothesis was rejected with $b>c$.
 Under shot noise accuracy rose from 0.673 to 0.767 (net 0.093, 0.047 to 0.143; one-sided $p=0.0002$, Holm-adjusted $p=0.0005$, two-sided
 $p=0.0003$), and under speckle noise from 0.697 to 0.757 (net 0.060, 0.017 to 0.103; one-sided 0.006, Holm-adjusted 0.011, two-sided 0.011).
@@ -249,16 +251,17 @@ the frozen LRF to its design-item mean (differences are variant minus LRF; posit
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN,A-S-BD,A-S-s3,A-MIL].cells.L1_noise0.1.vs_LRF.{d,ci95}
 Under Gaussian noise (L1 items), the paired difference from the frozen LRF was $-0.011$ [$-0.031$, 0.009] for a linear logit on the same
 35 features and $-0.002$ [$-0.033$, 0.029] for weighting by the features computed from $B$ and $D$ alone.
-It was $-0.033$ [$-0.071$, 0.004] for the features from $s_3$ alone and $-0.009$ [$-0.044$, 0.027] for attention-weighted pooling in the
+It was $-0.033$ [$-0.071$, 0.004] for the features from the uncertainty of the $B$ pass alone and $-0.009$ [$-0.044$, 0.027] for attention-weighted pooling in the
 style of gated attention MIL~\cite{ilse2018attention} (reading of intervals in supplement S-VII).
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-S-tbv,A-S-ltex,A-S-nbr,A-S-pos,A-SF,A-UNL].cells.L1_noise0.1.vs_LRF.ci95 (upper bound < 0)
-The interval lay below zero for the weightings computed from tbv, ltex, nbr or position alone and for an unlearned rank weight on $s_3$.
-It also lay below zero for a single-feature weight (feature \texttt{rad}, chosen from 35 candidate features by the inner-fold objective on
+The interval lay below zero for the weightings computed from the one-pass observed-position score, the patch texture, the
+codebook-neighbour distance or the grid position alone, and for an unlearned rank weight on the uncertainty of the $B$ pass.
+It also lay below zero for a single-feature weight (the distance from the grid centre, chosen from 35 candidate features by the inner-fold objective on
 the design items, a selection budget 35 times that of the frozen LRF; the selection used no fresh item).
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=KO-S-BD,KO-S-nbr,KO-F-neighbourhood].cells.L1_noise0.1.vs_LRF.{d,ci95}; other KO rows contain 0
 Among knockouts, the change in the frozen model's accuracy was $-0.053$ [$-0.082$, $-0.027$] when the features computed from $B$ and
 $D$ were set to their design-item mean.
-It was $0.040$ [0.013, 0.069] for the nbr features and $-0.062$ [$-0.096$, $-0.031$] for the neighbourhood features; for every other group
+It was $0.040$ [0.013, 0.069] for the codebook-neighbour-distance features and $-0.062$ [$-0.096$, $-0.031$] for the neighbourhood features; for every other group
 the interval contained zero.
 Setting a group to its mean gives inputs that the model did not see together in fitting; an interval away from zero shows that the frozen
 model's decisions depend on those inputs, not that the group alone detects anything.

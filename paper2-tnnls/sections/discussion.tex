@@ -69,12 +69,12 @@ with them.
 No ablation was preregistered; \cref{sec:study2-ablation} is exploratory.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (V-G values: A-LIN, A-S-BD, A-S-s3, A-MIL against LRF on the L1 cell, intervals containing 0); red-team condition V2-2(d), A16
 In that ablation, simpler weightings fitted on the design items (a linear logit, the features from $B$ and $D$ alone, the features from
-$s_3$ alone and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
+the uncertainty of the $B$ pass alone and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
 
 % D0097: category-disjoint negatives (exp_p2/gate/folds.py assign_negatives; runs/P2-LRF-FOLD/folds_lrf.json neg_restricted 533 of 533)
 \emph{Both studies.} All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category).
 The preregistration is self-hosted in the sense of
-\cref{sec:setting-tests}, and the audits were agent-run (see the Declaration).
+\cref{sec:setting-tests}, and the audits were automated audits run in the authors' own pipeline (not independent reviews).
 
 \subsection{Deviations From the Plans}\label{sec:deviations}
 {\small
@@ -89,7 +89,7 @@ card and plan differed on a rejection against the gate.
 (5) Family~H has its own disclosure and amendment items; one decision row was committed after its pilot driver started and before any
 pilot row existed.
 (6) The effective-$n$ record of the re-infilling figure carries a reason text written at analysis time.
-(7) The data steward did not collect the image ids of negatives and mismatches separately (no analysis uses them), and its check left
+(7) The fold builder did not collect the image ids of negatives and mismatches separately (no analysis uses them), and its check left
 some run files outside the excluded classes unopened.
 (8) The exact Clopper--Pearson bounds of \cref{tab:familyP} were added at writing (\nolinkurl{runs/P2-PAPER-BOUNDS}, descriptive).
 % run: runs/P2-GATE-M1/env-lock.txt and runs/P2-GATE-M4/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt (SPEC section 8; red-team A14)

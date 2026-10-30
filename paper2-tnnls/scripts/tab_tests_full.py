@@ -44,4 +44,4 @@ for name, r, src, dec, rej, ni in TESTS:
 write("supp_tests_full_study2.tex", "@{}lrrrrccrl@{}", HEAD, [rows],
       preamble=["Every quantity of SAP A6.4 'Reported with every test'. Intervals: paired percentile bootstrap over items (10000 resamples); Holm p: L3, L4 after the L1 gate (m = 2 two-sided) and LG (m = 3 one-sided); not applicable elsewhere.",
                 "double dagger (L-NI): p values against zero net change shown for completeness only; the preregistered L-NI test is the lower 90% bound against the margin; superiority on clean images was not preregistered.",
-                "impulse-noise row: two-sided p and the 95% interval lower bound 0.0 are stated beside it in the text; no two-sided claim."])
+                "impulse-noise row: two-sided p and the 95% interval lower bound 0.0 are stated beside it in the text; no two-sided claim."], script="tab_tests_full.py")

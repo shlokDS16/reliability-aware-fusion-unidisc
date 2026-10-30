@@ -39,10 +39,10 @@ ROWS = [
     ("S-C", "GATE-M against no gate on clean images", "run, formal", [f"{MP} s_c.n, holm_m"]),
     ("PS", "positive control: patch, swap", "run, formal", [f"{MP} ps.holm_m, ps.positive_control"]),
     ("S2", "re-infill of the flagged set against random-gate best-of-4 re-infill", "run, formal", ["runs/P2-GATE-S2/analysis.json completeness.{completed_n,planned_n}, n_min, per_cell.*.tested"]),
-    ("B", "hard-negative foil pairs: combination of both directions against the better single one", "run, formal", ["runs/P2-GATE-FOIL/analysis.json status, partial, n_test_completed"]),
+    ("B", "one-word foil pairs: combination of both directions against the better single one", "run, formal", ["runs/P2-GATE-FOIL/analysis.json status, partial, n_test_completed"]),
     ("R", "GATE-M against no gate on the second backbone", "not run (gatekept: P+ empty)", [f"{MP} primary.claim_survives (= false); no runs/P2-GATE-OMNI* directory"]),
     ("E", "sign agreement of the withholding theory", "withdrawn (AB.3)", ["runs/P2-GATE-M4/epred_score.json formal_test (= null), formal_test_note"]),
-    ("E-pred", "out-of-sample sign prediction, five cells", "run, descriptive", ["runs/P2-GATE-M4/epred_score.json cells, formal_test (= null)"]),
+    ("E-pred", "out-of-sample sign agreement, five cells", "run, descriptive", ["runs/P2-GATE-M4/epred_score.json cells, formal_test (= null)"]),
     ("E-dec", "three-part split of the accuracy lost to corruption", "run, descriptive", ["runs/P2-GATE-M4/edec.json n_cells, label"]),
     ("Suite, Tier 3", "other corruptions and detector-free combiners", "run, exploratory", ["runs/P2-GATE-SUITE/analysis.json; runs/P2-GATE-M4/tier3_fusion.json label"]),
     ("H", "GATE-M against no gate on hard-negative pairs", "headroom not met (H-NOGO); H4 not run", ["runs/P2-GATE-H3/family.json go (= false), n_rule.h_rule (= H-NOGO); no runs/P2-GATE-H4 directory"]),
@@ -52,4 +52,4 @@ assert H3["family"] == []
 rows = [row([f, c, st], rr) for f, c, st, rr in ROWS]
 write("supp_status_map_study1.tex", "@{}llp{0.30\\linewidth}@{}", ["Family", "Contrast", "Status"], [rows],
       preamble=["Study 1 family status map (A4.2.5 item 6): status only; no estimate and no interval anywhere in this table.",
-                "A status other than 'run, formal' may be hatched or set in grey by the writer; the text is binding."])
+                "A status other than 'run, formal' may be hatched or set in grey by the writer; the text is binding."], script="tab_status_map.py")

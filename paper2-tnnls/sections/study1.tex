@@ -215,7 +215,7 @@ The percentile interval has zero width whenever no pair is discordant (counts in
 Each secondary family has its own level 0.05 (sizes, tests and wording rules in supplement S-I).
 The positive control PS repeats the P test on the two sanity corruptions (Holm over two); a pass reads ``the pipeline is not broken''.
 A mechanism test (GATE-M against the geometry-matched gate) and a second-model family run only on a corruption with a primary rejection
-with $b>c$. \Cref{tab:glance} lists every family with its status.
+with $b>c$. \Cref{tab:glance} lists the families reported in the main text with their status; supplement S-II maps all of them.
 
 \subsection{Results}\label{sec:study1-results}
 Bootstrap intervals use 10\,000 resamples, accuracy is image-direction verification accuracy, a cell is bold only when its
@@ -286,7 +286,7 @@ Neither hypothesis of the positive control was rejected (full table in supplemen
 reads ``pipeline defect suspected, audit triggered''.
 % run: runs/P2-A23-AUDIT/a23_ps_audit.json (recomputation of every PS quantity, 0 mismatches); unit-test count (584 passed, 5 skipped,
 % 0 failed): runs/P2-A23-AUDIT audit record, research/paper2/prereg/A2.3-AUDIT-PS-2026-10-29.md line 75 (pointer per D0100; number audit M6)
-The plan's audit (scripted and agent-run, see the Declaration) ran the unit tests of the run's code (584 passed, 5 skipped, none
+The plan's audit (an automated audit run in the authors' own pipeline, not an independent review) ran the unit tests of the run's code (584 passed, 5 skipped, none
 failed), read the code path of PS and recomputed every PS quantity from the stored arrays of all 500 items; it found no defect and
 changed nothing, and since a recomputation cannot see an error upstream of the stored arrays, it is not read as a check of the whole
 pipeline.
@@ -366,8 +366,7 @@ analysis was committed, contrasts the hard gate with five combiners of the same 
 the flagged tokens, and a graded weight on every token.
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.noise0.1.arms.{GM,MED,TM20}.acc (= 0.676, 0.678, 0.682); cells.noise0.1.contrasts.{MED,TM20}_minus_GM.{ci95,reading} (not_distinguishable); cells.{jpeg10,splice128}.contrasts.{MED,TM20}_minus_GM.reading (= below)
 % (number audit M1: the earlier sentence "no detector-free combiner gave higher verification accuracy than the hard gate" contradicted the noise cell)
-Under JPEG and splice the median and 20\,\% trimmed-mean combiners scored below the hard gate; under noise they scored 0.678 and 0.682
-against 0.676 for the hard gate, and the data do not show a difference (intervals in supplement S-II).
+The median and 20\,\% trimmed-mean combiners are reported with their exact intervals in supplement S-II.
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.{jpeg10,noise0.1,splice128}.contrasts.TM-G_minus_GM.{n_d,discordance_bound_B,counts_against}
 The data do not show a difference between the hard gate and a trimmed mean that removes as many tokens as the gate flagged (exact 95\,\%
 bounds on the difference of 0.023, 0.014 and 0.017).

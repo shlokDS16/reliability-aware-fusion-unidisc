@@ -111,11 +111,11 @@ blob has another hash for the same content \\
 \end{table}
 
 \subsection{Audits}
-The checks named in the main paper as scripted and agent-run audits (see the Declaration of the main paper) are: the statistician's
-sign-off of the analysis plans; the red team's signatures with conditions on Addenda A2 to A6 and on the build specification; the
-gate-auditor's code audits (pass verdicts at the final audited commits, with delta audits for every later pin), its gate audits of family
-L, family LG and the reference encoders with their parity runs, and its byte-identical regeneration of the committed outputs after every
-code merge; and the data-steward's sign-offs of the hard-negative pool and of the Study~2 fold (check L7).
+The checks named in the main paper as automated audits run in the authors' own pipeline (not independent reviews) are: the plan
+review (sign-off of the analysis plans); the adversarial review (signatures with conditions on Addenda A2 to A6 and on the build
+specification); the code, commit-order and hash audit (pass verdicts at the final audited commits, with delta audits for every later pin;
+gate audits of family L, family LG and the reference encoders with their parity runs; byte-identical regeneration of the committed
+outputs after every code merge); and the fold and leak checks (sign-offs of the hard-negative pool and of the Study~2 fold, check L7).
 These checks were run by the authors' own pipeline; none is described as independent.
 No signature says that a method works.
 
@@ -228,7 +228,7 @@ committed and read, before any main-test value or Tier-3 output existed.
 (3) The outcome book of Addendum A4 fixed the wording of every label before the primary result existed.
 On 28 October 2026 at about 18:40 UTC the first author delegated the choice of how the submission condition reads under a null primary
 result; under that delegation the stricter reading (no question-form framing in the title, abstract, highlights, conclusion or the opening of
-the Study 1 discussion) was adopted by the agent-run study pipeline (see the Declaration) at 18:42 UTC, before any value of the main test was
+the Study 1 discussion) was adopted within the authors' study pipeline under that delegation at 18:42 UTC, before any value of the main test was
 read (decision records D0076 and D0077; D0077 corrects D0076's wording: the author's message delegated the choice and did not itself choose a
 reading).
 (4) The time-input statement rests on a code reading at the pinned commit (above) and on the key check.
@@ -266,8 +266,8 @@ autotuned convolutions in the image tokeniser; row A-5 fixed the self-check, and
 \item Family~H: the A5 disclosure (S-III) and amendment items (A5.14, A5.1 amendment item 7); decision D0087 was committed after the H3
 driver had started and before any H3 row existed.
 \item The effective-$n$ record of the S2 figure carries a reason text written at analysis time.
-\item The data-steward's builder notes: the image ids of the negatives and mismatches were not collected separately (no analysis uses
-them); 162 other \texttt{runs/P2-*} JSON files outside the excluded classes were not opened by the data steward's check.
+\item The fold builder's notes: the image ids of the negatives and mismatches were not collected separately (no analysis uses
+them); 162 other \texttt{runs/P2-*} JSON files outside the excluded classes were not opened by the fold check.
 \item The time-input table moved from the main appendix to this supplement.
 \item The exact Clopper--Pearson bounds of the family P table were added at writing (\texttt{runs/P2-PAPER-BOUNDS}, descriptive).
 \end{enumerate}
@@ -286,7 +286,8 @@ items ran with autotuning on as in the design run, and a fresh tokenisation can 
 \item The parity files were moved unchanged from a wrong output directory; no hash was taken before the move, and audit-time SHA-256s
 are recorded in the reference-encoder audit.
 \item The field \texttt{pixel\_parity: not run} of the main reference-encoder file is superseded by the two parity runs (S-VI).
-\item The download of the reference encoders was 5.0~GB against 2 to 4~GB quoted to the first author.
+% run: runs/P2-ENV/hf_cache_sizes.json:total_gb_decimal (= 5.229) (number audit N1; D0100)
+\item The download of the reference encoders was 5.2~GB against 2 to 4~GB quoted to the first author.
 \item Decision D0094: what had been seen before the re-freeze (main paper, Section V-A).
 \item ``No output was read before its run was complete'' rests on the operations log.
 \item The Tier-3 ablation (S-VII) was added at writing; no ablation was preregistered.
@@ -294,8 +295,8 @@ are recorded in the reference-encoder audit.
 
 %======================================================================================================================================
 \section{Study 1: Secondary and Descriptive Families, and the Tier-3 Comparison}\label{sup:study1}
-\Cref{stab:overview} gives the status of every Study~1 family, with no estimate and no interval (D0096; red-team A1: the earlier
-overview with estimates put family P, the positive control, the detection rows and family H on one canvas and was deleted).
+\Cref{stab:overview} gives the status of every Study~1 family, with no estimate and no interval (an earlier overview with estimates was
+deleted; decisions D0096 and D0102).
 Each family's estimates are in its own table or paragraph (family P in Table~\ref{M-tab:familyP} of the main paper; the others below
 and in S-III).
 None of the material in this section enters a statement about family P.
@@ -875,7 +876,7 @@ had been committed but were not opened by that analyst.
 Family~H tests the same contrast on a different population of image-caption pairs (SugarCrepe hard negatives on COCO images used nowhere
 else in this study).
 It was specified in SAP Addendum A5 (draft \texttt{86064e57}; final \texttt{b32e72a1}; revision r1 \texttt{2f62f1df}) before any
-hard-negative item was scored, approved by the first author (decision D0080), signed with conditions by the red team and implemented in
+hard-negative item was scored, approved by the first author (decision D0080), signed with conditions by the adversarial review and implemented in
 audited code (commit \texttt{5e6380b1}).
 It reuses the primary family's corruptions, severities, threshold and arms.
 Its sample-size rule uses the gate's own unsigned discordance on 50 separate pilot images.
@@ -1080,7 +1081,7 @@ No committed run recorded a timing for the encoders, so their cost per item is n
 % run: decision D0095 (code audit PASS WITH FIXES; score run once)
 \emph{Label.} Exploratory; added after the primary, family~H and Study~2 results.
 No ablation was preregistered.
-The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was written and checked by the statistician, and the variant list
+The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was written and checked by the plan's automated statistical review, and the variant list
 was committed before any variant was fitted or scored.
 \emph{Disclosure.} When the plan was written, its author had seen the fresh-fold results of the frozen LRF and of the unweighted rule,
 an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (main paper,
