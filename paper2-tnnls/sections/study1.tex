@@ -62,9 +62,9 @@ calibration and test (\cref{fig:gate-method}(a)).
 patterns). On $n_{\rm cal}=300$ clean calibration pairs, the suspicions $u_{ij}$ give the false-alarm proportion $L_i(\tau)$, and
 conformal risk control sets $\hat\tau$ at level $\alpha$ \eqref{eq:crc} before any test item is seen; on a test pair, flagged tokens
 ($I_j=0$) are withheld by masking, which removes their evidence $\Delta_j$ from $S_{\rm G}$ \eqref{eq:gated}. (b) Realised flagged share
-of the 500 clean test pairs against $\alpha\in\{0.01,0.05,0.10\}$. (c) Share minus $\alpha$ with its 95\,\% percentile-bootstrap interval
+of the 500 clean test pairs against $\alpha\in\{0.01,0.05,0.10\}$. (c) Share minus $\alpha$ with its 95\% percentile-bootstrap interval
 (10\,000 resamples); open marker: exploratory re-split replication (2\,000 re-splits of the pooled clean pairs; mean and 2.5 to
-97.5\,\% range; descriptive). The check covers clean pairs only, not the unchanged tokens of corrupted items.}
+97.5\% range; descriptive). The check covers clean pairs only, not the unchanged tokens of corrupted items.}
 \label{fig:gate-method}
 \end{figure*}
 
@@ -79,14 +79,14 @@ S_{\rm G}=\sum_{j=1}^{m}I_j\Delta_j,\qquad Y_{\rm G}=\ind\big[S_{\rm G}>0\big],
 \end{equation}
 with a tie or an empty kept set counted as wrong.
 With $I_j\equiv1$ this is the unweighted rule of \cref{sec:setting}, called \emph{none} below.
-For a Bayes-optimal denoiser of the absorbing-state objective, masking $G$ marginalises it~\cite{ou2025radd}, but $G$ is selected from
+For a Bayes-optimal denoiser of the absorbing-state objective, masking $G$ marginalises those tokens out~\cite{ou2025radd}, but $G$ is selected from
 the observed values, so the missingness is informative~\cite{rubin1976inference}.
 Marginalising is then the Bayes answer only if no kept token is corrupted, corrupted values carry no information about clean ones,
 corruption locations do not depend on the content, and the clean tokens in $G$ carry no evidence; this was stated in advance and is not
 an account of any result.
 
 Two further arms use the same flags.
-A re-infilling arm re-infills the flagged tokens with the model, caption masked, and keeps the best of four unguided draws by chain log-likelihood,
+A re-infilling arm re-infills the flagged tokens with the model, with the caption masked, and keeps the best of four unguided draws by chain log-likelihood,
 with the sampler fixed in the analysis plan, not that of the backbone's authors.
 The text direction, used only by family~B, scores the caption tokens with the image visible, minus the same pass with the image masked.
 
@@ -182,19 +182,19 @@ E-pred does not use \cref{prop:snrcorr}, and the proposition is not used to inte
 \caption{Model figure, no data: a model of when withholding helps an additive statistic (theory under stated assumptions, not validated
 on UniDisc). Above each curve $\phi_1=b(\phi_0;G,\chi)$ of \cref{prop:snrcorr} (shaded), withholding raises
 $\E S_{\rm G}/\sqrt{\Var S_{\rm G}}$; $\mu_c=0$, $\gamma_{01}=0$, $\chi=\rho\sigma_c^2/[(1-\rho)(\sigma^2+\mu^2)]=1$ and
-$G=(\rho m-1)\gamma_1=0$ (independent tokens, \cref{eq:snr}), 1, 4 and 16. A larger $G$ lowers the curve toward the diagonal
+$G=(\rho m-1)\gamma_1=0$ (independent tokens, \cref{eq:snr}), 1, 4, and 16. A larger $G$ lowers the curve towards the diagonal
 $\phi_1=\phi_0$ (random withholding). Grey: every rule with $\phi_1\le\phi_0$ lowers the ratio when $\gamma_{01}\ge0$.}
 \label{fig:frontier}
 \end{figure}
 
 \subsection{Preregistered Protocol}\label{sec:study1-protocol}
-The protocol was fixed in a preregistration card, a statistical analysis plan with its addenda and a method specification before any
-outcome of the main run existed; pins, audits, amendments and the protocol details omitted here are in supplement S-I.
+The protocol was fixed in a preregistration card, a statistical analysis plan with its addenda, and a method specification before any
+outcome of the main run existed; pins, audits, amendments, and the protocol details omitted here are in supplement S-I.
 
 \paragraph*{Folds and negatives}
 % run: runs/P2-GATE-FOLDS (folds.json sizes and seed 20261029; 494 pilot image ids excluded)
 Four image-disjoint sets were drawn from COCO val2017~\cite{lin2014coco} by image id with seed 20261029: calibration (300 pairs),
-headroom (100), test (300, with an ordered extension to 500 if the sample-size rule asks for it) and the 200 items of an earlier
+headroom (100), test (300, with an ordered extension to 500 if the sample-size rule asks for it), and the 200 items of an earlier
 detection pilot, which form the detection set.
 The 494 image ids of the two pilots are excluded from the new folds.
 The wrong caption of an item is a caption of another image that shares no annotated COCO category with the true image, fixed once per
@@ -202,7 +202,7 @@ item and shared by every arm and corruption.
 
 \paragraph*{Headroom rule and sample size}
 Each realistic corruption has two severities (rungs), walked in order from the one defined in \cref{sec:setting-corruptions}.
-Two sanity corruptions replace tokens by uniform random codes (one $8\times8$ patch of the token grid; 15\,\% of tokens) and form the
+Two sanity corruptions replace tokens by uniform random codes (one $8\times8$ patch of the token grid; 15\% of tokens) and form the
 positive control.
 On the 100 headroom items, with no gate flag computed, the first rung at which the size-normalised evidence falls under corruption and
 recovers under the changed-code gate, which keeps exactly the tokens whose code did not change, is the operating point.
@@ -212,22 +212,22 @@ The decision file was committed before the first test item was scored.
 \paragraph*{Arms and controls}
 The primary contrast is GATE-M against none.
 The controls are a geometry-matched random gate (the flag mask shifted on the torus, three seeds), equal-size scattered and top-$k$ gates,
-the changed-code gate, a pixel denoiser and GATE-M on clean images (supplement S-II).
+the changed-code gate, a pixel denoiser, and GATE-M on clean images (supplement S-II).
 Token detection is measured against changed-code labels by per-item AUROC.
 Cheap rivals are admitted in both orientations, so the rival and its sign are chosen on the data; a one-pass observed-position score of
-the non-finetuned backbone (TbV score~\cite{jhingran2026trustverify}) is reported beside them.
+the non-finetuned backbone (the TbV score, named after Trust but Verify~\cite{jhingran2026trustverify}) is reported beside them.
 
 \paragraph*{Families and reading rules}
 The primary family P has three hypotheses, one per realistic corruption at its operating point.
 Each compares GATE-M with none on the paired correctness of \cref{eq:gated} by the exact two-sided McNemar test, with Holm correction over
-three at familywise level 0.05; a corruption without an operating point stays in the family with $p=1$.
+the three hypotheses at familywise level 0.05; a corruption without an operating point stays in the family with $p=1$.
 The wording for every outcome was fixed before the headroom decision was written.
 The label is \emph{positive} if a hypothesis is rejected after Holm with $b>c$ and none with $c>b$.
-It is \emph{negative} if none is rejected and, for every corruption with an operating point, the 90\,\% paired bootstrap interval of the
+It is \emph{negative} if none is rejected and, for every corruption with an operating point, the 90\% paired bootstrap interval of the
 net accuracy change lies inside $(-0.05,+0.05)$ with at least 240 completed items; it is \emph{inconclusive} otherwise.
 A null result is worded as a bounded change, never as an absence of effect.
 The percentile interval has zero width whenever no pair is discordant (counts in the family P table, supplement S-II).
-Each secondary family has its own level 0.05 (sizes, tests and wording rules in supplement S-I).
+Each secondary family has its own level 0.05 (sizes, tests, and wording rules in supplement S-I).
 The positive control PS repeats the P test on the two sanity corruptions (Holm over two); a pass reads ``the pipeline is not broken''.
 A mechanism test (GATE-M against the geometry-matched gate) and a second-model family run only on a corruption with a primary rejection
 with $b>c$. \Cref{tab:glance} lists the families reported in the main text with their status; supplement S-II maps all of them.
@@ -241,9 +241,9 @@ preregistered test rejected, and there is no adjustment across families (\cref{s
 The first rung of every realistic corruption passed the headroom rule, and $D^\ast=19$ selected 500 test items with the correctness
 endpoint (supplement S-II gives the headroom statistics).
 % run: runs/P2-GATE-M4/analysis.json:primary.per_corruption.{jpeg,noise,splice}.{delta,ci90,n}; outcome.label (= negative)
-In the preregistered test no improvement was detected under JPEG quality~10, Gaussian noise with $\sigma=0.10$ or a $128$-pixel splice.
-For each tested corruption the 90\,\% interval of the net accuracy change lay inside $\pm0.05$: $-0.002$ ($-0.006$ to $0.000$) under JPEG,
-$0.000$ ($0.000$ to $0.000$) under noise and $-0.004$ ($-0.010$ to $0.002$) under splice, with $n=500$ each, so an improvement larger than
+In the preregistered test no improvement was detected under JPEG quality~10, Gaussian noise with $\sigma=0.10$, or a $128$-pixel splice.
+For each tested corruption the 90\% interval of the net accuracy change lay inside $\pm0.05$: $-0.002$ ($-0.006$ to $0.000$) under JPEG,
+$0.000$ ($0.000$ to $0.000$) under noise, and $-0.004$ ($-0.010$ to $0.002$) under splice, with $n=500$ each, so an improvement larger than
 0.05 is excluded and a loss larger than 0.05 is excluded.
 This does not show that the gate has no effect.
 % D0097: scope wording of A4.2.2 item 7 tightened (category-disjoint negatives; exp_p2/gate/folds.py assign_negatives)
@@ -252,7 +252,7 @@ an image sharing no annotated COCO category (category-disjoint) as the negative,
 % run: runs/P2-GATE-M4/analysis.json:completeness.*; outcome.label
 By the pre-stated rule the label of family P is \emph{negative}: no hypothesis was rejected after Holm correction over three, and every
 corruption had an operating point and 500 completed items, with no caption-token exclusion and no empty or non-finite evidence.
-\Cref{fig:p_result} shows the intervals; the full test, with $b$, $c$, $n_d$, the 98.33\,\% Holm-level intervals and the exact bounds, is
+\Cref{fig:p_result} shows the intervals; the full test, with $b$, $c$, $n_d$, the 98.33\% Holm-level intervals, and the exact bounds, is
 the family P table in supplement S-II.
 
 
@@ -260,7 +260,7 @@ the family P table in supplement S-II.
 \centering
 \includegraphics[width=\columnwidth]{figures/fig3_study1_P.pdf}
 \caption{Family P: net accuracy change of GATE-M minus no gate (open circle), $n=500$ items per corruption (P1 JPEG quality 10, P2
-Gaussian noise with standard deviation 0.1, P3 splice of 128 px). Thick bar: 90\,\%, thin bar: 95\,\% paired percentile bootstrap
+Gaussian noise with standard deviation 0.1, P3 splice of 128 px). Thick bar: 90\%, thin bar: 95\% paired percentile bootstrap
 interval (10\,000 resamples); solid line at 0; dashed lines: the $\pm0.05$ margin. An interval has zero width when no pair is
 discordant (counts in the family P table, supplement S-II).}
 \label{fig:p_result}
@@ -268,26 +268,26 @@ discordant (counts in the family P table, supplement S-II).}
 
 \subsubsection{Calibration and the clean control}
 % run: runs/P2-GATE-M4/analysis.json:calibration.fap_check.per_alpha.0.05.{F,ci_bootstrap,Z_cal}; critical_value (= 2.13)
-On the 500 clean test pairs the realised flagged share was 0.0456 at $\alpha=0.05$ (95\,\% interval 0.0442 to 0.0470), and at no level
-was there evidence of violation of \cref{prop:crc} (\cref{fig:gate-method}(b),(c)); the calibration statistics, and the flagged share of
+On the 500 clean test pairs the realised flagged share was 0.0456 at $\alpha=0.05$ (95\% interval 0.0442 to 0.0470), and at no level
+was there evidence of a violation of \cref{prop:crc} (\cref{fig:gate-method}(b),(c)); the calibration statistics, and the flagged share of
 the unchanged tokens of corrupted items, which the guarantee does not cover, are in supplement S-II.
 % (moved: flagged share of unchanged tokens of corrupted items 0.036 to 0.044 realistic, 0.089 swap; runs/P2-GATE-M4/analysis.json:calibration.per_condition.*.fap_on_clean_tokens; supplement flags table)
 % run: runs/P2-GATE-M4/analysis.json:s_c.{acc_a,acc_b,delta,ci95,p}
-In the clean control GATE-M gave 0.882 against 0.880 without a gate (net $0.002$, 95\,\% interval $-0.004$ to $0.010$; $p=1.00$): no change
+In the clean control GATE-M gave 0.882 against 0.880 without a gate (net $0.002$, 95\% interval $-0.004$ to $0.010$; $p=1.00$): no change
 was detected.
 
 \subsubsection{Positive control (PS, pipeline check)}
 % run: runs/P2-GATE-M4/analysis.json:ps.per_corruption.patch.{acc_a,acc_b,delta,ci95,p,p_holm}; ps.per_corruption.swap.{acc_a,acc_b,delta,ci95,p,p_holm} (values as printed in tables/tab_ps.tex)
-On the 500 test items GATE-M gave 0.870 against 0.870 without a gate under the patch corruption (net 0.000, 95\,\% interval $-0.008$ to
+On the 500 test items GATE-M gave 0.870 against 0.870 without a gate under the patch corruption (net 0.000, 95\% interval $-0.008$ to
 0.008; $p=1.00$, Holm-adjusted 1.00) and 0.876 against 0.870 under swap (net 0.006, $-0.008$ to 0.020; $p=0.581$, Holm-adjusted 1.00).
 % run: runs/P2-GATE-M4/analysis.json:ps.positive_control (= not met)
 Neither hypothesis of the positive control was rejected (full table in supplement S-II), so the control was not met, which by the plan
 reads ``pipeline defect suspected, audit triggered''.
 % run: runs/P2-A23-AUDIT/a23_ps_audit.json (recomputation of every PS quantity, 0 mismatches); unit-test count (584 passed, 5 skipped,
 % 0 failed): runs/P2-A23-AUDIT audit record, research/paper2/prereg/A2.3-AUDIT-PS-2026-10-29.md line 75 (pointer per D0100; number audit M6)
-The plan's audit (an automated audit run in the authors' own pipeline, not an independent review) passed the unit tests of the run's
-code (584 passed, 5 skipped, none failed) and recomputed every PS quantity from the stored arrays of all 500 items; it found no defect,
-and since it cannot see an error upstream of the stored arrays, it is not read as a check of the whole pipeline.
+The plan's audit (an automated audit run in the authors' own pipeline, not an independent review) ran the unit tests of the run's
+code (584 passed, 5 skipped, none failed) and recomputed every PS quantity from the stored arrays of all 500 items; it found no defect.
+Because it cannot see an error upstream of the stored arrays, it is not read as a check of the whole pipeline.
 
 \subsubsection{Token detection}
 % run: runs/P2-GATE-M1/analysis.json:table.{patch,swap}.q.{mean,lo,hi}; table.{jpeg,noise}.q.n (= 197, 198; n_items = 200)
@@ -312,9 +312,9 @@ rival's win is read as this label-circularity concern, not as an account of any 
 % run: runs/P2-GATE-M1/analysis.json:table.<corruption>.{q,tbv,<rival>}.{mean,lo,hi,n}; paired_q_vs_best_cheap.<corruption>.{best_cheap,rival_sign,diff_mean,ci95,p_holm}
 % run: runs/P2-GATE-M4/analysis.json:s_d2.per_corruption.{jpeg,noise}.{rival,diff_mean,ci95,n_eligible (= 492, 497),p_holm (= 0.0004)}; plotted values runs/P2-PAPER-FIGS/fig_detection.json
 \caption{Study 1, detection of changed image tokens (descriptive of the gate's score; not part of family P). (a) Mean per-item AUROC
-against changed-code labels with the 95\,\% percentile-bootstrap interval over items (10\,000 resamples), $n$ per row as printed: the gate's score $q_j=-u_j$, the one-pass TbV score of the non-finetuned model, and the best cheap
+against changed-code labels with the 95\% percentile-bootstrap interval over items (10\,000 resamples), $n$ per row as printed: the gate's score $q_j=-u_j$, the one-pass TbV score of the non-finetuned model, and the best cheap
 rival, chosen with its sign on these same items among both orientations of every cheap score (same-item selection, so optimistic; name
-and sign in the row label). (b) Paired difference $q$ minus rival with its 95\,\% interval, on the detection items
+and sign in the row label). (b) Paired difference $q$ minus rival with its 95\% interval, on the detection items
 where the rival was selected (filled) and with the rival frozen and re-scored on the test items (open; JPEG and noise; 492 and 497
 items; Holm-adjusted $p=0.0004$ for both, the resolution floor of 10\,000 resamples). Values in supplement S-II.}
 \label{fig:detection}
@@ -322,10 +322,10 @@ items; Holm-adjusted $p=0.0004$ for both, the resolution floor of 10\,000 resamp
 
 \subsubsection{Mechanism and the remaining secondary families}
 % run: runs/P2-GATE-M4/analysis.json:s_m.per_corruption.{jpeg,noise,splice}.tested (all false)
-The mechanism test tested no hypothesis and the second-model family was not run, because both are gatekept by a primary rejection with
+No hypothesis of the mechanism test was tested, and the second-model family was not run, because both are gatekept by a primary rejection with
 $b>c$.
 % run: runs/P2-GATE-M4/analysis.json:mechanism.{jpeg10,noise0.1,splice128}.y.*, s_z.*, s_dn.*; edec.json; epred_score.json; P2-GATE-M5/coherence.json
-The equal-size gates, the evidence-ratio and pixel-denoising families, the descriptive families (including E-pred) and the denoiser's
+The equal-size gates, the evidence-ratio and pixel-denoising families, the descriptive families (including E-pred), and the denoiser's
 coherence check are in supplement S-II and enter no statement about P.
 
 \subsubsection{Re-infilling the flagged tokens}
@@ -339,10 +339,10 @@ is stated about the backbone's own re-infilling.
 \subsubsection{Family B: the two directions on foil captions}
 Family~B, the preregistered two-way fusion test, compares a score-level combination of the text and image directions (Fisher
 discriminant weights fitted on separate fit pairs and frozen) with the better single direction.
-Its pairs come from FOIL-COCO~\cite{shekhar2017foil}, clean images whose negative caption differs from the true caption in one word, so it
+Its pairs come from FOIL-COCO~\cite{shekhar2017foil}: clean images whose negative caption differs from the true caption in one word, so the family
 is not a corruption test.
 % run: runs/P2-GATE-FOIL/analysis.json:test.{n,acc_a,acc_b,delta,ci95,p}; combination_beat_best_single (= false); analysed at commit 10e6bc0f
-On the 298 test pairs the combination reached 0.876 against 0.879 for the better direction, the text direction (net $-0.003$, 95\,\%
+On the 298 test pairs the combination reached 0.876 against 0.879 for the better direction, the text direction (net $-0.003$, 95\%
 interval $-0.010$ to $0.000$; $p=1.00$), so no gain of the combination over the better single score was detected (fit pairs and
 minimum detectable gain in supplement S-II).
 
@@ -352,25 +352,25 @@ In a separately labelled family added after the primary result was known (family
 negatives~\cite{hsieh2023sugarcrepe} on 50 COCO images not used elsewhere; Holm over the
 same three corruptions), the pre-written pilot rule found no corruption with decision headroom on 50 pilot images, so the family's test
 was not run.
-Its rules and code were committed before any hard-negative item was scored (disclosure, caveats and decision record in supplement
+Its rules and code were committed before any hard-negative item was scored (disclosure, caveats, and decision record in supplement
 S-III), and because its test was not run, nothing is stated about the gate on hard negatives.
 
 \subsubsection{Exploratory analyses}
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.*.contrasts.*_minus_GM (72 intervals; run once after analysis.json was committed)
 An exploratory comparison pre-specified in an addendum to the analysis plan, with intervals only and run once after the primary
 analysis was committed, contrasts the hard gate with five combiners of the same $\Delta_j$: three that need no detector, a discount of
-the flagged tokens, and a graded weight on every token; the median and 20\,\% trimmed-mean combiners are reported with their exact
+the flagged tokens, and a graded weight on every token; the median and 20\% trimmed-mean combiners are reported with their exact
 intervals in supplement S-II.
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.noise0.1.arms.{GM,MED,TM20}.acc (= 0.676, 0.678, 0.682); cells.noise0.1.contrasts.{MED,TM20}_minus_GM.{ci95,reading} (not_distinguishable); cells.{jpeg10,splice128}.contrasts.{MED,TM20}_minus_GM.reading (= below)
 % (number audit M1: the earlier sentence "no detector-free combiner gave higher verification accuracy than the hard gate" contradicted the noise cell)
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.{jpeg10,noise0.1,splice128}.contrasts.TM-G_minus_GM.{n_d,discordance_bound_B,counts_against}
-The data do not show a difference between the hard gate and a trimmed mean that removes as many tokens as the gate flagged (exact 95\,\%
-bounds on the difference of 0.023, 0.014 and 0.017).
-By the pre-stated rule, this counts against the added value of the detector on those cells (every cell, comparator and limit in
+The data do not show a difference between the hard gate and a trimmed mean that removes as many tokens as the gate flagged (exact 95\%
+bounds on the difference of 0.023, 0.014, and 0.017).
+By the pre-stated rule, this counts against the added value of the detector on those cells (every cell, comparator, and limit in
 supplement S-II).
 % run: runs/P2-GATE-SUITE/analysis.json:cells.*.gm_vs_none.ci95 (8 cells, 100 items each; every interval contains 0)
 In an exploratory suite of eight further cells (four corruption types of the imagecorruptions package~\cite{michaelis2019imagecorruptions}
-at two severities, 100 test items each; intervals only), no cell's 95\,\% interval of GATE-M minus none excluded zero (supplement S-II).
+at two severities, 100 test items each; intervals only), no cell's 95\% interval of GATE-M minus none excluded zero (supplement S-II).
 
 \subsubsection{Cost}
 % run: runs/P2-GATE-M4/items.jsonl:n_rows, seconds, peak_gb (median 84 rows, 11.2 s, max 8.2 GB)

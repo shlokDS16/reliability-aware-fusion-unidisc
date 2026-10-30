@@ -12,11 +12,11 @@
 Diffusion models are trained by maximising a variational lower bound on the data log-likelihood, as surveyed for continuous diffusion
 in image super-resolution~\cite{moser2025diffusion}, so a trained model can be read as a scorer of its own inputs.
 Text-to-image diffusion models have been used as zero-shot classifiers whose weights over diffusion timesteps are learned from held-out
-labelled data~\cite{clark2023zeroshot}, also with few labels~\cite{jeong2025diffusion}.
+labelled data~\cite{clark2023zeroshot}, including with few labels~\cite{jeong2025diffusion}.
 For image-text matching, the conditional error has been normalised by the unconditional one~\cite{krojer2023diffusionitm}, and VQAScore
 scores alignment by the probability of ``Yes'' that an image-to-text model assigns to a question about the pair~\cite{lin2024vqascore}.
 In text, masked language models score a token with the token masked~\cite{salazar2020mlm,li2022uchecker}.
-The evidence of this paper belongs to this family: a per-token log-likelihood ratio of the observed image codes under two captions,
+The evidence used in this paper belongs to this family: a per-token log-likelihood ratio of the observed image codes under two captions,
 computed by the masked denoiser of a unified model.
 
 \paragraph*{Masked discrete diffusion and unified models}
@@ -30,39 +30,38 @@ LaViDa adds a vision encoder to a diffusion language model~\cite{li2025lavida}, 
 model for multimodal generation and understanding~\cite{xin2025luminadimoo}.
 In this journal, discrete-diffusion image captioning has been studied in a setting where noise in the diffusion process weakens
 sentence information, and a feature-mask and gated-fusion design improves image-text alignment~\cite{yang2026malfm}.
-Many methods remask tokens that the sampler itself produced, by confidence, learned quality scores or critics, including
-cross-modal confidence in multimodal masked diffusion models
-\cite{wang2025remdm,zhai2026core,kim2025prism,schiff2026proseco,lezama2022tokencritic,ouyang2026freecorrection,le2026co2jump}.
-Work on damaged \emph{input} tokens is thinner: Trust but Verify detects corrupted context tokens in a finetuned text-only masked
+Many methods remask tokens that the sampler itself produced, by confidence, learned quality scores, or critics, including
+cross-modal confidence in multimodal masked diffusion models~\cite{wang2025remdm,zhai2026core,kim2025prism,schiff2026proseco,lezama2022tokencritic,ouyang2026freecorrection,le2026co2jump}.
+Work on damaged \emph{input} tokens is scarcer: Trust but Verify detects corrupted context tokens in a finetuned text-only masked
 diffusion model and refills them~\cite{jhingran2026trustverify}, and dropout decoding masks visual tokens that are uncertain under a
 logit-lens projection~\cite{fang2025dropout}.
 None of these works reports a verification decision under image corruption in a unified masked diffusion model.
 
 \paragraph*{Reliability-aware and dynamic fusion}
-When evidence comes from sources of unequal quality, the classical combination weights each source by its
+When evidence comes from sources of unequal quality, the classical combination rule weights each source by its
 reliability~\cite{chair1986optimal}, and classifier combination studies the rules for doing so~\cite{kittler1998combining}.
 In multimodal learning the weights change per input: dynamic, uncertainty-driven weighting of modalities has been analysed for
-low-quality data, with theory on when it is preferable to static weighting~\cite{zhang2023provable}, and a recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced and
+low-quality data, with theory on when it is preferable to static weighting~\cite{zhang2023provable}. A recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced, and
 quality-varying settings~\cite{zhang2026lowquality}.
 Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
 methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential}.
 Papers in this journal take the same view: a per-modality confidence score (an energy score) lets the fusion rely less on low-quality
-modalities~\cite{li2026tcpfmc}, evidence theory quantifies the uncertainty of each prediction and fuses evidence across propagation
-depths~\cite{chen2025uncertainty}, evidential deep learning suppresses unreliable modality-wise pseudo labels in audio-visual video
-parsing~\cite{jiang2025resisting}, and counterfactual samples in a shared multimodal latent space identify the input features that
+modalities~\cite{li2026tcpfmc}; evidence theory quantifies the uncertainty of each prediction and fuses evidence across propagation
+depths~\cite{chen2025uncertainty}; evidential deep learning suppresses unreliable modality-wise pseudo-labels in audio-visual video
+parsing~\cite{jiang2025resisting}; and counterfactual samples in a shared multimodal latent space identify the input features that
 contribute to high predictive uncertainty~\cite{qiu2025counterfactual}.
 At a finer grain, attention-based multiple-instance pooling learns instance weights from instance features under a bag-level
 loss~\cite{ilse2018attention}, and a token weight has been derived from a model's logits with and without the image, as a training-time
 reweighting~\cite{xiao2024seeing}.
 For Study~2, the closest precedents are thus learned timestep weights~\cite{clark2023zeroshot,jeong2025diffusion}, instance weights
-under a bag-level loss~\cite{ilse2018attention} and reliability weights of modalities or views~\cite{zhang2023provable,han2023trusted}.
+under a bag-level loss~\cite{ilse2018attention}, and reliability weights of modalities or views~\cite{zhang2023provable,han2023trusted}.
 Token-level confidences of a captioning vision-language model, aggregated algebraically or by a learned estimator, have also been used to
 judge whether a caption is correct for its image~\cite{petryk2024token}; that work scores the caption's tokens given the image and does
 not study image corruption.
 To our knowledge, no earlier work learns per-token, caption-withheld weights for the log-likelihood-ratio evidence of a unified
 masked diffusion model and tests them on fresh images under image corruption.
 This statement is limited to a keyword search of arXiv and of title-level records of IEEE-published journals and proceedings, logged in
-October 2026; it did not read full texts, the pages of IEEE Xplore itself, or the submission lists of open-review venues.
+October 2026; the search did not cover full texts, the pages of IEEE Xplore itself, or the submission lists of open-review venues.
 
 \paragraph*{Conformal risk control}
 Conformal prediction gives distribution-free guarantees under exchangeability~\cite{vovk2005algorithmic,angelopoulos2023gentle};

@@ -29,23 +29,23 @@ $S=\sum_j\Delta_j$ chooses the true caption if $S>0$.}
 Generative models are already used as scorers in this way.
 Diffusion classifiers compare conditional denoising errors across labels~\cite{li2023diffusionclassifier,clark2023zeroshot}, image-text
 matching has been scored by a conditional error normalised by the unconditional one~\cite{krojer2023diffusionitm}, and the authors of
-UniDisc show, as examples, the repair of damaged image-caption pairs by masking, re-infilling and selection by the model's own
+UniDisc give examples in which damaged image-caption pairs are repaired by masking, re-infilling, and selection by the model's own
 likelihood~\cite{swerdlow2025unidisc}.
-This paper studies evidence that the unified model computes itself, so its behaviour is a property of the scorer, not of an attached
+This paper studies evidence that the unified model itself computes, so its behaviour is a property of the scorer, not of an attached
 encoder.
-Images can be damaged before a model sees them, by compression, sensor noise or editing; corruption benchmarks treat such damage as a test
+Images can be damaged before a model sees them, by compression, sensor noise, or editing; corruption benchmarks treat such damage as a test
 condition~\cite{hendrycks2019benchmarking}, and multimodal fusion methods are evaluated under it~\cite{zhang2024informative}.
 The problem studied here is how the per-token likelihood evidence of a unified masked diffusion model behaves for image-text verification
 when the image is damaged before tokenisation, and whether a fixed rule applied to that evidence changes the decision
 (\cref{fig:measurement}).
 
 
-Two questions about this evidence were each preregistered (\cref{sec:setting-tests}), with their own plan, test images and decision
+Two questions about this evidence were preregistered separately (\cref{sec:setting-tests}), each with its own plan, test images, and decision
 rule.
 
 \noindent\textbf{Q1} (Study~1, \cref{sec:study1}): does discarding the image tokens that the model's own masked likelihood flags as
 improbable, with a flag threshold set by conformal risk control on clean pairs, change image-direction verification accuracy under Joint
-Photographic Experts Group (JPEG) compression, Gaussian noise and a pixel splice?
+Photographic Experts Group (JPEG) compression, Gaussian noise, and a pixel splice?
 
 \noindent\textbf{Q2} (Study~2, \cref{sec:study2}): does one frozen, learned per-token weighting of the evidence raise image-direction
 verification accuracy on fresh images under Gaussian noise?
@@ -61,10 +61,10 @@ clean pair's tokens is at most $\alpha$.
 Under an independent-token approximation, we give the condition on the false-alarm and hit rates under which discarding flagged tokens
 raises the signal-to-noise ratio of an additive evidence sum, stated as an approximation because image tokens are dependent, with an
 extension to exchangeably correlated tokens (\cref{prop:snrcorr}); it is linked to no result (\cref{sec:study1-method}).
-\item \emph{The preregistered test and its checks} (exact McNemar, Holm over three realistic corruptions, $n$ fixed by a headroom rule).
+\item \emph{The preregistered test and its checks} (exact McNemar, Holm over three realistic corruptions, and $n$ fixed by a headroom rule).
 % run: runs/P2-GATE-M4/analysis.json:outcome.label (= negative); A4.2.3 NEG 6.1 opening, first clause
 The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
-from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$ and a 128-pixel splice.
+from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$, and a 128-pixel splice.
 % run: runs/P2-GATE-M1/analysis.json:table.{patch,swap,jpeg,noise}.q.{mean,lo,hi}; table.{jpeg,noise}.tbv.{mean,lo,hi}; table.{jpeg,noise}.tex_neg.mean; falsifier.falsified (= true)
 At the token level the gate's score separates code-level random replacements (area under the receiver operating characteristic
 curve, AUROC, 0.961 for a patch, 0.955 for swapped codes) but is near chance on JPEG and Gaussian noise (0.561 and 0.503); on noise
@@ -80,24 +80,24 @@ stage not run (\cref{sec:study1-protocol,sec:study1-results}).
 \item \emph{A frozen weighting and its preregistered confirmation.} Learned reliability-aware fusion (LRF) is a logistic generalised
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:{features (35 names), n_items (= 500)}; HASHES.json:new.* (model.npz db7fdb4e...)
 additive model that maps 35 caption-withheld features of each image token to a non-negative weight on its evidence, fitted on 500 design
-images, frozen and pinned by SHA-256 before any test image was selected.
+images, frozen, and pinned by SHA-256 before any test image was selected.
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.{acc_b (= 0.7333), acc_a (= 0.8022), p_one (= 0.000508), label (= confirmed)}; family_L.L-LEN.label (= rejected, b 67 > c 33)
 On a fresh preregistered fold, the frozen LRF raised image-direction verification accuracy under Gaussian noise ($\sigma=0.1$) from 0.733
 without reliability weighting to 0.802 (exact one-sided McNemar $p=0.0005$), including with length-matched negatives; on clean images it
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.0089, 0.0533]), margin (= 0.03), non_inferior (= true), margin_note}; runs/P2-LRF-PLAN/n_rule.json:n_L (= 450)
-lost no more than three points (90\,\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory clean interval
+lost no more than three points (90\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory clean interval
 had been seen.
 This is in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not
 used to design or fit the method, with Gaussian noise at one severity.
 Two image-text encoders are scored on the same items for reference, without comparison, and the cost is reported
 (\cref{sec:study2}).
-\item \emph{A preregistration record.} The plans, hash pins, every deviation and the full outputs of every preregistered test are
-reported (\cref{sec:deviations}; supplement S-I, S-II and S-IV).
+\item \emph{A preregistration record.} The plans, hash pins, every deviation, and the full outputs of every preregistered test are
+reported (\cref{sec:deviations}; supplement S-I, S-II, and S-IV).
 \end{enumerate}
 
 \paragraph*{Scope of this paper}
 This paper reports two preregistered measurements on one model and does not run a race between verifiers.
 Its object is the evidence that a unified masked diffusion model computes about its own inputs, and each question asks, by an exact
 paired test, whether a rule fixed in advance changes the decision on images the rule never saw.
-Not claimed: a verifier that ranks with dedicated encoders; any result for another model, data set, severity or kind of negative
+Not claimed: a verifier that ranks with dedicated encoders; any result for another model, data set, severity, or kind of negative
 caption; that the learned weights track reliability or corruption; that either study bears on the other.
