@@ -58,10 +58,13 @@ loss~\cite{ilse2018attention}, and a token weight has been derived from a model'
 reweighting~\cite{xiao2024seeing}.
 For Study~2, the closest precedents are thus learned timestep weights~\cite{clark2023zeroshot,jeong2025diffusion}, instance weights
 under a bag-level loss~\cite{ilse2018attention} and reliability weights of modalities or views~\cite{zhang2023provable,han2023trusted}.
+Token-level confidences of a captioning vision-language model, aggregated algebraically or by a learned estimator, have also been used to
+judge whether a caption is correct for its image~\cite{petryk2024token}; that work scores the caption's tokens given the image and does
+not study image corruption.
 To our knowledge, no earlier work learns per-token, caption-withheld weights for the log-likelihood-ratio evidence of a unified
-masked diffusion model and tests them on fresh images.
-This statement is limited to a keyword search of these literatures that we logged in October 2026, which did not reach the submission
-lists of open-review venues or the journal tables of contents of IEEE Xplore.
+masked diffusion model and tests them on fresh images under image corruption.
+This statement is limited to a keyword search of arXiv and of title-level records of IEEE-published journals and proceedings, logged in
+October 2026; it did not read full texts, the pages of IEEE Xplore itself, or the submission lists of open-review venues.
 
 \paragraph*{Conformal risk control}
 Conformal prediction gives distribution-free guarantees under exchangeability~\cite{vovk2005algorithmic,angelopoulos2023gentle};
