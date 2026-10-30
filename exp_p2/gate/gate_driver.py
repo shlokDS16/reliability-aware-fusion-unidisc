@@ -79,7 +79,11 @@ STAGE_ARGS.update({"lrf-rescore": ["--slot-len", LRF_L_FIX],
                    "lrf-l1": ["--folds-path", str(LRF_FOLD), "--family-run", "P2-LRF-PLAN", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX, "--neg-len"],
                    "lrf-lg": ["--folds-path", str(LRF_FOLD), "--family-run", "P2-LRF-PLAN-LG", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX,
                               "--extra-cells", "shot_noise3,impulse_noise3,speckle_noise3"]})
-STAGE_MAX_CHUNKS = {"lrf-rescore": 40, "lrf-l1": 60, "lrf-lg": 40}       # explicit, not the driver default 12 (which stopped M4 once, CONFIRM 13): about 2.5 h, 4.3 h and 2.25 h of wall time in 15-minute chunks, with 1.5x slack
+# E1 (exploratory plan 2026-10-30): the L1 fold, family and flags with the pixel denoiser (S-DN, Study 1) applied before scoring; conditions jpeg10_nlm and noise0.1_nlm only. Run through the thin entry point
+# exp_p2.run_gate_lrf_dn, which leaves the pinned run_gate_m4.py untouched. Guards are passed with --extra (LRF_MEM_SLOW), as for the other lrf-* stages.
+STAGES.update({"lrf-dn": ("exp_p2.run_gate_lrf_dn", "P2-LRF-DN", 450)})
+STAGE_ARGS.update({"lrf-dn": STAGE_ARGS["lrf-l1"] + ["--denoise", "nlm-sdn"]})
+STAGE_MAX_CHUNKS = {"lrf-rescore": 40, "lrf-l1": 60, "lrf-lg": 40, "lrf-dn": 24}       # explicit, not the driver default 12 (which stopped M4 once, CONFIRM 13): about 2.5 h, 4.3 h and 2.25 h of wall time in 15-minute chunks, with 1.5x slack
 DEFAULT_MAX_CHUNKS = 12
 
 
@@ -115,7 +119,7 @@ def refusal_reason(log: Path, tail_bytes: int = 8192) -> str:
 
 def default_n(stage: str, fallback: int, runs: Path | None = None) -> int:
     """The item count when --n is not given. omni-r-test: the n_R recorded in runs/P2-OMNI-TIMING/omni_gate.json (the runner refuses a different --n), else the fallback 150."""
-    if stage == "lrf-l1":                                                       # the n-rule record's n_L, committed in runs/P2-LRF-PLAN/family.json as n_rule.test_fold (run_gate_m4 refuses any other --n)
+    if stage in ("lrf-l1", "lrf-dn"):                                                       # the n-rule record's n_L, committed in runs/P2-LRF-PLAN/family.json as n_rule.test_fold (run_gate_m4 refuses any other --n)
         p = Path(runs if runs is not None else common.RUNS) / "P2-LRF-PLAN" / "family.json"
         try:
             n = int(json.loads(p.read_text(encoding="utf8"))["n_rule"]["test_fold"])
