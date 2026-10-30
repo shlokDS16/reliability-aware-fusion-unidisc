@@ -1,0 +1,67 @@
+% Cover letter for the IEEE TNNLS submission of Paper 2. Seen by the editors only (not by reviewers), so it names the authors.
+% Claims follow the abstract's binding wording (SAP A6.12 branch A, A4.2.3); numbers are those printed in the abstract.
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{times}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\pagestyle{empty}
+\begin{document}
+
+\begin{flushright}
+School of Computer Science and Engineering\\
+Vellore Institute of Technology\\
+Vellore 632014, Tamil Nadu, India\\[4pt]
+\today
+\end{flushright}
+
+The Editor-in-Chief\\
+IEEE Transactions on Neural Networks and Learning Systems
+
+Dear Editor-in-Chief,
+
+We submit the manuscript \emph{``Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under
+Gaussian Noise in a Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc''} for consideration as a \textbf{Full
+Paper} in IEEE Transactions on Neural Networks and Learning Systems.
+
+Unified masked diffusion models generate and understand text and images with one network, and with the image tokens masked and a
+caption visible, the same network assigns a probability to each observed image code. The manuscript reports two separately
+preregistered studies of image-text verification under image damage in one such pretrained model (UniDisc, 1.4 billion parameters)
+on Common Objects in Context image-caption pairs.
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item In the first study, a gate discards low-likelihood image tokens. In the preregistered test no improvement was detected under
+JPEG compression at quality 10, Gaussian noise with standard deviation 0.1, and a 128-pixel splice; for each tested corruption the
+90\% confidence interval of the net accuracy change lay inside $\pm 0.05$ (500 pairs each), and the paper states that this does not
+show that the gate has no effect.
+\item In the second study, on a fresh preregistered fold, a frozen learned reliability-aware fusion of token evidence raised
+image-direction verification accuracy under Gaussian noise with standard deviation 0.1 from 0.733 to 0.802 (net 0.069, 95\%
+confidence interval 0.029 to 0.109; exact one-sided McNemar test, $p = 0.0005$), including with length-matched negatives, on 450
+images not used to design or fit the weighting, at that one severity.
+\end{itemize}
+Both studies were fixed in time-stamped preregistrations before their outcomes were seen, every number in the paper is traced to
+committed result files, and the limits of scope (one model, one dataset, one confirmed severity) are stated in the paper. We believe
+the work fits the journal's scope in learning systems and information fusion, and that its preregistered design and its separation
+of confirmed from exploratory results will interest the readership.
+
+The manuscript follows the journal's double-anonymous review policy: the review copy contains no author names, affiliations,
+funding or acknowledgment of the institution, and the code and data are available to reviewers in anonymized form. The
+supplementary material is provided as a separate file. We confirm that this work is original, has not been published elsewhere,
+and is not under review at any other publication. The authors declare no competing interests. All authors have approved the
+manuscript and agree with its submission.
+
+Thank you for considering our manuscript.
+
+Sincerely,
+
+Subramaniyaswamy Vairavasundaram (corresponding author)\\
+School of Computer Science and Engineering, Vellore Institute of Technology, Vellore 632014, Tamil Nadu, India\\
+E-mail: \href{mailto:subramaniyaswamy.v@vit.ac.in}{subramaniyaswamy.v@vit.ac.in}\quad
+ORCID: \href{https://orcid.org/0000-0001-5328-7672}{0000-0001-5328-7672}
+
+on behalf of all authors:\\
+Shlok Goenka (ORCID \href{https://orcid.org/0009-0002-8581-5657}{0009-0002-8581-5657}),
+Subramaniyaswamy Vairavasundaram (ORCID \href{https://orcid.org/0000-0001-5328-7672}{0000-0001-5328-7672}), and
+Balaji G N (ORCID \href{https://orcid.org/0000-0002-5346-0989}{0000-0002-5346-0989})
+
+\end{document}

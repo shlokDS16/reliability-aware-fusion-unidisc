@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = Path(sys.argv[1]).resolve()
+PLAIN = "--plain" in sys.argv   # Zenodo release: same Paper 2 files, names kept, the repository README
 
 INCLUDE = ["exp_p2/", "analysis/paper2/", "analysis_posthoc/", "research/paper2/prereg/", "tests/exp_p2/",
            "tests/analysis_lrf/", "tools/gpu_guard.py", "paper2-tnnls/"]
@@ -62,14 +63,18 @@ def wanted(p: str) -> bool:
 
 
 def mask(s: str) -> str:
-    for t in TERMS:
-        s = s.replace(t, MASK)
+    if PLAIN:
+        return s
+    for t in TERMS:   # case-insensitive: "SHLOK" in a comment, "shlok" in a path
+        s = re.sub(re.escape(t), MASK, s, flags=re.IGNORECASE)
     for t in WORD_TERMS:
         s = re.sub(r"\b" + t + r"\b", MASK, s)
     return s
 
 
 def leftover(s: str) -> list[str]:
+    if PLAIN:
+        return []
     hits = [t for t in TERMS if t.lower() in s.lower() and t.lower() not in MASK.lower()]
     hits += [t for t in WORD_TERMS if re.search(r"\b" + t + r"\b", s)]
     return hits
@@ -99,11 +104,15 @@ for rel in files:
             dst.write_bytes(new.encode("utf-8"))
             continue
     low = data.lower()
-    for t in TERMS:
+    for t in ([] if PLAIN else TERMS):
         if t.lower().encode() in low and len(t) > 4:
             problems.append(f"binary {rel}: contains {t!r}")
     dst.write_bytes(data)
-(OUT / "README.md").write_text(README, encoding="utf-8")
+(OUT / "README.md").write_text((ROOT / "README.md").read_text(encoding="utf-8") if PLAIN else README, encoding="utf-8")
+if PLAIN:   # the author version belongs in the public archive
+    for rel in ("paper2-tnnls/main_camera.tex", "paper2-tnnls/main_camera.pdf"):
+        if (ROOT / rel).exists():
+            (OUT / rel).write_bytes((ROOT / rel).read_bytes())
 print(f"files {len(files)}, text files masked {n_masked}, problems {len(problems)}")
 for p in problems[:40]:
     print("  ", p)

@@ -53,9 +53,9 @@ PDFs, README, licences; no model weights, no COCO images, no third-party PDFs).
 5. **Title**: `Code and data for: Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under Gaussian Noise in a Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc`
 6. **Publication date**: today's date.
 7. **Creators** (same order and details as the review paper; type each, add ORCID if you have it):
-   1. Goenka, Shlok. Affiliation: Vellore Institute of Technology, School of Computer Science and Engineering, Vellore, India.
-   2. Vairavasundaram, Subramaniyaswamy. Same affiliation.
-   3. G N, Balaji. Same affiliation.
+   1. Goenka, Shlok. ORCID 0009-0002-8581-5657. Affiliation: Vellore Institute of Technology, School of Computer Science and Engineering, Vellore, India.
+   2. Vairavasundaram, Subramaniyaswamy. ORCID 0000-0001-5328-7672. Same affiliation.
+   3. G N, Balaji. ORCID 0000-0002-5346-0989. Same affiliation.
 8. **Description** (paste):
    > Code, preregistration documents, hash pins, recorded predictions and analysis outputs for a paper that reports two
    > separately preregistered studies of image-text verification under image damage in the pretrained unified masked

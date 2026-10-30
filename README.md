@@ -48,10 +48,11 @@ GPU (RTX 5070 Ti) with the guards described in the supplement.
 
 ## Archive and licence
 
-A release of this repository is archived on Zenodo (DOI in the paper's author version). Licence: set at public release
+A release of this repository is archived on Zenodo (doi: 10.5281/zenodo.23810711; draft until acceptance). Licence: set at public release
 (planned: MIT for code; CC BY 4.0 for text, documents and results).
 
 ## Authors
 
-Shlok Goenka, Subramaniyaswamy Vairavasundaram (corresponding author, subramaniyaswamy.v@vit.ac.in), and Balaji G N,
+Shlok Goenka (ORCID 0009-0002-8581-5657), Subramaniyaswamy Vairavasundaram (corresponding author, subramaniyaswamy.v@vit.ac.in;
+ORCID 0000-0001-5328-7672), and Balaji G N (ORCID 0000-0002-5346-0989),
 School of Computer Science and Engineering, Vellore Institute of Technology, Vellore, India.
