@@ -18,9 +18,7 @@
 \usepackage{seqsplit}
 \usepackage{microtype}
 \usepackage{url}
-\usepackage{xr-hyper}   % numbers of the main paper's equations, figure and proposition (prefix M-; needs ../main.aux, so build main first)
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,breaklinks=true]{hyperref}
-\externaldocument[M-]{../main}
 \usepackage[capitalise]{cleveref}
 \newcommand{\todo}[1]{{\color{red}\textbf{[#1]}}}
 \newcommand{\E}{\mathbb{E}}
@@ -201,32 +199,17 @@ Raw logits are returned before the step that copies observed positions & \texttt
 \end{tabular}
 \end{table}
 
-\subsection{Protocol details of Study 1 (moved from the main paper, Sections IV-A and IV-B)}\label{sup:protocol1}
-% Moved verbatim from paper2-tnnls/sections/study1.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
-% run: design constants of research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md and SAP (rungs, thresholds T >= 2.0, n_v >= 90, rules R1-R3, alpha 0.05)
-Each realistic corruption has two rungs, walked in order: JPEG quality~10, then~5; Gaussian noise with $\sigma=0.10$, then $0.20$; a
-pixel splice of $128$, then $192$~px.
-A rung passes if the size-normalised evidence $\bar\Delta/s$ falls under corruption and recovers under the changed-code gate, which keeps
-exactly the tokens whose code did not change (paired $t\ge2.0$ for both, $n_v\ge90$ items).
-The first passing rung is the operating point.
-The largest headroom discordance $D^\ast$ between the changed-code gate and no gate then sets the test size: 300 items if $D^\ast\ge29$
-(rule R1), 500 items if $18\le D^\ast<29$ (R2), and a switch of endpoint if $D^\ast<18$ (R3).
-% run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md (design value; assumed discordance 0.10, not observed)
-The design minimum detectable net gain at $n=300$ was 0.053 unadjusted, under an assumed discordance of 10\,\%.
-Ties of the suspicion scores from \texttt{bf16} logits are broken by an independent uniform jitter smaller than the smallest gap between
-distinct calibration scores.
-Subtracting $D_j$ gives the Neyman--Pearson statistic only for corrupted values drawn from the position marginal, which JPEG compression,
-noise and splices do not produce, so no statement about detection power is made.
-
 \subsection{Disclosures of Addendum A4}
 (1) The five Tier-3 comparators and their parameters (S-II) were fixed in Addendum A4, whose draft (\texttt{40828e96}) and revision r1
 (\texttt{f1671c91}) were committed before the headroom decision file of the main run was written; the addendum's author states that no
 value of the headroom or primary stage was read when it was written, which is an assertion and not an attestation.
 (2) No $p$-value is computed for the Tier-3 comparators; there are 72 intervals and no multiplicity adjustment.
 (3) The outcome book of Addendum A4 fixed the wording of every label before the primary result existed.
-\todo{AUTHOR: confirm the wording of the record that, on 29 October 2026 at about 00:10 IST, the first author delegated the choice of
-whether a fallback applies if P is null, and that the stricter reading of the outcome book was adopted before any value of the main test
-was read (decisions D0076-D0077); name who adopted it.}
+On 29 October 2026 at about 00:10 IST the first author delegated the choice of how the submission condition reads under a null primary
+result; under that delegation the stricter reading (no question-form framing in the title, abstract, highlights, conclusion or the opening of
+the Study 1 discussion) was adopted by the agent-run study pipeline (see the Declaration) at 00:12 IST, before any value of the main test was
+read (decision records D0076 and D0077; D0077 corrects D0076's wording: the author's message delegated the choice and did not itself choose a
+reading).
 (4) The time-input statement rests on a code reading at the pinned commit (above) and on the key check.
 (5) Family~B ran before the re-infilling family S2, which the plan allows when a fixed time inequality holds at the end of the coherence
 stage; it held.
@@ -396,27 +379,6 @@ For $\alpha=0.05$ on an $8\times8$ patch image about 48 false flags are expected
 0.57 even for a perfect detector, and under JPEG and noise more than nine in ten tokens change, so precision must be read against that
 base rate.
 
-\subsection{Positive control (PS, pipeline check)}\label{sup:ps}
-% Moved from paper2-tnnls/sections/study1.tex (former main Table II) by the clarity editor (edit 2, 2026-10-30, lead decision); the table
-% file tables/tab_ps.tex is unchanged and its PS result sentences with their numbers stay in Section IV-C of the main paper.
-\Cref{stab:ps} is the positive-control table of Section IV-C of the main paper. It is a pipeline check and is not read beside family P.
-
-\begin{table}[!htbp]
-\centering
-\caption{Positive Control (Pipeline Check): GATE-M Against No Gate on the Sanity Corruptions}
-\label{stab:ps}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{\input{../tables/tab_ps}}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Columns as in Table~\ref{M-tab:familyP} of the main paper ($b$: items that GATE-M answers correctly and
-the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$; net difference $=(b-c)/n$); Holm over two; 95\,\% and 98.33\,\% paired
-percentile bootstrap intervals (10\,000 resamples). A pipeline check, not read beside family P; the control was not met and the plan's
-audit found no defect. Source: \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
-\nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.}
-\end{table}
-
 \subsection{Equal-size gates (descriptive) and the evidence ratio (S-Z)}
 % run: runs/P2-GATE-M4/analysis.json:mechanism.<cell>.y.*
 \Cref{stab:mech} reports GATE-M against the other gates of equal size, descriptively.
@@ -584,69 +546,6 @@ Against no gate, the flagged-set arm gave $0.003$ ($-0.007$ to $0.013$) under pa
 The share of re-infilled positions whose code equals the original clean code was below 0.04 in every arm and cell (descriptive; not
 restoration).
 The sensitivity analysis on the first 150 items was not rejected in either cell.
-
-\subsection{Family B: fit pairs and minimum detectable gain}
-% Moved verbatim from paper2-tnnls/sections/study1.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
-% run: runs/P2-GATE-FOIL/analysis.json:fit.{n_fit,best,best_acc} (239 fit pairs; text direction 0.887 < 0.95, so testable)
-On the 239 fit pairs the better direction was the text direction (accuracy 0.887, below the untestable ceiling of 0.95).
-% run: runs/P2-GATE-FOIL/analysis.json:mde_at_achieved_n.by_pi_d.0.1 (= 0.054; assumed discordance 0.10); test.n (= 298)
-The minimum detectable net gain at the test $n$ of 298 pairs is 0.054 at an assumed discordance of 0.10.
-
-\subsection{Proof of Proposition~\ref{M-prop:snrcorr} of the main paper (withholding with exchangeably correlated tokens)}\label{sup:proof-snrcorr}
-% Moved verbatim from paper2-tnnls/sections/appendix.tex (former Appendix A of the main paper; THEORY-ADDENDUM r1 R1.8 appendix block) by
-% the clarity editor (edit 2, 2026-10-30, lead decision); items (iii) and (iv) restored to the full text of edit 0. Cross-references to the
-% main paper go through xr-hyper (prefix M-). Theory under stated assumptions, not validated on UniDisc; not used in Study 2.
-This proof is theory under stated assumptions, not validated on UniDisc, and is not used in Study~2; the notation is that of Section IV-A
-of the main paper, and equation and figure numbers refer to the main paper.
-Write $m_0=(1-\rho)m$ and $m_1=\rho m$ for the numbers of clean and corrupted tokens, $k_0=1-\phi_0$ and $k_1=1-\phi_1$ for the keep
-probabilities, and $z_j\in\{0,1\}$ for the label of token $j$, so that $\E\Delta_j$ is $\mu$ or $\mu_c$ and $\Var\Delta_j$ is $\sigma^2$ or
-$\sigma_c^2$.
-The exchangeable block covariance of assumption (a) is positive semi-definite if and only if $\gamma_0\ge-1/(m_0-1)$,
-$\gamma_1\ge-1/(m_1-1)$, $\gamma_0,\gamma_1\le1$ and $\gamma_{01}^2\,m_0m_1\le\{1+(m_0-1)\gamma_0\}\{1+(m_1-1)\gamma_1\}$.
-
-\paragraph*{Variance}
-By assumption (b), $I_j$ is independent of $\Delta_j$, so
-$\Var(I_j\Delta_j)=k(\sigma_z^2+\mu_z^2)-k^2\mu_z^2=k\sigma_z^2+k(1-k)\mu_z^2$ with $k=k_{z_j}$, which are the terms of (\ref{M-eq:var}).
-For $j\neq k$, again by (b),
-$\mathrm{Cov}(I_j\Delta_j,I_k\Delta_k)=\E I_j\,\E I_k\,\E[\Delta_j\Delta_k]-\E I_j\,\E I_k\,\E\Delta_j\,\E\Delta_k=k_{z_j}k_{z_k}\,\mathrm{Cov}(\Delta_j,\Delta_k)$.
-There are $m_0(m_0-1)$ ordered clean pairs with covariance $\gamma_0\sigma^2$, $m_1(m_1-1)$ ordered corrupted pairs with covariance
-$\gamma_1\sigma_c^2$ and $2m_0m_1$ ordered mixed pairs with covariance $\gamma_{01}\sigma\sigma_c$, which gives (\ref{M-eq:varcorr}).
-
-\paragraph*{Condition}
-Let $V_g$ be (\ref{M-eq:varcorr}) at $(\phi_0,\phi_1)$ and $V_0$ its value at $\phi_0=\phi_1=0$.
-With $\mu_c=0$, $\E S_{\rm G}=m_0k_0\mu$ with the gate and $m_0\mu$ without it, so, both being positive, the gate raises the ratio if and
-only if $k_0^2V_0>V_g$.
-Collect $k_0^2V_0-V_g$ by type of term.
-The clean terms are
-$k_0^2m_0\sigma^2\{1+(m_0-1)\gamma_0\}-m_0k_0(\sigma^2+\phi_0\mu^2)-m_0(m_0-1)k_0^2\gamma_0\sigma^2=-m_0k_0\phi_0(\sigma^2+\mu^2)$,
-in which the $\gamma_0$ terms cancel.
-The corrupted terms are $m_1\sigma_c^2\{(k_0^2-k_1)+(m_1-1)\gamma_1(k_0^2-k_1^2)\}$, with $k_0^2-k_1=\phi_1-2\phi_0+\phi_0^2$ and
-$k_0^2-k_1^2=(\phi_1-\phi_0)(2-\phi_0-\phi_1)$.
-The mixed terms are $2m_0m_1\gamma_{01}\sigma\sigma_c\,k_0(k_0-k_1)$, with $k_0-k_1=\phi_1-\phi_0$.
-Dividing the sum by $m$ gives (\ref{M-eq:snrcorr}).
-
-\paragraph*{Consequences}
-(i) is read off (\ref{M-eq:snrcorr}).
-(ii) At $\phi_1=\phi_0\in(0,1)$ every correlation term vanishes and the left side is $\rho\sigma_c^2(\phi_0^2-\phi_0)<0$, below the positive
-right side.
-For $\phi_1\le\phi_0$, let $G=(\rho m-1)\gamma_1$, so that $G\ge-1$ by positive semi-definiteness.
-The bracket $(\phi_1-2\phi_0+\phi_0^2)+G(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ is linear in $G$; it equals $\phi_1-2\phi_0+\phi_0^2\le-\phi_0(1-\phi_0)$
-at $G=0$, equals $-\phi_1(1-\phi_1)\le0$ at $G=-1$, and does not increase for $G\ge0$; hence it is at most $0$.
-If $\gamma_{01}\ge0$ the mixed term is at most $0$ as well, while the right side is positive for $\phi_0\in(0,1)$.
-(iii) The derivatives of the left side with respect to $\gamma_1$ and $\gamma_{01}$ are
-$\rho\sigma_c^2(\rho m-1)(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ and $2\rho(1-\rho)m\sigma\sigma_c(1-\phi_0)(\phi_1-\phi_0)$, both positive when
-$\phi_1>\phi_0$ and $\rho m>1$, and the right side does not depend on $\gamma_1$ or $\gamma_{01}$.
-For fixed $\phi_1>\phi_0$ the $\gamma_1$ term grows without bound with $(\rho m-1)\gamma_1$, which gives the limit.
-With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, (\ref{M-eq:snrcorr}) reads
-$Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
-$b(\phi_0;G,\chi)=\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$), the curve of
-Fig.~\ref{M-fig:frontier}; as $G\to0$ it tends to the boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of (\ref{M-eq:snr}).
-(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms.
-% run: runs/P2-THEORY-CHECK/output.txt (check D4: min eigenvalue 0.9500; SNR none 0.4892, gate (0.3, 0) 0.5080)
-An instance with a positive definite covariance is $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$, $\mu=0.1$, $\mu_c=0$,
-$\sigma^2=\sigma_c^2=1$: the smallest eigenvalue of the correlation matrix is 0.9500, and the ratio rises from 0.4892 without a gate to
-0.5080 with the gate $(\phi_0,\phi_1)=(0.3,0)$. The instance illustrates the algebra and is not an estimate from the model.
-(v) $m$ enters (\ref{M-eq:snrcorr}) through $\rho m-1$ and $m$ whenever $\gamma_1\neq0$ or $\gamma_{01}\neq0$. \qed
 
 \subsection{Cost of Study 1}
 \begin{table}[!htbp]
@@ -969,31 +868,6 @@ Splice, 128 px & 0.896 & 0.893 & 0 & 1 \\
 recorded. Source: \nolinkurl{runs/P2-LRF-L1/items.jsonl}, \nolinkurl{runs/P2-LRF-LG/items.jsonl}.}
 \end{table}
 
-\subsection{Weight-model search, caption-slot checks and the full feature table (moved from the main paper, Section V-B)}\label{sup:lrfdetail}
-% Moved verbatim from paper2-tnnls/sections/study2.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
-% run: runs/P2-LRF-FROZEN-LFIX/spec.json:hpo.method (random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds); epochs (= 40)
-Nine configurations of $(Q,\lambda,\text{learning rate})$ were drawn at random and pruned by synchronous successive halving (factor 3; 4,
-13 and 40 epochs) on three inner folds of the 500 design items.
-% run: runs/P2-LRF-FROZEN-LFIX/spec.json:rescore_checks.{invariance_max_abs_diff (= 0.0), positive_control_max_abs_diff (= 0.0), n_check (= 5)}
-On five items under four conditions the caption-masked scores were identical whether the slot was built from the true caption, the wrong
-caption or padding, and the scorer reproduced the stored values at the true length (maximum absolute difference 0 in both checks).
-Any non-finite feature, weight or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
-\Cref{stab:features} gives every feature by name and formula; Table~\ref{M-tab:features} of the main paper groups them.
-
-\begin{table}[!htbp]
-\centering
-\caption{Input Features of the Frozen Weight Model, by Name, Group and Formula}
-\label{stab:features}
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\input{../tables/tab_features}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize 35 features in seven groups; names, order and counts as in \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json}
-(\nolinkurl{features}). $B_j$ and $D_j$ use the notation of Section III of the main paper. Source of the formulas:
-\nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer}.}
-\end{table}
-
 %======================================================================================================================================
 \section{Symbol Crosswalk}\label{sup:crosswalk}
 \begin{table}[!htbp]
@@ -1044,40 +918,137 @@ No committed run recorded a timing for the encoders, so their cost per item is n
 
 %======================================================================================================================================
 \section{Study 2: Exploratory Ablation (Tier 3)}\label{sup:ablation}
-This section is exploratory and was added after the primary, family~H and Study~2 results; no ablation was preregistered.
-\todo{RESULT: exploratory ablation in full (single-source refits, knockouts, seed spread), with the mandatory sentences of
-research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8 and the numbers of runs/P2-LRF-ABL-SCORE/ablation\_analysis.json}
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commit 4e785aa9) and controls.json (commit facab605); plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md
+% run: decision D0095 (code audit PASS WITH FIXES; score run once)
+\emph{Label.} Exploratory; added after the primary, family~H and Study~2 results.
+No ablation was preregistered.
+The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was written and checked by the statistician, and the variant list
+was committed before any variant was fitted or scored.
+\emph{Disclosure.} When the plan was written, its author had seen the fresh-fold results of the frozen LRF and of the unweighted rule,
+an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (main paper,
+Fig.~4); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
+the list was committed.
+Every listed variant is reported; no variant was selected and scored again, and the tested object of Study~2 stays the frozen LRF.
 
-%======================================================================================================================================
-\section{Sources of the Main Paper's Figures and Tables}\label{sup:sources}
-% Moved from the captions of the main paper by the clarity editor (edit 1, 2026-10-30); paths and keys unchanged.
-Every figure and table of the main paper is computed by a script in \nolinkurl{paper2-tnnls/scripts/} that reads only committed run files.
-\begin{itemize}
-\item Fig.~\ref{M-fig:measurement} (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
-\item Fig.~\ref{M-fig:frontier} (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
-and a curve ends where it reaches $\phi_1=1$ or has no root.
-\item Table~\ref{M-tab:familyP} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
-\nolinkurl{runs/P2-PAPER-BOUNDS/p_exact_bounds.json}.
-\item Fig.~\ref{M-fig:p_result} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{primary.per_corruption.*}; script
-\nolinkurl{paper2-tnnls/scripts/fig3_study1_P.py}.
-\item \Cref{stab:ps} (positive control; former main Table II): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
-\nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.
-\item Table~\ref{M-tab:detection} (token detection): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
-\nolinkurl{paired_q_vs_best_cheap.*}.
-\item Table~\ref{M-tab:features} (feature groups): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{features});
-\nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer}; full table in
-\cref{stab:features}.
-\item Fig.~\ref{M-fig:lrf_weights} (frozen weight model): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}},
-\nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,2}.npz} (SHA-256 checked against \nolinkurl{arrays_manifest.json}); computed values in
-\nolinkurl{runs/P2-PAPER-FIGS/}; script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of panel (a) runs between
-the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
-\item Table~\ref{M-tab:study2} (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
-\nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
-\item Fig.~\ref{M-fig:lrf_results} (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
-\nolinkurl{paper2-tnnls/scripts/fig5_study2_results.py}.
-\item Table~\ref{M-tab:baselines} (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});
-\nolinkurl{runs/P2-PAPER-TABLES/baselines_clean300.json}; revisions in \cref{sup:baselines}.\newline
-Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{runs/P2-LRF-BASELINES-PARITY-LG}.
-\end{itemize}
+\paragraph*{Variants}
+All fitted variants use LRF's protocol with the stated change: the same objective, optimiser, nine-configuration search with successive
+halving, three inner folds over the 500 design items, selection by the inner-fold objective, and one final seed.
+A-LIN is a linear logit on the 35 features (no hinge terms).
+A-S-BD, A-S-s3, A-S-tbv, A-S-ltex, A-S-nbr and A-S-pos are the same additive model on the features computed from one source only: $B$ and
+$D$ (14 features), $s_3$ (5), tbv (5), ltex (4), nbr (4) and grid position (3).
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-SF]; plan section 3a (feature chosen: rad)
+A-SF is a single-feature weight (feature \texttt{rad}, chosen from 35 candidate features by the inner-fold objective on the design items,
+a selection budget 35 times that of the frozen LRF; the selection used no fresh item).
+A-MIL is attention-weighted pooling in the style of gated attention MIL (Ilse et al., 2018; cited in the main paper) over the same 35 features, fitted with the
+same objective, design items and tuning budget; the evidence $\Delta_j$ takes the place of the instance classifier.
+A-UNL is an unlearned rank weight on $s_3$, $w_j=1-\mathrm{rank}(s_{3,j})$; the direction and the rank transform were fixed by the plan's
+author, who had seen the frozen LRF's shape functions; they were not read from an accuracy.
+The knockouts evaluate the frozen LRF with one group set to its design-item mean: by source (KO-S-BD, KO-S-s3, KO-S-tbv, KO-S-ltex,
+KO-S-nbr, KO-S-pos) and by formula type (KO-F-token, KO-F-position, KO-F-neighbourhood, KO-F-rank, KO-F-item).
+Setting a group to its mean gives inputs that the model did not see together in fitting; an interval away from zero shows that the frozen
+model's decisions depend on those inputs, not that the group alone detects anything.
+KO-S-pos and KO-F-position act on the same three features, so their rows are identical.
+
+\paragraph*{Intervals}
+Each interval is a marginal 95\,\% interval. 336 intervals were computed from the same images (variants $\times$ cells $\times$ two
+contrasts); they are positively dependent and no familywise or false-discovery adjustment was made. If every true difference were zero,
+about 5\,\% of them (about 17) would still exclude zero, and the count of intervals that exclude zero is not a calibrated tally because of
+the dependence. An interval that excludes zero is therefore a descriptive observation, not a finding; patterns across rows and cells are
+described, single intervals are not claims. The intervals cover item sampling only: refit-seed variation and design-item sampling are not
+in them.
+Intervals are paired percentile bootstrap intervals with 10\,000 item resamples, one shared index matrix per cell; differences are
+variant minus reference, so a positive value favours the variant, and an interval that contains zero does not show that the difference is
+zero.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:lg_l1_image_overlap.{n_image_overlap (= 300),lg_image_ids_equal_first_n_of_l1 (= true)}; n_per_cell
+The 300 images of the LG cells are the first 300 images of the L1 cells, so the eight cells are not independent samples; the cells have
+450 (L1) and 300 (LG) items.
+
+\paragraph*{Controls}
+% run: runs/P2-LRF-ABL-SCORE/controls.json:{NONE_vs_y_none.n_mismatch (= 0),LRF_vs_y_lrf.n_mismatch (= 0),KO_ALL_vs_NONE.n_differing (= 0),ok}; n (= 3000)
+Recomputed from the stored arrays, the unweighted rule and the frozen LRF reproduced the decisions of the preregistered analysis on all
+3\,000 item-cells (0 mismatches each), and the knockout of all 35 features (KO-ALL, an exact-equality control with no interval)
+reproduced the unweighted rule on every item-cell.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:seed_spread.harness_lrf_seed0_vs_frozen_lrf_items_deciding_differently.* (all 0)
+An LRF refit by the ablation harness at seed 0 decided every fresh item as the frozen LRF did.
+
+\paragraph*{Results}
+\Cref{stab:ablL1,stab:ablLG} give every variant against the frozen LRF and \cref{stab:ablnone} against the unweighted rule.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.*.vs_LRF.ci95
+Under Gaussian noise (L1) the intervals against LRF contained zero for A-LIN, A-S-BD, A-S-s3 and A-MIL, and lay below zero for A-S-tbv,
+A-S-ltex, A-S-nbr, A-S-pos, A-SF and A-UNL; among knockouts, KO-S-BD and KO-F-neighbourhood lay below zero and KO-S-nbr above zero, and
+every other knockout interval contained zero.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN].cells.{L1_jpeg10,LG_shot_noise3}.vs_LRF; rows[id=A-S-BD].cells.LG_impulse_noise3.vs_LRF; rows[id=KO-S-s3].cells.L1_jpeg10.vs_LRF
+In other cells, intervals against LRF that lay above zero were those of A-LIN under JPEG (0.020 [0.004, 0.038]), A-S-BD under impulse noise
+(0.043 [0.003, 0.083]) and KO-S-s3 under JPEG (0.011 [0.002, 0.022]); this comparison was added after the Study~2 results and is not a
+test. The tables give every other cell, row by row, without a summary.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-UNL].cells.L1_noise0.1.{vs_NONE,vs_LRF}
+The unlearned rank weight on $s_3$ had a paired difference from the unweighted rule of $-0.002$ [$-0.024$, 0.020] and from LRF of $-0.071$
+[$-0.111$, $-0.031$] under Gaussian noise.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:seed_spread.{max_range_over_variants_and_cells,seed0_is_prefixed}
+Across the three refit seeds, the range of fresh-fold accuracy was at most 0.030 in every variant and cell (\cref{stab:ablseeds}).
+Seed 0 is the pre-fixed seed that LRF used, not the best of three; the extra seeds repeat only the final fit, not the configuration search
+or the choice of design items, so they understate refit variation. The seed-spread rows are refits, not the frozen LRF.
+
+\begin{table}[!htbp]
+\centering
+\caption{Exploratory Ablation (Added After the Primary, Family H and Study 2 Results): Accuracy and Difference From the Frozen LRF, L1 Cells}
+\label{stab:ablL1}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{../tables/supp_ablation_vsLRF_L1}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Differences are variant minus reference; positive favours the variant. Each row is one refit seed with the
+configuration chosen by the design-item search; the intervals (95\,\%, paired percentile bootstrap, 10\,000 resamples) cover item
+sampling only. KO-ALL is a control (decisions identical to the unweighted rule on every item) and has no interval. Nothing is bold; rows in
+the order of the plan. Source: \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}; script
+\nolinkurl{paper2-tnnls/scripts/tab_ablation.py}.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Exploratory Ablation: Accuracy and Difference From the Frozen LRF, LG Cells (the First 300 L1 Images)}
+\label{stab:ablLG}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{../tables/supp_ablation_vsLRF_LG}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize As \cref{stab:ablL1}. The LG cells use the first 300 images of the L1 cells, so the cells are not
+independent samples.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Exploratory Ablation: Difference From the Unweighted Rule [95\,\% Interval], All Cells}
+\label{stab:ablnone}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\resizebox{\textwidth}{!}{\input{../tables/supp_ablation_vsNONE}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Variant minus the unweighted rule; positive favours the variant. The interval of LRF against the
+unweighted rule is the preregistered one (main paper, Study~2 results table) and is not recomputed here.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Exploratory Ablation: Seed-Spread Refits (Accuracy at Seeds 0, 1, 2; Mean, SD, Range)}
+\label{stab:ablseeds}
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\resizebox{\textwidth}{!}{\input{../tables/supp_ablation_seeds}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Seed 0 is the pre-fixed seed, not the best of three; the extra seeds repeat only the final fit with the
+configuration of the seed-0 search, so they understate refit variation. ``LRF refit (harness)'' is a seed-spread refit, not the frozen
+LRF. Descriptive; no interval.}
+\end{table}
+
+\paragraph*{Deviations entry}
+% run: git commits facab605 (scores) and 4e785aa9 (analysis); plan commit recorded in the plan file
+Tier-3 ablation (exploratory; added after the primary, family~H and Study~2 results): plan
+\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md} committed before any variant was scored on fresh items; variants fitted only
+on the 500 design items; every variant reported; intervals only.
 
 \end{document}
