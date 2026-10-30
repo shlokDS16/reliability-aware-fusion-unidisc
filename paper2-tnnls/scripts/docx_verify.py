@@ -45,7 +45,7 @@ def doc_paragraph_texts(d) -> list[dict]:
 
 
 def norm_tokens(text: str) -> list[str]:
-    text = unicodedata.normalize("NFKC", text).lower()
+    text = unicodedata.normalize("NFKC", text.replace("​", "")).lower()  # U+200B: URL break points in references
     text = text.replace("​", "").replace("­", "")
     text = re.sub(r"[\-‐-―−]", "", text)       # hyphens, dashes, minus: removed (pdftotext joins at line ends)
     return re.findall(r"[a-z0-9]+", text)

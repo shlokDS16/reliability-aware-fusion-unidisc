@@ -434,12 +434,63 @@ class Poster:
                     p.add_run(text)
         # the template header carries the page number (right) above the line; keep it.
 
+    def typeset_pass(self):
+        """Match the PDF's typesetting where Word differs: IEEEtran sets references in 8 pt on 9 pt lines, breaks URLs at
+        / . - _ ? = & #, and hyphenates. Display text gains invisible U+200B break points; link targets are unchanged."""
+        from docx.enum.text import WD_LINE_SPACING
+        rf = self.doc.styles["References"].paragraph_format
+        rf.line_spacing_rule = WD_LINE_SPACING.EXACTLY
+        rf.line_spacing = Pt(9)
+        rf.space_before = Pt(0)
+        rf.space_after = Pt(0)
+        zw = "​"
+        brk = re.compile(r"([/.\-_?=&#])(?=\S)")
+        url = re.compile(r"(https?://\S+|doi\.org/\S+|\S+/\S+)")
+        ref_sid = self.sid("References")
+        n = 0
+        for p in self.body.iter(W("p")):
+            if pstyle_of(p) != ref_sid:
+                continue
+            for t in p.iter(W("t")):
+                s = t.text or ""
+                new = url.sub(lambda m: brk.sub(lambda k: k.group(1) + zw, m.group(0)), s)
+                if new != s:
+                    t.text = new
+                    n += 1
+        st = self.doc.settings.element
+        if st.find(W("autoHyphenation")) is None:
+            ah = el("autoHyphenation", val="true")
+            dts = st.find(W("defaultTabStop"))
+            if dts is not None:
+                dts.addnext(ah)
+            else:
+                st.insert(0, ah)
+        # never hyphenate the title, the author line or headings (LaTeX does not either)
+        for name in ("Title", "Authors", "Heading 1", "Heading 2", "Heading 3", "Reference Head"):
+            try:
+                ppr = self.doc.styles[name].element.get_or_add_pPr()
+            except KeyError:
+                continue
+            if ppr.find(W("suppressAutoHyphens")) is None:
+                later = ("kinsoku", "wordWrap", "overflowPunct", "topLinePunct", "autoSpaceDE", "autoSpaceDN", "bidi",
+                         "adjustRightInd", "snapToGrid", "spacing", "ind", "contextualSpacing", "mirrorIndents",
+                         "suppressOverlap", "jc", "textDirection", "textAlignment", "textboxTightWrap", "outlineLvl",
+                         "divId", "cnfStyle", "rPr", "sectPr", "pPrChange")
+                nxt = next((c for c in ppr if c.tag in {W(t) for t in later}), None)
+                sah = el("suppressAutoHyphens")
+                if nxt is not None:
+                    nxt.addprevious(sah)
+                else:
+                    ppr.append(sah)
+        self.log.append(f"typeset: references 8/9 pt, {n} URL runs given break points, hyphenation on (not in title or headings)")
+
     def run(self, out: Path, header_text: str):
         self.ensure_styles()
         self.front_pass()
         self.paragraph_pass()
         self.equation_pass()
         self.table_pass()
+        self.typeset_pass()
         self.scrub()
         self.header(header_text)
         self.doc.save(str(out))

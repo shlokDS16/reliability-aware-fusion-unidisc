@@ -94,3 +94,14 @@ on the live tree (whose `main.aux` was older than one edited section, as the con
 - Not covered: algorithm2e environments, `\footnote` (none in the paper), photographs in biographies (`IEEEbiography` is flattened to bold name plus
   text), `\thanks` in the camera build is added as paragraphs instead of a real first-page footnote.
 - The supplement has no running abstract or index terms; it keeps the S- numbering of sections, tables, figures, equations and propositions.
+
+## Word layout pass (2026-10-30, after Shlok found Fig. 1 above the title in the DOCX)
+- `scripts/docx_page1.py` runs after conversion (main manuscript only; needs Microsoft Word). It asks Word where each
+  paragraph and float lands and places every wide (two-column) float, in source order, before the first paragraph that
+  starts on its page: never page 1 (Word would draw it above the title) and at most one wide float per page (two stacked
+  wide floats made Word leave the rest of the page blank). Skip with `--no-page1`; a failure prints `ERROR page-1 float check`.
+- `docx_post.typeset_pass`: references 8 pt on exact 9 pt lines (IEEEtran), invisible U+200B break points in reference URLs
+  (display text only; link targets unchanged), Word hyphenation on except title, author line and headings.
+- `docx_tex`: IEEEtran's `\hskip 1em plus 0.5em minus 0.4em\relax` no longer leaks into references [48] and [62].
+- Result at this commit: Word renders the manuscript in 15 pages (Fig. 1 top of page 2) and the supplement in 17.
+  Always check the Word render (`--render`, then look at the `.word.pdf` pages), not only the LaTeX PDF.

@@ -946,6 +946,8 @@ class Preprocessor:
                 num = self.aux.cites.get(key)
                 raw = re.sub(r"\\BIBentry(ALT|STD)interwordspacing", "", raw)
                 raw = re.sub(r"\\newblock\s*", " ", raw)
+                # IEEEtran's \hskip 1em plus 0.5em minus 0.4em\relax (after a book title) leaked as text into Word
+                raw = re.sub(r"\\hskip\s*[\d.]+\s*em(\s*plus\s*[\d.]+\s*em)?(\s*minus\s*[\d.]+\s*em)?\s*(\\relax)?\s*", " ", raw)
                 raw = re.sub(r"\\BIBforeignlanguage\{[^}]*\}\{([^}]*)\}", r"\1", raw)
                 fid = f"bib{num}"
                 self.fragments[fid] = raw.strip()

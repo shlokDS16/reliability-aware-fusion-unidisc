@@ -78,6 +78,7 @@ def main():
     ap.add_argument("--keep", default=None, help="directory for intermediate files (pandoc input/AST/raw docx)")
     ap.add_argument("--no-verify", action="store_true")
     ap.add_argument("--render", action="store_true", help="export DOCX to PDF with Word (COM) for a visual check")
+    ap.add_argument("--no-page1", action="store_true", help="skip the Word pass that keeps wide floats off page 1")
     a = ap.parse_args()
     src = Path(a.src).resolve()
     out = Path(a.out).resolve() if a.out else src / "docx"
@@ -98,6 +99,14 @@ def main():
         keep = Path(a.keep) / name if a.keep else None
         r = convert(tex, aux, bbl, dst, template, anon, unit, keep)
         print(f"[{name}] wrote {dst}")
+        if unit == "main" and not a.no_page1:
+            import docx_page1
+            try:
+                fin = docx_page1.fix(dst, r["warnings"])
+                print(f"[{name}] Word layout: {fin['pages']} pages; floats by page: "
+                      + ", ".join(f"{f['text'][:12]!r}->{f['page']}" for f in fin["floats"]))
+            except Exception as e:  # noqa: BLE001
+                print(f"  ERROR page-1 float check failed ({e}); a wide figure may sit above the title in Word", file=sys.stderr)
         for w in r["warnings"]:
             print(f"  warning: {w}")
         results[name] = (dst, pdf)
