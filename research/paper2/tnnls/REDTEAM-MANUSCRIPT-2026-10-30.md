@@ -386,3 +386,111 @@ between major revision and acceptance.
 
 I added no rows. The brief names one output file. A1 is fatal and blocks the gate until the orchestrator records a
 resolution in `decisions.jsonl`.
+
+---
+
+# Re-check 2026-10-30 (red team, on HEAD 9268e34b: main.pdf 15 pp, supplement.pdf 17 pp, both built 10:08 IST after the last source edit)
+
+Read: D0096-D0101 in full. The main text was diffed sentence by sentence against the 08:41 build, and every changed
+sentence was read. Read in full: abstract, contributions, V-A, V-D, V-G, VI-B, VI-C, VI-D, the Reproducibility
+paragraph and the Declaration. Rendered: page 1 and page 4 (Table I). Supplement read: Table S5 (status map), Table
+S18, S-VII in full with Table S24, and the S-I audit and G(3) text. Must-not scan re-run on pdftotext of both PDFs.
+Git order checked: ablation plan 506818c7 (07:13), then the fits 45f4a717 (08:23), then the scoring facab605 (08:35).
+Not re-checked: the DOCX; S-II detail tables S9-S16; last-page column balance (A12); numbers beyond those quoted below.
+
+## Verdict: DO NOT SIGN as built (one fatal, R1). One table change turns it into SIGN WITH CONDITIONS (R2-R6).
+
+A1-A7 are resolved, so the earlier fatal is gone. The new main-text **Table I** repeats the A1 defect in a lighter
+form: decision words instead of numbers, but in the main text, and with both studies on one canvas.
+
+## Status of the earlier findings
+
+| # | Status | Evidence |
+|---|---|---|
+| A1 | **RESOLVED** in the supplement | Table S5 is now a status-only map (status words of A4.2.5 item 6; no estimates). PS, detection and H have their own tables (S9, main III, S17). |
+| A2 | RESOLVED | The abstract ("a random caption of an image sharing no annotated object category"), IV-C1, V-C (rule stated in plain words), VI-C and VII all carry the category-disjoint scope (D0097). |
+| A3 | RESOLVED | The Reproducibility paragraph no longer claims a hash-preserving mirror. It now says: "available to the reviewers on request through the editor and will be released at camera-ready". Minor: "link withheld for double-anonymous review" is stated twice. |
+| A4 | **OPEN, author item (D0101)** | See R5. |
+| A5 | RESOLVED | Deviations item (1) now carries the r2/r3 clause. |
+| A6 | RESOLVED | Table S18 prints n_d, the 90% CI, the Clopper-Pearson CI of b/n_d and mid-p. V-D points to it. |
+| A7 | RESOLVED | Q1/Q2 are run-in paragraphs; page 1 renders cleanly. |
+| A8 | unchanged, not a violation | D0094 clause in V-A. |
+| A9 | PARTLY | Fig. 4 panel titles are now plain names. Table IV still writes q_j = B_j - D_j, the Study 1 symbol. V-G uses the undefined code names tbv, ltex, nbr, s3 and rad (see R6). |
+| A10, A12, A15 | not re-checked / unchanged | minor |
+| A11 | RESOLVED | "predict no ranking" and "A code reading confirmed" are gone. |
+| A13 | RESOLVED | Timestamps in UTC. "One laptop GPU (12 GB)" in Table S14 is a hardware fact; acceptable. |
+| A14 | RESOLVED | Deviations item (9): detection-stage and main-test env-lock files. |
+| A16 / V2-2(d) | RESOLVED | VI-C names the four simpler weightings not distinguishable from LRF under noise. The "does not show zero" sentence now sits only in S-VII's interval-definition paragraph. |
+
+## New findings
+
+| # | Sev. | Location | Finding | Rule | Fix |
+|---|---|---|---|---|---|
+| R1 | **fatal** | Main **Table I** "Preregistered Families at a Glance (Decision Words Only)", Sec. III-E (p.4). Text: "Table I lists the families with their preregistered decisions only" (III-E); "with its status" (IV-B). | (a) The **Decision** column holds results, not statuses. P reads "bounded null", directly beside PS "not rejected" (the failed positive control), S-D "rejected (Holm)" (the rival result) and H "not run". That is PS and the detection rival on the P canvas, and H on a results canvas beside P and PS. (b) The same table has a Study 2 block (L1 "confirmed", L4 and LG "rejected (Holm)") under the Study 1 block, in the shared Setting section before either study. A reader sees "Study 1: bounded null; Study 2: confirmed" on one canvas, which is the arc that F1/F2 were about. D0096 allowed "decision words". A lead row cannot loosen A4.2.5 (item 3: "any label"; item 6: "status only") or A5.9 (placement 5: "tightened, never loosened"). My W7 fix asked for status only; the decision column goes beyond it. | A4.2.5 items 3, 4, 6; A5.9 placement 3; C6-4 / A6.12 placement 2 (no canvas arranges the studies as problem and solution) | Replace the Decision column with the status words of Table S5 ("run, formal"; "not run (gatekept: P+ empty)"; "run; headroom not met (H-NOGO)"; for Study 2, "run, formal" per family), and make III-E and IV-B consistent ("status"). Alternatively, split into two status tables, one in each study's section. Amend D0096 by a dated row. With status words only, the table is the allowed status map and the two blocks carry no outcome. |
+| R2 | major | V-D, D0099 sentence: "None of the three other noise types ... was a training condition of the frozen weighting ... On these types (n = 300 each), each LG hypothesis was rejected with b > c." | Read in sequence, this is the held-out-family framing that A6.5/C6-11 bans, without the words. The C6-11 caveat (shot and speckle are close relatives of Gaussian noise; severity 3 is not matched to σ = 0.1) is a page earlier, in V-C. | A6.5 and C6-11 wording; A6.12 must-not ("held-out noise family", "generalises" without a test) | Keep D0099's sentence, but follow it in the same paragraph with the C6-11 clause ("shot and speckle noise are close relatives of Gaussian noise, impulse noise is the structurally different cell, and severity 3 is not matched to σ = 0.1") before the LG results. |
+| R3 | minor | IV-C9 (Study 1 Tier 3): "Under JPEG and splice the median and 20% trimmed-mean combiners scored below the hard gate; under noise they scored 0.678 and 0.682 against 0.676 ..., and the data do not show a difference" | The A4.1.10/r3 sentences must carry the net, its 95% CI and the exact discordant-split interval ("below GM"), or n_d and B/MDD ("not distinguishable"), beside the claim. These sit only in Table S15. | A4.1.10 r3 items 3 and 5 | Add the nets with their exact intervals, n_d and B in the text, or move the two sentences to S-II and keep only the trimmed-mean sentence, which already carries its bounds. |
+| R4 | minor | Supplement Table S5, E-pred row: "out-of-sample sign prediction"; B row: "hard-negative foil pairs" | "prediction" appears outside the E-pred table (R1.7 item 3). "Hard-negative" for FOIL pairs invites confusion with family H, whose name is "hard negatives". | THEORY R1.7 item 3; A5.9 clarity | "out-of-sample sign agreement"; "one-word foil pairs". |
+| R5 | **open author item (D0101); blocks submission, not the build** | Declaration: "The authors used Claude (Anthropic) to improve the language and grammar of the manuscript." | Body sentences this makes inaccurate (each points the reader to a Declaration that no longer contains what it promises, or contradicts it): (1) III-E "verified by scripted and agent-run audits (see the Declaration)"; (2) IV-C3 "The plan's audit (scripted and agent-run, see the Declaration)"; (3) V-C "passed scripted and agent-run audits (see the Declaration)"; (4) VI-C "the audits were agent-run (see the Declaration)"; (5) supplement S-I B, the list of the statistician's, red team's, gate-auditor's and data-steward's checks "(see the Declaration of the main paper)"; (6) supplement S-I G(3): the outcome-book reading "was adopted by the agent-run study pipeline (see the Declaration)", which contradicts "language and grammar" outright; (7) S-VII: "The plan ... was written and checked by the statistician", a role now undisclosed. Beyond the dangling references, the project record (agent-written code, analysis scripts, figures, drafts, agent-run audits and a delegated decision) is wider than "language and grammar". Submitting with the interim text would misstate AI use relative to the paper's own supplement. | SPEC rule 6 (F17); IEEE AI policy (checklist s7) | Author decision with the supervisor (D0101). Until then: do not submit. When the text is final, either restore the role-by-role content (draft kept in drafts/declaration-full-disclosure-draft.tex), or rewrite sentences (1)-(7) so that none relies on the Declaration. The second route would still leave (6) describing an agent-made decision, which must be disclosed somewhere. |
+| R6 | minor | V-G | V-G uses code names (tbv, ltex, nbr, s3, "feature rad") that the main text never defines; Table IV defines the features by formula only. "tbv" echoes Study 1's "TbV score". | A9 / F29 spirit; clarity | Use the Table IV descriptions ("the one-pass observed-position score", "patch texture", "codebook-neighbour distance", "confidence of the B pass", "radial position"), or add a name column to Table IV. |
+
+## V-G / S-VII compliance (V2-2 and SPEC s6)
+
+| Condition | Status |
+|---|---|
+| (a) Variants and quantities fixed before any fresh scoring | **PASS.** The plan (506818c7, 07:13) precedes the fits (45f4a717, 08:23) and the score (facab605, 08:35). S-VII discloses what the plan author had seen, including that the direction of A-UNL was fixed after seeing the shape functions. |
+| (b) No Study 1 object | **PASS.** No GATE-M, conformal-risk-control or masked-likelihood hard gate, no A4 Tier-3 comparator, no hard-versus-soft framing. A-S-BD uses B and D, which are defined in shared Sec. III. A-UNL ranks s3, not u_j. |
+| (c) Fit and selection on design items only | PASS (stated; the A-SF selection "used no fresh item"). |
+| (d) Every variant reported; covering intervals stated in V-G and Limitations; no rescue sentence | **PASS** (A16 resolved). |
+| (e) Kept out of title, abstract, conclusion and contributions | **PASS.** In the Discussion it appears only in alternative reading (3). |
+| SPEC s6: no p-value; no variant called better or worse in a claim; label; deviations entry | **PASS.** "Exploratory; added after the primary, family H and Study 2 results"; "not a test"; intervals only; dependence and multiplicity caveat (336 intervals). The deviations box has item (9) in main and item 12 in S-I. |
+| C6-8 (no design-item accuracy of the frozen LRF as performance) | PASS on Table S24 and the S-VII text. Tables S25-S27 were not read in full. |
+
+## Must-not rescan (HEAD 9268e34b)
+
+- **Main.** No true violation.
+  - Changed counts are explained by the new text.
+  - The only new hits: "improve" in the Declaration, which describes language editing and is not a claim; "improves" in
+    the Petryk et al. title [47]; "confirmed" only for L1 and in Table I's L1 row (see R1).
+  - "AI" appears only in the Declaration.
+  - "independent" is never used for an audit.
+  - "first", "calibrat-", "guarantee", "validated", "generalised" and "robust": same benign classes as before.
+  - Zero hits: "held-out" as a claim (the only hits are "held-out clean test pairs" and "held-out labelled data" [8]),
+    "explains", "predicts" (as a theory word), "outperform", "better than", "competitive", "equivalent", "screening",
+    "novel", "we prove".
+- **Supplement.** One minor true hit, R4 ("prediction" in the status map). "superiority" appears twice, both negated
+  (Table S3, Table S18 note). "independent" is used in mathematics and in "none is described as independent". "confirm-"
+  appears only in "confirmed" for L1, "confirmatory family" (A5.14) and the first author's "dated confirmation".
+- **DOCX.** Not scanned.
+
+## Hostile AC score after revision: still reject and resubmit, 4/10, confidence 4/5
+
+What improved:
+- Presentation: page 1, four contributions, category-disjoint scope stated, A6.4 table.
+- Honesty: the corrected search scope, Petryk et al. as the closest precedent, and the ablation reported in full.
+
+What did not improve:
+- W1 (practical significance) and W2 (one model, trained on the tested corruption).
+
+What got sharper:
+- W3 (novelty). Petryk et al. already learn an aggregation of token-level confidences to judge caption correctness. The
+  ablation shows a linear logit, B-and-D-only features and attention-MIL pooling are not distinguishable from LRF under
+  noise, and A-LIN and A-S-BD lie above it in one cell each. The supportable claim is "a learned reweighting of this
+  evidence helps under noise", not this GAM.
+
+Two items would cost points at a TNNLS desk:
+- R1 (a two-study outcome table on page 4).
+- R5, if it is submitted as is: a Declaration contradicted by its own supplement is an ethics flag, not a style point.
+
+The one experiment whose absence causes rejection is unchanged: a second backbone, or a corruption held out of LRF's
+training. It can only be exploratory.
+
+## Conditions for signature
+
+**R1 (must, before any signature).** After R1, SIGN WITH CONDITIONS:
+- R2 before submission;
+- R3, R4 and R6 at the next edit pass;
+- R5 resolved by the authors before submission (recorded as an open author item, D0101).
+
+## Ledger
+
+No rows added. R1 is fatal and blocks the gate until the orchestrator records a resolution (amend D0096).

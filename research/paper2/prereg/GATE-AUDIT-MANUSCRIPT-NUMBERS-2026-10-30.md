@@ -104,3 +104,54 @@ The anonymous PDF shows 3 of the main-paper todos (1, 3, 4) and 2 in the supplem
 
 - Fix M1 (binding claim contradicted by Table S-Tier-3).
 - Fix M2 (one rounding). M4 and M5 should be fixed or disclosed. M6 to M12 are provenance and convention items; none changes a number.
+
+---
+
+# Incremental audit, 2026-10-30: HEAD 9268e34b against audited 258281c8
+
+Scope: `git diff 258281c8 9268e34b` for `paper2-tnnls/sections`, `tables`, `supplement`, `figures/CAPTIONS.md`, plus the changed figure and table scripts.
+Verdict: **PASS WITH FIXES** (no value mismatch in any ablation, test-table or status table; one stale number in the supplement and one set of dangling pointers; details below).
+Ledger rows added: 0. Same rounding rules as above. Nothing was edited.
+
+## What was re-checked and how
+
+| Item | Method | Result |
+|---|---|---|
+| Ablation tables `supp_ablation_vsLRF_L1`, `_vsLRF_LG`, `_vsNONE`, `_seeds` (21 variant rows, 8 cells, references NONE and LRF, 10 seed rows) | A parser (scratch `abl_check.py`) read every printed number from the .tex and compared it to `runs/P2-LRF-ABL-SCORE/ablation_analysis.json` (acc, d, ci95 vs LRF and vs NONE, seed accuracies, mean, SD, range); tolerance 0.0005 | 1 672 values compared, 0 mismatches |
+| Main text V-G (study2.tex) | Each quoted difference and interval compared to the JSON and to the table row | all match: A-LIN -0.011 [-0.031, 0.009]; A-S-BD -0.002 [-0.033, 0.029]; A-S-s3 -0.033 [-0.071, 0.004]; A-MIL -0.009 [-0.044, 0.027]; KO-S-BD -0.053 [-0.082, -0.027]; KO-S-nbr 0.040 [0.013, 0.069]; KO-F-neighbourhood -0.062 [-0.096, -0.031]; seed range max 0.030; K = 336 |
+| V-G and S-VII classification sentences | Recomputed from the JSON over all rows | exact: on L1 noise the upper bound is below 0 for A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF, A-UNL (and KO-S-BD, KO-F-neighbourhood); the lower bound is above 0 only for KO-S-nbr; the other 12 rows contain 0; the "other cells above zero" list is complete (A-LIN JPEG, A-S-BD impulse, KO-S-s3 JPEG; no other cell of any row has a lower bound above 0); KO-S-pos and KO-F-position cells are identical |
+| Plan-level facts in S-VII | JSON, `controls.json`, `score_meta.json`, `P2-LRF-ABL-FIT/A-SF/spec.json`, `variants.json` | 3 000 item-cells = 4 x 450 + 4 x 300; 0 mismatches for NONE, LRF and KO-ALL; harness LRF at seed 0 decides every item as the frozen LRF (all eight cells 0); A-SF feature `rad`, selection budget "35 searches (35 times the frozen LRF's)"; seed 0 is `ss(4,99,0,0)`, `seed0_is_prefixed` true; predictions file SHA-256 `5c57ffac...` equals `meta.predictions_sha256`, 135 000 lines; 5 % of 336 = 16.8 ("about 17"); source feature counts 14, 5, 5, 4, 4, 3 sum to 35 (from the `spec.json` names) |
+| `supp_tests_full_study2.tex` (all A6.4 quantities) | Parser against `a6_analysis.json` (family_L) and `family_LG.cells.*`: n, b, c, n_d, both accuracies, net, 90 % and 95 % intervals, Clopper-Pearson of b/n_d, exact one- and two-sided p, mid-p one- and two-sided, Holm p | 141 values, 0 mismatches. The impulse row keeps two-sided 0.058, lower bound 0.000, and prints mid-p two-sided 0.044 (below 0.05, printed, not hidden) |
+| `supp_status_map_study1.tex` (status words) | Run files: s_m tested all false; no `runs/P2-GATE-OMNI*` or `runs/P2-GATE-H4*` directory; H3 `family = []` and `go = false`; `epred_score.formal_test = null`; E-pred five cells (P1 to P3, PS1, PS2); edec `n_cells = 5`, label descriptive; suite and Tier-3 labels exploratory; FOIL `status = tested`, `partial = false` | all status words agree with the run files |
+| `tab_families_glance.tex` (decision words) | JSON: P label negative; S-C and PS p_holm 1; S-D2 p_holm 0.0004; S2 p_holm 0.5 and 1.0; B p = 1.0; H go = false; L1 confirmed; L3 not rejected; L4 rejected (Holm); L-NI label shown; L-LEN rejected; three LG cells rejected (Holm) | all 16 rows agree |
+| M1 fix (Tier-3 sentence) | `tier3_fusion.json`: noise GM 0.676, MED 0.678, TM20 0.682, readings not distinguishable; JPEG and splice MED and TM20 readings "below" | fixed correctly in study1.tex and supplement S-II; M1 closed |
+| M2 fix | "Holm-adjusted p = 0.382" now matches Table IV and Fig. 5 | closed |
+| M4 fix | caption "Detection Items", Items column note, text "about 200", comment `table.{jpeg,noise}.q.n = 197, 198` | closed |
+| M5 | `runs/P2-GATE-M4/items.jsonl` and `env-lock.txt` now tracked (commit bfebb3ac) | closed (but see N4) |
+| M6, M7 pointer fixes | study1.tex cites `A2.3-AUDIT-PS-2026-10-29.md` line 75 for the 584 tests; setting.tex and study2.tex cite SAP A6.7 for 17 families and 0.5819 | closed |
+| 5.2 GB | `runs/P2-ENV/hf_cache_sizes.json:total_gb_decimal = 5.229` (CLIP 1.714 + SigLIP 3.515) matches discussion.tex "5.2 GB" | main paper correct; supplement not updated (N1) |
+| New wording facts | `folds_lrf.json:test[*].neg_restricted` true for 533 of 533 and `neg_len_restricted` true for 533 of 533; `manifest.json:length_matching.n_unrestricted = 0`; `spec.json:training_conditions` = clean, jpeg10, noise0.1, splice128 (shot, impulse, speckle were not training conditions); M1 and M4 `env-lock.txt` are 0 bytes; D0076 at 00:12 IST = 18:42 UTC and delegation about 00:10 IST = 18:40 UTC (the S-I conversion is correct) | all correct |
+| Changed figure and scripts | Fig. 4 png viewed: no result numbers, only feature axes and weight maps; Figs 3 and 5 unchanged | no number issue |
+| Abstract, introduction and conclusion changes | L-NI interval 0.009 to 0.053 added in intro and conclusion matches `ci90`; the abstract's negative sentence changed to "a random caption of an image sharing no annotated object category" (see N6); 247-word count recorded in the source comment, not recounted | numbers match |
+| Path scan of every `runs/`, `research/`, `exp_p2/` path in the changed files | all exist; tracked except `runs/P2-GATE-M1/env-lock.txt` (0 bytes, untracked) and the intentionally absent `runs/P2-GATE-H4` | see N4 |
+
+## New findings
+
+| ID | Location | Printed | Source | Status |
+|---|---|---|---|---|
+| N1 | `supplement.tex` S-I Study 2 deviation 9 (line 289 at 9268e34b) | "The download of the reference encoders was 5.0 GB against 2 to 4 GB quoted to the first author." | `runs/P2-ENV/hf_cache_sizes.json:total_gb_decimal = 5.229`; discussion.tex deviation 6 now says 5.2 GB | MISMATCH between supplement (5.0) and main paper (5.2). Fix: 5.2 GB. This also supplies the source that M9 could not locate. |
+| N2 | discussion.tex line 77; setting.tex line 100; study1.tex line 289; study2.tex line 117; supplement S-I lines 114 and 231 | "scripted and agent-run audits (see the Declaration)" and similar, six places | `declaration.tex` was replaced by the interim language-and-grammar text (D0101); it no longer names agent-run audits, roles or sections | Dangling pointer: six places send the reader to a Declaration that no longer says it. Restore an audit sentence in the Declaration or state the audit nature at each place (supplement S-I "Audits" does state it). Not a number. |
+| N3 | study1.tex line 218 | "Table tab:glance lists every family with its status." | `tab_families_glance.tex` has 16 rows (Study 1: P, S-C, PS, S-D, S-M, S2, B, H; Study 2: L1, L3, L4, L-NI, L-LEN, three LG cells). Missing: R, H-M, S-Z, S-DN, S-D2 and the E and Tier-3 groups; the full map is `supp_status_map_study1.tex` | Wording overstates; "17 families" cannot be recovered from the glance table. Fix: "the main families" or also point to the supplement map. |
+| N4 | discussion.tex deviation 9 comment | cites `runs/P2-GATE-M1/env-lock.txt` | file exists (0 bytes) but is untracked; the M4 counterpart was committed in bfebb3ac | Minor provenance gap. |
+| N5 | headers of `supp_status_map_study1.tex`, `tab_families_glance.tex`, `supp_tests_full_study2.tex` | "generated by scripts/supp_status_map_study1.py", "tab_families_glance.py", "supp_tests_full_study2.py" | actual scripts are `tab_status_map.py`, `tab_glance.py`, `tab_tests_full.py` | Generator names in the headers do not exist. Fix the header strings in the scripts. |
+| N6 | abstract, study1.tex, conclusion, discussion ("category-disjoint negatives", D0097) | "a random caption of an image sharing no annotated COCO category" for Study 1 | Verified for Study 2 (533 of 533, both wrong captions). For Study 1 the rule is in the code (`assign_negatives`) and plan; I did not re-derive category disjointness of the M2 to M4 folds from a run key | Not verified from a run file for Study 1; cite a key or verify against the fold annotations. |
+
+Open from the first audit: M3 (L4 "0.001 below", true gap 0.0014, consistent with printed 0.049), M8 (constant-only comment gaps in setting.tex and captions), M9 convention (supplement S-II tables use "Source:" captions). M10 and M12 are closed by the Declaration and negatives-wording changes; M11 is clarified in the text ("2 526 image ids, some outside the captioned set").
+
+## `\todo` at 9268e34b
+
+One, in the non-anonymous build only: `declaration.tex` line 12 `[AUTHOR: exact repository URL and archive DOI]` (a mention on line 6 is a comment). None is visible in the anonymous PDF. The ablation RESULT, Declaration confirmation and delegation-record todos are gone.
+
+## Required before the gate can tick
+
+N1 (value), N2 (dangling audit disclosure), N3 (wording). N4 to N6 are provenance and header fixes.
