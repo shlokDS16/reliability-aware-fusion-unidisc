@@ -199,3 +199,34 @@ Ledger rows added: 0. Nothing was edited.
 ## Required before the gate can tick
 
 F1 (remove "former main Table ..." phrases). N6 is a provenance wording note, not a number defect. No value mismatch exists in the abstract, text, tables, figures or supplement at fd191fdd within the scope audited.
+
+---
+
+# Closure re-check of F1 and N6 (after 7e874e76), 2026-10-30
+
+Method: PDFs read with `pdftotext -layout` (`paper2-tnnls/main.pdf`, `paper2-tnnls/supplement/supplement.pdf` at the working tree, rebuilt 12:32 after the coordinator's final rewording of item 18); the 2185a70f PDFs taken with `git show 2185a70f:<pdf>`; diff of 7e874e76 against 2185a70f read. Nothing was edited.
+
+## F1: CLOSED
+
+- Search of both current PDFs for "former", "Moved from", "moved from", "moved to", "previously": no hit of the editing-history kind. The old supplement had five (S-I and S-IV headings "Moved From the Main Paper", the family P table footnote "Moved from the main paper (A4.2.5 ...)", and three "former main ..." entries in S-VIII, plus item 18). The current text has none of them. The only remaining word "moved" in the main PDF is in the disclosure list item (3) of the appendix: "its table moved to the supplement". It was already there at 2185a70f, states where the table is (it is not a reference to a former layout) and is not the F1 pattern; noted as optional wording, not a blocker. Other "moved" hits in the supplement (row A-1 "moved the code pin", "parity files were moved unchanged") are record-of-event statements about runs.
+- Subsection headings now read "Protocol Details of Study 1 (Main Paper, Sections IV-A and IV-B)" and "Weight-Model Search ... (Main Paper, Section V-B)": they name the section the detail belongs to.
+- S-VIII sources list pointers re-read against the PDF: "Family P table (Table S5)" (Table S5 = full test of family P, line 299); "Table S10 (positive control)" (S10 = positive-control table, line 386); "Feature groups (Fig. 6(a) of the main paper)" with full table in the S-IV feature table; "Figure S1 (item-level margins, descriptive)" (Fig. S1 caption: n = 450 items, descriptive). Each names the right table or figure.
+- Item 18 of the S-I deviation list now reads: "The time-input table, planned for an appendix of the main paper, is reported in this supplement instead." Accurate: Table S4 (S-I section E, "Time Input of the Released Configuration") holds the evidence, and the main paper has no time-input table (main text only states the finding in Section III and defers to the supplement). It keeps the deviation disclosed and has no former-layout wording. The intermediate wording ("reported in this supplement only") was superseded and is not in the PDF.
+- Family P table footnote now reads "The main paper shows the P-only summary figure; this table holds the full family P record, including the 98.33% interval." Accurate (Fig. 4 main paper; Table S5 carries the 98.33% interval). The deleted "A4.2.5" token is the only number-like token that left the supplement (see item 3).
+
+## N6: CLOSED (as a count recomputed from the fold files; see the limit below)
+
+- `runs/P2-PAPER-TABLES/negatives_check.json`: study1 500/500/500, 0 fallback; study2 533/533/533, 0 fallback.
+- Independent recount (scratch script, `python -I`): `runs/P2-GATE-FOLDS/folds.json` test (300) + test_ext (200) = 500 items, `neg_restricted` True for 500, False for 0; `runs/P2-LRF-FOLD/folds_lrf.json` test = 533 items, `neg_restricted` True for 533; the length-matched negative `neg_len_restricted` also True for 533 (matches "both wrong captions"). SHA-256 of both files equals the value in the check file (450edb54...f311 and a545a83e...1de).
+- Structural check of the fold files: for all 500 and all 533 items the negative's `neg_idx` points to a different item whose `image_id` and `caption` equal `neg_image_id` and `neg_caption`, and the negative caption differs from the true caption (0 violations).
+- Rule semantics: `exp_p2/gate/folds.py` `assign_negatives` sets `neg_restricted` True only when the candidate pool is non-empty under "no shared annotated COCO category" (`not (cats[i] & cats[j])`), otherwise False (fallback). So True for every item is the category-disjoint statement. The COCO instance-annotation file is not on disk here, so I did not re-derive category sets from raw annotations; the evidence is the flag written by the code at fold build (E3/E4: recorded run output, not a re-derivation from annotations).
+- `% run:` comments: `study1.tex` (line after "The 494 image ids ...") cites `negatives_check.json:study1.{n_items (= 500), n_category_disjoint (= 500), n_fallback (= 0)}`; `study2.tex` cites `study2.{n_items (= 533), n_category_disjoint (= 533), n_fallback (= 0)}`. Both keys exist with those values.
+- Printed claims: abstract, IV-C (Study 1 text, "shares no annotated COCO category"), VI-C and Conclusion ("category-disjoint negatives") are now backed by these keys; the Study 2 text claim already had `folds_lrf.json:test[*].neg_restricted`.
+
+## Item 3: no printed number changed: CONFIRMED
+
+Multiset of number tokens (regex `\d+(?:[.,]\d+)*`) in `pdftotext -layout` output, 2185a70f PDFs against the current ones: main PDF identical (only old: none; only new: none). Supplement: only old = {"4.2.5": 1} (the plan-section label inside the deleted "Moved from the main paper (A4.2.5 ...)" footnote), only new = none. No result number was added, dropped or changed.
+
+## Verdict
+
+F1 CLOSED. N6 CLOSED (count and flag recomputed; category sets not re-derived from raw COCO annotations, which are not on disk). Number tokens: unchanged. Blockers from this re-check: none. Optional: the phrase "its table moved to the supplement" in the main appendix item (3) could read "its table is in the supplement" for consistency. Ledger rows added: 0. Not committed.
