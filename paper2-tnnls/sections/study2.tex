@@ -207,8 +207,7 @@ The maps are descriptive and do not show that the weights track reliability or c
 \caption{Study 2, three fresh-fold items under Gaussian noise ($\sigma=0.1$), one of each kind, chosen by a rule fixed before the figure was
 made, after the confirmatory result: the first item in fold-file order for which the unweighted rule and LRF are both correct (i), only LRF is correct (ii), and only the
 unweighted rule is correct (iii); the three kinds occur 303, 58, and 27 times among the 450 items (both rules are wrong on 62). Columns: clean image, noisy image,
-per-token evidence $\Delta_j$ and LRF weight $w_j$ on the $32\times32$ token grid (colour scales shared by the rows; $\Delta_j$ clipped at the 99th percentile
-of $|\Delta_j|$; weights on a square-root scale), and the true and the wrong caption with both decisions and sums. Descriptive; not evidence
+per-token evidence $\Delta_j$ and LRF weight $w_j$ on the $32\times32$ token grid (colour scales in supplement S-VIII), and the true and the wrong caption with both decisions and sums. Descriptive; not evidence
 that the weights track reliability or corruption. Images and captions are from COCO val2017~\cite{lin2014coco} (identifiers 335177, 520324, 224724; licences in supplement S-VIII); noisy panels modified.}
 \label{fig:qualitative}
 \end{figure*}
@@ -258,9 +257,7 @@ Nearly every cell is at or next to its ceiling, so no reading beyond the stated 
 \vspace{2pt}
 \parbox{\columnwidth}{\scriptsize For reference only: different models trained on different data; no test and no comparison are made.
 Same first 450 fold items (300 for the severity-3 cells) and regenerated pixels; revisions and scores in supplement S-VI. Drop: clean minus corrupted accuracy of the same model on the same items, paired percentile bootstrap 95\% interval. The row
-``Clean images, same 300 items'' was computed at writing from the stored predictions (descriptive). Cost per item was not measured.
-Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{-LG}; these supersede the field
-\nolinkurl{pixel_parity: not run} of the main run's file, which records only that the main run was made without the parity option.}
+``Clean images, same 300 items'' was computed at writing from the stored predictions (descriptive). Cost per item was not measured.}
 \end{table}
 
 \subsection{Cost of Study 2}\label{sec:study2-cost}
@@ -272,7 +269,7 @@ LRF adds no network row; its weights and decision are computed from the stored a
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.96\columnwidth]{figures/fig_ablation.pdf}
+\includegraphics[width=0.86\columnwidth]{figures/fig_ablation.pdf}
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.{d,ci95}; n_per_cell; ko_all_control; meta.{label,sign,interval}; values runs/P2-PAPER-FIGS/fig_ablation.json
 \caption{Study 2, exploratory ablation (added after the primary, family~H, and Study~2 results; intervals only, no test): paired accuracy
 difference, variant minus the frozen LRF, on the L1 noise cell ($n=450$), with the 95\% paired percentile-bootstrap interval
@@ -282,9 +279,7 @@ its design-item mean. Intervals are marginal, dependent, and unadjusted (supplem
 \label{fig:ablation}
 \end{figure}
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commits facab605, 4e785aa9; plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8)
-Exploratory; added after the primary, family~H, and Study~2 results; no ablation was preregistered, and every variant is in supplement S-VII.
-Single-source refits and other weightings were fitted with LRF's protocol on the 500 design items only; knockouts set one feature group of
-the frozen LRF to its design-item mean (differences are variant minus LRF; positive favours the variant).
+Exploratory; no ablation was preregistered, and every variant is in supplement S-VII.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.ci95 (classification: A-LIN, A-S-BD, A-S-s3, A-MIL contain 0; A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF, A-UNL, KO-S-BD, KO-F-neighbourhood below 0; KO-S-nbr above 0; other KO rows contain 0)
 \Cref{fig:ablation} shows every variant on the noise cell.
 The following intervals contained zero: those of a linear logit on the same 35 features, of the features computed from $B$ and $D$ alone,
@@ -300,22 +295,21 @@ model's decisions depend on those inputs, not that the group alone detects anyth
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:seed_spread.{max_range_over_variants_and_cells (= 0.030),seed0_is_prefixed (= true)}; K (= 336)
 Across the three refit seeds, the range of fresh-fold accuracy was at most 0.030 in every variant and cell; seed 0 was fixed before any
 fresh item and is not the best of three.
-The 336 intervals are dependent and unadjusted, and the other cells are in supplement S-VII.
+The 336 intervals are dependent and unadjusted.
 
 \subsection{Comparison With Alternative Aggregation Rules (Exploratory)}\label{sec:study2-compare}
 % run: tables/tab_baselines.tex (script scripts/tab_baselines.py; sources runs/P2-LRF-L1/a6_analysis.json, runs/P2-LRF-ABL-SCORE/ablation_analysis.json, runs/P2-LRF-E2/combiners.json); plan research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md E2, E3
-Exploratory; added after the primary result and the ablation above; no test, and the marks in \cref{tab:compare} are descriptive.
+Exploratory; no test, and the marks in \cref{tab:compare} are descriptive.
 \Cref{tab:compare} sets the accuracy of the unweighted sum and of LRF beside other ways of combining the same per-token evidence $\Delta_j$ on the 450 fresh-fold
 images: three rules without a fitted weight (a rank weight, the median, and the 20\% trimmed mean, defined in the table note) and four weightings fitted on the 500 design items
 (one feature, a linear logit on the 35 features, an additive model on two feature groups, and attention-weighted pooling~\cite{ilse2018attention}).
 % run: tables/tab_baselines.tex (Median and 20% trimmed mean rows against the Unweighted sum row, all four columns; source runs/P2-LRF-E2/combiners.json:cells.*.arms.{MED,TM20,NONE}.acc)
 The median and the trimmed mean had lower accuracy than no weighting in every condition.
-% run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.acc_a (= 0.8022); runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN,A-S-BD].cells.L1_noise0.1.{acc,vs_LRF.{d,ci95}} (acc = 0.7911, 0.8000; d = -0.011, -0.002; both intervals contain 0)
-Under Gaussian noise LRF reached 0.802, the additive model on two feature groups 0.800, and the linear logit 0.791 (both intervals of the difference from LRF contain zero; supplement S-VII).
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN].cells.{L1_jpeg10,L1_splice128}.{acc,vs_LRF.{d,ci95}} (jpeg d = 0.020, [0.004, 0.038]); runs/P2-LRF-L1/a6_analysis.json:family_L.{L3.acc_a (= 0.8644), L4.acc_a (= 0.9267), L-NI.acc_a (= 0.9178)}; rows[id=A-S-BD].cells.L1_clean.acc (= 0.9222)
 The linear logit reached 0.884 under JPEG against 0.864 for LRF (difference 0.020, unadjusted 95\% interval 0.004 to 0.038) and 0.931 under the splice against 0.927, and the additive model on two feature groups reached 0.922 on clean images against 0.918.
-Only the unweighted sum and LRF were fixed before the fold was opened; every other row was scored after the preregistered results, and the intervals are unadjusted.
-% DN-SENTENCE: one sentence for the two "Denoise, then ..." rows (plan E1) is added by the lead after the GPU run of runs/P2-LRF-DN; the rows print "pending" until then.
+% run: runs/P2-LRF-DN/dn_analysis.json:cells.noise0.1.arms.{DN+NONE,DN+LRF}.{acc (= 0.8444, 0.8556), vs_LRF.{diff,ci95}} (DN+NONE 0.042 [0.002, 0.082]; DN+LRF 0.053 [0.011, 0.096]); runs/P2-LRF-L1/a6_analysis.json:family_L.{L1.acc_b (= 0.7333), L1.acc_a (= 0.8022)}; plan E1 (commit 83ac79f8)
+% run: runs/P2-LRF-DN/dn_analysis.json:cells.jpeg10.arms.{DN+NONE,DN+LRF}.{acc (= 0.8533, 0.8133), vs_LRF.{diff,ci95}} (DN+NONE -0.011 [-0.044, 0.024]; DN+LRF -0.051 [-0.089, -0.013])
+Denoising before scoring (non-local means; the last two rows of \cref{tab:compare}) gave, under Gaussian noise, 0.844 with the unweighted sum and 0.856 with LRF, which is 0.042 (unadjusted 95\% interval 0.002 to 0.082) and 0.053 (0.011 to 0.096) above LRF without denoising (0.802); under JPEG quality~10 it gave 0.853 and 0.813, which are $-0.011$ ($-0.044$ to 0.024) and $-0.051$ ($-0.089$ to $-0.013$) from LRF.
 On these 450 images the table does not show that the particular form of LRF is needed or that it is preferable to a linear logit on the same features; the preregistered result remains the L1 test of \cref{tab:study2}.
 
 \begin{table}[!t]
@@ -327,11 +321,10 @@ On these 450 images the table does not show that the particular form of LRF is n
 \input{tables/tab_baselines}
 
 \vspace{2pt}
-\parbox{\columnwidth}{\scriptsize $^{\dagger}$Fixed before the fold was opened (unweighted sum and the frozen LRF); every other row was specified and scored after the
-preregistered Study~2 results. Italics: highest accuracy in the column (ties share the mark). The marks are descriptive, mark one sample, and are not a test;
-only the unweighted rule and LRF were fixed before the fold was opened. 4 of the 10 learned refits of the exploratory ablation are shown, chosen after the fold was scored;
+\parbox{\columnwidth}{\scriptsize $^{\dagger}$Fixed before the fold was opened (only the unweighted sum and the frozen LRF); every other row was specified and scored after the
+preregistered Study~2 results. Italics: highest accuracy in the column (ties share the mark); descriptive marks of one sample, not a test. 4 of the 10 learned refits of the exploratory ablation are shown, chosen after the fold was scored;
 all 10 are in supplement S-VII, with differences and intervals.
 Median: $\operatorname{med}_j\Delta_j>0$; 20\% trimmed mean: the mean of $\Delta_j$ without its $\lfloor0.2m\rfloor$ lowest and highest values is positive ($m=1\,024$).
 Unlearned rank weight: $w_j=1-r_j$, $r_j\in[0,1]$ the within-image percentile rank of the token's uncertainty (one minus the largest predicted probability, caption masked).
-Denoise: non-local-means denoising before scoring (setting fixed in advance), noise and JPEG only.}
+Denoise: non-local-means denoising before scoring (setting fixed in advance), noise and JPEG only. LRF was not trained on denoised images; the denoise-then-LRF row applies the frozen weights outside their training distribution.}
 \end{table}

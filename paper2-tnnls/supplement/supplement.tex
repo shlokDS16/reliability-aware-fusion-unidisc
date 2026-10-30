@@ -292,6 +292,9 @@ are recorded in the reference-encoder audit.
 \item Decision D0094: what had been seen before the re-freeze (main paper, Section V-A).
 \item ``No output was read before its run was complete'' rests on the operations log.
 \item The Tier-3 ablation (S-VII) was added at writing; no ablation was preregistered.
+% run: git commit 83ac79f8 (plan E1); runs/P2-LRF-DN/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt
+\item The denoiser comparison (S-VII, plan E1 in 
+olinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md}, commit 	exttt{83ac79f8}) was planned in a file committed before the run, and the run was made once, on the fresh-fold images, after the confirmatory results were known. The environment lock file of the denoiser run is empty, as for the earlier Study~2 stages; the environment record of item~3 is dated before that run.
 \end{enumerate}
 
 %======================================================================================================================================
@@ -1408,6 +1411,20 @@ rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed 
 \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
 \end{table}
 
+\paragraph*{Denoising before scoring (exploratory, plan E1)}
+% run: runs/P2-LRF-DN/dn_analysis.json:cells.{noise0.1,jpeg10}.arms.{NONE,LRF,DN+NONE,DN+LRF}.acc; .vs_NONE.{diff,b,c,ci95}; .vs_LRF.{diff,b,c,ci95}; .vs_DN_NONE.{diff,b,c,ci95}; bootstrap (10,000 resamples, items, seed 0); plan research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md E1 (commit 83ac79f8)
+The denoise rows of \cref{stab:compare} come from \nolinkurl{runs/P2-LRF-DN}: the 450 fresh-fold images, the same captions and the same stored corruption seeds as the L1 run, Gaussian noise with $\sigma=0.1$ and JPEG quality~10.
+Each corrupted image was denoised with OpenCV \texttt{fastNlMeansDenoisingColored} ($h=h_{\rm color}=25.5$, template window 7, search window 21; the setting was fixed in advance and no other was tried) and scored by the unweighted sum (denoise, then unweighted sum) and by the frozen LRF (denoise, then LRF).
+LRF was not trained on denoised images, so the second arm applies the frozen weights outside their training distribution.
+Under noise the accuracies were 0.733 (unweighted sum, undenoised), 0.802 (LRF, undenoised), 0.844 (denoise, then unweighted sum) and 0.856 (denoise, then LRF).
+The denoised unweighted sum exceeded the undenoised unweighted sum by 0.111 (95\% interval 0.067 to 0.156; 80 items right only after denoising, 30 right only before) and LRF by 0.042 (0.002 to 0.082; 53 against 34); the denoised LRF exceeded LRF by 0.053 (0.011 to 0.096; 61 against 37), and the two denoised arms differed by 0.011 ($-0.020$ to 0.044; 30 against 25).
+Under JPEG the accuracies were 0.849, 0.864, 0.853 and 0.813 in the same order.
+Against LRF the difference was $-0.011$ ($-0.044$ to 0.024; 29 against 34) for the denoised unweighted sum and $-0.051$ ($-0.089$ to $-0.013$; 29 against 52) for the denoised LRF; against the undenoised unweighted sum they were 0.004 ($-0.031$ to 0.038) and $-0.036$ ($-0.078$ to 0.004), and the denoised LRF was below the denoised unweighted sum by 0.040 ($-0.069$ to $-0.011$; 13 against 31).
+Intervals are 95\% paired percentile bootstrap intervals over items, unadjusted, from one resampling matrix per condition shared by all contrasts; there is no test, and the items were already used for the confirmatory test.
+% run: runs/P2-LRF-DN/dn_analysis.json:cells.*.corruption_reproduction.{token_equal_fraction (= 0.9980, 0.9973), items_all_tokens_equal (= 69, 73)}
+The corrupted images were regenerated for this run; their tokenisation agreed with the stored L1 codes on 99.8\% of image tokens under noise and 99.7\% under JPEG (all 1\,024 tokens equal on 69 and 73 of the 450 images).
+Source: \nolinkurl{runs/P2-LRF-DN}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.
+
 \paragraph*{Deviations entry}
 % run: git commits facab605 (scores) and 4e785aa9 (analysis); plan commit recorded in the plan file
 Tier-3 ablation (exploratory; added after the primary, family~H, and Study~2 results): plan
@@ -1443,7 +1460,7 @@ full table in \cref{stab:features}.
 the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
 \item Fig.~\ref{M-fig:qualitative} (three fresh-fold items): \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative.json} (selection rule, items, colour scales, attribution);
 \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (\nolinkurl{y_none}, \nolinkurl{y_lrf}, condition \nolinkurl{noise0.1}); \nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,8}.npz}
-(SHA-256 in the figure's trace file); the noisy pixels are regenerated with the runner's corruption call and seeds; script \nolinkurl{paper2-tnnls/scripts/fig_qualitative.py}.
+(SHA-256 in the figure's trace file); the noisy pixels are regenerated with the runner's corruption call and seeds; colour scales are shared by the rows, $\Delta_j$ is clipped at the 99th percentile of $|\Delta_j|$, and the weights are on a square-root scale; script \nolinkurl{paper2-tnnls/scripts/fig_qualitative.py}.
 % run: runs/P2-PAPER-FIGS/fig_qualitative_licences.json:items[*].{coco_val2017_image_id,licence,flickr_url}
 Images: COCO val2017 (Lin et al., 2014; cited in the main paper), Flickr, licences as listed; the noisy panels are modified.
 Image 335177: Attribution-NonCommercial-ShareAlike (CC BY-NC-SA 2.0), \nolinkurl{http://farm4.staticflickr.com/3444/3821042011_c741061caa_z.jpg};
@@ -1452,7 +1469,7 @@ image 224724: Attribution-NonCommercial (CC BY-NC 2.0), \nolinkurl{http://farm4.
 (record: \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative_licences.json}).
 \item Algorithm~\ref{M-alg:lrf} (decision rule of the frozen LRF): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{family}, \nolinkurl{n_features}, \nolinkurl{caption_slot_len}, \nolinkurl{preprocessing}).
 \item Table~\ref{M-tab:compare} (comparison with alternative aggregation rules, exploratory) and \cref{stab:compare}: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}
-(\nolinkurl{runs/P2-LRF-DN/dn_analysis.json} for the denoise rows once it exists); script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.
+(\nolinkurl{runs/P2-LRF-DN/dn_analysis.json} for the denoise rows); script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.
 \item Table~\ref{M-tab:study2} (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
 \nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
 \item Fig.~\ref{M-fig:lrf_results} (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script

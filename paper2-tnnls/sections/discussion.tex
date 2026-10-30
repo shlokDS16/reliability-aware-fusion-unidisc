@@ -31,11 +31,12 @@ preregistered level and holding with length-matched negative captions.
 It does not show that the weighting works on a corruption it was not trained on, that its weights follow the reliability of a token,
 or that the effect carries to another model, dataset, or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
-Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (1) a reweighting that helps
+Six inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (1) a reweighting that helps
 whatever the condition; (2) a supervised fit to the training corruption; (3) a single noise-sensitive feature, such as the
 codebook-neighbour distance or the one-pass observed-position score, which the learned weight shapes (supplement S-IV) cannot separate and on which the
 ablation of \cref{sec:study2-ablation} bears only as an exploratory result; (4) a limited reach to other noise types, since the
-impulse-noise interval starts at 0.0; and (5) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
+impulse-noise interval starts at 0.0; (5) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level; and
+(6) a gain under Gaussian noise that a generic pixel-domain denoiser applied before scoring matches or exceeds (\cref{sec:study2-compare}), so that this paper does not show learned weighting to be the preferable defence against this noise.
 A second backbone or a corruption held out of training would settle these questions; neither was run.
 
 \subsection{Limitations}\label{sec:limitations}
@@ -63,6 +64,8 @@ In that ablation, simpler weightings fitted on the design items (a linear logit,
 the uncertainty of the $B$ pass alone, and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN].cells.{L1_noise0.1,L1_jpeg10,L1_splice128,L1_clean}.{acc (= 0.7911, 0.8844, 0.9311, 0.9200),vs_NONE.{d,ci95}} (noise 0.058 [0.020, 0.096]; JPEG 0.036 [0.007, 0.064]; splice 0.036 [0.011, 0.062]; clean 0.033 [0.009, 0.060]); references_accuracy.LRF (0.8022, 0.8644, 0.9267, 0.9178); runs/P2-LRF-L1/a6_analysis.json:family_L.L3.{net,ci95,p_holm} (JPEG: no difference detected)
 The linear logit on the same 35 features was at or above the frozen LRF in three of the four conditions (accuracies in \cref{tab:compare}) and above the unweighted rule with a 95\% interval excluding zero in all four, including JPEG (difference 0.036, 0.007 to 0.064), where the preregistered test of LRF detected no difference.
+% run: runs/P2-LRF-DN/dn_analysis.json:cells.noise0.1.arms.{DN+NONE,DN+LRF}.{acc (= 0.8444, 0.8556), vs_LRF.{diff,ci95}} (0.042 [0.002, 0.082]; 0.053 [0.011, 0.096]); runs/P2-LRF-L1/a6_analysis.json:family_L.L1.acc_a (= 0.8022); cells.jpeg10.arms.DN+LRF.vs_LRF (-0.051 [-0.089, -0.013])
+Of practical significance, a non-local-means denoiser applied before scoring reached higher accuracy than LRF under Gaussian noise (\cref{sec:study2-compare}; exploratory, unadjusted), so LRF's confirmed gain is not shown to need learned weighting.
 
 % D0097: category-disjoint negatives (exp_p2/gate/folds.py assign_negatives; runs/P2-LRF-FOLD/folds_lrf.json neg_restricted 533 of 533)
 \emph{Both studies.} All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category with the test image).
@@ -99,5 +102,6 @@ supersede the main reference-encoder file's field ``pixel\_parity: not run''.
 (6) The reference-encoder download was 5.2~GB, against about 2 to 4~GB quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.
 (8) ``No output was read before its run was complete'' rests on the operations log.
-(9) The exploratory ablation, the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}, \cref{tab:compare}; plan committed before any value was computed), and the qualitative figure (\cref{fig:qualitative}; selection rule fixed after the confirmatory result) were added at writing, as exploratory additions.
+(9) The exploratory ablation, the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}, \cref{tab:compare}; plan committed before any value was computed), and the qualitative figure (\cref{fig:qualitative}; selection rule fixed after the confirmatory result) were added at writing, as exploratory additions. The plan for the denoise rows was committed before their run; the environment lock file of that run is empty, and the environment record predates it.
+% run: git commit 83ac79f8 (plan E1, 2026-10-30 23:31); runs/P2-LRF-DN/LAUNCH.md (2026-10-30 23:45); runs/P2-LRF-DN/predictions.jsonl (2026-10-31 00:56); runs/P2-LRF-DN/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt
 Supplement S-I gives each item in full with its record.\par}
