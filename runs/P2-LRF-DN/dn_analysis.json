@@ -1,0 +1,291 @@
+{
+ "label": "exploratory (EXPLORATORY-PLAN-BASELINES-2026-10-30.md E1); no p-value, no test, no multiplicity claim; added after the preregistered Study 2 results",
+ "plan": "research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md E1",
+ "definitions": "DN+NONE = y_none and DN+LRF = y_lrf of the denoised condition (OpenCV fastNlMeansDenoisingColored, config.DENOISE_PARAMS, unchanged; frozen LRF unchanged and out of its training distribution on denoised images); NONE and LRF = y_none and y_lrf of the same idx and condition in runs/P2-LRF-L1 (primary negative)",
+ "sign": "differences are arm minus reference; positive favours the arm; b = arm right and reference wrong, c = arm wrong and reference right",
+ "bootstrap": {
+  "n_boot": 10000,
+  "seed": "numpy.random.SeedSequence(0), one index matrix per condition shared by all contrasts",
+  "interval": "percentile, numpy.quantile 0.025 and 0.975",
+  "unit": "items"
+ },
+ "inputs": {
+  "dn_predictions": "runs\\P2-LRF-DN\\predictions.jsonl",
+  "dn_predictions_sha256": "4d6a2f0a1dcb41bf6b9226e1ab0ee0e58540dd44afcb9d38e81f8d78963cfceb",
+  "l1_predictions": "runs\\P2-LRF-L1\\predictions.jsonl",
+  "l1_predictions_sha256": "e919776c351596d175211a8a3ca215e6f6a892d608cf9a049df8f2d81c0d305f",
+  "numpy": "2.5.2"
+ },
+ "cells": {
+  "noise0.1": {
+   "n": 450,
+   "arms": {
+    "NONE": {
+     "acc": 0.7333333333333333
+    },
+    "LRF": {
+     "acc": 0.8022222222222222
+    },
+    "DN+NONE": {
+     "acc": 0.8444444444444444,
+     "vs_NONE": {
+      "diff": 0.1111111111111111,
+      "b": 80,
+      "c": 30,
+      "ci95": [
+       0.06666666666666667,
+       0.15555555555555556
+      ]
+     },
+     "vs_LRF": {
+      "diff": 0.042222222222222223,
+      "b": 53,
+      "c": 34,
+      "ci95": [
+       0.0022222222222222222,
+       0.08222222222222222
+      ]
+     }
+    },
+    "DN+LRF": {
+     "acc": 0.8555555555555555,
+     "vs_NONE": {
+      "diff": 0.12222222222222222,
+      "b": 98,
+      "c": 43,
+      "ci95": [
+       0.07111111111111111,
+       0.17333333333333334
+      ]
+     },
+     "vs_LRF": {
+      "diff": 0.05333333333333334,
+      "b": 61,
+      "c": 37,
+      "ci95": [
+       0.011111111111111112,
+       0.09555555555555556
+      ]
+     },
+     "vs_DN_NONE": {
+      "diff": 0.011111111111111112,
+      "b": 30,
+      "c": 25,
+      "ci95": [
+       -0.02,
+       0.044444444444444446
+      ]
+     }
+    }
+   },
+   "length_matched": {
+    "n": 450,
+    "arms": {
+     "NONE": {
+      "acc": 0.7066666666666667
+     },
+     "LRF": {
+      "acc": 0.7822222222222223
+     },
+     "DN+NONE": {
+      "acc": 0.8377777777777777,
+      "vs_NONE": {
+       "diff": 0.13111111111111112,
+       "b": 95,
+       "c": 36,
+       "ci95": [
+        0.08222222222222222,
+        0.18
+       ]
+      },
+      "vs_LRF": {
+       "diff": 0.05555555555555555,
+       "b": 65,
+       "c": 40,
+       "ci95": [
+        0.011111111111111112,
+        0.1
+       ]
+      }
+     },
+     "DN+LRF": {
+      "acc": 0.8533333333333334,
+      "vs_NONE": {
+       "diff": 0.14666666666666667,
+       "b": 108,
+       "c": 42,
+       "ci95": [
+        0.09555555555555556,
+        0.19783333333333253
+       ]
+      },
+      "vs_LRF": {
+       "diff": 0.07111111111111111,
+       "b": 67,
+       "c": 35,
+       "ci95": [
+        0.02666666666666667,
+        0.11555555555555555
+       ]
+      },
+      "vs_DN_NONE": {
+       "diff": 0.015555555555555555,
+       "b": 25,
+       "c": 18,
+       "ci95": [
+        -0.013333333333333334,
+        0.044444444444444446
+       ]
+      }
+     }
+    }
+   },
+   "corruption_reproduction": {
+    "checked": true,
+    "n_items": 450,
+    "token_equal_fraction": 0.9979709201388889,
+    "items_all_tokens_equal": 69
+   }
+  },
+  "jpeg10": {
+   "n": 450,
+   "arms": {
+    "NONE": {
+     "acc": 0.8488888888888889
+    },
+    "LRF": {
+     "acc": 0.8644444444444445
+    },
+    "DN+NONE": {
+     "acc": 0.8533333333333334,
+     "vs_NONE": {
+      "diff": 0.0044444444444444444,
+      "b": 32,
+      "c": 30,
+      "ci95": [
+       -0.03111111111111111,
+       0.03777777777777778
+      ]
+     },
+     "vs_LRF": {
+      "diff": -0.011111111111111112,
+      "b": 29,
+      "c": 34,
+      "ci95": [
+       -0.044444444444444446,
+       0.024444444444444446
+      ]
+     }
+    },
+    "DN+LRF": {
+     "acc": 0.8133333333333334,
+     "vs_NONE": {
+      "diff": -0.035555555555555556,
+      "b": 38,
+      "c": 54,
+      "ci95": [
+       -0.07777777777777778,
+       0.0044444444444444444
+      ]
+     },
+     "vs_LRF": {
+      "diff": -0.051111111111111114,
+      "b": 29,
+      "c": 52,
+      "ci95": [
+       -0.08888888888888889,
+       -0.013333333333333334
+      ]
+     },
+     "vs_DN_NONE": {
+      "diff": -0.04,
+      "b": 13,
+      "c": 31,
+      "ci95": [
+       -0.06888888888888889,
+       -0.011111111111111112
+      ]
+     }
+    }
+   },
+   "length_matched": {
+    "n": 450,
+    "arms": {
+     "NONE": {
+      "acc": 0.8111111111111111
+     },
+     "LRF": {
+      "acc": 0.8622222222222222
+     },
+     "DN+NONE": {
+      "acc": 0.8355555555555556,
+      "vs_NONE": {
+       "diff": 0.024444444444444446,
+       "b": 34,
+       "c": 23,
+       "ci95": [
+        -0.008888888888888889,
+        0.057777777777777775
+       ]
+      },
+      "vs_LRF": {
+       "diff": -0.02666666666666667,
+       "b": 26,
+       "c": 38,
+       "ci95": [
+        -0.06222222222222222,
+        0.008888888888888889
+       ]
+      }
+     },
+     "DN+LRF": {
+      "acc": 0.8244444444444444,
+      "vs_NONE": {
+       "diff": 0.013333333333333334,
+       "b": 49,
+       "c": 43,
+       "ci95": [
+        -0.028888888888888888,
+        0.05555555555555555
+       ]
+      },
+      "vs_LRF": {
+       "diff": -0.03777777777777778,
+       "b": 27,
+       "c": 44,
+       "ci95": [
+        -0.07333333333333333,
+        0.0
+       ]
+      },
+      "vs_DN_NONE": {
+       "diff": -0.011111111111111112,
+       "b": 17,
+       "c": 22,
+       "ci95": [
+        -0.03777777777777778,
+        0.015555555555555555
+       ]
+      }
+     }
+    }
+   },
+   "corruption_reproduction": {
+    "checked": true,
+    "n_items": 450,
+    "token_equal_fraction": 0.997265625,
+    "items_all_tokens_equal": 73
+   }
+  }
+ },
+ "conditions": [
+  "noise0.1",
+  "jpeg10"
+ ],
+ "arms": [
+  "NONE",
+  "LRF",
+  "DN+NONE",
+  "DN+LRF"
+ ]
+}
