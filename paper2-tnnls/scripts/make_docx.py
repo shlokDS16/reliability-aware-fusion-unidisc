@@ -85,9 +85,11 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     template = find_template(src, a.template)
     anon = not a.camera
-    suffix = "" if anon else "_camera"
+    suffix = "" if anon else "_authors"
     results = {}
     jobs = [("manuscript", src / "main.tex", src / "main.aux", src / "main.bbl", "main", src / "main.pdf")]
+    if not anon:   # author version: same source, aux/bbl/pdf of the main_camera.tex build (latexmk -pdf main_camera.tex)
+        jobs = [("manuscript", src / "main.tex", src / "main_camera.aux", src / "main_camera.bbl", "main", src / "main_camera.pdf")]
     sup = src / "supplement" / "supplement.tex"
     if not a.main_only and sup.exists():
         jobs.append(("supplement", sup, sup.with_suffix(".aux"), None, "supplement", sup.with_suffix(".pdf")))

@@ -27,7 +27,19 @@ for e in parts[1:]:
     if has_url:
         kept += 1
     elif doi:
-        add = "https://doi.org/" + doi.group(1).strip()
+        # IEEE reference style prints a DOI as "doi: 10.xxxx/..." (IEEE Reference Guide), shorter than
+        # "[Online]. Available: https://doi.org/..."; IEEEtran.bst ignores `doi`, so it goes into `note` as a blue link.
+        d = doi.group(1).strip()
+        link = "doi: \\href{https://doi.org/" + d + "}{\\nolinkurl{" + d + "}}"
+        note = re.search(r"^(\s*note\s*=\s*)\{(.*)\}(\s*,?\s*)$", e, re.M)
+        if note:
+            e = e[:note.start()] + note.group(1) + "{" + note.group(2) + ", " + link + "}" + note.group(3) + e[note.end():]
+        else:
+            k = e.rstrip().rfind("}")
+            body = e[:k].rstrip()
+            if not body.endswith(","):
+                body += ","
+            e = body + "\n  note = {" + link + "}\n}"
         added_doi += 1
     elif eprint:
         add = "https://arxiv.org/abs/" + eprint.group(1).strip()
@@ -42,6 +54,6 @@ for e in parts[1:]:
         e = body + "\n  url = {" + add + "}\n}"
     out.append(e)
 (root / "references-ieee.bib").write_text("\n".join(out) + "\n", encoding="utf8")
-print(f"prepare_bib: {len(parts) - 1} entries; url kept {kept}, from doi {added_doi}, from arXiv {added_arxiv}; "
+print(f"prepare_bib: {len(parts) - 1} entries; url kept {kept}, doi notes {added_doi}, from arXiv {added_arxiv}; "
       f"no link: {len(missing)} {missing}")
 sys.exit(0)

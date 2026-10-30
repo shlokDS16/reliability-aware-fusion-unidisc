@@ -101,7 +101,7 @@ class Poster:
         self.doc.styles["Table Note"].paragraph_format.alignment = 3
         fc = self.doc.styles["Figure Caption"]
         fc.paragraph_format.space_before = Pt(2)
-        fc.paragraph_format.space_after = Pt(6)
+        fc.paragraph_format.space_after = Pt(4)
         tt = self.doc.styles["Table Title"]
         tt.paragraph_format.space_after = Pt(2)
         todo = self.style("Todo", WD_STYLE_TYPE.CHARACTER, None)
@@ -312,7 +312,7 @@ class Poster:
         old = tbl.find(W("tblPr"))
         tp = el("tblPr")
         if wide:
-            tp.append(el("tblpPr", leftFromText=0, rightFromText=0, topFromText=100, bottomFromText=140,
+            tp.append(el("tblpPr", leftFromText=0, rightFromText=0, topFromText=60, bottomFromText=100,
                          vertAnchor="margin", horzAnchor="margin", tblpXSpec="center", tblpYSpec="top"))
             tp.append(el("tblOverlap", val="never"))
         tp.append(el("tblW", w=total, type="dxa"))
@@ -451,6 +451,10 @@ class Poster:
         for p in self.body.iter(W("p")):
             if pstyle_of(p) != ref_sid:
                 continue
+            # DOIs come as \nolinkurl (Verbatim Char, Courier); in Word the URLs print in the text font, so do the DOIs
+            for rs in p.iter(W("rStyle")):
+                if rs.get(W("val")) in ("VerbatimChar", self.sid("Verbatim Char")):
+                    rs.getparent().remove(rs)
             for t in p.iter(W("t")):
                 s = t.text or ""
                 new = url.sub(lambda m: brk.sub(lambda k: k.group(1) + zw, m.group(0)), s)

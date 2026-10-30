@@ -35,3 +35,14 @@ Files to upload (review stage; the review upload is the PDF):
   noise level), incremental novelty next to Petryk et al. (WACV 2024), and practical significance next to near-ceiling CLIP/SigLIP.
   These are stated in the paper's Limitations; they can only be removed by new confirmatory work (a second backbone or a corruption
   held out of training), which the preregistration's stop rule reserves for a future paper.
+
+## Two versions and the archive (2026-10-30)
+- Review copy (upload to the portal; double-anonymous): `main.pdf`, `supplement/supplement.pdf`, `docx/Paper2_TNNLS_manuscript.docx`,
+  `docx/Paper2_TNNLS_supplement.docx`. No names, repository URL or DOI (checked in the PDF and the Word render).
+- Author version (camera-ready, or a title page if the portal asks): `main_camera.pdf` (from `main_camera.tex`, built by
+  `build.sh`) and `docx/Paper2_TNNLS_manuscript_authors.docx` (`python scripts/make_docx.py --camera --main-only`). Authors as in
+  the review paper: Shlok Goenka, Subramaniyaswamy Vairavasundaram, Balaji G N; first footnote with funding, corresponding author
+  and affiliations; Acknowledgment; Zenodo DOI in Data Availability. Biographies are switched off (`\ifbios`) until supplied.
+- Before submitting: GitHub repository (private) and Zenodo draft with a reserved DOI exist (`drafts/REPOSITORY-SETUP-GUIDE.md`);
+  the repository URL, DOI and corresponding author are filled in `sections/declaration.tex` and `main.tex`.
+- References print DOIs in IEEE form ("doi: 10.xxxx/...", `scripts/prepare_bib.py`), which keeps the author version at 15 pages.

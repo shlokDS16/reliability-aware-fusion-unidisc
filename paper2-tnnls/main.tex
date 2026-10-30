@@ -14,6 +14,10 @@
 
 % ---- switches -----------------------------------------------------------------------------------
 \newif\ifanon      \anontrue
+% Two builds from one source (Shlok 2026-10-30): main.tex = anonymous review copy (TNNLS/CIS: double-anonymous review);
+% main_camera.tex defines \buildcamera = author version (names under the title, first footnote, Acknowledgment, Zenodo DOI).
+\ifdefined\buildcamera \anonfalse \fi
+\newif\ifbios      \biosfalse   % biographies and photos: final files only (CIS-IFA J); set true once the authors supply them
 \newif\ifplaceholder \placeholderfalse
 
 % ---- packages -----------------------------------------------------------------------------------
@@ -140,6 +144,6 @@ The authors thank Vellore Institute of Technology, Vellore, for providing suppor
 \bibliography{references-ieee}      % generated from references.bib by scripts/prepare_bib.py (DOI/arXiv -> url, links print blue)
 
 % ---- biographies and photos: final (non-anonymous) stage only -----------------------------------
-\ifanon\else\input{back/biographies}\fi
+\ifanon\else\ifbios\input{back/biographies}\fi\fi
 
 \end{document}

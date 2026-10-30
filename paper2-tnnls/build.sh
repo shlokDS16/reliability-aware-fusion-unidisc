@@ -9,6 +9,9 @@ if [ "${1:-}" = "--clean" ]; then latexmk -C main.tex >/dev/null 2>&1; latexmk -
 status=0
 latexmk -pdf -interaction=nonstopmode main.tex >build.log 2>&1 || { echo "main: latexmk FAILED, see build.log"; tail -n 25 build.log; exit 1; }
 latexmk -pdf -interaction=nonstopmode -cd supplement/supplement.tex >supplement/build.log 2>&1 || { echo "supplement: latexmk FAILED"; tail -n 25 supplement/build.log; status=1; }
+# author version (names, first footnote, Acknowledgment, Zenodo DOI) from the same source: main_camera.pdf
+latexmk -pdf -interaction=nonstopmode main_camera.tex >build_camera.log 2>&1 || { echo "author version: latexmk FAILED, see build_camera.log"; status=1; }
+echo "== author version pages: $(pdfinfo main_camera.pdf 2>/dev/null | awk '/^Pages:/{print $2}')"
 
 echo "== undefined references/citations, overfull boxes > 2pt"
 grep -h -E "Reference .* undefined|Citation .* undefined|There were undefined|Label\(s\) may have changed" main.log supplement/supplement.log | sort | uniq -c

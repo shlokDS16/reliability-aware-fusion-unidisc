@@ -105,3 +105,5 @@ on the live tree (whose `main.aux` was older than one edited section, as the con
 - `docx_tex`: IEEEtran's `\hskip 1em plus 0.5em minus 0.4em\relax` no longer leaks into references [48] and [62].
 - Result at this commit: Word renders the manuscript in 15 pages (Fig. 1 top of page 2) and the supplement in 17.
   Always check the Word render (`--render`, then look at the `.word.pdf` pages), not only the LaTeX PDF.
+- Author version: `python scripts/make_docx.py --camera --main-only` writes `Paper2_TNNLS_manuscript_authors.docx`, using the
+  aux, bbl and PDF of `main_camera.tex` (run `bash build.sh` first). In references, DOIs print in the text font (as the URLs do).
