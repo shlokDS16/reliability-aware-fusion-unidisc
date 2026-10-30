@@ -1,0 +1,41 @@
+{
+ "fit": {
+  "n_fit": 239,
+  "rule": "AD.6: rules (i) fit pairs >= 100, (ii) best single direction accuracy >= 0.95 on the fit pairs = untestable at ceiling, (iii) fusion_frozen.json committed",
+  "acc_T": 0.8870292887029289,
+  "acc_I": 0.6610878661087866,
+  "best": "T",
+  "best_acc": 0.8870292887029289,
+  "lda_w": [
+   2.2027974594878654,
+   -0.1763333049654039
+  ],
+  "acc_lda": 0.8870292887029289,
+  "stouffer_w": [
+   1.3374863544351037,
+   9.025528453970344
+  ],
+  "stouffer_r": 0.309776342996248,
+  "stouffer_sd": [
+   0.4619522335757227,
+   0.06845635820211188
+  ],
+  "acc_stouffer": 0.8451882845188284,
+  "corr_T_I": 0.309776342996248,
+  "status": "ok",
+  "test_pairs_may_run": true
+ },
+ "n_rows": 239,
+ "n_duplicate_rows_removed": 0,
+ "expected_rows": 239,
+ "allow_partial": false,
+ "sha256_of_fit_run_rows": "1da8afe39334867f6dad519a04c4d7d99c4568782b9aa9e7f013a529da7236ce",
+ "pool_sha256": "edc3b227baf940eb9b665369097866a28bbd628ad7ac893ad0813dd9b74a3616",
+ "foil_sha256": "7b37ab2a4e3dc911d006d5941919245c47d1e67d2ee29b4f7a87d5ecc9284642",
+ "fit_run": "P2-GATE-FOIL-FIT",
+ "code_git_sha": "247cb8cea59f19ca193393bba6c42f5a91a6d5bd",
+ "created": "2026-10-29T08:21:45",
+ "rule": "AD.6: rules (i) fit pairs >= 100, (ii) best single direction accuracy >= 0.95 on the fit pairs = untestable at ceiling, (iii) fusion_frozen.json committed",
+ "label": "frozen before any B test pair; commit this file (rule iii)",
+ "note": "LDA weights act on the raw margins (T, I); Y_fus = 1[w . (T, I) > 0]; best direction ties go to the text direction"
+}

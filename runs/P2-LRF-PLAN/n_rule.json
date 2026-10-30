@@ -1,0 +1,19 @@
+{
+ "cf_b": 86,
+ "cf_c": 28,
+ "cf_n": 500,
+ "cf_results": "runs/P2-LRF-CF-LFIX/results.json",
+ "cf_results_sha256": "c463739423b812c6c1540510d6a2bbd3c692f6cc587ca5a55f98f20f143cc089",
+ "delta_cf": 0.116,
+ "delta_plan": 0.058,
+ "n_L": 450,
+ "n_req": 450,
+ "pi_cf": 0.228,
+ "power_at_n_L": {
+  "delta_used": 0.058,
+  "one_sided_0.025": 0.7043622509667458,
+  "one_sided_0.05": 0.8028880404460034
+ },
+ "reason": "power rule",
+ "rule": "n_L = 533 if Delta_cf <= 0.02 else min(533, max(400, smallest n on a step-10 grid with one-sided exact power >= 0.8 at 0.05 for Delta_cf / 2))"
+}

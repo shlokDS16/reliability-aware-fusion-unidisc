@@ -1,0 +1,123 @@
+{
+ "id": "A-S-BD",
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "kind": "gam",
+ "family": "GAMCols",
+ "features": [
+  "B",
+  "D",
+  "q",
+  "nb3mean_q",
+  "nb3mean_B",
+  "nb3min_q",
+  "nb5mean_q",
+  "rank_q",
+  "rank_B",
+  "itemmean_q",
+  "itemmean_B",
+  "itemsd_q",
+  "itemsd_B",
+  "itemz_q"
+ ],
+ "cols": [
+  0,
+  1,
+  2,
+  10,
+  11,
+  16,
+  17,
+  18,
+  19,
+  22,
+  23,
+  28,
+  29,
+  34
+ ],
+ "n_features": 14,
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 4,
+  "ridge": 0.0003178305990854932,
+  "lr": 0.025160023145321495
+ },
+ "inner_cv_o1": 0.4046103159586589,
+ "epochs": 40,
+ "seeds": {
+  "seed0": 316748921,
+  "seed1": 1886600088,
+  "seed2": 4159147987,
+  "keys": {
+   "final_fit": [
+    [
+     4,
+     99,
+     0,
+     0
+    ],
+    [
+     4,
+     99,
+     0,
+     1
+    ],
+    [
+     4,
+     99,
+     0,
+     2
+    ]
+   ]
+  }
+ },
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 design items; selection by mean inner-fold O1",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "inner_fits": [
+    3,
+    99,
+    0,
+    "ci",
+    "ii"
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "preprocessing": "data.engineer on the design arrays -> columns of this variant -> (X - mu) / sd with mu, sd from the design items (restricted to the variant's columns)",
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "selfcheck_max_abs_diff_numpy_vs_torch": 6.330596704628988e-07,
+ "sec": {
+  "search": 78.5,
+  "final_fits": [
+   10.5,
+   10.6,
+   10.4
+  ]
+ },
+ "model_sha256": "dfbf49363adfcbc9bc6cfb3b23b3569db0353a827ad177271f6dfe72ffe93b36",
+ "seed_models_sha256": {
+  "seed1": "f9e25eeb9cef191e296b9b7f8e22c60bf5d00594d4e4589ed2679bfee71a56bf",
+  "seed2": "bc13ab4cec853ee6bf6020c0cf839d30fa55f48d780e0435fca76d15bae117c7"
+ },
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2"
+}

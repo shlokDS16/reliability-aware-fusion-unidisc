@@ -1,0 +1,78 @@
+{
+ "script": "runs/P2-UNIDISC-KEYCHECK/keycheck.py",
+ "torch": "2.11.0+cu130",
+ "config": {
+  "load_from_state_dict": "C:\\Users\\ANONYMIZED\\.cache\\huggingface\\hub\\models--aswerdlow--unidisc_interleaved\\snapshots\\2b344ca856bd108b52a2d022a3463dace131249f\\unidisc_interleaved.pt",
+  "disable_strict_load": false,
+  "resolved_strict_kwarg": false,
+  "use_orig_unidisc_dit": false,
+  "backbone": "dit",
+  "model_use_pretrained_img_emb": false,
+  "model_img_cond": false,
+  "model_cond_label": false,
+  "mup": false,
+  "image_vocab_size": 16384,
+  "force_text_vocab_size": null,
+  "add_labels": null,
+  "ckpt_is_bin": false
+ },
+ "checkpoint_file": "C:\\Users\\ANONYMIZED\\.cache\\huggingface\\hub\\models--aswerdlow--unidisc_interleaved\\snapshots\\2b344ca856bd108b52a2d022a3463dace131249f\\unidisc_interleaved.pt",
+ "checkpoint_bytes": 5627633316,
+ "vq_ckpt_not_part_of_backbone_load": "C:\\Users\\ANONYMIZED\\.cache\\huggingface\\hub\\models--aswerdlow--unidisc_interleaved\\snapshots\\2b344ca856bd108b52a2d022a3463dace131249f\\vq_ds16_t2i.pt",
+ "vocab": {
+  "len_tokenizer": 32000,
+  "has_mask_token": false,
+  "mask_index": 32000,
+  "text_vocab_size": 32001,
+  "total_vocab_size": 48385
+ },
+ "backbone_class": "models.dit.DIT",
+ "model_n_state_dict_entries": 342,
+ "model_n_parameter_tensors": 342,
+ "model_n_param_elements": 1406870785,
+ "model_n_persistent_buffer_entries": 0,
+ "model_nonpersistent_buffers_not_in_state_dict": [
+  "rotary_cos_emb_img_1024",
+  "rotary_cos_emb_img_2304",
+  "rotary_cos_emb_img_256",
+  "rotary_cos_emb_img_4096",
+  "rotary_cos_emb_txt",
+  "rotary_sin_emb_img_1024",
+  "rotary_sin_emb_img_2304",
+  "rotary_sin_emb_img_256",
+  "rotary_sin_emb_img_4096",
+  "rotary_sin_emb_txt"
+ ],
+ "ckpt_top_level_type": "OrderedDict",
+ "ckpt_top_level_n": 342,
+ "ckpt_n_entries": 342,
+ "ckpt_n_elements": 1406870785,
+ "ckpt_dtypes": [
+  "torch.float32"
+ ],
+ "result": {
+  "n_missing": 0,
+  "n_missing_learnable_params": 0,
+  "missing_learnable_params": [],
+  "n_missing_buffers": 0,
+  "missing_buffers": [],
+  "n_unexpected": 0,
+  "unexpected": [],
+  "n_shape_mismatch": 0,
+  "shape_mismatch": {},
+  "dtype_pairs_model_vs_ckpt": [],
+  "n_matched_with_equal_shape": 342
+ },
+ "torch_load_state_dict_strict_False": {
+  "strict": false,
+  "ok": true,
+  "missing_keys": [],
+  "unexpected_keys": []
+ },
+ "torch_load_state_dict_resolved_strict": {
+  "strict": false,
+  "ok": true,
+  "missing_keys": [],
+  "unexpected_keys": []
+ }
+}

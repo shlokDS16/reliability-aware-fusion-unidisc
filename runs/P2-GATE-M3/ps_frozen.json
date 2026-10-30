@@ -1,0 +1,38 @@
+{
+ "kind": "ps_frozen",
+ "version": 1,
+ "created": "2026-10-28T22:45:08+0530",
+ "spec": "SAP-GATE-2026-10-28 AD.4, AD.12 step 2, A3.3 item 1, AB.7 item 2, AB.8",
+ "params": {
+  "grid": 32,
+  "n_tokens": 1024,
+  "patch": 8,
+  "patch_rule": "max(2, grid // 4) = 8 on the 32 x 32 map",
+  "patch_share": 0.0625,
+  "swap_frac": 0.15,
+  "swap_n_positions": 154,
+  "vocab": 16384,
+  "token_rng_tag": {
+   "patch": 190,
+   "swap": 191
+  },
+  "rng": "np.random.default_rng([SEED_GATE, gid, tag])",
+  "seed_gate": 20261029,
+  "sanity_order": [
+   "patch",
+   "swap"
+  ],
+  "condition_order": "clean, each family corruption (with its denoised copy if in denoise_for), patch, swap",
+  "denoise_for": [
+   "jpeg",
+   "noise"
+  ],
+  "alphas": [
+   0.05,
+   0.01,
+   0.1
+  ]
+ },
+ "code_commit": "f6ad4c5608968be545e7d7e0fa55a892367eb520",
+ "note": "written before the first M4 item and committed; M4 and the E-pred fit chunk refuse to start without it; the run-time geometry is asserted in both"
+}

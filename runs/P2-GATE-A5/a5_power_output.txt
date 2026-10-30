@@ -1,0 +1,71 @@
+== required discordant n_d for conditional power 0.8 (exact; stays >= 0.8 for the next 5 values), Holm step 1 alpha' = 0.05/3
+theta 0.65: n_d 122
+theta 0.70: n_d 72
+theta 0.75: n_d 43
+theta 0.80: n_d 30
+theta 0.85: n_d 23
+theta 0.90: n_d 17
+theta 0.95: n_d 11
+
+== smallest b with c = 0 that rejects at Holm step 1: n_d=7 -> 7 ; n_d=8 -> 8
+
+== unconditional power, Holm step 1 (0.0167)
+n 300 pi_d 0.02 E[n_d]   6.0  theta .65/.75/.85/.95: 0.01 0.04 0.12 0.27
+n 300 pi_d 0.04 E[n_d]  12.0  theta .65/.75/.85/.95: 0.05 0.17 0.43 0.80
+n 300 pi_d 0.06 E[n_d]  18.0  theta .65/.75/.85/.95: 0.08 0.31 0.69 0.96
+n 300 pi_d 0.10 E[n_d]  30.0  theta .65/.75/.85/.95: 0.18 0.59 0.94 1.00
+n 300 pi_d 0.15 E[n_d]  45.0  theta .65/.75/.85/.95: 0.31 0.82 0.99 1.00
+n 300 pi_d 0.20 E[n_d]  60.0  theta .65/.75/.85/.95: 0.43 0.93 1.00 1.00
+n 300 pi_d 0.30 E[n_d]  90.0  theta .65/.75/.85/.95: 0.65 0.99 1.00 1.00
+n 200 pi_d 0.02 E[n_d]   4.0  theta .65/.75/.85/.95: 0.00 0.01 0.03 0.07
+n 200 pi_d 0.04 E[n_d]   8.0  theta .65/.75/.85/.95: 0.03 0.08 0.22 0.50
+n 200 pi_d 0.06 E[n_d]  12.0  theta .65/.75/.85/.95: 0.05 0.17 0.43 0.80
+n 200 pi_d 0.10 E[n_d]  20.0  theta .65/.75/.85/.95: 0.09 0.36 0.75 0.98
+n 200 pi_d 0.15 E[n_d]  30.0  theta .65/.75/.85/.95: 0.18 0.59 0.94 1.00
+n 200 pi_d 0.20 E[n_d]  40.0  theta .65/.75/.85/.95: 0.26 0.76 0.99 1.00
+n 200 pi_d 0.30 E[n_d]  60.0  theta .65/.75/.85/.95: 0.43 0.93 1.00 1.00
+
+== MDE at n = 300 and 200, Holm step 1: smallest theta (0.005 grid) with power >= 0.8; Delta = pi_d (2 theta - 1)
+n 300 pi_d 0.04: theta_min 0.955  Delta_min 0.036
+n 300 pi_d 0.06: theta_min 0.885  Delta_min 0.046
+n 300 pi_d 0.10: theta_min 0.800  Delta_min 0.060
+n 300 pi_d 0.15: theta_min 0.745  Delta_min 0.074
+n 300 pi_d 0.20: theta_min 0.715  Delta_min 0.086
+n 300 pi_d 0.30: theta_min 0.675  Delta_min 0.105
+n 200 pi_d 0.04: unreachable
+n 200 pi_d 0.06: theta_min 0.950  Delta_min 0.054
+n 200 pi_d 0.10: theta_min 0.865  Delta_min 0.073
+n 200 pi_d 0.15: theta_min 0.800  Delta_min 0.090
+n 200 pi_d 0.20: theta_min 0.760  Delta_min 0.104
+n 200 pi_d 0.30: theta_min 0.715  Delta_min 0.129
+
+== H3 rule, 50 items, one corruption: P(G >= 3), P(G >= 8), G ~ Bin(50, pi_d)
+pi_d 0.002: P(G>=3) 0.000  P(G>=8) 0.000
+pi_d 0.008: P(G>=3) 0.008  P(G>=8) 0.000
+pi_d 0.020: P(G>=3) 0.078  P(G>=8) 0.000
+pi_d 0.040: P(G>=3) 0.323  P(G>=8) 0.001
+pi_d 0.060: P(G>=3) 0.584  P(G>=8) 0.009
+pi_d 0.100: P(G>=3) 0.888  P(G>=8) 0.122
+pi_d 0.150: P(G>=3) 0.986  P(G>=8) 0.481
+pi_d 0.200: P(G>=3) 0.999  P(G>=8) 0.810
+
+== H3 decision-headroom rule: P(F- >= 2), F- ~ Bin(50, q)
+q 0.01: 0.089
+q 0.02: 0.264
+q 0.04: 0.600
+q 0.08: 0.917
+q 0.20: 1.000
+perfect-restoration bound at n = 300 (F- scaled x6, c = 0): b = 12 -> p = 0.00049 ; b = 6 -> p = 0.0312
+
+== H3 clean-signal rule: one-sided exact P(X >= k | 0.5), 50 items
+30 0.1013
+31 0.0595
+32 0.0325
+33 0.0164
+P(k >= 32 | true accuracy): {0.55: 0.127, 0.6: 0.336, 0.65: 0.622, 0.7: 0.859, 0.8: 0.997}
+
+== NEG reachability: 90 percent half-width about 1.645 sqrt(pi_d / n)
+300 {0.05: 0.021, 0.1: 0.03, 0.2: 0.042, 0.3: 0.052}
+200 {0.05: 0.026, 0.1: 0.037, 0.2: 0.052, 0.3: 0.064}
+
+== 1 - 0.95^k for k = 11, 13: 0.431 0.487

@@ -1,0 +1,134 @@
+{
+ "endpoint": "d",
+ "endpoint_note": "H endpoint is Y; 'd' only satisfies run_gate_m4/analysis_m4 (S-Z secondary)",
+ "n_headroom_items": 50,
+ "family": [],
+ "excluded": [
+  {
+   "corruption": "jpeg",
+   "reason": "no decision headroom (F- 4, F+ 4, bound p 1 > 0.01667 or F- <= F+); G 0 < 3"
+  },
+  {
+   "corruption": "noise",
+   "reason": "no decision headroom (F- 6, F+ 3, bound p 0.01983 > 0.01667 or F- <= F+); G 0 < 3"
+  },
+  {
+   "corruption": "splice",
+   "reason": "no decision headroom (F- 1, F+ 0, bound p 0.03125 > 0.01667 or F- <= F+); G 0 < 3"
+  }
+ ],
+ "n_rule": {
+  "rule": "NO-GO",
+  "h_rule": "H-NOGO",
+  "test_fold": 0,
+  "G_star": null,
+  "G_max_headroom": null,
+  "N_star": 43,
+  "min_G": 3,
+  "r1_G": 8,
+  "scale_50_to_300": 6,
+  "alpha_step1": 0.016667,
+  "min_valid": 45,
+  "primary_endpoint": "Y",
+  "primary_endpoint_code": "Y",
+  "negative_reading_available": false,
+  "time_rule": {
+   "now": "2026-10-29T19:23:51.000008+05:30",
+   "freeze": "2026-10-30T18:00:00+05:30",
+   "constants": {
+    "W_H3": 0.75,
+    "A_H3": 0.5,
+    "W_H4_300": 2.9,
+    "W_H4_200": 1.8,
+    "A_H4": 0.5,
+    "M": 2.0
+   },
+   "n_by_rule": 0,
+   "n_after_time": 0,
+   "status": "not tested (NO-GO)"
+  }
+ },
+ "go": false,
+ "downstream_claim_withdrawn": true,
+ "per_corruption": {
+  "jpeg": {
+   "key": "jpeg10",
+   "n_valid": 50,
+   "F_minus": 4,
+   "F_plus": 4,
+   "bound_b": 24,
+   "bound_c": 24,
+   "bound_p": 1.0,
+   "headroom": false,
+   "G": 0,
+   "chg_discordance": 10,
+   "tested": false,
+   "reason": "no decision headroom (F- 4, F+ 4, bound p 1 > 0.01667 or F- <= F+); G 0 < 3",
+   "bound_p_at_n": null,
+   "projection_at_n": null
+  },
+  "noise": {
+   "key": "noise0.1",
+   "n_valid": 50,
+   "F_minus": 6,
+   "F_plus": 3,
+   "bound_b": 36,
+   "bound_c": 18,
+   "bound_p": 0.019834326728068286,
+   "headroom": false,
+   "G": 0,
+   "chg_discordance": 10,
+   "tested": false,
+   "reason": "no decision headroom (F- 6, F+ 3, bound p 0.01983 > 0.01667 or F- <= F+); G 0 < 3",
+   "bound_p_at_n": null,
+   "projection_at_n": null
+  },
+  "splice": {
+   "key": "splice128",
+   "n_valid": 50,
+   "F_minus": 1,
+   "F_plus": 0,
+   "bound_b": 6,
+   "bound_c": 0,
+   "bound_p": 0.03125,
+   "headroom": false,
+   "G": 0,
+   "chg_discordance": 0,
+   "tested": false,
+   "reason": "no decision headroom (F- 1, F+ 0, bound p 0.03125 > 0.01667 or F- <= F+); G 0 < 3",
+   "bound_p_at_n": null,
+   "projection_at_n": null
+  }
+ },
+ "clean_none_accuracy": {
+  "k": 32,
+  "n": 50,
+  "wilson95": [
+   0.501410168761127,
+   0.7586125034815325
+  ]
+ },
+ "inputs": {
+  "h3_run": "P2-GATE-H3",
+  "items_sha256": "4349cdadd7c26d3b319b5f21d8c6d80c7cbf2d513215264db438aa6dcdab028c",
+  "plan_family_sha256": "53b384bd72e2311a6957862ea674c5f4162a9969eadb9d60a5074515ce7d11e6",
+  "folds_h3_sha256": "607ea2367e6958e110b07d91e24a72d10bff9fed92e35e82798c43f666d75160",
+  "code_commit": "5e6380b1a417c9b67b43dca7375d47ad522fef0a"
+ },
+ "spec": "SAP addendum A5, A5.5 and A5.5a",
+ "decide_record": {
+  "now": "2026-10-29T19:23:51.000008+05:30",
+  "now_source": "system",
+  "system_clock_at_decide": "2026-10-29T19:23:51.000008+05:30",
+  "last_row_source": "mtime",
+  "last_h3_row_time": "2026-10-29T19:22:50.009445+05:30",
+  "gap_hours": 0.016941823055555555,
+  "gap_over_A_H3": false,
+  "gap_reason": null,
+  "h3_rows": 50,
+  "h3_complete": true,
+  "deadline": "2026-10-30T13:12:00+05:30",
+  "after_deadline": false,
+  "decided_on_prefix": false
+ }
+}

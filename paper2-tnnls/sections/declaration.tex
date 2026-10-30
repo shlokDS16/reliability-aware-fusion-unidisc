@@ -1,0 +1,25 @@
+% declaration.tex -- unnumbered back matter before the References (writer W1, 2026-10-30).
+% (1) Reproducibility and Data Availability: SPEC v2.2 section 9 (claims nothing beyond the listed facts; F16).
+% (2) Declaration of Generative AI Use: SPEC rule 6, D0093 (the ONLY place AI use is mentioned; no Acknowledgment section). Written so
+%     that it can be moved unchanged into an Acknowledgment if the editor asks (checklist C2): it names each system and version, the
+%     roles, the sections affected and the level of use (IEEE Author Center, AI-generated content policy). Codex model name from
+%     research/paper2/tnnls/codex/SESSION.txt. Facts only the authors can confirm are marked \todo{AUTHOR: ...}.
+
+\section*{Reproducibility and Data Availability}
+% Red-team A3 (2026-10-30): no anonymised mirror exists, and anonymising commit metadata would change every hash; state only what exists.
+The code, the preregistration documents (cards, analysis plans, and their addenda), the hash pins, the recorded predictions, and the
+analysis outputs are kept in one version-controlled repository with its commit history
+(\anonlink{https://github.com/ANONYMIZED}{repository}\ifanon\else\ \todo{AUTHOR: exact repository URL}\fi);
+% TODO(AUTHOR): replace the \anonlink target with the exact repository URL once the private repository exists.
+the repository is available to the reviewers on request through the editor and will
+be released at camera-ready, and the commit identifiers printed in this paper and in supplement S-I refer to it.
+% Zenodo (ANONYMIZED 2026-10-30): manual upload with a reserved DOI (paper2-tnnls/drafts/REPOSITORY-SETUP-GUIDE.md). The record names
+% the authors, so the DOI is printed only in the author build. Do not submit until the Zenodo record (draft with reserved DOI) exists.
+A release of the repository is archived on Zenodo
+(\ifanon DOI withheld for double-anonymous review\else\todo{AUTHOR: Zenodo DOI, as https://doi.org/10.5281/zenodo.NNNNNNN}\fi).
+The per-item arrays are not tracked; their SHA-256 manifests are committed.
+The software environment was recorded after the runs.
+The images and captions are the public COCO val2017 split~\cite{lin2014coco}, and the model is the released UniDisc
+checkpoint~\cite{swerdlow2025unidisc} at the snapshot pinned in supplement S-I.
+% The Declaration of Generative AI Use section was removed (ANONYMIZED, chat 2026-10-30): its text now sits in the Acknowledgment
+% (main.tex), where IEEE/TNNLS (CIS Information for Authors, section K) requires the disclosure.

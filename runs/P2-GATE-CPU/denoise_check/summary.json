@@ -1,0 +1,152 @@
+{
+ "n_images": 20,
+ "noise_sigma": 0.1,
+ "noise_sigma_grey_levels": 25.5,
+ "noise": {
+  "noisy": {
+   "psnr": 20.412893445646837,
+   "ssim": 0.34432172649349063
+  },
+  "library_default": {
+   "psnr": 20.427608204460093,
+   "ssim": 0.34757521127981433
+  },
+  "chosen": {
+   "psnr": 25.7505925376045,
+   "ssim": 0.6894502746469203
+  },
+  "tutorial_h10": {
+   "psnr": 24.23389783591974,
+   "ssim": 0.6079118666554251
+  },
+  "gain_library_default_psnr": {
+   "mean": 0.014714758813255813,
+   "ci95": [
+    0.002734271130956474,
+    0.028728809004958777
+   ]
+  },
+  "gain_library_default_ssim": {
+   "mean": 0.003253484786323711,
+   "ci95": [
+    0.000905257861670468,
+    0.006292651847971716
+   ]
+  },
+  "gain_chosen_psnr": {
+   "mean": 5.337699091957661,
+   "ci95": [
+    4.1493552622287755,
+    6.490717469866668
+   ]
+  },
+  "gain_chosen_ssim": {
+   "mean": 0.34512854815342975,
+   "ci95": [
+    0.23983625550907164,
+    0.44273163564402623
+   ]
+  },
+  "gain_tutorial_h10_psnr": {
+   "mean": 3.821004390272905,
+   "ci95": [
+    3.1300022216131995,
+    4.620390890339986
+   ]
+  },
+  "gain_tutorial_h10_ssim": {
+   "mean": 0.2635901401619346,
+   "ci95": [
+    0.20694150961195762,
+    0.32750922792326675
+   ]
+  },
+  "share_of_noise_power_removed": {
+   "library_default": 0.0033824649619459413,
+   "chosen": 0.707429798507113,
+   "tutorial_h10": 0.585141912444842
+  }
+ },
+ "jpeg_q10": {
+  "noisy": {
+   "psnr": 26.820535548519167,
+   "ssim": 0.7614298656151745
+  },
+  "library_default": {
+   "psnr": 27.04102081784053,
+   "ssim": 0.7757938108551555
+  },
+  "chosen": {
+   "psnr": 25.134208521177094,
+   "ssim": 0.6735733572596752
+  },
+  "tutorial_h10": {
+   "psnr": 27.090302813384703,
+   "ssim": 0.7534518188402706
+  },
+  "gain_library_default_psnr": {
+   "mean": 0.2204852693213601,
+   "ci95": [
+    0.16247828202128844,
+    0.2797597763741399
+   ]
+  },
+  "gain_library_default_ssim": {
+   "mean": 0.014363945239981035,
+   "ci95": [
+    0.01048372704187507,
+    0.01811459144508641
+   ]
+  },
+  "gain_chosen_psnr": {
+   "mean": -1.6863270273420803,
+   "ci95": [
+    -2.002252206453158,
+    -1.352009355757371
+   ]
+  },
+  "gain_chosen_ssim": {
+   "mean": -0.08785650835549932,
+   "ci95": [
+    -0.13136822798176803,
+    -0.04906350787690502
+   ]
+  },
+  "gain_tutorial_h10_psnr": {
+   "mean": 0.2697672648655368,
+   "ci95": [
+    0.04643930194010799,
+    0.48994239529764344
+   ]
+  },
+  "gain_tutorial_h10_ssim": {
+   "mean": -0.007978046774903819,
+   "ci95": [
+    -0.031109074176295593,
+    0.0121711375584908
+   ]
+  },
+  "share_of_noise_power_removed": {
+   "library_default": 0.04950141850875578,
+   "chosen": -0.47445900686571396,
+   "tutorial_h10": 0.060226329023148284
+  }
+ },
+ "findings": {
+  "noise_library_default_gain_db": 0.014714758813255813,
+  "noise_chosen_gain_db": 5.337699091957661,
+  "library_default_acts_on_noise": false,
+  "chosen_acts_on_noise": true,
+  "jpeg_chosen_gain_db": -1.6863270273420803,
+  "jpeg_library_default_gain_db": 0.2204852693213601,
+  "chosen_hurts_jpeg_psnr": true,
+  "note": "ONE setting is used for all corruptions (spec v2 4.3). It is matched to the preregistered Gaussian noise; on JPEG q10 (no sigma exists to match) the same setting changes PSNR by the value above (negative = it over-smooths), so the JPEG denoise comparison (S-DN, JPEG) is against an aggressive denoiser. Reported, not tuned away."
+ },
+ "chosen_params": {
+  "h": 25.5,
+  "hColor": 25.5,
+  "templateWindowSize": 7,
+  "searchWindowSize": 21
+ },
+ "opencv": "4.13.0"
+}

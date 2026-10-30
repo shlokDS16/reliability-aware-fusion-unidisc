@@ -1,0 +1,40 @@
+{
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "argv": [
+  "C:\\Users\\ANONYMIZED\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\analysis\\paper2\\lrf\\ablation.py",
+  "fit",
+  "--src",
+  "runs/P2-LRF-RESCORE",
+  "--frozen",
+  "runs/P2-LRF-FROZEN-LFIX",
+  "--out",
+  "runs/P2-LRF-ABL-FIT"
+ ],
+ "src": "runs\\P2-LRF-RESCORE",
+ "frozen": "runs\\P2-LRF-FROZEN-LFIX",
+ "out": "runs\\P2-LRF-ABL-FIT",
+ "n_items": 500,
+ "rmax": 40,
+ "n_cfg": 9,
+ "resume": false,
+ "only": null,
+ "git_head": "047468c28bc0cdb96d8c2d12d1a28499f097efc8",
+ "code": {
+  "analysis/paper2/lrf/ablation.py": {
+   "sha256": "5b17ccb7fb06ac55aa63d16b437772ee120b995752938009e5bba58202c4ba2f",
+   "sha256_lf": "e93abc68a27473aa1a481830c747a566573f0e509612fe4d52c68e352560bf7a"
+  },
+  "exp_p2/gate/lrf_score.py": {
+   "sha256": "50ff675496bd0ad00ad6dfb72f6ef085135092718811d0e4333a853464b0c280",
+   "sha256_lf": "63f7096141638869fdcbc483a8902bae225503db95edc73f9569614645a85145"
+  }
+ },
+ "plan_sha256": "a65b07ca0a393e6f0eb313d344c790fb093c39190f34f446b7aa1f67ea6beea3",
+ "rescored_arrays_digest": "038ded0724b33e4ff132ce9af4eefd7c115bf82fc834777be1e2f4d69cb68e90",
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2",
+ "python": "3.12.14",
+ "torch_threads": 4,
+ "started": "2026-10-30 07:29:37"
+}

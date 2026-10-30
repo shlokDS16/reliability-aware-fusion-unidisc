@@ -1,0 +1,222 @@
+{
+ "fit": {
+  "n_fit": 239,
+  "rule": "AD.6: rules (i) fit pairs >= 100, (ii) best single direction accuracy >= 0.95 on the fit pairs = untestable at ceiling, (iii) fusion_frozen.json committed",
+  "acc_T": 0.8870292887029289,
+  "acc_I": 0.6610878661087866,
+  "best": "T",
+  "best_acc": 0.8870292887029289,
+  "lda_w": [
+   2.2027974594878654,
+   -0.1763333049654039
+  ],
+  "acc_lda": 0.8870292887029289,
+  "stouffer_w": [
+   1.3374863544351037,
+   9.025528453970344
+  ],
+  "stouffer_r": 0.309776342996248,
+  "stouffer_sd": [
+   0.4619522335757227,
+   0.06845635820211188
+  ],
+  "acc_stouffer": 0.8451882845188284,
+  "corr_T_I": 0.309776342996248,
+  "status": "ok",
+  "test_pairs_may_run": true
+ },
+ "family": "B",
+ "m": 1,
+ "alpha": 0.05,
+ "estimand": "Delta_B = Pr(Y_fus = 1) - Pr(Y_best = 1) on FOIL-COCO pairs, clean images, UniDisc",
+ "n_test_completed": 298,
+ "n_test_dropped_nonfinite": 0,
+ "n_test_planned": 298,
+ "weights_source": "fusion_frozen.json",
+ "refit_matches_frozen": true,
+ "tested": true,
+ "descriptive_only": false,
+ "test": {
+  "b": 0,
+  "c": 1,
+  "n_d": 1,
+  "n": 298,
+  "n_dropped": 0,
+  "p": 1.0,
+  "p_mid": 0.5,
+  "acc_a": 0.8758389261744967,
+  "acc_b": 0.8791946308724832,
+  "delta": -0.003355704697986577,
+  "ci95": [
+   -0.010067114093959731,
+   0.0
+  ],
+  "ci9833": [
+   -0.013422818791946308,
+   0.0
+  ],
+  "ci90": [
+   -0.010067114093959731,
+   0.0
+  ],
+  "equivalent_within_0p05": true,
+  "theta": 0.0,
+  "theta_cp95": [
+   0.0,
+   0.975
+  ]
+ },
+ "p": 1.0,
+ "best_direction": "T",
+ "combination_beat_best_single": false,
+ "status": "tested",
+ "wording": "the combination did not beat the better single score; minimum detectable net gain at the achieved n = 298 is 0.054 at an assumed discordance of 0.10 (0.066 at 0.15, 0.076 at 0.20, 0.037 at 0.05; power 0.8, exact two-sided McNemar, alpha' 0.05; discordance and split are assumed, not forecasts)",
+ "mde_at_achieved_n": {
+  "n": 298,
+  "alpha_prime": 0.05,
+  "power": 0.8,
+  "by_pi_d": {
+   "0.05": 0.037,
+   "0.1": 0.054,
+   "0.15": 0.066,
+   "0.2": 0.076
+  },
+  "theta_at_mde": {
+   "0.05": 0.87,
+   "0.1": 0.77,
+   "0.15": 0.72,
+   "0.2": 0.69
+  },
+  "note": "minimum detectable net gain (b - c)/n for power 0.8, exact two-sided McNemar, favourable tail; pi_d (discordance) and theta (split) are ASSUMED, not forecasts (SAP A3.1)"
+ },
+ "partial_prefix": null,
+ "sensitivity_first150_pool_positions": {
+  "exists": true,
+  "label": "sensitivity (first 150 pool positions), not confirmatory, not in the Holm set",
+  "n_completed_in_prefix": 148,
+  "tested": true,
+  "b": 0,
+  "c": 1,
+  "n_d": 1,
+  "p": 1.0,
+  "delta": -0.006756756756756757,
+  "ci95": [
+   -0.02027027027027027,
+   0.0
+  ],
+  "sens_rejects": false,
+  "primary_rejects": false,
+  "sensitive_to_n": false,
+  "mde_at_this_n": {
+   "0.05": null,
+   "0.1": 0.074,
+   "0.15": 0.092,
+   "0.2": 0.108
+  }
+ },
+ "max_net_gain_before_label_noise": 0.12080536912751683,
+ "max_net_gain_note": "1 minus the better single accuracy on the test pairs; the attainable gain is smaller by the label-noise share (A3b.3 item 7)",
+ "descriptive": {
+  "acc_text_alone": 0.8791946308724832,
+  "acc_image_alone": 0.6543624161073825,
+  "acc_stouffer_unfitted": 0.8456375838926175,
+  "acc_lda": 0.8758389261744967,
+  "stouffer_vs_best": {
+   "b": 12,
+   "c": 22,
+   "n_d": 34,
+   "n": 298,
+   "n_dropped": 0,
+   "p": 0.12144948495551944,
+   "p_mid": 0.0895310789346695,
+   "acc_a": 0.8456375838926175,
+   "acc_b": 0.8791946308724832,
+   "delta": -0.03355704697986577,
+   "ci95": [
+    -0.07046979865771812,
+    0.003355704697986577
+   ],
+   "ci9833": [
+    -0.08157164429530195,
+    0.013422818791946308
+   ],
+   "ci90": [
+    -0.06711409395973154,
+    -0.003355704697986577
+   ],
+   "equivalent_within_0p05": false,
+   "theta": 0.35294117647058826,
+   "theta_cp95": [
+    0.19745864791234236,
+    0.5351136291089579
+   ],
+   "label": "descriptive, no p enters a claim"
+  },
+  "note": "the unfitted Stouffer statistic is reported first (spec 8) and is descriptive"
+ },
+ "partial": false,
+ "n_duplicate_rows_removed": 0,
+ "frozen_file_sha256_of_fit_rows": "1da8afe39334867f6dad519a04c4d7d99c4568782b9aa9e7f013a529da7236ce",
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ },
+ "label": "family B, m = 1, alpha 0.05 (own family, no cross-family adjustment)",
+ "limits": [
+  "not a corruption test: a within-modality gate cannot see a fluent foil word (derivation, E0, untested)",
+  "text-only cues (an a/an mismatch, a swap inside a compound noun, a duplicated word) can drive the text direction; no text-only baseline was run in this plan (adding one needs a dated addendum and is exploratory)",
+  "the negative mix differs between the fit pairs and the test pairs (ball to racket 11 of 300 test against 1 of 240 fit; a/an 15 of 300 against 7 of 240); the combination weights were fitted on the same negative type but not the same mix of negatives",
+  "(i) 26 of 300 test pairs (8.7 percent) are flagged by the COCO-instance rule (the foil's category is present in the image's COCO instances); this is a flag rate, not an error rate and not a bound",
+  "(ii) of those, 12 of 300 (4.0 percent; 5 plausibly true, 7 ambiguous) were judged questionable by one reader (thumbnails, E1), and the other 14 of the 26 were judged wrong by role",
+  "(iii) the rule fails to find the category of the original true noun in 26 of 300 test pairs (33 of 240 fit pairs); the rate of plausibly-true foils is not bounded by these data",
+  "no judgement exists for the 240 fit pairs beyond the rule's own count (18 of 240 flagged); the ceiling rule and the choice of the best direction are decided on those pairs",
+  "no pair is excluded, relabelled or reweighted for foil validity in the confirmatory analysis; the descriptive recomputation without the 26 flagged pairs is exploratory and no p-value of it enters a claim",
+  "label noise caps the attainable gain: the attainable net gain is at most 1 minus the better single accuracy minus the label-noise share, and the A3.1 power table does not include this cap; the sign of any bias on Delta_B is not established",
+  "all test images are in folds.json test/test_ext, so P and B are dependent in their data (separate families, separate alpha)",
+  "the COCO captions c+ are probably in UniDisc's training data (U8) and the text direction may be memorised; contamination of FOIL images (U8) is unmeasured",
+  "a rejection needs b > c_cnt; the label 'negative' is not available at these n",
+  "foil captions are lower-cased on both sides because of the case leak; the FOIL file revision (July 2017 vs Oct 2018) is unverified"
+ ],
+ "created": "2026-10-29T17:59:44",
+ "code_git_sha": "f205ddecca52ca3198a07639e16b400acb5a9b3d",
+ "completed_vs_expected": [
+  298,
+  298
+ ]
+}

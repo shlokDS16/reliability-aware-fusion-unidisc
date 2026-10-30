@@ -1,0 +1,278 @@
+{
+ "family_L": {
+  "L-LEN": {
+   "acc_a": 0.7839643652561247,
+   "acc_b": 0.7082405345211581,
+   "alpha": 0.05,
+   "b": 67,
+   "c": 33,
+   "ci90": [
+    0.0400890868596882,
+    0.111358574610245
+   ],
+   "ci95": [
+    0.0334075723830735,
+    0.12026726057906459
+   ],
+   "cp95_b_over_nd": [
+    0.5688272492224368,
+    0.7608014653773982
+   ],
+   "harm": false,
+   "label": "rejected",
+   "n": 449,
+   "n_d": 100,
+   "n_excluded_length_mismatch": 1,
+   "n_with_length_matched_negative": 450,
+   "net": 0.0757238307349666,
+   "p": 0.00043685991845618616,
+   "p_mid_one": 0.0003206242510847969,
+   "p_mid_two": 0.0006412485021695937,
+   "p_one": 0.00043685991845618616,
+   "p_two": 0.0008737198369123723,
+   "passes_two_sided_005": true,
+   "rejected": true,
+   "sided": "one"
+  },
+  "L-NI": {
+   "acc_a": 0.9177777777777778,
+   "acc_b": 0.8866666666666667,
+   "alpha": 0.05,
+   "b": 27,
+   "c": 13,
+   "ci90": [
+    0.008888888888888889,
+    0.05333333333333334
+   ],
+   "ci95": [
+    0.0044444444444444444,
+    0.057777777777777775
+   ],
+   "cp95_b_over_nd": [
+    0.5087051245215515,
+    0.8142710332366502
+   ],
+   "harm": false,
+   "label": "shown",
+   "lower90": 0.008888888888888889,
+   "margin": 0.03,
+   "margin_note": "the margin was fixed after the M4 clean interval (-0.024 to +0.030) and the in-sample clean accuracy had been seen (C6-11)",
+   "n": 450,
+   "n_d": 40,
+   "net": 0.03111111111111111,
+   "non_inferior": true,
+   "p": 0.01923865414210013,
+   "p_mid_one": 0.013766577914793743,
+   "p_mid_two": 0.027533155829587486,
+   "p_one": 0.01923865414210013,
+   "p_two": 0.03847730828420026,
+   "passes_two_sided_005": true,
+   "rejected": true,
+   "sided": "one"
+  },
+  "L1": {
+   "acc_a": 0.8022222222222222,
+   "acc_b": 0.7333333333333333,
+   "alpha": 0.05,
+   "b": 58,
+   "c": 27,
+   "ci90": [
+    0.035555555555555556,
+    0.10222222222222223
+   ],
+   "ci95": [
+    0.028888888888888888,
+    0.10888888888888888
+   ],
+   "cp95_b_over_nd": [
+    0.5724126249851478,
+    0.7791622331545305
+   ],
+   "harm": false,
+   "headline_p_le_0025": true,
+   "label": "confirmed",
+   "n": 450,
+   "n_d": 85,
+   "net": 0.06888888888888889,
+   "p": 0.0005081104756739444,
+   "p_mid_one": 0.00036585503265620435,
+   "p_mid_two": 0.0007317100653124087,
+   "p_one": 0.0005081104756739444,
+   "p_two": 0.001016220951347889,
+   "passes_two_sided_005": true,
+   "rejected": true,
+   "sided": "one"
+  },
+  "L3": {
+   "acc_a": 0.8644444444444445,
+   "acc_b": 0.8488888888888889,
+   "alpha": 0.05,
+   "b": 27,
+   "c": 20,
+   "ci90": [
+    -0.008888888888888889,
+    0.04
+   ],
+   "ci95": [
+    -0.013333333333333334,
+    0.044444444444444446
+   ],
+   "condition": "jpeg10",
+   "cp95_b_over_nd": [
+    0.4217847474246197,
+    0.717420993216501
+   ],
+   "harm": false,
+   "n": 450,
+   "n_d": 47,
+   "net": 0.015555555555555555,
+   "p": 0.38169339766321286,
+   "p_holm": 0.38169339766321286,
+   "p_mid_one": 0.15616340373663462,
+   "p_mid_two": 0.31232680747326924,
+   "p_one": 0.19084669883160643,
+   "p_two": 0.38169339766321286,
+   "passes_two_sided_005": false,
+   "rejected": false,
+   "sided": "two",
+   "status": "tested"
+  },
+  "L4": {
+   "acc_a": 0.9266666666666666,
+   "acc_b": 0.8955555555555555,
+   "alpha": 0.05,
+   "b": 24,
+   "c": 10,
+   "ci90": [
+    0.008888888888888889,
+    0.05333333333333334
+   ],
+   "ci95": [
+    0.006666666666666667,
+    0.057777777777777775
+   ],
+   "condition": "splice128",
+   "cp95_b_over_nd": [
+    0.5252189396595142,
+    0.8490163355769715
+   ],
+   "harm": false,
+   "n": 450,
+   "n_d": 34,
+   "net": 0.03111111111111111,
+   "p": 0.024306510109454393,
+   "p_holm": 0.04861302021890879,
+   "p_mid_one": 0.008336923900060356,
+   "p_mid_two": 0.01667384780012071,
+   "p_one": 0.012153255054727197,
+   "p_two": 0.024306510109454393,
+   "passes_two_sided_005": true,
+   "rejected": true,
+   "sided": "two",
+   "status": "tested"
+  },
+  "branch": {
+   "branch": "A",
+   "title_rule": "L1 confirmed with one-sided p <= 0.025"
+  },
+  "length_strata": {
+   "descriptive_only": true,
+   "equal": {
+    "b": 8,
+    "c": 2,
+    "n": 43,
+    "net": 0.13953488372093023
+   },
+   "longer_minus_shorter": {
+    "ci95": [
+     -0.03831156170793527,
+     0.12271580717488781
+    ],
+    "diff": 0.0426740105283681
+   },
+   "true_longer": {
+    "b": 30,
+    "c": 12,
+    "n": 223,
+    "net": 0.08071748878923767
+   },
+   "true_shorter": {
+    "b": 20,
+    "c": 13,
+    "n": 184,
+    "net": 0.03804347826086957
+   }
+  },
+  "n_items_by_condition": {
+   "clean": 450,
+   "jpeg10": 450,
+   "noise0.1": 450,
+   "splice128": 450
+  },
+  "n_l": 450,
+  "partial_label": null,
+  "supplement_gatem_vs_none": {
+   "clean": {
+    "acc_gatem": 0.8888888888888888,
+    "acc_none": 0.8866666666666667,
+    "b": 2,
+    "c": 1,
+    "descriptive_only": true,
+    "n": 450
+   },
+   "jpeg10": {
+    "acc_gatem": 0.8466666666666667,
+    "acc_none": 0.8488888888888889,
+    "b": 0,
+    "c": 1,
+    "descriptive_only": true,
+    "n": 450
+   },
+   "noise0.1": {
+    "acc_gatem": 0.7266666666666667,
+    "acc_none": 0.7333333333333333,
+    "b": 0,
+    "c": 3,
+    "descriptive_only": true,
+    "n": 450
+   },
+   "splice128": {
+    "acc_gatem": 0.8933333333333333,
+    "acc_none": 0.8955555555555555,
+    "b": 0,
+    "c": 1,
+    "descriptive_only": true,
+    "n": 450
+   }
+  }
+ },
+ "meta": {
+  "interval": "percentile",
+  "l1_predictions_sha256": "e919776c351596d175211a8a3ca215e6f6a892d608cf9a049df8f2d81c0d305f",
+  "n_boot": 10000,
+  "n_l": 450,
+  "numpy_version": "2.5.2",
+  "root_seed": 20261028,
+  "seed_slots": [
+   "L1",
+   "L2_removed",
+   "L3",
+   "L4",
+   "LNI",
+   "LLEN",
+   "LG_shot_noise3",
+   "LG_impulse_noise3",
+   "LG_speckle_noise3",
+   "LG_drop",
+   "LEN_STRATA",
+   "LEN_STRATA_DIFF",
+   "DESC",
+   "BASELINES"
+  ],
+  "spawn_key": [
+   34
+  ],
+  "spec": "research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md r1 A6.4 to A6.8"
+ },
+ "multiplicity_note": "no multiplicity adjustment across families; the family of every claim is stated beside it (A6.8)"
+}

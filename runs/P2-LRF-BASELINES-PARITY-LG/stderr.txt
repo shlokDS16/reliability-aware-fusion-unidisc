@@ -1,0 +1,16 @@
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\.venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W1030 02:03:01.330000 14676 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+W1030 02:03:02.568000 14676 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:224: SyntaxWarning: invalid escape sequence '\s'
+  df_images = pd.read_csv(self.root / "images.txt", sep="\s+", names=["img_id", "img_path"])
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:225: SyntaxWarning: invalid escape sequence '\s'
+  df_labels = pd.read_csv(self.root / "classes.txt", sep="\s+", names=["cls_id", "cls_name"])
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:226: SyntaxWarning: invalid escape sequence '\s'
+  df_is_train = pd.read_csv(self.root / "train_test_split.txt", sep="\s+", names=["img_id", "is_train"])
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:228: SyntaxWarning: invalid escape sequence '\s'
+  df_att = pd.read_csv(self.root / "attributes.txt", sep="\s+", names=["att_id", "att_name"])
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\datasets\misc_image_datasets.py:230: SyntaxWarning: invalid escape sequence '\s'
+  self.root / "attributes/image_attribute_labels_filtered.txt", names=["img_id", "att_id", "is_pres", "cert_id", "time"], sep="\s+"
+C:\Users\ANONYMIZED\Downloads\Multi-Modality Language model\models\third_party\unidisc\models\noise_schedule.py:55: SyntaxWarning: invalid escape sequence '\i'
+  Total noise ie \int_0^t g(t) dt + g(0)

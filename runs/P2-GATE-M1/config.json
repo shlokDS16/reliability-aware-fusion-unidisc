@@ -1,0 +1,24 @@
+{
+ "stage": "M1-posthoc",
+ "probe_run": "P2-PROBE-02",
+ "names": [
+  "clean",
+  "swap",
+  "patch",
+  "jpeg",
+  "noise"
+ ],
+ "duty": 0.5,
+ "spec": "research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md section 11.1 M1",
+ "n_items": 200,
+ "mem_frac": 0.75,
+ "tbv": true,
+ "run_id": "P2-GATE-M1",
+ "git_sha": "b401b7b5abf85f44de0a784bb5d27b7f897e060e",
+ "created": "2026-10-28T19:51:23",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 5.76,
+  "free_commit_gb": 54.42
+ }
+}

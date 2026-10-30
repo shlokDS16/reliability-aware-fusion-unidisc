@@ -1,0 +1,58 @@
+{
+  "kind": "omni_adapter_code_audit_signature",
+  "scope": "CPU code audit of the Omni-Diffusion 4-bit adapter and family R. This is NOT the AB.5 item 1 / A3b.4 item 1 signature: omni_gate and run_gate_omni_r.require_signature read runs/P2-OMNI-TIMING/adapter_signature.json, which does not exist and is written only after the GPU timing stage, bound to selfcheck_sha256. This file is in a different directory on purpose and cannot satisfy either reader (no selfcheck hash, verdict is not 'PASS').",
+  "signed_by": "gate-auditor",
+  "date": "2026-10-28",
+  "verdict": "CODE-AUDIT PASS (CPU only); GPU adapter checks pending",
+  "gpu_checks_pending": true,
+  "selfcheck_sha256": null,
+  "audited_commit": "8c9edf8c547d8e0a6cd111cd20187f3917b49ac4",
+  "audited_code_state": "exp_p2/, tools/ and tests/ at this commit are byte-identical to 6a7e7d87 (git diff empty); pins.require_clean(exp_p2, tools) is clean",
+  "code_commits_reviewed": {
+    "adapter_and_family_R_first_audit": "f938ceab",
+    "round_3_part_1_and_part_3_fixes": ["1051d01f", "9fae9b66"],
+    "engineer_F_part_2_fixes": "6a7e7d87"
+  },
+  "audit_files": {
+    "part_3_audit": "research/paper2/prereg/GATE-CODE-AUDIT-A3-PART3-OMNI-2026-10-28.md",
+    "part_3_audit_sha256": "006f208303e0d08ac551c9154cff5973608c94ef5fbf866024314b46c163d560",
+    "reaudit": "research/paper2/prereg/GATE-CODE-REAUDIT-A3-2026-10-28.md",
+    "lead_decisions": "research/paper2/prereg/LEAD-DECISIONS-2026-10-28-PM.md",
+    "lead_decisions_sha256": "7d507e4bbcef92254616286a5f26709a4ac5b22f7634955184409ee6862230dd"
+  },
+  "checks_file_hashes_unchanged_since_SAP_A3b.4_item_2": {
+    "OMNI-ADAPTER-CHECKS-2026-10-28.md_sha256": "9b429e12df9d8aab6b569d83aeace75652eb78ee2d75454b6891d5bf435dbe55",
+    "exp_p2/omni/checks.py_sha256_LF": "9e397f2a3dedcd4a8edf133214d30ed25ee9170ca80a089238435c2217f6c48f",
+    "exp_p2/omni/checks.py_sha256_CRLF_working_tree": "4e196a1fcb2f222818ae70ebe73fd9d48f7a484257227060d53744691a85a5ee",
+    "checks_py_git_blob": "e657b799441457e6f25f4ec453cf796ea37d8544",
+    "blob_identical_at_f938ceab_and_HEAD": true
+  },
+  "files_added_after_the_first_audit_that_the_timing_stage_will_use": {
+    "exp_p2/omni/signing.py_sha256": "a1b27cfcf500285a28457dfc738c2f32fa724b8ce33dadcc0dc1792e7d43d769",
+    "exp_p2/gate/analysis_omni.py_sha256_LF": "ac04146be56cea5303cdcd5160f790d0691efbd8004328626585bae0d30f8cfa"
+  },
+  "tightenings_accepted_by_the_lead_2026-10-28_PM": {
+    "decision_ledger": "research/paper2/prereg/LEAD-DECISIONS-2026-10-28-PM.md item 2",
+    "T1": "A5 floors mean_logp(s=1) >= -8.011 and top-1(s=1) >= 0.005, applied as a separate check (exp_p2/omni/signing.py t1_check, also required by analysis_omni.omni_gate condition b); checks.py and its hashes unchanged",
+    "T2": "pins and versions (transformers 4.51.3, bitsandbytes 0.50.2, skip modules, mem_frac 0.62) recorded in omni_env.json['t2'] (exp_p2/omni/build.py t2_record) and read by signing.py",
+    "T3": "peak allocated memory during load plus self-check <= 7,000 MiB: recorded as selfcheck.json['peak_gate']; above it ids_equal is false and a guard_stop event is appended (exp_p2/run_omni_timing.py)",
+    "window": "A3b.4 item 3 window open at the time of the lead decision and of this audit: no M4 run directory and no Omni run directory exists",
+    "reading_disclosed": "A3b.4 item 3 words a tightening as 'a dated commit that changes the hashes'. T1 to T3 are implemented outside checks.py so that the SAP-recorded hashes stand; they only tighten. Disclose in the deviations box."
+  },
+  "cpu_findings_closed_in_the_reaudit": ["part 3 M-1 (omni_r wording R3, b<c, confounds, positive-control wording)", "part 3 M-2 (GO rule (b) needs A1..A7)", "part 3 m-1", "part 3 m-2", "part 3 m-4", "part 3 m-5 (HF_HUB_OFFLINE assigned for every Omni stage)"],
+  "conditions_for_the_real_signature_runs/P2-OMNI-TIMING/adapter_signature.json": [
+    "S-1 selfcheck.adapter.results holds exactly A1..A7 once each, all ok, adapter.all_ok, ids_equal",
+    "S-2 the per-check numbers of the table in section 5 of the part 3 audit, read by hand from selfcheck.json",
+    "S-3 (T1) A5 mean_logp(s=1) >= -8.011 and top-1(s=1) >= 0.005 in addition to the committed margin 1.0 nat and top-1 ordering",
+    "S-4 (T2) omni_env.json: pins_match all true, four skip modules, transformers 4.51.3, bitsandbytes 0.50.2, mem_frac 0.62",
+    "S-5 the first chunk's stdout log has the 'not used when initializing' notice for model.audio_model.* and no 'newly initialized' notice (read by hand)",
+    "S-6 (T3) peak_alloc_mib_during_checks <= 7000 and every timing row peak_alloc_mib <= 7000 and finite",
+    "S-7 allocated_after_load_mib within 5000-7000 MiB; selfcheck.quantisation.matches true (196 Linear4bit)",
+    "S-8 no guard_stop, item_error, hold_stop or selfcheck_failed_earlier event in chunks.jsonl",
+    "python -m exp_p2.omni.signing --run-id P2-OMNI-TIMING exits 0 (it covers S-1, S-3, S-4, S-6, S-7, S-8; S-2 and S-5 stay with the auditor)"
+  ],
+  "not_established_by_this_file": [
+    "that the 4-bit model loads, fits in 7,000 MiB, is fast enough or that its logits carry signal (every GPU property is E0 until the timing stage)",
+    "that the adapter was independently verified (A3b.4 item 1 (d)): the checks are executed by the implementer's code and reviewed, not executed, by the auditor"
+  ]
+}

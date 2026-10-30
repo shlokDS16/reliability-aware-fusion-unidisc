@@ -1,0 +1,745 @@
+{
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "order": [
+  "A-LIN",
+  "A-S-BD",
+  "A-S-s3",
+  "A-S-tbv",
+  "A-S-ltex",
+  "A-S-nbr",
+  "A-S-pos",
+  "A-SF",
+  "A-MIL",
+  "A-UNL",
+  "KO-S-BD",
+  "KO-S-s3",
+  "KO-S-tbv",
+  "KO-S-ltex",
+  "KO-S-nbr",
+  "KO-S-pos",
+  "KO-F-token",
+  "KO-F-position",
+  "KO-F-neighbourhood",
+  "KO-F-rank",
+  "KO-F-item",
+  "KO-ALL"
+ ],
+ "references": [
+  "NONE",
+  "LRF"
+ ],
+ "fitted": [
+  "A-LIN",
+  "A-S-BD",
+  "A-S-s3",
+  "A-S-tbv",
+  "A-S-ltex",
+  "A-S-nbr",
+  "A-S-pos",
+  "A-SF",
+  "A-MIL"
+ ],
+ "interval_rows": [
+  "A-LIN",
+  "A-S-BD",
+  "A-S-s3",
+  "A-S-tbv",
+  "A-S-ltex",
+  "A-S-nbr",
+  "A-S-pos",
+  "A-SF",
+  "A-MIL",
+  "A-UNL",
+  "KO-S-BD",
+  "KO-S-s3",
+  "KO-S-tbv",
+  "KO-S-ltex",
+  "KO-S-nbr",
+  "KO-S-pos",
+  "KO-F-token",
+  "KO-F-position",
+  "KO-F-neighbourhood",
+  "KO-F-rank",
+  "KO-F-item"
+ ],
+ "harness_lrf": "LRF-H",
+ "n_variants": 22,
+ "n_intervals_K": 336,
+ "features": [
+  "B",
+  "D",
+  "q",
+  "s3",
+  "tbv",
+  "ltex",
+  "nbr",
+  "row",
+  "col",
+  "rad",
+  "nb3mean_q",
+  "nb3mean_B",
+  "nb3mean_s3",
+  "nb3mean_tbv",
+  "nb3mean_ltex",
+  "nb3mean_nbr",
+  "nb3min_q",
+  "nb5mean_q",
+  "rank_q",
+  "rank_B",
+  "rank_s3",
+  "rank_tbv",
+  "itemmean_q",
+  "itemmean_B",
+  "itemmean_s3",
+  "itemmean_tbv",
+  "itemmean_ltex",
+  "itemmean_nbr",
+  "itemsd_q",
+  "itemsd_B",
+  "itemsd_s3",
+  "itemsd_tbv",
+  "itemsd_ltex",
+  "itemsd_nbr",
+  "itemz_q"
+ ],
+ "partition_S": {
+  "S-BD": {
+   "features": [
+    "B",
+    "D",
+    "q",
+    "nb3mean_q",
+    "nb3mean_B",
+    "nb3min_q",
+    "nb5mean_q",
+    "rank_q",
+    "rank_B",
+    "itemmean_q",
+    "itemmean_B",
+    "itemsd_q",
+    "itemsd_B",
+    "itemz_q"
+   ],
+   "cols": [
+    0,
+    1,
+    2,
+    10,
+    11,
+    16,
+    17,
+    18,
+    19,
+    22,
+    23,
+    28,
+    29,
+    34
+   ]
+  },
+  "S-s3": {
+   "features": [
+    "s3",
+    "nb3mean_s3",
+    "rank_s3",
+    "itemmean_s3",
+    "itemsd_s3"
+   ],
+   "cols": [
+    3,
+    12,
+    20,
+    24,
+    30
+   ]
+  },
+  "S-tbv": {
+   "features": [
+    "tbv",
+    "nb3mean_tbv",
+    "rank_tbv",
+    "itemmean_tbv",
+    "itemsd_tbv"
+   ],
+   "cols": [
+    4,
+    13,
+    21,
+    25,
+    31
+   ]
+  },
+  "S-ltex": {
+   "features": [
+    "ltex",
+    "nb3mean_ltex",
+    "itemmean_ltex",
+    "itemsd_ltex"
+   ],
+   "cols": [
+    5,
+    14,
+    26,
+    32
+   ]
+  },
+  "S-nbr": {
+   "features": [
+    "nbr",
+    "nb3mean_nbr",
+    "itemmean_nbr",
+    "itemsd_nbr"
+   ],
+   "cols": [
+    6,
+    15,
+    27,
+    33
+   ]
+  },
+  "S-pos": {
+   "features": [
+    "row",
+    "col",
+    "rad"
+   ],
+   "cols": [
+    7,
+    8,
+    9
+   ]
+  }
+ },
+ "partition_F": {
+  "F-token": {
+   "features": [
+    "B",
+    "D",
+    "q",
+    "s3",
+    "tbv",
+    "ltex",
+    "nbr"
+   ],
+   "cols": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  "F-position": {
+   "features": [
+    "row",
+    "col",
+    "rad"
+   ],
+   "cols": [
+    7,
+    8,
+    9
+   ]
+  },
+  "F-neighbourhood": {
+   "features": [
+    "nb3mean_q",
+    "nb3mean_B",
+    "nb3mean_s3",
+    "nb3mean_tbv",
+    "nb3mean_ltex",
+    "nb3mean_nbr",
+    "nb3min_q",
+    "nb5mean_q"
+   ],
+   "cols": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+   ]
+  },
+  "F-rank": {
+   "features": [
+    "rank_q",
+    "rank_B",
+    "rank_s3",
+    "rank_tbv"
+   ],
+   "cols": [
+    18,
+    19,
+    20,
+    21
+   ]
+  },
+  "F-item": {
+   "features": [
+    "itemmean_q",
+    "itemmean_B",
+    "itemmean_s3",
+    "itemmean_tbv",
+    "itemmean_ltex",
+    "itemmean_nbr",
+    "itemsd_q",
+    "itemsd_B",
+    "itemsd_s3",
+    "itemsd_tbv",
+    "itemsd_ltex",
+    "itemsd_nbr",
+    "itemz_q"
+   ],
+   "cols": [
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ]
+  }
+ },
+ "single_source": {
+  "A-S-BD": [
+   "B",
+   "D",
+   "q",
+   "nb3mean_q",
+   "nb3mean_B",
+   "nb3min_q",
+   "nb5mean_q",
+   "rank_q",
+   "rank_B",
+   "itemmean_q",
+   "itemmean_B",
+   "itemsd_q",
+   "itemsd_B",
+   "itemz_q"
+  ],
+  "A-S-s3": [
+   "s3",
+   "nb3mean_s3",
+   "rank_s3",
+   "itemmean_s3",
+   "itemsd_s3"
+  ],
+  "A-S-tbv": [
+   "tbv",
+   "nb3mean_tbv",
+   "rank_tbv",
+   "itemmean_tbv",
+   "itemsd_tbv"
+  ],
+  "A-S-ltex": [
+   "ltex",
+   "nb3mean_ltex",
+   "itemmean_ltex",
+   "itemsd_ltex"
+  ],
+  "A-S-nbr": [
+   "nbr",
+   "nb3mean_nbr",
+   "itemmean_nbr",
+   "itemsd_nbr"
+  ],
+  "A-S-pos": [
+   "row",
+   "col",
+   "rad"
+  ]
+ },
+ "knockouts": {
+  "KO-S-BD": {
+   "features": [
+    "B",
+    "D",
+    "q",
+    "nb3mean_q",
+    "nb3mean_B",
+    "nb3min_q",
+    "nb5mean_q",
+    "rank_q",
+    "rank_B",
+    "itemmean_q",
+    "itemmean_B",
+    "itemsd_q",
+    "itemsd_B",
+    "itemz_q"
+   ],
+   "cols": [
+    0,
+    1,
+    2,
+    10,
+    11,
+    16,
+    17,
+    18,
+    19,
+    22,
+    23,
+    28,
+    29,
+    34
+   ]
+  },
+  "KO-S-s3": {
+   "features": [
+    "s3",
+    "nb3mean_s3",
+    "rank_s3",
+    "itemmean_s3",
+    "itemsd_s3"
+   ],
+   "cols": [
+    3,
+    12,
+    20,
+    24,
+    30
+   ]
+  },
+  "KO-S-tbv": {
+   "features": [
+    "tbv",
+    "nb3mean_tbv",
+    "rank_tbv",
+    "itemmean_tbv",
+    "itemsd_tbv"
+   ],
+   "cols": [
+    4,
+    13,
+    21,
+    25,
+    31
+   ]
+  },
+  "KO-S-ltex": {
+   "features": [
+    "ltex",
+    "nb3mean_ltex",
+    "itemmean_ltex",
+    "itemsd_ltex"
+   ],
+   "cols": [
+    5,
+    14,
+    26,
+    32
+   ]
+  },
+  "KO-S-nbr": {
+   "features": [
+    "nbr",
+    "nb3mean_nbr",
+    "itemmean_nbr",
+    "itemsd_nbr"
+   ],
+   "cols": [
+    6,
+    15,
+    27,
+    33
+   ]
+  },
+  "KO-S-pos": {
+   "features": [
+    "row",
+    "col",
+    "rad"
+   ],
+   "cols": [
+    7,
+    8,
+    9
+   ]
+  },
+  "KO-F-token": {
+   "features": [
+    "B",
+    "D",
+    "q",
+    "s3",
+    "tbv",
+    "ltex",
+    "nbr"
+   ],
+   "cols": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  "KO-F-position": {
+   "features": [
+    "row",
+    "col",
+    "rad"
+   ],
+   "cols": [
+    7,
+    8,
+    9
+   ]
+  },
+  "KO-F-neighbourhood": {
+   "features": [
+    "nb3mean_q",
+    "nb3mean_B",
+    "nb3mean_s3",
+    "nb3mean_tbv",
+    "nb3mean_ltex",
+    "nb3mean_nbr",
+    "nb3min_q",
+    "nb5mean_q"
+   ],
+   "cols": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+   ]
+  },
+  "KO-F-rank": {
+   "features": [
+    "rank_q",
+    "rank_B",
+    "rank_s3",
+    "rank_tbv"
+   ],
+   "cols": [
+    18,
+    19,
+    20,
+    21
+   ]
+  },
+  "KO-F-item": {
+   "features": [
+    "itemmean_q",
+    "itemmean_B",
+    "itemmean_s3",
+    "itemmean_tbv",
+    "itemmean_ltex",
+    "itemmean_nbr",
+    "itemsd_q",
+    "itemsd_B",
+    "itemsd_s3",
+    "itemsd_tbv",
+    "itemsd_ltex",
+    "itemsd_nbr",
+    "itemz_q"
+   ],
+   "cols": [
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ]
+  },
+  "KO-ALL": {
+   "features": [
+    "B",
+    "D",
+    "q",
+    "s3",
+    "tbv",
+    "ltex",
+    "nbr",
+    "row",
+    "col",
+    "rad",
+    "nb3mean_q",
+    "nb3mean_B",
+    "nb3mean_s3",
+    "nb3mean_tbv",
+    "nb3mean_ltex",
+    "nb3mean_nbr",
+    "nb3min_q",
+    "nb5mean_q",
+    "rank_q",
+    "rank_B",
+    "rank_s3",
+    "rank_tbv",
+    "itemmean_q",
+    "itemmean_B",
+    "itemmean_s3",
+    "itemmean_tbv",
+    "itemmean_ltex",
+    "itemmean_nbr",
+    "itemsd_q",
+    "itemsd_B",
+    "itemsd_s3",
+    "itemsd_tbv",
+    "itemsd_ltex",
+    "itemsd_nbr",
+    "itemz_q"
+   ],
+   "cols": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ]
+  }
+ },
+ "a_unl": {
+  "rule": "w_j = 1 - rank_s3_j",
+  "feature": "rank_s3",
+  "col": 20
+ },
+ "cells": [
+  "L1_clean",
+  "L1_jpeg10",
+  "L1_noise0.1",
+  "L1_splice128",
+  "LG_clean",
+  "LG_shot_noise3",
+  "LG_impulse_noise3",
+  "LG_speckle_noise3"
+ ],
+ "seed_slot": {
+  "root": 20261028,
+  "spawn_key": [
+   35
+  ],
+  "child_keys": [
+   [
+    35,
+    0
+   ],
+   [
+    35,
+    1
+   ],
+   [
+    35,
+    2
+   ],
+   [
+    35,
+    3
+   ],
+   [
+    35,
+    4
+   ],
+   [
+    35,
+    5
+   ],
+   [
+    35,
+    6
+   ],
+   [
+    35,
+    7
+   ]
+  ],
+  "n_boot": 10000,
+  "level": 0.95
+ },
+ "fit_seed_keys": {
+  "root": 20261029,
+  "inner_folds": [
+   1,
+   99
+  ],
+  "configs": [
+   2,
+   99,
+   0
+  ],
+  "inner_fits": [
+   3,
+   99,
+   0,
+   "ci",
+   "ii"
+  ],
+  "final_fits": [
+   [
+    4,
+    99,
+    0,
+    0
+   ],
+   [
+    4,
+    99,
+    0,
+    1
+   ],
+   [
+    4,
+    99,
+    0,
+    2
+   ]
+  ]
+ }
+}

@@ -1,0 +1,116 @@
+n 300 acc 0.8433333333333334 n_wrong 47 n_ties 0
+wilson95 0.7979 0.8801
+boot95 [0.8        0.88333333]
+mean 0.18153181711832683 sd 0.19632074382909237 skew 0.7672390958449339 exkurt 1.5264632068495114 shapiro_p 8.318841382065185e-07
+quantiles 5,25,50,75,95 [-0.10494452  0.06025863  0.16639423  0.28011084  0.5199614 ]
+items with |d| < 0.1 sd: 12
+items with |d| < 0.25 sd: 39
+items with |d| < 0.5 sd: 85
+items with |d| < 1.0 sd: 168
+
+TABLE A: smallest discordant count n_d with exact conditional power >= 0.8 (stays >= 0.8 for next 5 n_d)
+theta 0.65 [('0.05', 97), ('0.025', 111), ('0.0167', 122)]
+theta 0.7 [('0.05', 54), ('0.025', 63), ('0.0167', 72)]
+theta 0.75 [('0.05', 35), ('0.025', 42), ('0.0167', 43)]
+theta 0.8 [('0.05', 23), ('0.025', 27), ('0.0167', 30)]
+theta 0.9 [('0.05', 12), ('0.025', 13), ('0.0167', 17)]
+
+TABLE B: n=300, min theta (grid 0.005) with unconditional exact power >= 0.8; delta_acc = pi_d*(2theta-1)
+n 300 alpha' 0.05 pi_d 0.04 theta_min 0.91 delta_acc 0.0328 nd_expected 12.0
+n 300 alpha' 0.05 pi_d 0.06 theta_min 0.84 delta_acc 0.0408 nd_expected 18.0
+n 300 alpha' 0.05 pi_d 0.08 theta_min 0.795 delta_acc 0.0472 nd_expected 24.0
+n 300 alpha' 0.05 pi_d 0.1 theta_min 0.765 delta_acc 0.053 nd_expected 30.0
+n 300 alpha' 0.05 pi_d 0.15 theta_min 0.715 delta_acc 0.0645 nd_expected 45.0
+n 300 alpha' 0.05 pi_d 0.2 theta_min 0.69 delta_acc 0.076 nd_expected 60.0
+n 300 alpha' 0.05 pi_d 0.3 theta_min 0.655 delta_acc 0.093 nd_expected 90.0
+n 300 alpha' 0.0167 pi_d 0.04 theta_min 0.955 delta_acc 0.0364 nd_expected 12.0
+n 300 alpha' 0.0167 pi_d 0.06 theta_min 0.885 delta_acc 0.0462 nd_expected 18.0
+n 300 alpha' 0.0167 pi_d 0.08 theta_min 0.835 delta_acc 0.0536 nd_expected 24.0
+n 300 alpha' 0.0167 pi_d 0.1 theta_min 0.8 delta_acc 0.06 nd_expected 30.0
+n 300 alpha' 0.0167 pi_d 0.15 theta_min 0.745 delta_acc 0.0735 nd_expected 45.0
+n 300 alpha' 0.0167 pi_d 0.2 theta_min 0.715 delta_acc 0.086 nd_expected 60.0
+n 300 alpha' 0.0167 pi_d 0.3 theta_min 0.675 delta_acc 0.105 nd_expected 90.0
+n 500 alpha' 0.05 pi_d 0.04 theta_min 0.825 delta_acc 0.026 nd_expected 20.0
+n 500 alpha' 0.05 pi_d 0.06 theta_min 0.77 delta_acc 0.0324 nd_expected 30.0
+n 500 alpha' 0.05 pi_d 0.08 theta_min 0.73 delta_acc 0.0368 nd_expected 40.0
+n 500 alpha' 0.05 pi_d 0.1 theta_min 0.705 delta_acc 0.041 nd_expected 50.0
+n 500 alpha' 0.05 pi_d 0.15 theta_min 0.67 delta_acc 0.051 nd_expected 75.0
+n 500 alpha' 0.05 pi_d 0.2 theta_min 0.645 delta_acc 0.058 nd_expected 100.0
+n 500 alpha' 0.05 pi_d 0.3 theta_min 0.62 delta_acc 0.072 nd_expected 150.0
+n 500 alpha' 0.0167 pi_d 0.04 theta_min 0.865 delta_acc 0.0292 nd_expected 20.0
+n 500 alpha' 0.0167 pi_d 0.06 theta_min 0.8 delta_acc 0.036 nd_expected 30.0
+n 500 alpha' 0.0167 pi_d 0.08 theta_min 0.76 delta_acc 0.0416 nd_expected 40.0
+n 500 alpha' 0.0167 pi_d 0.1 theta_min 0.735 delta_acc 0.047 nd_expected 50.0
+n 500 alpha' 0.0167 pi_d 0.15 theta_min 0.695 delta_acc 0.0585 nd_expected 75.0
+n 500 alpha' 0.0167 pi_d 0.2 theta_min 0.665 delta_acc 0.066 nd_expected 100.0
+n 500 alpha' 0.0167 pi_d 0.3 theta_min 0.635 delta_acc 0.081 nd_expected 150.0
+
+TABLE C: smallest n (step 5; power >= 0.8 at it and the next 3 grid points) for (pi_d, theta)
+pi_d 0.08 theta 0.65 [('0.05', 1150), ('0.0167', 1515)]
+pi_d 0.08 theta 0.7 [('0.05', 650), ('0.0167', 855)]
+pi_d 0.08 theta 0.75 [('0.05', 425), ('0.0167', 540)]
+pi_d 0.08 theta 0.8 [('0.05', 290), ('0.0167', 375)]
+pi_d 0.1 theta 0.65 [('0.05', 920), ('0.0167', 1210)]
+pi_d 0.1 theta 0.7 [('0.05', 520), ('0.0167', 685)]
+pi_d 0.1 theta 0.75 [('0.05', 340), ('0.0167', 430)]
+pi_d 0.1 theta 0.8 [('0.05', 235), ('0.0167', 300)]
+pi_d 0.15 theta 0.65 [('0.05', 615), ('0.0167', 810)]
+pi_d 0.15 theta 0.7 [('0.05', 345), ('0.0167', 455)]
+pi_d 0.15 theta 0.75 [('0.05', 225), ('0.0167', 290)]
+pi_d 0.15 theta 0.8 [('0.05', 155), ('0.0167', 200)]
+pi_d 0.2 theta 0.65 [('0.05', 460), ('0.0167', 605)]
+pi_d 0.2 theta 0.7 [('0.05', 260), ('0.0167', 340)]
+pi_d 0.2 theta 0.75 [('0.05', 170), ('0.0167', 215)]
+pi_d 0.2 theta 0.8 [('0.05', 115), ('0.0167', 150)]
+
+POWER AT n=300 for a given (pi_d, theta)  [alpha 0.05, 0.0167]
+0.1 0.75 0.744 0.592
+0.1 0.7 0.524 0.359
+0.13 0.75 0.865 0.748
+0.15 0.7 0.737 0.577
+0.2 0.65 0.604 0.427
+size check at theta=0.5, pi_d=0.10, n=300: 0.0154 0.005
+
+SCENARIOS: margin_none = x + e1 + e2 ; margin_gate = x + e1 ; e1~N(0,tau^2 (1-f)), e2~N(0,tau^2 f); x = resampled probe-1 clean margins
+{'tau': 0.1, 'f': 0.3, 'acc_clean': 0.843, 'acc_none': 0.8057, 'acc_gate': 0.8156, 'pi_d': 0.0626, 'theta': 0.5789, 'delta': 0.0099, 'pow300_a05': 0.0657, 'pow300_a0167': 0.0239, 'pow500_a0167': 0.0449}
+{'tau': 0.1, 'f': 0.5, 'acc_clean': 0.843, 'acc_none': 0.8056, 'acc_gate': 0.8233, 'pi_d': 0.0805, 'theta': 0.6104, 'delta': 0.0178, 'pow300_a05': 0.1362, 'pow300_a0167': 0.0625, 'pow500_a0167': 0.1265}
+{'tau': 0.1, 'f': 0.7, 'acc_clean': 0.843, 'acc_none': 0.8055, 'acc_gate': 0.8321, 'pi_d': 0.0952, 'theta': 0.6398, 'delta': 0.0266, 'pow300_a05': 0.2512, 'pow300_a0167': 0.1375, 'pow500_a0167': 0.2762}
+{'tau': 0.1, 'f': 0.9, 'acc_clean': 0.843, 'acc_none': 0.8051, 'acc_gate': 0.8428, 'pi_d': 0.1078, 'theta': 0.675, 'delta': 0.0377, 'pow300_a05': 0.4434, 'pow300_a0167': 0.2854, 'pow500_a0167': 0.5292}
+{'tau': 0.2, 'f': 0.3, 'acc_clean': 0.843, 'acc_none': 0.7412, 'acc_gate': 0.7611, 'pi_d': 0.1096, 'theta': 0.5908, 'delta': 0.0199, 'pow300_a05': 0.1337, 'pow300_a0167': 0.0628, 'pow500_a0167': 0.1185}
+{'tau': 0.2, 'f': 0.5, 'acc_clean': 0.843, 'acc_none': 0.7414, 'acc_gate': 0.7777, 'pi_d': 0.1439, 'theta': 0.6263, 'delta': 0.0363, 'pow300_a05': 0.3302, 'pow300_a0167': 0.1912, 'pow500_a0167': 0.3569}
+{'tau': 0.2, 'f': 0.7, 'acc_clean': 0.843, 'acc_none': 0.7416, 'acc_gate': 0.7991, 'pi_d': 0.1722, 'theta': 0.6667, 'delta': 0.0574, 'pow300_a05': 0.6315, 'pow300_a0167': 0.4575, 'pow500_a0167': 0.7371}
+{'tau': 0.2, 'f': 0.9, 'acc_clean': 0.843, 'acc_none': 0.7415, 'acc_gate': 0.8277, 'pi_d': 0.1976, 'theta': 0.7179, 'delta': 0.0861, 'pow300_a05': 0.9133, 'pow300_a0167': 0.8197, 'pow500_a0167': 0.975}
+{'tau': 0.3, 'f': 0.3, 'acc_clean': 0.843, 'acc_none': 0.6916, 'acc_gate': 0.7131, 'pi_d': 0.1373, 'theta': 0.5784, 'delta': 0.0215, 'pow300_a05': 0.1342, 'pow300_a0167': 0.0621, 'pow500_a0167': 0.1103}
+{'tau': 0.3, 'f': 0.5, 'acc_clean': 0.843, 'acc_none': 0.6918, 'acc_gate': 0.7338, 'pi_d': 0.1805, 'theta': 0.6164, 'delta': 0.042, 'pow300_a05': 0.356, 'pow300_a0167': 0.2087, 'pow500_a0167': 0.3915}
+{'tau': 0.3, 'f': 0.7, 'acc_clean': 0.843, 'acc_none': 0.692, 'acc_gate': 0.763, 'pi_d': 0.2192, 'theta': 0.662, 'delta': 0.071, 'pow300_a05': 0.72, 'pow300_a0167': 0.5523, 'pow500_a0167': 0.8277}
+{'tau': 0.3, 'f': 0.9, 'acc_clean': 0.843, 'acc_none': 0.6915, 'acc_gate': 0.8086, 'pi_d': 0.2563, 'theta': 0.7284, 'delta': 0.1171, 'pow300_a05': 0.9803, 'pow300_a0167': 0.9466, 'pow500_a0167': 0.9978}
+{'tau': 0.4, 'f': 0.3, 'acc_clean': 0.843, 'acc_none': 0.6563, 'acc_gate': 0.6767, 'pi_d': 0.1523, 'theta': 0.567, 'delta': 0.0204, 'pow300_a05': 0.116, 'pow300_a0167': 0.0516, 'pow500_a0167': 0.089}
+{'tau': 0.4, 'f': 0.5, 'acc_clean': 0.843, 'acc_none': 0.6569, 'acc_gate': 0.6976, 'pi_d': 0.2028, 'theta': 0.6004, 'delta': 0.0407, 'pow300_a05': 0.304, 'pow300_a0167': 0.1688, 'pow500_a0167': 0.3208}
+{'tau': 0.4, 'f': 0.7, 'acc_clean': 0.843, 'acc_none': 0.6567, 'acc_gate': 0.7298, 'pi_d': 0.2484, 'theta': 0.6471, 'delta': 0.0731, 'pow300_a05': 0.6877, 'pow300_a0167': 0.5178, 'pow500_a0167': 0.7952}
+{'tau': 0.4, 'f': 0.9, 'acc_clean': 0.843, 'acc_none': 0.6559, 'acc_gate': 0.7877, 'pi_d': 0.2947, 'theta': 0.7236, 'delta': 0.1318, 'pow300_a05': 0.9883, 'pow300_a0167': 0.9666, 'pow500_a0167': 0.9991}
+
+HEADROOM RULE (one condition, n=100, t-test form mean/(sd/sqrt(n)) >= 2): P(pass) vs true d/sigma_d
+d/sigma 0.0 0.024
+d/sigma 0.1 0.162
+d/sigma 0.2 0.502
+d/sigma 0.3 0.84
+d/sigma 0.4 0.976
+d/sigma 0.5 0.999
+
+Z-SCORE MDE in units of sigma_d (power 0.8, two-sided paired t)
+n 100 alpha' 0.05 0.2829
+n 100 alpha' 0.0167 0.3283
+n 300 alpha' 0.05 0.1623
+n 300 alpha' 0.0167 0.1877
+n 500 alpha' 0.05 0.1255
+n 500 alpha' 0.0167 0.1451
+
+DETECTION: MDE of mean paired per-item AUROC difference, n=200 items (normal approx, power 0.8)
+alpha' 0.05 sd_diff 0.05 0.0099
+alpha' 0.05 sd_diff 0.1 0.0198
+alpha' 0.05 sd_diff 0.15 0.0297
+alpha' 0.05 sd_diff 0.2 0.0396
+alpha' 0.025 sd_diff 0.05 0.0109
+alpha' 0.025 sd_diff 0.1 0.0218
+alpha' 0.025 sd_diff 0.15 0.0327
+alpha' 0.025 sd_diff 0.2 0.0436

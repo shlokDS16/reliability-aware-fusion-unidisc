@@ -1,0 +1,101 @@
+% setting.tex -- Section III, shared setting (writer W1, 2026-10-30). Binding contract: paper2-tnnls/SPEC.md v2.2, section 3 row III,
+% rules 3 (only the UNWEIGHTED S; no w_j, no I_j, no weighted sum), 6 (audits worded without "AI" and never "independent"), 9.
+% Sources: paper2/sections/method.tex ssec:notation, ssec:scores, ssec:evidence; paper2/sections/protocol.tex ssec:data,
+% ssec:corruptions, ssec:tests; SAP A4.3.1 (time-input sentence, mandatory wording), A6.3 (fresh-fold exclusions), A6.7 (17 families).
+% Every number carries a run comment.
+
+\section{Shared Setting}\label{sec:setting}
+\subsection{Model and Tokens}\label{sec:setting-model}
+% run: runs/P2-UNIDISC-KEYCHECK/keycheck.json:{model_n_param_elements (= 1406870785), config.image_vocab_size (= 16384)}
+The model is UniDisc~\cite{swerdlow2025unidisc}, a unified masked discrete diffusion model with 1.4B parameters, used as released with
+no training or finetuning here.
+A pair is a caption of $\ell$ text tokens and an image of $m$ image tokens in one sequence.
+% run: SAP card v4 / protocol (design values: 512 px, 32 x 32 grid, captions of 5 to 32 tokens); keycheck.json:config.image_vocab_size
+Images are tokenised at 512~px by the VQ-16 tokeniser of LlamaGen~\cite{sun2024llamagen} into a $32\times32$ grid, so
+$m=1\,024$ tokens, each one of 16\,384 codes; captions have 5 to 32 text tokens.
+The network $p_\theta$ maps a partly masked sequence to a categorical distribution at every masked position.
+The backbone runs in \texttt{bf16}, and every log-probability is a 32-bit log-softmax of the logits restricted to the vocabulary of the
+scored modality.
+UniDisc's denoiser has no time input in the released configuration: time conditioning is off, the official inference configuration
+passes a null noise level, the backbone builds no timestep embedder without time conditioning, and the released checkpoint contains no
+time-embedding weights. The scorer uses the authors' null-sigma inference path.
+This is a property of the released configuration and checkpoint, read in the authors' code at a pinned commit, and not a statement about
+UniDisc in general (evidence and limits in supplement S-I).
+
+\subsection{Per-Token Evidence and the Unweighted Decision}\label{sec:setting-evidence}
+Write $\tilde v=(\tilde v_1,\dots,\tilde v_m)$ for the observed, possibly damaged image tokens, $c^+$ for the true caption, and $c^-$ for a
+wrong caption.
+For a caption $c$, let $\Lambda^{c}_j[y]$ be the log-probability of code $y$ at image position $j$ in one pass of $p_\theta$ with every
+image token masked and $c$ visible.
+The \emph{image-direction evidence} of token $j$ is
+\begin{equation}
+\Delta_j=\Lambda^{c^+}_j[\tilde v_j]-\Lambda^{c^-}_j[\tilde v_j],
+\label{eq:delta}
+\end{equation}
+the log-likelihood ratio of the observed code under the two captions; $\Delta_j>0$ when the observed code is more probable under the true caption.
+Because every image token is masked in these passes, their logits do not depend on the image, which enters only through the codes at
+which the log-probabilities are read.
+The verification statistic is the unweighted sum, and the decision chooses the true caption when the sum is positive:
+\begin{equation}
+S=\sum_{j=1}^{m}\Delta_j,\qquad Y=\ind\big[S>0\big],
+\label{eq:sum}
+\end{equation}
+with a tie counted as wrong.
+Image-text verification accuracy is the mean of $Y$ over the items of a test set, and a net accuracy change is the accuracy of the rule
+under test minus that of \eqref{eq:sum} on the same items, so a positive value favours the rule under test.
+The caption-visible passes are the only inputs of $\Delta_j$.
+Two scores are computed with the caption masked: the position marginal $D_j=\log p_\theta(\tilde v_j\mid\text{all tokens masked})$,
+and $B_j$, the log-probability of $\tilde v_j$ when the tokens of its group in a random partition of the image positions are masked and
+the rest of the image is visible.
+\Cref{eq:delta,eq:sum} are the whole shared measurement; \cref{fig:measurement} draws it.
+
+\subsection{Corruptions}\label{sec:setting-corruptions}
+Three corruptions act on the pixels before tokenisation.
+They are JPEG compression at quality~10, Gaussian noise with standard deviation $\sigma=0.1$ on pixels scaled to $[0,1]$ (clipped and
+rounded to 8 bits), and a $128\times128$-pixel splice, in which a region of a donor COCO image is copied to a uniformly random location.
+The noise draw, the donor image, and the splice location derive from the item, so each image has one corruption realisation.
+\subsection{Data and Fresh Images}\label{sec:setting-data}
+Images and captions come from the COCO val2017 split~\cite{lin2014coco}.
+An item is one image with its true caption and one wrong caption, the caption of another image; each study states how the wrong caption
+is drawn.
+Test images are fresh in a defined sense: each study's test images are disjoint, by COCO image id, from every image that was used to
+calibrate, fit, or design its rule.
+The test fold of Study~2 also excludes every image used anywhere in the project and every
+SugarCrepe image.
+\subsection{Tests, Multiplicity, and Preregistration}\label{sec:setting-tests}
+Every test compares two decision rules on the same $n$ items.
+Let $b$ be the number of items that the rule under test decides correctly and the reference rule wrongly, and $c$ the reverse.
+The net accuracy change is $(b-c)/n$, and the exact McNemar test~\cite{mcnemar1947} conditions on the $n_d=b+c$ discordant items:
+\begin{align}
+p_{\rm one}&=\Pr\big[\mathrm{Bin}(n_d,\tfrac12)\ge b\big],\notag\\
+p_{\rm two}&=\min\big\{1,\ 2\min\big(p_{\rm one},\,\Pr[\mathrm{Bin}(n_d,\tfrac12)\le b]\big)\big\}.
+\label{eq:mcnemar}
+\end{align}
+The one-sided form of \eqref{eq:mcnemar} is used only for hypotheses with a preregistered direction, and every other test is two-sided.
+Within a family of hypotheses, the familywise error rate is held at 0.05 by Holm's step-down procedure~\cite{holm1979sequentially}.
+Intervals for the net accuracy change are paired percentile bootstrap intervals over items.
+% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.7 (plan constant: 17 families; 1 - 0.95^17 = 0.5819) (pointer per D0100; number audit M7)
+The paper contains 17 preregistered families across the two studies, each tested at its own level with no adjustment across families;
+under a global null with independent families, the chance of at least one false rejection is $1-0.95^{17}=0.58$.
+\Cref{tab:glance} lists the families reported in the main text with their status only; each study's Results give the outcomes.
+
+\begin{table}[!t]
+\centering
+\caption{Preregistered Families Reported in the Main Text (Status Only)}
+\label{tab:glance}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\input{tables/tab_families_glance}
+
+\vspace{2pt}
+\parbox{\columnwidth}{\scriptsize The two blocks are separate preregistered
+studies; supplement S-II maps every Study~1 family. ``Gatekept: P+ empty'' means that the family was to be tested only on
+corruptions where family~P rejected its null, and P rejected none.}
+\end{table}
+
+\emph{Preregistered} has one meaning in this paper: a dated analysis-plan addendum was committed to a version-controlled repository
+before the first test item was scored, with the tested object pinned by hash, and the order of the commits is the evidence; no
+third-party timestamp exists.
+The plans, pins, and their amendments are listed in supplement S-I.
+The commit order, the hash checks, and the data checks were verified by automated audits run in the authors' own pipeline (not
+independent reviews).

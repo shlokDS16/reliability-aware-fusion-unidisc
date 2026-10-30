@@ -1,0 +1,34 @@
+{
+ "endpoint": "d",
+ "family": [
+  {
+   "D_c": 19,
+   "corruption": "jpeg",
+   "key": "jpeg10",
+   "severity": 10
+  },
+  {
+   "D_c": 18,
+   "corruption": "noise",
+   "key": "noise0.1",
+   "severity": 0.1
+  },
+  {
+   "D_c": 2,
+   "corruption": "splice",
+   "key": "splice128",
+   "severity": 128
+  }
+ ],
+ "n_rule": {
+  "rule": "SAP A6 r1 A6.3 n-rule (exp_p2/gate/lrf_nrule.py)",
+  "test_fold": 450
+ },
+ "sources": {
+  "m3_family": "C:/Users/ANONYMIZED/Downloads/Multi-Modality Language model/.claude/worktrees/frosty-clarke-209639/runs/P2-GATE-M3/family.json",
+  "m3_family_sha256": "e8228cac44f353e511d7a2c43d313a7fcb970faa7718960afd4de015d33c0315",
+  "n_rule_record": "C:/Users/ANONYMIZED/Downloads/Multi-Modality Language model/.claude/worktrees/frosty-clarke-209639/runs/P2-LRF-PLAN/n_rule.json",
+  "n_rule_record_sha256": "331e108d15925c7aacb9ba82addd93d5478564180804d29a6d9438ad760f996d"
+ },
+ "spec": "exp_p2/gate/lrf_plan.py"
+}

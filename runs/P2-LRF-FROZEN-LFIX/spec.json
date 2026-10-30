@@ -1,0 +1,116 @@
+{
+ "name": "LRF (learned reliability-aware evidence fusion), logistic-GAM F1, RE-FROZEN at a fixed caption-slot length",
+ "decision": "D0083",
+ "status": "re-frozen on the M4 items re-scored at L_FIX; no accuracy computed before the hash commit (A6.2 step 4); no out-of-sample estimate",
+ "family": "F1 logistic-GAM: w_j = sigmoid(b + sum_k a_k x_k + sum_k sum_m c_km relu(x_k - t_km)), x standardised",
+ "objective": "item-level O1: mean softplus(-M/T), M = sum_j w_j Delta_j / sum_j w_j, + ridge * (|a|^2 + |c|^2); AdamW (wd 0), mini-batch 32 item-conditions",
+ "training_conditions": [
+  "clean",
+  "jpeg10",
+  "noise0.1",
+  "splice128"
+ ],
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 8,
+  "ridge": 0.002718101655720333,
+  "lr": 0.01685063723119033
+ },
+ "inner_cv_o1": 0.37510863939921063,
+ "epochs": 40,
+ "seed": 316748921,
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 items",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "final_fit": [
+    4,
+    99,
+    0,
+    0
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "features": [
+  "B",
+  "D",
+  "q",
+  "s3",
+  "tbv",
+  "ltex",
+  "nbr",
+  "row",
+  "col",
+  "rad",
+  "nb3mean_q",
+  "nb3mean_B",
+  "nb3mean_s3",
+  "nb3mean_tbv",
+  "nb3mean_ltex",
+  "nb3mean_nbr",
+  "nb3min_q",
+  "nb5mean_q",
+  "rank_q",
+  "rank_B",
+  "rank_s3",
+  "rank_tbv",
+  "itemmean_q",
+  "itemmean_B",
+  "itemmean_s3",
+  "itemmean_tbv",
+  "itemmean_ltex",
+  "itemmean_nbr",
+  "itemsd_q",
+  "itemsd_B",
+  "itemsd_s3",
+  "itemsd_tbv",
+  "itemsd_ltex",
+  "itemsd_nbr",
+  "itemz_q"
+ ],
+ "n_features": 35,
+ "preprocessing": "raw_from_npz -> data.engineer (per item and condition, no cross-item statistics) -> (X - mu) / sd with the stored mu, sd",
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "caption_slot_len": 13,
+ "layout": "B, s3, D, tbv scored on sc.build([PAD] * 13, codes); Lambda and Delta at their own caption lengths; tex and nbr layout-free",
+ "source_run": "P2-LRF-RESCORE",
+ "rescore_checks": {
+  "ok": true,
+  "inv_tol": 0.0,
+  "pc_tol": 1e-05,
+  "n_check": 5,
+  "invariance_max_abs_diff": 0.0,
+  "positive_control_max_abs_diff": 0.0,
+  "reason": "ok"
+ },
+ "rescored_arrays_digest": "038ded0724b33e4ff132ce9af4eefd7c115bf82fc834777be1e2f4d69cb68e90",
+ "rescore_config_sha256": "fbd3f495d3fa78bc2506c9d759ffa30a01e6a66ae5b8f63dc007320590293d86",
+ "inference": "analysis_posthoc.learned_ceiling.lrf.infer_item(load_frozen(<this dir>), np.load(item.npz), cond)",
+ "code_sha256": {
+  "data.py": "14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b",
+  "families.py": "1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e",
+  "lrf.py": "03ed472e1a3cd8bb2dc41f4a59d7b48f1561cd883012ac4434e08a5c37b9d6ec",
+  "run.py": "01c8dba6de377b18e5b483c2afb0b406ba6e38fd60c4ac3a896f4d4e245f767c"
+ },
+ "refreeze_py_sha256": "6cb0d2c00761209adf8158d090c70510b64a1c417e375c9969f4622bbcb9a086",
+ "model_sha256": "db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37",
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2"
+}

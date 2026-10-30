@@ -1,0 +1,40 @@
+{
+ "stage": "S2",
+ "fold": "test",
+ "n_items": 300,
+ "n_sap_text": 150,
+ "seed": 20261029,
+ "S_r": 16,
+ "n_draw": 4,
+ "alpha": 0.05,
+ "arms": [
+  "igate",
+  "irand",
+  "ichg"
+ ],
+ "leak": false,
+ "m4_run": "P2-GATE-M4",
+ "duty": 0.5,
+ "spec": "research/paper2/prereg/SAP-GATE-2026-10-28.md AD.5, AB.4; research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md 11.2 S2, v1 Algorithm 6",
+ "comparator": "I-RAND4: random-gate best-of-4 re-infill",
+ "selection": "highest own caption-masked chain log-likelihood (sum of log pi_j(y_j)); ties to the lowest draw",
+ "sampler": "S_r unmask steps in a fixed random order, unguided, temperature 1, image vocabulary, caption masked (R1)",
+ "mem_frac": 0.75,
+ "conds": [
+  "patch",
+  "splice128"
+ ],
+ "figures": false,
+ "n_vs_sap_text": {
+  "n": 300,
+  "sap_ad5": 150
+ },
+ "run_id": "P2-GATE-S2",
+ "git_sha": "f4519789052888ece4a0490adf2772bdb4ec67f4",
+ "created": "2026-10-29T09:01:42",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 7.93,
+  "free_commit_gb": 51.7
+ }
+}

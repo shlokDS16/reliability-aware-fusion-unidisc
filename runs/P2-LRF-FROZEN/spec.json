@@ -1,0 +1,117 @@
+{
+ "name": "LRF (learned reliability-aware evidence fusion), frozen logistic-GAM F1",
+ "decision": "D0082",
+ "status": "frozen 2026-10-29; trained on all 500 M4 test items (discovery set); confirm only on fresh items",
+ "family": "F1 logistic-GAM: w_j = sigmoid(b + sum_k a_k x_k + sum_k sum_m c_km relu(x_k - t_km)), x standardised",
+ "objective": "item-level O1: mean softplus(-M/T), M = sum_j w_j Delta_j / sum_j w_j, + ridge * (|a|^2 + |c|^2); AdamW (wd 0), mini-batch 32 item-conditions",
+ "training_conditions": [
+  "clean",
+  "jpeg10",
+  "noise0.1",
+  "splice128"
+ ],
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 8,
+  "ridge": 0.002718101655720333,
+  "lr": 0.01685063723119033
+ },
+ "inner_cv_o1": 0.3746654689311981,
+ "epochs": 40,
+ "seed": 316748921,
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 items",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "final_fit": [
+    4,
+    99,
+    0,
+    0
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "features": [
+  "B",
+  "D",
+  "q",
+  "s3",
+  "tbv",
+  "ltex",
+  "nbr",
+  "row",
+  "col",
+  "rad",
+  "nb3mean_q",
+  "nb3mean_B",
+  "nb3mean_s3",
+  "nb3mean_tbv",
+  "nb3mean_ltex",
+  "nb3mean_nbr",
+  "nb3min_q",
+  "nb5mean_q",
+  "rank_q",
+  "rank_B",
+  "rank_s3",
+  "rank_tbv",
+  "itemmean_q",
+  "itemmean_B",
+  "itemmean_s3",
+  "itemmean_tbv",
+  "itemmean_ltex",
+  "itemmean_nbr",
+  "itemsd_q",
+  "itemsd_B",
+  "itemsd_s3",
+  "itemsd_tbv",
+  "itemsd_ltex",
+  "itemsd_nbr",
+  "itemz_q"
+ ],
+ "n_features": 35,
+ "preprocessing": "raw_from_npz -> data.engineer (per item and condition, no cross-item statistics) -> (X - mu) / sd with the stored mu, sd",
+ "feature_definitions": {
+  "B": "<cond>_B",
+  "D": "<cond>_D",
+  "q": "B - D (float32)",
+  "s3": "<cond>_s3",
+  "tbv": "<cond>_tbv",
+  "ltex": "log1p(max(<cond>_tex, 0))",
+  "nbr": "<cond>_nbr",
+  "row/col/rad": "row-major 32x32 grid position /31; distance from centre",
+  "nb3mean_*": "3x3 mean excluding self, edge-aware",
+  "nb3min_q": "3x3 min of q excluding self",
+  "nb5mean_q": "5x5 mean of q excluding self",
+  "rank_*": "within-item percentile rank",
+  "itemmean_*/itemsd_*": "item-condition mean / SD over 1024 tokens",
+  "itemz_q": "(q - item mean) / (item SD + 1e-6)"
+ },
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "layout_caveat": "B, D, tbv were scored with the caption slots masked at the length of the TRUE caption (see LRF-FROZEN report, length check)",
+ "inference": "analysis_posthoc.learned_ceiling.lrf.infer_item(load_frozen(), np.load(item.npz), cond)",
+ "code_sha256": {
+  "data.py": "14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b",
+  "families.py": "1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e",
+  "lrf.py": "03ed472e1a3cd8bb2dc41f4a59d7b48f1561cd883012ac4434e08a5c37b9d6ec"
+ },
+ "model_sha256": "ca5c4e2fc5c6635a051a7c3a11f7b9e555fe9f6e2ce329825a80cb9b4bca1e65",
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2"
+}

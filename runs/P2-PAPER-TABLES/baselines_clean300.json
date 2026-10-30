@@ -1,0 +1,21 @@
+{
+ "label": "added at writing, descriptive; clean accuracy on the same items as the LG cells",
+ "source": "runs/P2-LRF-BASELINES/predictions.jsonl",
+ "source_sha256": "9fad81f500c210782ef36f51a65216385fe4086d924d748c9c87fb2e85fcafef",
+ "script": "paper2-tnnls/scripts/tab3_baselines.py",
+ "script_sha256": "4571a02b0343bcc910de0bdba4544f29582e1cd99ef78651d57ddd709f9c46d7",
+ "models": {
+  "clip": {
+   "n": 300,
+   "k": 299,
+   "acc": 0.9966666666666667,
+   "items": "idx 0..299"
+  },
+  "siglip": {
+   "n": 300,
+   "k": 299,
+   "acc": 0.9966666666666667,
+   "items": "idx 0..299"
+  }
+ }
+}

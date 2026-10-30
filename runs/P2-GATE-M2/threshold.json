@@ -1,0 +1,51 @@
+{
+ "statistic": "q",
+ "K": 8,
+ "seed": 20261029,
+ "n_cal": 300,
+ "eps0": 1.1920928955078125e-07,
+ "min_gap": 2.384185791015625e-07,
+ "ids_hash": "fd036603cdd6ca5b",
+ "thresholds": {
+  "0.05": {
+   "tau": -0.09846870147599458,
+   "alpha": 0.05,
+   "n_cal": 300,
+   "eps0": 1.1920928955078125e-07,
+   "statistic": "q",
+   "K": 8,
+   "seed": 20261029,
+   "ids_hash": "fd036603cdd6ca5b",
+   "feasible": true,
+   "r_hat": 0.04683268229165579,
+   "eps0_resolvable": true
+  },
+  "0.01": {
+   "tau": 2.249990486741647,
+   "alpha": 0.01,
+   "n_cal": 300,
+   "eps0": 1.1920928955078125e-07,
+   "statistic": "q",
+   "K": 8,
+   "seed": 20261029,
+   "ids_hash": "fd036603cdd6ca5b",
+   "feasible": true,
+   "r_hat": 0.006699218749999756,
+   "eps0_resolvable": true
+  },
+  "0.1": {
+   "tau": -1.1232737648119004,
+   "alpha": 0.1,
+   "n_cal": 300,
+   "eps0": 1.1920928955078125e-07,
+   "statistic": "q",
+   "K": 8,
+   "seed": 20261029,
+   "ids_hash": "fd036603cdd6ca5b",
+   "feasible": true,
+   "r_hat": 0.09699869791661017,
+   "eps0_resolvable": true
+  }
+ },
+ "wording": "The threshold is calibrated so that, for a clean test pair exchangeable with the calibration pairs, the expected proportion of its tokens that are flagged is at most alpha."
+}

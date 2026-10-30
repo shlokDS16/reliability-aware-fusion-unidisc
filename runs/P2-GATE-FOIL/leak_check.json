@@ -1,0 +1,218 @@
+{
+ "checks": [
+  {
+   "name": "L0_id_mapping_whole_file",
+   "ok": true,
+   "detail": {
+    "n_images": 32150,
+    "n_id_filename_mismatch": 0,
+    "first_mismatches": [],
+    "n_not_val2014_prefix": 0
+   }
+  },
+  {
+   "name": "L0_pool_ids_in_val2017",
+   "ok": true,
+   "detail": {
+    "n_not_in_val2017": 0
+   }
+  },
+  {
+   "name": "L0_ids_are_integers",
+   "ok": true,
+   "detail": "pool ids normalised by normalise_image_id"
+  },
+  {
+   "name": "L1_fit_subset_of_cal",
+   "ok": true,
+   "detail": {
+    "n_fit": 240,
+    "n_not_in_cal": 0
+   }
+  },
+  {
+   "name": "L2_fit_test_disjoint",
+   "ok": true,
+   "detail": {
+    "n_shared": 0
+   }
+  },
+  {
+   "name": "L3_test_disjoint_from_cal_head_probe",
+   "ok": true,
+   "detail": {
+    "shared_with_cal": 0,
+    "shared_with_head": 0,
+    "shared_with_probe": 0
+   }
+  },
+  {
+   "name": "L4_no_repeated_image_id",
+   "ok": true,
+   "detail": {
+    "fit_repeats": 0,
+    "test_repeats": 0
+   }
+  },
+  {
+   "name": "L4b_planned_size",
+   "ok": true,
+   "detail": {
+    "n_test": 300
+   }
+  },
+  {
+   "name": "L5_counts_logged",
+   "ok": true,
+   "detail": {
+    "n_candidate_pairs": 32150,
+    "n_eligible": 3265,
+    "excluded_by_reason": {
+     "not_in_val2017": 28187,
+     "in_calibration_fold": 240,
+     "in_probe1_or_probe2": 383,
+     "in_headroom_fold": 75
+    },
+    "n_eligible_in_folds_test": 238,
+    "n_eligible_in_folds_test_ext": 159,
+    "n_eligible_from_permutation": 2868,
+    "n_fit_candidates": 240,
+    "n_test_planned": 300,
+    "n_test_in_P_test_fold": 300,
+    "token_rule_excluded_at_pool_time": {
+     "fit": {
+      "pos_and_neg_out_of_range": 1
+     },
+     "test": {
+      "pos_and_neg_out_of_range": 2
+     }
+    },
+    "n_fit_after_pool_time_token_rule": 239,
+    "n_test_after_pool_time_token_rule": 298
+   }
+  },
+  {
+   "name": "L6_matched_ids_positive_control",
+   "ok": true,
+   "detail": {
+    "counts": {
+     "cal": 240,
+     "head": 75,
+     "test": 238,
+     "test_ext": 159,
+     "probe": 383
+    },
+    "total": 1095,
+    "meaning": "zero in a group = id format mismatch = leak check vacuous: B stops"
+   }
+  },
+  {
+   "name": "L7_hand_check_sample_printed",
+   "ok": true,
+   "detail": [
+    {
+     "group": "cal",
+     "image_id": 458755,
+     "foil_file_name": "COCO_val2014_000000458755.jpg",
+     "coco_member": "val2017/000000458755.jpg",
+     "member_exists": true
+    },
+    {
+     "group": "head",
+     "image_id": 172617,
+     "foil_file_name": "COCO_val2014_000000172617.jpg",
+     "coco_member": "val2017/000000172617.jpg",
+     "member_exists": true
+    },
+    {
+     "group": "test",
+     "image_id": 239537,
+     "foil_file_name": "COCO_val2014_000000239537.jpg",
+     "coco_member": "val2017/000000239537.jpg",
+     "member_exists": true
+    },
+    {
+     "group": "test_ext",
+     "image_id": 273642,
+     "foil_file_name": "COCO_val2014_000000273642.jpg",
+     "coco_member": "val2017/000000273642.jpg",
+     "member_exists": true
+    },
+    {
+     "group": "probe",
+     "image_id": 2587,
+     "foil_file_name": "COCO_val2014_000000002587.jpg",
+     "coco_member": "val2017/000000002587.jpg",
+     "member_exists": true
+    }
+   ]
+  }
+ ],
+ "counts": {
+  "n_candidate_pairs": 32150,
+  "n_eligible": 3265,
+  "excluded_by_reason": {
+   "not_in_val2017": 28187,
+   "in_calibration_fold": 240,
+   "in_probe1_or_probe2": 383,
+   "in_headroom_fold": 75
+  },
+  "n_eligible_in_folds_test": 238,
+  "n_eligible_in_folds_test_ext": 159,
+  "n_eligible_from_permutation": 2868,
+  "n_fit_candidates": 240,
+  "n_test_planned": 300,
+  "n_test_in_P_test_fold": 300,
+  "token_rule_excluded_at_pool_time": {
+   "fit": {
+    "pos_and_neg_out_of_range": 1
+   },
+   "test": {
+    "pos_and_neg_out_of_range": 2
+   }
+  },
+  "n_fit_after_pool_time_token_rule": 239,
+  "n_test_after_pool_time_token_rule": 298
+ },
+ "created": "2026-10-28T13:50:02",
+ "test_images_also_in_P_test_fold": 300,
+ "L7_status": "printed; the data-steward's hand check is NOT recorded by this script",
+ "ok": true,
+ "L8_selftest": {
+  "clean_pool_passes": true,
+  "L8_known_leak_with_cal_is_caught": [
+   "L2_fit_test_disjoint",
+   "L3_test_disjoint_from_cal_head_probe"
+  ],
+  "shared_with_head_is_caught": [
+   "L3_test_disjoint_from_cal_head_probe"
+  ],
+  "shared_with_probe_is_caught": [
+   "L3_test_disjoint_from_cal_head_probe"
+  ],
+  "fit_outside_cal_is_caught": [
+   "L1_fit_subset_of_cal"
+  ],
+  "repeated_id_is_caught": [
+   "L4_no_repeated_image_id"
+  ],
+  "fit_test_overlap_is_caught": [
+   "L2_fit_test_disjoint",
+   "L3_test_disjoint_from_cal_head_probe"
+  ],
+  "id_format_mismatch_is_vacuous_and_stops": [
+   "L6_matched_ids_positive_control",
+   "L7_hand_check_sample_printed"
+  ],
+  "all_known_bad_cases_caught": true,
+  "normalise_image_id_examples": {
+   "391895": 391895,
+   "'391895'": 391895,
+   "'000000391895'": 391895,
+   "'COCO_val2014_000000391895.jpg'": 391895,
+   "'val2017/000000391895.jpg'": 391895
+  },
+  "ok": true
+ },
+ "pool_sha256": "edc3b227baf940eb9b665369097866a28bbd628ad7ac893ad0813dd9b74a3616"
+}

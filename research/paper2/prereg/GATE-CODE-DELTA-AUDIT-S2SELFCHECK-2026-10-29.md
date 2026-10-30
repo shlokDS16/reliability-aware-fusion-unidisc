@@ -1,0 +1,39 @@
+---
+agent: gate-auditor
+date: 2026-10-29
+brief: Delta audit of the S2 self-check fix (commit 3ceb73e8, branch fix/s2-selfcheck-deterministic-cudnn) against code pin d81858c0 (card v4 row A-4)
+audited_sha: 3ceb73e874355dae75a5d35978704b28eb384d78
+pin_compared: d81858c0db2897f5783bedfa1925d0f95f5996d4
+verdict: PASS
+---
+
+# Verdict: PASS (audited SHA 3ceb73e8)
+
+No criterion is `missing` or `partly`. One procedural note for the lead (N1) and three disclosures (N2 to N4) do not affect the verdict. Nothing was edited or committed. The only repository side effect was a temporary detached `git worktree` at 3ceb73e8 in the scratch directory, since removed and pruned.
+
+## Criteria
+
+| # | Criterion | Status | Evidence (E3 = code read at pinned SHA; E4 = run here) |
+|---|---|---|---|
+| 0 | 3ceb73e8 descends from the pin | met | `git merge-base d81858c0 3ceb73e8` = d81858c0 (the pin is an ancestor; the parent chain goes via 508dce85). |
+| 1 | Code delta touches only `run_gate_s2.py` and a test | met | `git diff --name-status d81858c0 3ceb73e8 -- exp_p2 tools tests` = `M exp_p2/run_gate_s2.py`, `A tests/exp_p2/test_s2_selfcheck_deterministic.py`. `git diff --quiet d81858c0 3ceb73e8 -- exp_p2/gate exp_p2/scoring.py exp_p2/common.py tools` exits 0, so `runner.py`, `reinfill.py`, `arms.py`, `evidence.py`, `pipeline.py`, `scoring.py`, `common.py` and `gate_driver.py` are byte-identical to the pin. The pass rule is still `exp_p2/gate/runner.py:75` (`image_tokens_frac_equal >= 0.99`, unchanged). In `run_gate_s2.py` the hunks are: `import contextlib` (l.24), new `deterministic_cudnn` (l.275-295), new `selfcheck_deterministic` (l.298-301), removal of the inner closure `selfcheck` and `selfcheck=selfcheck_deterministic` at l.362. `process` (l.151-204), `process_fig`, `make_ctx_factory`, `plan_items`, the thresholds and `CONFIG` are untouched. The other files that differ between the two commits (paper2/, research/, runs/) are non-code and are not governed by the card's `git diff d81858c0 HEAD -- exp_p2 tools tests` rule. |
+| 2 | Flags restored on every path; same torch state as before the fix for S2 items | met | `run_gate_s2.py:287-295`: `old = (cd.benchmark, cd.deterministic)` is captured before assignment, and the restore sits in `finally`, so it covers exceptions and `KeyboardInterrupt`; a partly applied tuple assignment is also repaired. Only `cudnn.benchmark` and `cudnn.deterministic` are touched; TF32 (`cudnn.allow_tf32`, `cuda.matmul.allow_tf32`), `float32_matmul_precision` and `torch.use_deterministic_algorithms` are not. The state left by UniDisc is `models/third_party/unidisc/utils.py:425-438` (`set_torch_defaults()`, called from `runs/env-2026-10-14/scripts/unidisc_setup.py:48`): `cudnn.benchmark = True`, `cudnn.deterministic = False`, TF32 on. The test fixture sets exactly (True, False). The captured `old` therefore equals that state, and the restore returns to it. Tests: `test_selfcheck_runs_with_deterministic_cudnn_and_restores_the_flags` and `test_flags_are_restored_when_the_selfcheck_raises` (4 of 4 new tests pass, E4). GPU evidence: `runs/P2-S2-SELFCHECK-DIAG/fixcheck-4.json` `flags_before` and `flags_after_fixed` are both benchmark true, deterministic false. The self-check runs at most once per run (`runner.py:152`: only when `selfcheck.json` is absent), so later chunks do not enter the context manager. The self-check's transformer forward (bf16) uses no cuDNN convolutions, so the flag change cannot reach it. |
+| 3 | S2 `process()` and its inputs never re-encode images | met | `run_gate_s2.py:151-204`: inputs are `sc.caption_ids` (text), `np.load(ctx.m4/arrays/itemNNNN.npz)` (`clean_codes`, `<cond>_codes`, `<cond>_z`, `<cond>_flag0.05`), `pipeline.caption_lambdas`, `sc.build`, `pipeline.image_delta`, `reinfill.reinfill`. `git grep` at 3ceb73e8 over `exp_p2/gate` and `exp_p2/scoring.py` for `prep_image`, `.encode(`, `.preprocess(`, `get_vae` and `.selfcheck` finds image-tokeniser calls only in `scoring.py:127,139,140` (`encode`, `selfcheck`) and the `pipeline.prep_image` definition (l.19-22), which has no caller inside `exp_p2/gate`. `make_ctx` (l.116-127) reads only M4 arrays and `family.json`. `sc.decode` occurs only in `process_fig` (l.253-267), which runs with `selfcheck=None` (l.359). The stored-codes claim holds (E3). |
+| 4 | Smoke uses the same self-check | met | `exp_p2/run_gate_s2_smoke.py:58` calls `run_gate_s2.main([...], process_wrap=firewall, load=load)`. In the non-figure branch `main` passes `selfcheck=selfcheck_deterministic` (l.362). The smoke refuses `--figures` (l.52-54), so no smoke path bypasses it. The smoke script is unchanged. `test_main_hands_the_deterministic_selfcheck_to_the_runner` asserts `seen["selfcheck"] is run_gate_s2.selfcheck_deterministic` and `seen["process"] is run_gate_s2.process`. Row 8a is covered. |
+| 5 | Test suite on 3ceb73e8 | met | In a detached worktree of 3ceb73e8 (module path confirmed to resolve inside it): `..\..\..\.venv\Scripts\python.exe -m pytest tests/exp_p2 -q -p no:cacheprovider` gave **588 passed, 5 skipped, 1 warning in 283.71 s** (E4, 2026-10-29). The 5 skips are not new tests. The warning is the deprecated `pynvml` import. |
+
+## Evidence level of the claims
+
+- "The failures come from per-process cuDNN benchmark/TF32 algorithm choice": the diagnosis labels the exact mechanism (a separate benchmark entry per batch stride) as an inference. I agree; E4 supports only the correlation: fresh processes give 0.998, 0.9853515625 and 0.984375 under benchmark, and 1.0 under deterministic cuDNN, with identical inputs (`diag-2.json`, `diag-3.json`, `fixcheck-4.json`, not re-run by me). The `deterministic_cudnn` docstring (l.277-285) states the mechanism as fact. This is wording, not a code defect.
+- "The fix passes the self-check at 1.0 and reproduces `runs/P2-GATE-M4/selfcheck.json`": `fixcheck-4.json` shows `fixed.image_tokens_frac_equal` 1.0, `fixed_passed` true, same process `production` 0.984375, `production_passed` false (E4, one process, not repeated by me because the brief asked for a code audit and the GPU run is the lead's pre-card step).
+
+## Notes
+
+- **N1 (procedural, for the lead).** `S2-RUN-CARD-2026-10-29.md` l.24 and l.27 state that `git diff --quiet d81858c0 HEAD -- exp_p2 tools tests` must exit 0 and list `exp_p2/run_gate_s2.py` blob `15fafdf98ec6`. After the fix lands the first check exits 1 (I ran it on 3ceb73e8: exit 1) and the blob is `48ae81db7f29`. The card and the A-4 pin therefore need a dated update that names the new pin (3ceb73e8, or the merge commit if it is merged) before row 8a. The check should be `git diff d81858c0 <new pin> -- exp_p2 tools tests` limited to the two files above. I did not edit the card.
+- **N2 (existing smoke dirs).** `runs/P2-GATE-S2-SMOKE/` and `.try1/` hold a failed `selfcheck.json`; `runner.py:135-146` stops any later chunk under that run id. Row 8a needs a new run id or an archived directory (the diagnosis lists this as concern 1; not a code issue).
+- **N3 (scope of the check).** The fixed self-check validates the tokeniser under deterministic cuDNN, not under the benchmarked TF32 mode in which M4's stored codes were produced. This does not affect S2, which reads those stored codes. It does affect any other stage that tokenises images under benchmark (the diagnosis names M3, M4, FOIL and the probes, up to about 1.5% of image codes per image). That is a reproducibility-statement item for the paper, outside this delta.
+- **N4 (not checked).** I did not run the GPU self-check or compare M4's stored codes with a deterministic encode for items other than item 0 (the diagnosis lists this as an unknown). No S2 output depends on it.
+
+## Gate state
+
+This audit covers the code delta only. It does not tick or untick any gate in `research/progress.md`; whether row A-4's pin is updated is the lead's decision (N1).

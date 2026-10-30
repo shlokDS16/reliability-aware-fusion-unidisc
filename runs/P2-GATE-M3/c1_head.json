@@ -1,0 +1,24 @@
+{
+ "look": "headroom",
+ "n": 100,
+ "k": 86,
+ "accuracy": 0.86,
+ "wilson95": [
+  0.7786281178903616,
+  0.9147365634006086
+ ],
+ "probe1": {
+  "k": 253,
+  "n": 300,
+  "accuracy": 0.8433333333333334,
+  "wilson95": [
+   0.798,
+   0.88
+  ]
+ },
+ "overlaps_probe1_interval": true,
+ "audit_trigger": false,
+ "above_interval": false,
+ "sentence": "the clean none-arm accuracy was 0.860 (95 percent CI 0.779 to 0.915), against 0.843 (0.798 to 0.880) in probe 1",
+ "rule": "descriptive; trigger = Wilson interval does not overlap 0.798-0.880; action = pipeline audit only, nothing is tuned (SAP A2.3)"
+}

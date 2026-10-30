@@ -1,0 +1,237 @@
+{
+ "cells": {
+  "P1": {
+   "cell": "P1",
+   "s": -1,
+   "s_text": "-",
+   "stability_share_same_sign": 1.0,
+   "group": "P",
+   "b": 0,
+   "c_cnt": 1,
+   "n": 500,
+   "net_difference": -0.002,
+   "ci95": [
+    -0.006,
+    0.0
+   ],
+   "o": -1,
+   "o_star": null,
+   "evaluable": true,
+   "agree": true,
+   "excluded_reason": null
+  },
+  "P2": {
+   "cell": "P2",
+   "s": -1,
+   "s_text": "-",
+   "stability_share_same_sign": 1.0,
+   "group": "P",
+   "b": 0,
+   "c_cnt": 0,
+   "n": 500,
+   "net_difference": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "o": null,
+   "o_star": null,
+   "evaluable": false,
+   "agree": null,
+   "excluded_reason": "b = c_cnt: no observed sign (counted, excluded)"
+  },
+  "P3": {
+   "cell": "P3",
+   "s": -1,
+   "s_text": "-",
+   "stability_share_same_sign": 1.0,
+   "group": "P",
+   "b": 1,
+   "c_cnt": 3,
+   "n": 500,
+   "net_difference": -0.004,
+   "ci95": [
+    -0.012,
+    0.004
+   ],
+   "o": -1,
+   "o_star": null,
+   "evaluable": true,
+   "agree": true,
+   "excluded_reason": null
+  },
+  "PS1": {
+   "cell": "PS1",
+   "s": -1,
+   "s_text": "-",
+   "stability_share_same_sign": 0.9757,
+   "group": "PS",
+   "b": 2,
+   "c_cnt": 2,
+   "n": 500,
+   "net_difference": 0.0,
+   "ci95": [
+    -0.008,
+    0.008
+   ],
+   "o": null,
+   "o_star": null,
+   "evaluable": false,
+   "agree": null,
+   "excluded_reason": "b = c_cnt: no observed sign (counted, excluded)"
+  },
+  "PS2": {
+   "cell": "PS2",
+   "s": -1,
+   "s_text": "-",
+   "stability_share_same_sign": 0.5175,
+   "group": "PS",
+   "b": 8,
+   "c_cnt": 5,
+   "n": 500,
+   "net_difference": 0.006,
+   "ci95": [
+    -0.008,
+    0.02
+   ],
+   "o": 1,
+   "o_star": null,
+   "evaluable": true,
+   "agree": false,
+   "excluded_reason": null
+  }
+ },
+ "P": {
+  "A": 2,
+  "K_eval": 2,
+  "cp95": [
+   0.15811388300841903,
+   1.0
+  ],
+  "cells_evaluable": [
+   "P1",
+   "P3"
+  ],
+  "excluded": {
+   "P2": "b = c_cnt: no observed sign (counted, excluded)"
+  },
+  "agreement_where_observed_interval_excludes_0": {
+   "A": 0,
+   "K": 0,
+   "cells": [],
+   "note": "descriptive column o_c*"
+  },
+  "rivals": {
+   "always +": {
+    "A": 0,
+    "K_eval": 2
+   },
+   "- for P cells, + for PS cells": {
+    "A": 2,
+    "K_eval": 2
+   }
+  },
+  "sentence": "the sign of the plug-in SNR change agreed with the sign of the net accuracy difference in 2 of 2 cells (95 percent Clopper-Pearson interval [0.158, 1.000])",
+  "reachability_of_withdrawn_test": {
+   "K_eval": 2,
+   "min_attainable_p": 0.25,
+   "could_reject_at_alpha": false,
+   "status": "family E withdrawn by AB.3: no test is run"
+  }
+ },
+ "PS": {
+  "A": 0,
+  "K_eval": 1,
+  "cp95": [
+   0.0,
+   0.975
+  ],
+  "cells_evaluable": [
+   "PS2"
+  ],
+  "excluded": {
+   "PS1": "b = c_cnt: no observed sign (counted, excluded)"
+  },
+  "agreement_where_observed_interval_excludes_0": {
+   "A": 0,
+   "K": 0,
+   "cells": [],
+   "note": "descriptive column o_c*"
+  },
+  "rivals": {
+   "always +": {
+    "A": 1,
+    "K_eval": 1
+   },
+   "- for P cells, + for PS cells": {
+    "A": 1,
+    "K_eval": 1
+   }
+  },
+  "sentence": "the sign of the plug-in SNR change agreed with the sign of the net accuracy difference in 0 of 1 cells (95 percent Clopper-Pearson interval [0.000, 0.975])",
+  "reachability_of_withdrawn_test": {
+   "K_eval": 1,
+   "min_attainable_p": 0.5,
+   "could_reject_at_alpha": false,
+   "status": "family E withdrawn by AB.3: no test is run"
+  },
+  "label": "foregone: patch and swap are expected to be detected and helped (AB.3 item 2); not evidence for the P cells"
+ },
+ "refutation_rule_met_for_cells": [],
+ "refutation_note": "spec 5.3 / AB.3 item 4: a committed sign that disagrees with a cell whose observed 95 percent interval of the net accuracy difference excludes 0 refutes the independent-token model for that cell",
+ "formal_test": null,
+ "formal_test_note": "no test, no p-value, no alpha: family E is withdrawn (AB.3 item 1)",
+ "label": "secondary, descriptive; no test, no p-value, no alpha (family E withdrawn, AB.3 item 1); never pooled with the suite cells; no P result is called predicted, explained or caused (AB.1); Prop. 4 is not said to predict, explain or be supported (AB.3 item 4)",
+ "observed_sign_definition": "o_c = sign(b_c - c_cnt) on the binary Y of GATE-M versus none under every n-rule, R3 included; o_c* only where the 95 percent paired-bootstrap interval excludes 0 (AB.3 item 3)",
+ "frozen_file": "C:\\Users\\ANONYMIZED\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-GATE-EPRED-FIT\\epred_frozen.json",
+ "frozen_sha256": "2a3ae0b72e1c572419f1278575d3ad09b5a91cfcb971f61e92870bc8c6569cc4",
+ "fit_code_matches_frozen": true,
+ "order_check": {
+  "checked": true,
+  "first_m4_chunk_start": 1793209262.6879163,
+  "frozen_commit_time": 1793209194
+ },
+ "n_items": 500,
+ "n_duplicates_removed": 0,
+ "allow_partial_in_analysis_json": false,
+ "meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ }
+}

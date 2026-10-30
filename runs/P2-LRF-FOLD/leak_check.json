@@ -1,0 +1,257 @@
+{
+ "checks": [
+  {
+   "name": "L0_ids_are_integers",
+   "ok": true,
+   "detail": "COCO integer ids; coco_member = val2017/<id:012d>.jpg"
+  },
+  {
+   "name": "L0_ids_in_val2017",
+   "ok": true,
+   "detail": {
+    "n_not_in_val2017": 0
+   }
+  },
+  {
+   "name": "L1_disjoint_from_folds.cal_folds.head_folds.test_folds.test_ext",
+   "ok": true,
+   "detail": {
+    "folds.cal": 0,
+    "folds.head": 0,
+    "folds.test": 0,
+    "folds.test_ext": 0
+   }
+  },
+  {
+   "name": "L2_disjoint_from_probe1+probe2",
+   "ok": true,
+   "detail": {
+    "probe1+probe2": 0
+   }
+  },
+  {
+   "name": "L3_disjoint_from_P2-GATE-M1_P2-GATE-M5_foil.pool_sugarcrepe_hardneg.h_file:P2-GATE-CPU/denoise_check/items.jsonl_file:P2-GATE-EPRED-FIT/items.jsonl_file:P2-GATE-FOIL/pool.json_file:P2-GATE-FOIL-FIT/items.jsonl_file:P2-GATE-FOIL-TEST/items.jsonl_file:P2-GATE-FOLDS/folds.json_file:P2-GATE-H3/folds_check.json_file:P2-GATE-H3/items.jsonl_file:P2-GATE-M1/items.jsonl_file:P2-GATE-M2/folds_check.json_file:P2-GATE-M2/items.jsonl_file:P2-GATE-M3/folds_check.json_file:P2-GATE-M3/items.jsonl_file:P2-GATE-M4/folds_check.json_file:P2-GATE-M4/items.jsonl_file:P2-GATE-M5/folds_check.json_file:P2-GATE-M5/items.jsonl_file:P2-GATE-S2/items.jsonl_file:P2-GATE-S2-FIG/items.jsonl_file:P2-GATE-S2-SMOKE/items.jsonl_file:P2-HARDNEG-ITEMS/folds_hardneg.json_file:P2-HARDNEG-ITEMS/folds_hardneg_h3.json_file:P2-LRF-RESCORE/items.jsonl_file:P2-M0-STAGE2/items.jsonl_file:P2-M0-STAGE2/selection.json_file:P2-PROBE-01/items.jsonl_file:P2-PROBE-01/selection.json_file:P2-PROBE-02/items.jsonl_file:P2-PROBE-02/selection.json_file:P2-SMOKE-01/items.jsonl_file:P2-SMOKE-01/selection.json_file:P2-SMOKE-01.failed-selfcheck/selection.json_file:P2-SMOKE-02/items.jsonl_file:P2-SMOKE-02/selection.json",
+   "ok": true,
+   "detail": {
+    "P2-GATE-M1": 0,
+    "P2-GATE-M5": 0,
+    "foil.pool": 0,
+    "sugarcrepe": 0,
+    "hardneg.h": 0,
+    "file:P2-GATE-CPU/denoise_check/items.jsonl": 0,
+    "file:P2-GATE-EPRED-FIT/items.jsonl": 0,
+    "file:P2-GATE-FOIL/pool.json": 0,
+    "file:P2-GATE-FOIL-FIT/items.jsonl": 0,
+    "file:P2-GATE-FOIL-TEST/items.jsonl": 0,
+    "file:P2-GATE-FOLDS/folds.json": 0,
+    "file:P2-GATE-H3/folds_check.json": 0,
+    "file:P2-GATE-H3/items.jsonl": 0,
+    "file:P2-GATE-M1/items.jsonl": 0,
+    "file:P2-GATE-M2/folds_check.json": 0,
+    "file:P2-GATE-M2/items.jsonl": 0,
+    "file:P2-GATE-M3/folds_check.json": 0,
+    "file:P2-GATE-M3/items.jsonl": 0,
+    "file:P2-GATE-M4/folds_check.json": 0,
+    "file:P2-GATE-M4/items.jsonl": 0,
+    "file:P2-GATE-M5/folds_check.json": 0,
+    "file:P2-GATE-M5/items.jsonl": 0,
+    "file:P2-GATE-S2/items.jsonl": 0,
+    "file:P2-GATE-S2-FIG/items.jsonl": 0,
+    "file:P2-GATE-S2-SMOKE/items.jsonl": 0,
+    "file:P2-HARDNEG-ITEMS/folds_hardneg.json": 0,
+    "file:P2-HARDNEG-ITEMS/folds_hardneg_h3.json": 0,
+    "file:P2-LRF-RESCORE/items.jsonl": 0,
+    "file:P2-M0-STAGE2/items.jsonl": 0,
+    "file:P2-M0-STAGE2/selection.json": 0,
+    "file:P2-PROBE-01/items.jsonl": 0,
+    "file:P2-PROBE-01/selection.json": 0,
+    "file:P2-PROBE-02/items.jsonl": 0,
+    "file:P2-PROBE-02/selection.json": 0,
+    "file:P2-SMOKE-01/items.jsonl": 0,
+    "file:P2-SMOKE-01/selection.json": 0,
+    "file:P2-SMOKE-01.failed-selfcheck/selection.json": 0,
+    "file:P2-SMOKE-02/items.jsonl": 0,
+    "file:P2-SMOKE-02/selection.json": 0
+   }
+  },
+  {
+   "name": "L4_no_repeated_image_id",
+   "ok": true,
+   "detail": {
+    "n": 533,
+    "n_unique": 533
+   }
+  },
+  {
+   "name": "L4_gid_free_and_distinct",
+   "ok": true,
+   "detail": {
+    "n_gids": 533,
+    "min": 8000,
+    "max": 8532,
+    "clashes": {
+     "folds.cal": 0,
+     "folds.head": 0,
+     "folds.test": 0,
+     "foil.fit": 0,
+     "foil.test": 0,
+     "hardneg.head": 0,
+     "hardneg.test": 0
+    }
+   }
+  },
+  {
+   "name": "L4_only_test_fold_filled",
+   "ok": true,
+   "detail": {
+    "cal": 0,
+    "head": 0,
+    "test_ext": 0
+   }
+  },
+  {
+   "name": "L5_negatives_consistent",
+   "ok": true,
+   "detail": {
+    "n_bad": 0,
+    "first": []
+   }
+  },
+  {
+   "name": "L6_positive_control_ids_match_universe",
+   "ok": true,
+   "detail": {
+    "n_ids_in_universe": {
+     "folds.cal": 300,
+     "folds.head": 100,
+     "folds.test": 300,
+     "folds.test_ext": 200,
+     "probe1+probe2": 494,
+     "P2-GATE-M1": 200,
+     "P2-GATE-M5": 100,
+     "foil.pool": 540,
+     "sugarcrepe": 1560,
+     "hardneg.h": 350,
+     "file:P2-GATE-CPU/denoise_check/items.jsonl": 20,
+     "file:P2-GATE-EPRED-FIT/items.jsonl": 100,
+     "file:P2-GATE-FOIL/pool.json": 540,
+     "file:P2-GATE-FOIL-FIT/items.jsonl": 239,
+     "file:P2-GATE-FOIL-TEST/items.jsonl": 298,
+     "file:P2-GATE-FOLDS/folds.json": 900,
+     "file:P2-GATE-H3/folds_check.json": 0,
+     "file:P2-GATE-H3/items.jsonl": 50,
+     "file:P2-GATE-M1/items.jsonl": 200,
+     "file:P2-GATE-M2/folds_check.json": 0,
+     "file:P2-GATE-M2/items.jsonl": 300,
+     "file:P2-GATE-M3/folds_check.json": 0,
+     "file:P2-GATE-M3/items.jsonl": 100,
+     "file:P2-GATE-M4/folds_check.json": 0,
+     "file:P2-GATE-M4/items.jsonl": 500,
+     "file:P2-GATE-M5/folds_check.json": 0,
+     "file:P2-GATE-M5/items.jsonl": 100,
+     "file:P2-GATE-S2/items.jsonl": 300,
+     "file:P2-GATE-S2-FIG/items.jsonl": 0,
+     "file:P2-GATE-S2-SMOKE/items.jsonl": 0,
+     "file:P2-HARDNEG-ITEMS/folds_hardneg.json": 350,
+     "file:P2-HARDNEG-ITEMS/folds_hardneg_h3.json": 50,
+     "file:P2-LRF-RESCORE/items.jsonl": 500,
+     "file:P2-M0-STAGE2/items.jsonl": 10,
+     "file:P2-M0-STAGE2/selection.json": 10,
+     "file:P2-PROBE-01/items.jsonl": 300,
+     "file:P2-PROBE-01/selection.json": 300,
+     "file:P2-PROBE-02/items.jsonl": 200,
+     "file:P2-PROBE-02/selection.json": 200,
+     "file:P2-SMOKE-01/items.jsonl": 3,
+     "file:P2-SMOKE-01/selection.json": 300,
+     "file:P2-SMOKE-01.failed-selfcheck/selection.json": 300,
+     "file:P2-SMOKE-02/items.jsonl": 3,
+     "file:P2-SMOKE-02/selection.json": 200
+    },
+    "meaning": "zero for a non-empty source = id format mismatch = leak check vacuous"
+   }
+  },
+  {
+   "name": "L7_hand_check_sample_printed",
+   "ok": true,
+   "detail": [
+    {
+     "group": "folds.cal",
+     "n_matched": 300,
+     "image_id": 1296,
+     "coco_member": "val2017/000000001296.jpg"
+    },
+    {
+     "group": "folds.head",
+     "n_matched": 100,
+     "image_id": 885,
+     "coco_member": "val2017/000000000885.jpg"
+    },
+    {
+     "group": "folds.test",
+     "n_matched": 300,
+     "image_id": 1490,
+     "coco_member": "val2017/000000001490.jpg"
+    },
+    {
+     "group": "folds.test_ext",
+     "n_matched": 200,
+     "image_id": 1532,
+     "coco_member": "val2017/000000001532.jpg"
+    },
+    {
+     "group": "probe1+probe2",
+     "n_matched": 494,
+     "image_id": 1761,
+     "coco_member": "val2017/000000001761.jpg"
+    }
+   ]
+  }
+ ],
+ "created": "2026-10-29T21:00:54",
+ "L7_status": "printed; the data-steward's hand check is NOT recorded by this script",
+ "ok": true,
+ "L8_selftest": {
+  "clean_fold_passes": true,
+  "L8_injected_leak_with_folds.cal_is_caught": true,
+  "L8_injected_leak_with_folds.head_is_caught": true,
+  "L8_injected_leak_with_folds.test_is_caught": true,
+  "L8_injected_leak_with_folds.test_ext_is_caught": true,
+  "L8_injected_leak_with_probe1+probe2_is_caught": true,
+  "L8_injected_leak_with_P2-GATE-M1_is_caught": true,
+  "L8_injected_leak_with_P2-GATE-M5_is_caught": true,
+  "L8_injected_leak_with_foil.pool_is_caught": true,
+  "L8_injected_leak_with_sugarcrepe_is_caught": true,
+  "L8_injected_leak_with_hardneg.h_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-CPU/denoise_check/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-EPRED-FIT/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-FOIL/pool.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-FOIL-FIT/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-FOIL-TEST/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-FOLDS/folds.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-H3/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-M1/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-M2/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-M3/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-M4/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-M5/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-GATE-S2/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-HARDNEG-ITEMS/folds_hardneg.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-HARDNEG-ITEMS/folds_hardneg_h3.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-LRF-RESCORE/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-M0-STAGE2/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-M0-STAGE2/selection.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-PROBE-01/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-PROBE-01/selection.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-PROBE-02/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-PROBE-02/selection.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-SMOKE-01/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-SMOKE-01/selection.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-SMOKE-01.failed-selfcheck/selection.json_is_caught": true,
+  "L8_injected_leak_with_file:P2-SMOKE-02/items.jsonl_is_caught": true,
+  "L8_injected_leak_with_file:P2-SMOKE-02/selection.json_is_caught": true,
+  "L8_repeated_image_is_caught": true,
+  "L8_gid_collision_is_caught": true,
+  "L8_wrong_length_matched_negative_is_caught": true,
+  "ok": true
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "stage": "SUITE",
+ "family": "suite (exploratory, Tier 3)",
+ "n_items": 200,
+ "seed": 20261029,
+ "K": 8,
+ "alpha": 0.05,
+ "cells": [
+  "pixelate2",
+  "pixelate4",
+  "defocus_blur2",
+  "defocus_blur4",
+  "fog2",
+  "fog4",
+  "impulse_noise2",
+  "impulse_noise4"
+ ],
+ "package": {
+  "name": "imagecorruptions",
+  "repo": "https://github.com/bethgelab/imagecorruptions",
+  "commit": "c959e659c9713837d2acd7ce785a81202d4be799",
+  "licence": "Apache-2.0",
+  "paper": "Michaelis et al. 2019, arXiv:1907.07484",
+  "note": "installed from the commit because PyPI 1.1.2 calls gaussian(multichannel=True), removed from scikit-image (issue #30)"
+ },
+ "duty": 0.5,
+ "spec": "research/paper2/prereg/SAP-GATE-2026-10-28.md AD.9 + AB.8",
+ "mem_frac": 0.75,
+ "installed_commit": "c959e659c9713837d2acd7ce785a81202d4be799",
+ "run_id": "P2-GATE-SUITE",
+ "git_sha": "938f227288d1bd03ebb497600d2a78203cec96ad",
+ "created": "2026-10-30T02:06:04",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 12.12,
+  "free_commit_gb": 49.07
+ }
+}

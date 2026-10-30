@@ -1,0 +1,13 @@
+{
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "KO_ALL_vs_NONE_design_items": {
+  "n_item_conditions": 2000,
+  "max_within_item_condition_weight_spread": 0.0,
+  "n_decisions_differing_from_none": 0,
+  "n_differing_within_tie_tolerance": 0,
+  "n_differing_beyond_tolerance": 0,
+  "tolerance": "|sum Delta| <= 1e-9 * sum |Delta|",
+  "ok": true
+ },
+ "note": "counts of differing decisions only; no accuracy, decision count or margin is stored on design items (plan section 6 item 2); the fresh-item controls (NONE = y_none, LRF = y_lrf, KO-ALL = NONE) are computed by the score stage before any variant weighting"
+}

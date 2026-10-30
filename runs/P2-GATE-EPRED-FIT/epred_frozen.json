@@ -1,0 +1,364 @@
+{
+ "kind": "epred_frozen",
+ "version": 1,
+ "created": "2026-10-28T23:09:47+0530",
+ "spec": "SAP-GATE-2026-10-28 AD.3 as demoted by AB.3; spec v2 5.3 (Prop. 4, general form)",
+ "run_id": "P2-GATE-M3",
+ "fit_run": "P2-GATE-EPRED-FIT",
+ "fit_fold": "folds.json 'head' (the headroom items)",
+ "cells": {
+  "P1": {
+   "cell": "P1",
+   "sign": -1,
+   "sign_text": "-",
+   "snr_before": 0.2259328081286551,
+   "snr_after": 0.2188965022217679,
+   "delta_snr": -0.007036305906887197,
+   "reason_no_sign": null,
+   "n_items": 100,
+   "n_tokens": 102400,
+   "n_tokens_changed": 98670,
+   "n_tokens_flagged": 6056,
+   "inputs": {
+    "rho": 0.96357421875,
+    "mu": 0.24232939587201893,
+    "sigma2": 0.4873166900614202,
+    "mu_c": 0.17032899478171218,
+    "sigma2_c": 0.5897210949952785,
+    "alpha_obs": 0.04155495978552279,
+    "beta_obs": 0.05980541197932502
+   },
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "P2": {
+   "cell": "P2",
+   "sign": -1,
+   "sign_text": "-",
+   "snr_before": 0.18814422897627756,
+   "snr_after": 0.18504109352389014,
+   "delta_snr": -0.003103135452387412,
+   "reason_no_sign": null,
+   "n_items": 100,
+   "n_tokens": 102400,
+   "n_tokens_changed": 94937,
+   "n_tokens_flagged": 3213,
+   "inputs": {
+    "rho": 0.927119140625,
+    "mu": 0.23543772319838172,
+    "sigma2": 0.5275617149419716,
+    "mu_c": 0.12909505304420346,
+    "sigma2_c": 0.5291431776219631,
+    "alpha_obs": 0.033230604314618786,
+    "beta_obs": 0.031231237557538157
+   },
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "P3": {
+   "cell": "P3",
+   "sign": -1,
+   "sign_text": "-",
+   "snr_before": 0.26499554219484245,
+   "snr_after": 0.25909243175290114,
+   "delta_snr": -0.005903110441941306,
+   "reason_no_sign": null,
+   "n_items": 100,
+   "n_tokens": 102400,
+   "n_tokens_changed": 23719,
+   "n_tokens_flagged": 4289,
+   "inputs": {
+    "rho": 0.231630859375,
+    "mu": 0.2125489094238537,
+    "sigma2": 0.5654978355756632,
+    "mu_c": 0.1532166257988789,
+    "sigma2_c": 0.5539991498252179,
+    "alpha_obs": 0.04042907436356935,
+    "beta_obs": 0.04671360512669168
+   },
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0,
+    "share_minus": 1.0,
+    "share_tie": 0.0,
+    "share_same_sign": 1.0,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "PS1": {
+   "cell": "PS1",
+   "sign": -1,
+   "sign_text": "-",
+   "snr_before": 0.2668438610804729,
+   "snr_after": 0.2636950827865299,
+   "delta_snr": -0.003148778293943,
+   "reason_no_sign": null,
+   "n_items": 100,
+   "n_tokens": 102400,
+   "n_tokens_changed": 6399,
+   "n_tokens_flagged": 9313,
+   "inputs": {
+    "rho": 0.062490234375,
+    "mu": 0.21109846751603809,
+    "sigma2": 0.5638078174057641,
+    "mu_c": 0.02595606705680045,
+    "sigma2_c": 0.48862724412939196,
+    "alpha_obs": 0.04758283767877418,
+    "beta_obs": 0.7415221128301297
+   },
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.0243,
+    "share_minus": 0.9757,
+    "share_tie": 0.0,
+    "share_same_sign": 0.9757,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  },
+  "PS2": {
+   "cell": "PS2",
+   "sign": -1,
+   "sign_text": "-",
+   "snr_before": 0.24488418655181843,
+   "snr_after": 0.24468959606001955,
+   "delta_snr": -0.0001945904917988739,
+   "reason_no_sign": null,
+   "n_items": 100,
+   "n_tokens": 102400,
+   "n_tokens_changed": 15400,
+   "n_tokens_flagged": 20909,
+   "inputs": {
+    "rho": 0.150390625,
+    "mu": 0.21136839712899308,
+    "sigma2": 0.5629711590077514,
+    "mu_c": 0.025294855910462218,
+    "sigma2_c": 0.5485053439998926,
+    "alpha_obs": 0.08814942528735632,
+    "beta_obs": 0.8597402597402597
+   },
+   "stability": {
+    "n_boot": 10000,
+    "unit": "headroom items",
+    "share_defined": 1.0,
+    "share_plus": 0.4825,
+    "share_minus": 0.5175,
+    "share_tie": 0.0,
+    "share_same_sign": 0.5175,
+    "note": "share of resamples whose sign equals s_c; undefined and tie resamples count as different; it never changes s_c"
+   }
+  }
+ },
+ "absent_cells": {},
+ "s_c": {
+  "P1": -1,
+  "P2": -1,
+  "P3": -1,
+  "PS1": -1,
+  "PS2": -1
+ },
+ "n_boot": 10000,
+ "seed": {
+  "name": "prop4_plugin",
+  "position": 19
+ },
+ "seeds_meta": {
+  "root_seed": 20261028,
+  "spawn_order": [
+   "load_items",
+   "completeness_report",
+   "arm_y_z",
+   "exact_mcnemar",
+   "paired_boot_diff",
+   "primary",
+   "s_m",
+   "s_z",
+   "s_dn",
+   "s_d",
+   "s_d2",
+   "s_c",
+   "headroom_check",
+   "fap_check",
+   "split_replication",
+   "auroc",
+   "detection_contrast",
+   "wilcoxon_z",
+   "fusion",
+   "prop4_plugin",
+   "mechanism",
+   "calibration",
+   "equivalence",
+   "selftest",
+   "denoise_check",
+   "ps_family",
+   "s2_family",
+   "s2_descriptive",
+   "edec",
+   "omni_gate",
+   "omni_r",
+   "suite"
+  ],
+  "numpy_version": "2.5.2",
+  "bootstrap_resamples": 10000,
+  "interval": "percentile"
+ },
+ "method": "pooled token-level point estimates over the headroom items; sign of SNR_after - SNR_before from Prop. 4 (spec v2 5.3, general form)",
+ "label": "secondary, descriptive; no test, no p-value, no alpha (family E withdrawn, AB.3 item 1); never pooled with the suite cells; no P result is called predicted, explained or caused (AB.1); Prop. 4 is not said to predict, explain or be supported (AB.3 item 4)",
+ "fit_fold_check": {
+  "n_head": 100,
+  "n_used": 100,
+  "n_test": 500,
+  "disjoint_from_test": true,
+  "disjoint_from_cal": true,
+  "used_subset_of_head": true,
+  "head_image_ids_sha256": "4a2b7df80925781ed27b21b1a2619f2405b8f2ed1de5313a762a658f180ede4e"
+ },
+ "inputs": {
+  "family.json": {
+   "sha256": "e8228cac44f353e511d7a2c43d313a7fcb970faa7718960afd4de015d33c0315",
+   "sha256_lf": "63409d90c8265a0a10f9abd06886919adf64cae4fba5138d802d53e3961bee56",
+   "git_blob_sha1": "a3f47819633fb5a59a69d062cbbe49ae78ddcb63",
+   "bytes": 6869
+  },
+  "m3_items.jsonl": {
+   "sha256": "dba48fa641e837414268bf07964e9666de1ff4ac6fa2f88424ec7834737d92d1",
+   "sha256_lf": "a4a26ad719833f7c215f00d85bbe7feb0b9a4f1dd1c5907ef16728e16644435c",
+   "git_blob_sha1": "db45ff8ffd10ad12d9cd532237f54335ea598489",
+   "bytes": 228757
+  },
+  "folds.json": {
+   "sha256": "450edb543779de7ee5e6a52422fd6507ef52f15ba3b956a8b05c2e561620f311",
+   "sha256_lf": "c19db5b3b9fabdeb89e8e686c58ae6c011f746529fbf9be84f1c58c99c446786",
+   "git_blob_sha1": "bb585b089bd753d7a2613b67e286c93a25d39e44",
+   "bytes": 274450
+  },
+  "arrays": {
+   "sha256_of_name_and_file_hashes": "068f17c35a90f075287d75bb7aba9a1f5a86ecb59f4e5b372f92cf089c1d10c1",
+   "n_files": 200
+  },
+  "m2_threshold.json": {
+   "sha256": "f9f92c3a69a845605e8bc8da3252b1a4469ed19ef70d189de82a2f1d0dcaad98",
+   "sha256_lf": "290149ef41f0dce8e78e108e30edf548e5698f3b0511f74f00233f6b5c57feb9",
+   "git_blob_sha1": "05497e56a9ba1b36199754e2c07b9a82964f34c2",
+   "bytes": 1282
+  },
+  "fit_run_config.json": {
+   "sha256": "209b0e356ddd96f68191d61f612ec79fa75ed71566cc9c89e5eb5c2054188003",
+   "sha256_lf": "3d30368acb6c3ed826960888229c41038656d7967fd05003ea7dd9e99688d415",
+   "git_blob_sha1": "bcdbe8f85673301a6558dc163c87264d5463f8be",
+   "bytes": 2679
+  },
+  "fit_items.jsonl": {
+   "sha256": "485ffe515e92ae8960992c910f5e347f6870e86cd96e656ace70a86ec7dada78",
+   "sha256_lf": "b44f36e8f26050495baec88cad1988063189bddd0c5c98c4e8c79133d4276fa2",
+   "git_blob_sha1": "a39eb2359e92ae544f5f567ae66f31843167fd67",
+   "bytes": 38111
+  },
+  "chunk_runner_run_gate_epred_chunk.py": {
+   "sha256": "5b627b127f3e6fd027a838122d43f9cad4d9c74f6d6f17d98d2e297476775857",
+   "sha256_lf": "c644c094b151178db850bab78154f68d99d3e2f88b0066e50040d859fd226a71",
+   "git_blob_sha1": "452455e9831825e26c112d9d29a656a77aff9876",
+   "bytes": 15919
+  }
+ },
+ "fit_code": {
+  "files": {
+   "exp_p2/gate/epred_fit.py": {
+    "sha256": "a23e97ac0ff95cfd9054f4533fb6212f1faaa080ca99152db5c8c48a7a106c52",
+    "sha256_lf": "c89700dbc3ba4da61f4f8ae681a5775d05e54cbbf3a86d05650e4151d5d29abc",
+    "git_blob_sha1": "8685835a9c3b3cfd377ce944c33e37a71ea716ea",
+    "bytes": 16335
+   },
+   "exp_p2/gate/theory.py": {
+    "sha256": "5c535a3bda759e0bc3ef7b888b8a773ce2d0cf077c2b515661fda0a9ae00ab46",
+    "sha256_lf": "5c535a3bda759e0bc3ef7b888b8a773ce2d0cf077c2b515661fda0a9ae00ab46",
+    "git_blob_sha1": "4d2b550016e4563eb3506eaf5ccfda4b6b168748",
+    "bytes": 3277
+   },
+   "tests/exp_p2/test_gate_epred_fit.py": {
+    "sha256": "904363204aeeaa99c38010530fed4cbd3d0caeba97d60b3c3d99572e77eadca8",
+    "sha256_lf": "8d7528bbb37b9f125f80c37d13baadfcee01f347343910861c6fa355cabad25f",
+    "git_blob_sha1": "db2c9db62250ed538aba52262841422046690d68",
+    "bytes": 10561
+   }
+  },
+  "seed_fingerprint": {
+   "root_seed": 20261028,
+   "name": "prop4_plugin",
+   "position": 19,
+   "analyses_prefix": [
+    "load_items",
+    "completeness_report",
+    "arm_y_z",
+    "exact_mcnemar",
+    "paired_boot_diff",
+    "primary",
+    "s_m",
+    "s_z",
+    "s_dn",
+    "s_d",
+    "s_d2",
+    "s_c",
+    "headroom_check",
+    "fap_check",
+    "split_replication",
+    "auroc",
+    "detection_contrast",
+    "wilcoxon_z",
+    "fusion",
+    "prop4_plugin"
+   ],
+   "child_state": [
+    1783527896,
+    1966023535,
+    2411529871,
+    3112732399
+   ]
+  },
+  "git_head": "34b480ae68d5f01ef68762b85cc7953968258540",
+  "note": "sha256 = working-tree bytes; sha256_lf = CRLF normalised to LF; git_blob_sha1 = git blob id of the LF form. Not edited after this freeze (AB.3 item 5)."
+ },
+ "selftest": {
+  "sign_matches_closed_form_and_is_m_free": true,
+  "no_flags_is_a_tie": true,
+  "perfect_gate_helps_when_corrupted_class_is_noisy": true,
+  "nonfinite_input_has_no_sign": true,
+  "vector_sign_equals_scalar_sign": true,
+  "planted_helpful_gate_gets_plus": true,
+  "planted_harmful_gate_gets_minus": true,
+  "absent_cells_are_counted": true,
+  "stability_is_deterministic": true,
+  "reachability_K5_can_reject_K4_cannot": true,
+  "o_star_rule": true,
+  "all_ok": true
+ },
+ "audit_record": {
+  "path": "research\\paper2\\prereg\\GATE-CODE-AUDIT-A3-PART1-2026-10-28.md",
+  "sha256": "26145a2a6b918536a1b5eb13fbb09e0f20241332b57f3505bdd95b158d234c61",
+  "sha256_lf": "26145a2a6b918536a1b5eb13fbb09e0f20241332b57f3505bdd95b158d234c61",
+  "git_blob_sha1": "4135818076ebf9734616899d118516bffa45eeea",
+  "bytes": 27933
+ },
+ "allow_dirty": false,
+ "dirty_files_at_freeze": [],
+ "reminder": "committed before the first M4 item (AB.3 item 5); no decision depends on this file or on the fit chunk (AB.3 item 6)"
+}

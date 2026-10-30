@@ -1,0 +1,81 @@
+% related.tex -- Section II (writer W1, 2026-10-30). Binding contract: paper2-tnnls/SPEC.md v2.2, section 3 row II.
+% Every citation is a verified key of paper2-tnnls/references.bib, used for at most the sentence its "supports" line in
+% research/paper2/tnnls/CITATION-AUDIT-2026-10-30.md allows (sections 1-2). The eight TNNLS papers: moser2025diffusion, yang2026malfm,
+% li2026tcpfmc, chen2025uncertainty, zhang2024informative, jiang2025resisting, wang2025conformal, qiu2025counterfactual.
+% Study 2's novelty sentence is written for Study 2 alone and scoped to the logged search (NOVELTY-AUDIT-LRF-2026-10-29.md sections 1,
+% 4, 5, 7); the audit's matched-filter sentence and its section-6 sentence are NOT used (F13). Lumina-DiMOO is not called masked
+% discrete diffusion (unverified). Muddit is named once with its published title (citation audit, open item 3).
+
+\section{Related Work}\label{sec:related}
+
+\paragraph*{Generative and likelihood scoring}
+Diffusion models are trained by maximising a variational lower bound on the data log-likelihood, as surveyed for continuous diffusion
+in image super-resolution~\cite{moser2025diffusion}, so a trained model can be read as a scorer of its own inputs.
+Text-to-image diffusion models have been used as zero-shot classifiers whose weights over diffusion timesteps are learned from held-out
+labelled data~\cite{clark2023zeroshot}, including with few labels~\cite{jeong2025diffusion}.
+For image-text matching, the conditional error has been normalised by the unconditional one~\cite{krojer2023diffusionitm}, and VQAScore
+scores alignment by the probability of ``Yes'' that an image-to-text model assigns to a question about the pair~\cite{lin2024vqascore}.
+In text, masked language models score a token with the token masked~\cite{salazar2020mlm,li2022uchecker}.
+The evidence used in this paper belongs to this family: a per-token log-likelihood ratio of the observed image codes under two captions,
+computed by the masked denoiser of a unified model.
+
+\paragraph*{Masked discrete diffusion and unified models}
+Absorbing-state discrete diffusion~\cite{austin2021d3pm,lou2024sedd} was simplified into masked diffusion language
+models~\cite{sahoo2024mdlm} and scaled~\cite{nie2025llada}; the denoiser of such a model represents the conditional distribution of a
+clean token given the unmasked context~\cite{ou2025radd}.
+MaskGIT generates image tokens by masked prediction~\cite{chang2022maskgit}, and unified text-image models place several modalities in one
+sequence~\cite{swerdlow2025unidisc,yang2025mmada,li2026omnidiffusion}, as does Muddit, published as ``Beyond text-to-image: Liberating
+generation with a unified discrete diffusion model''~\cite{shi2025muddit}.
+LaViDa adds a vision encoder to a diffusion language model~\cite{li2025lavida}, and Lumina-DiMOO is a further omni diffusion language
+model for multimodal generation and understanding~\cite{xin2025luminadimoo}.
+In this journal, discrete-diffusion image captioning has been studied in a setting where noise in the diffusion process weakens
+sentence information, and a feature-mask and gated-fusion design improves image-text alignment~\cite{yang2026malfm}.
+Many methods remask tokens that the sampler itself produced, by confidence, learned quality scores, or critics, including
+cross-modal confidence in multimodal masked diffusion models~\cite{wang2025remdm,zhai2026core,kim2025prism,schiff2026proseco,lezama2022tokencritic,ouyang2026freecorrection,le2026co2jump}.
+Work on damaged \emph{input} tokens is scarcer: Trust but Verify detects corrupted context tokens in a finetuned text-only masked
+diffusion model and refills them~\cite{jhingran2026trustverify}, and dropout decoding masks visual tokens that are uncertain under a
+logit-lens projection~\cite{fang2025dropout}.
+None of them reports a verification decision under image corruption in a unified masked diffusion model.
+
+\paragraph*{Reliability-aware and dynamic fusion}
+When evidence comes from sources of unequal quality, the classical combination rule weights each source by its
+reliability~\cite{chair1986optimal}, and classifier combination studies the rules for doing so~\cite{kittler1998combining}.
+In multimodal learning the weights change per input: dynamic, uncertainty-driven weighting of modalities has been analysed for
+low-quality data, with theory on when it is preferable to static weighting~\cite{zhang2023provable}. A recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced, and
+quality-varying settings~\cite{zhang2026lowquality}.
+Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
+methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential}.
+Papers in this journal take the same view: a per-modality confidence score (an energy score) lets the fusion rely less on low-quality
+modalities~\cite{li2026tcpfmc}; evidence theory quantifies the uncertainty of each prediction and fuses evidence across propagation
+depths~\cite{chen2025uncertainty}; evidential deep learning suppresses unreliable modality-wise pseudo-labels in audio-visual video
+parsing~\cite{jiang2025resisting}; and counterfactual samples in a shared multimodal latent space identify the input features that
+contribute to high predictive uncertainty~\cite{qiu2025counterfactual}.
+At a finer grain, attention-based multiple-instance pooling learns instance weights from instance features under a bag-level
+loss~\cite{ilse2018attention}, and a token weight has been derived from a model's logits with and without the image, as a training-time
+reweighting~\cite{xiao2024seeing}.
+For Study~2, the closest precedents are thus learned timestep weights~\cite{clark2023zeroshot,jeong2025diffusion}, instance weights
+under a bag-level loss~\cite{ilse2018attention}, and reliability weights of modalities or views~\cite{zhang2023provable,han2023trusted}.
+Token-level confidences of a captioning vision-language model, aggregated algebraically or by a learned estimator, have also been used to
+judge whether a caption is correct for its image~\cite{petryk2024token}; that work scores the caption's tokens given the image and does
+not study image corruption.
+To our knowledge, no earlier work learns per-token, caption-withheld weights for the log-likelihood-ratio evidence of a unified
+masked diffusion model and tests them on fresh images under image corruption.
+This statement is limited to a keyword search of arXiv and of title-level records of IEEE-published journals and proceedings, logged in
+October 2026; the search did not cover full texts, the pages of IEEE Xplore itself, or the submission lists of open-review venues.
+
+\paragraph*{Conformal risk control}
+Conformal prediction gives distribution-free guarantees under exchangeability~\cite{vovk2005algorithmic,angelopoulos2023gentle};
+conformal $p$-values give false-discovery control for outlier detection~\cite{bates2023outliers}, and conformal risk control bounds the
+expected value of a monotone loss~\cite{angelopoulos2024crc}.
+Conformal loss-controlling prediction, published in this journal, extends conformal prediction from miscoverage to a general loss for
+each test object, with a finite-sample guarantee under exchangeability~\cite{wang2025conformal}; Study~1 uses the expected-loss
+statement of conformal risk control instead.
+Conformal risk control has been applied, with masking-derived CLIPScore distributions and a threshold set on foil-labelled data,
+to flag erroneous caption words given an image~\cite{gomes2025crc}.
+
+\paragraph*{Corruption benchmarks and preregistration}
+Common-corruption benchmarks test models under non-adversarial image corruptions~\cite{hendrycks2019benchmarking}, and a
+corruption benchmark for object detection released an implementation of such corruptions at graded
+severities~\cite{michaelis2019imagecorruptions}, which Study~2 uses for its other noise types.
+Preregistration records the questions and the analysis plan before the outcomes are observed, which separates prediction from
+postdiction~\cite{nosek2018preregistration}; the form used here is defined in \cref{sec:setting-tests}.

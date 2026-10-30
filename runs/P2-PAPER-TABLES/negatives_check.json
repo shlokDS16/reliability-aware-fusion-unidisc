@@ -1,0 +1,19 @@
+{
+ "study1": {
+  "source": "runs/P2-GATE-FOLDS/folds.json",
+  "sha256": "450edb543779de7ee5e6a52422fd6507ef52f15ba3b956a8b05c2e561620f311",
+  "n_items": 500,
+  "n_with_flag": 500,
+  "n_category_disjoint": 500,
+  "n_fallback": 0
+ },
+ "study2": {
+  "source": "runs/P2-LRF-FOLD/folds_lrf.json",
+  "sha256": "a545a83ec881988cc81d40c3598fcb4be6292a59d2c835e4cce6e72d3d71f1de",
+  "n_items": 533,
+  "n_with_flag": 533,
+  "n_category_disjoint": 533,
+  "n_fallback": 0
+ },
+ "note": "neg_restricted True = the negative caption comes from an image sharing no annotated COCO category with the item (exp_p2/gate/folds.py assign_negatives); False = fallback (any other item with a different caption). Computed 2026-10-30 for the manuscript (audit N6); descriptive."
+}

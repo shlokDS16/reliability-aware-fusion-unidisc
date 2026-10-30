@@ -1,0 +1,23 @@
+{
+ "written": "2026-10-29 22:42 IST",
+ "written_by": "Paper 2 lead (A6.0 item 2 row); before any L1 or LG output is scored",
+ "source": "runs/P2-LRF-FROZEN-LFIX/HASHES.json and spec.json (committed); entry points LF-normalised at code pin 1871fe7d (card row A-8)",
+ "model_sha256": "db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37",
+ "spec_sha256": "9d196d7189dc5b6a2d6d80ed694314c6ed323cac59b0300c42c073a6e40db4b5",
+ "code_sha256": {
+  "data.py": "14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b",
+  "families.py": "1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e",
+  "lrf.py": "03ed472e1a3cd8bb2dc41f4a59d7b48f1561cd883012ac4434e08a5c37b9d6ec",
+  "run.py": "01c8dba6de377b18e5b483c2afb0b406ba6e38fd60c4ac3a896f4d4e245f767c"
+ },
+ "scoring_code_sha256": "63f7096141638869fdcbc483a8902bae225503db95edc73f9569614645a85145",
+ "entry_points": {
+  "exp_p2/run_gate_m4.py": "e2d9a5ee9ceb2d33124de8cc1aeac4c84f5d6abbd7eccb59a0926eca527dab9f",
+  "exp_p2/run_gate_lrf_rescore.py": "ff34c2b631c924e94d8f0ad95ca02fadd125a49829d30d31657f95f562140322",
+  "exp_p2/gate/lrf_score.py": "63f7096141638869fdcbc483a8902bae225503db95edc73f9569614645a85145"
+ },
+ "decision_rule": "Y = 1[sum_j w_j * Delta_j > 0]; tie = wrong; non-finite feature, weight, score or margin = error",
+ "codebook_sha256": "ff15b9b5b362dc80f8a18f6e852e6e99478c0e8885646735ed16d1d80e3ae50b",
+ "di_sha256": "f7744253a1b997b8b9f28d9b91348e8371f1ea1e3564f6c8bfc2f10aa5b42176",
+ "note": "run_gate_m4.py differs from the freeze-time record (725a1b5a) only by the audited self-check fix of card row A-8; lrf_score.py and run_gate_lrf_rescore.py are byte-identical to the freeze-time record"
+}
