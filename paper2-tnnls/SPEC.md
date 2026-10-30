@@ -64,6 +64,10 @@ Capitalisation per the IEEE Editorial Style Manual (the writer checks prepositio
 
 ## 2. Abstract (RS-5)
 
+RULED (statistician, research/paper2/tnnls/ABSTRACT-RULING-2026-10-30.md, rows R1-R12): use its candidate with fallback F4 (names the
+estimand of the L-NI interval, "of the net change"); if an edit exceeds 250 words, fallback F1 (alpha clause to Results) first. The
+red team countersigns that the merged opening scope is scope, not a link sentence (else F3). The text below is the earlier plan.
+
 Skeleton and word counts: `paper2-tnnls/drafts/abstract-skeleton-v1.md` (295 words full, 290 merged; over 250). The statistician rules in
 a dated row which binding sentences may be shortened or moved to the body to reach at most 250 words (no writer choice). Order: setting
 (one sentence), Study 1 (gate description, NEG sentence, "This does not show that the gate has no effect"), Study 2 (L1 sentence with the
@@ -116,7 +120,10 @@ Scripts in `paper2-tnnls/scripts/` read only committed runs; outputs in `paper2-
 - **Table II** Study 2: L1, L3, L4 (Holm), L-NI, L-LEN, LG x3: accuracy without/with LRF, b, c, net, CI, one-sided p, Holm p where
   applicable, two-sided p, decision.
 - **Table III** reference encoders (CLIP ViT-L/14, SigLIP so400m): accuracy per condition and paired drop with 95% CI, their cost, the A6.6
-  caption sentence, the pixel-parity result. Requires the RS-12 gate-auditor verdict first.
+  caption sentence, the pixel-parity result citing BOTH runs/P2-LRF-BASELINES-PARITY-L1 and -LG (and explaining the main run's stale
+  "pixel_parity: not run" field); the clean accuracy on the same 300 items printed beside the LG cells (computed into a runs file); cost
+  "not measured" unless a named timing run exists; no robustness reading (cells at ceiling, CIs degenerate). RS-12 MET: gate-auditor PASS
+  WITH FIXES, research/paper2/prereg/GATE-AUDIT-BASELINES-PARITY-2026-10-30.md.
 - **Table (Study 2)** LRF feature groups (by formula). **Table (Study 2)** cost (NONE as only reference).
 Bold convention: a cell is bold only when its preregistered test rejected at its preregistered level; no underline; no ranking.
 
@@ -151,9 +158,9 @@ image ids not collected; zero effect); D0087 committed after the H3 driver start
 test-only); env-lock files empty in M1, M4, RESCORE, L1, LG (environment recorded after the runs, runs/P2-ENV/pip-freeze-2026-10-30.txt;
 imagecorruptions commit verified from the venv); arrays untracked (SHA-256 manifests committed); CRLF and LF hash forms (both refer to the
 same content); parity files moved unchanged from a wrong output directory; baselines.json "pixel_parity: not run" superseded by the
-PARITY runs; CLIP/SigLIP download 5.0 GB against 2-4 GB quoted to Shlok; D0094 (what the lead had seen before the re-freeze); "no output
-read before its run completed" rests on the operations log; Tier-3 ablation added at writing (section 6); any exact bound added at
-writing (Table I). [CONFIRM-EVENING-2026-10-28.md s18; gate audits L and LG; card rows A-5 to A-9]
+PARITY runs; no hash of the parity files was taken before the move (audit-time SHA-256s recorded in the baselines audit); CLIP/SigLIP download 5.0 GB against 2-4 GB quoted to Shlok; D0094 (what the lead had seen before the re-freeze); "no output
+read before its run completed" rests on the operations log; Tier-3 ablation added at writing (section 6); the exact Clopper-Pearson bounds of Table I
+added at writing (runs/P2-PAPER-BOUNDS, descriptive). [CONFIRM-EVENING-2026-10-28.md s18; gate audits L and LG; card rows A-5 to A-9]
 
 ## 9. Reproducibility paragraph and "preregistered" (F16)
 

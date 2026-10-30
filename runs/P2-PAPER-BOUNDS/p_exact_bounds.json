@@ -1,0 +1,44 @@
+{
+ "meta": {
+  "label": "added at writing, descriptive; not preregistered",
+  "method": "Clopper-Pearson exact, two-sided 95 percent",
+  "script_sha256": "2bad3d3b272731dd9e2c5a086b8008ab994ac791ac8c4b8b8ea2b6e0dc15bb4e",
+  "source": "runs\\P2-GATE-M4\\analysis.json",
+  "source_sha256": "4467a15a9e4f40472357b210a34a12a7f02fab2194d035dd21cf74bc0e2dbdb2"
+ },
+ "per_corruption": {
+  "jpeg": {
+   "b": 0,
+   "bound_abs_net_change_95": 0.011092,
+   "c": 1,
+   "cp95_discordance": [
+    5.1e-05,
+    0.011092
+   ],
+   "n": 500,
+   "n_d": 1
+  },
+  "noise": {
+   "b": 0,
+   "bound_abs_net_change_95": 0.007351,
+   "c": 0,
+   "cp95_discordance": [
+    0.0,
+    0.007351
+   ],
+   "n": 500,
+   "n_d": 0
+  },
+  "splice": {
+   "b": 1,
+   "bound_abs_net_change_95": 0.020356,
+   "c": 3,
+   "cp95_discordance": [
+    0.002184,
+    0.020356
+   ],
+   "n": 500,
+   "n_d": 4
+  }
+ }
+}
