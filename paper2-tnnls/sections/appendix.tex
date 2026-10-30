@@ -40,13 +40,8 @@ If $\gamma_{01}\ge0$ the mixed term is at most $0$ as well, while the right side
 $\rho\sigma_c^2(\rho m-1)(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ and $2\rho(1-\rho)m\sigma\sigma_c(1-\phi_0)(\phi_1-\phi_0)$, both positive when
 $\phi_1>\phi_0$ and $\rho m>1$, and the right side does not depend on $\gamma_1$ or $\gamma_{01}$.
 For fixed $\phi_1>\phi_0$ the $\gamma_1$ term grows without bound with $(\rho m-1)\gamma_1$, which gives the limit.
-With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, \cref{eq:snrcorr} reads
-$Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
-$b(\phi_0;G,\chi)=\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$), the curve of
-\cref{fig:frontier}; as $G\to0$ it tends to the boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of \cref{eq:snr}.
-(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms.
-% run: runs/P2-THEORY-CHECK/output.txt (check D4: min eigenvalue 0.9500; SNR none 0.4892, gate (0.3, 0) 0.5080)
-An instance with a positive definite covariance is $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$, $\mu=0.1$, $\mu_c=0$,
-$\sigma^2=\sigma_c^2=1$: the smallest eigenvalue of the correlation matrix is 0.9500, and the ratio rises from 0.4892 without a gate to
-0.5080 with the gate $(\phi_0,\phi_1)=(0.3,0)$. The instance illustrates the algebra and is not an estimate from the model.
+With $\gamma_{01}=0$ the condition is a quadratic inequality in $\phi_1-\phi_0$ whose root is the curve $b(\phi_0;G,\chi)$ of
+\cref{fig:frontier} (closed form in supplement S-II).
+(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms; a
+numerical instance with a positive definite covariance is in supplement S-II.
 (v) $m$ enters \cref{eq:snrcorr} through $\rho m-1$ and $m$ whenever $\gamma_1\neq0$ or $\gamma_{01}\neq0$. \qed

@@ -69,7 +69,7 @@ blocks.append(rows)
 # ---- B --------------------------------------------------------------------------------------------------------------------------------
 t = FB["test"]
 blocks.append([row(["B", "Foil pairs, clean images", r"accuracy, two-way fusion $-$ text direction", str(t["n"]), num(t["delta"]), iv(*t["ci95"]),
-                    f"not rejected, $p={pv(t['p'])}$; fusion did not beat the text direction"],
+                    f"not rejected, $p={pv(t['p'])}$; no gain over the text direction detected"],
                    [f"{MF} test.{{n,delta,ci95,p}}, combination_beat_best_single (= false), best_direction (= T)"])])
 # ---- H (decision only) ------------------------------------------------------------------------------------------------------------------
 blocks.append([row(["H", "Three corruptions", "decision fields only", "--", "--", "--", "H-NOGO: not tested; downstream claim withdrawn"],

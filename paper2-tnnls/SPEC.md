@@ -144,8 +144,8 @@ Study 2: one model, one dataset, one severity; LRF was trained on the tested cor
 new images, not a new corruption; no preregistered test separates corruption-specific weighting from a generic gain (clean and splice
 estimates were also positive); the title's "under Gaussian noise" names the tested condition, not a specificity; L4's Holm p is 0.049; the
 impulse cell's two-sided p is 0.058; the clean-image margin was fixed after an exploratory clean interval was seen; unknown overlap of COCO
-with UniDisc, CLIP and SigLIP pretraining; one corruption realisation and one mask seed per image; the A-8 residual (up to about 1.5% of
-tokens can differ between processes); the reference encoders almost solve this matching task ("This paper makes no claim of a competitive
+with UniDisc, CLIP and SigLIP pretraining; one corruption realisation and one mask seed per image; the A-8 residual (self-check token agreement 0.988 and 0.989 in the failed L1 starts and at least 0.986 in the parity runs; runs files;
+agreement between processes); the reference encoders almost solve this matching task ("This paper makes no claim of a competitive
 verifier"); no ablation was preregistered (section 6 is exploratory). Both: the preregistration is self-hosted (rule 9); audits were
 agent-run (rule 6).
 

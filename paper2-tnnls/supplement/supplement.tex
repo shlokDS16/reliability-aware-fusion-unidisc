@@ -199,6 +199,21 @@ Raw logits are returned before the step that copies observed positions & \texttt
 \end{tabular}
 \end{table}
 
+\subsection{Protocol details of Study 1 (moved from the main paper, Sections IV-A and IV-B)}\label{sup:protocol1}
+% Moved verbatim from paper2-tnnls/sections/study1.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
+% run: design constants of research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md and SAP (rungs, thresholds T >= 2.0, n_v >= 90, rules R1-R3, alpha 0.05)
+Each realistic corruption has two rungs, walked in order: JPEG quality~10, then~5; Gaussian noise with $\sigma=0.10$, then $0.20$; a
+pixel splice of $128$, then $192$~px.
+A rung passes if the size-normalised evidence $\bar\Delta/s$ falls under corruption and recovers under the changed-code gate, which keeps
+exactly the tokens whose code did not change (paired $t\ge2.0$ for both, $n_v\ge90$ items).
+The first passing rung is the operating point.
+The largest headroom discordance $D^\ast$ between the changed-code gate and no gate then sets the test size: 300 items if $D^\ast\ge29$
+(rule R1), 500 items if $18\le D^\ast<29$ (R2), and a switch of endpoint if $D^\ast<18$ (R3).
+% run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md (design value; assumed discordance 0.10, not observed)
+The design minimum detectable net gain at $n=300$ was 0.053 unadjusted, under an assumed discordance of 10\,\%.
+Ties of the suspicion scores from \texttt{bf16} logits are broken by an independent uniform jitter smaller than the smallest gap between
+distinct calibration scores.
+
 \subsection{Disclosures of Addendum A4}
 (1) The five Tier-3 comparators and their parameters (S-II) were fixed in Addendum A4, whose draft (\texttt{40828e96}) and revision r1
 (\texttt{f1671c91}) were committed before the headroom decision file of the main run was written; the addendum's author states that no
@@ -545,6 +560,27 @@ The share of re-infilled positions whose code equals the original clean code was
 restoration).
 The sensitivity analysis on the first 150 items was not rejected in either cell.
 
+\subsection{Family B: fit pairs and minimum detectable gain}
+% Moved verbatim from paper2-tnnls/sections/study1.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
+% run: runs/P2-GATE-FOIL/analysis.json:fit.{n_fit,best,best_acc} (239 fit pairs; text direction 0.887 < 0.95, so testable)
+On the 239 fit pairs the better direction was the text direction (accuracy 0.887, below the untestable ceiling of 0.95).
+% run: runs/P2-GATE-FOIL/analysis.json:mde_at_achieved_n.by_pi_d.0.1 (= 0.054; assumed discordance 0.10); test.n (= 298)
+The minimum detectable net gain at the test $n$ of 298 pairs is 0.054 at an assumed discordance of 0.10.
+
+\subsection{Correlated-token proposition of the main paper: closed-form frontier and a numerical instance}
+% Moved verbatim from paper2-tnnls/sections/appendix.tex (proof of the main paper's Proposition 2, items (iii) and (iv)) by the clarity
+% editor (edit 1, 2026-10-30); numbers unchanged. Theory under stated assumptions, not validated on UniDisc; not used in Study 2.
+This subsection completes items (iii) and (iv) of the proof in Appendix A of the main paper, in its notation; it is theory under stated
+assumptions, not validated on UniDisc, and is not used in Study~2.
+With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, the condition of the proposition reads
+$Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
+$b(\phi_0;G,\chi)=\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$), the curve of
+Fig.~2 of the main paper; as $G\to0$ it tends to the boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of the independent-token condition.
+% run: runs/P2-THEORY-CHECK/output.txt (check D4: min eigenvalue 0.9500; SNR none 0.4892, gate (0.3, 0) 0.5080)
+An instance with a positive definite covariance is $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$, $\mu=0.1$, $\mu_c=0$,
+$\sigma^2=\sigma_c^2=1$: the smallest eigenvalue of the correlation matrix is 0.9500, and the ratio rises from 0.4892 without a gate to
+0.5080 with the gate $(\phi_0,\phi_1)=(0.3,0)$. The instance illustrates the algebra and is not an estimate from the model.
+
 \subsection{Cost of Study 1}
 \begin{table}[!htbp]
 \centering
@@ -866,6 +902,30 @@ Splice, 128 px & 0.896 & 0.893 & 0 & 1 \\
 recorded. Source: \nolinkurl{runs/P2-LRF-L1/items.jsonl}, \nolinkurl{runs/P2-LRF-LG/items.jsonl}.}
 \end{table}
 
+\subsection{Weight-model search, caption-slot checks and the full feature table (moved from the main paper, Section V-B)}\label{sup:lrfdetail}
+% Moved verbatim from paper2-tnnls/sections/study2.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
+% run: runs/P2-LRF-FROZEN-LFIX/spec.json:hpo.method (random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds); epochs (= 40)
+Nine configurations of $(Q,\lambda,\text{learning rate})$ were drawn at random and pruned by synchronous successive halving (factor 3; 4,
+13 and 40 epochs) on three inner folds of the 500 design items.
+% run: runs/P2-LRF-FROZEN-LFIX/spec.json:rescore_checks.{invariance_max_abs_diff (= 0.0), positive_control_max_abs_diff (= 0.0), n_check (= 5)}
+On five items under four conditions the caption-masked scores were identical whether the slot was built from the true caption, the wrong
+caption or padding, and the scorer reproduced the stored values at the true length (maximum absolute difference 0 in both checks).
+\Cref{stab:features} gives every feature by name and formula; the main paper's Table IV groups them.
+
+\begin{table}[!htbp]
+\centering
+\caption{Input Features of the Frozen Weight Model, by Name, Group and Formula}
+\label{stab:features}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\input{../tables/tab_features}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize 35 features in seven groups; names, order and counts as in \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json}
+(\nolinkurl{features}). $B_j$ and $D_j$ use the notation of Section III of the main paper. Source of the formulas:
+\nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer}.}
+\end{table}
+
 %======================================================================================================================================
 \section{Symbol Crosswalk}\label{sup:crosswalk}
 \begin{table}[!htbp]
@@ -919,5 +979,37 @@ No committed run recorded a timing for the encoders, so their cost per item is n
 This section is exploratory and was added after the primary, family~H and Study~2 results; no ablation was preregistered.
 \todo{RESULT: exploratory ablation in full (single-source refits, knockouts, seed spread), with the mandatory sentences of
 research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8 and the numbers of runs/P2-LRF-ABL-SCORE/ablation\_analysis.json}
+
+%======================================================================================================================================
+\section{Sources of the Main Paper's Figures and Tables}\label{sup:sources}
+% Moved from the captions of the main paper by the clarity editor (edit 1, 2026-10-30); paths and keys unchanged.
+Every figure and table of the main paper is computed by a script in \nolinkurl{paper2-tnnls/scripts/} that reads only committed run files.
+\begin{itemize}
+\item Fig.~1 (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
+\item Fig.~2 (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
+and a curve ends where it reaches $\phi_1=1$ or has no root.
+\item Table I (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
+\nolinkurl{runs/P2-PAPER-BOUNDS/p_exact_bounds.json}.
+\item Fig.~3 (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{primary.per_corruption.*}; script
+\nolinkurl{paper2-tnnls/scripts/fig3_study1_P.py}.
+\item Table II (positive control): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
+\nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.
+\item Table III (token detection): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
+\nolinkurl{paired_q_vs_best_cheap.*}.
+\item Table IV (feature groups): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{features});
+\nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer}; full table in
+\cref{stab:features}.
+\item Fig.~4 (frozen weight model): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}},
+\nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,2}.npz} (SHA-256 checked against \nolinkurl{arrays_manifest.json}); computed values in
+\nolinkurl{runs/P2-PAPER-FIGS/}; script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of panel (a) runs between
+the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
+\item Table V (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
+\nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
+\item Fig.~5 (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
+\nolinkurl{paper2-tnnls/scripts/fig5_study2_results.py}.
+\item Table VI (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});
+\nolinkurl{runs/P2-PAPER-TABLES/baselines_clean300.json}; revisions in \cref{sup:baselines}.\newline
+Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{runs/P2-LRF-BASELINES-PARITY-LG}.
+\end{itemize}
 
 \end{document}

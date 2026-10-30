@@ -14,8 +14,8 @@ in image super-resolution~\cite{moser2025diffusion}.
 A trained likelihood model can therefore be read as a scorer of its own inputs.
 A text-conditional diffusion model classifies zero-shot by comparing the conditional denoising error across candidate
 labels~\cite{li2023diffusionclassifier}.
-Text-to-image diffusion models have been used as zero-shot classifiers whose aggregation weights over diffusion timesteps are learned
-from held-out labelled data~\cite{clark2023zeroshot}, and learned timestep weights have been shown with few labels~\cite{jeong2025diffusion}.
+Text-to-image diffusion models have been used as zero-shot classifiers whose weights over diffusion timesteps are learned from held-out
+labelled data~\cite{clark2023zeroshot}, also with few labels~\cite{jeong2025diffusion}.
 For image-text matching, the conditional error has been normalised by the unconditional one~\cite{krojer2023diffusionitm}, and VQAScore
 scores alignment by the probability of ``Yes'' that an image-to-text model assigns to a question about the pair~\cite{lin2024vqascore}.
 In text, masked language models score a token with the token masked~\cite{salazar2020mlm,li2022uchecker}.
@@ -50,18 +50,16 @@ static weighting~\cite{zhang2023provable}, and a recent survey organises fusion 
 quality-varying settings~\cite{zhang2026lowquality}.
 Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
 methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential}.
-Several papers in this journal take the same view.
-A per-modality confidence score (an energy score) lets the fusion rely less on low-quality modalities~\cite{li2026tcpfmc}, and evidence
-theory quantifies the uncertainty of each prediction and fuses evidence across propagation depths~\cite{chen2025uncertainty}.
-Evidential deep learning suppresses unreliable modality-wise pseudo labels in audio-visual video parsing~\cite{jiang2025resisting}, and
-counterfactual samples in a shared multimodal latent space identify the input features that contribute to high predictive
-uncertainty~\cite{qiu2025counterfactual}.
+Papers in this journal take the same view: a per-modality confidence score (an energy score) lets the fusion rely less on low-quality
+modalities~\cite{li2026tcpfmc}, evidence theory quantifies the uncertainty of each prediction and fuses evidence across propagation
+depths~\cite{chen2025uncertainty}, evidential deep learning suppresses unreliable modality-wise pseudo labels in audio-visual video
+parsing~\cite{jiang2025resisting}, and counterfactual samples in a shared multimodal latent space identify the input features that
+contribute to high predictive uncertainty~\cite{qiu2025counterfactual}.
 At a finer grain, attention-based multiple-instance pooling learns instance weights from instance features under a bag-level
 loss~\cite{ilse2018attention}, and a token weight has been derived from a model's logits with and without the image, as a training-time
 reweighting~\cite{xiao2024seeing}.
-For Study~2, the closest precedents are therefore learned aggregation weights over diffusion timesteps~\cite{clark2023zeroshot,jeong2025diffusion},
-instance weights learned under a bag-level loss~\cite{ilse2018attention}, and reliability weights at the level of modalities or
-views~\cite{zhang2023provable,han2023trusted}.
+For Study~2, the closest precedents are thus learned timestep weights~\cite{clark2023zeroshot,jeong2025diffusion}, instance weights
+under a bag-level loss~\cite{ilse2018attention} and reliability weights of modalities or views~\cite{zhang2023provable,han2023trusted}.
 To our knowledge, no earlier work learns per-token, caption-withheld weights for the log-likelihood-ratio evidence of a unified
 masked diffusion model and tests them on fresh images.
 This statement is limited to a keyword search of these literatures that we logged in October 2026, which did not reach the submission
@@ -81,5 +79,5 @@ to flag erroneous caption words given an image~\cite{gomes2025crc}.
 Common-corruption benchmarks test models under non-adversarial image corruptions~\cite{hendrycks2019benchmarking}, and a
 corruption benchmark for object detection released an implementation of such corruptions at graded
 severities~\cite{michaelis2019imagecorruptions}, which Study~2 uses for its other noise types.
-Preregistration fixes the questions and the analysis plan before the outcomes are observed, which separates prediction from
+Preregistration records the questions and the analysis plan before the outcomes are observed, which separates prediction from
 postdiction~\cite{nosek2018preregistration}; the form used here is defined in \cref{sec:setting-tests}.

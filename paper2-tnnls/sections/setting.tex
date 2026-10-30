@@ -18,13 +18,11 @@ $m=1\,024$ tokens, each one of 16\,384 codes; captions have 5 to 32 text tokens.
 The network $p_\theta$ maps a partly masked sequence to a categorical distribution at every masked position.
 The backbone runs in \texttt{bf16}, and every log-probability is a 32-bit log-softmax of the logits restricted to the vocabulary of the
 scored modality.
-
 UniDisc's denoiser has no time input in the released configuration: time conditioning is off, the official inference configuration
 passes a null noise level, the backbone builds no timestep embedder without time conditioning, and the released checkpoint contains no
 time-embedding weights; the scorer uses the authors' null-sigma inference path.
 This is a property of the released configuration and checkpoint, read in the authors' code at a pinned commit, and not a statement about
-UniDisc in general.
-The file-and-line evidence and the limits of the accompanying key check are in supplement S-I (time-input table).
+UniDisc in general (evidence and limits in supplement S-I).
 
 \subsection{Per-Token Evidence and the Unweighted Decision}\label{sec:setting-evidence}
 Write $\tilde v=(\tilde v_1,\dots,\tilde v_m)$ for the observed, possibly damaged image tokens, $c^+$ for the true caption and $c^-$ for a
@@ -47,11 +45,10 @@ S=\sum_{j=1}^{m}\Delta_j,\qquad Y=\ind\big[S>0\big],
 with a tie counted as wrong.
 Image-text verification accuracy is the mean of $Y$ over the items of a test set, and a net accuracy change is the accuracy of the rule
 under test minus that of \eqref{eq:sum} on the same items, so a positive value favours the rule under test.
-The caption-visible passes are the only inputs of $\Delta_j$; the scores that the two studies compute with the caption masked are
-written $B_j$ and $D_j$.
-$D_j=\log p_\theta(\tilde v_j\mid\text{all tokens masked})$ is the position marginal, and $B_j$ is the log-probability of $\tilde v_j$
-when the tokens of its group in a random partition of the image positions are masked, the rest of the image is visible and the caption
-is masked.
+The caption-visible passes are the only inputs of $\Delta_j$.
+Two scores are computed with the caption masked: the position marginal $D_j=\log p_\theta(\tilde v_j\mid\text{all tokens masked})$,
+and $B_j$, the log-probability of $\tilde v_j$ when the tokens of its group in a random partition of the image positions are masked and
+the rest of the image is visible.
 \Cref{eq:delta,eq:sum} are the whole shared measurement; \cref{fig:measurement} draws it.
 
 \subsection{Corruptions}\label{sec:setting-corruptions}
