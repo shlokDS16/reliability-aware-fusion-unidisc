@@ -1,5 +1,5 @@
 % main.tex -- Paper 2, IEEE Transactions on Neural Networks and Learning Systems (Full Paper), IEEEtran journal mode.
-% Build skeleton created 2026-10-29. NO PAPER CONTENT: every section is an \input stub with TODO comments.
+% Build skeleton created 2026-10-29; restructured 2026-10-30 to paper2-tnnls/SPEC.md v2.2 (binding contract for all content).
 % Requirements and their sources: research/paper2/tnnls/TNNLS-CHECKLIST-2026-10-29.md  (read it before editing the layout).
 %
 % Switches (set near the top of this file):
@@ -14,11 +14,10 @@
 
 % ---- switches -----------------------------------------------------------------------------------
 \newif\ifanon      \anontrue
-\newif\ifplaceholder \placeholdertrue
+\newif\ifplaceholder \placeholderfalse
 
 % ---- packages -----------------------------------------------------------------------------------
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}                 % Type 1 fonts, embedded in the PDF (journal requires all fonts embedded)
+% No font package: IEEEtran sets Times (ptm, Type 1, embedded), as in IEEE's bare_jrnl_new_sample4.tex (lmodern removed 2026-10-30).
 \usepackage{amsmath,amssymb,amsthm}  % IEEE Mathematics Guide: numbered equations, consecutive numbering
 \usepackage{mathtools}
 \usepackage{graphicx}
@@ -75,8 +74,8 @@
 \begin{document}
 
 % ---- title and authors ---------------------------------------------------------------------------
-% TODO(title): descriptive, no "new"/"novel", no maths symbols, Title Case (checklist section 2). Working title placeholder only.
-\title{[AUTHOR: title, to be set when the method and claim are frozen]}
+% Title: SAP A6.12 branch A, fixed; only capitalisation set to IEEE title case (SPEC section 1; D0092). Do not edit the words.
+\title{Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under Gaussian Noise in a Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc}
 
 \ifanon
   \author{Anonymous authors for double-anonymous review%
@@ -91,7 +90,7 @@
   \thanks{[AUTHOR: ORCID of each author is entered in the Author Portal; it is not printed in the PDF unless the template asks.]}}
 \fi
 % IEEEtran journal mode: running head (page numbers sit in the head). Anonymous build keeps the head free of author names.
-\markboth{IEEE Transactions on Neural Networks and Learning Systems}{Anonymous: [AUTHOR: short title]}
+\markboth{IEEE Transactions on Neural Networks and Learning Systems}{IEEE Transactions on Neural Networks and Learning Systems}   % no invented short title (D0092)
 
 \maketitle
 
@@ -107,15 +106,13 @@
 \end{IEEEkeywords}
 
 % ---- body ----------------------------------------------------------------------------------------
-\input{sections/introduction}      % I   Introduction
-\input{sections/related}           % II  Related Work
-\input{sections/preliminaries}     % III Preliminaries
-\input{sections/method}            % IV  Method
-\input{sections/theory}            % V   Theory
-\input{sections/setup}             % VI  Experimental Setup
-\input{sections/results}           % VII Results
-\input{sections/discussion}        % VIII Discussion and Limitations
-\input{sections/conclusion}        % IX  Conclusion
+\input{sections/introduction}      % I   Introduction (writer W1)
+\input{sections/related}           % II  Related work (W1)
+\input{sections/setting}           % III Shared setting: unweighted sum only (W1)
+\input{sections/study1}            % IV  Study 1: masked-likelihood token gating with conformal risk control (W2)
+\input{sections/study2}            % V   Study 2: learned reliability-aware fusion of token evidence (W2)
+\input{sections/discussion}        % VI  Discussion, Limitations, Deviations (W1)
+\input{sections/conclusion}        % VII Conclusion (W1)
 
 % ---- appendix (counts toward the 15-page limit; put long material in supplement/supplement.tex instead) ----
 \appendices
