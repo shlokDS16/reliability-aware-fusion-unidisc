@@ -83,11 +83,13 @@
 \else
   % Camera-ready / non-anonymous: first footnote carries dates, corresponding author, FULL financial support, affiliations, e-mails.
   % TODO: add \IEEEmembership{Member, IEEE} after a name only if that author is an IEEE member (affiliate grades are not listed).
-  \author{Shlok~Kumar~Goenka and [AUTHOR: supervising professor, full name]%
-  \thanks{[AUTHOR: funding statement or ``This research received no external funding.'']}%
-  \thanks{(Corresponding author: [AUTHOR: corresponding author].)}%
-  \thanks{The authors are with [AUTHOR: school or department], Vellore Institute of Technology, Vellore 632014, Tamil Nadu, India (e-mail: [AUTHOR: e-mails]).}%
-  \thanks{[AUTHOR: ORCID of each author is entered in the Author Portal; it is not printed in the PDF unless the template asks.]}}
+  % Authors as in Paper 1 (Shlok, chat 2026-10-30: "Same as paper 1 author details"; Paper 1 release/.zenodo.json and main.tex): D0104.
+  \author{Shlok~Goenka, Subramaniyaswamy~Vairavasundaram, and Balaji~G~N%
+  \thanks{This work was supported by Vellore Institute of Technology (VIT), Vellore, India.}%
+  \thanks{(Corresponding author: \todo{AUTHOR: corresponding author, as for Paper 1}.)}%
+  \thanks{The authors are with the School of Computer Science and Engineering, Vellore Institute of Technology, Vellore 632014, Tamil Nadu,
+  India (e-mail: shlok.goenka2023@vitstudent.ac.in; subramaniyaswamy.v@vit.ac.in; balaji.gn@vit.ac.in).}}
+  % ORCIDs are entered in the IEEE Author Portal (mandatory for every author); they are not printed in the PDF.
 \fi
 % IEEEtran journal mode: running head (page numbers sit in the head). Anonymous build keeps the head free of author names.
 \markboth{IEEE Transactions on Neural Networks and Learning Systems}{IEEE Transactions on Neural Networks and Learning Systems}   % no invented short title (D0092)
@@ -117,10 +119,17 @@ Diffusion models, hypothesis testing, information fusion, multimodal learning.
 % ---- appendix: none. The proof of prop:snrcorr (former Appendix A, sections/appendix.tex) moved to supplement S-II
 % (lead decision, clarity edit 2, 2026-10-30); sections/appendix.tex is kept as a record and is not input.
 
+% ---- Acknowledgment (camera-ready only; IEEE heading, unnumbered; text from Shlok 2026-10-30, D0104) -----------------------------
+% Funding is in the first footnote, as IEEE requires ("listed here and not in the Acknowledgment"). AI use is NOT mentioned here
+% (Shlok's rule: AI only in the Declaration below). The anonymous review build omits the Acknowledgment.
+\ifanon\else
+\section*{Acknowledgment}
+The authors thank Vellore Institute of Technology, Vellore, for providing support to carry out this research work.
+\fi
+
 % ---- Declaration of Generative AI Use ------------------------------------------------------------
-% Shlok's rule: AI use is mentioned ONLY in this section, and there is NO Acknowledgment section.
-% IEEE's rule (CIS Information for Authors K; Author Center submission policies) puts the disclosure in Acknowledgments and asks
-% for a citation to the AI system in the affected sections. The conflict is recorded as C2 in the checklist; not resolved here.
+% Shlok's rule: AI use is mentioned ONLY in this section (interim text D0101). IEEE's rule puts the disclosure in the Acknowledgment;
+% the conflict is recorded as C2 in the checklist.
 \input{sections/declaration}
 
 % ---- references ----------------------------------------------------------------------------------
