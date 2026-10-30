@@ -1,0 +1,168 @@
+{
+ "figure": "fig_qualitative",
+ "script": "paper2-tnnls/scripts/fig_qualitative.py",
+ "script_sha256": "3488219540cfa0767a769c6ac4a8615e49fe049f63f3e6c74b7076e81767e235",
+ "figstyle_sha256": "600aa0830a9d18f927f2455e721df7037fdba80c4e0df880867ac910681a929f",
+ "created_unix": 1793383611.4480217,
+ "cpu_only": true,
+ "purpose": "Qualitative figure (plan E4): three fresh-fold items under Gaussian noise 0.1, selected by a fixed rule; descriptive only",
+ "selection_rule": "first item in fold-file order (smallest idx in runs/P2-LRF-L1/predictions.jsonl, condition noise0.1) of each kind; decisions are the primary-negative fields y_none and y_lrf (not the _L length-matched fields)",
+ "kinds": [
+  {
+   "kind": "i",
+   "definition": "NONE correct, LRF correct"
+  },
+  {
+   "kind": "ii",
+   "definition": "NONE wrong, LRF correct"
+  },
+  {
+   "kind": "iii",
+   "definition": "NONE correct, LRF wrong"
+  }
+ ],
+ "fold": {
+  "run": "P2-LRF-L1",
+  "folds_path": "runs/P2-LRF-FOLD/folds_lrf.json",
+  "fold_name": "test",
+  "n_items": 450,
+  "condition": "noise0.1",
+  "sigma": 0.1
+ },
+ "items": [
+  {
+   "kind": "i",
+   "kind_label": "NONE correct, LRF correct",
+   "n_items_of_this_kind_in_fold": 303,
+   "idx": 0,
+   "gid": 8000,
+   "coco_val2017_image_id": 335177,
+   "caption": "A round intersection on a surburban street with one floor homes.",
+   "neg_caption": "A kitchen has an island, icebox, and sink in it.",
+   "fields": {
+    "y_none": 1,
+    "y_lrf": 1,
+    "m_none": 0.34987707156687975,
+    "m_lrf": 0.2903878438367844,
+    "y_none_L": 1,
+    "y_lrf_L": 1,
+    "m_none_L": 0.19317571027204394,
+    "m_lrf_L": 0.2925503632490495,
+    "w_sum": 11.616241979138717,
+    "w_mean": 0.011343986307752654
+   },
+   "sum_delta": 358.27412128448486,
+   "sum_w_delta": 3.373215461808433,
+   "w_min": 1.276009968898116e-08,
+   "w_max": 0.8465095665988388,
+   "delta_min": -1.8404912948608398,
+   "delta_max": 3.6458845138549805,
+   "array": "runs/P2-LRF-L1/arrays/item0000.npz",
+   "array_sha256": "b5428347e47ed46cfbb891347d57f62f08061fed3effa1c9ac11a6840e755b89",
+   "noisy_pixels_sha256": "e8d2f1b0b2df93e9d8d661f534e3fce615f6859751b5a910833adbc30b26472c",
+   "clean_pixels_sha256": "12ec2197eb65ba139bf06dc19056016c26a73de01f52154a6a2a41a85bade91b"
+  },
+  {
+   "kind": "ii",
+   "kind_label": "NONE wrong, LRF correct",
+   "n_items_of_this_kind_in_fold": 58,
+   "idx": 1,
+   "gid": 8001,
+   "coco_val2017_image_id": 520324,
+   "caption": "A small airplane sitting next to an airport runway.",
+   "neg_caption": "A white sheep standing on top of a dirt road.",
+   "fields": {
+    "y_none": 0,
+    "y_lrf": 1,
+    "m_none": -0.21083191689103842,
+    "m_lrf": 0.04116938847515237,
+    "y_none_L": 1,
+    "y_lrf_L": 1,
+    "m_none_L": 0.02809354802593589,
+    "m_lrf_L": 0.15482004860771917,
+    "w_sum": 7.383754594837688,
+    "w_mean": 0.00721069784652118
+   },
+   "sum_delta": -215.89188289642334,
+   "sum_w_delta": 0.3039846613200641,
+   "w_min": 1.931820294575831e-09,
+   "w_max": 0.5097807688963146,
+   "delta_min": -1.8744821548461914,
+   "delta_max": 2.9458155632019043,
+   "array": "runs/P2-LRF-L1/arrays/item0001.npz",
+   "array_sha256": "411774a4e26a1e48301209746a82085703fea6ea56ac3c573584e3d4aa1d408c",
+   "noisy_pixels_sha256": "713ba4f3b5292bb558cd856dfc49de2967259e5b2440589c4519e644b50f5ea4",
+   "clean_pixels_sha256": "235c34183bb49ad41bda8a256d5bb52d55aed2535ccd72b8334ea4835c327700"
+  },
+  {
+   "kind": "iii",
+   "kind_label": "NONE correct, LRF wrong",
+   "n_items_of_this_kind_in_fold": 27,
+   "idx": 8,
+   "gid": 8008,
+   "coco_val2017_image_id": 224724,
+   "caption": "A woman is leaving a building in a city.",
+   "neg_caption": "A stop sign is shown among foliage and grass.",
+   "fields": {
+    "y_none": 1,
+    "y_lrf": 0,
+    "m_none": 0.018804614897817373,
+    "m_lrf": -0.044351287080538385,
+    "y_none_L": 1,
+    "y_lrf_L": 1,
+    "m_none_L": 0.10786081338301301,
+    "m_lrf_L": 0.052600981562528196,
+    "w_sum": 15.049553408748984,
+    "w_mean": 0.01469682950073143
+   },
+   "sum_delta": 19.25592565536499,
+   "sum_w_delta": -0.6674670636653213,
+   "w_min": 6.956357371514645e-10,
+   "w_max": 0.7513062728543292,
+   "delta_min": -2.016904354095459,
+   "delta_max": 1.6863994598388672,
+   "array": "runs/P2-LRF-L1/arrays/item0008.npz",
+   "array_sha256": "feed714b5272d380d847c73002b399492b5eaa5bc6569c4557bfef813707b0bf",
+   "noisy_pixels_sha256": "9f4b74afd42a5438f1e58e2e2eea6833c75ddd64c578b9ffc7a45250d5c1ed28",
+   "clean_pixels_sha256": "b14497c3fab9a774fe2e3262db338822cb38e68718a67b93a5bb3d1ebf700a52"
+  }
+ ],
+ "pixel_regeneration": {
+  "preprocess": "exp_p2.gate.suite.center_crop_512 (copy of UniScorer.preprocess)",
+  "corruption": "exp_p2.gate.corruptions.apply_pixel('noise', 0.1, pil, exp_p2.run_gate_m3.rung_rng(gid, 'noise', rung))",
+  "seed_root": 20261029,
+  "deterministic_twice": true,
+  "vq_token_parity_check": "NOT run (needs UniDisc VQ, GPU); same calls as run_gate_m4.build_conditions lines 183-185"
+ },
+ "weights": {
+  "source": "analysis_posthoc.learned_ceiling.lrf.infer_item on the stored arrays, frozen model runs/P2-LRF-FROZEN-LFIX",
+  "model_sha256": "db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37",
+  "recomputed_equal_to_stored": [
+   "y_none",
+   "y_lrf",
+   "m_none",
+   "m_lrf",
+   "w_sum",
+   "w_mean"
+  ]
+ },
+ "colour_scales": {
+  "delta": {
+   "cmap": "vermillion-white-blue (Okabe-Ito)",
+   "vmin": -1.9272223615646356,
+   "vmax": 1.9272223615646356,
+   "rule": "99th percentile of |Delta| pooled over the three maps",
+   "n_tokens_clipped": 31,
+   "n_tokens": 3072
+  },
+  "w": {
+   "cmap": "white-to-dark-green sequential",
+   "vmin": 0.0,
+   "vmax": 0.8465095665988388,
+   "norm": "PowerNorm gamma 0.5",
+   "rule": "0 to the largest weight of the three maps"
+  }
+ },
+ "caption_draft": "Descriptive; rows selected by a fixed rule written before the figure was made (first item of each kind in fold order); not evidence that the weights track reliability or corruption.",
+ "attribution": "COCO val2017 images (annotations CC BY 4.0; image licences per Flickr terms listed by COCO); ids in items[].coco_val2017_image_id"
+}
