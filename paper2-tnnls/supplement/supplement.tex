@@ -293,8 +293,7 @@ are recorded in the reference-encoder audit.
 \item ``No output was read before its run was complete'' rests on the operations log.
 \item The Tier-3 ablation (S-VII) was added at writing; no ablation was preregistered.
 % run: git commit 83ac79f8 (plan E1); runs/P2-LRF-DN/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt
-\item The denoiser comparison (S-VII, plan E1 in 
-olinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md}, commit 	exttt{83ac79f8}) was planned in a file committed before the run, and the run was made once, on the fresh-fold images, after the confirmatory results were known. The environment lock file of the denoiser run is empty, as for the earlier Study~2 stages; the environment record of item~3 is dated before that run.
+\item The denoiser comparison (S-VII, plan E1 in  \nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md}, commit \texttt{83ac79f8}) was planned in a file committed before the run, and the run was made once, on the fresh-fold images, after the confirmatory results were known. The environment lock file of the denoiser run is empty, as for the earlier Study~2 stages; the environment record of item~4 is dated before that run.
 \end{enumerate}
 
 %======================================================================================================================================
@@ -1191,7 +1190,7 @@ caption, or padding, and the scorer reproduced the stored values at the true len
 Any non-finite feature, weight, or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
 \Cref{stab:features} gives every feature by name and formula; Fig.~\ref{M-fig:lrf_weights} of the main paper groups them.
 
-\Cref{sfig:pd} (moved from the main paper) shows the learned shape of the weight for the six of the 35 features with the largest learned effect range.
+\Cref{sfig:pd} shows the learned shape of the weight for the six of the 35 features with the largest learned effect range.
 
 \begin{figure}[!htbp]
 \centering
@@ -1276,8 +1275,7 @@ No ablation was preregistered.
 The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was written and then checked by an automated statistical review, and the variant list
 was committed before any variant was fitted or scored.
 \emph{Disclosure.} When the plan was written, its author had seen the fresh-fold results of the frozen LRF and of the unweighted rule,
-an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (moved from the main paper,
-\cref{sfig:pd}); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
+an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (\cref{sfig:pd}); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
 the list was committed.
 Every listed variant is reported; no variant was selected and scored again, and the tested object of Study~2 stays the frozen LRF.
 
@@ -1437,7 +1435,7 @@ on the 500 design items; every variant reported; intervals only.
 Every figure and table of the main paper is computed by a script in \nolinkurl{paper2-tnnls/scripts/} that reads only committed run files.
 \begin{itemize}
 \item Fig.~\ref{M-fig:measurement} (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
-\item \Cref{sfig:frontier} (theory, no data; moved from the main paper): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
+\item \Cref{sfig:frontier} (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
 and a curve ends where it reaches $\phi_1=1$ or has no root.
 \item Family P table (\cref{stab:familyP}): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
 \nolinkurl{runs/P2-PAPER-BOUNDS/p_exact_bounds.json}.
@@ -1449,7 +1447,7 @@ and a curve ends where it reaches $\phi_1=1$ or has no root.
 \nolinkurl{calibration.fap_check.per_alpha.*}, \nolinkurl{calibration.fap_check.critical_value}, \nolinkurl{calibration.split_replication.*};
 \nolinkurl{runs/P2-GATE-M2/threshold.json} (\nolinkurl{n_cal}); plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_gate_method.json}; script
 \nolinkurl{paper2-tnnls/scripts/fig_gate_method.py}.
-\item \Cref{sfig:detection} (token detection, moved from the main paper; values in \cref{stab:detection}): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
+\item \Cref{sfig:detection} (token detection; values in \cref{stab:detection}): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
 \nolinkurl{paired_q_vs_best_cheap.*}; \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{s_d2.per_corruption.*}; plotted values in
 \nolinkurl{runs/P2-PAPER-FIGS/fig_detection.json}; script \nolinkurl{paper2-tnnls/scripts/fig_detection.py}.
 \item Feature groups (Fig.~\ref{M-fig:lrf_weights} of the main paper): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json}

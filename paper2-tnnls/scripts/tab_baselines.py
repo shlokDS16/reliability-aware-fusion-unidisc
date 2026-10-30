@@ -112,7 +112,7 @@ def fmt_diff(v):
 CAPTION_MAIN = (r"Accuracy of the image-direction rule on the 450 fresh-fold images when the per-token evidence is combined in different ways "
                 r"(exploratory comparison). $^{\dagger}$Fixed before the fold was opened (unweighted sum and the frozen LRF); every other row was specified and scored "
                 r"after the preregistered Study~2 results. Italics: highest accuracy in the column (ties share the mark). The marks are descriptive, mark one sample, and are not a test; "
-                r"only the unweighted rule and LRF were fixed before the fold was opened. 4 of the 10 learned refits of the exploratory ablation are shown, chosen after the fold was scored; "
+                r"only the unweighted rule and LRF were fixed before the fold was opened. 4 of the 9 learned refits of the exploratory ablation are shown, chosen after the fold was scored; "
                 r"all 10 are in supplement S-VII, with differences and intervals. Median: the median of the per-token evidence is positive; 20\% trimmed mean: the mean of the evidence "
                 r"after the lowest and highest 0.2m values are removed is positive (m tokens). Unlearned rank weight: weight 1 minus the within-image percentile rank of the token's uncertainty "
                 r"(one minus the largest predicted probability with the caption masked). Denoise: non-local-means denoising before scoring (setting fixed in advance), noise and JPEG only.")

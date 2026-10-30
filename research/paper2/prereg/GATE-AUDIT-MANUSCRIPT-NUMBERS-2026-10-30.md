@@ -284,3 +284,52 @@ Scope: new qualitative figure (`figures/fig_qualitative.*`, `scripts/fig_qualita
 ## Required before the gate can tick
 
 F1 (remove the four printed "moved from the main paper" parentheticals). F2 optional; F3 conditional on the DN rows. No value mismatch exists in the new figure, Table IV (main and supplement), Algorithm 1, the prose of `sections/*.tex` or the supplement. Ledger rows added: 0. Not committed.
+
+
+
+# Incremental audit 4, 2026-10-31: HEAD 87bc6970 against 927ec942 (red-team fixes F1-F15, denoiser E1 integration, page-fit cuts)
+
+Verdict: **PASS WITH FIXES.** Every new or changed number matches its run file and key. Three printed defects (none a value mismatch) need a fix before the gate ticks: A1, A2, A3. Audit-3 finding F1 is still open (A4). Method: `git diff 927ec942..HEAD` for `sections/`, `supplement/supplement.tex`, `tables/`, `scripts/`; Python scripts reading the JSON files named below; `pdftotext` of the three PDFs; page 12 of `main.pdf` rendered and read.
+
+## Numbers recomputed (all match)
+
+- Table IV (`tab_baselines.tex`) and its supplement twin (`tab_baselines_full.tex`): every accuracy, difference and interval re-read from `runs/P2-LRF-L1/a6_analysis.json` (family_L acc_b, acc_a, net, ci95), `runs/P2-LRF-ABL-SCORE/ablation_analysis.json` (rows[id].cells.<L1 cell>.acc, vs_NONE.d, ci95; the NONE and LRF references equal the a6 values), `runs/P2-LRF-E2/combiners.json` (MED, TM20) and `runs/P2-LRF-DN/dn_analysis.json` (DN+NONE, DN+LRF; noise0.1 and jpeg10 only). 0 mismatches. The TM-G row is gone from both tables (D0108).
+- Italic marks, by integer correct items (acc x 450): noise DN+LRF 385 (next DN+NONE 380, LRF 361); JPEG A-LIN 398 (next A-S-BD 392); splice A-LIN 419 (next LRF 417); clean A-S-BD 415 (next A-LIN 414). The printed italics (read on the rendered page 12) are exactly these four cells; there is no bold or underline. The earlier F3 condition (marks move when DN rows are filled) is resolved: DN+LRF now takes the noise mark, and V-H no longer ranks.
+- V-H denoiser sentence and supplement S-VII paragraph against `dn_analysis.json`: noise 0.733, 0.802, 0.844, 0.856; DN+NONE vs NONE 0.111 [0.067, 0.156], b/c 80/30; vs LRF 0.042 [0.002, 0.082], 53/34; DN+LRF vs LRF 0.053 [0.011, 0.096], 61/37; DN+LRF vs DN+NONE 0.011 [-0.020, 0.044], 30/25. JPEG 0.849, 0.864, 0.853, 0.813; vs LRF -0.011 [-0.044, 0.024], 29/34 and -0.051 [-0.089, -0.013], 29/52; vs NONE 0.004 [-0.031, 0.038] and -0.036 [-0.078, 0.004]; DN+LRF vs DN+NONE -0.040 [-0.069, -0.011], 13/31. The accuracies also equal the counts of `y_none`/`y_lrf` in `runs/P2-LRF-DN/predictions.jsonl` (900 rows; noise 380 and 385, JPEG 384 and 366 of 450).
+- VI-B reading 6, VI-C denoiser sentence, "Six inexpensive alternative readings" (six enumerated): consistent with the same values.
+- VI-C linear-logit sentence: A-LIN 0.7911, 0.8844, 0.9311, 0.9200 against LRF 0.8022, 0.8644, 0.9267, 0.9178 gives "at or above LRF in three of four" (noise below); `vs_NONE.ci95` excludes 0 in all four (noise 0.058 [0.020, 0.096]; JPEG 0.036 [0.007, 0.064]; splice 0.036 [0.011, 0.062]; clean 0.033 [0.009, 0.060]); the preregistered JPEG test of LRF: `family_L.L3` net 0.016, ci95 [-0.013, 0.044], p_holm 0.38 (no difference detected).
+- F1 rival AUROC (IV-C4): `runs/P2-GATE-M1/analysis.json` table.jpeg/noise tex_neg 0.7558 [0.7429, 0.7676] and 0.7681 [0.7597, 0.7765]; q 0.5613 [0.5473, 0.5750] and 0.5028 [0.4925, 0.5134]; `paired_q_vs_best_cheap` (rival tex, sign -1) -0.1945 [-0.2141, -0.1748] and -0.2653 [-0.2782, -0.2527]. All printed to three decimals correctly. Note: the AUROCs use n = 197 and 198 items, the paired contrast n_items = 200; the text prints no n, so no error.
+- Qualitative figure sentence: counts both-correct 303, only-LRF 58, only-unweighted 27, both wrong 62 (sum 450) recomputed from `runs/P2-LRF-L1/predictions.jsonl`, condition noise0.1. Licence text for image ids 335177, 520324, 224724 equals `runs/P2-PAPER-FIGS/fig_qualitative_licences.json` (licence names and Flickr URLs).
+- Algorithm 1: n_features 35, caption_slot_len 13, Q = 8 knots (selected_cfg.knots), model SHA-256 prefix db7fdb4e, layout and preprocessing strings agree with `runs/P2-LRF-FROZEN-LFIX/spec.json`.
+
+## "99.8% / 99.7% token-code match"
+
+Stored where: `runs/P2-LRF-DN/dn_analysis.json` cells.noise0.1 and cells.jpeg10 `.corruption_reproduction` (token_equal_fraction 0.99797 and 0.99727; items_all_tokens_equal 69 and 73), computed by `corruption_check()` in `analysis/paper2/lrf/e1_denoise.py` (line 98): VQ codes of the regenerated corrupted-but-not-denoised image (`<cond>_nlm_codes_corr` in the DN arrays) against `<cond>_codes` of the L1 arrays. I re-ran that comparison independently from the 450 array pairs: 0.9979709 and 0.9972656, 69 and 73. Printed 99.8, 99.7, 69, 73 are correct, and the sentence says the match was not exact. The arrays are untracked (SHA-256 manifest committed), as for the other runs.
+
+## Deviations box: empty lock file, environment record predates the run
+
+Confirmed. `runs/P2-LRF-DN/env-lock.txt` is 0 bytes (written 2026-10-30 23:58:47; the L1 and LG lock files are 0 bytes too). `runs/P2-ENV/pip-freeze-2026-10-30.txt` (3302 bytes) was committed in b44fd0b5 at 2026-10-30 01:07:39, about 23 hours before the run. Wording note only: that commit says the file was regenerated from `importlib.metadata` because `pip freeze` was empty, so "pip freeze" is a file name, not the command.
+
+## E1 plan before the run (git times, +0530)
+
+83ac79f8 plan (`EXPLORATORY-PLAN-BASELINES-2026-10-30.md`, "written before any computation"; E1 fixes the denoiser, h = hColor = 25.5, windows 7 and 21, "no other setting is tried", the arms, 450 items, bootstrap 10,000, seed 0) 2026-10-30 23:31:10 -> ce8ab86a run code and tests 23:45:51 (LAUNCH.md 23:45:03) -> run start (config.json, env-lock.txt) 23:58:47 -> predictions.jsonl 2026-10-31 00:56:44 -> 456a30a7 results commit 00:57:48. The plan precedes the run by 27 minutes. `config.json` records the same parameters as the plan.
+
+## Other checks
+
+- "??": 0 in `main.pdf` (15 pp), 0 in `main_camera.pdf` (15 pp), 0 in `supplement.pdf` (21 pp). PDFs are newer than the `.tex` files they build from.
+- Pointers: main "supplement S-II" (proof, extension), "S-VII" (comparison, denoise paragraph, Table S30), "S-VIII" (colour scales and licences) all land on those sections in `supplement.pdf`. The main paper's "Section V-H, Table IV", "Fig. 6", "Section VI-C" resolve. The `\cref{stab:compare}` in the denoise paragraph prints "Table S30".
+- Cuts: numbers removed from `sections/`, `supplement.tex` and the tables were extracted from the diff and searched in the text of the new main and supplement PDFs. The only value with no remaining citation anywhere is the TM-G row of Table IV (0.727, 0.842, 0.887, 0.884; differences from NONE such as -0.007 [-0.016, 0.000]); its removal is ruling D0108 and the values remain in `runs/P2-LRF-E2/combiners.json`. The "LRF 0.802 highest; additive 0.002 and linear logit 0.011 lower" sentence is gone from V-H, but the values stay in S-VII's ablation table. The pixel-parity pointer removed from the Table III note remains in S-I (item on `pixel_parity: not run`). Nothing else is orphaned (the other regex hits were table-formatting false alarms).
+
+## Findings
+
+| ID | Location | Printed | Status |
+|---|---|---|---|
+| A1 | `supplement.tex` lines 296-298, S-I item 13 (`supplement.pdf` p. 5) | "plan E1 in olinkurlresearch/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md, commit exttt83ac79f8" | The source holds a literal newline before `olinkurl` and a tab before `exttt`: the `\n` of `\nolinkurl` and the `\t` of `\texttt` were collapsed when the line was written (the heredoc backslash problem of the memory note). The printed sentence is garbled and the plan path is not a link. Fix: restore `\nolinkurl{...}` and `\texttt{83ac79f8}` with Edit. Not a number error |
+| A2 | `sections/study2.tex` lines 325-326 (Table IV note, main PDF p. 12; the same words are in the caption draft of `scripts/tab_baselines.py` and `tables/tab_baselines.tex`) | "4 of the 10 learned refits of the exploratory ablation are shown ... all 10 are in supplement S-VII" | Count is wrong. `ablation_analysis.json` block 3a has 10 variants: nine learned (A-LIN, A-S-BD, A-S-s3, A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF, A-MIL; supplement S-VII "Variants") and one unlearned (A-UNL). The table shows four learned refits plus the unlearned rank weight. Fix: "4 of the 9 learned refits (and the unlearned rank weight) ... all 10 variants are in supplement S-VII". Ruling D0110 itself says "10", so its wording needs the same correction |
+| A3 | `supplement.tex` lines 299-300 (S-I item 13, printed as "item 3") | "the environment record of item 3 is dated before that run" | The environment-record item is item 4 in the printed S-I list ("4) The environment lock files of the design-run, re-score, L1, and LG stages are empty ..."); item 3 is "Row A-9 (pin 84be25c4) changed one test only". Fix: "item 4" or drop the number |
+| A4 | `supplement.tex` lines 1194, 1279, 1440, 1452 | "(moved from the main paper)" in four printed places | Audit-3 finding F1 is still open at HEAD; the gate does not tick until it is removed |
+| A5 (note) | `scripts/fig4_study2_weights.py` | the committed script now writes `runs/P2-PAPER-FIGS/fig4_meta_2026-10-31.json`, but that file does not exist | The script edit (F15) was not run after the change, so the trace file the docstring promises is absent. The printed figure is unchanged (no `fig4_study2_weights.pdf` diff since 927ec942), so no printed value is affected. Run the script once or note it. `fig4_study2_weights.png` (modified) and `fig4b_pd_curves.png` (untracked) are still in the working tree, as in audit 3 |
+
+## Required before the gate can tick
+
+A1 (garbled S-I item 13), A2 (9 learned refits, not 10), A3 (item 4, not 3), A4 (the four "moved from the main paper" parentheticals). A5 optional. No value mismatch exists in Table IV (main and supplement), the V-H, VI-B, VI-C, deviations and S-VII denoiser text, Algorithm 1, the rival-AUROC sentence, the qualitative-figure counts or the licences. Ledger rows added: 0. Not committed; the gate is not ticked in `progress.md`.
