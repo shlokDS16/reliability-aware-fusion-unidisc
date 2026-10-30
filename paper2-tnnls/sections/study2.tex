@@ -7,9 +7,8 @@
 % in-sample or design-item accuracy of the frozen object; "reliability-aware" is the method's name only. Every number has a "% run:".
 
 \section{Study 2: Learned Reliability-Aware Fusion of Token Evidence}\label{sec:study2}
-Study~2 asks whether one frozen, learned per-token weighting of the evidence $\Delta_j$ of \cref{sec:setting} raises image-direction
-verification accuracy on fresh images under Gaussian noise.
-The tested object is called learned reliability-aware fusion (LRF); the name describes its design, not a measured property.
+Study~2 answers Q2 (\cref{sec:intro}); the tested weighting of the evidence $\Delta_j$ is called learned reliability-aware fusion
+(LRF), a name that describes its design, not a measured property.
 
 \subsection{Provenance of the Tested Method}\label{sec:study2-provenance}
 % run: git commits 941a260b (SAP A6 r1, 2026-10-29 14:40), 24d36a8a (re-frozen object, 21:00:13), 4be79be8 (fresh fold, 21:01:03);
@@ -31,17 +30,15 @@ All LRF numbers on Study~1's items are post hoc and exploratory and appear only 
 Study~2 tests a different method on different images and does not bear on Study~1's conclusion.
 
 \subsection{The Frozen Weighting}\label{sec:study2-method}
-When evidence comes from sources of unequal quality, the standard combination weights each source by its
-reliability~\cite{chair1986optimal,kittler1998combining}, multimodal fusion lets the weights change per input~\cite{zhang2023provable,han2023trusted,li2026tcpfmc},
-and attention-based multiple-instance pooling learns instance weights from instance features under a bag-level
-loss~\cite{ilse2018attention}.
+Reliability-weighted fusion gives each source of evidence a weight that depends on its
+reliability~\cite{chair1986optimal,kittler1998combining,zhang2023provable,han2023trusted,li2026tcpfmc}, and attention-based
+multiple-instance pooling learns instance weights from instance features under a bag-level loss~\cite{ilse2018attention}.
 LRF applies this construction to the per-token evidence of a unified masked diffusion model: an additive model maps features of each
 image token to a non-negative weight, and the decision is the sign of the weighted evidence.
 
 \paragraph*{Features}
-Each token has 35 features in seven groups (\cref{tab:features}): seven token scores (five from the model with the caption masked, a
-patch texture and a codebook-neighbour distance), neighbourhood summaries of these scores, the grid position, within-image ranks, image means, image
-standard deviations and one image $z$-score.
+Each token has 35 features in the seven groups of \cref{tab:features}; the seven token scores are five from the model with the
+caption masked, a patch texture and a codebook-neighbour distance, and the other groups summarise them.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:inputs_never_used (Delta, Lambda, captions, z, condition identity)
 No feature uses $\Delta_j$, the caption-visible log-probabilities, the captions, the corruption labels or the identity of the condition.
 Features are standardised with the means and standard deviations of the design tokens.
@@ -59,8 +56,6 @@ Y_{\rm LRF}=\ind\Big[\sum_{j=1}^{m}w_j\Delta_j>0\Big],\qquad M=\frac{\sum_jw_j\D
 \label{eq:lrf-decision}
 \end{equation}
 with a tie counted as wrong.
-Any non-finite feature, weight or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
-
 \paragraph*{Objective and tuning}
 The parameters minimise, over the item-conditions of the design set,
 \begin{equation}
@@ -102,9 +97,8 @@ supplement S-IV.}
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_study2_weights.pdf}
 \caption{Frozen weight model; descriptive, not evidence that the weights track corruption. (a) Partial dependence of the token
-weight $w=\sigma(f(x))$ on the six of 35 features with the largest learned effect range, every other standardised feature at its mean 0;
-horizontal axes in original units; each curve spans the outer knots of its feature (grey ticks); colour and style give the feature group
-(\cref{tab:features}). (b) Token-weight maps on the $32\times32$ grid for the first three items of the fold file (chosen by position, not
+weight $w=\sigma(f(x))$ on the six of 35 features with the largest learned effect range, every other standardised feature at its mean 0
+(knots: grey ticks; colour and style: feature group of \cref{tab:features}). (b) Token-weight maps on the $32\times32$ grid for the first three items of the fold file (chosen by position, not
 outcome), clean (left) and under Gaussian noise with standard deviation 0.1 (right), on one square-root colour scale.}
 \label{fig:lrf_weights}
 \end{figure*}
@@ -124,8 +118,8 @@ items: $n_L=450$ (its inputs are in supplement S-IV).
 
 \paragraph*{Arms, families and tests}
 % run: design constants of research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.4, A6.5, A6.7 (levels, margin -0.03, severity 3, n 300)
-The arms are none (all 1\,024 tokens, weight one) and LRF, under clean images, JPEG quality~10, Gaussian noise $\sigma=0.1$ and the
-$128$-pixel splice.
+The arms are none (weight one on all 1\,024 tokens) and LRF, under clean images and the three corruptions of
+\cref{sec:setting-corruptions}.
 Family~L has three hypotheses under a fixed sequence then Holm (familywise level 0.05).
 The primary L1 tests LRF against none under noise by the exact one-sided McNemar test at 0.05 and is ``confirmed'' if and only if
 $p\le0.05$ and $b>c$.
@@ -191,29 +185,25 @@ The three cells are reported separately and are not pooled.
 \vspace{2pt}
 \parbox{\textwidth}{\scriptsize $b$: items LRF answers correctly and the unweighted rule incorrectly; $c$: the reverse; net $=(b-c)/n$.
 Intervals: 95\,\% paired percentile bootstrap (10\,000 resamples), except $^{\dagger}$ (L-NI): 90\,\%, margin $-0.03$ fixed after an
-exploratory clean interval had been seen; L-NI's test is the lower 90\,\% bound against the margin, so no $p$ is printed. $p$ one-sided
-and two-sided: exact McNemar; $p$ Holm: L3 and L4 after L1 in the fixed sequence (two-sided), LG over its three cells (one-sided).
-L-LEN: length-matched negative captions. LG: other noise types at severity 3, three separate rows. No adjustment across families. Bold:
-null rejected at the preregistered level.}
+exploratory clean interval had been seen; L-NI's test is the lower 90\,\% bound against the margin, so no $p$ is printed. $p$: exact
+McNemar; $p$ Holm: L3 and L4 after L1 (two-sided), LG over its three cells (one-sided). Bold: null rejected at the preregistered level.}
 \end{table*}
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig5_study2_results.pdf}
 \caption{Family L and L-NI on the fresh fold: net accuracy change of the frozen LRF, with minus without reliability weights, $n=450$.
-(a) Diamond: net change; bar: 95\,\% paired percentile bootstrap interval (10\,000 resamples). L1 (Gaussian noise, standard deviation 0.1;
-primary, shaded): exact one-sided McNemar $p$; L3 (JPEG quality 10) and L4 (128-px splice): Holm-adjusted two-sided $p$. (b) L-NI
-(clean images; own family): net change, 90\,\% interval and the margin $-0.03$ (dashed), fixed after an exploratory clean interval had
-been seen. LG is in \cref{tab:study2} only.}
+(a) Diamond: net change; bar: 95\,\% paired percentile bootstrap interval. L1 (Gaussian noise, standard deviation 0.1; primary,
+shaded): exact one-sided McNemar $p$; L3 (JPEG quality 10) and L4 (128-px splice): Holm-adjusted two-sided $p$. (b) L-NI (clean images;
+own family): net change, 90\,\% interval and the margin $-0.03$ (dashed), fixed after an exploratory clean interval had been seen.}
 \label{fig:lrf_results}
 \end{figure*}
 
 \subsection{Reference Encoders}\label{sec:study2-reference}
 % run: runs/P2-LRF-BASELINES/baselines.json:table.{clip,siglip}.*.acc (range 0.996 to 1.000); models.* (pinned revisions)
 For reference, CLIP ViT-L/14~\cite{radford2021clip} and SigLIP so400m~\cite{zhai2023sigmoid}, different models trained on different data, reached accuracies of 0.996 to 1.000 on the
-same items in every condition (\cref{tab:baselines}).
-They are scored with the same decision rule, the image-text score of the true caption above that of the wrong caption, on images
-regenerated with the runner's corruption functions and seeds.
+same items in every condition (\cref{tab:baselines}), with the same decision rule on images regenerated with the runner's corruption
+functions and seeds (supplement S-VI).
 % run: runs/P2-LRF-BASELINES-PARITY-L1/baselines.json:pixel_parity.{min (= 0.989),threshold}; runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.{min (= 0.986),threshold}
 Pixel parity was shown: the UniDisc tokeniser's re-encoding of the regenerated images agreed with the stored codes on at least 98.6\,\% of
 tokens (five items per condition set; threshold 98\,\%).
@@ -230,8 +220,7 @@ drawn, and no test is made.
 
 \vspace{2pt}
 \parbox{\columnwidth}{\scriptsize For reference only: different models trained on different data; no test and no comparison is made.
-Pinned revisions and scores in supplement S-VI. Same first 450 fold items (300 for the severity-3 cells) and the same regenerated
-pixels. Drop: clean minus corrupted accuracy of the same model on the same items, paired percentile bootstrap 95\,\% interval. The row
+Same first 450 fold items (300 for the severity-3 cells) and regenerated pixels; revisions and scores in supplement S-VI. Drop: clean minus corrupted accuracy of the same model on the same items, paired percentile bootstrap 95\,\% interval. The row
 ``Clean images, same 300 items'' was computed at writing from the stored predictions (descriptive). Cost per item was not measured.
 Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{-LG}; these supersede the field
 \nolinkurl{pixel_parity: not run} of the main run's file, which records only that the main run was made without the parity option.}
@@ -239,8 +228,7 @@ Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{-LG}; t
 
 \subsection{Cost of Study 2}\label{sec:study2-cost}
 % run: runs/P2-LRF-L1/items.jsonl:n_rows, seconds, peak_gb (67 rows, median 8.0 s, max 8.2 GB); runs/P2-LRF-LG/items.jsonl (42 rows, 5.0 s)
-The fresh-fold pass computes the unweighted rule for four conditions and stores the inputs of LRF.
-It used 67 network rows and a median of 8.0~s per item on one 12~GB laptop GPU, with a peak memory of 8.2~GB; the stage of the other noise
+The fresh-fold pass, which computes the unweighted rule for four conditions and stores the inputs of LRF, used 67 network rows and a median of 8.0~s per item on one 12~GB laptop GPU, with a peak memory of 8.2~GB; the stage of the other noise
 types used 42 rows and 5.0~s per item (supplement S-IV).
 LRF adds no network row; its weights and decision are computed from the stored arrays on the CPU, and that time was not recorded.
 

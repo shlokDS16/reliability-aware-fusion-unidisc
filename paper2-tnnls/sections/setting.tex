@@ -5,8 +5,6 @@
 % Every number carries a run comment.
 
 \section{Shared Setting}\label{sec:setting}
-This section defines what both studies use; each study defines its own rule in its own section.
-
 \subsection{Model and Tokens}\label{sec:setting-model}
 % run: runs/P2-UNIDISC-KEYCHECK/keycheck.json:{model_n_param_elements (= 1406870785), config.image_vocab_size (= 16384)}
 The model is UniDisc~\cite{swerdlow2025unidisc}, a unified masked discrete diffusion model with 1.4B parameters, used as released with
@@ -56,8 +54,6 @@ Three corruptions act on the pixels before tokenisation.
 They are JPEG compression at quality~10, Gaussian noise with standard deviation $\sigma=0.1$ on pixels scaled to $[0,1]$ (clipped and
 rounded to 8 bits), and a $128\times128$-pixel splice, in which a region of a donor COCO image is copied to a uniformly random location.
 The noise draw, the donor image and the splice location derive from the item, so each image has one corruption realisation.
-The corruptions used by only one study are defined in that study.
-
 \subsection{Data and Fresh Images}\label{sec:setting-data}
 Images and captions come from the COCO val2017 split~\cite{lin2014coco}.
 An item is one image with its true caption and one wrong caption, the caption of another image; each study states how the wrong caption
@@ -66,8 +62,6 @@ Test images are fresh in a fixed sense: each study's test images are disjoint, b
 calibrate, fit or design its rule.
 The test fold of Study~2 also excludes the union of every image used anywhere in the project, together with every image of the
 SugarCrepe release.
-Whether COCO val2017 images were in the training data of UniDisc or of its tokeniser is unknown.
-
 \subsection{Tests, Multiplicity and Preregistration}\label{sec:setting-tests}
 Every test compares two decision rules on the same $n$ items.
 Let $b$ be the number of items that the rule under test decides correctly and the reference rule decides wrongly, and $c$ the reverse.

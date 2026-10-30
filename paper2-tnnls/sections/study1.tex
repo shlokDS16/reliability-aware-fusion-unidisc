@@ -6,9 +6,8 @@
 % Every number carries a "% run:" comment with its file and key.
 
 \section{Study 1: Masked-Likelihood Token Gating With Conformal Risk Control}\label{sec:study1}
-Study~1 asks whether withholding the image tokens that the model's own masked likelihood flags as improbable changes image-direction
-verification accuracy under image corruption.
-The object of measurement is an input-level source-validation gate, fixed before any test item was seen.
+Study~1 answers Q1 (\cref{sec:intro}); its object of measurement is an input-level source-validation gate, fixed before any test item
+was seen.
 
 \subsection{Method}\label{sec:study1-method}
 
@@ -22,9 +21,8 @@ u_j=D_j-B_j ,
 \label{eq:suspicion}
 \end{equation}
 where a larger $u_j$ marks a token whose observed code is less probable given the rest of the image than given its position alone.
-The score never sees a caption, so the hypothesis under test cannot enter the gate.
-Subtracting $D_j$ gives the Neyman--Pearson statistic only for corrupted values drawn from the position marginal, which JPEG compression,
-noise and splices do not produce, so no statement about detection power is made.
+The score never sees a caption, so the hypothesis under test cannot enter the gate, and no statement about its detection power is made
+(supplement S-I).
 
 \paragraph*{Threshold by conformal risk control}
 The threshold is set on a calibration set $\mathcal D_{\rm cal}$ of $n_{\rm cal}$ clean pairs, disjoint by image from every other fold.
@@ -74,10 +72,9 @@ corruption locations do not depend on the content, and the clean tokens in $G$ c
 an account of any result.
 
 Two further arms use the same flags.
-GATE-I re-infills the flagged tokens with the model, caption masked, and keeps the best of four unguided draws by chain log-likelihood;
-the sampler is the one fixed in the analysis plan, not that of the backbone's authors.
-The text direction scores the caption tokens with the image visible, minus the same pass with the image masked; it is used only by
-family~B.
+GATE-I re-infills the flagged tokens with the model, caption masked, and keeps the best of four unguided draws by chain log-likelihood,
+with the sampler fixed in the analysis plan, not that of the backbone's authors.
+The text direction, used only by family~B, scores the caption tokens with the image visible, minus the same pass with the image masked.
 
 \paragraph*{A model of when withholding helps an additive statistic}
 The following is theory under stated assumptions, not validated on UniDisc, and no result below is read through it.
@@ -153,7 +150,7 @@ $\Var S_{\rm G}$, which gives the three correlation terms of \cref{eq:varcorr}.
 With $\mu_c=0$ the gate multiplies $\E S_{\rm G}$ by $1-\phi_0$, so it raises the ratio if and only if
 $(1-\phi_0)^2\,\Var S_{\rm G}|_{\phi_0=\phi_1=0}>\Var S_{\rm G}$; the clean-pair terms scale by $(1-\phi_0)^2$ on both sides and cancel, and the
 remaining terms, divided by $m$, give \cref{eq:snrcorr}.
-\Cref{app:snrcorr} gives the full proof. \qed
+The full proof is in supplement S-II. \qed
 
 \Cref{fig:frontier} draws the frontier of \cref{eq:snrcorr}.
 The ratio in \cref{prop:snrcorr} is the signal-to-noise ratio of the sum.
@@ -221,10 +218,8 @@ Mechanism S-M (GATE-M against the geometry-matched gate) and family~R (a second 
 with $b>c$.
 
 \subsection{Results}\label{sec:study1-results}
-Unless stated otherwise, intervals are paired percentile bootstrap intervals over items with 10\,000 resamples, and accuracy is
-image-direction verification accuracy.
-A cell is bold only when its preregistered test rejected at its preregistered level, and there is no adjustment across families
-(\cref{sec:setting-tests}).
+Bootstrap intervals use 10\,000 resamples, accuracy is image-direction verification accuracy, a cell is bold only when its
+preregistered test rejected, and there is no adjustment across families (\cref{sec:setting-tests}).
 
 \subsubsection{Operating points and family P}
 % run: runs/P2-GATE-M3/family.json:rungs.* (first rung passed for jpeg, noise, splice); n_rule.* (D_star 19, rule R2, test_fold 500)
@@ -282,27 +277,17 @@ In the clean control GATE-M gave 0.882 against 0.880 without a gate (net $0.002$
 was detected.
 
 \subsubsection{Positive control (PS, pipeline check)}
-% run: runs/P2-GATE-M4/analysis.json:ps.per_corruption.{patch,swap}.p_holm; ps.positive_control (= not met)
-Neither hypothesis of the positive control was rejected (\cref{tab:ps}), so the control was not met, which by the plan reads ``pipeline
-defect suspected, audit triggered''.
+% run: runs/P2-GATE-M4/analysis.json:ps.per_corruption.patch.{acc_a,acc_b,delta,ci95,p,p_holm}; ps.per_corruption.swap.{acc_a,acc_b,delta,ci95,p,p_holm} (values as printed in tables/tab_ps.tex)
+On the 500 test items GATE-M gave 0.870 against 0.870 without a gate under the patch corruption (net 0.000, 95\,\% interval $-0.008$ to
+0.008; $p=1.00$, Holm-adjusted 1.00) and 0.876 against 0.870 under swap (net 0.006, $-0.008$ to 0.020; $p=0.581$, Holm-adjusted 1.00).
+% run: runs/P2-GATE-M4/analysis.json:ps.positive_control (= not met)
+Neither hypothesis of the positive control was rejected (full table in supplement S-II), so the control was not met, which by the plan
+reads ``pipeline defect suspected, audit triggered''.
 % run: runs/P2-A23-AUDIT/a23_ps_audit.json (unit tests 584 passed, 5 skipped, 0 failed; recomputation of every PS quantity, 0 mismatches)
-The audit (SAP A2.3), one of the scripted and agent-run audits (see the Declaration), ran the unit tests of the run's code (584 passed,
-5 skipped, none failed), read the code path of PS and recomputed every PS quantity from the stored arrays of all 500 items.
-It found no defect and changed nothing; a recomputation cannot see an error upstream of the stored arrays, so it is not read as a
-check of the whole pipeline.
-
-\begin{table*}[!t]
-\centering
-\caption{Positive Control (Pipeline Check): GATE-M Against No Gate on the Sanity Corruptions}
-\label{tab:ps}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{\input{tables/tab_ps}}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Columns as in \cref{tab:familyP}; Holm over two; 95\,\% and 98.33\,\% intervals. A pipeline check, not
-read beside family P.}
-\end{table*}
+The audit (SAP A2.3; scripted and agent-run, see the Declaration) ran the unit tests of the run's code (584 passed, 5 skipped, none
+failed), read the code path of PS and recomputed every PS quantity from the stored arrays of all 500 items; it found no defect and
+changed nothing, and since a recomputation cannot see an error upstream of the stored arrays, it is not read as a check of the whole
+pipeline.
 
 \subsubsection{Token detection (S-D and S-D2)}
 % run: runs/P2-GATE-M1/analysis.json:table.{patch,swap}.q.{mean,lo,hi}
@@ -339,16 +324,14 @@ cheap score in either orientation, chosen on these data (so optimistic), with it
 
 \subsubsection{Mechanism and the remaining secondary families}
 % run: runs/P2-GATE-M4/analysis.json:s_m.per_corruption.{jpeg,noise,splice}.tested (all false)
-Family S-M tested no hypothesis and family~R was not run, because both are gatekept by a primary rejection with $b>c$ and there was none.
+Family S-M tested no hypothesis and family~R was not run, because both are gatekept by a primary rejection with $b>c$.
 % run: runs/P2-GATE-M4/analysis.json:mechanism.{jpeg10,noise0.1,splice128}.y.*, s_z.*, s_dn.*; edec.json; epred_score.json; P2-GATE-M5/coherence.json
-The equal-size gates, S-Z, S-DN, E-dec, E-pred and the coherence check of the denoiser are in supplement S-II; none enters a statement
-about family P.
+The equal-size gates, S-Z, S-DN, E-dec, E-pred and the denoiser's coherence check are in supplement S-II and enter no statement about P.
 
 \subsubsection{Re-infilling the flagged tokens (S2)}
 % run: runs/P2-GATE-S2/analysis.json:per_cell.{patch,splice}.{n,delta,ci95,p_holm,reading}; completeness.completed_n (= 300)
-S2 ran as planned on 300 items per cell.
-Re-infilling the flagged set against re-infilling an equal-size random set (kept draw, exact McNemar, Holm over two) gave a net change
-of $0.010$ ($0.000$ to $0.023$; $p_{\rm Holm}=0.50$) under the patch corruption and $-0.003$ ($-0.017$ to $0.007$; $p_{\rm Holm}=1.00$) under
+On 300 items per cell, as planned, re-infilling the flagged set against re-infilling an equal-size random set (kept draw, exact
+McNemar, Holm over two) gave a net change of $0.010$ ($0.000$ to $0.023$; $p_{\rm Holm}=0.50$) under the patch corruption and $-0.003$ ($-0.017$ to $0.007$; $p_{\rm Holm}=1.00$) under
 splice.
 Neither cell was rejected; there is no evidence that the flagged set is better placed than a random one under this sampler, and nothing
 is stated about the backbone's own re-infilling.
@@ -381,8 +364,8 @@ graded weight on every token.
 On the realistic corruptions no detector-free combiner gave higher verification accuracy than the hard gate.
 The data do not show a difference between the hard gate and a trimmed mean that removes as many tokens as the gate flagged (exact 95\,\%
 bounds on the difference of 0.023, 0.014 and 0.017).
-By the pre-stated rule, this counts against the added value of the detector on those cells.
-Supplement S-II gives every cell, comparator and limit.
+By the pre-stated rule, this counts against the added value of the detector on those cells (every cell, comparator and limit in
+supplement S-II).
 % run: runs/P2-GATE-SUITE/analysis.json:cells.*.gm_vs_none.ci95 (8 cells, 100 items each; every interval contains 0)
 In an exploratory suite of eight further cells (four corruption types of the imagecorruptions package~\cite{michaelis2019imagecorruptions}
 at two severities, 100 test items each; intervals only), no cell's 95\,\% interval of GATE-M minus none excluded zero (supplement S-II).

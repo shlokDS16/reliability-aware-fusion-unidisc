@@ -12,8 +12,8 @@
 The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
 from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$ and a 128-pixel splice, for this model and these severities; it does
 not show that gating has no effect.
-The statement concerns this gate at its preregistered level $\alpha=0.05$, one severity per corruption, one model and one data set, and
-it carries no information about other levels, stronger corruptions, other models or other tasks, none of which was tested.
+It concerns this gate at its preregistered level $\alpha=0.05$, one severity per corruption, one model and one data set, and says
+nothing about other levels, stronger corruptions, models or tasks, none of which was tested.
 
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.*.contrasts.* (exploratory; Section IV-C)
 The exploratory Tier-3 comparison of the hard gate with five combiners of the same evidence is reported in \cref{sec:study1-results} and
@@ -28,20 +28,16 @@ gate on hard negatives (\cref{sec:study1-H}; supplement S-III).
 \subsection{Study 2}\label{sec:disc-study2}
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.label (= confirmed); branch.branch (= A)
 L1 shows that one frozen weighting, hash-pinned before any test image was chosen, raised image-direction verification accuracy under
-Gaussian noise with $\sigma=0.1$ on 450 COCO images that played no part in its design or fit.
-The gain passed an exact paired test at the preregistered level and held with length-matched negative captions.
+Gaussian noise with $\sigma=0.1$ on 450 COCO images that played no part in its design or fit, passing an exact paired test at the
+preregistered level and holding with length-matched negative captions.
 It does not show that the weighting works on a corruption it was not trained on, that its weights follow the reliability of a token,
 or that the effect carries to another model, data set or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
-Five inexpensive alternative readings remain open.
-(i) The gain may be a reweighting that helps whatever the condition, since the clean-image and splice estimates were also positive.
-(ii) It may be a supervised fit to the training corruption, since Gaussian noise with $\sigma=0.1$ was a training condition.
-(iii) A noise-sensitive feature, such as the codebook-neighbour distance or the one-pass observed-position score, may carry it;
-\cref{fig:lrf_weights} is descriptive and cannot separate this, and the exploratory ablation of \cref{sec:study2-ablation} bears on it
-only as an exploratory result.
-(iv) How far the gain extends to other noise types is open: shot and speckle noise are close relatives of Gaussian noise, and impulse noise, the
-structurally different cell, has a 95\,\% interval that starts at 0.0.
-(v) The splice decision rests on a Holm-adjusted $p$ of 0.049, a margin of 0.001 below the level.
+Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (i) a reweighting that helps
+whatever the condition; (ii) a supervised fit to the training corruption; (iii) a single noise-sensitive feature, such as the
+codebook-neighbour distance or the one-pass observed-position score, which \cref{fig:lrf_weights} cannot separate and the exploratory
+ablation of \cref{sec:study2-ablation} bears on only as an exploratory result; (iv) a limited reach to other noise types, since the
+impulse-noise interval starts at 0.0; and (v) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
 A second backbone, a corruption held out of training and a preregistered comparison with simpler weighting rules on fresh images are the
 tests that would settle these questions; none was run.
 
@@ -58,7 +54,7 @@ No preregistered test separates corruption-specific weighting from a generic gai
 positive; the title's ``under Gaussian noise'' names the tested condition, not a specificity.
 The Holm-adjusted $p$ of L4 is 0.049, and the two-sided $p$ of the impulse-noise cell is 0.058.
 The clean-image margin of L-NI was fixed after an exploratory clean interval had been seen.
-Whether COCO images were in the pretraining data of UniDisc, CLIP or SigLIP is unknown.
+Whether COCO images were in the pretraining data of UniDisc, its tokeniser, CLIP or SigLIP is unknown.
 Each image has one corruption realisation and one mask seed, so the intervals cover item sampling only.
 A fresh tokenisation of the same pixels in another process need not reproduce the stored codes: it agreed on 98.8\,\% and 98.9\,\% of
 image tokens in the two stopped self-checks of card row A-8, and on at least 98.6\,\% in the pixel-parity runs.
@@ -74,15 +70,15 @@ No ablation was preregistered; \cref{sec:study2-ablation} is exploratory.
 \noindent\emph{Study 1:}
 (1) The Tier-3 comparators, parameters and fallback seed were fixed in an addendum committed before the main run's headroom decision;
 their intervals carry no $p$-value and no multiplicity adjustment.
-(2) Every outcome label's wording was fixed before the primary result, with a dated record of how a null would be reported and of the
-reading adopted where card and plan differed on a rejection against the gate.
+(2) Outcome-label wording was fixed before the primary result, with a dated record of the null wording and of the reading adopted where
+card and plan differed on a rejection against the gate.
 (3) The time-input statement rests on a code reading at a pinned commit and a key check; its table moved to the supplement.
 (4) Family~B ran before the re-infilling family under the plan's fixed time inequality.
 (5) Family~H has its own disclosure and amendment items; one decision row was committed after its pilot driver started and before any
 pilot row existed.
 (6) The effective-$n$ record of the re-infilling figure carries a reason text written at analysis time.
-(7) The data steward did not collect the image ids of negatives and mismatches separately (no analysis uses them), and some run files
-outside the excluded classes were not opened by the steward's check.
+(7) The data steward did not collect the image ids of negatives and mismatches separately (no analysis uses them), and its check left
+some run files outside the excluded classes unopened.
 (8) The exact Clopper--Pearson bounds of \cref{tab:familyP} were added at writing (\nolinkurl{runs/P2-PAPER-BOUNDS}, descriptive).
 \emph{Study 2:}
 (1) The L1 stage stopped twice at its tokenisation self-check before any item; card row A-8 moved the code pin, and row A-9 changed one
@@ -91,8 +87,8 @@ test only.
 (3) The environment lock files of the design, re-score, L1 and other-noise stages are empty; the environment was recorded after the runs,
 and the corruption package's commit was verified from it.
 (4) Item arrays are untracked with committed SHA-256 manifests; hashes appear in CRLF and LF forms of the same content.
-(5) The pixel-parity files were moved unchanged from a wrong output directory with no hash taken before the move (audit-time hashes are
-recorded); they supersede the field ``pixel\_parity: not run'' of the main reference-encoder file.
+(5) The pixel-parity files were moved unchanged from a wrong output directory with no prior hash (audit-time hashes are recorded); they
+supersede the field ``pixel\_parity: not run'' of the main reference-encoder file.
 (6) The reference-encoder download was larger than the size quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.
 (8) ``No output was read before its run was complete'' rests on the operations log.

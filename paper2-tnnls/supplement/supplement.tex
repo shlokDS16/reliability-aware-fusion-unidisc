@@ -18,7 +18,9 @@
 \usepackage{seqsplit}
 \usepackage{microtype}
 \usepackage{url}
+\usepackage{xr-hyper}   % numbers of the main paper's equations, figure and proposition (prefix M-; needs ../main.aux, so build main first)
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,breaklinks=true]{hyperref}
+\externaldocument[M-]{../main}
 \usepackage[capitalise]{cleveref}
 \newcommand{\todo}[1]{{\color{red}\textbf{[#1]}}}
 \newcommand{\E}{\mathbb{E}}
@@ -213,6 +215,8 @@ The largest headroom discordance $D^\ast$ between the changed-code gate and no g
 The design minimum detectable net gain at $n=300$ was 0.053 unadjusted, under an assumed discordance of 10\,\%.
 Ties of the suspicion scores from \texttt{bf16} logits are broken by an independent uniform jitter smaller than the smallest gap between
 distinct calibration scores.
+Subtracting $D_j$ gives the Neyman--Pearson statistic only for corrupted values drawn from the position marginal, which JPEG compression,
+noise and splices do not produce, so no statement about detection power is made.
 
 \subsection{Disclosures of Addendum A4}
 (1) The five Tier-3 comparators and their parameters (S-II) were fixed in Addendum A4, whose draft (\texttt{40828e96}) and revision r1
@@ -392,6 +396,27 @@ For $\alpha=0.05$ on an $8\times8$ patch image about 48 false flags are expected
 0.57 even for a perfect detector, and under JPEG and noise more than nine in ten tokens change, so precision must be read against that
 base rate.
 
+\subsection{Positive control (PS, pipeline check)}\label{sup:ps}
+% Moved from paper2-tnnls/sections/study1.tex (former main Table II) by the clarity editor (edit 2, 2026-10-30, lead decision); the table
+% file tables/tab_ps.tex is unchanged and its PS result sentences with their numbers stay in Section IV-C of the main paper.
+\Cref{stab:ps} is the positive-control table of Section IV-C of the main paper. It is a pipeline check and is not read beside family P.
+
+\begin{table}[!htbp]
+\centering
+\caption{Positive Control (Pipeline Check): GATE-M Against No Gate on the Sanity Corruptions}
+\label{stab:ps}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{\input{../tables/tab_ps}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Columns as in Table~\ref{M-tab:familyP} of the main paper ($b$: items that GATE-M answers correctly and
+the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$; net difference $=(b-c)/n$); Holm over two; 95\,\% and 98.33\,\% paired
+percentile bootstrap intervals (10\,000 resamples). A pipeline check, not read beside family P; the control was not met and the plan's
+audit found no defect. Source: \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
+\nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.}
+\end{table}
+
 \subsection{Equal-size gates (descriptive) and the evidence ratio (S-Z)}
 % run: runs/P2-GATE-M4/analysis.json:mechanism.<cell>.y.*
 \Cref{stab:mech} reports GATE-M against the other gates of equal size, descriptively.
@@ -567,19 +592,61 @@ On the 239 fit pairs the better direction was the text direction (accuracy 0.887
 % run: runs/P2-GATE-FOIL/analysis.json:mde_at_achieved_n.by_pi_d.0.1 (= 0.054; assumed discordance 0.10); test.n (= 298)
 The minimum detectable net gain at the test $n$ of 298 pairs is 0.054 at an assumed discordance of 0.10.
 
-\subsection{Correlated-token proposition of the main paper: closed-form frontier and a numerical instance}
-% Moved verbatim from paper2-tnnls/sections/appendix.tex (proof of the main paper's Proposition 2, items (iii) and (iv)) by the clarity
-% editor (edit 1, 2026-10-30); numbers unchanged. Theory under stated assumptions, not validated on UniDisc; not used in Study 2.
-This subsection completes items (iii) and (iv) of the proof in Appendix A of the main paper, in its notation; it is theory under stated
-assumptions, not validated on UniDisc, and is not used in Study~2.
-With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, the condition of the proposition reads
+\subsection{Proof of Proposition~\ref{M-prop:snrcorr} of the main paper (withholding with exchangeably correlated tokens)}\label{sup:proof-snrcorr}
+% Moved verbatim from paper2-tnnls/sections/appendix.tex (former Appendix A of the main paper; THEORY-ADDENDUM r1 R1.8 appendix block) by
+% the clarity editor (edit 2, 2026-10-30, lead decision); items (iii) and (iv) restored to the full text of edit 0. Cross-references to the
+% main paper go through xr-hyper (prefix M-). Theory under stated assumptions, not validated on UniDisc; not used in Study 2.
+This proof is theory under stated assumptions, not validated on UniDisc, and is not used in Study~2; the notation is that of Section IV-A
+of the main paper, and equation and figure numbers refer to the main paper.
+Write $m_0=(1-\rho)m$ and $m_1=\rho m$ for the numbers of clean and corrupted tokens, $k_0=1-\phi_0$ and $k_1=1-\phi_1$ for the keep
+probabilities, and $z_j\in\{0,1\}$ for the label of token $j$, so that $\E\Delta_j$ is $\mu$ or $\mu_c$ and $\Var\Delta_j$ is $\sigma^2$ or
+$\sigma_c^2$.
+The exchangeable block covariance of assumption (a) is positive semi-definite if and only if $\gamma_0\ge-1/(m_0-1)$,
+$\gamma_1\ge-1/(m_1-1)$, $\gamma_0,\gamma_1\le1$ and $\gamma_{01}^2\,m_0m_1\le\{1+(m_0-1)\gamma_0\}\{1+(m_1-1)\gamma_1\}$.
+
+\paragraph*{Variance}
+By assumption (b), $I_j$ is independent of $\Delta_j$, so
+$\Var(I_j\Delta_j)=k(\sigma_z^2+\mu_z^2)-k^2\mu_z^2=k\sigma_z^2+k(1-k)\mu_z^2$ with $k=k_{z_j}$, which are the terms of (\ref{M-eq:var}).
+For $j\neq k$, again by (b),
+$\mathrm{Cov}(I_j\Delta_j,I_k\Delta_k)=\E I_j\,\E I_k\,\E[\Delta_j\Delta_k]-\E I_j\,\E I_k\,\E\Delta_j\,\E\Delta_k=k_{z_j}k_{z_k}\,\mathrm{Cov}(\Delta_j,\Delta_k)$.
+There are $m_0(m_0-1)$ ordered clean pairs with covariance $\gamma_0\sigma^2$, $m_1(m_1-1)$ ordered corrupted pairs with covariance
+$\gamma_1\sigma_c^2$ and $2m_0m_1$ ordered mixed pairs with covariance $\gamma_{01}\sigma\sigma_c$, which gives (\ref{M-eq:varcorr}).
+
+\paragraph*{Condition}
+Let $V_g$ be (\ref{M-eq:varcorr}) at $(\phi_0,\phi_1)$ and $V_0$ its value at $\phi_0=\phi_1=0$.
+With $\mu_c=0$, $\E S_{\rm G}=m_0k_0\mu$ with the gate and $m_0\mu$ without it, so, both being positive, the gate raises the ratio if and
+only if $k_0^2V_0>V_g$.
+Collect $k_0^2V_0-V_g$ by type of term.
+The clean terms are
+$k_0^2m_0\sigma^2\{1+(m_0-1)\gamma_0\}-m_0k_0(\sigma^2+\phi_0\mu^2)-m_0(m_0-1)k_0^2\gamma_0\sigma^2=-m_0k_0\phi_0(\sigma^2+\mu^2)$,
+in which the $\gamma_0$ terms cancel.
+The corrupted terms are $m_1\sigma_c^2\{(k_0^2-k_1)+(m_1-1)\gamma_1(k_0^2-k_1^2)\}$, with $k_0^2-k_1=\phi_1-2\phi_0+\phi_0^2$ and
+$k_0^2-k_1^2=(\phi_1-\phi_0)(2-\phi_0-\phi_1)$.
+The mixed terms are $2m_0m_1\gamma_{01}\sigma\sigma_c\,k_0(k_0-k_1)$, with $k_0-k_1=\phi_1-\phi_0$.
+Dividing the sum by $m$ gives (\ref{M-eq:snrcorr}).
+
+\paragraph*{Consequences}
+(i) is read off (\ref{M-eq:snrcorr}).
+(ii) At $\phi_1=\phi_0\in(0,1)$ every correlation term vanishes and the left side is $\rho\sigma_c^2(\phi_0^2-\phi_0)<0$, below the positive
+right side.
+For $\phi_1\le\phi_0$, let $G=(\rho m-1)\gamma_1$, so that $G\ge-1$ by positive semi-definiteness.
+The bracket $(\phi_1-2\phi_0+\phi_0^2)+G(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ is linear in $G$; it equals $\phi_1-2\phi_0+\phi_0^2\le-\phi_0(1-\phi_0)$
+at $G=0$, equals $-\phi_1(1-\phi_1)\le0$ at $G=-1$, and does not increase for $G\ge0$; hence it is at most $0$.
+If $\gamma_{01}\ge0$ the mixed term is at most $0$ as well, while the right side is positive for $\phi_0\in(0,1)$.
+(iii) The derivatives of the left side with respect to $\gamma_1$ and $\gamma_{01}$ are
+$\rho\sigma_c^2(\rho m-1)(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ and $2\rho(1-\rho)m\sigma\sigma_c(1-\phi_0)(\phi_1-\phi_0)$, both positive when
+$\phi_1>\phi_0$ and $\rho m>1$, and the right side does not depend on $\gamma_1$ or $\gamma_{01}$.
+For fixed $\phi_1>\phi_0$ the $\gamma_1$ term grows without bound with $(\rho m-1)\gamma_1$, which gives the limit.
+With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, (\ref{M-eq:snrcorr}) reads
 $Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
 $b(\phi_0;G,\chi)=\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$), the curve of
-Fig.~2 of the main paper; as $G\to0$ it tends to the boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of the independent-token condition.
+Fig.~\ref{M-fig:frontier}; as $G\to0$ it tends to the boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of (\ref{M-eq:snr}).
+(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms.
 % run: runs/P2-THEORY-CHECK/output.txt (check D4: min eigenvalue 0.9500; SNR none 0.4892, gate (0.3, 0) 0.5080)
 An instance with a positive definite covariance is $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$, $\mu=0.1$, $\mu_c=0$,
 $\sigma^2=\sigma_c^2=1$: the smallest eigenvalue of the correlation matrix is 0.9500, and the ratio rises from 0.4892 without a gate to
 0.5080 with the gate $(\phi_0,\phi_1)=(0.3,0)$. The instance illustrates the algebra and is not an estimate from the model.
+(v) $m$ enters (\ref{M-eq:snrcorr}) through $\rho m-1$ and $m$ whenever $\gamma_1\neq0$ or $\gamma_{01}\neq0$. \qed
 
 \subsection{Cost of Study 1}
 \begin{table}[!htbp]
@@ -910,7 +977,8 @@ Nine configurations of $(Q,\lambda,\text{learning rate})$ were drawn at random a
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:rescore_checks.{invariance_max_abs_diff (= 0.0), positive_control_max_abs_diff (= 0.0), n_check (= 5)}
 On five items under four conditions the caption-masked scores were identical whether the slot was built from the true caption, the wrong
 caption or padding, and the scorer reproduced the stored values at the true length (maximum absolute difference 0 in both checks).
-\Cref{stab:features} gives every feature by name and formula; the main paper's Table IV groups them.
+Any non-finite feature, weight or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
+\Cref{stab:features} gives every feature by name and formula; Table~\ref{M-tab:features} of the main paper groups them.
 
 \begin{table}[!htbp]
 \centering
@@ -985,29 +1053,29 @@ research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8 and the numbers of r
 % Moved from the captions of the main paper by the clarity editor (edit 1, 2026-10-30); paths and keys unchanged.
 Every figure and table of the main paper is computed by a script in \nolinkurl{paper2-tnnls/scripts/} that reads only committed run files.
 \begin{itemize}
-\item Fig.~1 (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
-\item Fig.~2 (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
+\item Fig.~\ref{M-fig:measurement} (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
+\item Fig.~\ref{M-fig:frontier} (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
 and a curve ends where it reaches $\phi_1=1$ or has no root.
-\item Table I (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
+\item Table~\ref{M-tab:familyP} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
 \nolinkurl{runs/P2-PAPER-BOUNDS/p_exact_bounds.json}.
-\item Fig.~3 (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{primary.per_corruption.*}; script
+\item Fig.~\ref{M-fig:p_result} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{primary.per_corruption.*}; script
 \nolinkurl{paper2-tnnls/scripts/fig3_study1_P.py}.
-\item Table II (positive control): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
+\item \Cref{stab:ps} (positive control; former main Table II): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
 \nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.
-\item Table III (token detection): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
+\item Table~\ref{M-tab:detection} (token detection): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
 \nolinkurl{paired_q_vs_best_cheap.*}.
-\item Table IV (feature groups): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{features});
+\item Table~\ref{M-tab:features} (feature groups): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{features});
 \nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer}; full table in
 \cref{stab:features}.
-\item Fig.~4 (frozen weight model): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}},
+\item Fig.~\ref{M-fig:lrf_weights} (frozen weight model): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}},
 \nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,2}.npz} (SHA-256 checked against \nolinkurl{arrays_manifest.json}); computed values in
 \nolinkurl{runs/P2-PAPER-FIGS/}; script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of panel (a) runs between
 the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
-\item Table V (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
+\item Table~\ref{M-tab:study2} (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
 \nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
-\item Fig.~5 (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
+\item Fig.~\ref{M-fig:lrf_results} (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
 \nolinkurl{paper2-tnnls/scripts/fig5_study2_results.py}.
-\item Table VI (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});
+\item Table~\ref{M-tab:baselines} (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});
 \nolinkurl{runs/P2-PAPER-TABLES/baselines_clean300.json}; revisions in \cref{sup:baselines}.\newline
 Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{runs/P2-LRF-BASELINES-PARITY-LG}.
 \end{itemize}

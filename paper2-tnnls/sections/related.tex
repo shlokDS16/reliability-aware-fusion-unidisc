@@ -10,8 +10,7 @@
 
 \paragraph*{Generative and likelihood scoring}
 Diffusion models are trained by maximising a variational lower bound on the data log-likelihood, as surveyed for continuous diffusion
-in image super-resolution~\cite{moser2025diffusion}.
-A trained likelihood model can therefore be read as a scorer of its own inputs.
+in image super-resolution~\cite{moser2025diffusion}, so a trained model can be read as a scorer of its own inputs.
 A text-conditional diffusion model classifies zero-shot by comparing the conditional denoising error across candidate
 labels~\cite{li2023diffusionclassifier}.
 Text-to-image diffusion models have been used as zero-shot classifiers whose weights over diffusion timesteps are learned from held-out
@@ -44,9 +43,8 @@ None of these works reports a verification decision under image corruption in a 
 \paragraph*{Reliability-aware and dynamic fusion}
 When evidence comes from sources of unequal quality, the classical combination weights each source by its
 reliability~\cite{chair1986optimal}, and classifier combination studies the rules for doing so~\cite{kittler1998combining}.
-In multimodal learning the weights change per input.
-Dynamic, uncertainty-driven weighting of modalities has been analysed for low-quality data, with theory on when it is preferable to
-static weighting~\cite{zhang2023provable}, and a recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced and
+In multimodal learning the weights change per input: dynamic, uncertainty-driven weighting of modalities has been analysed for
+low-quality data, with theory on when it is preferable to static weighting~\cite{zhang2023provable}, and a recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced and
 quality-varying settings~\cite{zhang2026lowquality}.
 Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
 methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential}.
@@ -70,8 +68,8 @@ Conformal prediction gives distribution-free guarantees under exchangeability~\c
 conformal $p$-values give false-discovery control for outlier detection~\cite{bates2023outliers}, and conformal risk control bounds the
 expected value of a monotone loss~\cite{angelopoulos2024crc}.
 Conformal loss-controlling prediction, published in this journal, extends conformal prediction from miscoverage to a general loss for
-each test object, with a finite-sample guarantee under exchangeability~\cite{wang2025conformal}.
-It differs from the expected-loss statement of conformal risk control, which is the one used in Study~1.
+each test object, with a finite-sample guarantee under exchangeability~\cite{wang2025conformal}; Study~1 uses the expected-loss
+statement of conformal risk control instead.
 Conformal risk control has been applied, with masking-derived CLIPScore distributions and a threshold set on foil-labelled data,
 to flag erroneous caption words given an image~\cite{gomes2025crc}.
 
