@@ -295,10 +295,30 @@ are recorded in the reference-encoder audit.
 
 %======================================================================================================================================
 \section{Study 1: Secondary and Descriptive Families, and the Tier-3 Comparison}\label{sup:study1}
+\subsection{Family P: the full preregistered test}\label{sup:familyP}
+% Moved from paper2-tnnls/sections/study1.tex (former main Table, label tab:familyP) by the clarity editor (edit 6, 2026-10-30, page cap).
+% run: runs/P2-GATE-M4/analysis.json:primary.per_corruption.*, outcome.label; runs/P2-PAPER-BOUNDS/p_exact_bounds.json
+\Cref{stab:familyP} gives the full test of family P; its intervals are plotted in Fig.~\ref{M-fig:p_result} of the main paper.
+
+\begin{table}[!htbp]
+\centering
+\caption{Family P: GATE-M Against No Gate on the 500 Test Items}
+\label{stab:familyP}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{\input{../tables/tab1_familyP}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Moved from the main paper (edit 6; A4.2.5 keeps the P table and its 98.33\,\% interval, the P-only summary figure stays in the main text). $b$: items that GATE-M answers correctly and the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$;
+net difference $=(b-c)/n$. Paired percentile bootstrap intervals (10\,000 resamples) at 90\,\% (the level of the preregistered
+decision), 95\,\% and 98.33\,\% (the Holm level of the smallest-$p$ step); zero width when $n_d=0$. $p$: exact two-sided McNemar;
+$p_{\rm Holm}$: Holm over the three corruptions. The exact Clopper--Pearson 95\,\% bound on the absolute net change was added at
+writing and is descriptive, not preregistered. No test rejected, so nothing is bold.}
+\end{table}
+
 \Cref{stab:overview} gives the status of every Study~1 family, with no estimate and no interval (an earlier overview with estimates was
 deleted; decisions D0096 and D0102).
-Each family's estimates are in its own table or paragraph (family P in Table~\ref{M-tab:familyP} of the main paper; the others below
-and in S-III).
+Each family's estimates are in its own table or paragraph (family P in \cref{stab:familyP}; the others below and in S-III).
 None of the material in this section enters a statement about family P.
 
 \begin{table}[!htbp]
@@ -416,11 +436,32 @@ base rate.
 \resizebox{\textwidth}{!}{\input{../tables/tab_ps}}
 
 \vspace{2pt}
-\parbox{\textwidth}{\scriptsize Columns as in Table~\ref{M-tab:familyP} of the main paper ($b$: items that GATE-M answers correctly and
+\parbox{\textwidth}{\scriptsize Columns as in \cref{stab:familyP} ($b$: items that GATE-M answers correctly and
 the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$; net difference $=(b-c)/n$); Holm over two; 95\,\% and 98.33\,\% paired
 percentile bootstrap intervals (10\,000 resamples). A pipeline check, not read beside family P; the control was not met and the plan's
 audit found no defect. Source: \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
 \nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.}
+\end{table}
+
+\subsection{Token detection: values of the main paper's detection figure}\label{sup:detection}
+% Moved from the main paper (former main detection table, label tab:detection) by the clarity editor (edit 6, 2026-10-30); the main paper
+% now shows these values in its detection figure. The table file tables/tab_detection.tex is unchanged.
+\Cref{stab:detection} gives the values plotted in Fig.~\ref{M-fig:detection} of the main paper.
+
+\begin{table}[!htbp]
+\centering
+\caption{Detection of Changed Image Tokens on the Detection Items: Per-Item AUROC}
+\label{stab:detection}
+% run: runs/P2-GATE-M1/analysis.json:paired_q_vs_best_cheap.{jpeg,noise}.p_holm (= 0.0004)
+\footnotesize
+\resizebox{\textwidth}{!}{\input{../tables/tab_detection}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Mean per-item AUROC against changed-code labels, 95\,\% percentile bootstrap intervals over items
+(10\,000 resamples). $q$: the gate's score; TbV score: one-pass observed-position score of the non-finetuned model; rival: the best
+cheap score in either orientation, chosen on these data (same-item selection, so optimistic), with its sign. Items: detection items
+entering each row. Last column: paired difference $q$ minus rival (Holm-adjusted $p=0.0004$ for JPEG and noise). Source:
+\nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*}, \nolinkurl{paired_q_vs_best_cheap.*}.}
 \end{table}
 
 \subsection{Equal-size gates (descriptive) and the evidence ratio (S-Z)}
@@ -914,6 +955,24 @@ images was not preregistered. Impulse noise: the two-sided $p$ and the lower 95\
 claim is made. Bold: null rejected at the preregistered level.}
 \end{table}
 
+\subsection{Item-level margins on the fresh fold (descriptive)}\label{sup:margins}
+% Moved from the main paper (edit 6, 2026-10-30; page cap; figure-smith's first candidate for the supplement).
+\Cref{sfig:margins} shows the discordant items of L1 and of the clean cell by margin. It is descriptive, and superiority on clean images
+was not a preregistered hypothesis.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{../figures/fig_margins.pdf}
+% run: runs/P2-LRF-L1/predictions.jsonl (condition, idx, m_none, m_lrf, y_none, y_lrf; sha256 = a6_analysis.json meta.l1_predictions_sha256); counts runs/P2-LRF-L1/a6_analysis.json:family_L.{L1,L-NI}.{b (= 58, 27),c (= 27, 13),n (= 450)}; values runs/P2-PAPER-FIGS/fig_margins.json
+\caption{Study 2, item-level margins on the fresh fold (descriptive; no test). Each point is one of the $n=450$ items: horizontal, the
+margin without weighting, $S/m$; vertical, the LRF margin $M$ (\ref{M-eq:lrf-decision}) of the main paper. A decision is correct when its margin is positive
+(ties wrong), so the upper-left quadrant holds the $b$ items correct only with LRF (filled diamonds) and the lower-right the $c$ items
+correct only without weighting (open triangles); grey: same decision; line: equal margins. (a) Gaussian noise, standard deviation 0.1
+(L1). (b) Clean images (L-NI), same items; descriptive only, and superiority on clean images was not a preregistered hypothesis.
+Counts $b$, $c$ as in Table~\ref{M-tab:study2} of the main paper.}
+\label{sfig:margins}
+\end{figure}
+
 \subsection{Exploratory and descriptive material}
 Everything in the rest of this section is exploratory or descriptive.
 The design-item numbers below are post hoc: they set the preregistered sample-size rule only and are not a performance estimate of the
@@ -1011,7 +1070,7 @@ Nine configurations of $(Q,\lambda,\text{learning rate})$ were drawn at random a
 On five items under four conditions the caption-masked scores were identical whether the slot was built from the true caption, the wrong
 caption or padding, and the scorer reproduced the stored values at the true length (maximum absolute difference 0 in both checks).
 Any non-finite feature, weight or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
-\Cref{stab:features} gives every feature by name and formula; Table~\ref{M-tab:features} of the main paper groups them.
+\Cref{stab:features} gives every feature by name and formula; Fig.~\ref{M-fig:lrf_weights}(a) of the main paper groups them.
 
 \begin{table}[!htbp]
 \centering
@@ -1221,25 +1280,36 @@ Every figure and table of the main paper is computed by a script in \nolinkurl{p
 \item Fig.~\ref{M-fig:measurement} (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
 \item Fig.~\ref{M-fig:frontier} (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
 and a curve ends where it reaches $\phi_1=1$ or has no root.
-\item Table~\ref{M-tab:familyP} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
+\item Family P table (\cref{stab:familyP}; former main Table I): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
 \nolinkurl{runs/P2-PAPER-BOUNDS/p_exact_bounds.json}.
 \item Fig.~\ref{M-fig:p_result} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{primary.per_corruption.*}; script
 \nolinkurl{paper2-tnnls/scripts/fig3_study1_P.py}.
 \item \Cref{stab:ps} (positive control; former main Table II): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
 \nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.
-\item Table~\ref{M-tab:detection} (token detection): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
-\nolinkurl{paired_q_vs_best_cheap.*}.
-\item Table~\ref{M-tab:features} (feature groups): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{features});
-\nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer}; full table in
-\cref{stab:features}.
+\item Fig.~\ref{M-fig:gate-method} (gate method and calibration check): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys
+\nolinkurl{calibration.fap_check.per_alpha.*}, \nolinkurl{calibration.fap_check.critical_value}, \nolinkurl{calibration.split_replication.*};
+\nolinkurl{runs/P2-GATE-M2/threshold.json} (\nolinkurl{n_cal}); plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_gate_method.json}; script
+\nolinkurl{paper2-tnnls/scripts/fig_gate_method.py}.
+\item Fig.~\ref{M-fig:detection} (token detection; values in \cref{stab:detection}): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
+\nolinkurl{paired_q_vs_best_cheap.*}; \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{s_d2.per_corruption.*}; plotted values in
+\nolinkurl{runs/P2-PAPER-FIGS/fig_detection.json}; script \nolinkurl{paper2-tnnls/scripts/fig_detection.py}.
+\item Feature groups (Fig.~\ref{M-fig:lrf_weights}(a) of the main paper; former main feature table): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json}
+(\nolinkurl{features}); \nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer};
+full table in \cref{stab:features}.
 \item Fig.~\ref{M-fig:lrf_weights} (frozen weight model): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}},
 \nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,2}.npz} (SHA-256 checked against \nolinkurl{arrays_manifest.json}); computed values in
-\nolinkurl{runs/P2-PAPER-FIGS/}; script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of panel (a) runs between
+\nolinkurl{runs/P2-PAPER-FIGS/}; script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py} (also \nolinkurl{fig4_meta.json}). Each curve of panel (b) runs between
 the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
 \item Table~\ref{M-tab:study2} (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
 \nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
 \item Fig.~\ref{M-fig:lrf_results} (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
 \nolinkurl{paper2-tnnls/scripts/fig5_study2_results.py}.
+\item \Cref{sfig:margins} (item-level margins, descriptive; former main figure): \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (fields \nolinkurl{condition},
+\nolinkurl{idx}, \nolinkurl{m_none}, \nolinkurl{m_lrf}, \nolinkurl{y_none}, \nolinkurl{y_lrf}; SHA-256 checked against \nolinkurl{a6_analysis.json});
+plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_margins.json}; script \nolinkurl{paper2-tnnls/scripts/fig_margins.py}.
+\item Fig.~\ref{M-fig:ablation} (exploratory ablation): \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, keys
+\nolinkurl{rows[*].cells.L1_noise0.1.vs_LRF.*}, \nolinkurl{ko_all_control}; plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_ablation.json};
+script \nolinkurl{paper2-tnnls/scripts/fig_ablation.py}; rows in the order of \cref{sup:ablation}.
 \item Table~\ref{M-tab:baselines} (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});
 \nolinkurl{runs/P2-PAPER-TABLES/baselines_clean300.json}; revisions in \cref{sup:baselines}.\newline
 Pixel parity: \nolinkurl{runs/P2-LRF-BASELINES-PARITY-L1} and \nolinkurl{runs/P2-LRF-BASELINES-PARITY-LG}.

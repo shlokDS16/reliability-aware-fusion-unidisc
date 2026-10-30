@@ -37,8 +37,8 @@ LRF applies this construction to the per-token evidence of a unified masked diff
 image token to a non-negative weight, and the decision is the sign of the weighted evidence.
 
 \paragraph*{Features}
-Each token has 35 features in the seven groups of \cref{tab:features}; the seven token scores are five from the model with the
-caption masked, a patch texture and a codebook-neighbour distance, and the other groups summarise them.
+Each token has 35 features in the seven groups of \cref{fig:lrf_weights}(a) (formulas in supplement S-IV); the seven token scores are
+five from the model with the caption masked, a patch texture and a codebook-neighbour distance, and the other groups summarise them.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:inputs_never_used (Delta, Lambda, captions, z, condition identity)
 No feature uses $\Delta_j$, the caption-visible log-probabilities, the captions, the corruption labels or the identity of the condition.
 Features are standardised with the means and standard deviations of the design tokens.
@@ -76,31 +76,47 @@ deviation 0.1 and with a 128-pixel splice; these are also the four tested condit
 The caption-masked scores are computed with the caption slot filled by 13 padding tokens, so they do not depend on the length of either
 caption; $\Delta_j$ keeps each caption at its own length (invariance checks in supplement S-IV).
 % run: runs/P2-LRF-FROZEN-LFIX/HASHES.json:new.* (model db7fdb4e..., spec 9d196d71...); pinned_vs_A6.2_table.* (all equals_table true)
-The model file, its specification, the feature and fitting code, the codebook and the cached position marginal are pinned by SHA-256, and
-the scorer checks every hash before it reads an item (supplement S-I).
-\Cref{fig:lrf_weights} shows the learned shapes and three example weight maps.
-
-\begin{table}[!t]
-\centering
-\caption{Input Features of the Frozen Weight Model, by Group and Formula}
-\label{tab:features}
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\input{tables/tab_features_main}
-
-\vspace{2pt}
-\parbox{\columnwidth}{\scriptsize $B_j$ and $D_j$ as in \cref{sec:setting-evidence}. Feature names, order and the full formulas are in
-supplement S-IV.}
-\end{table}
+The model file and every input of the scorer are pinned by SHA-256 and checked before each item (supplement S-I).
+\Cref{fig:lrf_weights} draws the model and shows the learned shapes and three example weight maps.
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_study2_weights.pdf}
-\caption{Frozen weight model; descriptive, not evidence that the weights track corruption. (a) Partial dependence of the token
-weight $w=\operatorname{sigm}(f(x))$ on the six of 35 features with the largest learned effect range, every other standardised feature at its mean 0
-(knots: grey ticks; colour and style: feature group of \cref{tab:features}). (b) Token-weight maps on the $32\times32$ grid for the first three items of the fold file (chosen by position, not
-outcome), clean (left) and under Gaussian noise with standard deviation 0.1 (right), on one square-root colour scale.}
+% run: runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json,HASHES.json} (features (35; group counts 7, 3, 8, 4, 6, 6, 1), knots, inputs_never_used, model.npz db7fdb4e...); runs/P2-LRF-L1/arrays/item000{0,1,2}.npz; values runs/P2-PAPER-FIGS/{fig4_pd_curves.json,fig4_token_weights.npz,fig4_meta.json}
+\caption{Study 2: learned reliability-aware fusion (LRF) and its frozen weight model. (a) Schematic (no data; fixed weight grid). Each
+image token has 35 features $x_j$ in seven groups (counts as printed; formulas in supplement S-IV); no feature uses $\Delta_j$, a caption
+or the identity of the condition. A logistic additive model with a hinge basis \eqref{eq:lrf-weight} gives the weight $w_j$, and the true
+caption is chosen if $\sum_jw_j\Delta_j>0$ \eqref{eq:lrf-decision}. (b) Partial dependence of $w$ on the six of 35 features with the largest learned effect range, every other
+standardised feature at its mean 0 (knots: grey ticks; line style: feature group of (a)). (c) Token-weight maps on the $32\times32$ grid
+for the first three items of the fold file (chosen by position, not outcome), clean (top) and under Gaussian noise with standard
+deviation 0.1 (bottom), on one square-root colour scale. Descriptive; not evidence that the weights track corruption.}
 \label{fig:lrf_weights}
+\end{figure*}
+
+\begin{table*}[!t]
+\centering
+\caption{Study 2 Preregistered Families on the Fresh Fold: Accuracy Without and With LRF, Discordant Counts, $p$-Values and Decisions}
+\label{tab:study2}
+% run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.{p_two (= 0.058),ci95 (= [0.0, 0.1])}; family_L.L-LEN.n (= 449)
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{tables/tab2_study2}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize $b$: items LRF answers correctly and the unweighted rule incorrectly; $c$: the reverse; net $=(b-c)/n$.
+Intervals: 95\,\% paired percentile bootstrap (10\,000 resamples), except $^{\dagger}$ (L-NI): 90\,\%, margin $-0.03$ fixed after an
+exploratory clean interval had been seen; L-NI's test is the lower 90\,\% bound against the margin, so no $p$ is printed. $p$: exact
+McNemar; $p$ Holm: L3 and L4 after L1 (two-sided), LG over its three cells (one-sided). Bold: null rejected at the preregistered level.}
+\end{table*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig5_study2_results.pdf}
+\caption{Family L and L-NI on the fresh fold: net accuracy change of the frozen LRF, with minus without reliability weights, $n=450$.
+(a) Diamond: net change; bar: 95\,\% paired percentile bootstrap interval. L1 (Gaussian noise, standard deviation 0.1; primary,
+shaded): exact one-sided McNemar $p$; L3 (JPEG quality 10) and L4 (128-px splice): Holm-adjusted two-sided $p$. (b) L-NI (clean images;
+own family): net change, 90\,\% interval and the margin $-0.03$ (dashed), fixed after an exploratory clean interval had been seen.}
+\label{fig:lrf_results}
 \end{figure*}
 
 \subsection{Preregistered Protocol}\label{sec:study2-protocol}
@@ -159,6 +175,7 @@ On clean images LRF lost no more than three points (90\,\% interval of the net c
 exploratory clean interval had been seen.
 The clean-image estimate, descriptive, was positive (0.887 without weighting, 0.918 with; net 0.031); superiority on clean images was not a
 preregistered hypothesis.
+Supplement S-IV plots the discordant items of L1 and of the clean cell by margin (descriptive).
 
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L3.{net,ci95,p_holm}
 Under JPEG quality~10 no difference was detected (net 0.016, 95\,\% interval $-0.013$ to $0.044$; Holm-adjusted $p=0.382$).
@@ -184,32 +201,6 @@ The one-sided and Holm-adjusted $p$ are 0.029 and the two-sided $p$ is 0.058, so
 two-sided claim is made for it.
 The three cells are reported separately and are not pooled.
 
-\begin{table*}[!t]
-\centering
-\caption{Study 2 Preregistered Families on the Fresh Fold: Accuracy Without and With LRF, Discordant Counts, $p$-Values and Decisions}
-\label{tab:study2}
-% run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.{p_two (= 0.058),ci95 (= [0.0, 0.1])}; family_L.L-LEN.n (= 449)
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\resizebox{\textwidth}{!}{\input{tables/tab2_study2}}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize $b$: items LRF answers correctly and the unweighted rule incorrectly; $c$: the reverse; net $=(b-c)/n$.
-Intervals: 95\,\% paired percentile bootstrap (10\,000 resamples), except $^{\dagger}$ (L-NI): 90\,\%, margin $-0.03$ fixed after an
-exploratory clean interval had been seen; L-NI's test is the lower 90\,\% bound against the margin, so no $p$ is printed. $p$: exact
-McNemar; $p$ Holm: L3 and L4 after L1 (two-sided), LG over its three cells (one-sided). Bold: null rejected at the preregistered level.}
-\end{table*}
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{figures/fig5_study2_results.pdf}
-\caption{Family L and L-NI on the fresh fold: net accuracy change of the frozen LRF, with minus without reliability weights, $n=450$.
-(a) Diamond: net change; bar: 95\,\% paired percentile bootstrap interval. L1 (Gaussian noise, standard deviation 0.1; primary,
-shaded): exact one-sided McNemar $p$; L3 (JPEG quality 10) and L4 (128-px splice): Holm-adjusted two-sided $p$. (b) L-NI (clean images;
-own family): net change, 90\,\% interval and the margin $-0.03$ (dashed), fixed after an exploratory clean interval had been seen.}
-\label{fig:lrf_results}
-\end{figure*}
-
 \subsection{Reference Encoders}\label{sec:study2-reference}
 % run: runs/P2-LRF-BASELINES/baselines.json:table.{clip,siglip}.*.acc (range 0.996 to 1.000); models.* (pinned revisions)
 For reference, CLIP ViT-L/14~\cite{radford2021clip} and SigLIP so400m~\cite{zhai2023sigmoid}, different models trained on different data, reached accuracies of 0.996 to 1.000 on the
@@ -218,8 +209,7 @@ functions and seeds (supplement S-VI).
 % run: runs/P2-LRF-BASELINES-PARITY-L1/baselines.json:pixel_parity.{min (= 0.989),threshold}; runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.{min (= 0.986),threshold}
 Pixel parity was shown: the UniDisc tokeniser's re-encoding of the regenerated images agreed with the stored codes on at least 98.6\,\% of
 tokens (five items per condition set; threshold 98\,\%).
-Nearly every cell is at or next to its ceiling and most drop intervals are a single point, so no reading beyond the stated accuracies is
-drawn, and no test is made.
+Nearly every cell is at or next to its ceiling, so no reading beyond the stated accuracies is drawn, and no test is made.
 
 \begin{table}[!t]
 \centering
@@ -244,25 +234,33 @@ types used 42 rows and 5.0~s per item (supplement S-IV).
 LRF adds no network row; its weights and decision are computed from the stored arrays on the CPU, and that time was not recorded.
 
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_ablation.pdf}
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.{d,ci95}; n_per_cell; ko_all_control; meta.{label,sign,interval}; values runs/P2-PAPER-FIGS/fig_ablation.json
+\caption{Study 2, exploratory ablation (added after the primary, family~H and Study~2 results; intervals only, no test): paired accuracy
+difference, variant minus the frozen LRF, on the L1 noise cell ($n=450$), with the 95\,\% paired percentile-bootstrap interval
+(10\,000 resamples). Differences are variant minus reference; positive favours the variant. Upper block: weightings refitted with LRF's
+protocol on the 500 design items only, and one unlearned rank weight. Lower block: knockouts, the frozen LRF with one feature group set to
+its design-item mean; setting a group to its mean gives inputs that the model did not see together in fitting; an interval away from
+zero shows that the frozen model's decisions depend on those inputs, not that the group alone detects anything. Intervals are
+marginal, dependent and unadjusted (supplement S-VII, with the other cells).}
+\label{fig:ablation}
+\end{figure}
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commits facab605, 4e785aa9; plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8)
 Exploratory; added after the primary, family~H and Study~2 results; no ablation was preregistered, and every variant is in supplement S-VII.
 Single-source refits and other weightings were fitted with LRF's protocol on the 500 design items only; knockouts set one feature group of
 the frozen LRF to its design-item mean (differences are variant minus LRF; positive favours the variant).
-% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN,A-S-BD,A-S-s3,A-MIL].cells.L1_noise0.1.vs_LRF.{d,ci95}
-Under Gaussian noise (L1 items), the paired difference from the frozen LRF was $-0.011$ [$-0.031$, 0.009] for a linear logit on the same
-35 features and $-0.002$ [$-0.033$, 0.029] for weighting by the features computed from $B$ and $D$ alone.
-It was $-0.033$ [$-0.071$, 0.004] for the features from the uncertainty of the $B$ pass alone and $-0.009$ [$-0.044$, 0.027] for attention-weighted pooling in the
-style of gated attention MIL~\cite{ilse2018attention} (reading of intervals in supplement S-VII).
-% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-S-tbv,A-S-ltex,A-S-nbr,A-S-pos,A-SF,A-UNL].cells.L1_noise0.1.vs_LRF.ci95 (upper bound < 0)
-The interval lay below zero for the weightings computed from the one-pass observed-position score, the patch texture, the
-codebook-neighbour distance or the grid position alone, and for an unlearned rank weight on the uncertainty of the $B$ pass.
-It also lay below zero for a single-feature weight (the distance from the grid centre, chosen from 35 candidate features by the inner-fold objective on
-the design items, a selection budget 35 times that of the frozen LRF; the selection used no fresh item).
-% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=KO-S-BD,KO-S-nbr,KO-F-neighbourhood].cells.L1_noise0.1.vs_LRF.{d,ci95}; other KO rows contain 0
-Among knockouts, the change in the frozen model's accuracy was $-0.053$ [$-0.082$, $-0.027$] when the features computed from $B$ and
-$D$ were set to their design-item mean.
-It was $0.040$ [0.013, 0.069] for the codebook-neighbour-distance features and $-0.062$ [$-0.096$, $-0.031$] for the neighbourhood features; for every other group
-the interval contained zero.
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.ci95 (classification: A-LIN, A-S-BD, A-S-s3, A-MIL contain 0; A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF, A-UNL, KO-S-BD, KO-F-neighbourhood below 0; KO-S-nbr above 0; other KO rows contain 0)
+\Cref{fig:ablation} shows every variant on the noise cell.
+The intervals of a linear logit on the same 35 features, of the features computed from $B$ and $D$ alone, of the features from the
+uncertainty of the $B$ pass alone and of attention-weighted pooling in the style of gated attention MIL~\cite{ilse2018attention} contained
+zero.
+They lay below zero for the other single-source weightings, the unlearned rank weight and a single-feature weight (the distance from the
+grid centre, chosen from 35 candidate features by the inner-fold objective on the design items, a selection budget 35 times that of the
+frozen LRF; the selection used no fresh item).
+Among knockouts, the intervals for the features from $B$ and $D$ and for the neighbourhood features lay below zero and the interval for the
+codebook-neighbour-distance features above it; every other group's interval contained zero.
 Setting a group to its mean gives inputs that the model did not see together in fitting; an interval away from zero shows that the frozen
 model's decisions depend on those inputs, not that the group alone detects anything.
 This comparison was added after the Study~2 results and is not a test.

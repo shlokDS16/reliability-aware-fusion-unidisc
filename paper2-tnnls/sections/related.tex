@@ -11,8 +11,6 @@
 \paragraph*{Generative and likelihood scoring}
 Diffusion models are trained by maximising a variational lower bound on the data log-likelihood, as surveyed for continuous diffusion
 in image super-resolution~\cite{moser2025diffusion}, so a trained model can be read as a scorer of its own inputs.
-A text-conditional diffusion model classifies zero-shot by comparing the conditional denoising error across candidate
-labels~\cite{li2023diffusionclassifier}.
 Text-to-image diffusion models have been used as zero-shot classifiers whose weights over diffusion timesteps are learned from held-out
 labelled data~\cite{clark2023zeroshot}, also with few labels~\cite{jeong2025diffusion}.
 For image-text matching, the conditional error has been normalised by the unconditional one~\cite{krojer2023diffusionitm}, and VQAScore

@@ -12,8 +12,6 @@
 The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
 from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$ and a 128-pixel splice, for this model and these severities; it does
 not show that gating has no effect.
-It concerns this gate at its preregistered level $\alpha=0.05$, one severity per corruption, one model and one data set, and says
-nothing about other levels, stronger corruptions, models or tasks, none of which was tested.
 
 % run: runs/P2-GATE-M4/tier3_fusion.json:cells.*.contrasts.* (exploratory; Section IV-C)
 The exploratory comparison of the hard gate with five combiners of the same evidence is reported in \cref{sec:study1-results} and
@@ -33,17 +31,12 @@ preregistered level and holding with length-matched negative captions.
 It does not show that the weighting works on a corruption it was not trained on, that its weights follow the reliability of a token,
 or that the effect carries to another model, data set or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
-Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}:
-\begin{enumerate}
-\item a reweighting that helps whatever the condition;
-\item a supervised fit to the training corruption;
-\item a single noise-sensitive feature, such as the codebook-neighbour distance or the one-pass observed-position score, which
-\cref{fig:lrf_weights} cannot separate and the exploratory ablation of \cref{sec:study2-ablation} bears on only as an exploratory result;
-\item a limited reach to other noise types, since the impulse-noise interval starts at 0.0;
-\item an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
-\end{enumerate}
-A second backbone, a corruption held out of training and a preregistered comparison with simpler weighting rules on fresh images are the
-tests that would settle these questions; none was run.
+Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (1) a reweighting that helps
+whatever the condition; (2) a supervised fit to the training corruption; (3) a single noise-sensitive feature, such as the
+codebook-neighbour distance or the one-pass observed-position score, which \cref{fig:lrf_weights} cannot separate and the exploratory
+ablation of \cref{sec:study2-ablation} bears on only as an exploratory result; (4) a limited reach to other noise types, since the
+impulse-noise interval starts at 0.0; and (5) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
+A second backbone or a corruption held out of training would settle these questions; neither was run.
 The paper measures the evidence that the model computes about its own inputs; it makes no claim of a verifier that ranks with dedicated
 encoders, and the two reference encoders are near ceiling on these items (\cref{sec:study2-reference}).
 
@@ -91,9 +84,9 @@ pilot row existed.
 (6) The effective-$n$ record of the re-infilling figure carries a reason text written at analysis time.
 (7) The fold builder did not collect the image ids of negatives and mismatches separately (no analysis uses them), and its check left
 some run files outside the excluded classes unopened.
-(8) The exact Clopper--Pearson bounds of \cref{tab:familyP} were added at writing (\nolinkurl{runs/P2-PAPER-BOUNDS}, descriptive).
+(8) The exact Clopper--Pearson bounds of the family P table (supplement S-II) were added at writing (\nolinkurl{runs/P2-PAPER-BOUNDS}, descriptive).
 % run: runs/P2-GATE-M1/env-lock.txt and runs/P2-GATE-M4/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt (SPEC section 8; red-team A14)
-(9) The environment lock files of the detection and main-test stages are empty; the environment was recorded after the runs.
+(9) The environment lock files of the detection and main-test stages are empty (as in Study~2 item 3).
 \emph{Study 2:}
 (1) The L1 stage stopped twice at its tokenisation self-check before any item; a dated amendment moved the code pin, and a second
 changed one test only.
@@ -101,8 +94,8 @@ changed one test only.
 (3) The environment lock files of the design, re-score, L1 and other-noise stages are empty; the environment was recorded after the runs,
 and the corruption package's commit was verified from it.
 (4) Item arrays are untracked with committed SHA-256 manifests; hashes appear in CRLF and LF forms of the same content.
-(5) The pixel-parity files were moved unchanged from a wrong output directory with no prior hash (audit-time hashes are recorded); they
-supersede the field ``pixel\_parity: not run'' of the main reference-encoder file.
+(5) The pixel-parity files were moved unchanged from a wrong output directory with no prior hash (audit-time hashes recorded); they
+supersede the main reference-encoder file's field ``pixel\_parity: not run''.
 % run: runs/P2-ENV/hf_cache_sizes.json:total_gb_decimal (= 5.229); D0100
 (6) The reference-encoder download was 5.2~GB, against about 2 to 4~GB quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.

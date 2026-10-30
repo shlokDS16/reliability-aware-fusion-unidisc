@@ -67,11 +67,10 @@ The preregistered test excludes an improvement or a loss of more than five perce
 from gating under JPEG quality~10, Gaussian noise with $\sigma=0.1$ and a 128-pixel splice.
 % run: runs/P2-GATE-M1/analysis.json:table.{patch,swap,jpeg,noise}.q.{mean,lo,hi}; table.{jpeg,noise}.tbv.{mean,lo,hi}; table.{jpeg,noise}.tex_neg.mean; falsifier.falsified (= true)
 At the token level the gate's score separates code-level random replacements (area under the receiver operating characteristic
-curve, AUROC, 0.961 for a patch, 0.955 for swapped codes) but is near chance on JPEG and Gaussian noise (0.561 and 0.503).
-On noise it is below a one-pass score without finetuning (0.607; the marginal 95\,\% intervals do not overlap, a descriptive
-observation, and no paired test was run); on JPEG the two intervals overlap (0.561 against 0.581; intervals in \cref{tab:detection}).
-In the preregistered comparison it is below a texture score whose sign was chosen on the same items (0.756 and 0.768), so the
-preregistered falsifier for the score was met.
+curve, AUROC, 0.961 for a patch, 0.955 for swapped codes) but is near chance on JPEG and Gaussian noise (0.561 and 0.503); on noise
+it is below a one-pass score without finetuning (marginal intervals, descriptive; no paired test), on JPEG the two overlap, and in the
+preregistered comparison it is below a texture score whose sign was chosen on the same items, so the preregistered falsifier for the
+score was met (\cref{fig:detection}).
 We check the clean false-alarm statement on held-out clean test pairs.
 Re-infilling of the flagged tokens and the score-level combination of the two directions on foil captions: run, formal.
 % run: runs/P2-GATE-H3/family.json:n_rule.h_rule (= H-NOGO); go (= false); n_headroom_items (= 50); A5.9 placement 4 (status only, prefix)
@@ -99,7 +98,6 @@ reported (\cref{sec:deviations}; supplement S-I, S-II and S-IV).
 \paragraph*{Scope of this paper}
 This paper reports two preregistered measurements on one model and does not run a race between verifiers.
 Its object is the evidence that a unified masked diffusion model computes about its own inputs, and each question asks, by an exact
-paired test, whether a rule fixed in advance changes the decision on images the rule never saw; the reference encoders of
-\cref{sec:study2-reference} are context, not rivals.
+paired test, whether a rule fixed in advance changes the decision on images the rule never saw.
 Not claimed: a verifier that ranks with dedicated encoders; any result for another model, data set, severity or kind of negative
 caption; that the learned weights track reliability or corruption; that either study bears on the other.
