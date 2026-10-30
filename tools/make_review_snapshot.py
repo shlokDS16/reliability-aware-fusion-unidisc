@@ -20,6 +20,7 @@ INCLUDE_GLOB = [re.compile(r"^runs/P2-[^/]+/")]
 EXCLUDE = [re.compile(p) for p in [
     r"__pycache__/", r"\.pyc$",
     r"^paper2-tnnls/main_camera\.", r"^paper2-tnnls/back/", r"^paper2-tnnls/drafts/", r"^paper2-tnnls/docx/",
+    r"^paper2-tnnls/SUBMISSION-PACKAGE/", r"^paper2-tnnls/release/",
     r"^paper2-tnnls/PORTAL-STATEMENTS\.md$", r"^paper2-tnnls/SUBMISSION-CHECKLIST\.md$", r"^paper2-tnnls/SPEC\.md$",
     r"\.log$", r"\.synctex\.gz$", r"\.fdb_latexmk$", r"\.fls$"]]
 
