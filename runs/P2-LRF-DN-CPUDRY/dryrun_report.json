@@ -1,0 +1,343 @@
+{
+ "what": "CPU dry run of E1 with the STUB network (tests/exp_p2/fake_gate.py); no GPU, no UniDisc. Numbers below are stub numbers and mean nothing.",
+ "n_items": 2,
+ "idx": [
+  0,
+  1
+ ],
+ "conditions_in_rows": [
+  "jpeg10_nlm",
+  "noise0.1_nlm"
+ ],
+ "conditions_scored_by_lrf_score": [
+  "noise0.1_nlm",
+  "jpeg10_nlm"
+ ],
+ "n_prediction_lines": 4,
+ "positive_control": {
+  "n_checked": 4,
+  "ok": true
+ },
+ "frozen_pins_verified": [
+  "model_sha256",
+  "spec_sha256",
+  "code_sha256[data.py]",
+  "code_sha256[families.py]",
+  "code_sha256[lrf.py]",
+  "code_sha256[run.py]",
+  "scoring_code_sha256",
+  "entry_points[exp_p2/run_gate_m4.py]",
+  "entry_points[exp_p2/run_gate_lrf_rescore.py]",
+  "entry_points[exp_p2/gate/lrf_score.py]",
+  "decision_rule"
+ ],
+ "pinned_externally": true,
+ "arrays_item0_noise_keys": [
+  "noise0.1_nlm_B",
+  "noise0.1_nlm_D",
+  "noise0.1_nlm_codes",
+  "noise0.1_nlm_codes_corr",
+  "noise0.1_nlm_delta",
+  "noise0.1_nlm_deltaL",
+  "noise0.1_nlm_flag0.01",
+  "noise0.1_nlm_flag0.05",
+  "noise0.1_nlm_flag0.1",
+  "noise0.1_nlm_nbr",
+  "noise0.1_nlm_s3",
+  "noise0.1_nlm_tbv",
+  "noise0.1_nlm_tex",
+  "noise0.1_nlm_z"
+ ],
+ "corruption_reproduction_note": "not applicable with the stub encoder (its codes differ from UniDisc's); on the GPU run e1_denoise.corruption_check compares noise0.1_nlm_codes_corr with L1's noise0.1_codes",
+ "timing_s": {
+  "wall_total": 4.4828661999999895,
+  "stub_item_mean": 1.7832606500005568,
+  "stub_item_each": [
+   2.54,
+   1.026
+  ],
+  "nlm_per_image_mean": 0.24105294999981197,
+  "nlm_per_image_each": [
+   0.269,
+   0.225,
+   0.211,
+   0.259
+  ],
+  "n_nlm_calls": 4
+ },
+ "stub_rows_pushed_through_network_per_item": [
+  22,
+  21
+ ],
+ "analysis_cells_stub": {
+  "noise0.1": {
+   "n": 2,
+   "arms": {
+    "NONE": {
+     "acc": 0.5
+    },
+    "LRF": {
+     "acc": 1.0
+    },
+    "DN+NONE": {
+     "acc": 0.0,
+     "vs_NONE": {
+      "diff": -0.5,
+      "b": 0,
+      "c": 1,
+      "ci95": [
+       -1.0,
+       0.0
+      ]
+     },
+     "vs_LRF": {
+      "diff": -1.0,
+      "b": 0,
+      "c": 2,
+      "ci95": [
+       -1.0,
+       -1.0
+      ]
+     }
+    },
+    "DN+LRF": {
+     "acc": 0.0,
+     "vs_NONE": {
+      "diff": -0.5,
+      "b": 0,
+      "c": 1,
+      "ci95": [
+       -1.0,
+       0.0
+      ]
+     },
+     "vs_LRF": {
+      "diff": -1.0,
+      "b": 0,
+      "c": 2,
+      "ci95": [
+       -1.0,
+       -1.0
+      ]
+     },
+     "vs_DN_NONE": {
+      "diff": 0.0,
+      "b": 0,
+      "c": 0,
+      "ci95": [
+       0.0,
+       0.0
+      ]
+     }
+    }
+   },
+   "length_matched": {
+    "n": 2,
+    "arms": {
+     "NONE": {
+      "acc": 1.0
+     },
+     "LRF": {
+      "acc": 1.0
+     },
+     "DN+NONE": {
+      "acc": 0.0,
+      "vs_NONE": {
+       "diff": -1.0,
+       "b": 0,
+       "c": 2,
+       "ci95": [
+        -1.0,
+        -1.0
+       ]
+      },
+      "vs_LRF": {
+       "diff": -1.0,
+       "b": 0,
+       "c": 2,
+       "ci95": [
+        -1.0,
+        -1.0
+       ]
+      }
+     },
+     "DN+LRF": {
+      "acc": 0.5,
+      "vs_NONE": {
+       "diff": -0.5,
+       "b": 0,
+       "c": 1,
+       "ci95": [
+        -1.0,
+        0.0
+       ]
+      },
+      "vs_LRF": {
+       "diff": -0.5,
+       "b": 0,
+       "c": 1,
+       "ci95": [
+        -1.0,
+        0.0
+       ]
+      },
+      "vs_DN_NONE": {
+       "diff": 0.5,
+       "b": 1,
+       "c": 0,
+       "ci95": [
+        0.0,
+        1.0
+       ]
+      }
+     }
+    }
+   },
+   "corruption_reproduction": {
+    "checked": false,
+    "reason": "arrays missing"
+   }
+  },
+  "jpeg10": {
+   "n": 2,
+   "arms": {
+    "NONE": {
+     "acc": 1.0
+    },
+    "LRF": {
+     "acc": 1.0
+    },
+    "DN+NONE": {
+     "acc": 0.0,
+     "vs_NONE": {
+      "diff": -1.0,
+      "b": 0,
+      "c": 2,
+      "ci95": [
+       -1.0,
+       -1.0
+      ]
+     },
+     "vs_LRF": {
+      "diff": -1.0,
+      "b": 0,
+      "c": 2,
+      "ci95": [
+       -1.0,
+       -1.0
+      ]
+     }
+    },
+    "DN+LRF": {
+     "acc": 0.0,
+     "vs_NONE": {
+      "diff": -1.0,
+      "b": 0,
+      "c": 2,
+      "ci95": [
+       -1.0,
+       -1.0
+      ]
+     },
+     "vs_LRF": {
+      "diff": -1.0,
+      "b": 0,
+      "c": 2,
+      "ci95": [
+       -1.0,
+       -1.0
+      ]
+     },
+     "vs_DN_NONE": {
+      "diff": 0.0,
+      "b": 0,
+      "c": 0,
+      "ci95": [
+       0.0,
+       0.0
+      ]
+     }
+    }
+   },
+   "length_matched": {
+    "n": 2,
+    "arms": {
+     "NONE": {
+      "acc": 1.0
+     },
+     "LRF": {
+      "acc": 1.0
+     },
+     "DN+NONE": {
+      "acc": 0.0,
+      "vs_NONE": {
+       "diff": -1.0,
+       "b": 0,
+       "c": 2,
+       "ci95": [
+        -1.0,
+        -1.0
+       ]
+      },
+      "vs_LRF": {
+       "diff": -1.0,
+       "b": 0,
+       "c": 2,
+       "ci95": [
+        -1.0,
+        -1.0
+       ]
+      }
+     },
+     "DN+LRF": {
+      "acc": 0.5,
+      "vs_NONE": {
+       "diff": -0.5,
+       "b": 0,
+       "c": 1,
+       "ci95": [
+        -1.0,
+        0.0
+       ]
+      },
+      "vs_LRF": {
+       "diff": -0.5,
+       "b": 0,
+       "c": 1,
+       "ci95": [
+        -1.0,
+        0.0
+       ]
+      },
+      "vs_DN_NONE": {
+       "diff": 0.5,
+       "b": 1,
+       "c": 0,
+       "ci95": [
+        0.0,
+        1.0
+       ]
+      }
+     }
+    }
+   },
+   "corruption_reproduction": {
+    "checked": false,
+    "reason": "arrays missing"
+   }
+  }
+ },
+ "analysis_keys": [
+  "arms",
+  "bootstrap",
+  "cells",
+  "conditions",
+  "definitions",
+  "inputs",
+  "label",
+  "plan",
+  "sign"
+ ],
+ "opencv": "5.0.0",
+ "cpu_count": 24
+}

@@ -4,6 +4,9 @@
 % Rules kept here: I_j and S_G appear only in this section; no Study 2 symbol, role or result; no comparison word; the P discordance
 % appears only as numbers in the P table (V2-1); family H only in its own subsubsection with the A5.9 prefix; Prop. 3 is not here.
 % Every number carries a "% run:" comment with its file and key.
+% Mask-DiFuser pass (2026-10-30, lead instruction): the correlated-token proposition (former Proposition 2), its proof sketch and the frontier figure
+% (former Fig. 3), and the token-detection figure (former Fig. 5) moved to supplement S-II; Lemma 1 stays here with a pointer. This overrides SPEC
+% section 0 rule 4 (which kept prop:snrcorr in the main text) by the lead's instruction. Old text: git history.
 
 \section{Study 1: Masked-Likelihood Token Gating With Conformal Risk Control}\label{sec:study1}
 Study~1 answers Q1 (\cref{sec:intro}); its object of measurement is an input-level source-validation gate, fixed before any test item
@@ -111,7 +114,7 @@ For $\mu_c=0$ and $\E S_{\rm G}>0$, the gate raises $\E S_{\rm G}/\sqrt{\Var S_{
 \end{equation}
 \end{lemma}
 \noindent\emph{Proof.} $\Var(I_j\Delta_j)=k\sigma_z^2+k(1-k)\mu_z^2$, where $z$ is the token's class (clean or corrupted), $\mu_z$ and $\sigma_z^2$ are the moments of that class and $k$ is its keep probability; sum over
-tokens. The condition is \cref{prop:snrcorr} below at zero correlation. \qed
+tokens. The condition is the case of zero correlation of the extension in supplement S-II. \qed
 
 Three consequences follow.
 A necessary condition is $\phi_1>2\phi_0-\phi_0^2$; a random gate, with $\phi_1=\phi_0$, lowers the ratio; and on a clean item any gate
@@ -120,72 +123,13 @@ The descriptive family E-pred uses \cref{eq:mean,eq:var} as preregistered.
 
 \paragraph*{Correlated tokens}
 Neighbouring image tokens are correlated, so \cref{eq:var} is an approximation.
-The following statement replaces independence by an exchangeable correlation; it is theory under stated assumptions and is not
-evaluated on the model.
-
-\begin{proposition}[withholding with exchangeably correlated tokens]\label{prop:snrcorr}
-Condition on the corruption labels, so that $(1-\rho)m$ tokens are clean and $\rho m$ are corrupted, with the moments and keep
-probabilities of \cref{lem:meanvar}.
-Assume (a) that for $j\neq k$ the correlation of $\Delta_j$ and $\Delta_k$ is $\gamma_0$ if both tokens are clean, $\gamma_1$ if both are
-corrupted and $\gamma_{01}$ otherwise, with values for which the covariance matrix is positive semi-definite; and (b) that the keep
-indicators $I_j$ are independent of each other and of every $\Delta_k$.
-Then $\E S_{\rm G}$ is given by \cref{eq:mean}, and
-\begin{equation}
-\begin{aligned}
-\Var S_{\rm G}={}&V+(1-\rho)m\big((1-\rho)m-1\big)(1-\phi_0)^2\gamma_0\sigma^2\\
-&+\rho m(\rho m-1)(1-\phi_1)^2\gamma_1\sigma_c^2\\
-&+2\rho(1-\rho)m^2(1-\phi_0)(1-\phi_1)\gamma_{01}\sigma\sigma_c,
-\end{aligned}
-\label{eq:varcorr}
-\end{equation}
-where $V$ is the right side of \cref{eq:var}.
-If moreover $\mu_c=0$ and $\E S_{\rm G}>0$ with and without the gate, the gate raises $\E S_{\rm G}/\sqrt{\Var S_{\rm G}}$ if and only if
-\begin{equation}
-\begin{aligned}
-&\rho\,\sigma_c^2\Big[(\phi_1-2\phi_0+\phi_0^2)\\
-&\qquad+(\rho m-1)\,\gamma_1\,(\phi_1-\phi_0)(2-\phi_0-\phi_1)\Big]\\
-&\quad+2\rho(1-\rho)\,m\,\gamma_{01}\,\sigma\sigma_c\,(1-\phi_0)(\phi_1-\phi_0)\\
-&\qquad>\;(1-\rho)\,\phi_0(1-\phi_0)\,(\sigma^2+\mu^2).
-\end{aligned}
-\label{eq:snrcorr}
-\end{equation}
-Consequently:
-(i) $\gamma_0$ does not enter \cref{eq:snrcorr}, and at $\gamma_1=\gamma_{01}=0$ it is \cref{eq:snr};
-(ii) a gate with $\phi_1=\phi_0$, such as a random gate, lowers the ratio for every admissible correlation, and if $\gamma_{01}\ge0$ every
-gate with $\phi_1\le\phi_0$ lowers it;
-(iii) where $\phi_1>\phi_0$, a larger $\gamma_1$ or $\gamma_{01}$ can only turn a decrease of the ratio into an increase, so positive
-correlation among corrupted tokens, or between clean and corrupted tokens, enlarges the region of $(\phi_0,\phi_1)$ in which the gate
-raises the ratio, and as $(\rho m-1)\gamma_1\to\infty$ that region tends to $\{\phi_1>\phi_0\}$;
-(iv) if $\gamma_{01}<0$, a gate that flags only clean tokens can raise the ratio;
-(v) unlike \cref{eq:snr}, the condition depends on $m$.
-\end{proposition}
-
-\noindent\emph{Proof sketch.} Each of the $m(m-1)$ ordered pairs of distinct tokens adds $\E I_j\,\E I_k\,\mathrm{Cov}(\Delta_j,\Delta_k)$ to
-$\Var S_{\rm G}$, which gives the three correlation terms of \cref{eq:varcorr}.
-With $\mu_c=0$ the gate multiplies $\E S_{\rm G}$ by $1-\phi_0$, so it raises the ratio if and only if
-$(1-\phi_0)^2\,\Var S_{\rm G}|_{\phi_0=\phi_1=0}>\Var S_{\rm G}$; the clean-pair terms scale by $(1-\phi_0)^2$ on both sides and cancel, and the
-remaining terms, divided by $m$, give \cref{eq:snrcorr}.
-The full proof is in supplement S-II. \qed
-
-\Cref{fig:frontier} draws the frontier of \cref{eq:snrcorr}.
-The ratio in \cref{prop:snrcorr} is the signal-to-noise ratio of the sum.
+Supplement S-II states and proves an extension of \cref{lem:meanvar} to exchangeably correlated tokens and draws its frontier; it is theory
+under stated assumptions and is not evaluated on the model.
+The ratio in \cref{lem:meanvar} is the signal-to-noise ratio of the sum.
 If the per-token terms are jointly Gaussian, the accuracy $P(S_{\rm G}>0)$ given the flags is $\Phi$ of the conditional ratio, which the
 unconditional ratio approximates; without joint Gaussianity no statement about accuracy follows, and a gate can raise the ratio while
 lowering the accuracy.
-Assumption (b) is an approximation for this gate, whose flags are computed from the same token values as the evidence.
-With correlation the ratio no longer grows like $\sqrt m$; it tends to a limit set by the shared component of the per-token terms.
-E-pred does not use \cref{prop:snrcorr}, and the proposition is not used to interpret E-pred or any other result.
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\columnwidth]{figures/fig2_theory.pdf}
-\caption{Model figure, no data: a model of when withholding helps an additive statistic (theory under stated assumptions, not validated
-on UniDisc). Above each curve $\phi_1=b(\phi_0;G,\chi)$ of \cref{prop:snrcorr} (shaded), withholding raises
-$\E S_{\rm G}/\sqrt{\Var S_{\rm G}}$; $\mu_c=0$, $\gamma_{01}=0$, $\chi=\rho\sigma_c^2/[(1-\rho)(\sigma^2+\mu^2)]=1$ and
-$G=(\rho m-1)\gamma_1=0$ (independent tokens, \cref{eq:snr}), 1, 4, and 16. A larger $G$ lowers the curve towards the diagonal
-$\phi_1=\phi_0$ (random withholding). Grey: every rule with $\phi_1\le\phi_0$ lowers the ratio when $\gamma_{01}\ge0$.}
-\label{fig:frontier}
-\end{figure}
+E-pred does not use the extension, and the extension is not used to interpret E-pred or any other result.
 
 \subsection{Preregistered Protocol}\label{sec:study1-protocol}
 The protocol was fixed in a preregistration card, a statistical analysis plan with its addenda, and a method specification before any
@@ -292,34 +236,20 @@ Because it cannot see an error upstream of the stored arrays, it is not read as 
 
 \subsubsection{Token detection}
 % run: runs/P2-GATE-M1/analysis.json:table.{patch,swap}.q.{mean,lo,hi}; table.{jpeg,noise}.q.n (= 197, 198; n_items = 200)
-On the detection items (about 200; exact counts in \cref{fig:detection}) the gate's masked-likelihood score $q_j=-u_j$ separates
-code-level random replacements but is near chance on JPEG and Gaussian noise (\cref{fig:detection}(a)).
-% run: runs/P2-GATE-M1/analysis.json:table.{jpeg,noise}.{q,tbv}.{mean,lo,hi}
-On noise it is below the one-pass TbV score of the non-finetuned backbone; the marginal intervals do not overlap, which is descriptive,
-and no paired test was run; on JPEG the two overlap.
-% run: runs/P2-GATE-M4/analysis.json:s_d2.per_corruption.{jpeg,noise}.{diff_mean,ci95,p_holm,n_eligible}
-With the best cheap rival (the pixel variance of a token's patch, sign reversed) frozen and re-scored on the test items, $q$ minus the
-rival was $-0.198$ ($-0.211$ to $-0.186$) under JPEG and $-0.258$ ($-0.267$ to $-0.250$) under noise (Holm-adjusted $p=0.0004$).
-% run: runs/P2-GATE-M1/analysis.json:paired_q_vs_best_cheap.{jpeg,noise}.{best_cheap,rival_sign,diff_mean,ci95,p_holm}; table.*.tex_neg
-On the detection items, where the rival and its sign were selected, $q$ also lies below it (same-item selection; \cref{fig:detection}(b)).
+On the detection items (about 200; exact counts in supplement S-II) the gate's masked-likelihood score $q_j=-u_j$ separates
+code-level random replacements but is near chance on JPEG and Gaussian noise (AUROC with intervals in supplement S-II).
+% run: runs/P2-GATE-M4/analysis.json:s_d2.per_corruption.{jpeg,noise}.{diff_mean,ci95,p_holm,n_eligible}; runs/P2-GATE-M1/analysis.json:paired_q_vs_best_cheap.{jpeg,noise}.{best_cheap,rival_sign,diff_mean,ci95,p_holm}; table.*.tex_neg
+In the preregistered comparison with the best cheap rival (the pixel variance of a token's patch, sign reversed, frozen and re-scored on the test
+items) the score was below the rival under JPEG and under noise (Holm-adjusted $p=0.0004$; values, the comparison on the detection items, and the
+one-pass comparison in supplement S-II).
 The preregistered falsifier for the score was therefore met, and this paper makes no claim that the score detects corrupted codes more
 accurately than cheap methods.
 The labels mark codes that the tokeniser changed, which a texture score can anticipate without any reference to the evidence; the
 rival's higher AUROC is read as a sign of this label circularity, not as evidence about any corruption effect.
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\columnwidth]{figures/fig_detection.pdf}
-% run: runs/P2-GATE-M1/analysis.json:table.<corruption>.{q,tbv,<rival>}.{mean,lo,hi,n}; paired_q_vs_best_cheap.<corruption>.{best_cheap,rival_sign,diff_mean,ci95,p_holm}
-% run: runs/P2-GATE-M4/analysis.json:s_d2.per_corruption.{jpeg,noise}.{rival,diff_mean,ci95,n_eligible (= 492, 497),p_holm (= 0.0004)}; plotted values runs/P2-PAPER-FIGS/fig_detection.json
-\caption{Study 1, detection of changed image tokens (descriptive of the gate's score; not part of family P). (a) Mean per-item AUROC
-against changed-code labels with the 95\% percentile-bootstrap interval over items (10\,000 resamples), $n$ per row as printed: the gate's score $q_j=-u_j$, the one-pass TbV score of the non-finetuned model, and the best cheap
-rival, chosen with its sign on these same items among both orientations of every cheap score (same-item selection, so optimistic; name
-and sign in the row label). (b) Paired difference $q$ minus rival with its 95\% interval, on the detection items
-where the rival was selected (filled) and with the rival frozen and re-scored on the test items (open; JPEG and noise; 492 and 497
-items; Holm-adjusted $p=0.0004$ for both, the resolution floor of 10\,000 resamples). Values in supplement S-II.}
-\label{fig:detection}
-\end{figure}
+% run: runs/P2-GATE-M1/analysis.json:table.{jpeg,noise}.{q,tex_neg}.{mean,lo,hi} (rival tex_neg, i.e. patch texture with sign -1: 0.7558 [0.7429, 0.7676], 0.7681 [0.7597, 0.7765]; q: 0.5613 [0.5473, 0.5750], 0.5028 [0.4925, 0.5134]); paired_q_vs_best_cheap.{jpeg,noise}.{best_cheap,rival_sign (= -1),diff_mean,ci95} (-0.1945 [-0.2141, -0.1748], -0.2653 [-0.2782, -0.2527]); n = 197, 198
+On the detection items, where the rival and its sign were chosen, the rival (patch variance, sign $-1$) had an AUROC of 0.756 (95\% interval 0.743 to 0.768) under JPEG
+and 0.768 (0.760 to 0.776) under noise, against 0.561 (0.547 to 0.575) and 0.503 (0.493 to 0.513) for the score; the paired difference, score minus rival, was $-0.195$
+($-0.214$ to $-0.175$) and $-0.265$ ($-0.278$ to $-0.253$), and the choice on the same items favours the rival.
 
 \subsubsection{Mechanism and the remaining secondary families}
 % run: runs/P2-GATE-M4/analysis.json:s_m.per_corruption.{jpeg,noise,splice}.tested (all false)

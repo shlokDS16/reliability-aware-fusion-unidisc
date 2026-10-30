@@ -1,0 +1,250 @@
+{
+ "label": "exploratory (EXPLORATORY-PLAN-BASELINES-2026-10-30.md E2); no p-value, no test, no multiplicity claim; added after the preregistered Study 2 results",
+ "plan": "research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md E2",
+ "definitions": "exp_p2/gate/tier3_fusion.py item_margins (MED = numpy.median; TM20 = trimmed mean, k = floor(0.20 m) per tail; TM-G = trimmed mean, k = g // 2 per tail, g = flag0.05 count); Y = 1[margin > 0], ties and empty sets wrong",
+ "sign": "differences are arm minus NONE; positive favours the arm",
+ "bootstrap": {
+  "n_boot": 10000,
+  "seed": "numpy.random.SeedSequence(0), one index matrix per condition shared by all arms",
+  "interval": "percentile, numpy.quantile 0.025 and 0.975",
+  "unit": "items"
+ },
+ "consistency": {
+  "ok": true,
+  "checked": "NONE recomputed == y_none and gate arm == y_gatem for every item and condition",
+  "n_rows_checked": 1800
+ },
+ "inputs": {
+  "predictions": "runs\\P2-LRF-L1\\predictions.jsonl",
+  "predictions_sha256": "e919776c351596d175211a8a3ca215e6f6a892d608cf9a049df8f2d81c0d305f",
+  "arrays_dir": "runs\\P2-LRF-L1\\arrays",
+  "tier3_fusion_sha256": "72ba22e4233702ae3bf7e3ef00db432dbb45dd5e1e8b05c5c69e7d8e42d0dbdd",
+  "numpy": "2.5.2"
+ },
+ "cells": {
+  "noise0.1": {
+   "n": 450,
+   "mean_flagged": 34.473333333333336,
+   "arms": {
+    "NONE": {
+     "acc": 0.7333333333333333,
+     "n_empty": 0,
+     "n_ties": 0
+    },
+    "MED": {
+     "acc": 0.7155555555555555,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.017777777777777778,
+      "b": 6,
+      "c": 14,
+      "ci95": [
+       -0.03777777777777778,
+       0.0022222222222222222
+      ]
+     }
+    },
+    "TM20": {
+     "acc": 0.7155555555555555,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.017777777777777778,
+      "b": 1,
+      "c": 9,
+      "ci95": [
+       -0.03333333333333333,
+       -0.0044444444444444444
+      ]
+     }
+    },
+    "TM-G": {
+     "acc": 0.7266666666666667,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.006666666666666667,
+      "b": 0,
+      "c": 3,
+      "ci95": [
+       -0.015555555555555555,
+       0.0
+      ]
+     }
+    }
+   }
+  },
+  "jpeg10": {
+   "n": 450,
+   "mean_flagged": 62.486666666666665,
+   "arms": {
+    "NONE": {
+     "acc": 0.8488888888888889,
+     "n_empty": 0,
+     "n_ties": 0
+    },
+    "MED": {
+     "acc": 0.8288888888888889,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.02,
+      "b": 7,
+      "c": 16,
+      "ci95": [
+       -0.04,
+       0.0
+      ]
+     }
+    },
+    "TM20": {
+     "acc": 0.8266666666666667,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.022222222222222223,
+      "b": 2,
+      "c": 12,
+      "ci95": [
+       -0.04,
+       -0.006666666666666667
+      ]
+     }
+    },
+    "TM-G": {
+     "acc": 0.8422222222222222,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.006666666666666667,
+      "b": 0,
+      "c": 3,
+      "ci95": [
+       -0.015555555555555555,
+       0.0
+      ]
+     }
+    }
+   }
+  },
+  "splice128": {
+   "n": 450,
+   "mean_flagged": 47.2,
+   "arms": {
+    "NONE": {
+     "acc": 0.8955555555555555,
+     "n_empty": 0,
+     "n_ties": 0
+    },
+    "MED": {
+     "acc": 0.8644444444444445,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.03111111111111111,
+      "b": 3,
+      "c": 17,
+      "ci95": [
+       -0.051111111111111114,
+       -0.013333333333333334
+      ]
+     }
+    },
+    "TM20": {
+     "acc": 0.8733333333333333,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.022222222222222223,
+      "b": 3,
+      "c": 13,
+      "ci95": [
+       -0.04,
+       -0.0044444444444444444
+      ]
+     }
+    },
+    "TM-G": {
+     "acc": 0.8866666666666667,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.008888888888888889,
+      "b": 0,
+      "c": 4,
+      "ci95": [
+       -0.017777777777777778,
+       -0.0022222222222222222
+      ]
+     }
+    }
+   }
+  },
+  "clean": {
+   "n": 450,
+   "mean_flagged": 47.80444444444444,
+   "arms": {
+    "NONE": {
+     "acc": 0.8866666666666667,
+     "n_empty": 0,
+     "n_ties": 0
+    },
+    "MED": {
+     "acc": 0.8622222222222222,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.024444444444444446,
+      "b": 3,
+      "c": 14,
+      "ci95": [
+       -0.042222222222222223,
+       -0.006666666666666667
+      ]
+     }
+    },
+    "TM20": {
+     "acc": 0.8688888888888889,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.017777777777777778,
+      "b": 1,
+      "c": 9,
+      "ci95": [
+       -0.03333333333333333,
+       -0.0044444444444444444
+      ]
+     }
+    },
+    "TM-G": {
+     "acc": 0.8844444444444445,
+     "n_empty": 0,
+     "n_ties": 0,
+     "vs_NONE": {
+      "diff": -0.0022222222222222222,
+      "b": 0,
+      "c": 1,
+      "ci95": [
+       -0.006666666666666667,
+       0.0
+      ]
+     }
+    }
+   }
+  }
+ },
+ "conditions": [
+  "noise0.1",
+  "jpeg10",
+  "splice128",
+  "clean"
+ ],
+ "arms": [
+  "NONE",
+  "MED",
+  "TM20",
+  "TM-G"
+ ]
+}

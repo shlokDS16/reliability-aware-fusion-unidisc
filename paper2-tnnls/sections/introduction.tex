@@ -58,10 +58,9 @@ Each item was delivered regardless of the outcome; items 1 and 2 belong to Study
 source-validation gate for a pretrained unified masked diffusion model: each image token is scored by the model's own masked likelihood
 with the caption withheld, and the flag threshold is set by conformal risk control on clean pairs so that the expected flagged share of a
 clean pair's tokens is at most $\alpha$.
-Under an independent-token approximation, we give the condition on the false-alarm and hit rates under which discarding flagged tokens
-raises the signal-to-noise ratio of an additive evidence sum.
-The condition is stated as an approximation because image tokens are dependent, and it is extended to exchangeably correlated tokens
-(\cref{prop:snrcorr}); it is linked to no result (\cref{sec:study1-method}).
+Under an independent-token approximation, we state the closed-form condition on the false-alarm and hit rates under which discarding flagged
+tokens raises the signal-to-noise ratio of an additive evidence sum (\cref{sec:study1-method}) and prove it in supplement S-II; it is an
+approximation because image tokens are dependent, supplement S-II extends it to exchangeably correlated tokens, and it is linked to no result.
 \item \emph{The preregistered test and its checks} (exact McNemar, Holm over three realistic corruptions, and $n$ fixed by a headroom rule).
 % run: runs/P2-GATE-M4/analysis.json:outcome.label (= negative); A4.2.3 NEG 6.1 opening, first clause
 The preregistered test excludes an improvement or a loss of more than five percentage points in image-direction verification accuracy
@@ -72,23 +71,22 @@ characteristic curve (AUROC) of 0.961 for a patch and 0.955 for swapped codes, b
 0.503).
 On noise it is below a one-pass score without finetuning (marginal intervals, descriptive; no paired test), and on JPEG the two overlap.
 In the preregistered comparison it is below a texture score whose sign was chosen on the same items, so the preregistered falsifier for
-the score was met (\cref{fig:detection}).
-We check the clean false-alarm statement on held-out clean test pairs.
-Re-infilling of the flagged tokens and the score-level combination of the two directions on foil captions were run as formal tests.
+the score was met (supplement S-II).
+The clean false-alarm statement was checked on held-out clean test pairs, and re-infilling of the flagged tokens and the score-level
+combination of the two directions on foil captions were run as formal tests.
 % run: runs/P2-GATE-H3/family.json:n_rule.h_rule (= H-NOGO); go (= false); n_headroom_items (= 50); A5.9 placement 4 (status only, prefix)
 In a separately labelled family added after the primary result was known (family H: SugarCrepe hard negatives~\cite{hsieh2023sugarcrepe}
 on 50 Common Objects in Context (COCO) images not used elsewhere; Holm over the same three corruptions), the headroom stage was run;
 its headroom condition was not met, so the test stage was not run (\cref{sec:study1-protocol,sec:study1-results}).
-\item \emph{A frozen weighting and its preregistered confirmation.} Learned reliability-aware fusion (LRF) is a logistic generalised
+\item \emph{A frozen weighting and its preregistered confirmation.} Learned reliability-aware fusion (LRF), a logistic generalised
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:{features (35 names), n_items (= 500)}; HASHES.json:new.* (model.npz db7fdb4e...)
-additive model that maps 35 caption-withheld features of each image token to a non-negative weight on its evidence, fitted on 500 design
-images, frozen, and pinned by SHA-256 before any test image was selected.
+additive model that maps 35 caption-withheld features of each image token to a non-negative weight on its evidence, was fitted on 500
+design images, frozen, and pinned by SHA-256 before any test image was selected.
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.{acc_b (= 0.7333), acc_a (= 0.8022), p_one (= 0.000508), label (= confirmed)}; family_L.L-LEN.label (= rejected, b 67 > c 33)
 On a fresh preregistered fold, the frozen LRF raised image-direction verification accuracy under Gaussian noise ($\sigma=0.1$) from 0.733
 without reliability weighting to 0.802 (exact one-sided McNemar $p=0.0005$), including with length-matched negatives; on clean images it
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.0089, 0.0533]), margin (= 0.03), non_inferior (= true), margin_note}; runs/P2-LRF-PLAN/n_rule.json:n_L (= 450)
-lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053); the margin was fixed after an exploratory clean interval
-had been seen.
+lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053; margin fixed after an exploratory clean interval had been seen).
 This result holds in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not
 used to design or fit the method, with Gaussian noise at one severity.
 Two image-text encoders are scored on the same items for reference, without comparison, and the cost is reported

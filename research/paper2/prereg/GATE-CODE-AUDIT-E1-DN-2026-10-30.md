@@ -1,0 +1,71 @@
+# Pre-launch code audit: E1 pixel denoiser run (stage `lrf-dn`, run id P2-LRF-DN)
+
+Auditor: gate-auditor (validator; the code was written by another agent). Date: 2026-10-30. Read-only audit; this is the only file written.
+Binding plan: `research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md` section E1 (commit 83ac79f8). Code audited at HEAD ce8ab86a; `git status --short exp_p2 tools analysis tests runs/P2-LRF-DN` is empty, so the audited files equal HEAD and the driver's dirty-tree check will pass.
+
+## Verdict: PASS WITH FIXES
+
+No blocking finding. The run may be launched as written. Findings 1 to 3 are optional hardening that is cheap to apply before the launch; none changes the validity of the result. Evidence level of everything below: E3/E4 (code read at a pinned SHA, tests and hashes recomputed here).
+
+## Criterion table
+
+| # | Criterion | Status | Evidence |
+|---|---|---|---|
+| 1 | Denoiser = Study 1 S-DN, same seed and images as L1 | met | below |
+| 2 | Pins unchanged, frozen LRF unchanged, hook swap cannot leak | met | below |
+| 3 | 450 items, L1 captions, noise 0.1 and JPEG 10 only, slot 13 | met | below |
+| 4 | Guards, refuse dirty tree and reused id, no write into prereg dirs | met (id guard is weak, F1) | below |
+| 5 | Analysis: pairing, b/c, bootstrap, no p-values, schema | met | below |
+| 6 | Tests | met | 14/14, related suites pass |
+| 7 | Launch command and time estimate | met | below |
+
+## 1. Denoiser, seed, images
+- `exp_p2/run_gate_lrf_dn.py:45-47` `denoise_nlm_sdn` returns `corruptions.denoise(pil512)`; `exp_p2/gate/corruptions.py:76-86` uses `config.DENOISE_PARAMS` when `params=None` (cv2.fastNlMeansDenoisingColored, h = hColor = 25.5, windows 7 and 21). `exp_p2/gate/config.py:28` values recomputed by import: `{'h': 25.5, 'hColor': 25.5, 'templateWindowSize': 7, 'searchWindowSize': 21}`. `denoise_check.chosen` (`exp_p2/gate/denoise_check.py:45-46`) is the same call; Study 1's M4 `_dn` arm (`exp_p2/run_gate_m4.py:187`) is also `corruptions.denoise(img)` on the PIL output of `apply_pixel`. `config.py` and `corruptions.py` are unchanged since the commits f58cd32c / 857673b0 (older than L1).
+- Corruption: `run_gate_lrf_dn.py:60-61` calls `corruptions.apply_pixel(corr, sev, pil, m4.rung_rng(gid, corr, r), None)` with `r = list(config.LADDERS[corr]).index(sev)`; this is line for line `run_gate_m4.py:180-183` (rung_rng is `default_rng([SEED_GATE, gid, 100+10*ladder_index+rung])`, `run_gate_m3.py:47-48`, stateless). The family comes from `ctx.family` = `runs/P2-LRF-PLAN/family.json`: jpeg 10, noise 0.1, splice 128, the same as L1 (`runs/P2-LRF-L1/items.jsonl` row 0 has clean, jpeg10, noise0.1, splice128; slot_len 13). Images: `pipeline.prep_image` in `m4.process`, unchanged.
+- Test `test_flag_on_item_has_only_the_denoised_conditions_with_the_same_corruption_seed` and `test_flag_on_denoised_codes_come_from_the_documented_denoiser` check both on the stub encoder. The real-encoder check (`<cond>_nlm_codes_corr` against L1 `<cond>_codes`) happens in the analysis after the run (F4).
+- OpenCV: the venv used for the GPU run has cv2 5.0.0; Study 1's `denoise_check` recorded 4.13.0 (`runs/P2-GATE-CPU/denoise_check/config.json:32`). I ran the NLM call on one synthetic 512x512 noisy image under both builds: outputs bit-identical (max abs difference 0). One image is not a proof, but there is no sign of a version effect. The run config records `opencv` (`run_gate_lrf_dn.py:80-84`). The `env-lock.txt` of P2-GATE-M4 and P2-LRF-L1 are 0 bytes, so the version used for the original S-DN arm cannot be read from them (F3).
+
+## 2. Pins, frozen object, hook swap
+- Recomputed here (LF-normalised SHA-256) against `runs/P2-LRF-PINS/pins.json`: `exp_p2/run_gate_m4.py`, `exp_p2/run_gate_lrf_rescore.py`, `exp_p2/gate/lrf_score.py` (entry_points and scoring_code_sha256) all True; `runs/P2-LRF-FROZEN-LFIX/model.npz` equals model_sha256, `spec.json` equals spec_sha256; `runs/P2-GATE-M1/codebook.npy` equals codebook_sha256; `analysis_posthoc/learned_ceiling/{data,families,lrf,run}.py` equal the pinned code hashes. `git diff --stat 83ac79f8..HEAD` over run_gate_m4.py, lrf_score.py, corruptions.py, config.py, runner.py, runs/P2-LRF-FROZEN-LFIX, runs/P2-LRF-L1, runs/P2-LRF-PINS, analysis_posthoc: empty. Test `test_unchanged_pinned_runner_and_parameters` repeats the m4 hash check.
+- Scoring will use the unchanged `lrf_score` with `--pins` and `--conds noise0.1_nlm,jpeg10_nlm`; `lrf_score.score_run` (`lrf_score.py:266-291`) also re-derives y_none from the runner row (positive control), and `verify_run_inputs` checks codebook and DI hashes against config.json (written because `--layout-fix 13` is set, `run_gate_m4.py:321-322`).
+- Hook swap: `dn_patched` (`run_gate_lrf_dn.py:87-110`) replaces four module attributes (`m4.build_conditions`, `m4.process`, `m4.make_ctx_factory`, `runner.run_items`), only inside `with` in `main` for `--denoise nlm-sdn` (lines 147-154), restoring in `finally`. `m4.main` resolves all four at call time (`run_gate_m4.py:346`: `process=process`, `make_ctx_factory(a)`, `runner.run_items`), so the swap takes effect; with `--denoise none` nothing is patched and `m4.main(rest)` is called. Tests: `test_flag_off_calls_the_l1_runner_untouched`, `test_flag_off_pipeline_is_byte_identical_before_and_after_the_patch_block`, `test_hooks_are_restored_after_an_error`. One process per chunk, so nothing can leak into other runs.
+- `exp_p2/run_gate_m4.py` is not edited (HEAD diff shows only gate_driver.py among existing exp_p2 files, +8/-2 lines: stage registration and `default_n`).
+
+## 3. Items, conditions, captions
+- Items: `get_items` and `check_n_against_rule` are the unchanged m4 code; the driver passes `--n 450`, `runs/P2-LRF-PLAN/family.json` has `n_rule.test_fold` 450, and `--folds-path runs/P2-LRF-FOLD/folds_lrf.json` (same file as L1; L1 config records its sha256 a545a83e...). `check_flags` (`run_gate_lrf_dn.py:113-139`) forces `--tbv on`, `--sanity ""`, `--denoise-for ""`, `--layout-fix 13`, `--family-run P2-LRF-PLAN`, `--neg-len`, and forbids `--extra-cells` and `--gate-true-layout`. I fed the exact command that `gate_driver.build_cmd` produces (stage args plus the LAUNCH `--extra`) to `check_flags`: returns `[]`.
+- Captions: `m4.process` uses `it["caption"]`, `it["neg_caption"]`, and `neg_caption_len` (primary and length-matched negatives) from the same fold file; `ctx.slot_len` must be 13 (`run_gate_lrf_dn.py:52`).
+- Conditions: `build_conditions_dn` (lines 50-68) emits only `jpeg10_nlm` and `noise0.1_nlm` (DN_CORRUPTIONS = jpeg, noise; splice and clean are skipped). `extra=True` makes `m4.process` skip the text-direction passes (`run_gate_m4.py:270`), kind stays `pixel`, so the full LRF feature set (B, D, s3, tbv, tex, nbr, delta, deltaL, flags) is stored; test checks every key of `lrf_score.NEEDED` is present. `tex` is computed on the denoised pixels (`pix=np.asarray(den)`), consistent with "LRF applied to the denoised image".
+
+## 4. Guards, refusals, preregistered directories
+- Guards: the driver forwards `STAGE_ARGS["lrf-dn"]` (= the lrf-l1 flags + `--denoise nlm-sdn`) and `--extra` to the stage; `m4.main` parses them with `runner.base_parser` (`--slow-factor`, `--slow-min-s`, `--max-used-first-mib`, `--max-used-mib`, `--max-rise-mib`, `--mem-frac`) and passes `guards_from_args` and `mem_frac` to `runner.run_items` (`run_gate_m4.py:346-347`); the wrapper in `dn_patched.run_items` passes `**kw` through unchanged except `cfg`. Telemetry via `tools/gpu_guard.py` every 1 s per chunk (`gate_driver.build_cmd`). Max chunks 24 explicit (`gate_driver.py:86`, `resolve_max_chunks`). The same flag values as the L1 launches (`runs/P2-LRF-L1/driver.log` line 2). Hold files, AC, event log, gpu_guard pin and dirty-tree (exit 11, `pins.require_clean` over exp_p2/ and tools/) are the unchanged driver code. The slow rule (`guards.py:69`, floor 2 s, factor 3) is safe for items of about 3 s (stops only above 9 s and 2 s).
+- Writes: the new run writes only `runs/P2-LRF-DN/` (config, items, arrays, l10, selfcheck, chunks, telemetry, logs). `P2-GATE-DCACHE` is opened read-only in practice: only `DI_n013.npy` is needed (text-direction passes, the other cache user, are skipped) and its sha256 is recorded. L1, PLAN, FOLD, FROZEN, PINS are only read. The CPU dry run redirects `common.RUNS` to a scratch directory under `runs/P2-LRF-DN-CPUDRY`.
+- Reused run id: see F1 (weak guard).
+
+## 5. Analysis `analysis/paper2/lrf/e1_denoise.py`
+- Pairing: `_rows` keys by `idx` per condition (`noise0.1_nlm` against `noise0.1`, `jpeg10_nlm` against `jpeg10`; lines 51-60, 104-106), refuses duplicates, empty conditions, differing item sets (line 65-66) and differing gid or image_id (67-69).
+- Accuracy and discordance: `paired` (38-44): diff = arm - reference, b = arm right and reference wrong, c = the reverse, effect = (b - c)/n. Arms: DN+NONE (`y_none` of the denoised row), DN+LRF (`y_lrf`), references NONE and LRF from L1 (same idx and condition); vs_NONE, vs_LRF, plus vs_DN_NONE for DN+LRF; length-matched copy when every row has `y_lrf_L`.
+- Bootstrap: `T3.index_matrix(n, SeedSequence(0), 10000)` = `default_rng(child).integers(0, n, (10000, n))` (`tier3_fusion.py:203-205`), percentile 0.025/0.975; identical construction to `e2_combiners.py:102`; test reproduces the interval independently. No p-value anywhere (test asserts no `p` key; label says no test, no multiplicity claim).
+- Schema read by `paper2-tnnls/scripts/tab_baselines.py:73-79`: `cells.<cond>.n` (asserted 450), `.arms["DN+NONE"|"DN+LRF"].{acc, vs_NONE.{diff, ci95}}`: present, and `test_analysis_output_schema_matches_the_combiners_file` checks `{diff, ci95, b, c}`. Output path `runs/P2-LRF-DN/dn_analysis.json` matches `tab_baselines.py:26`. Note: y = 1 means correct throughout (L1 predictions.jsonl), so accuracy = mean.
+
+## 6. Tests (venv `...\Multi-Modality Language model\.venv\Scripts\python.exe`)
+- `tests/exp_p2/test_lrf_dn.py`: 14 passed (6.8 s).
+- Related: `pytest tests/exp_p2 -k "driver or lrf or m4 or integration or runners or corrupt or denoise or pins or e2"`: 246 passed. Whole `tests/exp_p2`: 820 passed, 5 skipped (261 s). `tests/analysis_lrf`: 38 passed. No failures.
+
+## 7. Launch command and time
+- Command in `runs/P2-LRF-DN/LAUNCH.md:22` is correct: stage exists in `STAGES` before argparse (`choices=sorted(STAGES)`), run id and n match, the explicit `--max-chunks 24`, the guard values equal the L1 launches. Chunks 5 min then 15 min at duty 0.5; first chunk is effectively the smoke run; `--limit` can be added via `--extra` if a shorter look is wanted. Resumable (`--resume`, rows are the completion count).
+- Time: L1 measured 8.26 s busy per item with 67 network rows; this run has 3 (two caption Lambdas + length-matched negative) + 2 x 9 (8 gate + 1 tbv) = 21 rows, which matches the dry run (21 to 22 stub rows). Scaling gives about 3.1 s per item, wall about 1 h; the stated pessimistic bound 8.3 s per item gives about 2.4 h; 24 chunks x 15 min is a ceiling of about 6 h. Plausible and bounded. Stated as an estimate, not a measurement; not verified on the GPU.
+
+## Findings
+1. (Minor, hardening) The "run id is not an existing run" refusal is a static tuple `PROTECTED_RUN_IDS` (`run_gate_lrf_dn.py:37`, used at line 128) of six ids. It does not cover P2-LRF-PLAN, P2-LRF-FOLD, P2-LRF-FROZEN-LFIX, P2-LRF-PINS, P2-LRF-E2, P2-GATE-M1/M2/M3 etc., and `common.init_run` / `gate_driver` do not refuse a directory that already has results (config.json is only written if absent). The docstring (line 16-17) and LAUNCH.md say "not an existing run", which overstates it. The launch command gives `P2-LRF-DN` explicitly and that directory holds only LAUNCH.md, so there is no current risk. Suggested fix: refuse when `runs/<id>/config.json` exists and does not record `denoise == "nlm-sdn"`, or when the id does not start with `P2-LRF-DN`.
+2. (Info) Condition indices differ from L1 (`ci` is 0 and 1 here, 1 and 2 in L1), and the flag jitter and the geometry/scattered arms are seeded by `ci` (`run_gate_m4.py:244,262-263`). The stored `*_flag*` / GATE-M columns of the DN run are therefore not comparable with L1's. LRF and NONE use only B, D, s3, tbv, tex, nbr and delta (`lrf_score.raw_from_arrays`), which do not depend on `ci`, so E1's arms are unaffected. Do not report GATE-M from this run.
+3. (Info) OpenCV differs between Study 1's denoise check (4.13.0) and the GPU venv (5.0.0); bit-identical on one synthetic image here; version recorded in the run config. If the paper says "exactly Study 1's arm", add the version note in the supplement.
+4. (Minor) The analysis cannot detect a caption or fold mismatch beyond gid and image_id; and `corruption_check` needs `runs/P2-LRF-L1/arrays/` which is untracked (git status `?? runs/P2-LRF-L1/arrays/`), so on a clean clone it reports `checked: false, reason: arrays missing` without failing. Optional: compare `caption`, `neg_caption`, `neg_caption_len` and `folds_sha256` between the two `items.jsonl` / `config.json`; and treat `token_equal_fraction < 1` as something to report. The LAUNCH note already says to report it either way.
+5. (Minor) `tab_baselines.py` asserts NONE accuracies of the e2 and ablation files against the a6 file but not those of `dn_analysis.json`; add `assert dn["cells"][cond]["arms"]["NONE"]["acc"]` equals the a6 value when the file exists.
+6. (Doc) `runs/P2-LRF-DN/LAUNCH.md:3` says "Not committed", and the Pre-launch step 1 says to commit the files; they are committed in ce8ab86a. Stale text only.
+7. (Info) The tracked working tree has uncommitted edits under `paper2-tnnls/` and `runs/P2-PAPER-FIGS`, and `runs/P2-PROBE-02` files; none is under exp_p2/ or tools/, so the driver's dirty check is not affected, and none touches this run.
+
+## What I did not check
+- GPU behaviour, real UniDisc encoder output, actual speed and memory: nothing was run on the GPU. The dry run (`runs/P2-LRF-DN-CPUDRY/dryrun_report.json`) uses a stub network and only proves plumbing.
+- The model-to-model equality of cv2 4.13.0 and 5.0.0 on the real corrupted COCO images.
+- That ANONYMIZED is present, GPU idle, AC power and other sessions informed (launch-time conditions in LAUNCH.md).
+- Ledger: no rows added; progress.md not edited (this is a code audit, not a gate verdict).
