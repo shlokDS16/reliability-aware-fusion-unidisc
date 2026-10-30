@@ -9,8 +9,10 @@ listed here, tell me what it says.
 
 1. **AI sentence in the Acknowledgment.** It now reads: "The authors used Claude (Anthropic) to improve the language and grammar of
    the manuscript. The authors reviewed and edited all content and take full responsibility for it." If your professor changes it,
-   send me the new text: I rebuild the PDF and Word files (both versions) in one go. IEEE asks that sections with AI-generated text
-   cite the AI system; language editing alone does not need that.
+   send me the new text: I rebuild the PDF and Word files (both versions) in one go. **The red team flags this sentence as too
+   narrow (finding F9):** besides language editing, Claude helped produce figures, Algorithm 1, the comparison table, analysis
+   scripts and much of the text under your direction, and IEEE asks that AI use be disclosed with the sections and level of use.
+   Settle a wording that covers this with your professor; a fuller draft is in `drafts/declaration-full-disclosure-draft.tex`.
 2. **Anonymized code link** (repository guide, step 4: anonymous.4open.science on branch `review-snapshot`). Send me the link and I
    put it into the review copy. If the site cannot read the private repository, upload `optional/04_Anonymized_code_and_data.zip`
    as supplementary material instead (it is the same anonymized snapshot) and tell me, so the sentence says so.
@@ -22,7 +24,7 @@ listed here, tell me what it says.
 | Upload as (portal file type) | File | Notes |
 |---|---|---|
 | Main document / Manuscript (PDF) | `01_Manuscript_anonymous.pdf` | 15 pages, two-column IEEE format, all pages numbered, all fonts embedded, no author names, no funding, no institution thanks, PDF metadata "Anonymous". |
-| Supplementary material (for review) | `02_Supplementary_Material_anonymous.pdf` | 18 pages, anonymous. |
+| Supplementary material (for review) | `02_Supplementary_Material_anonymous.pdf` | 21 pages, anonymous. |
 | Cover letter | `03_Cover_Letter.pdf` | One page, to the Editor-in-Chief; names the authors (editors only, not reviewers). |
 | Only if the anonymized link fails: supplementary material | `optional/04_Anonymized_code_and_data.zip` | Same files as the `review-snapshot` branch; names replaced by ANONYMIZED. |
 
@@ -89,3 +91,11 @@ The internal area-chair style review scored the paper 4/10 (reject and resubmit)
 noise severity, the weighting was trained on the tested noise level, closeness to Petryk et al. (WACV 2024), and CLIP/SigLIP near
 ceiling on the same items. These are stated in the paper's Limitations; removing them needs new confirmatory work (a second model or
 a held-out corruption), which is reserved for a later paper. Numbers, statistics and the preregistration record passed all audits.
+
+Update 2026-10-31 (presentation pass modelled on Mask-DiFuser, TPAMI 2026): the paper now has a real-image qualitative figure,
+Algorithm 1 and an exploratory comparison table (Table IV) against alternative aggregation rules and a pixel denoiser, all on the
+450 fresh-fold images. Two results there will draw reviewer attention, and the paper states both plainly: a classical
+non-local-means denoiser applied before scoring reached 0.844 under Gaussian noise (0.856 combined with LRF) against LRF's 0.802,
+and a linear logit refitted on the same features was at or above LRF in three of four conditions. The preregistered result (LRF
+above the unweighted rule) is unchanged; the paper does not claim LRF is the best defence against this noise. Red team: SIGN WITH
+CONDITIONS (conditions: the AI wording above, and the rebuilt files, now done); number audit 4: PASS WITH FIXES (fixes applied).
