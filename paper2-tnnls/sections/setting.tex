@@ -9,7 +9,7 @@
 % run: runs/P2-UNIDISC-KEYCHECK/keycheck.json:{model_n_param_elements (= 1406870785), config.image_vocab_size (= 16384)}
 The model is UniDisc~\cite{swerdlow2025unidisc}, a unified masked discrete diffusion model with 1.4B parameters, used as released with
 no training or finetuning here.
-A pair is a caption of $n$ text tokens and an image of $m$ image tokens in one sequence.
+A pair is a caption of $\ell$ text tokens and an image of $m$ image tokens in one sequence.
 % run: SAP card v4 / protocol (design values: 512 px, 32 x 32 grid, captions of 5 to 32 tokens); keycheck.json:config.image_vocab_size
 Images are tokenised at 512~px by the VQ-16 tokeniser of LlamaGen~\cite{sun2024llamagen} into a $32\times32$ grid, so
 $m=1\,024$ tokens, each one of 16\,384 codes; captions have 5 to 32 text tokens.

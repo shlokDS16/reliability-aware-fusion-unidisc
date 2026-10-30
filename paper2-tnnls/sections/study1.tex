@@ -79,7 +79,8 @@ The text direction, used only by family~B, scores the caption tokens with the im
 \paragraph*{A model of when withholding helps an additive statistic}
 The following is theory under stated assumptions, not validated on UniDisc, and no result below is read through it.
 Let a fraction $\rho$ of the $m$ tokens be corrupted.
-Clean terms $\Delta_j$ have mean $\mu$ and variance $\sigma^2$ and are kept with probability $1-\phi_0$; corrupted terms have mean
+Clean terms $\Delta_j$ have mean $\mu$ and variance $\sigma^2$ (moments of the evidence, not the noise level of
+\cref{sec:setting-corruptions}) and are kept with probability $1-\phi_0$; corrupted terms have mean
 $\mu_c$ and variance $\sigma_c^2$ and are kept with probability $1-\phi_1$.
 
 \begin{lemma}[independent tokens]\label{lem:meanvar}

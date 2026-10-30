@@ -30,17 +30,17 @@ assert sum(len(v) for v in G.values()) == 35 and sorted(sum(G.values(), [])) == 
 L = lambda xs: ", ".join(f"\\texttt{{{x.replace('_', chr(92) + '_')}}}" for x in xs)
 DEF = {
     "token scores": r"$B_j$: log-probability of the observed code at token $j$ with the tokens of $j$'s group masked, the other image tokens visible and the caption masked; "
-                    r"$D_j$: the same with every token masked; $q_j=B_j-D_j$; \texttt{s3} $=1-\max_y p(y)$ of the pass that gives $B_j$; "
+                    r"$D_j$: the same with every token masked; $r_j=B_j-D_j$; \texttt{s3} $=1-\max_y p(y)$ of the pass that gives $B_j$; "
                     r"\texttt{tbv}: log-probability of the observed code from one raw-logit pass with all image tokens visible and the caption masked; "
-                    r"\texttt{ltex} $=\log(1+\tau_j)$, $\tau_j$ the pixel variance of the $16\times16$ patch of token $j$; "
+                    r"\texttt{ltex} $=\log(1+v_j)$, $v_j$ the pixel variance of the $16\times16$ patch of token $j$; "
                     r"\texttt{nbr}: mean $L_2$ distance of the codebook vector of token $j$ to those of its eight neighbours",
     "position": r"\texttt{row}, \texttt{col}: grid row and column of the token divided by 31; \texttt{rad} $=\sqrt{(\mathrm{row}-\tfrac12)^2+(\mathrm{col}-\tfrac12)^2}$",
-    "neighbourhood": r"\texttt{nb3mean\_}$k$: mean of score $k$ over the eight neighbours (edge-aware, token excluded); \texttt{nb3min\_q}: their minimum of $q$; "
-                     r"\texttt{nb5mean\_q}: mean of $q$ over the $5\times5$ neighbourhood without the token",
+    "neighbourhood": r"\texttt{nb3mean\_}$k$: mean of score $k$ over the eight neighbours (edge-aware, token excluded); \texttt{nb3min\_q}: their minimum of $r$; "
+                     r"\texttt{nb5mean\_q}: mean of $r$ over the $5\times5$ neighbourhood without the token",
     "within-image rank": r"percentile rank of the score among the 1\,024 tokens of the image, in $[0,1]$",
     "image mean": r"mean of the score over the 1\,024 tokens of the image",
     "image standard deviation": r"standard deviation of the score over the 1\,024 tokens of the image",
-    "image z-score": r"$(q_j-\bar q)/(\mathrm{sd}(q)+10^{-6})$ within the image",
+    "image z-score": r"$(r_j-\bar r)/(\mathrm{sd}(r)+10^{-6})$ within the image",
 }
 rows = [row([g, str(len(v)), L(v), DEF[g]],
             [f"analysis_posthoc/learned_ceiling/data.py feature_names(), engineer() (names and formulas); runs/P2-LRF-FROZEN-LFIX/spec.json features (order, n_features = 35); group counts computed"])

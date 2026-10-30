@@ -6,16 +6,16 @@
 \toprule
 Group & Count & Definition \\
 \midrule
-token scores & 7 & $B_j$; $D_j$; $q_j=B_j-D_j$; $1-\max_y p(y)$ of the pass that gives $B_j$; one-pass log-probability of the observed code with all
-image tokens visible and the caption masked; $\log(1+\tau_j)$, $\tau_j$ the pixel variance of the $16\times16$ patch of token $j$; mean
+token scores & 7 & $B_j$; $D_j$; $r_j=B_j-D_j$; $1-\max_y p(y)$ of the pass that gives $B_j$; one-pass log-probability of the observed code with all
+image tokens visible and the caption masked; $\log(1+v_j)$, $v_j$ the pixel variance of the $16\times16$ patch of token $j$; mean
 $L_2$ distance of the codebook vector of token $j$ to those of its eight neighbours \\
 position & 3 & grid row and column divided by 31; distance from the grid centre \\
-neighbourhood & 8 & means of six token scores over the eight neighbours; their minimum of $q$; mean of $q$ over the $5\times5$
+neighbourhood & 8 & means of six token scores over the eight neighbours; their minimum of $r$; mean of $r$ over the $5\times5$
 neighbourhood without the token \\
 within-image rank & 4 & percentile rank of four token scores among the 1\,024 tokens of the image \\
 image mean & 6 & mean of six token scores over the 1\,024 tokens of the image \\
 image standard deviation & 6 & standard deviation of the same six scores over the image \\
-image z-score & 1 & $(q_j-\bar q)/(\mathrm{sd}(q)+10^{-6})$ within the image \\
+image z-score & 1 & $(r_j-\bar r)/(\mathrm{sd}(r)+10^{-6})$ within the image \\
 \textbf{Total} & 35 & \\
 \bottomrule
 \end{tabular}

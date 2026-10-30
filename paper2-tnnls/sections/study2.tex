@@ -46,10 +46,10 @@ Features are standardised with the means and standard deviations of the design t
 \paragraph*{Weight model and decision}
 For token $j$ with standardised features $x_{j1},\dots,x_{j,35}$, the weight is a logistic generalised additive model~\cite{hastie1990generalized} with a hinge basis,
 \begin{equation}
-w_j=\sigma\Big(\beta_0+\sum_{k=1}^{35}a_kx_{jk}+\sum_{k=1}^{35}\sum_{l=1}^{Q}c_{kl}\,(x_{jk}-t_{kl})_+\Big),
+w_j=\operatorname{sigm}\Big(\beta_0+\sum_{k=1}^{35}a_kx_{jk}+\sum_{k=1}^{35}\sum_{l=1}^{Q}c_{kl}\,(x_{jk}-t_{kl})_+\Big),
 \label{eq:lrf-weight}
 \end{equation}
-where $\sigma$ is the logistic function and the knots $t_{kl}$ are the $l/(Q+1)$ quantiles of feature $k$ over the design tokens.
+where $\operatorname{sigm}$ is the logistic function and the knots $t_{kl}$ are the $l/(Q+1)$ quantiles of feature $k$ over the design tokens.
 The decision and the normalised margin are
 \begin{equation}
 Y_{\rm LRF}=\ind\Big[\sum_{j=1}^{m}w_j\Delta_j>0\Big],\qquad M=\frac{\sum_jw_j\Delta_j}{\sum_jw_j},
@@ -97,7 +97,7 @@ supplement S-IV.}
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_study2_weights.pdf}
 \caption{Frozen weight model; descriptive, not evidence that the weights track corruption. (a) Partial dependence of the token
-weight $w=\sigma(f(x))$ on the six of 35 features with the largest learned effect range, every other standardised feature at its mean 0
+weight $w=\operatorname{sigm}(f(x))$ on the six of 35 features with the largest learned effect range, every other standardised feature at its mean 0
 (knots: grey ticks; colour and style: feature group of \cref{tab:features}). (b) Token-weight maps on the $32\times32$ grid for the first three items of the fold file (chosen by position, not
 outcome), clean (left) and under Gaussian noise with standard deviation 0.1 (right), on one square-root colour scale.}
 \label{fig:lrf_weights}

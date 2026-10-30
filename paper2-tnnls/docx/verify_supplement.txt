@@ -4,7 +4,7 @@ PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\f
 sections: 1
   section 0: columns=1 widths_twips=[] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
 paragraph styles (outside tables): Text=97, TableTitle=54, Heading2=24, TableNote=11, Heading1=8, Equation=2, Title=1, Authors=1
-tables=27 (floating=0) drawings=0 OMML math zones=1162 equation paragraphs=2 numbered=0 sequence_ok=True
+tables=27 (floating=0) drawings=0 OMML math zones=1166 equation paragraphs=2 numbered=0 sequence_ok=True
 hyperlinks=33 (internal 33, external 0) bookmarks=77 internal links without bookmark=0 []
 leftover sentinels: 0 []
 paragraphs with a raw LaTeX command left: 0 []
@@ -13,15 +13,15 @@ headings: 32 (H1 8, H2 24)
 reference entries: 0
 table labels: ['TABLE\xa0S1', 'TABLE\xa0S2', 'TABLE\xa0S3', 'TABLE\xa0S4', 'TABLE\xa0S5', 'TABLE\xa0S6', 'TABLE\xa0S7', 'TABLE\xa0S8', 'TABLE\xa0S9', 'TABLE\xa0S10', 'TABLE\xa0S11', 'TABLE\xa0S12', 'TABLE\xa0S13', 'TABLE\xa0S14', 'TABLE\xa0S15', 'TABLE\xa0S16', 'TABLE\xa0S17', 'TABLE\xa0S18', 'TABLE\xa0S19', 'TABLE\xa0S20', 'TABLE\xa0S21', 'TABLE\xa0S22', 'TABLE\xa0S23', 'TABLE\xa0S24', 'TABLE\xa0S25', 'TABLE\xa0S26', 'TABLE\xa0S27']; figure captions: ['Fig.\xa01 (conc', 'Fig.\xa02 (theo', 'Fig.\xa03 (fami', 'Fig.\xa04 (froz', 'Fig.\xa05 (fami']
 == text comparison with pdftotext
-tokens: pdf=16091 docx=16020
-word recall (PDF words found in DOCX, multiset): 0.9912
-5-gram match rate (PDF 5-grams present in DOCX): 0.7842
-prose words (>= 3 letters): pdf=7901 docx=7897; recall 0.9980
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9271
+tokens: pdf=16136 docx=16064
+word recall (PDF words found in DOCX, multiset): 0.9911
+5-gram match rate (PDF 5-grams present in DOCX): 0.7832
+prose words (>= 3 letters): pdf=7928 docx=7925; recall 0.9980
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9253
 prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 28; of these 26 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 2 contain words absent from the DOCX
    CONTENT-MISSING?  absent words dec | manifest hash dec draft commit revision commit final revision
    CONTENT-MISSING?  absent words aware, edge | eight neighbours edge tbv ltex nbr aware token excluded
-PDF token spans not found in DOCX: 190 (>= 6 tokens: 57; tokens in them: 819)
+PDF token spans not found in DOCX: 192 (>= 6 tokens: 58; tokens in them: 828)
    MISSING?  tier3 comparators addendum a5 family h fold file hardnegative pool
    MISSING?  model npz specification spec json tuning record hpo json feature code data py modelfamily code families py fitting code lrf py codebook untracked cached position
    MISSING?  lrf json sha256 db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37 9d196d7189dc5b6a2d6d80ed694314c6ed323cac59b0300c42c073a6e40db4b5 63cd79442078414726b327eef76e1e1397b3db1b7c3222449705a3
@@ -52,10 +52,11 @@ PDF token spans not found in DOCX: 190 (>= 6 tokens: 57; tokens in them: 819)
    MISSING?  decision rule test performed downstream claim hnogo no withdrawn in
    MISSING?  0 896 0 889 0 847 0 727 0 893 21 01 03 01 table s21
    MISSING?  05 1 not measured 8 2 8 2 not measured
-   MISSING?  masked qj bj dj s3 1 maxy p y of
+   MISSING?  masked rj bj dj s3 1 maxy p y of
    MISSING?  nb3mean b row 1 2 2 col 1 2 2 nb3mean s3 nb3mean k
-   MISSING?  image zscore total itemsd ltex itemsd nbr 1 itemz q 35 qj q sd q
+   MISSING?  image zscore total itemsd ltex itemsd nbr 1 itemz q 35 rj r sd r
    MISSING?  signaltonoise calculator alpha obs beta obs partition group sk qj bj dj statistic q gm igate irand4 proposition 4
+   MISSING?  data py sigmoid in spec json paper 0 1 0 1 group of
    MISSING?  without weighting q learning rate t captionslot length 13 llen decisions
    MISSING?  aspos asf amil aunl 0 920 0 922 0 893 0 913 0 896 0 900
    MISSING?  884 0 871 0 853 0 856 0 840 0 873 0 864 0 840

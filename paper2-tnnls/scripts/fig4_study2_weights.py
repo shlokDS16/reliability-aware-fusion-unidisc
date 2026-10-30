@@ -98,7 +98,7 @@ meta = dict(
 json.dump(meta, open(OUT / "fig4_meta.json", "w", encoding="utf-8"), indent=1)
 
 # ---- figure ----------------------------------------------------------------------------------------------------------------------
-# group names are those of tables/tab_features_main.tex; titles use its notation (B_j, q_j, log(1+tau_j), ...)
+# group names are those of tables/tab_features_main.tex; titles use its notation (B_j, r_j, log(1+v_j), ...)
 def GROUP(n):
     if n in ("row", "col", "rad"):
         return "position"
@@ -118,7 +118,7 @@ def GROUP(n):
 GSTYLE = {"token scores": (C["green"], "-"), "position": (C["orange"], (0, (5, 1.5))), "neighbourhood": (C["purple"], (0, (2.5, 1.2))),
           "within-image rank": (C["verm"], (0, (1, 1.2))), "image mean": (C["blue"], (0, (3, 1, 1, 1))),
           "image standard deviation": ("#444444", (0, (6, 1.5, 1.5, 1.5))), "image z-score": (C["sky"], (0, (4, 2)))}
-BASE = {"B": r"$B_j$", "D": r"$D_j$", "q": r"$q_j$", "s3": r"$1-\max_y p(y)$", "tbv": "one-pass\nlog-probability", "ltex": r"$\log(1+\tau_j)$",
+BASE = {"B": r"$B_j$", "D": r"$D_j$", "q": r"$r_j$", "s3": r"$1-\max_y p(y)$", "tbv": "one-pass\nlog-probability", "ltex": r"$\log(1+v_j)$",
         "nbr": "neighbour\ndistance"}
 PREFIX = {"rank_": "rank of", "nb3mean_": "neighbour mean of", "nb3min_": "neighbour minimum of", "nb5mean_": r"$5\times5$ mean of",
           "itemmean_": "image mean of", "itemsd_": "image std. dev. of", "itemz_": "image z-score of"}
@@ -154,7 +154,7 @@ for i, k in enumerate(top):
         plt.setp(ax.get_yticklabels(), visible=False)
     axes_a.append(ax)
 axes_a[0].set_ylim(ylo - 2 * pad, yhi + pad)
-axes_a[0].set_ylabel(r"weight $w=\sigma(f(x))$")
+axes_a[0].set_ylabel(r"weight $w=\mathrm{sigm}(f(x))$")
 fig.text(0.004, 0.985, "(a)", fontsize=S.FS + 1, fontweight="bold", va="top")
 from matplotlib.lines import Line2D
 shown = []
