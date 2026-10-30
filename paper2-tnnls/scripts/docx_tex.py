@@ -307,7 +307,7 @@ def parse_tabular(spec: str, body: str) -> dict:
         for ctext in split_top(t, "&"):
             ctext = ctext.strip()
             span, align = 1, None
-            mm = re.match(r"\\multicolumn\s*\{(\d+)\}\s*\{([^}]*)\}\s*", ctext)
+            mm = re.match(r"\\multicolumn\s*\{(\d+)\}\s*\{((?:[^{}]|\{[^{}]*\})*)\}\s*", ctext)   # column spec may hold one brace level, e.g. @{}l
             if mm:
                 span = int(mm.group(1))
                 am = re.search(r"[lcr]", mm.group(2))
