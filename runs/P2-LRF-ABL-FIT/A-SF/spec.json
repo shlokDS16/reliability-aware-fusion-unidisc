@@ -1,0 +1,136 @@
+{
+ "id": "A-SF",
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "kind": "gam",
+ "family": "GAMCols",
+ "features": [
+  "rad"
+ ],
+ "cols": [
+  9
+ ],
+ "n_features": 1,
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 4,
+  "ridge": 0.0003178305990854932,
+  "lr": 0.025160023145321495
+ },
+ "inner_cv_o1": 0.44191702206929523,
+ "epochs": 40,
+ "seeds": {
+  "seed0": 316748921,
+  "seed1": 1886600088,
+  "seed2": 4159147987,
+  "keys": {
+   "final_fit": [
+    [
+     4,
+     99,
+     0,
+     0
+    ],
+    [
+     4,
+     99,
+     0,
+     1
+    ],
+    [
+     4,
+     99,
+     0,
+     2
+    ]
+   ]
+  }
+ },
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 design items; selection by mean inner-fold O1",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "inner_fits": [
+    3,
+    99,
+    0,
+    "ci",
+    "ii"
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "preprocessing": "data.engineer on the design arrays -> columns of this variant -> (X - mu) / sd with mu, sd from the design items (restricted to the variant's columns)",
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "selfcheck_max_abs_diff_numpy_vs_torch": 4.3302393365474146e-08,
+ "sec": {
+  "search": 0.0,
+  "final_fits": [
+   4.1,
+   3.9,
+   3.9
+  ]
+ },
+ "model_sha256": "3fb47ec89cab99350a1c4134fcff5f5e8528f60006e14366161c8088b25664e9",
+ "seed_models_sha256": {
+  "seed1": "5ce754aa7cb4a00d2400d85bd327ffa1d970ae00c0514967d56fa009ff8b1d1c",
+  "seed2": "601a2fba358fdcf57d516173adc8d6243cf37673cd61fe8ece1a1dad8aa1d55a"
+ },
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2",
+ "chosen_feature": "rad",
+ "candidate_inner_cv_o1": {
+  "B": 0.45425530274709064,
+  "D": 0.4449293613433838,
+  "q": 0.4632004499435425,
+  "s3": 0.46803558866182965,
+  "tbv": 0.44938525557518005,
+  "ltex": 0.4688535730044047,
+  "nbr": 0.4549075663089752,
+  "row": 0.46738038460413617,
+  "col": 0.4422655701637268,
+  "rad": 0.44191702206929523,
+  "nb3mean_q": 0.47286715110143024,
+  "nb3mean_B": 0.4745037853717804,
+  "nb3mean_s3": 0.4745851357777913,
+  "nb3mean_tbv": 0.47082096338272095,
+  "nb3mean_ltex": 0.4739670356114705,
+  "nb3mean_nbr": 0.47455571095148724,
+  "nb3min_q": 0.47322022914886475,
+  "nb5mean_q": 0.47225451469421387,
+  "rank_q": 0.460185448328654,
+  "rank_B": 0.4513092339038849,
+  "rank_s3": 0.4638592302799225,
+  "rank_tbv": 0.44736530383427936,
+  "itemmean_q": 0.47315800189971924,
+  "itemmean_B": 0.47315798203150433,
+  "itemmean_s3": 0.47315800189971924,
+  "itemmean_tbv": 0.47315797209739685,
+  "itemmean_ltex": 0.47315798203150433,
+  "itemmean_nbr": 0.47315798203150433,
+  "itemsd_q": 0.47315798203150433,
+  "itemsd_B": 0.47315798203150433,
+  "itemsd_s3": 0.47315798203150433,
+  "itemsd_tbv": 0.47315802176793414,
+  "itemsd_ltex": 0.47315800189971924,
+  "itemsd_nbr": 0.47315798203150433,
+  "itemz_q": 0.46085243423779804
+ },
+ "selection_budget": "35 searches (35 times the frozen LRF's); no fresh item used"
+}

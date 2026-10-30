@@ -1,0 +1,101 @@
+{
+ "id": "A-S-pos",
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "kind": "gam",
+ "family": "GAMCols",
+ "features": [
+  "row",
+  "col",
+  "rad"
+ ],
+ "cols": [
+  7,
+  8,
+  9
+ ],
+ "n_features": 3,
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 4,
+  "ridge": 0.0003178305990854932,
+  "lr": 0.025160023145321495
+ },
+ "inner_cv_o1": 0.43629377086957294,
+ "epochs": 40,
+ "seeds": {
+  "seed0": 316748921,
+  "seed1": 1886600088,
+  "seed2": 4159147987,
+  "keys": {
+   "final_fit": [
+    [
+     4,
+     99,
+     0,
+     0
+    ],
+    [
+     4,
+     99,
+     0,
+     1
+    ],
+    [
+     4,
+     99,
+     0,
+     2
+    ]
+   ]
+  }
+ },
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 design items; selection by mean inner-fold O1",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "inner_fits": [
+    3,
+    99,
+    0,
+    "ci",
+    "ii"
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "preprocessing": "data.engineer on the design arrays -> columns of this variant -> (X - mu) / sd with mu, sd from the design items (restricted to the variant's columns)",
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "selfcheck_max_abs_diff_numpy_vs_torch": 4.9299165000293854e-08,
+ "sec": {
+  "search": 37.4,
+  "final_fits": [
+   4.6,
+   4.6,
+   4.4
+  ]
+ },
+ "model_sha256": "7e9f809973619cbdfce3676324f39c1c840db7564f40378798f497fd4f3ad948",
+ "seed_models_sha256": {
+  "seed1": "3212ea8eb9e06e246e81ef5a918f48f67703fece318c30d5ffe216fe3d5ba0db",
+  "seed2": "17e425a29539968bf01a42e3caa65a8f4bc6c59c5abfeeceec66e135dc09234b"
+ },
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2"
+}

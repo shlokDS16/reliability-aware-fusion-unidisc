@@ -1,0 +1,105 @@
+{
+ "id": "A-S-s3",
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "kind": "gam",
+ "family": "GAMCols",
+ "features": [
+  "s3",
+  "nb3mean_s3",
+  "rank_s3",
+  "itemmean_s3",
+  "itemsd_s3"
+ ],
+ "cols": [
+  3,
+  12,
+  20,
+  24,
+  30
+ ],
+ "n_features": 5,
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 8,
+  "ridge": 0.00020187645282349314,
+  "lr": 0.009927959371687998
+ },
+ "inner_cv_o1": 0.44261472423871356,
+ "epochs": 40,
+ "seeds": {
+  "seed0": 316748921,
+  "seed1": 1886600088,
+  "seed2": 4159147987,
+  "keys": {
+   "final_fit": [
+    [
+     4,
+     99,
+     0,
+     0
+    ],
+    [
+     4,
+     99,
+     0,
+     1
+    ],
+    [
+     4,
+     99,
+     0,
+     2
+    ]
+   ]
+  }
+ },
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 design items; selection by mean inner-fold O1",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "inner_fits": [
+    3,
+    99,
+    0,
+    "ci",
+    "ii"
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "preprocessing": "data.engineer on the design arrays -> columns of this variant -> (X - mu) / sd with mu, sd from the design items (restricted to the variant's columns)",
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "selfcheck_max_abs_diff_numpy_vs_torch": 2.4560899458681007e-07,
+ "sec": {
+  "search": 48.8,
+  "final_fits": [
+   6.2,
+   6.5,
+   6.7
+  ]
+ },
+ "model_sha256": "6cc401b6bd11e1a689f80f34150e321e11de3dfe1d45fc898902eb37e10bff7e",
+ "seed_models_sha256": {
+  "seed1": "6d659081edb07221aca009bc7b667e15c997b3e2c7fb5017fd12c120f1c9e2b6",
+  "seed2": "f2069451a837e4ec30b9a76f57136149786c9e88e22973457be66c278ac57473"
+ },
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2"
+}

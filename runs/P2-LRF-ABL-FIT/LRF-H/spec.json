@@ -1,0 +1,195 @@
+{
+ "id": "LRF-H",
+ "label": "exploratory; added after the primary, family H and Study 2 results",
+ "plan": "research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md",
+ "kind": "gam",
+ "family": "GAMCols",
+ "features": [
+  "B",
+  "D",
+  "q",
+  "s3",
+  "tbv",
+  "ltex",
+  "nbr",
+  "row",
+  "col",
+  "rad",
+  "nb3mean_q",
+  "nb3mean_B",
+  "nb3mean_s3",
+  "nb3mean_tbv",
+  "nb3mean_ltex",
+  "nb3mean_nbr",
+  "nb3min_q",
+  "nb5mean_q",
+  "rank_q",
+  "rank_B",
+  "rank_s3",
+  "rank_tbv",
+  "itemmean_q",
+  "itemmean_B",
+  "itemmean_s3",
+  "itemmean_tbv",
+  "itemmean_ltex",
+  "itemmean_nbr",
+  "itemsd_q",
+  "itemsd_B",
+  "itemsd_s3",
+  "itemsd_tbv",
+  "itemsd_ltex",
+  "itemsd_nbr",
+  "itemz_q"
+ ],
+ "cols": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34
+ ],
+ "n_features": 35,
+ "n_items": 500,
+ "T": 0.16970035433769226,
+ "selected_cfg": {
+  "knots": 8,
+  "ridge": 0.002718101655720333,
+  "lr": 0.01685063723119033
+ },
+ "inner_cv_o1": 0.37510863939921063,
+ "epochs": 40,
+ "seeds": {
+  "seed0": 316748921,
+  "seed1": 1886600088,
+  "seed2": 4159147987,
+  "keys": {
+   "final_fit": [
+    [
+     4,
+     99,
+     0,
+     0
+    ],
+    [
+     4,
+     99,
+     0,
+     1
+    ],
+    [
+     4,
+     99,
+     0,
+     2
+    ]
+   ]
+  }
+ },
+ "hpo": {
+  "method": "random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds over all 500 design items; selection by mean inner-fold O1",
+  "seed_keys": {
+   "configs": [
+    2,
+    99,
+    0
+   ],
+   "inner_folds": [
+    1,
+    99
+   ],
+   "inner_fits": [
+    3,
+    99,
+    0,
+    "ci",
+    "ii"
+   ]
+  },
+  "root_seed": 20261029
+ },
+ "preprocessing": "data.engineer on the design arrays -> columns of this variant -> (X - mu) / sd with mu, sd from the design items (restricted to the variant's columns)",
+ "inputs_never_used": [
+  "Delta",
+  "Lambda",
+  "captions",
+  "z",
+  "GATE flags",
+  "condition identity"
+ ],
+ "selfcheck_max_abs_diff_numpy_vs_torch": 3.8021623960382556e-07,
+ "sec": {
+  "search": 0.0,
+  "final_fits": [
+   27.7,
+   25.4,
+   26.0
+  ]
+ },
+ "model_sha256": "264eb560c17d47454c1b540fcbbf5a5cd9fed75bec7c9f2ccecf921908558d20",
+ "seed_models_sha256": {
+  "seed1": "40b84a6af584d21d87635ef7f9db69c481ae95427f858d3234eca801c71258d0",
+  "seed2": "2bec226a3035eab51853494a10f8473daf905aad341e5a3c4c5e819115a22a09"
+ },
+ "torch": "2.11.0+cu130",
+ "numpy": "2.5.2",
+ "role": "harness LRF refit (R0 and seed-spread); not the frozen LRF",
+ "r0": {
+  "ok": true,
+  "cfg_equal": true,
+  "selected_cfg_harness": {
+   "knots": 8,
+   "ridge": 0.002718101655720333,
+   "lr": 0.01685063723119033
+  },
+  "selected_cfg_frozen": {
+   "knots": 8,
+   "ridge": 0.002718101655720333,
+   "lr": 0.01685063723119033
+  },
+  "inner_o1_harness": 0.37510863939921063,
+  "inner_o1_frozen": 0.37510863939921063,
+  "inner_o1_abs_diff": 0.0,
+  "o1_tol": 1e-06,
+  "max_abs_weight_diff": 5.323384330568892e-07,
+  "weight_tol": 1e-05,
+  "n_weights": 2048000,
+  "seed_key": [
+   4,
+   99,
+   0,
+   0
+  ],
+  "frozen_seed": 316748921,
+  "harness_seed": 316748921
+ }
+}
