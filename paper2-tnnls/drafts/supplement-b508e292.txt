@@ -1,0 +1,1188 @@
+                                                                                                                                                                                                                         1
+
+        Supplementary Material for "Learned
+Reliability-Aware Fusion of Token Evidence Raised
+Image-Text Verification Accuracy Under Gaussian
+
+  Noise in a Unified Masked Diffusion Model: A
+       Preregistered Confirmation in UniDisc"
+
+                                   Anonymous authors for double-anonymous review
+
+References to sections, tables, equations and propositions of the main paper are written in words (for example "Section
+IV-C of the main paper"); labels with an S belong to this supplement. Every number carries a source comment in the
+LaTeX file, with its runs/ file and key. Study 1 material (S-II, S-III) and Study 2 material (S-IV, S-VI, S-VII) are kept
+in separate sections and separate tables.
+
+                                                        S-I. Preregistration Record
+A. Pins
+
+   Study 1's artefacts are pinned in Table S1 and Study 2's in Table S2. Hashes are SHA-256 of the committed bytes
+(git LF convention) unless marked. Some working-tree files are CRLF, so a raw hash of a checked-out file can differ
+from the committed hash without a change of content; both forms are recorded where both were used.
+
+                                              TABLE S1
+Pinned Artefacts of Study 1 (pin file runs/P2-GATE-CARD-V4/pins.json)
+
+Artefact                              Identifier
+Code, tests, guard
+                                      final audited commit 9c4e1e25; moved by dated rows A-1 (f2f7b2e1), A-4 (d81858c0, Tier-3
+Analysis plan with Addenda A1 to      code added), A-5 (8d1bee3a, re-infilling self-check) and A-6 (725a1b5a, family H and Study 2
+A3b.12                                code); manifest hash 65513677ba4d98adfa1a861db4215200ad64b78aec1cceeaf0bcdca6b4664
+Addendum A4 (outcome book, Tier-3     dec
+comparators)                          e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7 (LF)
+Addendum A5 (family H)
+Fold file                             draft commit 40828e96, revision r1 commit f1671c91
+
+Hard-negative pool (family B), mani-  final b32e72a1, revision r1 2f62f1df; family H code commit 5e6380b1
+fest, leak check                      LF c19db5b3b9fabdeb89e8e686c58ae6c011f746529fbf9be84f1c58c99c446786; CRLF work-
+Frozen files of E-pred                ing copy 450edb543779de7ee5e6a52422fd6507ef52f15ba3b956a8b05c2e561620f311
+                                      cfd0f94facd0, 070fb29a2ebc, 91f4b7968b54 (prefixes, LF)
+
+                                      fit c89700dbc3ba, signal-to-noise calculator 5c535a3bda75, test file 8d7528bbb37b
+
+                                                       TABLE S2
+Hash Set of the Frozen Weighting of Study 2, Verified by the Scorer at Start
+
+Artefact                                         SHA-256
+
+Model runs/P2-LRF-FROZEN-LFIX/model.npz          db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37
+Specification spec.json                          9d196d7189dc5b6a2d6d80ed694314c6ed323cac59b0300c42c073a6e40db4b5
+Tuning record hpo.json                           63cd79442078414726b327eef76e1e1397b3db1b7c3222449705a3f4acdad04f
+Feature code data.py                             14421ffb1061947a8408406750e8417282188efeccf07cac3142179fed9f429b
+Model-family code families.py                    1c49827d723ea17017f84ba283fcfa681bf24e10c0a0e7d62b6a83064f850a7e
+Fitting code lrf.py                              03ed472e1a3cd8bb2dc41f4a59d7b48f1561cd883012ac4434e08a5c37b9d6ec
+Codebook (untracked)                             ff15b9b5b362dc80f8a18f6e852e6e99478c0e8885646735ed16d1d80e3ae50b
+Cached position marginal at slot length 13 (un-  f7744253a1b997b8b9f28d9b91348e8371f1ea1e3564f6c8bfc2f10aa5b42176
+tracked)
+Re-scored design arrays (digest)                 038ded0724b33e4ff132ce9af4eefd7c115bf82fc834777be1e2f4d69cb68e90
+Fresh fold folds_lrf.json                        CRLF working copy a545a83ec881988cc81d40c3598fcb4be6292a59d2c835e4cce
+                                                 6e72d3d71f1de; the committed LF blob has another hash for the same content
+                                                                                                                                        2
+
+B. Audits
+
+   The checks named in the main paper as scripted and agent-run audits (see the Declaration of the main paper) are:
+the statistician's sign-off of the analysis plans; the red team's signatures with conditions on Addenda A2 to A6 and on
+the build specification; the gate-auditor's code audits (pass verdicts at the final audited commits, with delta audits
+for every later pin), its gate audits of family L, family LG and the reference encoders with their parity runs, and its
+byte-identical regeneration of the committed outputs after every code merge; and the data-steward's sign-offs of the
+hard-negative pool and of the Study 2 fold (check L7). These checks were run by the authors' own pipeline; none is
+described as independent. No signature says that a method works.
+
+C. Families
+
+   Table S3 lists every test family of the paper. Each family has its own level 0.05 and its own Holm correction; there is
+no control across families. The paper has 17 families; under a global null with independence the chance of at least one
+false rejection is 1 - 0.9517 = 0.58.
+
+                                                                 TABLE S3
+                       Test Families. mH: Hypotheses in the Family's Holm Correction
+
+Study  Family n                  Test                                                   mH Not allowed
+1
+       P         300, 500, or exact two-sided McNemar, GATE-M against none: 3                    a claim in favour of the gate from
+1
+1                300 with the JPEG, noise, splice                                                a rejection with c > b; "predicted",
+
+1                evidence ratio                                                                  "explained", "caused by detection"
+1
+1      PS        as P            same test on patch and swap                            2        use as a demonstration that the gate
+
+1                                                                                                works
+2
+2      S2        300             exact McNemar, re-infilled flagged set against 2                "improves", "restores", detection as
+2
+2                                random-gate best-of-four re-infill (kept draw), patch           mechanism
+1
+                                 and splice; only if n  120
+
+       B         300 pairs       exact McNemar, two-way fusion against the better 1              a statement about corruption
+
+                                 single direction; untestable at ceiling 0.95
+
+       R         150             exact McNemar per corruption with a primary ­                   any claim beyond the tested model
+
+                                 rejection with b > c (none: not run)
+
+       S-M, S- as P              mechanism, evidence ratio, denoising, detection, 3, 3, 2, as in the protocol
+
+       Z, S-DN,                  out-of-sample detection, clean control                 2, 2, 1
+
+       S-D, S-
+
+       D2, S-C
+
+       H, H-M 300 (planned) as P on SugarCrepe hard negatives; added after the 3                 see S-III
+
+                                 primary result
+
+       L         450             L1 exact one-sided McNemar on noise; then Holm 3                "confirmed" except for L1
+
+                                 over L3 (JPEG), L4 (splice), two-sided
+
+       L-NI 450                  lower 90 % bootstrap bound of the clean net change 1            a superiority claim on clean images
+
+                                 against -0.03
+
+       L-LEN 449                 exact one-sided McNemar on noise with length- 1                 ­
+
+                                 matched negatives
+
+       LG        300             exact one-sided McNemar, shot, impulse, speckle 3               a claim beyond the three tested noise
+
+                                 (severity 3)                                                    types
+
+       E-dec, P fold             intervals or sign agreement only; no test              ­        any p-value in a claim
+       E-pred,
+       suite
+
+D. Dated amendments
+
+   Row A-1 moved the Study 1 code pin for later stages; it changed two command-line flags of the stage runner and
+the guard settings recorded per chunk, and no analysis path, scoring definition or frozen file. Row A-2 set a slow-item
+limit of three times the median item time, with a floor of 2 s, for later stages on the first author's dated answer; guard
+settings decide only whether a run continues. Row A-3 closed the window for tightening the second-model stage before
+the main analysis ran; that stage never ran. Row A-4 added the audited Tier-3 code, with no existing file changed. Row
+A-5 made the unchanged tokenisation self-check of the re-infilling stage run with deterministic convolution algorithms.
+Row A-6 merged the family H and Study 2 code after the re-infilling stage completed, with a byte-identical regeneration
+of every committed Study 1 output. Row A-7 recorded the family H preconditions before its first item. Row A-8 made
+the Study 2 self-check run with deterministic convolution algorithms after two stops before any item (pin 1871fe7d).
+Row A-9 changed one test only (pin 84be25c4); production code was byte-identical.
+
+E. Time input of the released configuration
+
+   The main paper (Section III) states that UniDisc's denoiser has no time input in the released configuration. Table S4
+gives the evidence, read in the authors' code at commit 3ee3e47a9e64bac2fdca59957726f14723371ced of the UniDisc
+                                                                                                                             3
+
+repository and in the key names of the checkpoint snapshot 2b344ca856bd108b52a2d022a3463dace131249f (a code
+reading, not a reproduction). The statement concerns this configuration and checkpoint, not UniDisc in general. Because
+the loader is non-strict, a key check was run: all 342 checkpoint tensors match the 342 parameters of the denoiser
+backbone, with no missing key, no unexpected key and no shape mismatch. The check does not cover the image tokeniser,
+which is loaded by another path, and key equality does not show that the values are the intended final weights; how
+often whole-modality masks occurred in training cannot be recovered from the code.
+
+                                                                        TABLE S4
+Evidence for the Absence of a Time Input (Paths Relative to the UniDisc Repository Unless Marked)
+
+Claim                                                             Evidence (file:line)
+                                                                  configs/config.yaml:12,14,15
+Time conditioning is off; absorbing-state diffusion, parameteri-
+sation subs; no experiment overrides it                           project    files  runs/env-2026-10-14/scripts/unidisc_
+The project composes the official demonstration experiments
+and loads the interleaved checkpoint                              setup.py:17,30-35, exp001/unidisc_net.py:46-47
+The official inference experiment sets a null noise level; the
+samplers pass None                                                configs/experiments/large_scale_high_res_interleaved_
+
+The forward pass accepts a null noise level only when this is     inference.yaml:30-31; model_eval.py:2057,2086,3019,3060,
+allowed
+No timestep embedder and no time modulation without time          3186
+conditioning
+A stored scaling flag is never read                               model.py:660-662,691,729
+No time-embedding or time-modulation keys; "sigma" absent
+from the checkpoint                                               models/dit.py:1105,1186-1188,1377-1379,    models/dit.py:
+Raw logits are returned before the step that copies observed
+positions                                                         1064-1090
+
+                                                                  configs/model/extra_large.yaml:8; models/dit.py:1290
+
+                                                                  key names read from the checkpoint pickle
+
+                                                                  model.py:784-788
+
+F. Disclosures of Addendum A4
+
+   (1) The five Tier-3 comparators and their parameters (S-II) were fixed in Addendum A4, whose draft (40828e96) and
+revision r1 (f1671c91) were committed before the headroom decision file of the main run was written; the addendum's
+author states that no value of the headroom or primary stage was read when it was written, which is an assertion and
+not an attestation. (2) No p-value is computed for the Tier-3 comparators; there are 72 intervals and no multiplicity
+adjustment. (3) The outcome book of Addendum A4 fixed the wording of every label before the primary result existed.
+On 29 October 2026 at about 00:10 IST the first author delegated the choice of how the submission condition reads
+under a null primary result; under that delegation the stricter reading (no question-form framing in the title, abstract,
+highlights, conclusion or the opening of the Study 1 discussion) was adopted by the agent-run study pipeline (see the
+Declaration) at 00:12 IST, before any value of the main test was read (decision records D0076 and D0077; D0077
+corrects D0076's wording: the author's message delegated the choice and did not itself choose a reading). (4) The
+time-input statement rests on a code reading at the pinned commit (above) and on the key check. (5) Family B ran
+before the re-infilling family S2, which the plan allows when a fixed time inequality holds at the end of the coherence
+stage; it held. A code reading confirmed that no output of family B can reach an input of S2; the rule that B is analysed
+only after the S2 table exists is procedural, and it was followed (analysis commit 10e6bc0f).
+
+G. Full list of deviations and disclosures
+
+   Study 1.
+
+   1) The sample size of S2 and B was set to 300 instead of 150 before any outcome, on the first author's dated
+       confirmation; S2 was restricted to patch and splice after a 21-item dry run.
+
+   2) The first stage of the detection measurement stopped and was resumed at item 106 of 200.
+   3) Three checks of the second-model adapter are applied outside the module that holds the others and were reviewed,
+
+       not executed, by the auditor; the second-model stage never ran.
+   4) The sensitivity analyses of S2 and B read "rejection" as the favourable-direction rejection at the adjusted level;
+
+       this can over-flag sensitivity to n, never under-flag it, and it enters no claim.
+   5) The firewall for the S2 smoke test is an honour rule.
+   6) The swap and patch parameters are stored in one frozen file that stands for two files named in the plan.
+   7) The chance bar for the sanity corruptions is called blind on the lead's assertion that no detection-pilot output
+
+       from item 26 on was read; the first author's written co-attestation that he had not looked at those outputs is
+       dated before the analysis ran.
+   8) Where the card forbids any claim from a rejection with c > b and the plan prescribes "reduced verification
+       accuracy", the plan governs, and no claim in favour of the gate is made from such a rejection.
+                                                                                                                                                                                                                             4
+
+   9) The calibration stage stopped twice on the slow-item rule of the guard (106 and then 114 rows complete), with no
+       crash; it was relaunched on the first author's dated answers (row A-2); stored rows were kept unchanged.
+
+ 10) The main-test stage stopped once at 334 of 500 on the default chunk limit of the stage runner, not a guard stop,
+       and resumed at row 334 with the same items and flags.
+
+ 11) During the coherence stage the operating system restarted the laptop for an update after one of 100 items; the
+       stage was continued on the first author's instruction and completed 100 of 100.
+
+ 12) Family B ran before S2 under the plan's time inequality (A4 disclosure (5) above).
+ 13) No second-model stage ran, because no corruption had a primary rejection with b > c.
+ 14) The S2 smoke test stopped twice at the tokenisation self-check before any item, from process-to-process nondeter-
+
+       minism of autotuned convolutions in the image tokeniser; row A-5 fixed the self-check, and S2 reads stored codes
+       and never re-tokenises.
+ 15) Family H: the A5 disclosure (S-III) and amendment items (A5.14, A5.1 amendment item 7); decision D0087 was
+       committed after the H3 driver had started and before any H3 row existed.
+ 16) The effective-n record of the S2 figure carries a reason text written at analysis time.
+ 17) The data-steward's builder notes: the image ids of the negatives and mismatches were not collected separately (no
+       analysis uses them); 162 other runs/P2-* JSON files outside the excluded classes were not opened by the data
+       steward's check.
+ 18) The time-input table moved from the main appendix to this supplement.
+ 19) The exact Clopper­Pearson bounds of the family P table were added at writing (runs/P2-PAPER-BOUNDS,
+       descriptive).
+Study 2.
+   1) The L1 stage stopped twice at its tokenisation self-check before any item (directories P2-LRF-L1.try1, .try2);
+       row A-8 moved the pin to 1871fe7d. Residual: the self-check certifies the layout under the deterministic backend,
+       while the items ran with autotuning on as in the design run, and a fresh tokenisation can differ by up to about
+       1.5 % of tokens between processes.
+   2) The scorer's pin file was written at 22:42 while L1 was running; every value in it was copied from records committed
+       before L1 (the hash set of the object commit).
+   3) Row A-9 (pin 84be25c4) changed one test only.
+   4) The environment lock files of the design-run, re-score, L1 and LG stages are empty; the environment was recorded
+       after the runs (runs/P2-ENV/pip-freeze-2026-10-30.txt); the commit of the corruption package was verified
+       from the environment.
+   5) Item arrays are untracked; SHA-256 manifests are committed.
+   6) Hashes appear in CRLF and LF forms; both refer to the same content.
+   7) The parity files were moved unchanged from a wrong output directory; no hash was taken before the move, and
+       audit-time SHA-256s are recorded in the reference-encoder audit.
+   8) The field pixel_parity: not run of the main reference-encoder file is superseded by the two parity runs (S-VI).
+   9) The download of the reference encoders was 5.0 GB against 2 to 4 GB quoted to the first author.
+ 10) Decision D0094: what had been seen before the re-freeze (main paper, Section V-A).
+ 11) "No output was read before its run was complete" rests on the operations log.
+ 12) The Tier-3 ablation (S-VII) was added at writing; no ablation was preregistered.
+
+                 S-II. Study 1: Secondary and Descriptive Families, and the Tier-3 Comparison
+
+   Table S5 gives every Study 1 family on one overview with its preregistered decision. None of the material in this
+section enters a statement about family P.
+
+A. Headroom
+
+   Table S6 gives the headroom check that fixed the operating points and the test size. On the size-scaled ratio zR, a
+sensitivity analysis, the second condition fails at every rung (T2 from -6.75 to -0.09); the rule uses the size-normalised
+ratio.
+
+B. Calibration and flags
+   In 2 000 random re-splits of calibration and test items at  = 0.05 (exploratory) the mean of F^ -  was -0.0031,
+
+with 2.5 and 97.5 percentiles of -0.0055 and -0.0006. The clean no-gate accuracy on the test fold was 0.880 (Wilson
+95 % interval 0.849 to 0.906), against 0.843 (0.798 to 0.880) in the pilot; the intervals overlap, so the pre-stated pipeline
+audit was not triggered. For  = 0.05 on an 8 × 8 patch image about 48 false flags are expected against at most 64 true
+ones, so precision is at most 0.57 even for a perfect detector, and under JPEG and noise more than nine in ten tokens
+change, so precision must be read against that base rate.
+                                                                                                                                                               5
+
+                                                                                TABLE S5
+                        Study 1 Families on One Overview: Estimate, Interval and Preregistered Decision
+
+Family Cell             Contrast                                            n Estimate Interval      Preregistered decision
+
+P   JPEG, quality 10    accuracy, GATE-M - none                             500 -0.002 [-0.006, 0.000]a not rejected, pHolm = 1.00; 90% interval inside ±0.05
+                        accuracy, GATE-M - none                             500 0.000 [0.000, 0.000]a not rejected, pHolm = 1.00; 90% interval inside ±0.05
+P   Noise,  = 0.1       accuracy, GATE-M - none                             500 -0.004 [-0.010, 0.002]a not rejected, pHolm = 1.00; 90% interval inside ±0.05
+                                                                            500 0.002 [-0.004, 0.008]a not rejected, pHolm = 1.00; 90% interval inside ±0.05
+P   Splice, 128 px      accuracy, GATE-M - none
+                                                                            500 0.000 [-0.008, 0.008] not rejected, pHolm = 1.00; positive control not met
+S-C Clean images        accuracy, GATE-M - none                             500 0.006 [-0.008, 0.020] not rejected, pHolm = 1.00; positive control not met
+                        accuracy, GATE-M - none
+PS Patch, 8 × 8 codes
+PS Swap, 15% of codes
+
+S-D JPEG, quality 10    AUROC, q - frozen rival                             492 -0.198 [-0.211, -0.186] rejected, pHolm = 0.0004; rival higher
+S-D Noise,  = 0.1       AUROC, q - frozen rival                             497 -0.258 [-0.267, -0.250] rejected, pHolm = 0.0004; rival higher
+
+S-M All three corruptions accuracy, GATE-M - random gate                    ­­­                      not tested: no primary rejection with b > c
+
+S2  Patch, 8 × 8 codes  accuracy, flagged set - random-gate best-of-4 re-infill 300 0.010 [0.000, 0.023] inconclusive, pHolm = 0.500
+                        accuracy, flagged set - random-gate best-of-4 re-infill 300 -0.003 [-0.017, 0.007] inconclusive, pHolm = 1.00
+S2  Splice, 128 px
+
+B   Foil pairs, clean images accuracy, two-way fusion - text direction      298 -0.003 [-0.010, 0.000] not rejected, p = 1.00; no gain over the text direction detected
+
+H   Three corruptions   decision fields only                                ­­­                      H-NOGO: not tested; downstream claim withdrawn
+
+Rows P and S-C: 90 % interval (a); others 95 %. Bold: null rejected at the preregistered level. S2: random-gate best-of-four re-infill as comparator. B:
+foil pairs on clean images. H: decision fields only. Source: runs/P2-GATE-M4/analysis.json, runs/P2-GATE-S2/analysis.json, runs/P2-GATE-FOIL/
+analysis.json (commit 10e6bc0f), runs/P2-GATE-H3/family.json.
+
+                                                                                          TABLE S6
+Headroom check on the 100 headroom items (no gate flag computed). nv: items with all values; T1, T2: paired t statistics of
+ clean minus corrupted and changed-code gate minus corrupted, on dR; a rung passes if nv  90, T1  2 and T2  2, and the
+first passing rung is the operating point. Dc: items whose correctness differs between the changed-code gate and no gate.
+
+    Changed codes: mean number of the 1 024 codes that differ from the clean tokenisation. Accuracy drop: clean minus
+
+corrupted accuracy without a gate. Rungs after a passing first rung were computed but not used. No interval is reported,
+so nothing is bold. D = max(19, 18, 2) = 19 over the operating points gives rule R2 (18  D < 29): 500 test items, endpoint Y .
+
+                                             Source: runs/P2-GATE-M3/family.json, keys rungs.* and n_rule.*.
+
+                        Rung                         nv   T1            T2  Passes    Dc    Changed  Accuracy  Operating
+                                                                                              codes     drop      point
+
+                        JPEG, quality 10 99 6.03 3.30 yes 19 986.7                                   0.06                    yes
+
+                        JPEG, quality 5 95 5.16 1.54 no 26 1010.5                                    0.04                    ­
+
+                        Noise,  = 0.10 100 4.20 4.38 yes 18 949.4                                    0.14                    yes
+
+                        Noise,  = 0.20 100 3.79 4.27 yes 19 998.4                                    0.22                    ­
+
+                        Splice, 128 px               100 5.33 4.05 yes                2     237.2    0.01                    yes
+
+                        Splice, 192 px               100 7.93 7.34 yes                3     387.7    0.03                    ­
+
+                                                                                          TABLE S7
+  Clean false-alarm check on the 500 clean test pairs. F^: mean over items of the flagged share of an item's 1 024 tokens;
+  interval: percentile bootstrap 95 % over items (10 000 resamples). F^cal: flagged share on the 300 calibration pairs at the
+fitted threshold. Zcal: calibration statistic of Section S-I; a violation is flagged above 2.13. Nothing is bold (no interval of
+
+                     a difference). Source: runs/P2-GATE-M4/analysis.json, keys calibration.fap_check.per_alpha.*;
+
+                                                  runs/P2-GATE-M2/threshold.json, keys thresholds.*.r_hat.
+
+                                              F^cal       F^ (test) [95 %]            Zcal           Reading
+
+                              0.01 0.0067 0.0064 [0.0061, 0.0067] -16.12 no evidence of violation
+                              0.05 0.0468 0.0456 [0.0442, 0.0470] -3.59 no evidence of violation
+                              0.10 0.0970 0.0956 [0.0928, 0.0985] -1.76 no evidence of violation
+
+                                                                                          TABLE S8
+Flags of the gate at  = 0.05 on the corrupted test images, token level, pooled over the 500 items. Changed share: share of
+
+     tokens whose code differs from the clean tokenisation (). Hit rate: share of changed tokens flagged. False-alarm
+  proportion: share of unchanged tokens of corrupted items flagged (not covered by the guarantee). Precision: share of
+flagged tokens that changed. Point estimates; no interval was computed, so nothing is bold. Patch and swap are the sanity
+
+                               corruptions of the positive control. Source: runs/P2-GATE-M4/analysis.json, keys
+        calibration.per_condition.*.{precision,recall,fap_on_clean_tokens} and calibration.per_condition.*.prop4.rho.
+
+                        Corruption                       Changed share      Hit rate  False-alarm proportion   Precision
+
+                        JPEG, quality 10                       0.961         0.061                0.037          0.976
+                        Noise,  = 0.10                         0.928         0.033                0.036          0.922
+                        Splice, 128 px                         0.227         0.049                0.044          0.248
+
+                        Patch (sanity)                         0.062         0.750                0.050          0.498
+                        Swap (sanity)                          0.150         0.859                0.089          0.631
+                                                                                                                     6
+
+C. Equal-size gates (descriptive) and the evidence ratio (S-Z)
+
+   Table S9 reports GATE-M against the other gates of equal size, descriptively. On every realistic corruption GATE-M
+was not distinguishable from the geometry-matched and scattered random gates; under splice the top-k gate on plain
+B gave a higher accuracy than GATE-M (-0.008, 95 % interval -0.016 to -0.002); the changed-code gate lowered
+accuracy relative to no gate under JPEG (-0.084, -0.122 to -0.046) and raised it under noise (0.070, 0.036 to 0.104).
+
+                                                                                          TABLE S9
+
+Equal-size gates on the 500 test items: accuracy of GATE-M minus each comparison gate, and of the changed-code gate minus
+ no gate, with paired percentile bootstrap 95 % intervals over items (10 000 resamples). Geometry-matched and scattered
+    random gates are averaged over three seeds per item. Descriptive (exploratory); no p-value. Bold: the 95 % interval
+                excludes zero. Source: runs/P2-GATE-M4/analysis.json, keys mechanism.{jpeg10,noise0.1,splice128}.y.*.
+
+                                              GATE-M minus
+
+Corruption    geometry-         scattered     plain-B             s3                 changed-      Changed-code
+JPEG           matched                         top-k            top-k                   code         minus none
+Noise                            -0.002
+Splice            0.000      [-0.007, 0.001]         0.000            0.000            0.082            -0.084
+            [-0.002, 0.002]                    [-0.006, 0.006]  [-0.008, 0.008]    [0.044, 0.120]  [-0.122, -0.046]
+                                   0.000
+                  0.001       [0.000, 0.000]       -0.002             0.000           -0.070             0.070
+             [0.000, 0.002]                    [-0.006, 0.000]   [0.000, 0.000]  [-0.104, -0.036]    [0.036, 0.104]
+                                 -0.004
+                -0.001       [-0.011, 0.002]       -0.008           -0.006            -0.008              0.004
+            [-0.009, 0.007]                   [-0.016, -0.002]  [-0.016, 0.002]   [-0.022, 0.006]   [-0.010, 0.018]
+
+   GATE-M increased the evidence ratio (mean over spread of the kept j) under all three corruptions (Wilcoxon
+signed-rank, Holm over three): by 0.0090 (0.0078 to 0.0102; pHolm = 1.9 × 10-39) under JPEG, 0.0038 (0.0030 to 0.0047;
+8.5 × 10-16) under noise and 0.0078 (0.0069 to 0.0087; 2.9 × 10-43) under splice. This is not a result about verification
+
+accuracy: the ratio rises when tokens with extreme evidence are removed for any reason. The geometry-matched random
+
+gate did not raise it (GATE-M minus that gate 0.0091, 0.0040, 0.0081), the plain-B top-k gate raised it almost as much
+
+as GATE-M (differences 0.0008, 0.0003, 0.0005), and the uncertainty top-k gate less (0.0051, 0.0033, 0.0045).
+
+D. Pixel denoising (S-DN)
+
+   The denoiser is OpenCV non-local means with one setting for all corruptions; on 20 images it raises the PSNR of
+the noisy image from 20.41 to 25.75 dB and lowers that of JPEG quality 10 from 26.82 to 25.13 dB. Under noise
+the denoised copy gave higher verification accuracy than GATE-M: 0.852 against 0.676 (GATE-M minus denoised
+-0.176, 95 % interval -0.224 to -0.130; pHolm = 1.5 × 10-12). Under JPEG no difference was detected (0.844 against
+0.836; -0.008, -0.042 to 0.026; pHolm = 0.74); at this setting the denoiser harms JPEG images, so this row compares
+GATE-M with a defence that lowers image quality.
+
+E. Decomposition (E-dec) and sign agreement (E-pred), descriptive
+
+   E-dec splits the accuracy lost to corruption into the residual loss under the changed-code (oracle) gate, the recovery
+by GATE-M and the gap to the oracle gate (Table S10); its parts are relative to the changed-code label, which marks
+encoder instability and is not an evidence oracle. E-pred compares the committed sign of the independent-token
+signal-to-noise change with the observed sign of b - c (Table S11): agreement in 2 of 2 evaluable primary cells (95 %
+interval 0.158 to 1.000), the noise cell excluded for having no observed sign, and in 0 of 1 positive-control cells; the rival
+rule "always +" agreed in 0 of 2. No cell had an observed interval that excludes zero, so the plan's refutation rule was
+not met. On the evidence ratio, which GATE-M raised, the committed sign was negative; this disagreement is reported
+and not read either way. The correlated-token proposition of the main paper is not used to interpret E-pred.
+
+F. Coherence of the denoiser across mask patterns
+
+   On 100 clean calibration items (800 gaps) the median absolute order gap of the joint log-likelihood was 0.071 nats,
+above the numerical noise floor (95th percentile of repeat differences 0.000) and below the clean mean per-token evidence
+µ = 0.199, so neither pre-stated reading applies; by pair type (descriptive) the median gap was 0.253 for horizontally
+adjacent, 0.246 for vertically adjacent and 0.032 for distant tokens.
+
+G. Exploratory corruption suite
+
+   The suite has eight cells of 100 test items (Table S12); the four types and two severities were chosen by kind from a
+package of fifteen types with no recorded rationale. Intervals only; no p-value enters a claim.
+                                                                                           7
+
+                                                                                         TABLE S10
+  E-dec on the accuracy scale, primary cells (descriptive; no test). T : clean minus corrupted accuracy without a gate; U :
+
+       residual loss under the oracle (changed-code) gate; R: realised recovery by GATE-M; V : gap to the oracle gate;
+T = U + R + V . Paired percentile bootstrap 95 % intervals over items, items resampled jointly (10 000 resamples). n: complete
+
+             items (two JPEG items have no finite changed-code value). Bold: the 95 % interval excludes zero. Source:
+
+                                       runs/P2-GATE-M4/edec.json, keys cells.{P1,P2,P3}.accuracy_scale.tau.*.
+
+Cell              n     T                   U                  R             V
+
+JPEG (P1) 498           0.044            0.124                 -0.002    -0.078
+
+                        [0.018, 0.070] [0.088, 0.161] [-0.006, 0.000] [-0.116, -0.040]
+
+Noise (P2) 500          0.204            0.134                 0.000     0.070
+
+                        [0.166, 0.244] [0.098, 0.172] [0.000, 0.000]     [0.036, 0.106]
+
+Splice (P3) 500         0.004               0.000              -0.004    0.008
+
+                        [-0.006, 0.014] [-0.016, 0.016] [-0.012, 0.004] [-0.006, 0.024]
+
+                                                                                         TABLE S11
+ E-pred, primary cells (descriptive; family E withdrawn, no test). sc: committed sign of the plug-in signal-to-noise change
+
+(the independent-token condition of Lemma 1 of the main paper) from the fit chunk, with the share of fit resamples giving
+the same sign; oc: sign of b - c for GATE-M against none; oc: the same sign only where the 95 % paired bootstrap interval of
+the net difference excludes zero. Net difference with its paired percentile bootstrap 95 % interval over items. Agreement
+
+    A/Keval = 2/2 (Clopper­Pearson 95 % interval 0.158 to 1.000); rival rules: "always +" 0/2, "- for primary cells, + for
+positive-control cells" 2/2. No estimate is bold: no interval excludes zero. Positive-control cells are reported in the text.
+
+                                       Source: runs/P2-GATE-M4/epred_score.json, keys cells.{P1,P2,P3} and P.
+
+Cell         predicted  Same-sign  b     c         Net diff.   observed  oc      Agree
+              sign sc      share                    [95 %]      sign oc
+
+JPEG (P1)         -     1.000      01              -0.002           -    none    yes
+                        1.000                                     none
+                        1.000               [-0.006, 0.000]
+                                                                    -
+Noise (P2)        -                00              0.000                 none   excluded
+                                                                                 (b = c)
+
+                                               [0.000, 0.000]
+
+Splice (P3)       -                13              -0.004                none    yes
+
+                                            [-0.012, 0.004]
+
+                                                                  TABLE S12
+Exploratory Corruption Suite: GATE-M Against No Gate (100 Items per Cell; Intervals Only)
+
+Cell (imagecorruptions, severity) Acc. none Acc. GATE-M b c              Net [95 %]
+
+Pixelate, 2                        0.82            0.82           0 0 0.00 [0.00, 0.00]
+Pixelate, 4
+Defocus blur, 2                    0.76            0.76           0 0 0.00 [0.00, 0.00]
+Defocus blur, 4
+Fog, 2                             0.82            0.82           0 0 0.00 [0.00, 0.00]
+Fog, 4
+Impulse noise, 2                   0.75            0.76           1 0 0.01 [0.00, 0.03]
+Impulse noise, 4
+                                   0.77            0.76           0 1 -0.01 [-0.03, 0.00]
+
+                                   0.81            0.80           0 1 -0.01 [-0.03, 0.00]
+
+                                   0.60            0.61           1 0 0.01 [0.00, 0.03]
+
+                                   0.55            0.55           0 0 0.00 [0.00, 0.00]
+
+H. Re-infilling (S2): detail
+
+   In the flagged-set arm the four draws share one position set, while in the random-set arm each draw has its own
+random set, so the best-of-four selection acts over position sets as well as noise in the random-set arm; the direction of
+the net bias is not established. Re-infilling clean positions with caption-masked prior samples destroys caption evidence,
+so the random-set arm may fall below no gate. Against no gate, the flagged-set arm gave 0.003 (-0.007 to 0.013) under
+patch and -0.003 (-0.017 to 0.007) under splice (descriptive). The share of re-infilled positions whose code equals the
+original clean code was below 0.04 in every arm and cell (descriptive; not restoration). The sensitivity analysis on the
+first 150 items was not rejected in either cell.
+
+I. Cost of Study 1
+
+J. Exploratory (Tier 3): hard gate against detector-free combiners, discounting and reliability weighting of the same
+evidence
+
+   This comparison was pre-specified in Addendum A4 and is exploratory (Tier 3): intervals only, no p-value, 72 intervals
+and no multiplicity adjustment; it was run once after the primary analysis was committed, on the same j, items and
+decision rule, and it cannot explain, qualify or rescue the primary result. Each comparator is contrasted with the hard
+gate (GM, which is GATE-M). The reading of a contrast comes from the exact Clopper­Pearson 95 % interval for the
+                                                                                                                                               8
+
+                                                                       TABLE S13
+                                         Cost per Item of the Main-Test Stage of Study 1
+
+Method (stage)                                            Items Network rows per item Compute time per item, s Peak GPU memory, GB
+
+NONE and GATE-M (main-test pass; all Study 1 arms share it) 500           84 (84­86)       11.2 (11.0­11.5)            8.2
+
+       One laptop GPU (12 GB). Network rows: median (range); time: median (quartiles) of the busy time per item, excluding duty-cycle pauses;
+       memory: maximum over items. All arms share the pass, so per-arm cost is not measured separately. Source: runs/P2-GATE-M4/items.jsonl,
+       fields n_rows, seconds, peak_gb.
+
+share of discordant items won by the comparator: above GM if its lower end exceeds one half, below if its upper end is
+under one half, identical if nd = 0, and not distinguishable otherwise. Beside it are the net difference with a descriptive
+bootstrap interval and the bound used for added value: the exact 95 % upper bound B on the discordance rate for
+nd < 10, and the minimum detectable difference (MDD) for nd  10.
+
+   On the realistic corruptions no detector-free combiner gave higher verification accuracy than the hard gate. The hard
+gate gave higher verification accuracy than the median under JPEG (-0.032, -0.052 to -0.014; exact interval for the
+discordant split 0.047 to 0.374) and splice (-0.032, -0.050 to -0.016; 0.001 to 0.273), and than the 20 % trimmed
+mean under JPEG (-0.020; 0.018 to 0.428) and splice (-0.026; 0.000 to 0.247). The data do not show a difference
+between the hard gate and the trimmed mean at the gate's flag count under JPEG (nd = 5; B = 0.023), noise (nd = 2;
+B = 0.014) or splice (nd = 3; B = 0.017), nor, under noise, between the hard gate and the median (nd = 19; MDD
+0.025) or the 20 % trimmed mean (nd = 9; B = 0.034); because each bound is at most 0.05, each counts, by the
+pre-stated rule, as a finding against the added value of the detector over a detector-free combiner on that cell. By limit
+(c) of Table S14, the contrast with the trimmed mean at the gate's flag count largely repeats the primary contrast
+when the gate's score is near chance. Discarding and discounting the flagged tokens were not distinguishable under
+JPEG or splice and made the same decision on all 500 items under noise; discarding and reliability weighting of every
+token were not distinguishable on any realistic corruption (nd = 15, 18 and 12; MDD 0.022, 0.024 and 0.020). On the
+positive-control cells (Table S15; pipeline check only), reliability weighting of every token gave higher accuracy than the
+hard gate under swap (0.016, 0.004 to 0.030; exact interval 0.516 to 0.979); this concerns discarding against weighting
+on a sanity corruption and is not a finding about the realistic corruptions.
+
+      Theory reference for Study 1's soft comparators; not used in Study 2: The following statements are theory under
+stated assumptions, not validated on UniDisc. They describe what the soft comparators above approximate under a
+model; they predict no ranking of the comparators, the optimal weight below is not a comparator and was not computed
+on any data, and no sentence of the paper combines them with the correlated-token proposition of the main paper
+(whose assumptions differ, see Remark (iii) below). Write the soft comparators' weights as j  0 and S = j jj;
+the reported normalised mean has the sign of S.
+
+Lemma S1 (weighted statistic). Assume the moments and correlations of the main paper's correlated-token proposition,
+and that within a class the j are i.i.d. with mean ¯z and second moment 2z, independent across classes and of all .
+With m0 clean and m1 corrupted tokens,
+
+                                ES = m0¯0µ + m1¯1µc,                                                                                           (S1)
+                             Var S = m0{20(2 + µ2) - ¯02µ2} + m1{21(c2 + µc2) - ¯12µc2}                                                        (S2)
+
+                                         + m0(m0 - 1)¯0202 + m1(m1 - 1)¯121c2 + 2m0m1¯0¯101c.
+
+The hard gate is  = I and returns the variance of the main paper.
+
+Proposition S1 (signal-to-noise-optimal weights as a function of the score). Condition on the scores u1, . . . , um and
+
+let j = (uj). Assume (W1) j is independent of uj given its label; (W2) the labels are independent across tokens
+
+given the scores; (W3) c =  and one exchangeable correlation  for all pairs. With 1(u) the probability that a token
+with score u is corrupted, µ(u) = (1 - 1(u))µ + 1(u)µc, 2(u) = 2 + 1(1 - 1)(µ - µc)2 and dj = 2(uj) - 2: (a)
+for  = 0 and   0 the optimum is (µ(u))+/2(u), and a 0/1 weight is optimal if and only if this function takes at
+most one non-zero value on the support of u (up to scale); with µc = 0 and µ2  2 it is approximately proportional to
+1 - 1(u); (b) for  > 0 and   0 the optimum is (uj)  (µ(uj) - )+/dj with  = 2 k(µ(uk) - )+/dk, which
+has a unique solution   0; if some µ(uk) > 0, then  = 0 if and only if  = 0, and if every µ(uk)  0, then  = 0 for
+every ; correlation together with non-negativity induces a cut; (c) without   0 the optimum is -1µ(u), which has no
+
+cut and gives negative weights to tokens with low µ(u).
+
+Proof  of  (b).  Maximising  the  ratio  over  the  cone      0  is,  up  to  scale,  the  convex  problem  min0  1      -  µ(u)
+                                                                                                                  2
+with  = D + 211; its KKT conditions give j = (µ(uj) - )/dj on the support with  = 2 k k, and the right
+
+side of the fixed-point equation is continuous and non-increasing in  while the left side increases. (a) follows from the
+
+Cauchy­Schwarz inequality.
+                                                                                                          9
+
+                                                                                         TABLE S14
+
+ Exploratory (Tier 3): the hard gate GM (GATE-M) against detector-free combiners (MED: median; TM-G: trimmed mean
+removing gi/2 tokens from each tail, gi the gate's flag count; TM20: 20 % trimmed mean), discounting of the gate-flagged
+ tokens (SOFT-G) and reliability weighting of every token (SOFT-A), on the same j and items (n = 500 per cell; primary
+cells and the clean cell). Acc.: accuracy of the comparator. b/c: items right only under the comparator / only under GM.
+
+ : comparator minus GM with its percentile bootstrap 95 % interval (descriptive; 10 000 resamples, one index matrix per
+ cell). Exact: Clopper­Pearson 95 % interval for b/nd, which gives the reading. Bound: B (exact 95 % upper bound on the
+  discordance rate) for nd < 10, MDD for nd  10. Reading: above or below GM, not distinguishable (n.d.) or identical; :
+counts as a finding against the added value of the detector (n.d. or identical for a detector-free combiner with bound at
+most 0.05; primary cells only). Bold: the exact interval excludes one half. 72 intervals in this comparison; no p-value and no
+
+  multiplicity adjustment. Limits: (a) no sign-aware detector-free estimator is computed, because the direction in which a
+corruption moves j is defined by the true caption and such a combiner would use the label; (b) SOFT-G's weights lie token
+
+ by token between GM's and no gate's, so it is not reliability weighting of every token; (c) when the gate's score is near
+
+chance the flagged count is close to the false-alarm count, so TM-G approximates no gate trimmed at about that count and
+TM-G minus GM largely repeats the primary contrast; (d) at this n many contrasts are uninformative, as the bound shows.
+
+Source: runs/P2-GATE-M4/tier3_fusion.json, keys cells.*.arms, cells.*.contrasts.*_minus_GM, clean.arms, clean.contrasts.
+
+Cell Comparator Acc. b/c nd       [95 %, descriptive]                  Exact 95 %   Bound      Reading
+
+JPEG, quality 10  (GM 0.836; no gate 0.838; mean flagged tokens 61.8)                          below GM
+          MED                                                                                  n.d.
+                  0.804 4/20 24 -0.032 [-0.052, -0.014] 0.047­0.374                 MDD 0.027  below GM
+          TM-G                                                                        B 0.023  n.d.
+          TM20    0.834 2/3 5 -0.002 [-0.010, 0.006] 0.053­0.853                               n.d.
+          SOFT-G                                                                    MDD 0.021
+          SOFT-A  0.816 2/12 14 -0.020 [-0.034, -0.006] 0.018­0.428                   B 0.011  n.d.
+                                                                                               n.d.
+                  0.838 1/0 1    0.002 [0.000, 0.006]                  0.025­1.000  MDD 0.022  n.d.
+                                                                                               identical
+                  0.838 8/7 15 0.002 [-0.014, 0.018] 0.266­0.787                               n.d.
+
+Noise,  = 0.10    (GM 0.676; no gate 0.676; mean flagged tokens 33.9)                          below GM
+          MED                                                                                  n.d.
+          TM-G    0.678 10/9 19 0.002 [-0.016, 0.020] 0.289­0.756                   MDD 0.025  below GM
+          TM20                                                                        B 0.014  n.d.
+          SOFT-G  0.676 1/1 2    0.000 [-0.006, 0.006] 0.013­0.987                    B 0.034  n.d.
+          SOFT-A                                                                      B 0.007
+                  0.682 6/3 9    0.006 [-0.006, 0.018] 0.299­0.925                             below GM
+                                                                                    MDD 0.024  n.d.
+                  0.676 0/0 0    0.000                                 ­                       below GM
+                                                                                               n.d.
+                  0.676 9/9 18 0.000 [-0.016, 0.016] 0.260­0.740                               n.d.
+
+Splice, 128 px (GM 0.872; no gate 0.876; mean flagged tokens 46.0)
+
+      MED         0.840 1/17 18 -0.032 [-0.050, -0.016]                0.001­0.273  MDD 0.024
+                                                                       0.000­0.708    B 0.017
+      TM-G        0.866 0/3 3 -0.006 [-0.014, 0.000]                   0.000­0.247
+                                                                       0.158­1.000  MDD 0.020
+      TM20        0.846 0/13 13 -0.026 [-0.040, -0.014]                0.349­0.901    B 0.014
+
+      SOFT-G      0.876 2/0 2    0.004 [0.000, 0.010]                               MDD 0.020
+
+      SOFT-A      0.880 8/4 12 0.008 [-0.006, 0.022]
+
+Clean pairs, cost of each combiner (GM 0.882; no gate 0.880; mean flagged tokens 46.7)
+
+      MED         0.852 1/16 17 -0.030 [-0.046, -0.014] 0.001­0.287 MDD 0.023
+
+      TM-G        0.874 1/5 6 -0.008 [-0.018, 0.000] 0.004­0.641 B 0.026
+
+      TM20        0.854 0/14 14 -0.028 [-0.044, -0.014] 0.000­0.232 MDD 0.021
+
+      SOFT-G      0.880 0/1 1 -0.002 [-0.006, 0.000] 0.000­0.975 B 0.011
+
+      SOFT-A      0.884 6/5 11 0.002 [-0.012, 0.014] 0.234­0.833 MDD 0.019
+
+                                                                                         TABLE S15
+
+  Exploratory (Tier 3), positive-control cells only (pipeline check; never pooled with or shown beside the primary cells).
+Columns, comparators, bound, reading and bold rule as in Table S14; n = 500 per cell; "against added value" is not read on
+
+                      these cells. Source: runs/P2-GATE-M4/tier3_fusion.json, keys ps_cells.{patch,swap}.arms and
+                                                             ps_cells.{patch,swap}.contrasts.*_minus_GM.
+
+Cell Comparator Acc. b/c nd  [95 %, descriptive]                       Exact 95 %      Bound   Reading
+
+Patch (GM 0.870; no gate 0.870; mean flagged tokens 96.5)              0.016­0.383  MDD 0.022  below GM
+                                                                       0.025­0.556  MDD 0.018  n.d.
+      MED         0.846 2/14 16 -0.024 [-0.040, -0.010]                0.016­0.383  MDD 0.022  below GM
+                                                                                               identical
+      TM-G        0.858 2/8 10 -0.012 [-0.024, 0.000]                         ­       B 0.007  n.d.
+                                                                       0.390­0.940  MDD 0.018
+      TM20        0.846 2/14 16 -0.024 [-0.040, -0.010]                                        below GM
+                                                                       0.001­0.238  MDD 0.025  below GM
+      SOFT-G      0.870 0/0 0    0.000                                 0.002­0.339  MDD 0.021  below GM
+                                                                       0.000­0.218  MDD 0.021  n.d.
+      SOFT-A      0.880 8/3 11 0.010 [-0.002, 0.024]                   0.094­0.992             above GM
+                                                                       0.516­0.979    B 0.017
+Swap  (GM 0.876; no gate 0.870; mean flagged tokens 209.7)                          MDD 0.019
+
+      MED         0.838 1/20 21 -0.038 [-0.056, -0.020]
+
+      TM-G        0.852 1/13 14 -0.024 [-0.040, -0.010]
+
+      TM20        0.846 0/15 15 -0.030 [-0.046, -0.016]
+
+      SOFT-G      0.878 2/1 3    0.002 [-0.004, 0.010]
+
+      SOFT-A      0.892 10/2 12  0.016 [0.004, 0.030]
+                                                                          10
+
+Corollary S1 (cost on a clean pair). On a clean pair ( = 0) any non-constant weight lowers the ratio. Given the
+weights, with  = m j j2/( j j)2 and clean correlation 0, the squared ratio relative to no weighting is {(1 - 0) +
+0m}/{(1 - 0) + 0m}.
+
+   Remarks. (i) For weights spread uniformly over a conformal p-value grid the limit of this ratio at 0 = 0 is 3/4 (a
+ratio of squared signal-to-noise ratios), but within an item the scores are clustered, so 3/4 is not the expected clean-cell
+cost of the per-token weighting comparator and is not compared with the clean cell above. (ii) The hard gate is a 0/1
+weight; under (a) it is optimal only in the case stated there. (iii) (W3) forces 0 = 1 = 01 and c = , which is not
+the case in which the main paper's frontier moves, so the two statements are not jointly applicable.
+
+                               S-III. Study 1: Family H (Added After the Primary Result)
+
+   In a separately labelled family added after the primary result was known (family H: SugarCrepe hard negatives on 50
+pilot COCO images not used elsewhere; Holm over the same three corruptions), the pre-written pilot rule found no
+corruption with decision headroom on 50 pilot images, so the family's test was not run. The family's test (H4) was not
+run, and nothing is stated about the gate on hard negatives. Table S16 gives the recorded decision; the item values of
+the pilot are in runs/P2-GATE-H3/family.json and are not interpreted here.
+
+                                          TABLE S16
+Family H (Added After the Primary Result): Recorded Decision
+
+Item                         Recorded decision
+
+Preregistered decision rule  H-NOGO
+Test performed               no
+Downstream claim             withdrawn
+
+In a separately labelled family added after the primary result was known
+(family H: SugarCrepe hard negatives on 50 pilot COCO images not
+used elsewhere; Holm over the same three corruptions). Decision fields
+only. Source: runs/P2-GATE-H3/family.json, keys n_rule.h_rule, go,
+downstream_claim_withdrawn.
+
+      Disclosure: In a separately labelled family added after the primary result was known (family H), the following
+applies. Family H was added on 29 October 2026, after the following had been computed and committed: the primary
+family (label negative) with its secondary families and mechanism arms (S-M, S-Z, S-DN, S-D2, S-C), the calibration
+check and the clean-accuracy look; the positive-control family PS and the pipeline audit it triggered (no defect found);
+the decomposition and sign-agreement analyses (E-dec, E-pred); and the exploratory comparators (Tier 3). Of these,
+the analyst who designed family H read the primary family, S-M, the completeness and clean-accuracy records, parts of
+the mechanism and calibration sections, the positive-control audit, and a one-line summary of the Tier-3 result; the
+E-dec and E-pred outputs had been committed but were not opened by that analyst. Family H tests the same contrast
+on a different population of image-caption pairs (SugarCrepe hard negatives on COCO images used nowhere else in
+this study). It was specified in SAP Addendum A5 (draft 86064e57; final b32e72a1; revision r1 2f62f1df) before any
+hard-negative item was scored, approved by the first author (decision D0080), signed with conditions by the red team
+and implemented in audited code (commit 5e6380b1). It reuses the primary family's corruptions, severities, threshold
+and arms. Its sample-size rule uses the gate's own unsigned discordance on 50 separate pilot images. Family H is the
+last confirmatory family added after the primary result; it has its own Holm correction, cannot change the primary
+result, and is reported whatever its outcome, including "not run".
+
+      Caveats: In a separately labelled family added after the primary result was known (family H), the following caveats
+apply to its pool. SugarCrepe positives are original COCO val2017 captions of their images, and whether UniDisc saw
+them in training is unmeasured; SugarCrepe filtered its negatives against text-only models, not against UniDisc; the
+same image and positive recur across subsets, so one row per image is used; and the H images are a selected subset of
+val2017.
+
+                                   S-IV. Study 2: Exploratory and Descriptive Material
+
+   Everything in this section is exploratory or descriptive. The design-item numbers below are post hoc: they set the
+preregistered sample-size rule only and are not a performance estimate of the frozen object, which has no out-of-sample
+estimate on the design items.
+
+      Sample-size rule: The rule (Addendum A6, A6.3) sets plan to half of a cross-fitted design-item difference and
+takes the smallest n on a step-10 grid with exact one-sided McNemar power at least 0.8 at level 0.05, bounded to
+[400, 533]; its inputs and output are in Table S17.
+                                                                                                                                          11
+
+                                                                             TABLE S17
+Inputs and Output of the Sample-Size Rule of Study 2 (Post Hoc Design-Item Cross-Fit; Sets the Rule Only)
+
+                Quantity                                                                                        Value
+
+                Cross-fitted design items, noise: b, c, n (5 outer, 3 inner folds)                          86, 28, 500
+                cf ; discordance cf ; plan = cf /2                                                     0.116; 0.228; 0.058
+                nreq; nL
+                Power at nL for plan, one-sided 0.05; 0.025                                                   450; 450
+                                                                                                           0.803; 0.704
+
+      Fresh-fold construction: The fold builder read every image set of the project and the seven SugarCrepe files (1 560
+images) and excluded their union; images without instance annotations were not eligible. The primary wrong caption
+follows the derangement rule of the project's fold code; the length-matched wrong caption has the true caption's token
+count in 531 of 533 items and differs by one token in the other two.
+
+      Length strata of L1 (descriptive): By length stratum the L1 net change was 0.038 when the true caption was
+shorter than the wrong one (184 items), 0.140 when equal (43) and 0.081 when longer (223); longer minus shorter was
+0.043 (95 % interval -0.038 to 0.123).
+
+      Drop of the unweighted rule under the other noise types (descriptive): On the first 300 fold items the unweighted
+rule lost 0.217 (95 % interval 0.163 to 0.270) under shot noise, 0.190 (0.143 to 0.240) under impulse noise and 0.193
+(0.143 to 0.247) under speckle noise, relative to clean images.
+
+      Fresh-fold GATE-M arm (descriptive, separate): The fresh-fold stage also computed Study 1's GATE-M arm, at
+the fixed caption slot with the threshold calibrated at the true-caption layout, so it carries no guarantee. Table S18
+reports it on its own, with no LRF number; it is descriptive and enters no claim of either study.
+
+                                                                                TABLE S18
+                Fresh-Fold GATE-M Arm Against No Gate (Descriptive, No Guarantee, No Test; 450 Items)
+
+                                         Condition               Acc. none Acc. GATE-M b c
+
+                                         Clean                   0.887                   0.889         21
+                                         JPEG, quality 10        0.849                   0.847         01
+                                         Gaussian noise,  = 0.1  0.733                   0.727         03
+                                         Splice, 128 px          0.896                   0.893         01
+
+Cost of Study 2: Table S19 gives the cost of the fresh-fold stages; the unweighted rule is the only reference.
+
+                                                                         TABLE S19
+                                         Cost per Item of the Fresh-Fold Stages of Study 2
+
+Method (stage)                                                   Items Network rows per item Compute time per item, s Peak GPU memory, GB
+
+NONE, all four conditions (fresh-fold pass; the same pass stores the inputs of LRF) 450         67         8.0 (7.9­8.4)           8.2
+                                                                                                42         5.0 (5.0­5.1)           8.2
+NONE, three other noise types (LG pass)                          300                     not measured      not measured     not measured
+
+LRF: weights and decision from stored arrays (CPU)               ­
+
+As for Table S13. LRF reads stored arrays on the CPU and adds no network row; no timing was recorded. Source: runs/P2-LRF-L1/
+items.jsonl, runs/P2-LRF-LG/items.jsonl.
+
+                                                           S-V. Symbol Crosswalk
+
+                                    S-VI. Study 2: Reference Encoders and Pixel Parity
+
+   The reference encoders are openai/clip-vit-large-patch14 at revision 32bd64288804d66eefd0ccbe215aa642df71cc4
+1 and google/siglip-so400m-patch14-384 at revision 9fdffc58afc957d1a03a25b10dba0329ab15c2a3, scored with the
+CLIP cosine score and the SigLIP pairwise logit; the decision is the score of the true caption above that of the wrong
+caption, with ties counted as wrong. They are run on the same first 450 fold items (300 for the three severity-3 cells)
+on images regenerated with the runner's corruption functions and seeds; no caption exceeds either text encoder's length
+limit. Pixel parity: the UniDisc tokeniser's re-encoding of the regenerated images agreed with the stored codes on at
+least 0.989 of tokens for the clean, JPEG, noise and splice conditions and at least 0.986 for the clean and severity-3
+conditions (five items each; threshold 0.98). These two runs supersede the field pixel_parity: not run of the main
+reference-encoder file, which records only that the main run was made without the parity option; the parity files were
+moved unchanged from a wrong output directory, and audit-time hashes are recorded. Agreement below one is expected
+from process-to-process tokenisation differences (S-I, Study 2 deviation 1); the control detects gross pixel errors, not
+single-pixel ones. No committed run recorded a timing for the encoders, so their cost per item is not reported.
+                                                                                                                           12
+
+                                                      TABLE S20
+Crosswalk From Preregistration and Code Names to the Symbols of the Paper
+
+Preregistration or code                                       Paper
+
+Study 1                                                       0, 1
+alpha, beta in the signal-to-noise calculator                 ^0, ^1
+alpha_obs, beta_obs                                           group of a token in the K-group partition
+partition group Sk                                            -uj
+qj = Bj - Dj (statistic q)                                    GATE-M; GATE-I; random-gate best-of-four re-infill
+GM; I-GATE; I-RAND4                                           the independent-token condition (Lemma 1 of the main paper)
+Proposition 4 of the method specification                     the correlated-token proposition of the main paper
+Proposition 2 of the theory addendum                          Proposition S1, Lemma S1, Corollary S1
+Proposition 3, Lemma 2, Corollary 3.1 of the theory addendum
+                                                              accuracy with LRF, accuracy without weighting
+Study 2                                                       Q, , learning rate, T
+acc_a, acc_b in a6_analysis.json                              caption-slot length 13
+knots, ridge, lr, T in spec.json                              L-LEN decisions with the length-matched wrong caption
+LFIX = 13
+y_lrf_L, y_none_L
+
+                                          S-VII. Study 2: Exploratory Ablation (Tier 3)
+
+   Label. Exploratory; added after the primary, family H and Study 2 results. No ablation was preregistered. The plan
+(research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md) was written and checked by the statistician, and the variant
+list was committed before any variant was fitted or scored. Disclosure. When the plan was written, its author had seen
+the fresh-fold results of the frozen LRF and of the unweighted rule, an exploratory cross-fit of four learned-weighting
+families on the design items, and the frozen LRF's shape functions (main paper, Fig. 4); the variant list was fixed after
+the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before the list was committed.
+Every listed variant is reported; no variant was selected and scored again, and the tested object of Study 2 stays the
+frozen LRF.
+
+      Variants: All fitted variants use LRF's protocol with the stated change: the same objective, optimiser, nine-
+configuration search with successive halving, three inner folds over the 500 design items, selection by the inner-fold
+objective, and one final seed. A-LIN is a linear logit on the 35 features (no hinge terms). A-S-BD, A-S-s3, A-S-tbv,
+A-S-ltex, A-S-nbr and A-S-pos are the same additive model on the features computed from one source only: B and D
+(14 features), s3 (5), tbv (5), ltex (4), nbr (4) and grid position (3). A-SF is a single-feature weight (feature rad, chosen
+from 35 candidate features by the inner-fold objective on the design items, a selection budget 35 times that of the
+frozen LRF; the selection used no fresh item). A-MIL is attention-weighted pooling in the style of gated attention MIL
+(Ilse et al., 2018; cited in the main paper) over the same 35 features, fitted with the same objective, design items and
+tuning budget; the evidence j takes the place of the instance classifier. A-UNL is an unlearned rank weight on s3,
+wj = 1 - rank(s3,j); the direction and the rank transform were fixed by the plan's author, who had seen the frozen
+LRF's shape functions; they were not read from an accuracy. The knockouts evaluate the frozen LRF with one group
+set to its design-item mean: by source (KO-S-BD, KO-S-s3, KO-S-tbv, KO-S-ltex, KO-S-nbr, KO-S-pos) and by formula
+type (KO-F-token, KO-F-position, KO-F-neighbourhood, KO-F-rank, KO-F-item). Setting a group to its mean gives
+inputs that the model did not see together in fitting; an interval away from zero shows that the frozen model's decisions
+depend on those inputs, not that the group alone detects anything. KO-S-pos and KO-F-position act on the same three
+features, so their rows are identical.
+
+      Intervals: Each interval is a marginal 95 % interval. 336 intervals were computed from the same images (variants ×
+cells × two contrasts); they are positively dependent and no familywise or false-discovery adjustment was made. If
+every true difference were zero, about 5 % of them (about 17) would still exclude zero, and the count of intervals that
+exclude zero is not a calibrated tally because of the dependence. An interval that excludes zero is therefore a descriptive
+observation, not a finding; patterns across rows and cells are described, single intervals are not claims. The intervals
+cover item sampling only: refit-seed variation and design-item sampling are not in them. Intervals are paired percentile
+bootstrap intervals with 10 000 item resamples, one shared index matrix per cell; differences are variant minus reference,
+so a positive value favours the variant, and an interval that contains zero does not show that the difference is zero. The
+300 images of the LG cells are the first 300 images of the L1 cells, so the eight cells are not independent samples; the
+cells have 450 (L1) and 300 (LG) items.
+
+      Controls: Recomputed from the stored arrays, the unweighted rule and the frozen LRF reproduced the decisions of
+the preregistered analysis on all 3 000 item-cells (0 mismatches each), and the knockout of all 35 features (KO-ALL,
+an exact-equality control with no interval) reproduced the unweighted rule on every item-cell. An LRF refit by the
+ablation harness at seed 0 decided every fresh item as the frozen LRF did.
+
+      Results: Tables S21 and S22 give every variant against the frozen LRF and Table S23 against the unweighted
+rule. Under Gaussian noise (L1) the intervals against LRF contained zero for A-LIN, A-S-BD, A-S-s3 and A-MIL,
+                                                                                                                                                   13
+
+and lay below zero for A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF and A-UNL; among knockouts, KO-S-BD and
+KO-F-neighbourhood lay below zero and KO-S-nbr above zero, and every other knockout interval contained zero. In
+other cells, intervals against LRF that lay above zero were those of A-LIN under JPEG (0.020 [0.004, 0.038]), A-S-BD
+under impulse noise (0.043 [0.003, 0.083]) and KO-S-s3 under JPEG (0.011 [0.002, 0.022]); this comparison was added
+after the Study 2 results and is not a test. The tables give every other cell, row by row, without a summary. The
+unlearned rank weight on s3 had a paired difference from the unweighted rule of -0.002 [-0.024, 0.020] and from LRF
+of -0.071 [-0.111, -0.031] under Gaussian noise. Across the three refit seeds, the range of fresh-fold accuracy was at
+most 0.030 in every variant and cell (Table S24). Seed 0 is the pre-fixed seed that LRF used, not the best of three; the
+extra seeds repeat only the final fit, not the configuration search or the choice of design items, so they understate refit
+variation. The seed-spread rows are refits, not the frozen LRF.
+
+                                                                                         TABLE S21
+Exploratory Ablation (Added After the Primary, Family H and Study 2 Results): Accuracy and Difference From the Frozen
+
+                                                                                      LRF, L1 Cells
+
+                           clean (n = 450)                 JPEG 10 (n = 450)                noise 0.1 (n = 450)              splice 128 (n = 450)
+
+Row                 Acc.   d vs LRF [95 %]          Acc.   d vs LRF [95 %]           Acc.   d vs LRF [95 %]           Acc.   d vs LRF [95 %]
+
+NONE (reference) 0.887     ­                        0.849  ­                         0.733  ­                         0.896  ­
+
+LRF (reference)     0.918  ­                        0.864  ­                         0.802  ­                         0.927  ­
+
+A-LIN               0.920    0.002 [-0.013, 0.018]  0.884    0.020 [0.004, 0.038]    0.791   -0.011 [-0.031, 0.009]   0.931    0.004 [-0.009, 0.018]
+A-S-BD              0.922    0.004 [-0.016, 0.024]  0.871   0.007 [-0.018, 0.031]    0.800   -0.002 [-0.033, 0.029]   0.911   -0.016 [-0.038, 0.004]
+A-S-s3              0.893   -0.024 [-0.051, 0.002]  0.853  -0.011 [-0.040, 0.018]    0.769   -0.033 [-0.071, 0.004]   0.889  -0.038 [-0.062, -0.016]
+A-S-tbv             0.913   -0.004 [-0.029, 0.020]  0.856  -0.009 [-0.038, 0.020]    0.762  -0.040 [-0.078, -0.002]   0.904   -0.022 [-0.044, 0.000]
+A-S-ltex            0.896   -0.022 [-0.049, 0.004]  0.840  -0.024 [-0.056, 0.004]    0.758  -0.044 [-0.084, -0.004]   0.893  -0.033 [-0.058, -0.011]
+A-S-nbr             0.900   -0.018 [-0.042, 0.007]  0.873   0.009 [-0.016, 0.033]    0.724  -0.078 [-0.116, -0.040]   0.898  -0.029 [-0.053, -0.007]
+A-S-pos             0.902   -0.016 [-0.044, 0.013]  0.864   0.000 [-0.029, 0.029]    0.731  -0.071 [-0.107, -0.036]   0.891  -0.036 [-0.064, -0.007]
+A-SF                0.893   -0.024 [-0.053, 0.002]  0.840  -0.024 [-0.056, 0.007]    0.742  -0.060 [-0.096, -0.024]   0.891  -0.036 [-0.064, -0.007]
+A-MIL               0.864  -0.053 [-0.082, -0.024]  0.838  -0.027 [-0.056, 0.002]    0.793   -0.009 [-0.044, 0.027]   0.851  -0.076 [-0.102, -0.049]
+A-UNL               0.896   -0.022 [-0.044, 0.000]  0.838  -0.027 [-0.058, 0.004]    0.731  -0.071 [-0.111, -0.031]   0.891  -0.036 [-0.060, -0.013]
+
+KO-S-BD             0.909   -0.009 [-0.027, 0.009]  0.836  -0.029 [-0.053, -0.004]   0.749  -0.053 [-0.082, -0.027]   0.907  -0.020 [-0.038, -0.002]
+KO-S-s3             0.913   -0.004 [-0.020, 0.011]  0.876      0.011 [0.002, 0.022]  0.811    0.009 [-0.009, 0.027]   0.918   -0.009 [-0.020, 0.000]
+KO-S-tbv            0.904   -0.013 [-0.031, 0.004]  0.880    0.016 [-0.002, 0.036]   0.784   -0.018 [-0.042, 0.004]   0.900  -0.027 [-0.044, -0.009]
+KO-S-ltex           0.911   -0.007 [-0.022, 0.007]  0.822                            0.787   -0.016 [-0.036, 0.004]   0.916   -0.011 [-0.027, 0.004]
+KO-S-nbr            0.927    0.009 [-0.011, 0.029]  0.862  -0.042 [-0.062, -0.024]   0.842      0.040 [0.013, 0.069]  0.924   -0.002 [-0.022, 0.018]
+KO-S-pos            0.913   -0.004 [-0.020, 0.011]  0.869   -0.002 [-0.024, 0.020]   0.791   -0.011 [-0.036, 0.013]   0.918   -0.009 [-0.022, 0.002]
+KO-F-token          0.909   -0.009 [-0.033, 0.016]  0.849    0.004 [-0.011, 0.020]   0.820    0.018 [-0.011, 0.047]   0.902  -0.024 [-0.049, -0.002]
+KO-F-position       0.913   -0.004 [-0.020, 0.011]  0.869   -0.016 [-0.049, 0.018]   0.791   -0.011 [-0.036, 0.013]   0.918   -0.009 [-0.022, 0.002]
+KO-F-neighbourhood  0.884  -0.033 [-0.056, -0.011]  0.771    0.004 [-0.011, 0.020]   0.740                            0.871  -0.056 [-0.082, -0.031]
+KO-F-rank           0.889  -0.029 [-0.056, -0.004]  0.851  -0.093 [-0.127, -0.062]   0.773  -0.062 [-0.096, -0.031]   0.882  -0.044 [-0.069, -0.020]
+KO-F-item           0.916   -0.002 [-0.018, 0.011]  0.871   -0.013 [-0.040, 0.013]   0.784   -0.029 [-0.064, 0.007]   0.927    0.000 [-0.011, 0.011]
+                                                             0.007 [-0.011, 0.024]           -0.018 [-0.047, 0.009]
+
+Differences are variant minus reference; positive favours the variant. Each row is one refit seed with the configuration chosen by the design-item search;
+the intervals (95 %, paired percentile bootstrap, 10 000 resamples) cover item sampling only. KO-ALL is a control (decisions identical to the unweighted
+rule on every item) and has no interval. Nothing is bold; rows in the order of the plan. Source: runs/P2-LRF-ABL-SCORE/ablation_analysis.json;
+script paper2-tnnls/scripts/tab_ablation.py.
+
+      Deviations entry: Tier-3 ablation (exploratory; added after the primary, family H and Study 2 results): plan
+research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md committed before any variant was scored on fresh items;
+variants fitted only on the 500 design items; every variant reported; intervals only.
+                                                                                                                                                         14
+
+                                                                                       TABLE S22
+           Exploratory Ablation: Accuracy and Difference From the Frozen LRF, LG Cells (the First 300 L1 Images)
+
+                           clean (n = 300)                    shot (n = 300)                    impulse (n = 300)                speckle (n = 300)
+
+Row                 Acc.   d vs LRF [95 %]             Acc.          d vs LRF [95 %]     Acc.   d vs LRF [95 %]           Acc.          d vs LRF [95 %]
+
+NONE (reference) 0.890               ­                 0.673            ­                0.700          ­                 0.697         ­
+
+LRF (reference)     0.913            ­                 0.767            ­                0.750          ­                 0.757         ­
+
+A-LIN               0.917    0.003 [-0.017, 0.023]     0.737  -0.030 [-0.057, -0.007]    0.753    0.003 [-0.023, 0.033]   0.753   -0.003 [-0.033, 0.027]
+A-S-BD              0.920    0.007 [-0.017, 0.033]     0.773    0.007 [-0.030, 0.043]    0.793      0.043 [0.003, 0.083]  0.773    0.017 [-0.023, 0.057]
+A-S-s3              0.893   -0.020 [-0.050, 0.010]     0.750   -0.017 [-0.060, 0.023]    0.743   -0.007 [-0.053, 0.037]   0.757    0.000 [-0.043, 0.043]
+A-S-tbv             0.900   -0.013 [-0.043, 0.017]     0.730   -0.037 [-0.083, 0.007]    0.747   -0.003 [-0.050, 0.043]   0.753   -0.003 [-0.043, 0.033]
+A-S-ltex            0.893   -0.020 [-0.053, 0.010]     0.673                             0.713   -0.037 [-0.087, 0.013]   0.683  -0.073 [-0.117, -0.030]
+A-S-nbr             0.893   -0.020 [-0.050, 0.010]     0.710  -0.093 [-0.143, -0.047]    0.690  -0.060 [-0.110, -0.010]   0.720   -0.037 [-0.080, 0.007]
+A-S-pos             0.900   -0.013 [-0.047, 0.020]     0.700  -0.057 [-0.107, -0.010]    0.737   -0.013 [-0.060, 0.033]   0.727   -0.030 [-0.070, 0.010]
+A-SF                0.883   -0.030 [-0.063, 0.003]     0.700  -0.067 [-0.110, -0.023]    0.727   -0.023 [-0.073, 0.027]   0.730   -0.027 [-0.067, 0.010]
+A-MIL               0.857  -0.057 [-0.093, -0.023]     0.760  -0.067 [-0.113, -0.020]    0.763    0.013 [-0.030, 0.057]   0.780    0.023 [-0.023, 0.070]
+A-UNL               0.890   -0.023 [-0.050, 0.003]     0.673   -0.007 [-0.050, 0.037]    0.700   -0.050 [-0.100, 0.000]   0.697  -0.060 [-0.103, -0.020]
+                                                              -0.093 [-0.143, -0.047]
+
+KO-S-BD             0.903 -0.010 [-0.033, 0.013] 0.703 -0.063 [-0.100, -0.027] 0.720            -0.030 [-0.067, 0.007]    0.720  -0.037 [-0.067, -0.007]
+                                                                                                 0.010 [-0.013, 0.033]    0.777    0.020 [-0.003, 0.043]
+KO-S-s3             0.917 0.003 [-0.013, 0.020] 0.760 -0.007 [-0.033, 0.017] 0.760               0.000 [-0.030, 0.030]    0.740   -0.017 [-0.047, 0.010]
+                                                                                                -0.013 [-0.033, 0.007]    0.767    0.010 [-0.010, 0.033]
+KO-S-tbv            0.903 -0.010 [-0.027, 0.007] 0.730 -0.037 [-0.067, -0.007] 0.750             0.033 [-0.007, 0.073]    0.783    0.027 [-0.013, 0.067]
+                                                                                                 0.000 [-0.027, 0.027]    0.750   -0.007 [-0.030, 0.017]
+KO-S-ltex           0.907 -0.007 [-0.027, 0.010] 0.737 -0.030 [-0.057, -0.007] 0.737             0.020 [-0.017, 0.057]    0.770    0.013 [-0.020, 0.047]
+                                                                                                 0.000 [-0.027, 0.027]    0.750   -0.007 [-0.030, 0.017]
+KO-S-nbr            0.917 0.003 [-0.020, 0.027] 0.790 0.023 [-0.010, 0.060] 0.783               -0.033 [-0.077, 0.007]    0.717
+                                                                                                 0.003 [-0.043, 0.050]    0.723  -0.040 [-0.077, -0.003]
+KO-S-pos            0.913 0.000 [-0.017, 0.017] 0.763 -0.003 [-0.030, 0.023] 0.750              -0.003 [-0.040, 0.033]    0.737   -0.033 [-0.073, 0.007]
+                                                                                                                                  -0.020 [-0.050, 0.010]
+KO-F-token          0.900 -0.013 [-0.043, 0.017] 0.773 0.007 [-0.027, 0.040] 0.770
+
+KO-F-position       0.913 0.000 [-0.017, 0.017] 0.763 -0.003 [-0.030, 0.023] 0.750
+
+KO-F-neighbourhood 0.863 -0.050 [-0.080, -0.020] 0.697 -0.070 [-0.110, -0.033] 0.717
+
+KO-F-rank           0.877 -0.037 [-0.067, -0.007] 0.727 -0.040 [-0.080, 0.000] 0.753
+
+KO-F-item           0.917 0.003 [-0.013, 0.020] 0.733 -0.033 [-0.070, 0.000] 0.747
+
+As Table S21. The LG cells use the first 300 images of the L1 cells, so the cells are not independent samples.
+
+                                                                                 TABLE S23
+                    Exploratory Ablation: Difference From the Unweighted Rule [95 % Interval], All Cells
+
+                                            L1 cells (n = 450)                                             LG cells (n = 300)
+
+Row                 clean            JPEG 10           noise 0.1           splice 128           clean      shot           impulse          speckle
+
+A-LIN                      0.033            0.036             0.058        0.036                0.027      0.063                 0.053     0.057
+A-S-BD               [0.009, 0.060]   [0.007, 0.064]
+A-S-s3                                                 [0.020, 0.096] [0.011, 0.062] [0.000, 0.057] [0.017, 0.110] [0.000, 0.107] [0.013, 0.100]
+A-S-tbv                    0.036            0.022
+A-S-ltex             [0.013, 0.058]   [0.000, 0.044]          0.067        0.016                0.030      0.100                 0.093     0.077
+A-S-nbr
+A-S-pos                    0.007            0.004      [0.033, 0.100] [-0.009, 0.040] [0.007, 0.057] [0.057, 0.147] [0.053, 0.137] [0.033, 0.120]
+A-SF                [-0.011, 0.024]  [-0.016, 0.024]
+A-MIL                                                         0.036        -0.007               0.003      0.077                 0.043     0.060
+A-UNL                      0.027            0.007
+                     [0.004, 0.049]  [-0.020, 0.033]   [0.007, 0.064] [-0.024, 0.011] [-0.017, 0.023] [0.040, 0.113] [0.013, 0.077] [0.023, 0.097]
+
+                           0.009          -0.009              0.029        0.009                0.010      0.057                 0.047     0.057
+                    [-0.016, 0.033]  [-0.038, 0.018]
+                                                       [0.007, 0.053] [-0.013, 0.031] [-0.013, 0.037] [0.027, 0.090] [0.020, 0.077] [0.020, 0.093]
+                           0.013            0.024
+                    [-0.007, 0.033]   [0.000, 0.049]          0.024        -0.002               0.003      0.000                 0.013     -0.013
+
+                           0.016            0.016      [-0.002, 0.053] [-0.024, 0.020] [-0.027, 0.030] [-0.010, 0.010] [-0.010, 0.040] [-0.033, 0.003]
+                    [-0.013, 0.044]  [-0.013, 0.047]
+                                                       -0.009              0.002                0.003      0.037          -0.010           0.023
+                           0.007          -0.009
+                    [-0.022, 0.036]  [-0.040, 0.022]   [-0.033, 0.016] [-0.020, 0.024] [-0.020, 0.030] [0.007, 0.070] [-0.043, 0.023] [-0.007, 0.057]
+
+                         -0.022           -0.011       -0.002              -0.004               0.010      0.027                 0.037     0.030
+                    [-0.056, 0.011]  [-0.049, 0.027]
+                                                       [-0.036, 0.031] [-0.036, 0.024] [-0.023, 0.043] [-0.010, 0.067] [-0.003, 0.077] [-0.007, 0.067]
+                           0.009          -0.011
+                    [-0.011, 0.029]  [-0.036, 0.011]          0.009        -0.004               -0.007     0.027                 0.027     0.033
+
+                                                       [-0.024, 0.042] [-0.036, 0.027] [-0.040, 0.027] [-0.013, 0.067] [-0.017, 0.070] [-0.007, 0.073]
+
+                                                              0.060        -0.044               -0.033     0.087                 0.063     0.083
+
+                                                       [0.018, 0.104] [-0.080, -0.009] [-0.073, 0.007] [0.030, 0.143] [0.007, 0.120] [0.030, 0.137]
+
+                                                       -0.002              -0.004               0.000      0.000                 0.000     0.000
+
+                                                       [-0.024, 0.020] [-0.024, 0.016] [-0.023, 0.023] [-0.023, 0.023] [-0.030, 0.030] [-0.030, 0.030]
+
+KO-S-BD             0.022               -0.013                0.016            0.011            0.013      0.030                 0.020     0.023
+                                                                        [-0.018, 0.040]
+                    [-0.007, 0.051] [-0.044, 0.018] [-0.018, 0.051]                      [-0.020, 0.047] [-0.010, 0.073] [-0.023, 0.063] [-0.017, 0.060]
+                                                                               0.022
+KO-S-s3             0.027               0.027                 0.078     [-0.002, 0.047]         0.027      0.087                 0.060     0.080
+
+                    [0.002, 0.053] [-0.002, 0.056] [0.040, 0.118]              0.004     [0.000, 0.057] [0.040, 0.133] [0.013, 0.107] [0.037, 0.123]
+                                                                        [-0.024, 0.033]
+KO-S-tbv            0.018               0.031                 0.051                             0.013      0.057                 0.050     0.043
+                                                                               0.020
+                    [-0.009, 0.044] [0.002, 0.060] [0.013, 0.089]       [-0.007, 0.049]  [-0.017, 0.047] [0.013, 0.103] [0.003, 0.097] [0.000, 0.087]
+
+KO-S-ltex           0.024               -0.027                0.053            0.029            0.017      0.063                 0.037     0.070
+                                                                         [0.002, 0.056]
+                    [-0.002, 0.051] [-0.060, 0.007] [0.016, 0.091]                       [-0.017, 0.050] [0.017, 0.110] [-0.007, 0.080] [0.023, 0.117]
+                                                                               0.022
+KO-S-nbr            0.040               0.013                 0.109     [-0.002, 0.047]         0.027      0.117                 0.083     0.087
+
+                    [0.013, 0.067] [-0.016, 0.042] [0.071, 0.149]              0.007     [-0.003, 0.060] [0.067, 0.167] [0.033, 0.133] [0.037, 0.137]
+                                                                        [-0.022, 0.036]
+KO-S-pos            0.027               0.020                 0.058                             0.023      0.090                 0.050     0.053
+                                                                               0.022
+                    [0.002, 0.051] [-0.009, 0.047] [0.022, 0.096]       [-0.002, 0.047]  [-0.003, 0.053] [0.043, 0.140] [0.007, 0.093] [0.013, 0.093]
+
+KO-F-token          0.022               0.000                 0.087          -0.024             0.010      0.100                 0.070     0.073
+                                                                        [-0.058, 0.007]
+                    [-0.007, 0.051] [-0.029, 0.029] [0.051, 0.122]                       [-0.023, 0.043] [0.057, 0.143] [0.027, 0.113] [0.030, 0.117]
+                                                                             -0.013
+KO-F-position       0.027               0.020                 0.058     [-0.042, 0.016]         0.023      0.090                 0.050     0.053
+
+                    [0.002, 0.051] [-0.009, 0.047] [0.022, 0.096]              0.031     [-0.003, 0.053] [0.043, 0.140] [0.007, 0.093] [0.013, 0.093]
+                                                                         [0.007, 0.056]
+KO-F-neighbourhood       -0.002             -0.078            0.007                             -0.027     0.023                 0.017     0.020
+                    [-0.036, 0.031]  [-0.118, -0.040]  [-0.031, 0.044]
+                                                                                         [-0.067, 0.013] [-0.023, 0.070] [-0.033, 0.067] [-0.027, 0.067]
+
+KO-F-rank           0.002               0.002                 0.040                             -0.013     0.053                 0.053     0.027
+
+                    [-0.027, 0.029] [-0.029, 0.033] [0.002, 0.078]                       [-0.047, 0.020] [0.010, 0.100] [0.007, 0.100] [-0.020, 0.073]
+
+KO-F-item           0.029               0.022                 0.051                             0.027      0.060                 0.047     0.040
+
+                    [0.004, 0.053] [-0.007, 0.051] [0.020, 0.082]                        [0.000, 0.057] [0.023, 0.100] [0.013, 0.080] [0.003, 0.077]
+
+Variant minus the unweighted rule; positive favours the variant. The interval of LRF against the unweighted rule is the preregistered one (main paper,
+Study 2 results table) and is not recomputed here.
+                                                                                                                                                                                 15
+
+                                                                                  TABLE S24
+                     Exploratory Ablation: Seed-Spread Refits (Accuracy at Seeds 0, 1, 2; Mean, SD, Range)
+
+                                          L1 cells (n = 450)                                                                  LG cells (n = 300)
+
+Refit                clean                JPEG 10              noise 0.1            splice 128           clean                shot                 impulse              speckle
+
+LRF refit (harness)  0.918, 0.900, 0.913  0.864, 0.844, 0.838  0.802, 0.787, 0.780  0.927, 0.904, 0.916  0.913, 0.893, 0.910  0.767, 0.747, 0.737  0.750, 0.757, 0.760  0.757, 0.760, 0.760
+                     0.910, 0.009, 0.018  0.849, 0.014, 0.027  0.790, 0.011, 0.022  0.916, 0.011, 0.022  0.906, 0.011, 0.020  0.750, 0.015, 0.030  0.756, 0.005, 0.010  0.759, 0.002, 0.003
+
+A-LIN                0.920, 0.920, 0.920 0.884, 0.869, 0.869 0.791, 0.787, 0.782 0.931, 0.927, 0.924 0.917, 0.913, 0.910 0.737, 0.743, 0.747 0.753, 0.757, 0.747 0.753, 0.753, 0.757
+                     0.920, 0.000, 0.000 0.874, 0.009, 0.016 0.787, 0.004, 0.009 0.927, 0.003, 0.007 0.913, 0.003, 0.007 0.742, 0.005, 0.010 0.752, 0.005, 0.010 0.754, 0.002, 0.003
+
+A-S-BD               0.922, 0.920, 0.920 0.871, 0.873, 0.871 0.800, 0.802, 0.802 0.911, 0.916, 0.913 0.920, 0.913, 0.913 0.773, 0.793, 0.787 0.793, 0.797, 0.793 0.773, 0.783, 0.777
+                     0.921, 0.001, 0.002 0.872, 0.001, 0.002 0.801, 0.001, 0.002 0.913, 0.002, 0.004 0.916, 0.004, 0.007 0.784, 0.010, 0.020 0.794, 0.002, 0.003 0.778, 0.005, 0.010
+
+A-S-s3               0.893, 0.896, 0.896 0.853, 0.847, 0.851 0.769, 0.776, 0.778 0.889, 0.889, 0.887 0.893, 0.900, 0.897 0.750, 0.747, 0.750 0.743, 0.743, 0.747 0.757, 0.757, 0.757
+                     0.895, 0.001, 0.002 0.850, 0.003, 0.007 0.774, 0.005, 0.009 0.888, 0.001, 0.002 0.897, 0.003, 0.007 0.749, 0.002, 0.003 0.744, 0.002, 0.003 0.757, 0.000, 0.000
+
+A-S-tbv              0.913, 0.907, 0.909 0.856, 0.844, 0.844 0.762, 0.767, 0.762 0.904, 0.913, 0.907 0.900, 0.910, 0.907 0.730, 0.730, 0.720 0.747, 0.753, 0.753 0.753, 0.773, 0.763
+                     0.910, 0.003, 0.007 0.848, 0.006, 0.011 0.764, 0.003, 0.004 0.908, 0.005, 0.009 0.906, 0.005, 0.010 0.727, 0.006, 0.010 0.751, 0.004, 0.007 0.763, 0.010, 0.020
+
+A-S-ltex             0.896, 0.893, 0.893 0.840, 0.838, 0.838 0.758, 0.751, 0.753 0.893, 0.891, 0.896 0.893, 0.890, 0.887 0.673, 0.673, 0.667 0.713, 0.723, 0.723 0.683, 0.683, 0.683
+                     0.894, 0.001, 0.002 0.839, 0.001, 0.002 0.754, 0.003, 0.007 0.893, 0.002, 0.004 0.890, 0.003, 0.007 0.671, 0.004, 0.007 0.720, 0.006, 0.010 0.683, 0.000, 0.000
+
+A-S-nbr              0.900, 0.902, 0.902 0.873, 0.876, 0.876 0.724, 0.724, 0.722 0.898, 0.900, 0.900 0.893, 0.900, 0.897 0.710, 0.710, 0.710 0.690, 0.693, 0.693 0.720, 0.723, 0.723
+                     0.901, 0.001, 0.002 0.875, 0.001, 0.002 0.724, 0.001, 0.002 0.899, 0.001, 0.002 0.897, 0.003, 0.007 0.710, 0.000, 0.000 0.692, 0.002, 0.003 0.722, 0.002, 0.003
+
+A-S-pos              0.902, 0.907, 0.896 0.864, 0.869, 0.858 0.731, 0.731, 0.742 0.891, 0.893, 0.889 0.900, 0.900, 0.887 0.700, 0.700, 0.707 0.737, 0.740, 0.737 0.727, 0.727, 0.727
+                     0.901, 0.006, 0.011 0.864, 0.006, 0.011 0.735, 0.006, 0.011 0.891, 0.002, 0.004 0.896, 0.008, 0.013 0.702, 0.004, 0.007 0.738, 0.002, 0.003 0.727, 0.000, 0.000
+
+A-SF                 0.893, 0.893, 0.896 0.840, 0.840, 0.836 0.742, 0.740, 0.744 0.891, 0.891, 0.889 0.883, 0.883, 0.887 0.700, 0.700, 0.700 0.727, 0.727, 0.727 0.730, 0.730, 0.730
+                     0.894, 0.001, 0.002 0.839, 0.003, 0.004 0.742, 0.002, 0.004 0.890, 0.001, 0.002 0.884, 0.002, 0.003 0.700, 0.000, 0.000 0.727, 0.000, 0.000 0.730, 0.000, 0.000
+
+A-MIL                0.864, 0.860, 0.864 0.838, 0.833, 0.838 0.793, 0.807, 0.809 0.851, 0.853, 0.869 0.857, 0.863, 0.857 0.760, 0.760, 0.770 0.763, 0.773, 0.777 0.780, 0.767, 0.777
+                     0.863, 0.003, 0.004 0.836, 0.003, 0.004 0.803, 0.008, 0.016 0.858, 0.010, 0.018 0.859, 0.004, 0.007 0.763, 0.006, 0.010 0.771, 0.007, 0.013 0.774, 0.007, 0.013
+
+Seed 0 is the pre-fixed seed, not the best of three; the extra seeds repeat only the final fit with the configuration of the seed-0 search, so they understate
+refit variation. "LRF refit (harness)" is a seed-spread refit, not the frozen LRF. Descriptive; no interval.
+

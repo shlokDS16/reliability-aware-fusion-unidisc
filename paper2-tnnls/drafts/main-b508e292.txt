@@ -1,0 +1,1131 @@
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS            1
+
+     Learned Reliability-Aware Fusion of Token Evidence Raised
+Image-Text Verification Accuracy Under Gaussian Noise in a Unified
+ Masked Diffusion Model: A Preregistered Confirmation in UniDisc
+
+                                       Anonymous authors for double-anonymous review
+
+   Abstract--Unified masked diffusion models verify captions         selection by the model's own likelihood [4]. When the score
+against images, but received images may be damaged; we report        is the model's own likelihood of its input, the behaviour of
+two separately preregistered studies in one pretrained model         that evidence is a property of the scorer itself, not of an
+of this kind (UniDisc, 1.4 billion parameters) on Common             attached encoder. Images can be damaged before a model
+Objects in Context image-caption pairs. In the first, a gate         sees them, by compression, sensor noise or editing; corruption
+discards low-likelihood image tokens. In the preregistered test      benchmarks treat such damage as a test condition [10], and
+no improvement was detected under Joint Photographic Experts         multimodal fusion methods are evaluated under it [11]. The
+Group compression at quality 10, Gaussian noise with standard        problem studied here is how the per-token likelihood evidence
+deviation 0.1 and a 128-pixel splice; for each tested corruption     of a unified masked diffusion model behaves for image-text
+the 90 percent confidence interval of the net accuracy change        verification when the image is damaged before tokenisation,
+lay inside plus or minus 0.05 (-0.002, -0.006 to 0.000; 0.000,       and whether a fixed rule applied to that evidence changes the
+0.000 to 0.000; -0.004, -0.010 to 0.002; 500 pairs each), so an      decision (Fig. 1).
+improvement or a loss larger than 0.05 is excluded. This does not
+show that the gate has no effect. Each negative is a random other       Two questions about this evidence were each preregistered
+caption. In the second, on a fresh preregistered fold, a frozen      (Section III-E), with their own plan, test images and decision
+learned reliability-aware fusion of token evidence raised image-     rule.
+direction verification accuracy under Gaussian noise with standard
+deviation 0.1 from 0.733 without reliability weighting to 0.802         Q1 (StuDdoyes1,dSiseccatriodningIVt)h.e image tokens that the model's
+(net 0.069, 95 percent confidence interval 0.029 to 0.109; exact                own masked likelihood flags as improbable, with a
+McNemar test at the preregistered one-sided level 0.05, probability             flag threshold set by conformal risk control on clean
+value 0.0005), including with length-matched negatives. On clean                pairs, change image-direction verification accuracy
+images it lost no more than three points (90 percent confidence                 under Joint Photographic Experts Group (JPEG)
+interval of the net change 0.009 to 0.053); the margin was fixed                compression, Gaussian noise and a pixel splice?
+after an exploratory clean interval had been seen. This is on 450
+validation-split images not used to design or fit the method, at        Q2 (StuDdoyes2,oSnecftrioznenV,).learned per-token weighting of the
+that one severity.                                                              evidence raise image-direction verification accuracy
+                                                                                on fresh images under Gaussian noise?
+   Index Terms--Diffusion models, hypothesis testing, information
+fusion, multimodal learning.
+
+I. INTRODUCTION                                                            Contributions: Each item was delivered whatever the
+                                                                     analysis found; items 1 to 6 are Study 1 and 7 to 9 Study 2.
+
+A unified masked diffusion model places text tokens and              1) The measured object. We specify, and treat as the object
+      image tokens in one sequence and is trained to predict any         of measurement, an input-level source-validation gate for
+masked token from any visible subset, the mask token standing            a pretrained unified masked diffusion model: each image
+for "unknown" [1]­[3]. Such models generate and understand               token is scored by the model's own masked likelihood
+both modalities with one network [4]­[6]. The same network               with the caption withheld, and the flag threshold is set
+can judge its own inputs: with the image tokens masked and               by conformal risk control on clean pairs so that the
+a caption visible, it states how probable each observed image            expected flagged share of a clean pair's tokens is at most
+code is under that caption, and no external encoder is involved.          (Section IV-A).
+In this paper, image-text verification means this image-direction
+decision: for one image and two candidate captions, the true         2) A closed-form condition. Under an independent-token
+caption is chosen if the observed image tokens are, summed               approximation, we give the condition on the false-
+over tokens, more probable under it than under a wrong caption           alarm and hit rates under which discarding flagged
+(Section III).                                                           tokens raises the signal-to-noise ratio of an additive
+                                                                         evidence sum, stated as an approximation because image
+   Generative models are already used as scorers in this way.            tokens are dependent, with an extension to exchangeably
+Diffusion classifiers compare conditional denoising errors               correlated tokens (Proposition 2); it is linked to no result
+across labels [7], [8], image-text matching has been scored by           (Section IV-A).
+a conditional error normalised by the unconditional one [9],
+and the authors of UniDisc show, as examples, the repair             3) The preregistered test (exact McNemar, Holm over three
+of damaged image-caption pairs by masking, re-infilling and              realistic corruptions, n fixed by a headroom rule). The
+                                                                         preregistered test excludes an improvement or a loss
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                              2
+
+                              true and wrong captions
+                                  (caption tokens)
+
+                                                                                   j
+
+       input damage           tokenise                     masked diffusion model                    sum     decision
+                                                            image tokens masked,                   S = j      S>0
+       noise, JPEG,
+           splice                                               caption visible                           j
+
+image          damaged image            image tokens                               per-token evidence
+                                                                                                        the true caption is chosen if S > 0
+
+caption token  image token    token changed by the damage      evidence j > 0      evidence j < 0
+
+Fig. 1. Image-text verification by per-token evidence in a masked diffusion model (conceptual drawing with a fixed token pattern; no data). A possibly
+damaged image is tokenised; with the image tokens masked and each caption visible, the model gives the evidence j , the log-probability ratio of the observed
+image token under the true and a wrong caption, and the unweighted sum S = j j chooses the true caption if S > 0.
+
+    of more than five percentage points in image-direction            points, against a margin fixed after an exploratory clean
+    verification accuracy from gating under JPEG quality 10,          interval had been seen. This is in one pretrained unified
+    Gaussian noise with  = 0.1 and a 128-pixel splice                 masked diffusion model (UniDisc, 1.4B parameters),
+    (Sections IV-B and IV-C).                                         on 450 COCO val2017 images not used to design or
+4) Token detection, measured. At the token level the gate's           fit the method, with Gaussian noise at one severity
+    score separates code-level random replacements (area              (Sections V-C and V-D).
+    under the receiver operating characteristic curve, AUROC,     9) Reference encoders and cost, without comparison. Two
+    0.961 for a patch, 0.955 for swapped codes) but is near           image-text encoders are scored on the same items
+    chance on JPEG and Gaussian noise (0.561 and 0.503).              for reference, and the cost of the method is reported
+    On noise it is below a one-pass score without finetuning          (Sections V-E and V-F).
+    (0.607; the marginal 95 % intervals do not overlap;
+    no paired test was run); on JPEG the two intervals               Scope of this paper: This paper reports two preregistered
+    overlap (0.561 against 0.581; intervals in Table II). In   measurements on one model and does not run a race between
+    the preregistered comparison it is below a texture score   verifiers. Its object is the evidence that a unified masked
+    whose sign was chosen on the same items (0.756 and         diffusion model computes about its own inputs, and each
+    0.768), so the preregistered falsifier for the score was   question asks, by an exact paired test, whether a rule fixed in
+    met (Section IV-C).                                        advance changes the decision on images the rule never saw;
+5) Calibration, checked. We check the clean false-alarm        the reference encoders of Section V-E are context, not rivals.
+    statement on held-out clean test pairs (Section IV-C).     Not claimed: a verifier that ranks with dedicated encoders; any
+6) Secondary families, by status. Re-infilling of the flagged  result for another model, data set, severity or kind of negative
+    tokens (S2) and the score-level combination of the         caption; that the learned weights track reliability or corruption;
+    two directions on foil captions (B): run, formal. In a     that either study bears on the other.
+    separately labelled family added after the primary result
+    was known (family H: SugarCrepe hard negatives [12]                                 II. RELATED WORK
+    on 50 Common Objects in Context (COCO) images not
+    used elsewhere; Holm over the same three corruptions):           Generative and likelihood scoring: Diffusion models are
+    run; headroom not met (H-NOGO), its test stage not run     trained by maximising a variational lower bound on the data
+    (Section IV-C8).                                           log-likelihood, as surveyed for continuous diffusion in image
+7) The tested object of Study 2. Learned reliability-aware     super-resolution [13], so a trained model can be read as a scorer
+    fusion (LRF): a logistic generalised additive model that   of its own inputs. A text-conditional diffusion model classifies
+    maps 35 caption-withheld features of each image token      zero-shot by comparing the conditional denoising error across
+    to a non-negative weight on its evidence, fitted on 500    candidate labels [7]. Text-to-image diffusion models have been
+    design images, frozen and pinned by SHA-256 before         used as zero-shot classifiers whose weights over diffusion
+    any test image was selected (Sections V-A and V-B).        timesteps are learned from held-out labelled data [8], also
+8) A preregistered confirmation. On a fresh preregistered      with few labels [14]. For image-text matching, the conditional
+    fold, the frozen LRF raised image-direction verification   error has been normalised by the unconditional one [9], and
+    accuracy under Gaussian noise ( = 0.1) from 0.733          VQAScore scores alignment by the probability of "Yes" that an
+    without reliability weighting to 0.802 (exact one-sided    image-to-text model assigns to a question about the pair [15].
+    McNemar p = 0.0005), including with length-matched         In text, masked language models score a token with the token
+    negatives; on clean images it lost no more than three      masked [16], [17]. The evidence of this paper belongs to this
+                                                               family: a per-token log-likelihood ratio of the observed image
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS         3
+
+codes under two captions, computed by the masked denoiser         on fresh images. This statement is limited to a keyword search
+of a unified model.                                               of these literatures that we logged in October 2026, which did
+                                                                  not reach the submission lists of open-review venues or the
+      Masked discrete diffusion and unified models: Absorbing-    journal tables of contents of IEEE Xplore.
+state discrete diffusion [1], [18] was simplified into masked
+diffusion language models [2] and scaled [19]; the denoiser of          Conformal risk control: Conformal prediction gives
+such a model represents the conditional distribution of a clean   distribution-free guarantees under exchangeability [47], [48];
+token given the unmasked context [3]. Masked generation of        conformal p-values give false-discovery control for outlier
+image tokens [20] and unified text-image models place several     detection [49], and conformal risk control bounds the expected
+modalities in one sequence [4]­[6], as does Muddit, published     value of a monotone loss [50]. Conformal loss-controlling
+as "Beyond text-to-image: Liberating generation with a unified    prediction, published in this journal, extends conformal predic-
+discrete diffusion model" [21]. LaViDa adds a vision encoder      tion from miscoverage to a general loss for each test object,
+to a diffusion language model [22], and Lumina-DiMOO              with a finite-sample guarantee under exchangeability [51];
+is a further omni diffusion language model for multimodal         Study 1 uses the expected-loss statement of conformal risk
+generation and understanding [23]. In this journal, discrete-     control instead. Conformal risk control has been applied, with
+diffusion image captioning has been studied in a setting where    masking-derived CLIPScore distributions and a threshold set
+noise in the diffusion process weakens sentence information,      on foil-labelled data, to flag erroneous caption words given an
+and a feature-mask and gated-fusion design improves image-        image [52].
+text alignment [24]. Many methods remask tokens that the
+sampler itself produced, by confidence, learned quality scores          Corruption benchmarks and preregistration: Common-
+or critics, including cross-modal confidence in multimodal        corruption benchmarks test models under non-adversarial image
+masked diffusion models [25]­[31]. Work on damaged input          corruptions [10], and a corruption benchmark for object
+tokens is thinner: Trust but Verify detects corrupted context     detection released an implementation of such corruptions
+tokens in a finetuned text-only masked diffusion model and        at graded severities [53], which Study 2 uses for its other
+refills them [32], and dropout decoding masks visual tokens that  noise types. Preregistration records the questions and the
+are uncertain under a logit-lens projection [33]. None of these   analysis plan before the outcomes are observed, which separates
+works reports a verification decision under image corruption      prediction from postdiction [54]; the form used here is defined
+in a unified masked diffusion model.                              in Section III-E.
+
+      Reliability-aware and dynamic fusion: When evidence                                III. SHARED SETTING
+comes from sources of unequal quality, the classical combina-
+tion weights each source by its reliability [34], and classifier  A. Model and Tokens
+combination studies the rules for doing so [35]. In multimodal
+learning the weights change per input: dynamic, uncertainty-         The model is UniDisc [4], a unified masked discrete diffusion
+driven weighting of modalities has been analysed for low-         model with 1.4B parameters, used as released with no training
+quality data, with theory on when it is preferable to static      or finetuning here. A pair is a caption of n text tokens and
+weighting [36], and a recent survey organises fusion on low-      an image of m image tokens in one sequence. Images are
+quality data into noisy, incomplete, imbalanced and quality-      tokenised at 512 px by the VQ-16 tokeniser of LlamaGen [55]
+varying settings [37]. Trusted multi-view classification fuses    into a 32 × 32 grid, so m = 1 024 tokens, each one of 16 384
+per-view evidence dynamically to handle unreliable views [38],    codes; captions have 5 to 32 text tokens. The network p maps
+and evidential methods attach an estimated importance or          a partly masked sequence to a categorical distribution at every
+reliability to each modality before combining [39], [40]. Papers  masked position. The backbone runs in bf16, and every log-
+in this journal take the same view: a per-modality confidence     probability is a 32-bit log-softmax of the logits restricted to
+score (an energy score) lets the fusion rely less on low-quality  the vocabulary of the scored modality. UniDisc's denoiser has
+modalities [41], evidence theory quantifies the uncertainty       no time input in the released configuration: time conditioning
+of each prediction and fuses evidence across propagation          is off, the official inference configuration passes a null noise
+depths [42], evidential deep learning suppresses unreliable       level, the backbone builds no timestep embedder without time
+modality-wise pseudo labels in audio-visual video parsing [43],   conditioning, and the released checkpoint contains no time-
+and counterfactual samples in a shared multimodal latent space    embedding weights; the scorer uses the authors' null-sigma
+identify the input features that contribute to high predictive    inference path. This is a property of the released configuration
+uncertainty [44]. At a finer grain, attention-based multiple-     and checkpoint, read in the authors' code at a pinned commit,
+instance pooling learns instance weights from instance features   and not a statement about UniDisc in general (evidence and
+under a bag-level loss [45], and a token weight has been derived  limits in supplement S-I).
+from a model's logits with and without the image, as a training-
+time reweighting [46]. For Study 2, the closest precedents are    B. Per-Token Evidence and the Unweighted Decision
+thus learned timestep weights [8], [14], instance weights under
+a bag-level loss [45] and reliability weights of modalities or       Write v~ = (v~1, . . . , v~m) for the observed, possibly damaged
+views [36], [38]. To our knowledge, no earlier work learns        image tokens, c+ for the true caption and c- for a wrong
+per-token, caption-withheld weights for the log-likelihood-ratio  caption. For a caption c, let jc[y] be the log-probability of
+evidence of a unified masked diffusion model and tests them       code y at image position j in one pass of p with every image
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                          4
+
+token masked and c visible. The image-direction evidence of        The one-sided form of (3) is used where a plan states a direction
+                                                                   in advance, and the two-sided form otherwise; each study lists
+token j is  j = jc+ [v~j ] - jc- [v~j ],                           which. Within a family of hypotheses the familywise level 0.05
+                                                                   is held by Holm's step-down procedure [58]. Intervals for the
+                                                              (1)  net accuracy change are paired percentile bootstrap intervals
+                                                                   over items. The paper contains 17 preregistered families across
+the log-likelihood ratio of the observed code under the two        the two studies, each tested at its own level with no adjustment
+captions; j > 0 when the observed code is more probable            across families; under a global null with independent families,
+under the true caption. Because every image token is masked        the chance of at least one false rejection is 1 - 0.9517 = 0.58.
+in these passes, their logits do not depend on the image, which
+enters only through the codes at which the log-probabilities          Preregistered has one meaning in this paper: a dated
+are read. The verification statistic is the unweighted sum, and    analysis-plan addendum was committed to a version-controlled
+the decision chooses the true caption when the sum is positive:    repository before the first test item was scored, with the tested
+                                                                   object pinned by hash, and the order of the commits is the
+            m                                                      evidence; no third-party timestamp exists. The plans, pins and
+                                                                   their amendments are listed in supplement S-I. The commit
+            S = j, Y =  S > 0 ,                               (2)  order, the hash checks and the data checks were verified by
+                                                                   scripted and agent-run audits (see the Declaration).
+            j=1
+                                                                   IV. STUDY 1: MASKED-LIKELIHOOD TOKEN GATING WITH
+with a tie counted as wrong. Image-text verification accuracy is                      CONFORMAL RISK CONTROL
+the mean of Y over the items of a test set, and a net accuracy
+change is the accuracy of the rule under test minus that of           Study 1 answers Q1 (Section I); its object of measurement
+(2) on the same items, so a positive value favours the rule        is an input-level source-validation gate, fixed before any test
+under test. The caption-visible passes are the only inputs of      item was seen.
+j. Two scores are computed with the caption masked: the
+position marginal Dj = log p(v~j | all tokens masked), and
+Bj, the log-probability of v~j when the tokens of its group in
+a random partition of the image positions are masked and the
+rest of the image is visible. (1) and (2) are the whole shared
+measurement; Fig. 1 draws it.
+
+C. Corruptions                                                     A. Method
+
+   Three corruptions act on the pixels before tokenisation. They         Suspicion score: The m = 1 024 image positions are split
+are JPEG compression at quality 10, Gaussian noise with            at random into K complementary groups, which define the
+standard deviation  = 0.1 on pixels scaled to [0, 1] (clipped      caption-masked scores Bj and Dj of Section III-B. The gate
+and rounded to 8 bits), and a 128 × 128-pixel splice, in which     uses K = 8 and the suspicion
+a region of a donor COCO image is copied to a uniformly
+random location. The noise draw, the donor image and the                       uj = Dj - Bj ,                      (4)
+splice location derive from the item, so each image has one
+corruption realisation.                                            where a larger uj marks a token whose observed code is less
+                                                                   probable given the rest of the image than given its position
+D. Data and Fresh Images                                           alone. The score never sees a caption, so the hypothesis under
+                                                                   test cannot enter the gate, and no statement about its detection
+   Images and captions come from the COCO val2017 split [56].      power is made (supplement S-I).
+An item is one image with its true caption and one wrong
+caption, the caption of another image; each study states how             Threshold by conformal risk control: The threshold is
+the wrong caption is drawn. Test images are fresh in a fixed       set on a calibration set Dcal of ncal clean pairs, disjoint by
+sense: each study's test images are disjoint, by COCO image        image from every other fold. For item i with suspicions uij,
+id, from every image that was used to calibrate, fit or design     the false-alarm proportion at threshold  is
+its rule. The test fold of Study 2 also excludes the union of
+every image used anywhere in the project, together with every                  1m
+image of the SugarCrepe release.                                   Li( ) = m  uij >   [0, 1],                      (5)
+
+                                                                               j=1
+
+                                                                   which does not increase in  . With Fcal( ) = nc-a1l i Li( ),
+                                                                   the threshold is
+
+E. Tests, Multiplicity and Preregistration                         ^ = inf  :    ncal   Fcal( ) +      1        ,  (6)
+                                                                               ncal +1             ncal +1
+
+   Every test compares two decision rules on the same n items.     with ^ = + if the set is empty; ties from bf16 logits
+Let b be the number of items that the rule under test decides      are broken by a small random jitter (supplement S-I). The
+correctly and the reference rule decides wrongly, and c the        calibration set has ncal = 300 pairs and the primary level is
+reverse. The net accuracy change is (b - c)/n, and the exact        = 0.05.
+McNemar test [57] conditions on the nd = b + c discordant
+items:                                                             Proposition 1 (conformal risk control applied). Let the
+                                                                   calibration items and a new clean test item be exchangeable
+pone = Pr   Bin(nd,  1  )    b  ,                                  as items, and let Li be given by (5) with scores that have no
+                     2                                             ties. Then E Ltest(^)  .
+
+ptwo = min  1, 2 min       pone,   Pr[Bin(nd,  1  )    b]  .  (3)
+                                               2
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS          5
+
+Proof. The loss is bounded by one and does not increase in         Proof. Var(Ijj) = kz2 + k(1 - k)µ2z with k the keep
+the threshold, so the statement is Theorem 1 of conformal risk     probability of the token's class; sum over tokens. The condition
+control [50] with bound B = 1.                                     is Proposition 2 below at zero correlation.
+
+   This is the only guarantee in the paper: for a clean test pair     Three consequences follow. A necessary condition is 1 >
+exchangeable with the calibration pairs, the expected share of     20 - 20; a random gate, with 1 = 0, lowers the ratio; and
+its tokens that are flagged is at most . The bound is over items,  on a clean item any gate with 0 > 0 lowers it slightly. The
+so tokens inside an item need not be exchangeable, and it is       descriptive family E-pred uses (8) and (9) as preregistered.
+marginal over the draw of the calibration set. It says nothing
+about detection power, about false alarms among the clean                Correlated tokens: Neighbouring image tokens are cor-
+tokens of a corrupted item, or about a shift between calibration   related, so (9) is an approximation. The following statement
+and test.                                                          replaces independence by an exchangeable correlation; it is
+                                                                   theory under stated assumptions and is not evaluated on the
+      The gate and GATE-M: Let Ij = [uj  ^] be the                 model.
+keep indicator of token j and G = {j : Ij = 0} the flagged
+set. GATE-M withholds the flagged tokens by masking them.          Proposition 2 (withholding with exchangeably correlated
+Because the logits of the image-direction passes do not depend     tokens). Condition on the corruption labels, so that (1 - )m
+on the image (Section III-B), withholding token j removes its      tokens are clean and m are corrupted, with the moments and
+term j from the evidence:                                          keep probabilities of Lemma 1. Assume (a) that for j = k the
+                                                                   correlation of j and k is 0 if both tokens are clean, 1 if
+m                                                                  both are corrupted and 01 otherwise, with values for which
+                                                                   the covariance matrix is positive semi-definite; and (b) that
+SG = Ijj, YG =  SG > 0 ,  (7)                                      the keep indicators Ij are independent of each other and of
+                                                                   every k. Then ESG is given by (8), and
+j=1
+                                                                      Var SG = V + (1 - )m (1 - )m - 1 (1 - 0)202
+with a tie or an empty kept set counted as wrong. With                              + m(m - 1)(1 - 1)21c2
+Ij  1 this is the unweighted rule of Section III, called none                       + 2(1 - )m2(1 - 0)(1 - 1)01c,
+below. For a Bayes-optimal denoiser of the absorbing-state                                                                                (11)
+objective, masking G marginalises it [3], but G is selected from
+the observed values, so the missingness is informative [59].       where V is the right side of (9). If moreover µc = 0 and ESG >
+Marginalising is then the Bayes answer only if no kept token       0 with and without the gate, the gate raises ESG/ Var SG if
+is corrupted, corrupted values carry no information about clean    and only if
+ones, corruption locations do not depend on the content, and
+the clean tokens in G carry no evidence; this was stated in                  c2 (1 - 20 + 20)
+advance and is not an account of any result.
+                                                                                   + (m - 1) 1 (1 - 0)(2 - 0 - 1) (12)
+   Two further arms use the same flags. GATE-I re-infills the                   + 2(1 - ) m 01 c (1 - 0)(1 - 0)
+flagged tokens with the model, caption masked, and keeps the
+best of four unguided draws by chain log-likelihood, with the                      > (1 - ) 0(1 - 0) (2 + µ2).
+sampler fixed in the analysis plan, not that of the backbone's
+authors. The text direction, used only by family B, scores the     Consequently: (i) 0 does not enter (12), and at 1 = 01 = 0 it
+caption tokens with the image visible, minus the same pass         is (10); (ii) a gate with 1 = 0, such as a random gate, lowers
+with the image masked.                                             the ratio for every admissible correlation, and if 01  0 every
+                                                                   gate with 1  0 lowers it; (iii) where 1 > 0, a larger 1
+      A model of when withholding helps an additive statistic:     or 01 can only turn a decrease of the ratio into an increase,
+The following is theory under stated assumptions, not validated    so positive correlation among corrupted tokens, or between
+on UniDisc, and no result below is read through it. Let a          clean and corrupted tokens, enlarges the region of (0, 1)
+fraction  of the m tokens be corrupted. Clean terms j have         in which the gate raises the ratio, and as (m - 1)1  
+mean µ and variance 2 and are kept with probability 1 - 0;         that region tends to {1 > 0}; (iv) if 01 < 0, a gate that
+corrupted terms have mean µc and variance c2 and are kept          flags only clean tokens can raise the ratio; (v) unlike (10), the
+with probability 1 - 1.                                            condition depends on m.
+
+Lemma 1 (independent tokens). If the terms j are indepen-          Proof sketch. Each of the m(m - 1) ordered pairs of distinct
+dent given the corruption labels and every Ij is independent       tokens adds EIj EIk Cov(j, k) to Var SG, which gives the
+of all k, then                                                     three correlation terms of (11). With µc = 0 the gate multiplies
+                                                                   ESG by 1 - 0, so it raises the ratio if and only if (1 -
+   ESG = m (1 - )(1 - 0)µ + (1 - 1)µc , (8)                        0)2 Var SG|0=1=0 > Var SG; the clean-pair terms scale
+Var SG = m (1 - ) (1 - 0)2 + 0(1 - 0)µ2                            by (1 - 0)2 on both sides and cancel, and the remaining
+                                                                   terms, divided by m, give (12). The full proof is in supplement
+                     +  (1 - 1)c2 + 1(1 - 1)µ2c . (9)              S-II.
+                                                                
+                                                                      Fig. 2 draws the frontier of (12). The ratio in Proposition 2
+For µc = 0 and ESG > 0, the gate raises ESG/ Var SG                is the signal-to-noise ratio of the sum. If the per-token terms
+above its value at 0 = 1 = 0 if and only if
+
+  c2 (1 - 20 + 20) > 0(1 - 0)(1 - ) (2 + µ2). (10)
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                        6
+
+1: corrupted-token withholding probability    1                                                 G=0              of tokens) and form the positive control. On the 100 headroom
+                                                                  ratio raised                  (independent)    items, with no gate flag computed, the first rung at which the
+                                                                                                G=1              size-normalised evidence falls under corruption and recovers
+                                                              (above each curve)                                 under the changed-code gate, which keeps exactly the tokens
+                                            0.8                                                                  whose code did not change, is the operating point. The largest
+                                                                                                                 headroom discordance D between the changed-code gate and
+                                            0.6                                                 G=4              no gate then sets the test size by rules R1 to R3. The decision
+                                                                                                                 file was committed before the first test item was scored.
+                                                                                                G = 16
+                                                                                                                       Arms and controls: The primary contrast is GATE-M
+                                            0.4                                                 1 = 0            against none. The controls are a geometry-matched random
+                                            0.2                                                 (random gate)    gate (the flag mask shifted on the torus, three seeds), equal-
+                                                                                                                 size scattered and top-k gates, the changed-code gate, a pixel
+                                              0          1  0: ratio lowered                                     denoiser and GATE-M on clean images (supplement S-II).
+                                                0        for every gate if 01  0                                 Token detection is measured against changed-code labels by per-
+                                                                                                                 item AUROC. Cheap rivals are admitted in both orientations,
+                                                   0.1   0.2        0.3           0.4      0.5                   so the rival and its sign are chosen on the data; a one-pass
+                                                   0: clean-token withholding probability                        observed-position score of the non-finetuned backbone (TbV
+                                                                                                                 score [32]) is reported beside them.
+Fig. 2. Model figure, no data: a model of when withholding helps an additive
+                                                                                                                       Families and reading rules: The primary family P has
+statistic (theory under stated assumptions, not validated on UniDisc). Above                                     three hypotheses, one per realistic corruption at its operating
+                                                                                                                 point. Each compares GATE-M with none on the paired
+each  curve 1 =                                    b(0;  G, )   of  Proposition 2 (shaded), withholding  raises  correctness of (7) by the exact two-sided McNemar test,
+ESG   / Var SG;                                    µc =  0, 01  =   0,  = c2/[(1 - )(2 + µ2)] =          1 and   with Holm correction over three at familywise level 0.05;
+                                                                                                                 a corruption without an operating point stays in the family
+G = (m - 1)1 = 0 (independent tokens, (10)), 1, 4 and 16. A larger G                                             with p = 1. The wording for every outcome was fixed before
+                                                                                                                 the headroom decision was written. The label is positive if a
+lowers the curve toward the diagonal 1 = 0 (random withholding). Grey:                                           hypothesis is rejected after Holm with b > c and none with
+                                                                                                                 c > b. It is negative if none is rejected and, for every corruption
+every rule with 1  0 lowers the ratio when 01  0.                                                                with an operating point, the 90 % paired bootstrap interval of
+                                                                                                                 the net accuracy change lies inside (-0.05, +0.05) with at
+are jointly Gaussian, the accuracy P (SG > 0) given the flags                                                    least 240 completed items; it is inconclusive otherwise. A null
+is  of the conditional ratio, which the unconditional ratio                                                      result is worded as a bounded change, never as an absence of
+approximates; without joint Gaussianity no statement about                                                       effect. The percentile interval has zero width whenever no pair
+accuracy follows, and a gate can raise the ratio while lowering                                                  is discordant (counts in Table I). Each secondary family has its
+the accuracy. Assumption (b) is an approximation for this gate,                                                  own level 0.05 (sizes, tests and wording rules in supplement S-
+whose flags are computed from the same token values asthe                                                        I). The positive control PS repeats the P test on the two sanity
+evidence. With correlation the ratio no longer grows like m;                                                     corruptions (Holm over two); a pass reads "the pipeline is
+it tends to a limit set by the shared component of the per-token                                                 not broken". Mechanism S-M (GATE-M against the geometry-
+terms. E-pred does not use Proposition 2, and the proposition                                                    matched gate) and family R (a second model) run only on a
+is not used to interpret E-pred or any other result.                                                             corruption with a primary rejection with b > c.
+
+B. Preregistered Protocol                                                                                        C. Results
+
+   The protocol was fixed in a preregistration card, a statistical                                                  Bootstrap intervals use 10 000 resamples, accuracy is image-
+analysis plan with its addenda and a method specification before                                                 direction verification accuracy, a cell is bold only when its
+any outcome of the main run existed; pins, audits, amendments                                                    preregistered test rejected, and there is no adjustment across
+and the protocol details omitted here are in supplement S-I.                                                     families (Section III-E).
+
+      Folds and negatives: Four image-disjoint sets were drawn                                                      1) Operating points and family P: The first rung of every
+from COCO val2017 [56] by image id with seed 20261029:                                                           realistic corruption passed the headroom rule, and D = 19
+calibration (300 pairs), headroom (100), test (300, with an                                                      selected rule R2: 500 test items with the correctness end-
+ordered extension to 500 if the sample-size rule asks for it)                                                    point (supplement S-II gives the headroom statistics). In the
+and the 200 items of an earlier detection pilot, which form the                                                  preregistered test no improvement was detected under JPEG
+detection set. The 494 image ids of the two pilots are excluded                                                  quality 10, Gaussian noise with  = 0.10 or a 128-pixel
+from the new folds. The wrong caption of an item is a caption                                                    splice. For each tested corruption the 90 % interval of the net
+of another image that shares no annotated COCO category                                                          accuracy change lay inside ±0.05: -0.002 (-0.006 to 0.000)
+with the true image, fixed once per item and shared by every                                                     under JPEG, 0.000 (0.000 to 0.000) under noise and -0.004
+arm and corruption.                                                                                              (-0.010 to 0.002) under splice, with n = 500 each, so an
+                                                                                                                 improvement larger than 0.05 is excluded and a loss larger
+      Headroom rule and sample size: Each realistic corruption
+has two severities (rungs), walked in order from the one defined
+in Section III-C. Two sanity corruptions replace tokens by
+uniform random codes (one 8 × 8 patch of the token grid; 15 %
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                       7
+
+                      net change       95% interval                             code-level random replacements but is near chance on JPEG
+                      90% interval     ±0.05 margin                             and Gaussian noise (Table II). On noise it is below the one-
+                                                                                pass TbV score of the non-finetuned backbone; the marginal
+P1: JPEG, quality 10                                                            intervals do not overlap, no paired test was run, and on JPEG
+                                                                                the two overlap. The best cheap rival, chosen with its sign on
+P2: noise,  = 0.1                                                               the same items, is the pixel variance of a token's patch with its
+                                                                                sign reversed, and q lies below it on JPEG and on noise (Holm-
+P3: splice, 128 px                                                              adjusted p = 0.0004 on each, the resolution floor of 10 000
+                                                                                resamples). With the rival frozen and the contrast repeated on
+                      -0.05         0                +0.05                      the test items (S-D2), the differences were -0.198 (-0.211
+                                                                                to -0.186; 492 items) under JPEG and -0.258 (-0.267 to
+                      Net accuracy change, GATE-M minus no gate                 -0.250; 497 items) under noise, again with pHolm = 0.0004.
+                                                                                The preregistered falsifier for the score was therefore met, and
+Fig. 3. Family P: net accuracy change of GATE-M minus no gate (open             this paper makes no claim that the score detects corrupted
+circle), n = 500 items per corruption (P1 JPEG quality 10, P2 Gaussian noise    codes more accurately than cheap methods. The labels mark
+with standard deviation 0.1, P3 splice of 128 px). Thick bar: 90 %, thin bar:   codes that the tokeniser changed, which a texture score can
+95 % paired percentile bootstrap interval (10 000 resamples); solid line at 0;  anticipate without any reference to the evidence; the rival's
+dashed lines: the ±0.05 margin. An interval has zero width when no pair is      win is read as this label-circularity concern, not as an account
+discordant (counts in Table I).                                                 of any corruption effect.
+
+than 0.05 is excluded. This does not show that the gate has no                     5) Mechanism and the remaining secondary families: Family
+effect. It holds in one pretrained unified masked diffusion model               S-M tested no hypothesis and family R was not run, because
+(UniDisc, 1.4B parameters) on COCO image-caption pairs with                     both are gatekept by a primary rejection with b > c. The
+a random other caption as the negative, at one severity per                     equal-size gates, S-Z, S-DN, E-dec, E-pred and the denoiser's
+corruption. By the pre-stated rule the label of family P is                     coherence check are in supplement S-II and enter no statement
+negative: no hypothesis was rejected after Holm correction                      about P.
+over three, and every corruption had an operating point and
+500 completed items, with no caption-token exclusion and no                        6) Re-infilling the flagged tokens (S2): On 300 items per cell,
+empty or non-finite evidence. Table I gives the full test and                   as planned, re-infilling the flagged set against re-infilling an
+Fig. 3 its intervals.                                                           equal-size random set (kept draw, exact McNemar, Holm over
+                                                                                two) gave a net change of 0.010 (0.000 to 0.023; pHolm = 0.50)
+   2) Calibration and the clean control (S-C): On the 500 clean                 under the patch corruption and -0.003 (-0.017 to 0.007;
+test pairs the realised flagged share was 0.0456 at  = 0.05                     pHolm = 1.00) under splice. Neither cell was rejected; there
+(95 % interval 0.0442 to 0.0470), with a calibration statistic                  is no evidence that the flagged set is better placed than a
+of -3.59 against the violation bound of 2.13, so there is                       random one under this sampler, and nothing is stated about
+no evidence of violation of Proposition 1 (other levels in                      the backbone's own re-infilling.
+supplement S-II). The guarantee does not cover the unchanged
+tokens of corrupted items, whose flagged share was 0.036 to                        7) Family B: the two directions on foil captions: Family B,
+0.044 under the realistic corruptions and 0.089 under swap                      the preregistered two-way fusion test, compares a score-
+(supplement S-II). In the clean control GATE-M gave 0.882                       level combination of the text and image directions (Fisher
+against 0.880 without a gate (net 0.002, 95 % interval -0.004                   discriminant weights fitted on separate fit pairs and frozen)
+to 0.010; p = 1.00): no change was detected.                                    with the better single direction. Its pairs come from FOIL-
+                                                                                COCO [60], clean images whose negative caption differs from
+   3) Positive control (PS, pipeline check): On the 500 test                    the true caption in one word, so it is not a corruption test.
+items GATE-M gave 0.870 against 0.870 without a gate under                      On the 298 test pairs the combination reached 0.876 against
+the patch corruption (net 0.000, 95 % interval -0.008 to 0.008;                 0.879 for the better direction, the text direction (net -0.003,
+p = 1.00, Holm-adjusted 1.00) and 0.876 against 0.870 under                     95 % interval -0.010 to 0.000; p = 1.00), so no gain of the
+swap (net 0.006, -0.008 to 0.020; p = 0.581, Holm-adjusted                      combination over the better single score was detected (fit pairs
+1.00). Neither hypothesis of the positive control was rejected                  and minimum detectable gain in supplement S-II).
+(full table in supplement S-II), so the control was not met,
+which by the plan reads "pipeline defect suspected, audit                          8) Family H (added after the primary result): In a separately
+triggered". The audit (SAP A2.3; scripted and agent-run, see                    labelled family added after the primary result was known
+the Declaration) ran the unit tests of the run's code (584                      (family H: SugarCrepe hard negatives [12] on 50 COCO images
+passed, 5 skipped, none failed), read the code path of PS and                   not used elsewhere; Holm over the same three corruptions),
+recomputed every PS quantity from the stored arrays of all                      the pre-written pilot rule found no corruption with decision
+500 items; it found no defect and changed nothing, and since                    headroom on 50 pilot images, so the family's test was not run.
+a recomputation cannot see an error upstream of the stored                      Its rules and code were committed before any hard-negative
+arrays, it is not read as a check of the whole pipeline.                        item was scored (disclosure, caveats and decision record in
+                                                                                supplement S-III), and because its test was not run, nothing is
+   4) Token detection (S-D and S-D2): On the 200 detection                      stated about the gate on hard negatives.
+items the gate's masked-likelihood score qj = -uj separates
+                                                                                   9) Exploratory analyses: An exploratory comparison pre-
+                                                                                specified in SAP Addendum A4, with intervals only and run
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                                                           8
+
+                                                                         TABLE I
+                                     FAMILY P: GATE-M AGAINST NO GATE ON THE 500 TEST ITEMS
+
+Cell                n Acc. none Acc. GATE-M b c nd Net diff. p (pHolm) Preregistered decision
+
+P1: JPEG, quality 10 500 0.838       0.836  0 1 1 -0.002 1.00 (1.00) not rejected; 90% interval inside (-0.05, 0.05)
+
+intervals: 90% [-0.006, 0.000]; 95% [-0.006, 0.000]; 98.33% [-0.008, 0.000]; exact 95% bound on |net change| 0.011 (added at writing, descriptive)
+
+P2: noise,  = 0.1 500 0.676          0.676  0 0 0 0.000 1.00 (1.00) not rejected; 90% interval inside (-0.05, 0.05)
+
+intervals: 90% [0.000, 0.000]; 95% [0.000, 0.000]; 98.33% [0.000, 0.000]; exact 95% bound on |net change| 0.007 (added at writing, descriptive)
+
+P3: splice, 128 px 500 0.876         0.872  1 3 4 -0.004 0.625 (1.00) not rejected; 90% interval inside (-0.05, 0.05)
+
+intervals: 90% [-0.010, 0.002]; 95% [-0.012, 0.004]; 98.33% [-0.014, 0.004]; exact 95% bound on |net change| 0.020 (added at writing, descriptive)
+
+b: items that GATE-M answers correctly and the ungated rule incorrectly; c: the reverse; nd = b + c; net difference = (b - c)/n. Paired percentile bootstrap intervals (10 000
+resamples) at 90 % (the level of the preregistered decision), 95 % and 98.33 % (the Holm level of the smallest-p step); zero width when nd = 0. p: exact two-sided McNemar;
+pHolm: Holm over the three corruptions. The exact Clopper­Pearson 95 % bound on the absolute net change was added at writing and is descriptive, not preregistered. No test
+rejected, so nothing is bold.
+
+                                                                           TABLE II
+                    DETECTION OF CHANGED IMAGE TOKENS ON THE 200 DETECTION ITEMS: PER-ITEM AUROC
+
+Corruption          Items q (AUROC)         TbV score, one pass (AUROC) Best cheap rival, sign (AUROC)      q minus rival
+
+Patch, 8 × 8 codes  200 0.961 [0.959, 0.963] 0.854 [0.847, 0.861]  plain B (+): 0.964 [0.962, 0.966]        -0.003 [-0.004, -0.003]
+Swap, 15% of codes  200 0.955 [0.952, 0.957] 0.859 [0.854, 0.864]  plain B (+): 0.960 [0.958, 0.962]        -0.005 [-0.006, -0.005]
+JPEG, quality 10    197 0.561 [0.547, 0.575] 0.581 [0.569, 0.593]  patch texture (-): 0.756 [0.743, 0.768]  -0.195 [-0.214, -0.175]
+Noise,  = 0.1       198 0.503 [0.493, 0.513] 0.607 [0.597, 0.618]  patch texture (-): 0.768 [0.760, 0.776]  -0.265 [-0.278, -0.253]
+
+Mean per-item AUROC against changed-code labels, 95 % percentile bootstrap intervals over items (10 000 resamples). q: the gate's score; TbV score: one-pass observed-position
+score of the non-finetuned model; rival: the best cheap score in either orientation, chosen on these data (so optimistic), with its sign. Last column: paired difference q minus rival
+(Holm-adjusted p = 0.0004 for JPEG and noise).
+
+once after the primary analysis was committed, contrasts the       additive model, gradient-boosted trees, a multilayer perceptron
+hard gate with five combiners of the same j: three that need       and a grid model) were compared, and the logistic generalised
+no detector, a discount of the flagged tokens, and a graded        additive model was selected by inner cross-validation. Two
+weight on every token. On the realistic corruptions no detector-   other method designs and two other project routes were
+free combiner gave higher verification accuracy than the hard      considered and not pursued. A first freeze was found to read
+gate. The data do not show a difference between the hard gate      the true caption's length through the layout of its inputs; the
+and a trimmed mean that removes as many tokens as the gate         method was therefore re-scored and re-frozen at a fixed caption-
+flagged (exact 95 % bounds on the difference of 0.023, 0.014       slot length, a choice declared before any re-frozen result existed.
+and 0.017). By the pre-stated rule, this counts against the added  Before the re-freeze the analysts had also seen the result table
+value of the detector on those cells (every cell, comparator       of Study 1's re-infilling family, the result of its family B and
+and limit in supplement S-II). In an exploratory suite of eight    the code of the decision rule of its family H; the re-freeze
+further cells (four corruption types of the imagecorruptions       protocol itself had been fixed earlier and was not changed. The
+package [53] at two severities, 100 test items each; intervals     configuration was frozen (SHA-256 db7fdb4e..., commit
+only), no cell's 95 % interval of GATE-M minus none excluded       24d36a8a) before any Study 2 image was selected. Study 2
+zero (supplement S-II).                                            was preregistered (Addendum A6 r1, commit 941a260b) with
+                                                                   a rule that no further confirmatory study would be added. All
+   10) Cost: The main-test pass, which computes every arm of       LRF numbers on Study 1's items are post hoc and exploratory
+Study 1 at once, used a median of 84 network rows and 11.2 s       and appear only in supplement S-IV. Study 2 tests a different
+per item on one 12 GB laptop GPU, with a peak memory of            method on different images and does not bear on Study 1's
+8.2 GB (supplement S-II).                                          conclusion.
+
+ V. STUDY 2: LEARNED RELIABILITY-AWARE FUSION OF                   B. The Frozen Weighting
+                          TOKEN EVIDENCE
+                                                                      Reliability-weighted fusion gives each source of evidence
+   Study 2 answers Q2 (Section I); the tested weighting of the     a weight that depends on its reliability [34]­[36], [38], [41],
+evidence j is called learned reliability-aware fusion (LRF),       and attention-based multiple-instance pooling learns instance
+a name that describes its design, not a measured property.         weights from instance features under a bag-level loss [45]. LRF
+                                                                   applies this construction to the per-token evidence of a unified
+A. Provenance of the Tested Method                                 masked diffusion model: an additive model maps features of
+                                                                   each image token to a non-negative weight, and the decision
+   Study 2 was added after Study 1 had been analysed (primary      is the sign of the weighted evidence.
+result negative), when the target venue changed. The method
+it tests was designed post hoc on Study 1's 500 test items.              Features: Each token has 35 features in the seven groups
+Before the design, Study 1's primary and secondary results,        of Table III; the seven token scores are five from the model with
+its positive-control audit, its exploratory comparators and an     the caption masked, a patch texture and a codebook-neighbour
+exploratory learned-weighting analysis had all been seen. In that  distance, and the other groups summarise them. No feature
+analysis four learned-weighting families (a logistic generalised
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                                                          9
+
+uses j, the caption-visible log-probabilities, the captions, the                                        TABLE III
+corruption labels or the identity of the condition. Features are   INPUT FEATURES OF THE FROZEN WEIGHT MODEL, BY GROUP AND
+standardised with the means and standard deviations of the
+design tokens.                                                                                          FORMULA
+
+      Weight model and decision: For token j with standardised     Group              Count Definition
+features xj1, . . . , xj,35, the weight is a logistic generalised
+additive model [61] with a hinge basis,                            token scores       7 Bj ; Dj ; qj = Bj - Dj ; 1 - maxy p(y) of the
+                                                                                             pass that gives Bj ; one-pass log-probability of the
+
+                                                                                      observed code with all image tokens visible and the
+
+         35                 35 Q                                                      caption masked; log(1 + j ), j the pixel variance
+                                                                                      of the 16 × 16 patch of token j; mean L2 distance
+wj =  0 + akxjk +                    ckl (xjk - tkl)+ , (13)                          of the codebook vector of token j to those of its
+
+                                                                                      eight neighbours
+
+         k=1                k=1 l=1                                position           3 grid row and column divided by 31; distance from
+
+                                                                                      the grid centre
+
+where  is the logistic function and the knots tkl are the          neighbourhood      8 means of six token scores over the eight neighbours;
+l/(Q + 1) quantiles of feature k over the design tokens. The
+                                                                                      their minimum of q; mean of q over the 5 × 5
+
+                                                                                      neighbourhood without the token
+
+decision and the normalised margin are                             within-image rank  4 percentile rank of four token scores among the 1 024
+
+         m                                                                            tokens of the image
+
+                                     M = j wjj , (14)              image mean         6 mean of six token scores over the 1 024 tokens of
+                                                 j wj
+YLRF =        wjj > 0 ,                                                               the image
+
+         j=1                                                       image standard deviation 6 standard deviation of the same six scores over the
+
+                                                                                      image
+
+with a tie counted as wrong.                                       image z-score      1 (qj - q¯)/(sd(q) + 10-6) within the image
+      Objective and tuning: The parameters minimise, over the      Total              35
+
+item-conditions of the design set,                                 Bj and Dj as in Section III-B. Feature names, order and the full formulas are in
+                                                                   supplement S-IV.
+
+1  N                        +  a2 + c2 ,            (15)
+
+N     log 1 + e-Mi/T                                                     Arms, families and tests: The arms are none (weight one
+                                                                   on all 1 024 tokens) and LRF, under clean images and the three
+   i=1                                                             corruptions of Section III-C. Family L has three hypotheses
+                                                                   under a fixed sequence then Holm (familywise level 0.05).
+a softplus loss on the margin Mi of (14), which is positive        The primary L1 tests LRF against none under noise by the
+when the true caption wins. The temperature is T = 0.170;          exact one-sided McNemar test at 0.05 and is "confirmed" if
+                                                                   and only if p  0.05 and b > c. Only if L1 is confirmed
+optimisation is AdamW without weight decay on mini-batches         are L3 (JPEG) and L4 (splice) tested, by exact two-sided
+                                                                   McNemar tests with Holm over two. A gain claim in the title,
+of 32 item-conditions. The configuration selected by successive    abstract or highlights required L1 one-sided p  0.025. L-
+                                                                   NI (one hypothesis, regardless of L1) tests non-inferiority on
+halving on three inner folds of the 500 design items (search       clean images with margin -0.03, read from the lower bound
+                                                                   of the 90 % paired bootstrap interval; the margin was fixed
+in supplement S-IV; Q = 8 knots,  = 0.0027, learning rate          after an exploratory clean interval had been seen. L-LEN (one
+                                                                   hypothesis) repeats L1 with the length-matched wrong captions;
+0.0169) was refitted on all 500 items for 40 epochs with a         items whose length-matched caption still differs in length are
+                                                                   excluded and counted. Family LG (Holm over three, one-
+fixed seed. The training data were the 500 design images,          sided 0.05) tests LRF against none on other noise types (shot,
+                                                                   impulse, speckle; imagecorruptions severity 3) [53] on the first
+each scored clean, after JPEG compression at quality 10, with      300 fold items. Shot and speckle noise are close relatives of
+                                                                   Gaussian noise, impulse noise is the structurally different cell,
+Gaussian noise of standard deviation 0.1 and with a 128-pixel      and severity 3 is not matched to  = 0.1. Per the operations
+                                                                   log, no output was read before its run was complete.
+splice; these are also the four tested conditions.
+                                                                   D. Results
+Fixed caption slot and hashes: The caption-masked scores
+                                                                      Table IV gives every preregistered test and Fig. 5 the family-
+are computed with the caption slot filled by 13 padding tokens,    L intervals; each family is at its own level, with no adjustment
+                                                                   across families (Section III-E). On a fresh preregistered fold,
+so they do not depend on the length of either caption; j keeps     the frozen LRF raised image-direction verification accuracy
+each caption at its own length (invariance checks in supplement    under Gaussian noise ( = 0.1) from 0.733 without reliability
+                                                                   weighting to 0.802 (net 0.069, 95 % interval 0.029 to 0.109;
+S-IV). The model file, its specification, the feature and fitting  exact one-sided McNemar p = 0.0005; preregistered one-sided
+                                                                    = 0.05), including with length-matched negatives (0.708
+code, the codebook and the cached position marginal are pinned     to 0.784, net 0.076, 0.033 to 0.120; one-sided p = 0.0004;
+                                                                   n = 449, one item excluded for a length mismatch). L1 is
+by SHA-256, and the scorer checks every hash before it reads       therefore confirmed. This is in one pretrained unified masked
+
+an item (supplement S-I). Fig. 4 shows the learned shapes and
+
+three example weight maps.
+
+C. Preregistered Protocol
+
+      Fresh fold and sample size: The fold was built after the
+object commit: 533 COCO val2017 images in a seeded order,
+drawn from the 2 449 eligible images that remain after the
+exclusions of Section III-D (2 526 images). Each image has
+one seeded true caption of 5 to 32 tokens, a wrong caption of
+another image chosen by the preregistered derangement rule,
+and a second, length-matched wrong caption. The fold, its
+eight-check leak test (with an injected leak as positive control)
+and the code passed scripted and agent-run audits (see the
+Declaration) before the first item. A preregistered power rule,
+committed before the first item, fixed the test size as a prefix
+of the ordered list, so it could not select items: nL = 450 (its
+inputs are in supplement S-IV).
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                                                                      10
+
+(a)                        rank_B                nb3mean_ltex             tbv                  itemsd_ltex              itemsd_nbr                nbr
+       0.4                  rank                 neighbourhood        token score               item-level              item-level            token score
+
+weight w = (f(x))  0.2
+
+                   0.0                           4             6      -5 -4 -3              1             2      0.15          0.20              1.2 1.4
+                          0.25 0.50 0.75         feature value        feature value          feature value       feature value                feature value
+                            feature value
+
+(b)                                      Item 1                                     Item 2                                     Item 3                          weight wj (square-root scale)
+        0
+                           clean                 noise                clean                 noise                clean                 noise
+
+token row                                                                                                                                                0.75
+                                                                                                                                                         0.50
+
+                                                                                                                                                         0.25
+
+                   31   0                31 0                  31  0                31 0                  31  0                31 0                  31
+
+                           token column          token column         token column          token column         token column          token column
+
+Fig. 4. Frozen weight model; descriptive, not evidence that the weights track corruption. (a) Partial dependence of the token weight w = (f (x)) on the
+six of 35 features with the largest learned effect range, every other standardised feature at its mean 0 (knots: grey ticks; colour and style: feature group of
+Table III). (b) Token-weight maps on the 32 × 32 grid for the first three items of the fold file (chosen by position, not outcome), clean (left) and under
+Gaussian noise with standard deviation 0.1 (right), on one square-root colour scale.
+
+diffusion model (UniDisc, 1.4B parameters), on 450 COCO                                     E. Reference Encoders
+val2017 images not used to design or fit the method, with
+Gaussian noise at one severity. On clean images LRF lost no                                    For reference, CLIP ViT-L/14 [62] and SigLIP so400m [63],
+more than three points (90 % interval of the net change 0.009                               different models trained on different data, reached accuracies of
+to 0.053); the margin was fixed after an exploratory clean                                  0.996 to 1.000 on the same items in every condition (Table V),
+interval had been seen. The clean-image estimate was positive                               with the same decision rule on images regenerated with the
+(0.887 without weighting, 0.918 with; net 0.031); superiority                               runner's corruption functions and seeds (supplement S-VI).
+on clean images was not a preregistered hypothesis.                                         Pixel parity was shown: the UniDisc tokeniser's re-encoding
+                                                                                            of the regenerated images agreed with the stored codes on at
+   Under JPEG quality 10 no difference was detected (net                                    least 98.6 % of tokens (five items per condition set; threshold
+0.016, 95 % interval -0.013 to 0.044; Holm-adjusted p = 0.38).                              98 %). Nearly every cell is at or next to its ceiling and most
+Under the 128-pixel splice LRF raised accuracy from 0.896                                   drop intervals are a single point, so no reading beyond the
+to 0.927 (net 0.031, 0.007 to 0.058); the Holm-adjusted p is                                stated accuracies is drawn, and no test is made.
+0.049, a margin of 0.001 below the 0.05 level (unadjusted
+two-sided p = 0.024). No tested condition showed a reduction:                               F. Cost of Study 2
+the lowest 95 % bound was -0.013, under JPEG.
+                                                                                               The fresh-fold pass, which computes the unweighted rule for
+   On the other noise types (shot, impulse, speckle; imagecor-                              four conditions and stores the inputs of LRF, used 67 network
+ruptions severity 3; n = 300 each), each LG hypothesis was                                  rows and a median of 8.0 s per item on one 12 GB laptop GPU,
+rejected with b > c. Under shot noise accuracy rose from 0.673                              with a peak memory of 8.2 GB; the stage of the other noise
+to 0.767 (net 0.093, 0.047 to 0.143; one-sided p = 0.0002,                                  types used 42 rows and 5.0 s per item (supplement S-IV). LRF
+Holm-adjusted p = 0.0005, two-sided p = 0.0003), and under                                  adds no network row; its weights and decision are computed
+speckle noise from 0.697 to 0.757 (net 0.060, 0.017 to 0.103;                               from the stored arrays on the CPU, and that time was not
+one-sided 0.006, Holm-adjusted 0.011, two-sided 0.011). Under                               recorded.
+impulse noise it rose from 0.700 to 0.750 (net 0.050), and
+the 95 % interval has lower bound 0.0 (0.000 to 0.100). The                                 G. Exploratory Ablation
+one-sided and Holm-adjusted p are 0.029 and the two-sided p
+is 0.058, so this cell would not pass a two-sided 0.05 test, and                               Exploratory; added after the primary, family H and Study 2
+no two-sided claim is made for it. The three cells are reported                             results; no ablation was preregistered, and every variant is in
+separately and are not pooled.                                                              supplement S-VII. Single-source refits and other weightings
+                                                                                            were fitted with LRF's protocol on the 500 design items only;
+                                                                                            knockouts set one feature group of the frozen LRF to its design-
+                                                                                            item mean (differences are variant minus LRF; positive favours
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                                                                                                               11
+
+                                                                                          TABLE IV
+STUDY 2 PREREGISTERED FAMILIES ON THE FRESH FOLD: ACCURACY WITHOUT AND WITH LRF, DISCORDANT COUNTS, p-VALUES AND DECISIONS
+
+Hypothesis                                  n Acc. none Acc. LRF b c Net (95% interval) p one-sided p Holm p two-sided Preregistered decision
+
+L1: noise,  = 0.1                           450     0.733        0.802  58 27 0.069 [0.029, 0.109]            0.0005        ­   0.001 confirmed (one-sided)
+                                                    0.849        0.864  27 20 0.016 [-0.013, 0.044]            0.191   0.382    0.382 not rejected
+L3: JPEG, quality 10                        450     0.896        0.927  24 10 0.031 [0.007, 0.058]             0.012   0.049    0.024 rejected (Holm)
+                                                    0.887        0.918  27 13 0.031 [0.009, 0.053]                  ­
+L4: splice, 128 px                          450     0.708        0.784  67 33 0.076 [0.033, 0.120]                          ­        ­ non-inferior (lower bound 0.009 above -0.03)
+                                                                                                              0.0004        ­  0.0009 rejected (one-sided)
+L-NI: clean images                          450
+
+L-LEN: noise, length-matched negatives 449
+
+LG: shot noise                              300 0.673            0.767  43 15 0.093 [0.047, 0.143]            0.0002 0.0005    0.0003 rejected (Holm, one-sided)
+LG: impulse noise                           300 0.700            0.750  35 20 0.050 [0.000, 0.100]             0.029 0.029      0.058 rejected (Holm, one-sided)
+LG: speckle noise                           300 0.697            0.757  32 14 0.060 [0.017, 0.103]             0.006 0.011      0.011 rejected (Holm, one-sided)
+
+b: items LRF answers correctly and the unweighted rule incorrectly; c: the reverse; net = (b - c)/n. Intervals: 95 % paired percentile bootstrap (10 000 resamples), except  (L-NI):
+90 %, margin -0.03 fixed after an exploratory clean interval had been seen; L-NI's test is the lower 90 % bound against the margin, so no p is printed. p: exact McNemar; p Holm:
+L3 and L4 after L1 (two-sided), LG over its three cells (one-sided). Bold: null rejected at the preregistered level.
+
+(a) Family L, fresh fold, n = 450; 95% interval                                                               (b) L-NI: non-inferiority, n = 450
+
+                   L1: noise,  = 0.1                                                                          L-NI: clean images
+               one-sided p = 0.0005                                                                                   90% interval
+
+               L3: JPEG, quality 10                                                                                                           -0.04  0  0.04      0.08
+                     Holm p = 0.382
+                                                                                                                               Net accuracy change, with minus without
+
+                        L4: splice, 128 px
+                          Holm p = 0.049
+
+                                                    0                   0.05         0.10
+
+                                         Net accuracy change, with minus without weights
+
+                                                                 net change and interval                      non-inferiority margin (-0.03)
+
+Fig. 5. Family L and L-NI on the fresh fold: net accuracy change of the frozen LRF, with minus without reliability weights, n = 450. (a) Diamond: net
+change; bar: 95 % paired percentile bootstrap interval. L1 (Gaussian noise, standard deviation 0.1; primary, shaded): exact one-sided McNemar p; L3 (JPEG
+quality 10) and L4 (128-px splice): Holm-adjusted two-sided p. (b) L-NI (clean images; own family): net change, 90 % interval and the margin -0.03 (dashed),
+fixed after an exploratory clean interval had been seen.
+
+                                      TABLE V                                                                 weight on s3. It also lay below zero for a single-feature weight
+REFERENCE ACCURACY OF CLIP VIT-L/14 AND SIGLIP SO400M PER                                                     (feature rad, chosen from 35 candidate features by the inner-
+                                                                                                              fold objective on the design items, a selection budget 35 times
+                                     CONDITION                                                                that of the frozen LRF; the selection used no fresh item).
+                                                                                                              Among knockouts, the change in the frozen model's accuracy
+Condition                  n CLIP acc. CLIP drop (95% interval) SigLIP acc. SigLIP drop (95% interval)        was -0.053 [-0.082, -0.027] when the features computed
+                                                                                                              from B and D were set to their design-item mean. It was
+Clean images               450 0.998             ­               0.998                 ­                      0.040 [0.013, 0.069] for the nbr features and -0.062 [-0.096,
+Gaussian noise,  = 0.1                                           0.998    0.000 [0.000, 0.000]                -0.031] for the neighbourhood features; for every other group
+JPEG, quality 10           450 1.000 -0.002 [-0.007, 0.000]      1.000  -0.002 [-0.007, 0.000]                the interval contained zero. Setting a group to its mean gives
+Splice, 128 px                                                   1.000  -0.002 [-0.007, 0.000]                inputs that the model did not see together in fitting; an interval
+                           450 0.998 0.000 [0.000, 0.000]                                                     away from zero shows that the frozen model's decisions depend
+                                                                                                              on those inputs, not that the group alone detects anything. This
+                           450 0.996 0.002 [0.000, 0.007]                                                     comparison was added after the Study 2 results and is not a test.
+                                                                                                              Across the three refit seeds, the range of fresh-fold accuracy
+Clean images, same 300 items 300  0.997                 ­        0.997                    ­                   was at most 0.030 in every variant and cell; seed 0 was fixed
+                                  1.000  -0.003 [-0.010, 0.000]  0.997        0.000 [0.000, 0.000]            before any fresh item and is not the best of three. The 336
+Shot noise, severity 3     300    0.997                          0.997        0.000 [0.000, 0.000]            intervals are dependent and unadjusted, and the other cells are
+                                  1.000    0.000 [0.000, 0.000]  0.997        0.000 [0.000, 0.000]            in supplement S-VII.
+Impulse noise, severity 3  300           -0.003 [-0.010, 0.000]
+                                                                                                                                         VI. DISCUSSION
+Speckle noise, severity 3  300
+                                                                                                              A. Study 1
+Cost per item              ­ not measured (no timing in any committed baseline run)
+                                                                                                                 The preregistered test excludes an improvement or a loss of
+Pixel parity, 5 items, the four conditions of the top block: minimum token agreement 0.989 (threshold 0.98)   more than five percentage points in image-direction verification
+Pixel parity, 5 items, clean and three severity-3 conditions: minimum token agreement 0.986 (threshold 0.98)  accuracy from gating under JPEG quality 10, Gaussian noise
+                                                                                                              with  = 0.1 and a 128-pixel splice, for this model and these
+For reference only: different models trained on different data; no test and no comparison                     severities; it does not show that gating has no effect. It concerns
+is made. Same first 450 fold items (300 for the severity-3 cells) and regenerated pixels;
+revisions and scores in supplement S-VI. Drop: clean minus corrupted accuracy of the
+same model on the same items, paired percentile bootstrap 95 % interval. The row "Clean
+images, same 300 items" was computed at writing from the stored predictions (descriptive).
+Cost per item was not measured. Pixel parity: runs/P2-LRF-BASELINES-PARITY-L1
+and -LG; these supersede the field pixel parity:notrun of the main run's file, which
+records only that the main run was made without the parity option.
+
+the variant). Under Gaussian noise (L1 items), the paired
+difference from the frozen LRF was -0.011 [-0.031, 0.009]
+for a linear logit on the same 35 features and -0.002 [-0.033,
+0.029] for weighting by the features computed from B and
+D alone. It was -0.033 [-0.071, 0.004] for the features from
+s3 alone and -0.009 [-0.044, 0.027] for attention-weighted
+pooling in the style of gated attention MIL [45]; an interval
+that contains zero does not show that the difference is zero.
+The interval lay below zero for the weightings computed from
+tbv, ltex, nbr or position alone and for an unlearned rank
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS           12
+
+this gate at its preregistered level  = 0.05, one severity per      tokenisation of the same pixels in another process need not
+corruption, one model and one data set, and says nothing about      reproduce the stored codes: it agreed on 98.8 % and 98.9 % of
+other levels, stronger corruptions, models or tasks, none of        image tokens in the two stopped self-checks of card row A-8,
+which was tested.                                                   and on at least 98.6 % in the pixel-parity runs. The reference
+                                                                    encoders almost solve this matching task (Section V-E); this
+   The exploratory Tier-3 comparison of the hard gate with five     paper makes no claim of a verifier that ranks with them. No
+combiners of the same evidence is reported in Section IV-C          ablation was preregistered; Section V-G is exploratory.
+and supplement S-II; it describes the combiners and is not an
+account of the primary result.                                         Both studies. All results are for random-caption negatives.
+                                                                    The preregistration is self-hosted in the sense of Section III-E,
+   In a separately labelled family added after the primary result   and the audits were agent-run (see the Declaration).
+was known (family H: SugarCrepe hard negatives [12] on 50
+COCO images not used elsewhere; Holm over the same three            D. Deviations From the Plans
+corruptions), the pre-written pilot rule found no corruption
+with decision headroom on 50 pilot images, so the family's          Study 1: (1) The Tier-3 comparators, parameters and fallback seed
+test was not run, and nothing is stated about the gate on hard      were fixed in an addendum committed before the main run's
+negatives (Section IV-C8; supplement S-III).                        headroom decision; their intervals carry no p-value and no multiplicity
+                                                                    adjustment. (2) Outcome-label wording was fixed before the primary
+B. Study 2                                                          result, with a dated record of the null wording and of the reading
+                                                                    adopted where card and plan differed on a rejection against the gate.
+   L1 shows that one frozen weighting, hash-pinned before           (3) The time-input statement rests on a code reading at a pinned
+any test image was chosen, raised image-direction verification      commit and a key check; its table moved to the supplement. (4)
+accuracy under Gaussian noise with  = 0.1 on 450 COCO               Family B ran before the re-infilling family under the plan's fixed
+images that played no part in its design or fit, passing an exact   time inequality. (5) Family H has its own disclosure and amendment
+paired test at the preregistered level and holding with length-     items; one decision row was committed after its pilot driver started
+matched negative captions. It does not show that the weighting      and before any pilot row existed. (6) The effective-n record of the
+works on a corruption it was not trained on, that its weights       re-infilling figure carries a reason text written at analysis time. (7) The
+follow the reliability of a token, or that the effect carries to    data steward did not collect the image ids of negatives and mismatches
+another model, data set or severity. Five inexpensive alternative   separately (no analysis uses them), and its check left some run files
+readings remain open, each with its evidence in Section VI-C:       outside the excluded classes unopened. (8) The exact Clopper­Pearson
+(i) a reweighting that helps whatever the condition; (ii) a         bounds of Table I were added at writing (runs/P2-PAPER-BOUNDS,
+supervised fit to the training corruption; (iii) a single noise-    descriptive). Study 2: (1) The L1 stage stopped twice at its tokenisation
+sensitive feature, such as the codebook-neighbour distance          self-check before any item; card row A-8 moved the code pin, and
+or the one-pass observed-position score, which Fig. 4 cannot        row A-9 changed one test only. (2) The scorer's pin file was written
+separate and the exploratory ablation of Section V-G bears on       while L1 ran, with every value copied from records committed before
+only as an exploratory result; (iv) a limited reach to other noise  L1. (3) The environment lock files of the design, re-score, L1 and
+types, since the impulse-noise interval starts at 0.0; and (v) an   other-noise stages are empty; the environment was recorded after the
+unstable splice decision, whose Holm-adjusted p of 0.049 lies       runs, and the corruption package's commit was verified from it. (4)
+0.001 below the level. A second backbone, a corruption held         Item arrays are untracked with committed SHA-256 manifests; hashes
+out of training and a preregistered comparison with simpler         appear in CRLF and LF forms of the same content. (5) The pixel-
+weighting rules on fresh images are the tests that would settle     parity files were moved unchanged from a wrong output directory
+these questions; none was run.                                      with no prior hash (audit-time hashes are recorded); they supersede
+                                                                    the field "pixel parity: not run" of the main reference-encoder file.
+C. Limitations                                                      (6) The reference-encoder download was larger than the size quoted
+                                                                    to the first author. (7) What had been seen before the re-freeze is
+                                                                    stated in Section V-A. (8) "No output was read before its run was
+                                                                    complete" rests on the operations log. (9) The exploratory ablation
+                                                                    was added at writing. Supplement S-I gives each item in full with its
+                                                                    record.
+
+   Study 1. One model and one severity per corruption were                                    VII. CONCLUSION
+tested.
+                                                                       Study 1 measured a gate that withholds the image tokens
+   Study 2. One model, one data set and one severity per            flagged by UniDisc's own masked likelihood, with the flag
+corruption were tested. LRF was trained on the tested corruption    threshold set by conformal risk control on clean pairs. The
+(Gaussian noise with  = 0.1 was a training condition), so L1        preregistered test excludes an improvement or a loss of more
+tests new images, not a new corruption. No preregistered test       than five percentage points in image-direction verification
+separates corruption-specific weighting from a generic gain,        accuracy from gating under JPEG quality 10, Gaussian noise
+since the clean-image and splice estimates were also positive;      with  = 0.1 and a 128-pixel splice, for this model and these
+the title's "under Gaussian noise" names the tested condition,      severities; it does not show that gating has no effect. The
+not a specificity. The Holm-adjusted p of L4 is 0.049, and          result is for one pretrained model of 1.4B parameters with
+the two-sided p of the impulse-noise cell is 0.058. The clean-      random-caption negatives.
+image margin of L-NI was fixed after an exploratory clean
+interval had been seen. Whether COCO images were in the                Study 2 tested one frozen learned reliability-aware fusion of
+pretraining data of UniDisc, its tokeniser, CLIP or SigLIP is       token evidence on a fresh preregistered fold. Under Gaussian
+unknown. Each image has one corruption realisation and one          noise with  = 0.1 it raised image-direction verification
+mask seed, so the intervals cover item sampling only. A fresh       accuracy from 0.733 without reliability weighting to 0.802 (net
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS           13
+
+0.069, 95 % interval 0.029 to 0.109; exact one-sided McNemar                                     REFERENCES
+p = 0.0005), including with length-matched negatives, and on
+clean images it lost no more than three points, against a margin     [1] J. Austin, D. D. Johnson, J. Ho, D. Tarlow, and
+fixed after an exploratory clean interval had been seen. This             R. van den Berg, "Structured denoising diffusion models
+holds for one model, on 450 COCO images not used to design                in discrete state-spaces," in Advances in Neural Information
+or fit the method, at one severity; the weighting was trained             Processing Systems 34 (NeurIPS 2021), 2021, pp. 17 981­17 993.
+on the tested corruption, and no preregistered test shows that            [Online]. Available: https://proceedings.neurips.cc/paper/2021/hash/
+its gain is specific to that corruption.                                  958c530554f78bcd8e97125b70e6973d-Abstract.html
+
+         REPRODUCIBILITY AND DATA AVAILABILITY                       [2] S. S. Sahoo, M. Arriola, Y. Schiff, A. Gokaslan, E. Marroquin, J. T.
+                                                                          Chiu, A. Rush, and V. Kuleshov, "Simple and effective masked diffusion
+   The code, the preregistration documents (cards, analysis               language models," in Advances in Neural Information Processing
+plans and their addenda), the hash pins, the stored predictions           Systems 37 (NeurIPS 2024), 2024, pp. 130 136­130 184. [Online].
+and the analysis outputs are kept in one version-controlled               Available: https://doi.org/10.52202/079017-4135
+repository ([link withheld for double-anonymous review]);
+for review, an anonymised mirror is provided that preserves          [3] J. Ou, S. Nie, K. Xue, F. Zhu, J. Sun, Z. Li, and C. Li,
+the commit times and hashes on which the definition of                    "Your absorbing discrete diffusion secretly models the conditional
+"preregistered" in Section III-E rests. The per-item arrays are           distributions of clean data," in International Conference on
+not tracked; their SHA-256 manifests are committed. The                   Learning Representations (ICLR 2025), 2025, pp. 64 972­65 009.
+software environment was recorded after the runs. The images              [Online]. Available: https://proceedings.iclr.cc/paper files/paper/2025/
+and captions are the public COCO val2017 split [56], and the              hash/a365e37c18fb91af547a2f0012a89e98-Abstract-Conference.html
+model is the released UniDisc checkpoint [4] at the snapshot
+pinned in supplement S-I.                                            [4] A. Swerdlow, M. Prabhudesai, S. Gandhi, D. Pathak, and K. Fragkiadaki,
+                                                                          "Unified multimodal discrete diffusion," arXiv preprint arXiv:2503.20853,
+            DECLARATION OF GENERATIVE AI USE                              2025. [Online]. Available: https://arxiv.org/abs/2503.20853
+
+   The authors used generative AI systems in this work. The          [5] L. Yang, Y. Tian, B. Li, X. Zhang, K. Shen, Y. Tong, and M. Wang,
+systems were Claude Opus 5.5, Claude Sonnet 5.5 and Claude                "MMaDA: Multimodal large diffusion language models," in Advances in
+Haiku 5.5 (Anthropic), run as agents through Claude Code,                 Neural Information Processing Systems 38 (NeurIPS 2025), 2025, pp.
+and Codex (OpenAI; model recorded in the session log as                   154 021­154 061. [Online]. Available: https://doi.org/10.52202/085713-
+gpt-6-luna), used to review plans and drafts. [AUTHOR:                    4636
+confirm that this list of systems and versions is complete
+for every stage of the work, and give the Claude Code and            [6] L. Li, Z. Long, Y. Shen, H. Gao, H. Cao, X. Sun, C. Shan, R. He,
+Codex client versions if the editor requires them.] They                  and C. Fu, "Omni-diffusion: Unified multimodal understanding and
+were used in four roles. (i) Drafting and editing the text of             generation with masked discrete diffusion," in Proceedings of the 43rd
+every section, the abstract, the figure and table captions and            International Conference on Machine Learning, ser. Proceedings of
+the supplement. (ii) Writing the experiment code, the analysis            Machine Learning Research, vol. 306, 2026, pp. 68 853­68 867. [Online].
+scripts and the figure scripts, and producing the figures and             Available: https://proceedings.mlr.press/v306/li26dv.html
+tables from the committed run files. (iii) Literature search
+and the verification of every reference against Crossref, arXiv,     [7] A. C. Li, M. Prabhudesai, S. Duggal, E. Brown, and D. Pathak,
+OpenAlex or the publisher's record. (iv) The scripted and                 "Your diffusion model is secretly a zero-shot classifier," in 2023
+agent-run audits named in the paper: the red team (adversarial            IEEE/CVF International Conference on Computer Vision (ICCV), 2023,
+review of the plans, results and text), the gate-auditor (commit          pp. 2206­2217. [Online]. Available: https://doi.org/10.1109/ICCV51070.
+order, hash checks, code audits and reconciliation of every               2023.00210
+number with the run files), the data-steward (fold construction
+and leak checks) and the statistician (analysis plans, statistical   [8] K. Clark and P. Jaini, "Text-to-image diffusion models are zero-shot
+checks and the ruling on the abstract). The sections affected             classifiers," in Advances in Neural Information Processing Systems
+are therefore all sections, the supplement, the figures and the           36 (NeurIPS 2023), 2023, pp. 58 921­58 937. [Online]. Available:
+tables. The level of use was substantial: the systems wrote first         https://doi.org/10.52202/075280-2571
+drafts of the text and code and ran the audits, and the authors
+directed the work, set the research questions and approved           [9] B. Krojer, E. Poole-Dayan, V. Voleti, C. Pal, and S. Reddy, "Are
+the preregistration documents and the decisions recorded in               diffusion models vision-and-language reasoners?" in Advances in
+them. [AUTHOR: confirm the level-of-use sentence, in                      Neural Information Processing Systems 36 (NeurIPS 2023), 2023, pp.
+particular which decisions the authors made and approved                  8385­8405. [Online]. Available: https://doi.org/10.52202/075280-0367
+themselves.] No AI system generated data: every reported
+number comes from runs of the stated model on the stated            [10] D. Hendrycks and T. Dietterich, "Benchmarking neural network
+images. The audits listed above were run by AI agents inside              robustness to common corruptions and perturbations," in International
+the authors' own pipeline, not by outside reviewers. The authors          Conference on Learning Representations (ICLR 2019), 2019. [Online].
+reviewed all content and take full responsibility for it.                 Available: https://openreview.net/forum?id=HJz6tiCqYm
+
+                                                                    [11] X. Zhang, Z. Li, Z. Zou, X. Gao, Y. Xiong, D. Jin, J. Li, and
+                                                                          H. Liu, "Informative data selection with uncertainty for multimodal
+                                                                          object detection," IEEE Transactions on Neural Networks and Learning
+                                                                          Systems, vol. 35, no. 10, pp. 13 561­13 573, 2024. [Online]. Available:
+                                                                          https://doi.org/10.1109/TNNLS.2023.3270159
+
+                                                                    [12] C.-Y. Hsieh, J. Zhang, Z. Ma, A. Kembhavi, and R. Krishna, "SugarCrepe:
+                                                                          Fixing hackable benchmarks for vision-language compositionality," in
+                                                                          Advances in Neural Information Processing Systems, vol. 36, 2023.
+                                                                          [Online]. Available: https://doi.org/10.52202/075280-1355
+
+                                                                    [13] B. B. Moser, A. S. Shanbhag, F. Raue, S. Frolov, S. Palacio, and
+                                                                          A. Dengel, "Diffusion models, image super-resolution, and everything:
+                                                                          A survey," IEEE Transactions on Neural Networks and Learning
+                                                                          Systems, vol. 36, no. 7, pp. 11 793­11 813, 2025. [Online]. Available:
+                                                                          https://doi.org/10.1109/TNNLS.2024.3476671
+
+                                                                    [14] Y. Jeong, A. Uselis, S. J. Oh, and A. Rohrbach, "Diffusion classifiers
+                                                                          understand compositionality, but conditions apply," in Advances in Neural
+                                                                          Information Processing Systems 38 (NeurIPS 2025), 2025, pp. 137 728­
+                                                                          137 777. [Online]. Available: https://doi.org/10.52202/085713-4141
+
+                                                                    [15] Z. Lin, D. Pathak, B. Li, J. Li, X. Xia, G. Neubig, P. Zhang,
+                                                                          and D. Ramanan, "Evaluating text-to-visual generation with image-
+                                                                          to-text generation," in Computer Vision ­ ECCV 2024, ser. Lecture
+                                                                          Notes in Computer Science, 2024, pp. 366­384. [Online]. Available:
+                                                                          https://doi.org/10.1007/978-3-031-72673-6 20
+
+                                                                    [16] J. Salazar, D. Liang, T. Q. Nguyen, and K. Kirchhoff, "Masked
+                                                                          language model scoring," in Proceedings of the 58th Annual Meeting of
+                                                                          the Association for Computational Linguistics, 2020, pp. 2699­2712.
+                                                                          [Online]. Available: https://doi.org/10.18653/v1/2020.acl-main.240
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                         14
+
+[17] P. Li, "uChecker: Masked pretrained language models as unsupervised                38 (NeurIPS 2025), 2025, pp. 165 747­165 772. [Online]. Available:
+      Chinese spelling checkers," in Proceedings of the 29th International              https://doi.org/10.52202/085713-4991
+      Conference on Computational Linguistics, 2022, pp. 2812­2822.               [34] Z. Chair and P. K. Varshney, "Optimal data fusion in multiple sensor
+      [Online]. Available: https://aclanthology.org/2022.coling-1.248/                  detection systems," IEEE Transactions on Aerospace and Electronic
+                                                                                        Systems, vol. AES-22, no. 1, pp. 98­101, 1986. [Online]. Available:
+[18] A. Lou, C. Meng, and S. Ermon, "Discrete diffusion modeling by                     https://doi.org/10.1109/TAES.1986.310699
+      estimating the ratios of the data distribution," in Proceedings of the      [35] J. Kittler, M. Hatef, R. P. W. Duin, and J. Matas, "On combining
+      41st International Conference on Machine Learning, ser. Proceedings               classifiers," IEEE Transactions on Pattern Analysis and Machine
+      of Machine Learning Research, vol. 235, 2024, pp. 32 819­32 848.                  Intelligence, vol. 20, no. 3, pp. 226­239, 1998. [Online]. Available:
+      [Online]. Available: https://proceedings.mlr.press/v235/lou24a.html               https://doi.org/10.1109/34.667881
+                                                                                  [36] Q. Zhang, H. Wu, C. Zhang, Q. Hu, H. Fu, J. T. Zhou, and
+[19] S. Nie, F. Zhu, Z. You, X. Zhang, J. Ou, J. Hu, J. Zhou, Y. Lin, J.-R. Wen,        X. Peng, "Provable dynamic fusion for low-quality multimodal
+      and C. Li, "Large language diffusion models," in Advances in Neural               data," in Proceedings of the 40th International Conference on
+      Information Processing Systems 38 (NeurIPS 2025), 2025, pp. 56 354­               Machine Learning, ser. Proceedings of Machine Learning Research,
+      56 392. [Online]. Available: https://doi.org/10.52202/085713-1689                 vol. 202, 2023, pp. 41 753­41 769. [Online]. Available: https:
+                                                                                        //proceedings.mlr.press/v202/zhang23ar.html
+[20] H. Chang, H. Zhang, L. Jiang, C. Liu, and W. T. Freeman, "MaskGIT:           [37] Q. Zhang, Y. Wei, Z. Han, H. Fu, X. Peng, Q. Hu, C. Deng, C. Xu,
+      Masked generative image transformer," in 2022 IEEE/CVF Conference                 J. Wen, D. Hu, and C. Zhang, "Multimodal fusion on low-quality data:
+      on Computer Vision and Pattern Recognition (CVPR), 2022, pp.                      A comprehensive survey," Information Fusion, vol. 135, p. 104437,
+      11 305­11 315. [Online]. Available: https://doi.org/10.1109/CVPR52688.            2026. [Online]. Available: https://doi.org/10.1016/j.inffus.2026.104437
+      2022.01103                                                                  [38] Z. Han, C. Zhang, H. Fu, and J. T. Zhou, "Trusted multi-view
+                                                                                        classification with dynamic evidential fusion," IEEE Transactions on
+[21] Q. Shi, J. Bai, Z. Zhao, W. Chai, K. Yu, J. Wu, S. Song, Y. Tong,                  Pattern Analysis and Machine Intelligence, vol. 45, no. 2, pp. 2551­2566,
+      X. Li, X. Li, and S. Yan, "Beyond text-to-image: Liberating generation            2023. [Online]. Available: https://doi.org/10.1109/TPAMI.2022.3171983
+      with a unified discrete diffusion model," in International Conference       [39] Z. Shao, W. Dou, and Y. Pan, "Dual-level deep evidential fusion:
+      on Learning Representations (ICLR 2026), 2026, pp. 71 124­71 149.                 Integrating multimodal information for enhanced reliable decision-
+      [Online]. Available: https://proceedings.iclr.cc/paper files/paper/2026/          making in deep learning," Information Fusion, vol. 103, p. 102113,
+      hash/73eebcdbc4e122eea5be2ca3823ffc26-Abstract-Conference.html                    2024. [Online]. Available: https://doi.org/10.1016/j.inffus.2023.102113
+                                                                                  [40] L. Huang, S. Ruan, P. Decazes, and T. Denoeux, "Deep evidential fusion
+[22] S. Li, K. Kallidromitis, H. Bansal, A. Gokul, Y. Kato, K. Kozuka,                  with uncertainty quantification and reliability learning for multimodal
+      J. Kuen, Z. Lin, K.-W. Chang, and A. Grover, "LaViDa: A large                     medical image segmentation," Information Fusion, vol. 113, p. 102648,
+      diffusion language model for multimodal understanding," in Advances               2025. [Online]. Available: https://doi.org/10.1016/j.inffus.2024.102648
+      in Neural Information Processing Systems 38 (NeurIPS 2025), 2025.           [41] A. Li, D. Miao, T. Gao, S. Mei, F. Gu, C. Chen, A. Wang, H. Fan,
+      [Online]. Available: https://doi.org/10.52202/085713-3511                         and X. Liu, "TCPFMC: Trustworthy cyclic progressive fusion for
+                                                                                        multimodal classification," IEEE Transactions on Neural Networks
+[23] Y. Xin, Q. Qin, S. Luo, K. Zhu, J. Yan, Y. Tai, J. Lei, Y. Cao, K. Wang,           and Learning Systems, vol. 37, no. 9, pp. 4246­4260, 2026. [Online].
+      Y. Wang, J. Bai, Q. Yu, D. Jiang, Y. Pu, H. Chen, L. Zhuo, J. He,                 Available: https://doi.org/10.1109/TNNLS.2026.3661974
+      G. Luo, T. Li, M. Hu, J. Ye, S. Ye, B. Zhang, C. Xu, W. Wang, H. Li,        [42] Q. Chen, S. Li, Y. Liu, S. Pan, G. I. Webb, and S. Zhang,
+      G. Zhai, T. Xue, B. Fu, X. Liu, Y. Qiao, and Y. Liu, "Lumina-DiMOO:               "Uncertainty-aware graph neural networks: A multihop evidence fusion
+      An omni diffusion large language model for multi-modal generation                 approach," IEEE Transactions on Neural Networks and Learning
+      and understanding," arXiv preprint arXiv:2510.06308, 2025. [Online].              Systems, vol. 36, no. 10, pp. 18 463­18 477, 2025. [Online]. Available:
+      Available: https://arxiv.org/abs/2510.06308                                       https://doi.org/10.1109/TNNLS.2025.3581083
+                                                                                  [43] X. Jiang, X. Xu, L. Zhu, Z. Sun, A. Cichocki, and H. T. Shen,
+[24] X. Yang, B. Song, Y. Dong, W. Sun, T. Sun, S. Zheng, and                           "Resisting noise in pseudo labels: Audible video event parsing with
+      Z. Hou, "MALFM-Captioner: A multipath alignment learning for image                evidential learning," IEEE Transactions on Neural Networks and
+      captioning with feature mask," IEEE Transactions on Neural Networks               Learning Systems, vol. 36, no. 6, pp. 10 874­10 888, 2025. [Online].
+      and Learning Systems, pp. 1­13, 2026, early access. [Online]. Available:          Available: https://doi.org/10.1109/TNNLS.2024.3505674
+      https://doi.org/10.1109/TNNLS.2026.3690650                                  [44] T. Qiu and Q. Li, "A framework for counterfactual explanation of
+                                                                                        predictive uncertainty in multimodal models," IEEE Transactions on
+[25] G. Wang, Y. Schiff, S. S. Sahoo, and V. Kuleshov, "Remasking discrete              Neural Networks and Learning Systems, vol. 36, no. 7, pp. 12 507­12 520,
+      diffusion models with inference-time scaling," in Advances in Neural              2025. [Online]. Available: https://doi.org/10.1109/TNNLS.2024.3476080
+      Information Processing Systems 38 (NeurIPS 2025), 2025, pp. 163 488­        [45] M. Ilse, J. Tomczak, and M. Welling, "Attention-based deep
+      163 545. [Online]. Available: https://doi.org/10.52202/085713-4927                multiple instance learning," in Proceedings of the 35th International
+                                                                                        Conference on Machine Learning, ser. Proceedings of Machine
+[26] K. Zhai, S. Mollah, Z. Wang, and M. Shah, "CORE: Context-                          Learning Research, vol. 80, 2018, pp. 2127­2136. [Online]. Available:
+      robust remasking for diffusion language models," arXiv preprint                   https://proceedings.mlr.press/v80/ilse18a.html
+      arXiv:2602.04096, 2026. [Online]. Available: https://arxiv.org/abs/2602.    [46] X. Xiao, B. Wu, J. Wang, C. Li, X. Zhou, and H. Guo,
+      04096                                                                             "Seeing the image: Prioritizing visual correlation by contrastive
+                                                                                        alignment," in Advances in Neural Information Processing Systems
+[27] J. Kim, S. Kim, T. Lee, D. Z. Pan, H. Kim, S. Kakade,                              37 (NeurIPS 2024), 2024, pp. 30 925­30 950. [Online]. Available:
+      and S. Chen, "Fine-tuning masked diffusion for provable self-                     https://doi.org/10.52202/079017-0973
+      correction," arXiv preprint arXiv:2510.01384, 2025. [Online]. Available:    [47] V. Vovk, A. Gammerman, and G. Shafer, Algorithmic Learning in
+      https://arxiv.org/abs/2510.01384                                                  a Random World. New York: Springer, 2005. [Online]. Available:
+                                                                                        https://doi.org/10.1007/b106715
+[28] Y. Schiff, O. Belhasin, R. Uziel, G. Wang, M. Arriola, G. Turok,             [48] A. N. Angelopoulos and S. Bates, "Conformal prediction: A
+      R. Zilberstein, M. Elad, and V. Kuleshov, "Learn from your mistakes: Self-        gentle introduction," Foundations and Trends in Machine Learning,
+      correcting masked diffusion models," arXiv preprint arXiv:2602.11590,             vol. 16, no. 4, pp. 494­591, 2023. [Online]. Available: https:
+      2026. [Online]. Available: https://arxiv.org/abs/2602.11590                       //doi.org/10.1561/2200000101
+                                                                                  [49] S. Bates, E. Cande`s, L. Lei, Y. Romano, and M. Sesia, "Testing for outliers
+[29] J. Lezama, H. Chang, L. Jiang, and I. Essa, "Improved masked image                 with conformal p-values," The Annals of Statistics, vol. 51, no. 1, pp.
+      generation with Token-Critic," in Computer Vision ­ ECCV 2022,                    149­178, 2023. [Online]. Available: https://doi.org/10.1214/22-AOS2244
+      ser. Lecture Notes in Computer Science, 2022, pp. 70­86. [Online].          [50] A. N. Angelopoulos, S. Bates, A. Fisch, L. Lei, and
+      Available: https://doi.org/10.1007/978-3-031-20050-2 5                            T. Schuster, "Conformal risk control," in International Conference
+                                                                                        on Learning Representations (ICLR 2024), 2024, pp. 55 198­55 218.
+[30] Y. Ouyang, P. Hu, Z. Wan, Z. Wang, L. Xie, D. Bespalov, Y. N.                      [Online]. Available: https://proceedings.iclr.cc/paper files/paper/2024/
+      Wu, G. Cheng, H. Zha, and Q. Sun, "Training-free self-correction for              hash/f3549ef9b5ff520a7e41ff3cc306ab2b-Abstract-Conference.html
+      multimodal masked diffusion models," arXiv preprint arXiv:2602.02927,
+      2026. [Online]. Available: https://arxiv.org/abs/2602.02927
+
+[31] M.-Q. Le, A. Comas, A. Lattas, S. Moschoglou, P. Ve´lez, A. Raj,
+      A. Germuth, T. Beeler, D. Samaras, and D. Qiu, "Concurrent image
+      understanding and generation: Self-correcting coupled Markov jump
+      processes," arXiv preprint arXiv:2607.13188, 2026. [Online]. Available:
+      https://arxiv.org/abs/2607.13188
+
+[32] G. Jhingran, "Trust but verify: Designing region-inhomogeneous forward
+      dynamics for discrete diffusion," arXiv preprint arXiv:2610.22380, 2026.
+      [Online]. Available: https://arxiv.org/abs/2610.22380
+
+[33] Y. Fang, Z. Yang, Z. Chen, Z. Zhao, and J. Zhou, "Enhancing
+      vision-language model reliability with uncertainty-guided dropout
+      decoding," in Advances in Neural Information Processing Systems
+IEEE TRANSACTIONS ON NEURAL NETWORKS AND LEARNING SYSTEMS                         15
+
+[51] D. Wang, P. Wang, Z. Ji, X. Yang, and H. Li, "Conformal loss-controlling
+      prediction," IEEE Transactions on Neural Networks and Learning
+      Systems, vol. 36, no. 2, pp. 2973­2983, 2025. [Online]. Available:
+      https://doi.org/10.1109/TNNLS.2024.3356512
+
+[52] G. Gomes, B. Martins, and C. Zerva, "A conformal risk control
+      framework for granular word assessment and uncertainty calibration
+      of CLIPScore quality estimates," in Findings of the Association
+      for Computational Linguistics: ACL 2025, 2025, pp. 12 348­12 365.
+      [Online]. Available: https://doi.org/10.18653/v1/2025.findings-acl.638
+
+[53] C. Michaelis, B. Mitzkus, R. Geirhos, E. Rusak, O. Bringmann,
+      A. S. Ecker, M. Bethge, and W. Brendel, "Benchmarking robustness
+      in object detection: Autonomous driving when winter is coming,"
+      arXiv preprint arXiv:1907.07484, 2019. [Online]. Available: https:
+      //arxiv.org/abs/1907.07484
+
+[54] B. A. Nosek, C. R. Ebersole, A. C. DeHaven, and D. T. Mellor, "The
+      preregistration revolution," Proceedings of the National Academy of
+      Sciences, vol. 115, no. 11, pp. 2600­2606, 2018. [Online]. Available:
+      https://doi.org/10.1073/pnas.1708274114
+
+[55] P. Sun, Y. Jiang, S. Chen, S. Zhang, B. Peng, P. Luo, and Z. Yuan,
+      "Autoregressive model beats diffusion: Llama for scalable image
+      generation," arXiv preprint arXiv:2406.06525, 2024. [Online]. Available:
+      https://arxiv.org/abs/2406.06525
+
+[56] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan,
+      P. Dolla´r, and C. L. Zitnick, "Microsoft COCO: Common objects
+      in context," in Computer Vision ­ ECCV 2014, ser. Lecture Notes
+      in Computer Science, 2014, pp. 740­755. [Online]. Available:
+      https://doi.org/10.1007/978-3-319-10602-1 48
+
+[57] Q. McNemar, "Note on the sampling error of the difference between
+      correlated proportions or percentages," Psychometrika, vol. 12, no. 2, pp.
+      153­157, 1947. [Online]. Available: https://doi.org/10.1007/BF02295996
+
+[58] S. Holm, "A simple sequentially rejective multiple test procedure,"
+      Scandinavian Journal of Statistics, vol. 6, no. 2, pp. 65­70, 1979.
+      [Online]. Available: https://www.jstor.org/stable/4615733
+
+[59] D. B. Rubin, "Inference and missing data," Biometrika, vol. 63, no. 3,
+      pp. 581­592, 1976. [Online]. Available: https://doi.org/10.1093/biomet/
+      63.3.581
+
+[60] R. Shekhar, S. Pezzelle, Y. Klimovich, A. Herbelot, M. Nabi,
+      E. Sangineto, and R. Bernardi, "FOIL it! Find one mismatch
+      between image and language caption," in Proceedings of the 55th
+      Annual Meeting of the Association for Computational Linguistics
+      (Volume 1: Long Papers), 2017, pp. 255­265. [Online]. Available:
+      https://doi.org/10.18653/v1/P17-1024
+
+[61] T. J. Hastie and R. J. Tibshirani, Generalized Additive Models.
+      Chapman and Hall, 1990, reissued by Routledge, 2017. [Online].
+      Available: https://doi.org/10.1201/9780203753781
+
+[62] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal,
+      G. Sastry, A. Askell, P. Mishkin, J. Clark, G. Krueger, and
+      I. Sutskever, "Learning transferable visual models from natural
+      language supervision," in Proceedings of the 38th International
+      Conference on Machine Learning, ser. Proceedings of Machine
+      Learning Research, vol. 139, 2021, pp. 8748­8763. [Online]. Available:
+      https://proceedings.mlr.press/v139/radford21a.html
+
+[63] X. Zhai, B. Mustafa, A. Kolesnikov, and L. Beyer, "Sigmoid loss
+      for language image pre-training," in 2023 IEEE/CVF International
+      Conference on Computer Vision (ICCV), 2023, pp. 11 941­11 952.
+      [Online]. Available: https://doi.org/10.1109/ICCV51070.2023.01100
+
