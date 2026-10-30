@@ -230,3 +230,57 @@ Multiset of number tokens (regex `\d+(?:[.,]\d+)*`) in `pdftotext -layout` outpu
 ## Verdict
 
 F1 CLOSED. N6 CLOSED (count and flag recomputed; category sets not re-derived from raw COCO annotations, which are not on disk). Number tokens: unchanged. Blockers from this re-check: none. Optional: the phrase "its table moved to the supplement" in the main appendix item (3) could read "its table is in the supplement" for consistency. Ledger rows added: 0. Not committed.
+
+---
+
+# Incremental audit 3, 2026-10-31: HEAD 175efa89 (Mask-DiFuser presentation pass) against the audited state at 7e874e76
+
+Scope: new qualitative figure (`figures/fig_qualitative.*`, `scripts/fig_qualitative.py`, `runs/P2-PAPER-FIGS/fig_qualitative.json`), new exploratory Table IV and its supplement version (`tables/tab_baselines.tex`, `tab_baselines_full.tex`, `scripts/tab_baselines.py`), Algorithm 1, every number added or moved in `sections/*.tex` and `supplement/supplement.tex` (diff HEAD~1..HEAD plus the integrity diff `paper2-tnnls/drafts/integrity-diff-mask-difuser-pass.md`), and cross-references after Proposition 2, Fig. 3 and Fig. 5 moved to the supplement. The "Denoise" rows (pending) were skipped as instructed. PDFs at HEAD: `main.pdf` 15 pp., `main_camera.pdf` 15 pp., `supplement.pdf` 21 pp.; each PDF is newer than every `.tex` it builds from. Nothing was edited.
+
+**Verdict: PASS WITH FIXES.** No value mismatch anywhere in scope. One wording item that the gate set earlier as required (F1), one layout item (F2), one note (F3).
+
+## What was checked and how
+
+| Item | Method | Result |
+|---|---|---|
+| Table IV compact (10 rows x 4 columns) and full table (40 accuracies, 36 differences with both interval ends) | Independent script (scratch `a3/tabcheck.py`, `python -I`) re-read `runs/P2-LRF-L1/a6_analysis.json` (family_L acc_b, acc_a, net, ci95), `runs/P2-LRF-ABL-SCORE/ablation_analysis.json` (rows[A-UNL, A-SF, A-LIN, A-S-BD, A-MIL].cells.L1_*.{acc, vs_NONE.d, vs_NONE.ci95}) and `runs/P2-LRF-E2/combiners.json` (cells.*.arms.{MED, TM20, TM-G}.{acc, vs_NONE.diff, ci95}); rounded half-up to 3 decimals; parsed the printed `.tex` cells (sign, accuracy, both interval ends, bold, underline) | 0 differences; each printed difference also equals variant accuracy minus NONE accuracy to 1e-9 in all 36 cells; the text of `main.pdf` Table IV equals the `.tex` |
+| Marked best and second best | Ranked by integer correct count (acc x 450, distinct values) over all 10 rows | Noise: LRF 361 (best, bold), A-S-BD 360 (second, underlined). JPEG: A-LIN 398, A-S-BD 392. Splice: A-LIN 419, LRF 417. Clean: A-S-BD 415, A-LIN 414. All eight marks printed in both tables are the correct ones; no tie occurs |
+| "The median, the trimmed mean, and the trimmed-at-gate-count mean had lower accuracy than no weighting in every condition" | 12 accuracy pairs (MED 0.716/0.829/0.864/0.862, TM20 0.716/0.827/0.873/0.869, TM-G 0.727/0.842/0.887/0.884, against NONE 0.733/0.849/0.896/0.887) | true for all 12 |
+| V-H prose numbers (0.802; 0.002 and 0.011 lower, intervals contain 0; 0.884 vs 0.864, difference 0.020 [0.004, 0.038]; 0.931 vs 0.927; 0.922 vs 0.918) | `ablation_analysis.json` vs_LRF: A-S-BD noise d -0.0022 [-0.0333, 0.0289]; A-LIN noise d -0.0111 [-0.0311, 0.0089]; A-LIN JPEG d 0.0200 [0.0044, 0.0378], acc 0.8844; A-LIN splice acc 0.9311; A-S-BD clean acc 0.9222; LRF 0.8022, 0.8644, 0.9267, 0.9178 from `a6_analysis.json` | all agree; each sentence carries a `% run:` comment naming the right file and keys |
+| Number-token multiset of the prose (comments stripped), HEAD~1 against HEAD, all section files and the supplement (scratch `a3/numdiff.py`) | `study1.tex` loses the six detection numbers, 0.0004, 492, 497 (moved verbatim to supplement S-II.E); `study2.tex` gains exactly the V-H numbers above plus 303, 58, 27, the three COCO ids and the Algorithm 1 constants; no other section file changes a number token | no unreviewed number |
+| Moved detection values (-0.198 [-0.211, -0.186], -0.258 [-0.267, -0.250], Holm p = 0.0004, 492 and 497 items) | `runs/P2-GATE-M4/analysis.json` s_d2.per_corruption: diff_mean -0.19811 / -0.25818, ci95 [-0.21072, -0.18562] / [-0.26677, -0.24966], p_holm 0.00040, n_eligible 492 / 497, rival tex_neg | agree |
+| Shortened main-text detection paragraph ("the score was below the rival under JPEG and under noise (Holm-adjusted p=0.0004)") | same keys: both differences negative, both p_holm 0.0004 | agrees; the falsifier sentence is verbatim |
+| Algorithm 1 constants | `runs/P2-LRF-FROZEN-LFIX/spec.json`: n_features 35, caption_slot_len 13, model_sha256 `db7fdb4e9f...`, family F1 logistic GAM with hinge basis, standardisation `(X - mu)/sd`; m = 1 024 = the 32 x 32 grid | agree; the algorithm adds no step beyond eq. (lrf-decision) |
+| V-H design description | "500 design items": spec `n_items` 500; four rules without a fitted weight = A-UNL, MED, TM20, TM-G; TM-G definition in `combiners.json` (k = g // 2 per tail, g = flag0.05 count) matches "half the gate flagged per tail"; A-UNL = `1 - rank(s3)` (ablation plan row A-UNL); A-S-BD is the GAM on the 14 S-BD columns (groups B and D) | agree |
+
+## Qualitative figure (E4 rule)
+
+- `runs/P2-LRF-L1/predictions.jsonl` (1 800 rows: 450 per condition for clean, jpeg10, noise0.1, splice128; condition noise0.1 has 450 distinct idx). Rule applied independently, in idx order, on the primary-negative fields `y_none` and `y_lrf`:
+  - kind (i) both correct: 303 items, first idx 0 (gid 8000, COCO 335177);
+  - kind (ii) NONE wrong, LRF correct: 58 items, first idx 1 (gid 8001, COCO 520324);
+  - kind (iii) NONE correct, LRF wrong: 27 items, first idx 8 (gid 8008, COCO 224724).
+  These equal `fig_qualitative.json` items[*] (kind, idx, gid, image id, `n_items_of_this_kind_in_fold`) and the counts printed in the text and caption (303, 58, 27). Counts 58 and 27 are also b and c of L1 in `a6_analysis.json`. The eight stored fields of each shown item (`y_none`, `y_lrf`, `m_none`, `m_lrf`, `y_none_L`, `y_lrf_L`, `w_sum`, `w_mean`) equal the predictions row exactly. Kind (iii) is shown, as the plan requires.
+- The rendered figure was read: row labels "unweighted correct; LRF correct", "unweighted wrong; LRF correct", "unweighted correct; LRF wrong"; sums +358.3 / +3.37, -215.9 / +0.30, +19.3 / -0.67 equal `sum_delta` and `sum_w_delta` (358.274, 3.373; -215.892, 0.304; 19.256, -0.667) and every sign agrees with the printed verdict (positive sum is correct, ties wrong); image ids and fold indices 0, 1, 8 as in the file; the Delta colour bar clip of 1.9 equals 1.927 (99th percentile of |Delta|), weight bar top 0.8 against vmax 0.8465.
+- Caption sentences (descriptive; not evidence of reliability tracking; COCO val2017 licence) agree with the plan text and the JSON `attribution`.
+- Not re-run: pixel regeneration and the VQ-token parity check (GPU; the JSON itself says "NOT run"); the figure was read, not rebuilt.
+
+## Cross-references and pointers
+
+- Numbering at HEAD from the PDFs: main Fig. 1 measurement, 2 gate method, 3 family P, 4 weight schematic, 5 family-L results, 6 qualitative, 7 ablation; Tables I glance, II Study 2, III reference encoders, IV exploratory comparison; Algorithm 1. Every main-text pointer read in the PDF text is correct ("Fig. 4 draws the model ... Fig. 6 shows three fresh-fold items", "Fig. 5 shows the net change ... Table II", "Fig. 7 shows every variant", "Table IV", "CLIP and SigLIP ... Table III", "Algorithm 1"). No "Proposition 2" remains; "Proposition 1" and "Fig. 2(b),(c)" are unchanged and right.
+- "??": 0 in `main.pdf`, 0 in `main_camera.pdf`, 0 in `supplement.pdf` (pdftotext).
+- Supplement numbering: Fig. S1 detection (S-II.E), S2 frontier (S-II.M), S3 item-level margins (S-IV.B), S4 partial dependence (S-IV.D); Table S11 detection values, Table S30 full comparison. In-supplement pointers and the S-VIII list use these numbers consistently.
+- Supplement pointers to the main paper: "Fig. 3 of the main paper" (family P), "Fig. 4 of the main paper" (feature groups, twice), "Table II of the main paper" (b, c), "Table IV of the main paper" (S30), "Section IV-A" (proposition notation), "Section V-B" (weight-model search): each correct. The `M-` references to Lemma 1 and eqs. (8) to (10) of the main paper print correctly.
+- Main-paper pointers to the supplement that are new or changed: "supplement S-II" (extension, frontier, detection values: land in S-II.M and S-II.E), "supplement S-IV" (learned shapes: S-IV.D), "supplement S-VII" (comparison with intervals: the label sits in S-VII; see F2). All land on the right section.
+- Old `\cref{prop:snrcorr}`, `fig:frontier`, `fig:detection` occur only in `sections/appendix.tex`, which `main.tex` does not input (comment at `main.tex` line 125), so nothing dangles.
+
+## Findings
+
+| ID | Location | Printed | Status |
+|---|---|---|---|
+| F1 | `supplement.pdf`: S-IV.D "Figure S4 (moved from the main paper) shows ..."; S-VII disclosure "the frozen LRF's shape functions (moved from the main paper, Fig. S4)"; S-VIII "Figure S2 (theory, no data; moved from the main paper)" and "Figure S1 (token detection, moved from the main paper; ...)". In `supplement.tex`: `\Cref{sfig:pd} (moved from the main paper)`, `(moved from the main paper, \cref{sfig:pd})`, `(theory, no data; moved from the main paper)`, `(token detection, moved from the main paper; ...)` | edit-history wording | The pattern of the earlier finding F1 (closed at 7e874e76: a reviewer never saw the earlier layout) is back in four printed places. Not a number error. Delete the parentheticals or say "shown here". TeX comments that say "Moved from ..." are not printed and are fine. The earlier audit listed this as required, so the gate does not tick until it is fixed |
+| F2 | `supplement.pdf` page 20: Table S30 (label `stab:compare`, belongs to S-VII) is printed after the S-VIII heading and list; main-text pointers say "supplement S-VII" | float placement | Layout only; found by its number S30, which the S-VII text and the S-VIII list cite. Optional: a float barrier before S-VIII. Table S29 sits on the same pages |
+| F3 (note) | Table IV noise column and the V-H "highest accuracy" sentences | LRF 361 vs A-S-BD 360 correct items; splice LRF 417 second | Marks are correct but one item apart; the caption already calls them descriptive and post hoc. When the "pending" DN rows are filled, `marks()` ranks over every row with a number, so bold and underline can move; the V-H sentences and the `% DN-SENTENCE` must then be re-checked against the final table. Also `figures/fig4_study2_weights.png` is modified and `figures/fig4b_pd_curves.png` is untracked in the working tree; the PDF builds use the PDF figures, so no printed value is affected, but commit or discard them for consistency |
+
+## Required before the gate can tick
+
+F1 (remove the four printed "moved from the main paper" parentheticals). F2 optional; F3 conditional on the DN rows. No value mismatch exists in the new figure, Table IV (main and supplement), Algorithm 1, the prose of `sections/*.tex` or the supplement. Ledger rows added: 0. Not committed.
