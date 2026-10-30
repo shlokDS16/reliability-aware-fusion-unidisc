@@ -33,7 +33,7 @@ or that the effect carries to another model, dataset, or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
 Five inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (1) a reweighting that helps
 whatever the condition; (2) a supervised fit to the training corruption; (3) a single noise-sensitive feature, such as the
-codebook-neighbour distance or the one-pass observed-position score, which \cref{fig:lrf_weights} cannot separate and on which the
+codebook-neighbour distance or the one-pass observed-position score, which the learned weight shapes (supplement S-IV) cannot separate and on which the
 ablation of \cref{sec:study2-ablation} bears only as an exploratory result; (4) a limited reach to other noise types, since the
 impulse-noise interval starts at 0.0; and (5) an unstable splice decision, whose Holm-adjusted $p$ of 0.049 lies 0.001 below the level.
 A second backbone or a corruption held out of training would settle these questions; neither was run.
@@ -57,7 +57,7 @@ A fresh tokenisation of the same pixels in another process need not reproduce th
 image tokens in the two stopped self-checks (supplement S-I, Study~2 deviation 1), and on at least 98.6\% in the pixel-parity runs.
 The reference encoders almost solve this matching task (\cref{sec:study2-reference}); this paper makes no claim of a verifier that ranks
 with them.
-No ablation was preregistered; \cref{sec:study2-ablation} is exploratory.
+No ablation and no comparison with other aggregation rules was preregistered; \cref{sec:study2-ablation,sec:study2-compare} are exploratory.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (V-G values: A-LIN, A-S-BD, A-S-s3, A-MIL against LRF on the L1 cell, intervals containing 0); red-team condition V2-2(d), A16
 In that ablation, simpler weightings fitted on the design items (a linear logit, the features from $B$ and $D$ alone, the features from
 the uncertainty of the $B$ pass alone, and attention-weighted pooling) were not distinguishable from the frozen LRF within their intervals under Gaussian noise.
@@ -97,5 +97,5 @@ supersede the main reference-encoder file's field ``pixel\_parity: not run''.
 (6) The reference-encoder download was 5.2~GB, against about 2 to 4~GB quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.
 (8) ``No output was read before its run was complete'' rests on the operations log.
-(9) The exploratory ablation was added at writing.
+(9) The exploratory ablation and the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}; plan committed before any value was computed) were added at writing.
 Supplement S-I gives each item in full with its record.\par}

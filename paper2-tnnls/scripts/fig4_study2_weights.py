@@ -1,4 +1,7 @@
-"""Fig. 4 (Study 2, frozen weight model, two-column). Descriptive: no accuracy, no correctness mark.
+"""Fig. 6 of the main paper (Study 2, frozen weight model: schematic only, two-column) and Fig. S-PD of the supplement (partial dependence).
+Descriptive: no accuracy, no correctness mark.
+Layout change 2026-10-30 (Mask-DiFuser pass): panel (b) partial dependence moved to the supplement as figure fig4b_pd_curves (one row of six);
+panel (c) token-weight maps dropped from the paper (the real-image figure fig_qualitative replaces it); the maps stay in runs/P2-PAPER-FIGS/fig4_token_weights.npz.
 
 (a) Partial dependence of the token weight w = sigmoid(f(x)) on the 6 features with the largest learned effect range, all other standardised
     features at their mean 0, x axis in original feature units (mu + sd * x). f(x) = b + a_k x + sum_m c_km relu(x - t_km) (spec.json "family").
@@ -85,7 +88,7 @@ json.dump({curves[k]["name"]: dict(x_orig=curves[k]["x_orig"].tolist(), w=curves
           open(OUT / "fig4_pd_curves.json", "w", encoding="utf-8"))
 np.savez_compressed(OUT / "fig4_token_weights.npz", **{f"item{i}_{c}_w": maps[c][i] for c in CONDS for i in range(len(items))})
 meta = dict(
-    purpose="Fig. 4 of paper2-tnnls (descriptive: partial dependence of the frozen weight model and three token-weight maps); no accuracy computed",
+    purpose="Fig. 6 (schematic of the frozen weight model) and supplement partial-dependence figure of paper2-tnnls (descriptive); the stored token-weight maps are no longer plotted; no accuracy computed",
     script="paper2-tnnls/scripts/fig4_study2_weights.py", script_sha256=S.sha256(S.HERE / "fig4_study2_weights.py"),
     figstyle_sha256=S.sha256(S.HERE / "figstyle.py"),
     frozen_dir="runs/P2-LRF-FROZEN-LFIX", model_sha256=S.sha256(FROZEN / "model.npz"), spec_model_sha256=fz["spec"]["model_sha256"],
@@ -149,13 +152,12 @@ json.dump(dict(meta, panel_a=dict(group_counts=GCOUNT, model_sha256_prefix=MODEL
                                   schematic="no data; weight grid drawn with numpy seed 7")),
           open(OUT / "fig4_meta.json", "w", encoding="utf-8"), indent=1)
 
-H = 4.30
 W_MM, HA = S.COL2 * 25.4, 44.0
+H = HA / 25.4
 fig = plt.figure(figsize=(S.COL2, H))
 
 # ---- (a) schematic: features -> GAM f -> w_j -> weighted sum -> decision -------------------------------------------------------------------
 cv = Canvas(fig, [0, 1 - HA / (H * 25.4), 1, HA / (H * 25.4)], W_MM, HA)
-cv.tag(0.5, HA - 0.3, "(a)")
 GREEN = C["green"]
 YC = 22.0
 fx, fw, rowh = 4.0, 52.0, 3.55
@@ -196,59 +198,29 @@ cv.box(162.5, YC - 6.5, 18.5, 13.0, lw=1.0)
 cv.text(171.75, YC + 2.4, "decision", fs=S.FS)
 cv.text(171.75, YC - 2.4, r"$\sum_j w_j\Delta_j>0$", fs=S.FS - 0.5)
 
-# ---- (b) partial dependence, 2 x 3 ----------------------------------------------------------------------------------------------------------
+S.save(fig, "fig4_study2_weights")
+
+# ---- supplement figure: partial dependence, one row of six ---------------------------------------------------------------------------------
 ylo = min(curves[k]["w"].min() for k in top)
 yhi = max(curves[k]["w"].max() for k in top)
 pad = 0.06 * (yhi - ylo)
-pw, ph, pgx = 0.95, 0.58, 0.22                     # inches
-px0 = 0.50
-row_bot = [1.54, 0.36]                             # bottom of the two rows (inches)
+HS = 1.45
+pw, ph, pgx = 0.92, 0.62, 0.19                     # inches
+px0, pb = 0.50, 0.40
+figb = plt.figure(figsize=(S.COL2, HS))
 axes_b = []
 for i, k in enumerate(top):
-    r_, c_ = divmod(i, 3)
-    ax = fig.add_axes([(px0 + c_ * (pw + pgx)) / S.COL2, row_bot[r_] / H, pw / S.COL2, ph / H],
-                      sharey=axes_b[0] if axes_b else None)
+    ax = figb.add_axes([(px0 + i * (pw + pgx)) / S.COL2, pb / HS, pw / S.COL2, ph / HS], sharey=axes_b[0] if axes_b else None)
     col, ls = GSTYLE[GROUP(names[k])]
     ax.plot(curves[k]["x_orig"], curves[k]["w"], color=col, ls=ls, lw=1.6)
     ax.plot(mu[k] + sd[k] * knots[k], np.full(knots.shape[1], ylo - 0.5 * pad), ls="none", marker="|", ms=3.0, color=C["grey"],
             clip_on=False, zorder=1)
     ax.set_title(pretty(names[k]), fontsize=S.FS, pad=2, linespacing=1.0)
     ax.locator_params(axis="x", nbins=3)
-    if c_ > 0:
+    if i > 0:
         plt.setp(ax.get_yticklabels(), visible=False)
-    if r_ == 1:
-        ax.set_xlabel("feature value", labelpad=1.0)
+    ax.set_xlabel("feature value", labelpad=1.0)
     axes_b.append(ax)
 axes_b[0].set_ylim(ylo - 2 * pad, yhi + pad)
-fig.text(0.06 / S.COL2, (row_bot[1] + row_bot[0] + ph) / 2 / H, r"weight $w=\mathrm{sigm}(f(x))$", rotation=90, va="center", ha="left",
-         fontsize=S.FS)
-fig.text(0.004, (row_bot[0] + ph + 0.40) / H, "(b)", fontsize=S.FS + 1, fontweight="bold", va="top")
-
-# ---- (c) token-weight maps: rows clean / noise, columns item 1-3 ---------------------------------------------------------------------------
-ms_ = 0.72
-mx0, mgx, mgy = 4.20, 0.10, 0.10
-ims = []
-for ri, cnd in enumerate(CONDS):
-    for gi in range(N_ITEMS_SHOWN):
-        bot = 0.36 + (1 - ri) * (ms_ + mgy)
-        ax = fig.add_axes([(mx0 + gi * (ms_ + mgx)) / S.COL2, bot / H, ms_ / S.COL2, ms_ / H])
-        im = ax.imshow(maps[cnd][gi], cmap="cividis", norm=PowerNorm(0.5, vmin=vmin, vmax=vmax), interpolation="nearest", origin="upper")
-        ims.append(im)
-        ax.set_xticks([])
-        ax.set_yticks([])
-        for sp in ax.spines.values():
-            sp.set_visible(True)
-            sp.set_linewidth(0.6)
-        if ri == 0:
-            ax.set_title(f"item {gi + 1}", fontsize=S.FS, pad=2)
-        if gi == 0:
-            ax.set_ylabel("clean" if cnd == "clean" else r"noise, $\sigma=0.1$", labelpad=2)
-        if ri == 1:
-            ax.set_xlabel(r"$32\times32$ tokens", labelpad=1.5)
-fig.text((mx0 - 0.30) / S.COL2, (row_bot[0] + ph + 0.40) / H, "(c)", fontsize=S.FS + 1, fontweight="bold", va="top")
-cax = fig.add_axes([(mx0 + 3 * ms_ + 2 * mgx + 0.08) / S.COL2, 0.36 / H, 0.07 / S.COL2, (2 * ms_ + mgy) / H])
-cb = fig.colorbar(ims[0], cax=cax)
-cb.set_label(r"weight $w_j$ (square-root scale)", labelpad=2.0)
-cb.outline.set_linewidth(0.5)
-cb.ax.tick_params(length=2.0, width=0.5)
-S.save(fig, "fig4_study2_weights")
+figb.text(0.06 / S.COL2, (pb + ph / 2) / HS, r"weight $w=\mathrm{sigm}(f(x))$", rotation=90, va="center", ha="left", fontsize=S.FS)
+S.save(figb, "fig4b_pd_curves")
