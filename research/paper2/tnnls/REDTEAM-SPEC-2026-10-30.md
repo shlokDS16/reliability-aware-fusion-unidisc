@@ -292,3 +292,77 @@ letter, README and Zenodo placement; and an override list for the exemplar bluep
 ## Ledger
 
 No rows added. The brief names one output file; the resolution of F1 is the orchestrator's `decisions.jsonl` row.
+
+---
+
+# Re-check of v2 (red team, 2026-10-30, on commit bc02667b: paper2-tnnls/SPEC.md v2, decisions D0090-D0094, drafts/abstract-skeleton-v1.md)
+
+Read: SPEC v2 in full; D0090-D0094 in full; abstract skeleton in full. Not re-read: the binding addenda (quoted from the v1 review above).
+Not checked: the AD.11 status map behind the v2 contribution-bullet-6 statuses; the RS-12 audit (running); the statistician's RS-5
+ruling (pending).
+
+## Verdict: SIGN WITH CONDITIONS (V2-1 to V2-6). The fatal F1 is resolved (D0090, SPEC rules 3-4, section 3 rows III-V, Fig. 1-2 rules). Confidence 0.75.
+
+## Status of v1 conditions
+
+| Condition | Status in v2 |
+|---|---|
+| RS-1 (F1-F4) | **MET.** No shared theory section, no `S_w`; `I_j` only in Study 1 and `w_j` only in Study 2; Prop. 3 in S-II with the required label; Fig. 1 shows the measurement only; Fig. 2 is theory only, no inset; chronological order. The D0090 row exists. |
+| RS-2 (F5, F6, F21, F23) | **MET.** Table I is P only; PS, detection and H have their own canvases; cost is split per study, with CLIP/SigLIP cost inside Table III; S-IV tables are separate; Fig. 3 follows A4.2.5 item 1. |
+| RS-3 (F7) | **MET** (D0091). |
+| RS-4 (F8) | **MET, one gap** (V2-5). |
+| RS-5 (F9) | **OPEN, pending.** The skeleton counts 295/290 words; the statistician ruling is due (V2-3). |
+| RS-6 (F10) | **MET** (D0092). |
+| RS-7 (F11, F12) | **MET for Study 2. One new violation in the Study 1 Limitations** (V2-1). |
+| RS-8 (F13, F14, F28) | **MET** (section 3 row II, row I scope paragraph, section 11). |
+| RS-9 (F15-F17) | **MET** (sections 8, 9; rule 6; D0094). |
+| RS-10 | **MET** (rule 5). |
+| RS-11 (F18) | **MET** (Table I). |
+| RS-12 | **OPEN, pending** the gate-auditor verdict. Table III is correctly gated on it (section 5). |
+
+## New findings on v2
+
+**N1 (major). The Study 1 Limitations sentence breaks A5.9 must-not 1, and my v1 report caused it.**
+- v2 section 7 says: "the gate changed few decisions (n_d 0, 1 and 4 of 500), so the bounded null bounds an intervention that rarely acted".
+- A5.9 must-not 1 says: "The realised P discordance may be printed in the P table as a number, nothing more", and it applies "in Methods and
+  the deviations box too". "Rarely acted" is also a near relative of the barred "lacked headroom".
+- My v1 list of cheapest alternative explanations (item 6) and my F18 rationale used the same reading.
+- **That item is withdrawn for any paper text.** It may only inform the authors.
+- In the paper, n_d appears only as numbers in Table I.
+
+**N2 (major). The section 6 Tier-3 ablation can rebuild the banned Study 1 / Study 2 contrast, and its placement list is incomplete.**
+- "Simpler weight rules" are not restricted. A hard-gate row, a conformal-risk-control or masked-likelihood threshold row, or any A4 Tier-3
+  comparator (MED, TM-G, TM20, SOFT-G, SOFT-A) scored beside LRF on the fresh fold would put a Study 1 object next to LRF numbers. That
+  breaks A6.12 placement 2 and the must-not, C6-4, and section 11 (the "hard gate versus soft weighting" exemplar override).
+- A5.1 amendment item 2 also keeps every later analysis out of the highlights, the cover letter and the repository front matter, and v2
+  section 6 lists only title, abstract, conclusion and contributions.
+- The variants are chosen after L1 and LG are known. Only a fixed, complete variant list in the plan stops the choice of easy or hard
+  rivals.
+
+## Conditions still open
+
+- **V2-1 (major, N1).** Strike the Study 1 Limitations sentence about n_d and "an intervention that rarely acted". Study 1 Limitations keeps
+  scope items only (one model, one severity per corruption, random-caption negatives as scope). No sentence anywhere states or interprets
+  the P discordance outside Table I.
+- **V2-2 (major, N2).** The ablation plan must meet all of the following before it is committed:
+  - (a) It lists every variant and every reported quantity before any fresh-fold scoring.
+  - (b) It contains no Study 1 object: no GATE-M, no conformal-risk-control or masked-likelihood hard gate, no A4 Tier-3 comparator, and
+    no row framed as "hard versus soft".
+  - (c) It fits and selects only on the 500 design items, with no fresh-fold choice of any kind.
+  - (d) It reports every variant whatever the result. If a simpler rule's interval covers LRF's, that is stated in V-G and in Limitations,
+    with no rescue sentence.
+  - (e) Section 6's exclusion list gains highlights, cover letter and repository front matter (A5.1 amendment item 2).
+  - The statistician's check confirms (a)-(e).
+- **V2-3 (pending, RS-5).** The statistician ruling must also cover the remaining abstract items:
+  - "p = 0.0005" (a symbol; write it as "p-value 0.0005" or similar);
+  - "JPEG" and "COCO" kept as proper names (dated row);
+  - the degenerate noise interval "0.000, 0.000 to 0.000", which is binding NEG content. Keep it, and expect a reviewer to ask about it.
+- **V2-4 (pending, RS-12).** No CLIP or SigLIP number in any text before the gate-auditor PASS on `runs/P2-LRF-BASELINES` and both PARITY runs.
+- **V2-5 (minor).** Contribution bullet 6 names family H by status with the post hoc label (A5.9 placement 4). The gate-auditor checks the
+  S2 and B "run, formal" statuses against the AD.11 status map during number reconciliation. Rule 4's detectability-limit sentence is
+  used only if the lead's must-not-claim-6 ruling row exists (THEORY R1.2 item 4).
+- **V2-6 (minor).** Fig. 5 shows L-NI in its own labelled panel as family L-NI (m = 1), not as a member of family L.
+
+Writers may start once V2-1 and V2-2 are in the spec. V2-3 and V2-4 gate the abstract and Table III only.
+
+Ledger: no rows added (the brief allows this file only).
