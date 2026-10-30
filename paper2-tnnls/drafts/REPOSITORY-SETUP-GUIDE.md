@@ -78,7 +78,7 @@ PDFs, README, licences; no model weights, no COCO images, no third-party PDFs).
 ## Step 3. Send me
 
 - The GitHub URL (step 1) and the reserved DOI (step 2.3).
-- Corresponding author for Paper 2 (the review paper never named one; name and e-mail).
+- (Done 2026-10-30: corresponding author is Subramaniyaswamy Vairavasundaram, subramaniyaswamy.v@vit.ac.in.)
 - Optional: ORCIDs (they go into the IEEE Author Portal, not the PDF) and a licence preference.
 
 ## What I do with them

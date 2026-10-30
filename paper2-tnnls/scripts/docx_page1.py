@@ -28,7 +28,7 @@ $w.DisplayAlerts = 0
 $out = @{ paras = @(); floats = @(); pages = 0 }
 try {
   $d = $w.Documents.Open($In, $false, $true)
-  $d.Repaginate()
+  try { $d.Repaginate() } catch { }   # can fail on some layouts; page queries below paginate anyway
   $out.pages = $d.ComputeStatistics(2)
   foreach ($t in $d.Tables) {
     if ($t.Rows.WrapAroundText) {
@@ -51,15 +51,20 @@ def _norm(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9]", "", s or "")[:40]
 
 
-def probe(docx_path: Path) -> dict:
+def probe(docx_path: Path, tries: int = 3) -> dict:
     ps = Path(tempfile.gettempdir()) / "docx_page1_probe.ps1"
     ps.write_text(PROBE_PS, encoding="utf-8")
-    r = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ps), "-In", str(docx_path)],
-                       capture_output=True, encoding="utf-8", errors="replace", timeout=900)
-    txt = (r.stdout or "").strip()
-    if not txt.startswith("{"):
-        raise RuntimeError(f"Word probe failed: {(r.stderr or txt)[:300]}")
-    return json.loads(txt)
+    last = ""
+    for _ in range(tries):   # Word occasionally returns an empty layout (busy COM server): ask again
+        r = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ps), "-In", str(docx_path)],
+                           capture_output=True, encoding="utf-8", errors="replace", timeout=900)
+        txt = (r.stdout or "").strip()
+        if txt.startswith("{"):
+            out = json.loads(txt)
+            if out.get("paras") and out.get("pages"):
+                return out
+        last = (r.stderr or txt)[:300]
+    raise RuntimeError(f"Word probe failed {tries} times: {last}")
 
 
 def _text(el) -> str:
@@ -92,14 +97,19 @@ def fix(docx_path: Path, log: list[str] | None = None) -> dict:
     shutil.copyfile(docx_path, cur)
     doc = docx.Document(str(cur))
     body = doc.element.body
-    order = []                                        # (float key, key of the paragraph just before it in the source)
+    # Paragraphs are matched by position: Word's body paragraphs (outside tables) and the body-level w:p elements come in the
+    # same order, and moving a float (a w:tbl) never changes that order. Text matching failed on paragraphs that start
+    # with inline math (Word's text includes it, python-docx's does not).
+    def body_ps(b):
+        return [el for el in b if el.tag == qn("w:p")]
+    order = []                                        # (float key, position of the body paragraph just before it)
     for t in _wide_floats(body):
         prev = t.getprevious()
-        while prev is not None and (prev.tag != qn("w:p") or not _norm(_text(prev))):
+        while prev is not None and prev.tag != qn("w:p"):
             prev = prev.getprevious()
-        order.append((_norm(_text(t)), _norm(_text(prev)) if prev is not None else ""))
+        order.append((_norm(_text(t)), body_ps(body).index(prev) if prev is not None else 0))
     used_pages: set[int] = set()
-    for k, (key, src_prev) in enumerate(order):
+    for k, (key, src_ord) in enumerate(order):
         # park this float and every later one at the end, so the layout up to here is final
         doc = docx.Document(str(cur))
         body = doc.element.body
@@ -111,32 +121,47 @@ def fix(docx_path: Path, log: list[str] | None = None) -> dict:
         parked = work / f"park{k}.docx"
         doc.save(str(parked))
         pr = probe(parked)
-        paras = [p for p in pr["paras"] if _norm(p["text"])]
-        src_page = next((int(p["page"]) for p in paras if _norm(p["text"]) == src_prev), 1)
+        doc = docx.Document(str(parked))
+        body = doc.element.body
+        xps = body_ps(body)
+        wps = pr["paras"]
+        # Word adds one implicit empty paragraph after a table that ends the document (the parked floats): ignore it
+        if len(wps) - len(xps) not in (0, 1):
+            raise RuntimeError(f"wide floats: Word reports {len(wps)} body paragraphs, the file has {len(xps)}")
+        wps = wps[:len(xps)]
+        src_page = int(wps[src_ord]["page"])
         target = max(src_page, 2)
         while target in used_pages:
             target += 1
-        # anchor: the first paragraph that starts on the target page (the float then sits at its top, text below)
-        cand = [p for p in paras if int(p["page"]) >= target]
-        doc = docx.Document(str(parked))
-        body = doc.element.body
-        tbl = next(t for t in _wide_floats(body) if _norm(_text(t)) == key)
-        # Word's paragraph text includes equation text that python-docx does not see: take the first candidate that
-        # matches a paragraph in the XML (a paragraph that starts with an equation is skipped for the next one)
-        i, hit = -1, None
-        for c in cand[:12]:
-            i = _para_index(body, _norm(c["text"]))
-            if i >= 0:
-                hit = c
+        # anchor: the first paragraph that starts on the target page (the float then sits at its top, text below).
+        # Each placement is checked in Word; some anchors (for example between items of a numbered list) break Word's
+        # layout, so the next paragraph is tried.
+        js = [n for n, p in enumerate(wps) if int(p["page"]) >= target][:8]
+        if not js:
+            raise RuntimeError(f"wide floats: no paragraph on page {target} for {key[:24]!r}")
+        placed = None
+        for j in js:
+            doc = docx.Document(str(parked))
+            body = doc.element.body
+            xps = body_ps(body)
+            tbl = next(t for t in _wide_floats(body) if _norm(_text(t)) == key)
+            body.remove(tbl)
+            xps[j].addprevious(tbl)
+            trial = work / f"trial{k}_{j}.docx"
+            doc.save(str(trial))
+            try:
+                pt = probe(trial, tries=2)
+            except RuntimeError:
+                continue
+            now = next((int(f["page"]) for f in pt["floats"] if _norm(f["text"]) == key), 0)
+            if pt["pages"] > 1 and now >= target:
+                placed = (j, now)
+                shutil.copyfile(trial, cur)
                 break
-        if hit is None:
-            raise RuntimeError(f"wide floats: no matchable paragraph on page {target} for {key[:24]!r}")
-        anchor_el = list(body)[i]
-        body.remove(tbl)
-        anchor_el.addprevious(tbl)
-        doc.save(str(cur))
-        used_pages.add(int(hit["page"]))
-        log.append(f"wide float {key[:24]!r}: top of page {hit['page']} (source text on page {src_page})")
+        if placed is None:
+            raise RuntimeError(f"wide floats: no working anchor on page {target} for {key[:24]!r}")
+        used_pages.add(placed[1])
+        log.append(f"wide float {key[:24]!r}: top of page {placed[1]} (source text on page {src_page})")
     pr = probe(cur)
     pages = {}
     for f in pr["floats"]:

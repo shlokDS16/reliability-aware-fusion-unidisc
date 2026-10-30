@@ -1,4 +1,4 @@
-DOCX: C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\paper2-tnnls\docx\Paper2_TNNLS_manuscript.docx
+DOCX: C:\Users\Shlok\AppData\Local\Temp\claude\C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-frosty-clarke-209639\859c4d92-4b84-49ba-bcb9-d1cabe9c75dc\scratchpad\anonbuild\Paper2_TNNLS_manuscript.docx
 PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\paper2-tnnls\main.pdf
 == structure
 sections: 2
@@ -16,9 +16,9 @@ table labels: ['TABLE\xa0I', 'TABLE\xa0II', 'TABLE\xa0III']; figure captions: ['
 == text comparison with pdftotext
 tokens: pdf=15312 docx=14568
 word recall (PDF words found in DOCX, multiset): 0.9469
-5-gram match rate (PDF 5-grams present in DOCX): 0.8846
+5-gram match rate (PDF 5-grams present in DOCX): 0.8847
 prose words (>= 3 letters): pdf=10338 docx=10008; recall 0.9659
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9336
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9337
 prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 22; of these 10 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 12 contain words absent from the DOCX
    CONTENT-MISSING?  absent words tokenise | noise with true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens m
    CONTENT-MISSING?  absent words min | items pone bin ptwo min min pone bin the
@@ -32,14 +32,14 @@ prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 22; of th
    CONTENT-MISSING?  absent words withinimage, zscore | audits run pertoken features token scores position neighbourhood withinimage rank image mean image standard deviation image zscore input uses caption the condit
    CONTENT-MISSING?  absent words akxjk, ckl, dev, neighbour, ranbkj, std, xjk | additive model hinge basis akxjk ckl xjk tkl frozen before any test image ranbkj neighbour mean log onepass logprobability clean image std dev log image std dev
    CONTENT-MISSING?  absent words attention, formula, imagelevel, neighbour, withinimage | parity option frozen lrf refitted and unlearned weightings linear logit features from and only uncertainty pass only onepass score only patch texture only neigh
-PDF token spans not found in DOCX: 145 (>= 6 tokens: 33; tokens in them: 832)
+PDF token spans not found in DOCX: 145 (>= 6 tokens: 33; tokens in them: 830)
    MISSING?  0 1 true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption visible caption token image token
    MISSING?  is j cj v j jc v j 1 the
    MISSING?  is positive m s j y s 0 2 j 1 with a
    MISSING?  items pone pr bin nd 1 2 b ptwo min 1 2 min pone pr bin nd 1 2 b 3
    MISSING?  not run pairs study 2 l1 l3 l4 lni llen lg learned weights
    MISSING?  threshold is 1m li m uij 0 1 5 j 1 which does
-   MISSING?  with fcal nca1l i li the threshold is inf ncal ncal 1 fcal 1 ncal 1 6 with if
+   MISSING?  with fcal nca1l i li the threshold is inf ncal ncal 1 fcal 1 ncal 1 6
    MISSING?  the evidence m sg ij j yg sg 0 7 j 1 with a
    MISSING?  8 and var sg v 1 m 1 m 1
    MISSING?  raises esg var sg if a calibration before any test item clean pairs ncal 300 uij test pair image tokens j 1 m uj dj bj conformal risk control li share of uij at level flagged withheld ij 0 ij uj flagg
