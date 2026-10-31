@@ -64,16 +64,19 @@ without reliability weighting to 0.802 (exact one-sided McNemar $p=0.0005$), inc
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L-NI.{ci90 (= [0.0089, 0.0533]), margin (= 0.03), non_inferior (= true), margin_note}; runs/P2-LRF-PLAN/n_rule.json:n_L (= 450)
 lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053; margin fixed after an
 exploratory clean interval had been seen).
-This holds in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images not used to design or
-fit the method, with Gaussian noise at one severity.
+% run: runs/P2-LRF-F30K/f30k_analysis.json:F1.{acc_none (= 0.6927), acc_lrf (= 0.7924), p_one (= 6.44e-12), label (= confirmed)}; F_NI.non_inferior (= true); F_LEN.label (= confirmed); n_scored (= 872)
+A second preregistered test, on 872 Flickr30K test images with the weighting unchanged, confirmed the gain under the same noise (accuracy 0.693
+to 0.792; exact one-sided McNemar $p=6.4\times10^{-12}$), also with length-matched wrong captions, and showed non-inferiority on clean images.
+This holds in one pretrained unified masked diffusion model (UniDisc, 1.4B parameters), on 450 COCO val2017 images and 872 Flickr30K images
+not used to design or fit the method, with Gaussian noise at one severity.
 \item \emph{A preregistration record.} The plans, hash pins, every deviation, and the full outputs of every preregistered test are
 reported (\cref{sec:deviations}; supplement S-I and S-II), together with the cost of the method and, for reference only, the accuracy of
 two image-text encoders on the same items (\cref{sec:study2}).
 \end{enumerate}
 
 \paragraph*{Scope of this paper}
-This paper reports one preregistered measurement on one model and does not run a race between verifiers.
+This paper reports preregistered measurements on one model and two datasets, and does not run a race between verifiers.
 Its object is the evidence that a unified masked diffusion model computes about its own inputs, and its question is whether a rule fixed in
 advance changes the decision, by an exact paired test, on images the rule never saw.
-The paper does not claim a verifier that ranks with dedicated encoders, or any result for another model, dataset, severity, or kind of
-negative caption; it does not claim that the learned weights track reliability or corruption.
+The paper does not claim a verifier that ranks with dedicated encoders, or any result for another model, for a dataset other than COCO and
+Flickr30K, or for a severity or kind of negative caption beyond those tested; it does not claim that the learned weights track reliability or corruption.

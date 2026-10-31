@@ -96,8 +96,8 @@ No signature says that a method works.
 \subsection{Families}
 \Cref{stab:families} lists every test family of the paper.
 Each family has its own level 0.05 and its own Holm correction; there is no error-rate control across families.
-% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md section A6.7 (four families of this study: L, L-NI, L-LEN, LG); 1 - 0.95^4 = 0.1855
-The paper has four families; under a global null with independence the chance of at least one false rejection is $1-0.95^{4}=0.19$.
+% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md section A6.7 (four COCO families: L, L-NI, L-LEN, LG); SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.4 (three Flickr30K families: F1, F-NI, F-LEN); 4 + 3 = 7; 1 - 0.95^7 = 0.3017
+The paper has seven families, four on COCO and three on Flickr30K; under a global null with independence the chance of at least one false rejection is $1-0.95^{7}=0.30$.
 
 \begin{table}[!htbp]
 \centering
@@ -114,6 +114,10 @@ L & 450 & L1 exact one-sided McNemar on noise; then Holm over L3 (JPEG), L4 (spl
 L-NI & 450 & lower 90\% bootstrap bound of the clean net change against $-0.03$ & 1 & a superiority claim on clean images \\
 L-LEN & 449 & exact one-sided McNemar on noise with length-matched negatives & 1 & -- \\
 LG & 300 & exact one-sided McNemar, shot, impulse, speckle (severity 3) & 3 & a claim beyond the three tested noise types \\
+% run: research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.4; runs/P2-LRF-F30K/f30k_analysis.json:n_scored (= 872), F_LEN.n_excluded_length_mismatch (= 0)
+F1 & 872 & exact one-sided McNemar on noise ($\sigma=0.1$), Flickr30K & 1 & a claim for another noise level, model, or dataset \\
+F-NI & 872 & lower 90\% bootstrap bound of the clean net change against $-0.03$, Flickr30K & 1 & a superiority claim on clean images \\
+F-LEN & 872 & exact one-sided McNemar on noise with length-matched negatives, Flickr30K & 1 & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -122,6 +126,20 @@ LG & 300 & exact one-sided McNemar, shot, impulse, speckle (severity 3) & 3 & a 
 % run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md section 9, rows A-8 and A-9 (rows A-1 to A-7 concern code pins of the earlier study and are not repeated here)
 Row A-8 made the self-check of the tokenisation of the fresh-fold stage run with deterministic convolution algorithms after two stops before any item (pin \texttt{1871fe7d}).
 Row A-9 changed one test only (pin \texttt{84be25c4}); production code was byte-identical.
+
+\subsection{Addendum A7: Transfer Test on Flickr30K}\label{sup:a7}
+% run: git commits 76b85e44 (SAP-ADDENDUM-A7-F30K-2026-10-31.md, before any Flickr30K image or caption was downloaded and before any code of the test) and c79d3ed3 (amendment A7.2(d), before any image was scored)
+% run: runs/P2-LRF-F30K-FOLD/builder_report.json:{n_test_split (= 1000), n_excluded_d_token_range (= 128), n_kept (= 872), dataset.{name (= nlphuji/flickr30k), revision (= 2b239befc81b6e3f035ce6bd52f5f4d60f5625f7), split}}
+% run: runs/P2-LRF-F30K/f30k_analysis.json:inputs.predictions_sha256 (= 82f0a24832110a5ee301f6b19587eac2df09f733d470101a9579037845111fd8)
+The addendum A7 (commit \texttt{76b85e44}) fixed the object (the frozen LRF of \cref{stab:pins2}, unchanged), the data, the three families of \cref{stab:families}, and the wording
+before any Flickr30K image or caption was downloaded; it was pushed to the code-hosting service before its data were downloaded.
+Its amendment A7.2(d) (commit \texttt{c79d3ed3}), made before any image was scored, added the exclusion of items whose first caption lies outside 5 to 32 tokens, the caption-length rule of the
+COCO folds: 128 of the 1\,000 test images were excluded, leaving 872, above the floor of 800 of A7.6. Nothing else changed.
+The images and captions of the Flickr30K test split of the Karpathy split (Young et al., 2014; cited in the main paper) were taken from the Hugging Face dataset
+\texttt{nlphuji/flickr30k} at revision \texttt{\seqsplit{2b239befc81b6e3f035ce6bd52f5f4d60f5625f7}}.
+The dataset card carries no licence field; the dataset's homepage offers the images for non-commercial research and educational purposes under the Flickr Terms of Use and states that its authors do not own the image copyright.
+Flickr30K images and captions are therefore not redistributed: the repository stores image identifiers and hashes, never an image or a caption, and the per-item arrays are untracked with a committed SHA-256 manifest.
+The SHA-256 of the scored predictions is \texttt{\seqsplit{82f0a24832110a5ee301f6b19587eac2df09f733d470101a9579037845111fd8}}.
 
 \subsection{Time Input of the Released Configuration}\label{sup:timefree}
 The main paper (Section III) states that UniDisc's denoiser has no time input in the released configuration.
@@ -184,6 +202,8 @@ are recorded in the reference-encoder audit.
 \item 2026-10-31: this paper reports one of two preregistered studies; the other is not reported here; the methods state its negative primary result without its numbers. The analysis addendum (A6.12) had placed a sentence on the other study in this paper's abstract, so this is a deviation from it.
 \item 2026-10-31: the title was shortened from the title preregistered for the confirmed branch (A6.12, branch A); the claim is unchanged.
 \item 2026-10-31: the abstract contains no numbers; they are in the Results. This departs from the sentence templates of A6.12, which carried the numbers in the abstract; no claim was added.
+% run: git commits 76b85e44 (A7) and c79d3ed3 (amendment A7.2(d), before any image was scored); runs/P2-LRF-F30K-FOLD/builder_report.json:{n_test_split (= 1000), n_excluded_d_token_range (= 128), n_kept (= 872)}
+\item 2026-10-31: amendment (d) of Addendum A7 (commit \texttt{c79d3ed3}), made before any image was scored: items whose first caption lies outside 5 to 32 tokens were excluded, the caption-length rule of the COCO folds, because the pinned runner stops a fold in which more than 10\% of items break it; 128 of the 1\,000 test images were excluded, leaving 872 (floor 800). The as-written build is kept as a record.
 \end{enumerate}
 
 %======================================================================================================================================
@@ -573,6 +593,7 @@ image 224724: Attribution-NonCommercial (CC BY-NC 2.0), \nolinkurl{http://farm4.
 (\nolinkurl{runs/P2-LRF-DN/dn_analysis.json} for the denoise rows); script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.
 \item Table~\ref{M-tab:study2} (preregistered families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
 \nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
+\item Table~\ref{M-tab:f30k} (Flickr30K transfer test, F1, F-NI, F-LEN): \nolinkurl{runs/P2-LRF-F30K/f30k_analysis.json} (\nolinkurl{F1}, \nolinkurl{F_NI}, \nolinkurl{F_LEN}); script \nolinkurl{paper2-tnnls/scripts/tab_f30k.py}.
 \item Fig.~\ref{M-fig:lrf_results} (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
 \nolinkurl{paper2-tnnls/scripts/fig5_study2_results.py}.
 \item \Cref{sfig:margins} (item-level margins, descriptive): \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (fields \nolinkurl{condition},
