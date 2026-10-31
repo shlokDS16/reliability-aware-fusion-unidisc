@@ -46,8 +46,8 @@ quality-varying settings~\cite{zhang2026lowquality}.
 Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
 methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential,han2026aemrl}.
 % source: research/paper2/sources/PROF-SOURCES-FUSION-2026-10-31.md (DMMF Sec. III, conclusion pp. 12-13)
-Separate data and model uncertainties can also set each modality's weight~\cite{guo2026dmmf}, whose authors leave token-level
-uncertainty open.
+Separate data and model uncertainties can also set each modality's weight~\cite{guo2026dmmf}, whose authors leave finer-grained
+uncertainty modelling to future work.
 % source: research/paper2/sources/DYMO-READING-2026-10-31.md (full-text reading; Alg. 1 p6, Eqs. 4-9 pp5-6)
 When modalities are missing, recovered modalities can be selected at inference by a loss-derived reward on whole
 modalities~\cite{du2026dymo}; our weights act on single tokens inside one model.

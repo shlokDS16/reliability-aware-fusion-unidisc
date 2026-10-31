@@ -175,11 +175,13 @@ are recorded in the reference-encoder audit.
 \item The download of the reference encoders was 5.2~GB against 2 to 4~GB quoted to the first author.
 \item Decision D0094: what had been seen before the re-freeze (main paper, Section IV-A).
 \item ``No output was read before its run was complete'' rests on the operations log.
-\item The Tier-3 ablation (S-V) was added at writing; no ablation was preregistered.
+\item The exploratory ablation (S-V) was added at writing; no ablation was preregistered.
 % run: git commit 83ac79f8 (plan E1); runs/P2-LRF-DN/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt
 \item The denoiser comparison (S-V, plan E1 in \texttt{\seqsplit{research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md}}, commit \texttt{83ac79f8}) was planned in a file committed before the run, and the run was made once, on the fresh-fold images, after the confirmatory results were known. The environment lock file of the denoiser run is empty, as for the earlier stages; the environment record of item~4 is dated before that run.
+% run: git commits ddcc9523 (plan E4) and 3bd115b1 (severity plan) before their runs; runs/P2-LRF-SEV/env-lock.txt (0 bytes)
+\item The Dempster-combination row (\nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-EVIDENTIAL-2026-10-31.md}) and the Gaussian-noise severity sweep (\nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md}, \cref{stab:severity}) were planned in files committed before their runs, after the confirmatory results were known; the environment lock file of the sweep run is empty, as for the denoiser run.
 % 2026-10-31 items (single-study version; lead instruction, item 8)
-\item 2026-10-31: this paper reports only the second of two preregistered studies; the first is reported separately. The analysis addendum (A6.12) had placed a sentence on the first study in this paper's abstract, so this is a deviation from it.
+\item 2026-10-31: this paper reports one of two preregistered studies; the other is not reported here; the methods state its negative primary result without its numbers. The analysis addendum (A6.12) had placed a sentence on the other study in this paper's abstract, so this is a deviation from it.
 \item 2026-10-31: the title was shortened from the title preregistered for the confirmed branch (A6.12, branch A); the claim is unchanged.
 \item 2026-10-31: the abstract contains no numbers; they are in the Results. This departs from the sentence templates of A6.12, which carried the numbers in the abstract; no claim was added.
 \end{enumerate}
@@ -517,13 +519,14 @@ LRF. Descriptive; no interval.}
 \parbox{\textwidth}{\scriptsize As Table~\ref{M-tab:compare} of the main paper, with the difference from the unweighted sum (accuracy minus the unweighted sum; 95\% paired percentile bootstrap
 interval, 10\,000 resamples). Intervals are marginal and unadjusted; the rows other than the unweighted sum and LRF are exploratory, and the intervals of the ablation rows, the median and trimmed mean, and the denoise
 rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed before the fold was opened. Source: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json},
-\nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
+\nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}, \nolinkurl{runs/P2-LRF-E4/evidential.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
 \end{table}
 
 \begin{table}[!htbp]
 \centering
 \caption{Exploratory Gaussian-Noise Severity Sweep of the Frozen LRF and the Unweighted Sum on the 450 Fresh-Fold Images}
 \label{stab:severity}
+% run: runs/P2-LRF-SEV/sev_analysis.json:positive_control.{token_equal_fraction (= 0.9979),min_required (= 0.99)}; Qiu et al. levels 0.08-0.38: research/paper2/sources/PROF-SOURCES-ROBUST-DUALDIFF-2026-10-31.md (Qiu Table 8, p. 31)
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \resizebox{\textwidth}{!}{\input{../tables/supp_severity}}
@@ -574,7 +577,7 @@ image 520324: Attribution-ShareAlike (CC BY-SA 2.0), \nolinkurl{http://farm2.sta
 image 224724: Attribution-NonCommercial (CC BY-NC 2.0), \nolinkurl{http://farm4.staticflickr.com/3543/3544616491_7cdec47006_z.jpg}
 (record: \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative_licences.json}).
 \item Algorithm~\ref{M-alg:lrf} (decision rule of the frozen LRF): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{family}, \nolinkurl{n_features}, \nolinkurl{caption_slot_len}, \nolinkurl{preprocessing}).
-\item Table~\ref{M-tab:compare} (comparison with alternative aggregation rules, exploratory) and \cref{stab:compare}: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}
+\item Table~\ref{M-tab:compare} (comparison with alternative aggregation rules, exploratory) and \cref{stab:compare}: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}, \nolinkurl{runs/P2-LRF-E4/evidential.json}
 (\nolinkurl{runs/P2-LRF-DN/dn_analysis.json} for the denoise rows); script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.
 \item Table~\ref{M-tab:study2} (preregistered families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
 \nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).

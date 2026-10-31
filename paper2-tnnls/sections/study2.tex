@@ -18,7 +18,8 @@ This section tests one weighting of the evidence $\Delta_j$ (\cref{sec:intro}); 
 % 2026-10-31 (lead instruction, item 4): the one sentence on the origin of the design images follows; no result of the earlier study is given.
 % The disclosures of SAP A6.13 (design after the earlier analysis, families compared, re-freeze, what had been seen) are kept in generic words
 % because their substance is binding; they name no result and no study number (open issue for the lead in SINGLE-STUDY-REWRITE-2026-10-31.md).
-The 500 design images came from an earlier preregistered study of the same model that tested a different question and is reported separately.
+% R1 (red-team closure 2026-10-31): the A6.13 substance (the earlier primary result was negative) is stated; no number of that study is given.
+The 500 design images came from an earlier preregistered study of the same model that tested a different question; its preregistered primary result was negative (no improvement was detected), and that study is not reported in this paper.
 The method was designed after that study had been analysed, on those images, so the design was not preregistered.
 Before the design, the analysts had seen the results of that study's analyses, which are not reported here, and an exploratory
 learned-weighting analysis on the design images.
@@ -297,7 +298,7 @@ fresh item and is not the best of three.
 The 336 intervals are dependent and unadjusted.
 
 \subsection{Comparison With Alternative Aggregation Rules (Exploratory)}\label{sec:study2-compare}
-% run: tables/tab_baselines.tex (script scripts/tab_baselines.py; sources runs/P2-LRF-L1/a6_analysis.json, runs/P2-LRF-ABL-SCORE/ablation_analysis.json, runs/P2-LRF-E2/combiners.json); plan research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md E2, E3
+% run: tables/tab_baselines.tex (script scripts/tab_baselines.py; sources runs/P2-LRF-L1/a6_analysis.json, runs/P2-LRF-ABL-SCORE/ablation_analysis.json, runs/P2-LRF-E2/combiners.json, runs/P2-LRF-E4/evidential.json); plan research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md E2, E3
 Exploratory; no test, and the marks in \cref{tab:compare} are descriptive.
 \Cref{tab:compare} sets the accuracy of the unweighted sum and of LRF beside other ways of combining the same per-token evidence $\Delta_j$ on the 450 fresh-fold
 images: three rules without a fitted weight (a rank weight, the median, and the 20\% trimmed mean, defined in the table note) and four weightings fitted on the 500 design items
@@ -332,6 +333,7 @@ preregistered results. Italics: highest accuracy in the column (ties share the m
 all 10 are in supplement S-V, with differences and intervals.
 Median: $\operatorname{med}_j\Delta_j>0$; 20\% trimmed mean: the mean of $\Delta_j$ without its $\lfloor0.2m\rfloor$ lowest and highest values is positive ($m=1\,024$).
 Unlearned rank weight: $w_j=1-r_j$, $r_j\in[0,1]$ the within-image percentile rank of the token's uncertainty (one minus the largest predicted probability, caption masked).
+% run: research/paper2/tnnls/EXPLORATORY-PLAN-EVIDENTIAL-2026-10-31.md (definition: prior weight 2, lam = 1, discount 1 - rank_s3); analysis/paper2/lrf/e4_evidential.py; runs/P2-LRF-E4/evidential.json:{primary,definitions}
 Dempster combination: per token, evidence $\max(\pm\Delta_j,0)$ with Dirichlet prior weight 2 gives an opinion, discounted by $w_j$ of the rank weight and combined over tokens by Dempster's rule; the opinions are constructed from $\Delta_j$, not learned by an evidential head.
 Denoise: non-local-means denoising before scoring (setting fixed in advance), noise and JPEG only. LRF was not trained on denoised images; the denoise-then-LRF row applies the frozen weights outside their training distribution.}
 \end{table}
