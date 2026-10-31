@@ -7,15 +7,16 @@ listed here, tell me what it says.
 
 ## 0. Before you click Submit (four checks)
 
-1. **AI sentence in the Acknowledgment.** It now reads: "The authors used Claude (Anthropic) to improve the language and grammar of
-   the manuscript. The authors reviewed and edited all content and take full responsibility for it." If your professor changes it,
-   send me the new text: I rebuild the PDF and Word files (both versions) in one go. **The red team flags this sentence as too
-   narrow (finding F9):** besides language editing, Claude helped produce figures, Algorithm 1, the comparison table, analysis
-   scripts and much of the text under your direction, and IEEE asks that AI use be disclosed with the sections and level of use.
-   Settle a wording that covers this with your professor; a fuller draft is in `drafts/declaration-full-disclosure-draft.tex`.
-2. **Anonymized code link** (repository guide, step 4: anonymous.4open.science on branch `review-snapshot`). Send me the link and I
-   put it into the review copy. If the site cannot read the private repository, upload `optional/04_Anonymized_code_and_data.zip`
-   as supplementary material instead (it is the same anonymized snapshot) and tell me, so the sentence says so.
+1. **AI sentence in the Acknowledgment (yours to settle).** It is at `paper2-tnnls/main.tex` line 140 and is used by both the
+   review and the author version. It now reads: "The authors used Claude (Anthropic) to improve the language and grammar of the
+   manuscript. The authors reviewed and edited all content and take full responsibility for it." The red team flags this as narrower
+   than the actual use (finding F9: figures, Algorithm 1, tables, analysis scripts and much of the text were produced with Claude under
+   your direction; IEEE asks for the sections and level of use). A fuller draft is in `drafts/declaration-full-disclosure-draft.tex`.
+   **After you edit it, run** `bash paper2-tnnls/scripts/rebuild_package.sh` from the repository root (about 20 minutes). It rebuilds
+   every PDF and Word file in this folder, re-checks the review copies for author names, and stops on any error. Then commit and push.
+2. **Anonymized code link (optional).** The review copy already says the repository is available to the reviewers through the
+   editor, so nothing is needed to submit. If you want a direct link, create one at anonymous.4open.science on branch
+   `review-snapshot`; or upload `optional/04_Anonymized_code_and_data.zip` as supplementary material (same anonymized snapshot).
 3. **Zenodo DOI reserved: done** (10.5281/zenodo.23810711, draft; do not Publish before acceptance). Printed only in the author version.
 4. **Confirm** that the paper is not under review anywhere else (the portal asks; TNNLS disqualifies duplicate submissions).
 
