@@ -2,13 +2,15 @@
 
 Code, preregistration documents, hash pins, recorded predictions and analysis outputs for the paper
 
-> Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under Gaussian Noise in a
-> Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc (submitted to IEEE Transactions on Neural Networks
-> and Learning Systems).
+> Reliability-Aware Fusion of Token Evidence for Image-Text Verification in Unified Discrete Diffusion (submitted to IEEE
+> Transactions on Neural Networks and Learning Systems).
 
-The paper reports two separately preregistered studies of image-text verification under image damage in the pretrained
-unified masked diffusion model UniDisc on COCO val2017 image-caption pairs: a likelihood-based gate on image tokens
-(Study 1) and a frozen learned reliability-aware weighting of per-token evidence tested on a fresh fold (Study 2).
+The paper reports one preregistered study of image-text verification under image damage in the pretrained unified discrete
+diffusion model UniDisc on COCO val2017 image-caption pairs: a frozen learned reliability-aware weighting of per-token
+evidence, tested on a fresh fold (called Study 2 in the code and run names). Its design images come from an earlier
+preregistered study of a likelihood-based gate on image tokens (Study 1, primary result negative), whose code and runs are
+also in this repository and are reported separately; the two-study version of the paper is at the tag
+`paper2-two-study-2026-10-31`.
 
 This repository is private during review. It holds the project's full git history because the paper and its supplement
 (Section S-I) cite commit identifiers for every pin, freeze and analysis run; those identifiers exist only in this history.
