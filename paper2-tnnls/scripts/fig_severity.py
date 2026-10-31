@@ -32,8 +32,9 @@ a.axvline(0.1, color=C["lgrey"], lw=0.6, ls=":", zorder=0)
 a.set_xlabel(r"Gaussian noise $\sigma$")
 a.set_ylabel("Accuracy")
 a.set_xticks(sig, ["0", ".05", ".1", ".2", ".3"])
-a.set_ylim(0.55, 0.95)
-a.legend(frameon=False, loc="lower left", handlelength=1.4, borderaxespad=0.1)
+a.set_ylim(0.52, 0.95)
+a.text(0.06, lrf[1] + 0.025, "LRF (frozen)", color=C["blue"], ha="left", va="bottom", fontsize=S.FS - 0.5)      # direct labels: no legend box over the lines
+a.text(0.3, none[-1] - 0.022, "Unweighted sum", color=C["grey"], ha="right", va="top", fontsize=S.FS - 0.5)
 S.panel_letter(a, "a", dx=-0.25)
 
 b.axhline(0, color=C["ink"], lw=0.5)

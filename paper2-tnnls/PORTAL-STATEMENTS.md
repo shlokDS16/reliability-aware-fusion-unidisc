@@ -6,7 +6,7 @@ The submission sheet with every portal field, the authors with ORCIDs and the fi
 ## Printed in the paper
 
 - **First footnote (author version only):** "This work was supported by Vellore Institute of Technology (VIT), Vellore, India."
-  "(Corresponding author: Subramaniyaswamy Vairavasundaram.)" "The authors are with the School of Computer Science and Engineering,
+  "(Corresponding author: Balaji G N.)" "The authors are with the School of Computer Science and Engineering,
   Vellore Institute of Technology, Vellore 632014, Tamil Nadu, India (e-mail: shlok.goenka2023@vitstudent.ac.in;
   subramaniyaswamy.v@vit.ac.in; balaji.gn@vit.ac.in)."
 - **Acknowledgment** (IEEE/TNNLS section K puts AI disclosure here; decision D0106):
