@@ -7,18 +7,19 @@
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN] (linear logit: noise interval contains 0; at or above LRF in the other three conditions)
 % run: runs/P2-LRF-SEV/sev_analysis.json:levels.{0.05,0.2,0.3}.LRF_minus_NONE.ci95 (all above 0); levels.0.1.gain_minus_clean_gain.ci95 (contains 0); A6.1/discussion: noise 0.1 was a training condition
 % 2026-10-31: rewritten to 250 words or fewer after number audit 5 (fix 1) and red-team closure R4/R5.
+% 2026-10-31 (A7): second preregistered test on Flickr30K added, still without numbers: runs/P2-LRF-F30K/f30k_analysis.json:F1.label (= confirmed), F_LEN.label (= confirmed), F_NI.non_inferior (= true), n_scored (= 872)
+% Wording per SAP A7.5 (confirmed branch) and A6.12 must-nots (no robust, first, state of the art, generalises); the last sentence now reads one model, two datasets, one tested noise level.
 Image-text verification, choosing the true caption of an image from two candidates, becomes harder when the image is damaged.
-We study it in one frozen unified discrete diffusion model, UniDisc, which scores every image token given a caption.
-Each token's log-probability ratio between the true and a wrong caption is evidence, and the standard rule sums it with equal weights.
+We study it in one frozen unified discrete diffusion model, UniDisc.
+Each image token's log-probability ratio between the true and a wrong caption is evidence, and the standard rule sums it with equal weights.
 We learn a per-token reliability weighting of this evidence from caption-free features, fit it on design images that
 include the noise level later tested, and freeze it.
-A preregistered one-sided exact paired test on fresh Common Objects in Context validation images under Gaussian noise at one level
-confirmed that the frozen weighting raised verification accuracy, also with wrong captions matched in length.
-On clean images it was non-inferior within a preregistered margin, fixed after an exploratory clean-image interval had been seen.
-In exploratory comparisons, a pixel denoiser before scoring did better under Gaussian noise, and combined with the weighting it did worse under
-Joint Photographic Experts Group compression.
-A linear logit on the same features did about as well under noise and better under compression.
-A sweep on the same images found the gain at milder and stronger noise, but at the tested level it did not clearly exceed the clean-image
+Preregistered one-sided exact paired tests confirmed that the frozen weighting raised verification accuracy under Gaussian noise,
+on fresh Common Objects in Context validation images and, with the weighting unchanged, on a second dataset, also with length-matched wrong captions.
+On clean images it was non-inferior on both datasets within a preregistered margin, fixed after an exploratory clean-image interval had been seen.
+In exploratory comparisons, a pixel denoiser before scoring did better under Gaussian noise but, combined with the weighting, worse under
+Joint Photographic Experts Group compression, and a linear logit on the same features did about as well under noise and better under compression.
+A sweep on the same validation images found the gain at milder and stronger noise, but at the tested level it did not clearly exceed the clean-image
 gain.
-The evidence covers one model, one dataset, and one tested noise level; it does not show that the weights track token reliability (the
+The confirmatory evidence covers one model, two datasets, and one tested noise level; it does not show that the weights track token reliability (the
 name describes the design) or that the gain transfers to other models or corruptions.

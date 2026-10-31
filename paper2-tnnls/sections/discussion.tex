@@ -12,8 +12,10 @@
 L1 shows that one frozen weighting, hash-pinned before any test image was chosen, raised image-direction verification accuracy under
 Gaussian noise with $\sigma=0.1$ on 450 COCO images that played no part in its design or fit, passing an exact paired test at the
 preregistered level and holding with length-matched negative captions.
+% run: runs/P2-LRF-F30K/f30k_analysis.json:{F1.label (= confirmed), F_LEN.label (= confirmed), F_NI.non_inferior (= true), n_scored (= 872)}
+The preregistered test on Flickr30K (\cref{sec:study2-f30k}) repeated the confirmation on a second dataset, with the weighting unchanged.
 It does not show that the weighting works on a corruption it was not trained on, that its weights follow the reliability of a token,
-or that the effect carries to another model, dataset, or severity.
+or that the effect carries to another model or severity.
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.ci95 (= [0.0, 0.1]); runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486)
 Six inexpensive alternative readings remain open, each with its evidence in \cref{sec:limitations}: (1) a reweighting that helps
 whatever the condition; (2) a supervised fit to the training corruption; (3) a single noise-sensitive feature, such as the
@@ -27,9 +29,11 @@ A second backbone or a corruption held out of training would settle these questi
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486); runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.p_two (= 0.058)
 % run: runs/P2-LRF-L1.try1/selfcheck.json:image_tokens_frac_equal (= 0.98828125); runs/P2-LRF-L1.try2/selfcheck.json:image_tokens_frac_equal (= 0.9892578125)
 % run: runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.min (= 0.986328125)
-One model, one dataset, and one severity per corruption were tested in the preregistered tests; the exploratory severity sweep adds three Gaussian levels on the same images, not new images.
-LRF was trained on the tested corruption (Gaussian noise with $\sigma=0.1$ was a training condition), so L1 tests new images, not a new
+One model, two datasets (COCO and Flickr30K), and one severity per corruption were tested in the preregistered tests; the exploratory severity sweep adds three Gaussian levels on the same COCO images, not new images.
+LRF was trained on the tested corruption (Gaussian noise with $\sigma=0.1$ was a training condition), so L1 and F1 test new images, not a new
 corruption.
+% run: runs/P2-LRF-F30K/f30k_analysis.json:descriptive.{gain_on_clean (= 0.0275), gain_on_noise0.1 (= 0.0998), descriptive_only (= true)}
+On Flickr30K the gain on clean images (0.028) was smaller than under noise (0.100), but no test of that difference was preregistered.
 No preregistered test separates corruption-specific weighting from a generic gain, since the clean-image and splice estimates were also
 positive; ``under Gaussian noise'' names the tested condition, not a specificity.
 The Holm-adjusted $p$ of L4 is 0.049, and the two-sided $p$ of the impulse-noise cell is 0.058.
@@ -41,8 +45,8 @@ image tokens in the two stopped self-checks (supplement S-I, deviation 1), and o
 The reference encoders almost solve this matching task (\cref{sec:study2-reference}); this paper makes no claim of a verifier that ranks
 with them.
 % 2026-10-31, PROFESSOR-REVIEW-TRIAGE-2026-10-31.md Class C (Q4, Q5, Q6 NO-GO): stated as limitations; no number.
-No second backbone was scored, since a likelihood score of a quantised adapter would be confounded and LRF would need refitting; no second
-dataset and no hard-negative captions were tested; and the scorer is a sum of one-pass conditionals, a factorised surrogate, so an
+No second backbone was scored, since a likelihood score of a quantised adapter would be confounded and LRF would need refitting; no third
+dataset and no hard-negative captions were tested (the Flickr30K wrong captions share no content word with the true one, and the COCO wrong captions share no annotated category); and the scorer is a sum of one-pass conditionals, a factorised surrogate, so an
 exact ordered likelihood was not computed (\cref{sec:setting-evidence}).
 No ablation and no comparison with other aggregation rules was preregistered; \cref{sec:study2-ablation,sec:study2-compare} are exploratory.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (V-G values: A-LIN, A-S-BD, A-S-s3, A-MIL against LRF on the L1 cell, intervals containing 0); red-team condition V2-2(d), A16
@@ -54,7 +58,7 @@ The linear logit on the same 35 features was at or above the frozen LRF in three
 A non-local-means denoiser applied before scoring reached higher accuracy than LRF under Gaussian noise (\cref{sec:study2-compare}; exploratory, unadjusted), so the paper does not show that LRF is the better choice against this noise.
 
 % D0097: category-disjoint negatives (exp_p2/gate/folds.py assign_negatives; runs/P2-LRF-FOLD/folds_lrf.json neg_restricted 533 of 533)
-All results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category with the test image).
+All COCO results are for category-disjoint negatives (a random caption of an image sharing no annotated COCO category with the test image), and the Flickr30K results for wrong captions that share no content word with the true caption.
 The preregistration is self-hosted (\cref{sec:setting-tests}), and the audits were run automatically in the authors' own pipeline (not independent reviews).
 
 \subsection{Deviations From the Plans}\label{sec:deviations}
@@ -79,4 +83,10 @@ supersede the main reference-encoder file's field ``pixel\_parity: not run''.
 (11) 2026-10-31: the title was shortened from the title preregistered for the confirmed branch; the claim is unchanged.
 (12) 2026-10-31: the abstract contains no numbers; they are in the Results. This departs from the sentence templates of A6.12, which
 carried the numbers in the abstract; no claim was added.
+% run: git commit c79d3ed3 (amendment A7.2(d), before any image was scored); runs/P2-LRF-F30K-FOLD/builder_report.json:{n_excluded_d_token_range (= 128), n_test_split (= 1000), n_kept (= 872)}; SAP A7.6 floor 800
+(13) 2026-10-31: the Flickr30K addendum was amended before any image was scored (A7.2(d)): items whose first caption lay outside 5 to 32 tokens
+were excluded, the caption-length rule of the COCO folds, because the pinned runner stops a fold in which more than 10\% of items break it;
+128 of the 1\,000 test images were excluded, leaving 872, above the preregistered floor of 800.
 Supplement S-I gives each item in full with its record.\par}
+% run: research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.1 (commit 76b85e44); A6.13 rule (no further confirmatory study)
+(14) 2026-10-31: addendum A6 had stated that no further confirmatory study would be added; addendum A7 (commit \texttt{76b85e44}), written after the COCO results were known, added one confirmatory test of the same frozen object on Flickr30K, in answer to a supervisor's comment and an internal review. Addendum A6 and its results were not changed.

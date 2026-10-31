@@ -1,0 +1,140 @@
+{
+ "F1": {
+  "acc_lrf": 0.7924311926605505,
+  "acc_none": 0.6926605504587156,
+  "alpha": 0.05,
+  "b": 128,
+  "c": 41,
+  "ci90": [
+   0.0768348623853211,
+   0.12385321100917432
+  ],
+  "ci95": [
+   0.07224770642201835,
+   0.12844036697247707
+  ],
+  "condition": "noise0.1",
+  "confirmed": true,
+  "cp95_b_over_nd": [
+   0.6856054275047634,
+   0.8199313402445029
+  ],
+  "headline_alpha": 0.025,
+  "headline_gain_claim_allowed": true,
+  "label": "confirmed",
+  "n": 872,
+  "n_d": 169,
+  "net": 0.09977064220183486,
+  "p_mid_one": 4.229270746842941e-12,
+  "p_one": 6.440556114529946e-12,
+  "p_two": 1.2881112229059891e-11,
+  "rejected": true,
+  "sided": "one",
+  "wording": "On a second dataset, the frozen weighting, unchanged, raised accuracy under Gaussian noise (preregistered one-sided test)"
+ },
+ "F_LEN": {
+  "acc_lrf": 0.7706422018348624,
+  "acc_none": 0.6834862385321101,
+  "alpha": 0.05,
+  "b": 125,
+  "c": 49,
+  "ci90": [
+   0.06307339449541284,
+   0.11123853211009174
+  ],
+  "ci95": [
+   0.058486238532110095,
+   0.1158256880733945
+  ],
+  "condition": "noise0.1",
+  "confirmed": true,
+  "cp95_b_over_nd": [
+   0.6453361800245929,
+   0.7838406227863803
+  ],
+  "label": "confirmed",
+  "n": 872,
+  "n_d": 174,
+  "n_excluded_length_mismatch": 0,
+  "n_with_length_matched_negative": 872,
+  "n_without_length_matched_score": 0,
+  "net": 0.0871559633027523,
+  "p_mid_one": 2.6220973564983696e-09,
+  "p_one": 3.79367732180294e-09,
+  "p_two": 7.58735464360588e-09,
+  "rejected": true,
+  "sided": "one"
+ },
+ "F_NI": {
+  "acc_lrf": 0.8681192660550459,
+  "acc_none": 0.8405963302752294,
+  "b": 60,
+  "c": 36,
+  "ci90": [
+   0.009174311926605505,
+   0.045871559633027525
+  ],
+  "ci95": [
+   0.005733944954128441,
+   0.04931192660550459
+  ],
+  "condition": "clean",
+  "cp95_b_over_nd": [
+   0.520304326160022,
+   0.7217610373158772
+  ],
+  "label": "non-inferior",
+  "lower90": 0.009174311926605505,
+  "margin": -0.03,
+  "n": 872,
+  "n_d": 96,
+  "net": 0.027522935779816515,
+  "non_inferior": true,
+  "note": "lower bound of the 90% paired percentile bootstrap interval of the net accuracy change (LRF minus NONE) must exceed -0.03",
+  "p_mid_one": 0.00719481650354783,
+  "p_one": 0.009216676465731271,
+  "p_two": 0.018433352931462543
+ },
+ "bootstrap": {
+  "code": "analysis/paper2/lrf/a6_analysis.py boot_ci",
+  "interval": "percentile, numpy.quantile at (1-level)/2 and 1-(1-level)/2",
+  "n_boot": 10000,
+  "seed": "a fresh numpy.random.SeedSequence(0) generator per block",
+  "unit": "items"
+ },
+ "complete": true,
+ "definitions": "NONE = y_none (unweighted sum of per-token evidence), LRF = y_lrf (frozen weights, unchanged); b = LRF right and NONE wrong, c = LRF wrong and NONE right; net = (b - c) / n; positive favours LRF",
+ "descriptive": {
+  "clean": {
+   "acc_lrf": 0.8681192660550459,
+   "acc_none": 0.8405963302752294,
+   "n": 872
+  },
+  "descriptive_only": true,
+  "gain_on_clean": 0.027522935779816515,
+  "gain_on_noise0.1": 0.09977064220183486,
+  "noise0.1": {
+   "acc_lrf": 0.7924311926605505,
+   "acc_none": 0.6926605504587156,
+   "n": 872
+  }
+ },
+ "inputs": {
+  "numpy": "2.5.2",
+  "predictions_sha256": "82f0a24832110a5ee301f6b19587eac2df09f733d470101a9579037845111fd8"
+ },
+ "label": "preregistered confirmatory test (SAP addendum A7); three separate families, no adjustment across families",
+ "min_scored": 800,
+ "n_planned": 872,
+ "n_scored": 872,
+ "n_test_split": 1000,
+ "run": "P2-LRF-F30K",
+ "scorer_meta": {
+  "n_items_rows": 872,
+  "ok": true,
+  "predictions_sha256": "82f0a24832110a5ee301f6b19587eac2df09f733d470101a9579037845111fd8"
+ },
+ "spec": "research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.4",
+ "underpowered": false,
+ "underpowered_label": null
+}

@@ -11,5 +11,9 @@ Under Gaussian noise with $\sigma=0.1$ it raised image-direction verification ac
 (net 0.069, 95\% interval 0.029 to 0.109; exact one-sided McNemar $p=0.0005$), including with length-matched negatives, and on clean
 images it lost no more than three percentage points (0.03 in accuracy; 90\% interval of the net change 0.009 to 0.053); the margin was
 fixed after an exploratory clean interval had been seen.
-This holds for one model, on 450 COCO images not used to design or fit the method, at one severity; the weighting was trained on the
-tested corruption, and no preregistered test shows that its gain is specific to that corruption.
+% run: runs/P2-LRF-F30K/f30k_analysis.json:F1.{acc_none (= 0.6927), acc_lrf (= 0.7924), net (= 0.0998), ci95 (= [0.0722, 0.1284]), p_one (= 6.44e-12), label (= confirmed)}; F_LEN.label (= confirmed); F_NI.{lower90 (= 0.0092), margin (= -0.03), non_inferior (= true)}; n_scored (= 872)
+A second preregistered test, on 872 Flickr30K test images with the weighting unchanged, confirmed the gain under the same noise (0.693 to
+0.792; net 0.100, 95\% interval 0.072 to 0.128; exact one-sided McNemar $p=6.4\times10^{-12}$), also with length-matched wrong captions, and
+the weighting was non-inferior on clean images.
+This holds for one model, on 450 COCO images and 872 Flickr30K images not used to design or fit the method, at one severity; the weighting
+was trained on the tested corruption, and no preregistered test shows that its gain is specific to that corruption.

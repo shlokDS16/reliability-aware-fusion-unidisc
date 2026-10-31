@@ -4,7 +4,7 @@ lower temperature limit). It never creates or deletes a hold file and never laun
 
     python -m exp_p2.gate.gate_driver --stage m2 [--run-id P2-GATE-M2] [--n 300]
 
-Stages: p2, m1-m5, s2; h3, h4 (family H, hard negatives, SAP A5); lrf-rescore, lrf-l1, lrf-lg (Study 2, SAP A6 r1); foil-fit, foil-test (family B, two runs); epred-fit (the E-pred fit chunk, after M3 and before M4); suite (imagecorruptions, exploratory); omni-timing, omni-r-cal, omni-r-pos,
+Stages: p2, m1-m5, s2; h3, h4 (family H, hard negatives, SAP A5); lrf-rescore, lrf-l1, lrf-lg (Study 2, SAP A6 r1); lrf-f30k (Flickr30K transfer, SAP A7); foil-fit, foil-test (family B, two runs); epred-fit (the E-pred fit chunk, after M3 and before M4); suite (imagecorruptions, exploratory); omni-timing, omni-r-cal, omni-r-pos,
 omni-r-test (Omni-Diffusion 8B, 4-bit, family R: the stage runs in the OMNI interpreter, gpu_guard.py in the project one). Order of use and exact commands: research/paper2/method/IMPL-E-INTEGRATION-2026-10-28.md.
 
 Completion is read from the row count, never from the exit code. Exit codes: 0 complete, 3 gate not open, 4 three temperature stops, 5 two chunks
@@ -86,7 +86,13 @@ STAGE_ARGS.update({"lrf-dn": STAGE_ARGS["lrf-l1"] + ["--denoise", "nlm-sdn"]})
 # Severity sweep (exploratory plan 2026-10-31): the L1 fold, family and flags; Gaussian noise at sigma 0.05, 0.2, 0.3 with L1's noise0.1 stream, through the thin entry point exp_p2.run_gate_lrf_sev.
 STAGES.update({"lrf-sev": ("exp_p2.run_gate_lrf_sev", "P2-LRF-SEV", 450)})
 STAGE_ARGS.update({"lrf-sev": STAGE_ARGS["lrf-l1"] + ["--sweep", "noise"]})
-STAGE_MAX_CHUNKS = {"lrf-rescore": 40, "lrf-l1": 60, "lrf-lg": 40, "lrf-dn": 24, "lrf-sev": 20}       # explicit, not the driver default 12 (which stopped M4 once, CONFIRM 13): about 2.5 h, 4.3 h and 2.25 h of wall time in 15-minute chunks, with 1.5x slack
+# Flickr30K transfer test (SAP addendum A7, 2026-10-31): the frozen LRF on the Flickr30K test split, conditions clean and noise0.1 only, through the thin entry point exp_p2.run_gate_lrf_f30k (it swaps the image
+# loader, nothing else). Fold runs/P2-LRF-F30K-FOLD/folds_f30k.json, family runs/P2-LRF-PLAN-F30K/family.json (the single cell noise0.1; n_rule.test_fold = the items kept, A7.2). Guards through --extra (LRF_MEM_SLOW).
+F30K_FOLD = Path(common.RUNS) / "P2-LRF-F30K-FOLD" / "folds_f30k.json"
+STAGES.update({"lrf-f30k": ("exp_p2.run_gate_lrf_f30k", "P2-LRF-F30K", 990)})
+STAGE_ARGS.update({"lrf-f30k": ["--folds-path", str(F30K_FOLD), "--family-run", "P2-LRF-PLAN-F30K", "--sanity", "", "--denoise-for", "", "--tbv", "on", "--layout-fix", LRF_L_FIX, "--neg-len"]})
+PLAN_RUN = {"lrf-l1": "P2-LRF-PLAN", "lrf-dn": "P2-LRF-PLAN", "lrf-sev": "P2-LRF-PLAN", "lrf-f30k": "P2-LRF-PLAN-F30K"}      # stage -> run whose family.json holds the n-rule's test_fold (default_n)
+STAGE_MAX_CHUNKS = {"lrf-rescore": 40, "lrf-l1": 60, "lrf-lg": 40, "lrf-dn": 24, "lrf-sev": 20, "lrf-f30k": 24}       # explicit, not the driver default 12 (which stopped M4 once, CONFIRM 13): about 2.5 h, 4.3 h and 2.25 h of wall time in 15-minute chunks, with 1.5x slack
 DEFAULT_MAX_CHUNKS = 12
 
 
@@ -122,8 +128,8 @@ def refusal_reason(log: Path, tail_bytes: int = 8192) -> str:
 
 def default_n(stage: str, fallback: int, runs: Path | None = None) -> int:
     """The item count when --n is not given. omni-r-test: the n_R recorded in runs/P2-OMNI-TIMING/omni_gate.json (the runner refuses a different --n), else the fallback 150."""
-    if stage in ("lrf-l1", "lrf-dn", "lrf-sev"):                                                       # the n-rule record's n_L, committed in runs/P2-LRF-PLAN/family.json as n_rule.test_fold (run_gate_m4 refuses any other --n)
-        p = Path(runs if runs is not None else common.RUNS) / "P2-LRF-PLAN" / "family.json"
+    if stage in PLAN_RUN:                                                                              # the n-rule record's n_L, committed in runs/<plan run>/family.json as n_rule.test_fold (run_gate_m4 refuses any other --n)
+        p = Path(runs if runs is not None else common.RUNS) / PLAN_RUN[stage] / "family.json"
         try:
             n = int(json.loads(p.read_text(encoding="utf8"))["n_rule"]["test_fold"])
             if n > 0:

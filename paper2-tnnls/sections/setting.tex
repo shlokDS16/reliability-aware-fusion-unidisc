@@ -65,6 +65,8 @@ wrong caption is drawn.
 Test images are fresh in a defined sense: they are disjoint, by COCO image id, from every image that was used to fit or design the rule.
 The test fold also excludes every image used anywhere in the project, including the earlier preregistered stage that supplied the design
 images (\cref{sec:study2-provenance}), and every SugarCrepe image~\cite{hsieh2023sugarcrepe} that the project had prepared.
+% run: research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.2
+The second dataset, Flickr30K~\cite{young2014flickr30k}, enters only in \cref{sec:study2-f30k}; every other result uses COCO.
 \subsection{Tests, Multiplicity, and Preregistration}\label{sec:setting-tests}
 Every test compares two decision rules on the same $n$ items.
 Let $b$ be the number of items that the rule under test decides correctly and the reference rule wrongly, and $c$ the reverse.
@@ -77,20 +79,22 @@ p_{\rm two}&=\min\big\{1,\ 2\min\big(p_{\rm one},\,\Pr[\mathrm{Bin}(n_d,\tfrac12
 The one-sided form of \eqref{eq:mcnemar} is used only for hypotheses with a preregistered direction, and every other test is two-sided.
 Within a family of hypotheses, the familywise error rate is held at 0.05 by Holm's step-down procedure~\cite{holm1979sequentially}.
 Intervals for the net accuracy change are paired percentile bootstrap intervals over items.
-% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md section A6.7 (Multiplicity table: the four families of this study are L (m = 3), L-NI (m = 1), L-LEN (m = 1), LG (m = 3), each alpha 0.05); 1 - 0.95^4 = 0.1855
-% (2026-10-31: replaces the two-study count of 17 families, which included the families of the separately reported study; recomputed from the A6.7 table, no other family of this study is preregistered there)
-This paper contains four preregistered families (L, L-NI, L-LEN, and LG; \cref{sec:study2-protocol}), each tested at its own level with no adjustment across families;
-under a global null with independent families, the chance of at least one false rejection is $1-0.95^{4}=0.19$.
-% R2 (red-team closure): runs/P2-LRF-L1/a6_analysis.json:family_L.L1.p (= 0.000508) x 17 (the two-study family count of A6.7) = 0.0086
-Counting also the families of the earlier study (17 in all), a Bonferroni factor of 17 on the primary one-sided $p$ still gives 0.0086.
+% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md section A6.7 (Multiplicity table: the four COCO families are L (m = 3), L-NI (m = 1), L-LEN (m = 1), LG (m = 3), each alpha 0.05); research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.4 (three families F1, F-NI, F-LEN, each alpha 0.05); 4 + 3 = 7; 1 - 0.95^7 = 0.3017
+% (2026-10-31: replaces the two-study count of 17 families, which included the families of the separately reported study; recomputed from the A6.7 table and A7.4, no other family of this paper is preregistered there)
+This paper contains seven preregistered families: four on COCO (L, L-NI, L-LEN, and LG; \cref{sec:study2-protocol}) and three on Flickr30K (F1, F-NI, and F-LEN; \cref{sec:study2-f30k}), each tested at its own level with no adjustment across families;
+under a global null with independent families, the chance of at least one false rejection is $1-0.95^{7}=0.30$.
+% R2 (red-team closure), rewritten after number audit 6 (M2: A7.5 forbids a link to the earlier study): runs/P2-LRF-L1/a6_analysis.json:family_L.L1.p_one (= 0.000508); runs/P2-LRF-F30K/f30k_analysis.json:F1.p_one (= 6.44e-12); 0.05/7 = 0.007143
+Counted as one correction over the seven families, the Bonferroni level for a one-sided test at 0.05 is $0.05/7=0.0071$, and both primary one-sided $p$-values lie below it ($p=0.0005$ for L1 and $p=6.4\times10^{-12}$ for F1).
 % F9 (2026-10-31, professor triage; page cap): the families table was reduced to a pointer; supplement S-I lists every family (stab:families).
 Supplement S-I lists every family with its test and its wording limits, and the Results give the outcomes.
 
 \emph{Preregistered} has one meaning in this paper: a dated analysis-plan addendum was committed to a version-controlled repository
-before the first test item was scored, with the tested object pinned by hash, and the order of the commits is the evidence; no
-third-party timestamp exists.
+before the first test item was scored, with the tested object pinned by hash, and the order of the commits is the evidence; for the
+tests on COCO no third-party timestamp exists.
 % run: runs/P2-PROVENANCE/first_push.json first_push_utc (2026-10-30T13:55:20Z; raw API response beside it); anonymous in both builds (no service name)
-The repository history was first pushed to a code-hosting service on 30 October 2026, after the preregistered tests reported here had been run; its push log is the only third-party record, and it dates the push, not the commits.
+The repository history was first pushed to a code-hosting service on 30 October 2026, after the preregistered tests on COCO had been run; its push log is the only third-party record of those tests, and it dates the push, not the commits.
+% run: runs/P2-PROVENANCE/a7_push_vs_data.json:{push_utc (= 2026-10-31T06:06:10Z), first_data_file_utc (= 2026-10-31T06:08:31Z), push_before_data (= true)}; git commits 76b85e44 (SAP A7) and c79d3ed3 (amendment A7.2(d))
+The addendum of the Flickr30K test (\cref{sec:study2-f30k}) was pushed to the hosting service before its data were downloaded, so unlike the earlier tests its original plan, before amendment (d), has a third-party timestamp.
 The plans, pins, and their amendments are listed in supplement S-I.
 The commit order, the hash checks, and the data checks were verified by automated audits run in the authors' own pipeline (not
 independent reviews).
