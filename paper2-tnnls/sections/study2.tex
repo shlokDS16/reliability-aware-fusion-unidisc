@@ -264,7 +264,14 @@ Same first 450 fold items (300 for the severity-3 cells) and regenerated pixels;
 % run: runs/P2-LRF-L1/items.jsonl:n_rows, seconds, peak_gb (67 rows, median 8.0 s, max 8.2 GB); runs/P2-LRF-LG/items.jsonl (42 rows, 5.0 s)
 The fresh-fold pass, which computes the unweighted rule for four conditions and stores the inputs of LRF, used 67 network rows and a median of 8.0~s per item on one 12~GB laptop GPU, with a peak memory of 8.2~GB; the stage of the other noise
 types used 42 rows and 5.0~s per item (supplement S-IV).
-LRF adds no network row; its weights and decision are computed from the stored arrays on the CPU and were not timed.
+% F2 (professor triage Q9, 2026-10-31): replaces "LRF adds no network row". Counts read from the code (exp_p2/gate/pipeline.py caption_lambdas;
+% exp_p2/run_gate_m4.py process; exp_p2/run_gate_lrf_rescore.py docstring) and checked against the stored rows.
+% run: runs/P2-LRF-RESCORE/items.jsonl:n_rows (median 36 per item = 4 conditions x 9 passes); runs/P2-LRF-L1/config.json:K (= 8); exp_p2/gate/config.py GRID (= 32, m = 1024)
+Per scored image, the unweighted sum needs two caption-visible passes with the whole image masked, so that their outputs do not depend on the image codes (the evidence of every condition is a gather at its codes).
+LRF needs those two and nine more for its features: eight complementary-mask passes (for $B$ and the uncertainty of the $B$ pass) and one observed-position pass; $D$ comes from a cached caption-masked null of fixed slot length, and the texture and codebook-neighbour features need no pass.
+LRF therefore costs $2+9=11$ passes per scored image against 2, and then computes its weights and decision from the stored arrays on the CPU, in a time that was not measured.
+% TODO-LEAD: CPU scorer time (replace "in a time that was not measured" by the timing clause once the stored script and run exist)
+The count follows the number of mask groups ($K=8$), not the $m=1\,024$ grid positions; another $K$ or grid size was not tried.
 
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
 \begin{figure}[!t]
@@ -310,7 +317,9 @@ The linear logit reached 0.884 under JPEG against 0.864 for LRF (difference 0.02
 % run: runs/P2-LRF-DN/dn_analysis.json:cells.noise0.1.arms.{DN+NONE,DN+LRF}.{acc (= 0.8444, 0.8556), vs_LRF.{diff,ci95}} (DN+NONE 0.042 [0.002, 0.082]; DN+LRF 0.053 [0.011, 0.096]); runs/P2-LRF-L1/a6_analysis.json:family_L.{L1.acc_b (= 0.7333), L1.acc_a (= 0.8022)}; plan E1 (commit 83ac79f8)
 % run: runs/P2-LRF-DN/dn_analysis.json:cells.jpeg10.arms.{DN+NONE,DN+LRF}.{acc (= 0.8533, 0.8133), vs_LRF.{diff,ci95}} (DN+NONE -0.011 [-0.044, 0.024]; DN+LRF -0.051 [-0.089, -0.013])
 Denoising before scoring (non-local means; the last two rows of \cref{tab:compare}) gave, under Gaussian noise, 0.844 with the unweighted sum and 0.856 with LRF, which is 0.042 (unadjusted 95\% interval 0.002 to 0.082) and 0.053 (0.011 to 0.096) above LRF without denoising (0.802); under JPEG quality~10 it gave 0.853 and 0.813, which are $-0.011$ ($-0.044$ to 0.024) and $-0.051$ ($-0.089$ to $-0.013$) from LRF.
-On these 450 images the table does not show that the particular form of LRF is needed or that it is preferable to a linear logit on the same features; the preregistered result remains the L1 test of \cref{tab:study2}.
+% F3 (professor triage Q3, 2026-10-31); facts as in V-A (sec:study2-provenance): four learned families, inner cross-validation on the 500 design items; shapes: supplement S-IV. No new number.
+Nothing here favours the additive form over a linear logit on the same features; the confirmed object is the frozen weighting, and the preregistered result remains the L1 test of \cref{tab:study2}.
+LRF was chosen by inner cross-validation among four learned families on the design items (\cref{sec:study2-provenance}), and the learned shapes in supplement S-IV are descriptive.
 
 \begin{table}[!t]
 \centering
