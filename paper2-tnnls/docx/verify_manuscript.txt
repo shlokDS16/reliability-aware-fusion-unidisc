@@ -1,4 +1,4 @@
-DOCX: C:\Users\Shlok\AppData\Local\Temp\tmp.8h2AhtLmOS\anon\Paper2_TNNLS_manuscript.docx
+DOCX: C:\Users\Shlok\AppData\Local\Temp\tmp.snhTh48FnW\anon\Paper2_TNNLS_manuscript.docx
 PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\paper2-tnnls\main.pdf
 == structure
 sections: 2
@@ -14,11 +14,11 @@ headings: 26 (H1 8, H2 17)
 reference entries: 70
 table labels: ['TABLE\xa0I', 'TABLE\xa0II', 'TABLE\xa0III', 'TABLE\xa0IV']; figure captions: ['Fig.\xa01. Imag', 'Fig.\xa02. Lear', 'Fig.\xa03 shows', 'Fig.\xa03. Fami', 'Fig.\xa04. Thre', 'Fig.\xa05. Lear', 'Fig.\xa06. Expl']
 == text comparison with pdftotext
-tokens: pdf=13464 docx=12741
-word recall (PDF words found in DOCX, multiset): 0.9421
-5-gram match rate (PDF 5-grams present in DOCX): 0.8779
+tokens: pdf=13460 docx=12741
+word recall (PDF words found in DOCX, multiset): 0.9423
+5-gram match rate (PDF 5-grams present in DOCX): 0.8782
 prose words (>= 3 letters): pdf=9014 docx=8690; recall 0.9615
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9388
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9390
 prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 15; of these 6 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 9 contain words absent from the DOCX
    CONTENT-MISSING?  absent words tokenise | unidisc parameters true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image 
    CONTENT-MISSING?  absent words min | items pone bin ptwo min min pone bin the
@@ -29,7 +29,7 @@ prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 15; of th
    CONTENT-MISSING?  absent words akxjk, ckl, xjk | additive model hinge basis akxjk ckl xjk tkl frozen before
    CONTENT-MISSING?  absent words airplane, airport, bars, building, city, dirt, foliage, grass | other noise clean noisy evidence lrf weight captions and decisions unweighted correct lrf correct true round intersection surburban street with one floor homes 
    CONTENT-MISSING?  absent words dev, neighbour, ranbkj, std | and splice weight sigm ranbkj feature value neighbour mean log feature value onepass logprobability feature value image std dev log image std dev neighbour dist
-PDF token spans not found in DOCX: 128 (>= 6 tokens: 26; tokens in them: 808)
+PDF token spans not found in DOCX: 128 (>= 6 tokens: 26; tokens in them: 804)
    MISSING?  on 450 true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption visible caption token image to
    MISSING?  is positive m s j y s 0 2 j 1 with a
    MISSING?  items pone pr bin nd 1 2 b ptwo min 1 2 min pone pr bin nd 1 2 b 3
@@ -55,5 +55,5 @@ PDF token spans not found in DOCX: 128 (>= 6 tokens: 26; tokens in them: 808)
    MISSING?  47 0 742 0 791 0 800 0 793 0 840 0 884 0 871 0 838
    MISSING?  891 0 931 0 911 0 851 0 893 0 920 0 922 0 864
    MISSING?  and splice weight w sigm f x ranbkj of 0 25 0 00 0 25 0 50 0 75 feature value neighbour mean of log 1 vj feature value onepass logprobability 5 4 3 feature value image std dev of log 1 vj image std de
-   MISSING?  track corruption a 0 9 accuracy 0 8 0 7 unweighted sum 0 6 lrf frozen 0 05 1 2 3 gaussian noise b lrf unweighted 0 10 0 05 0 00 0 05 1 2 3 gaussian noise fig 6
+   MISSING?  track corruption a 0 8 lrf frozen accuracy 0 6 unweighted sum 0 05 1 2 3 gaussian noise b lrf unweighted 0 10 0 05 0 00 0 05 1 2 3 gaussian noise fig 6
 DOCX prose paragraphs (no math) with < 60% of 5-grams in the PDF: 0
