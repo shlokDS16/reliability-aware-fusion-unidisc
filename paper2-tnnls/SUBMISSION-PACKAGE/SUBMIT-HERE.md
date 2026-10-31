@@ -23,8 +23,8 @@ listed here, tell me what it says.
 
 | Upload as (portal file type) | File | Notes |
 |---|---|---|
-| Main document / Manuscript (PDF) | `01_Manuscript_anonymous.pdf` | 15 pages, two-column IEEE format, all pages numbered, all fonts embedded, no author names, no funding, no institution thanks, PDF metadata "Anonymous". |
-| Supplementary material (for review) | `02_Supplementary_Material_anonymous.pdf` | 21 pages, anonymous. |
+| Main document / Manuscript (PDF) | `01_Manuscript_anonymous.pdf` | 12 pages, two-column IEEE format, all pages numbered, all fonts embedded, no author names, no funding, no institution thanks, PDF metadata "Anonymous". |
+| Supplementary material (for review) | `02_Supplementary_Material_anonymous.pdf` | 10 pages, anonymous. |
 | Cover letter | `03_Cover_Letter.pdf` | One page, to the Editor-in-Chief; names the authors (editors only, not reviewers). |
 | Only if the anonymized link fails: supplementary material | `optional/04_Anonymized_code_and_data.zip` | Same files as the `review-snapshot` branch; names replaced by ANONYMIZED. |
 
@@ -35,23 +35,22 @@ Word files are not needed at review (TNNLS reviews the PDF); review-copy Word fi
 
 - **Article type:** Full Paper (it cannot be changed after submission).
 - **Title:** Reliability-Aware Fusion of Token Evidence for Image-Text Verification in Unified Discrete Diffusion
-  (single-study version of 2026-10-31; this file's older text, package PDFs and Word files were built from the two-study version and must be rebuilt before upload)
-- **Abstract** (paste; 248 words, limit 250; same as the PDF, no numbers):
+  (single-study version of 2026-10-31; package PDFs and Word files rebuilt from it on 2026-10-31)
+- **Abstract** (paste; 249 words, limit 250; same as the PDF, no numbers):
 
-  Image-text verification, the choice of the true caption of an image from two candidates, becomes harder when the image is
-  damaged. We study this problem inside one frozen pretrained unified discrete diffusion model, UniDisc, which gives every
-  observed image token a probability given a caption, with no external encoder. For each token, the log-probability ratio
-  between the true and a wrong caption is evidence, and the standard rule adds the evidence of all tokens with equal weight. We
-  learn a per-token reliability weighting of this evidence from features computed without the caption, fit it on design images,
-  and freeze it. A preregistered one-sided exact paired test on fresh Common Objects in Context validation images under Gaussian
-  noise at one level confirmed that the frozen weighting raised verification accuracy, including when the wrong caption was
-  matched to the true one in length. On clean images the weighting was non-inferior within a preregistered margin; the margin
-  was fixed after an exploratory clean-image interval had been seen. Two exploratory comparisons qualify this result. A
-  classical pixel denoiser applied before scoring reached higher accuracy than the weighting under Gaussian noise, and combined
-  with the weighting it reached lower accuracy under Joint Photographic Experts Group compression. A linear logit on the same
-  features reached similar accuracy to the additive weighting. The evidence covers one model, one dataset, and one noise level;
-  it does not show that the learned weights track token reliability, or that the gain holds for other models, corruptions, or
-  severities.
+  Image-text verification, choosing the true caption of an image from two candidates, becomes harder when the image is damaged. We
+  study it in one frozen unified discrete diffusion model, UniDisc, which scores every image token given a caption. Each token's
+  log-probability ratio between the true and a wrong caption is evidence, and the standard rule sums it with equal weights. We
+  learn a per-token reliability weighting of this evidence from caption-free features, fit it on design images that include the
+  noise level later tested, and freeze it. A preregistered one-sided exact paired test on fresh Common Objects in Context
+  validation images under Gaussian noise at one level confirmed that the frozen weighting raised verification accuracy, also with
+  wrong captions matched in length. On clean images it was non-inferior within a preregistered margin, fixed after an exploratory
+  clean-image interval had been seen. In exploratory comparisons, a pixel denoiser before scoring did better under Gaussian noise,
+  and combined with the weighting it did worse under Joint Photographic Experts Group compression. A linear logit on the same
+  features did about as well under noise and better under compression. A sweep on the same images found the gain at milder and
+  stronger noise, but at the tested level it did not clearly exceed the clean-image gain. The evidence covers one model, one
+  dataset, and one tested noise level; it does not show that the weights track token reliability (the name describes the design)
+  or that the gain transfers to other models or corruptions.
 
 - **Keywords / Index Terms** (5; TNNLS asks for 4-5): Denoising diffusion; Discrete diffusion; Information fusion; Masked diffusion; Multimodal learning.
 - **Authors** (this order; TNNLS returns papers without review if any author's contact details are missing or wrong; ORCID is
@@ -79,7 +78,7 @@ Word files are not needed at review (TNNLS reviews the PDF); review-copy Word fi
 
 ## 3. After acceptance (not now)
 
-- Mandatory over-length charge: 5 pages above 10 at USD 200 = **USD 1,000** (15-page paper). The USD 110/page charge is optional.
+- Mandatory over-length charge: 2 pages above 10 at USD 200 = **USD 400** (12-page paper). The USD 110/page charge is optional.
 - Final files: one zip with all LaTeX sources of the accepted version, built from `main_camera.tex` (author version in
   `at-acceptance/`), plus biographies and head-and-shoulder photos of all three authors (I switch them on with `\biostrue`).
 - Signed IEEE copyright form (sent by IEEE after acceptance).

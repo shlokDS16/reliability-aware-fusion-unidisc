@@ -1,66 +1,57 @@
-DOCX: C:\Users\Shlok\AppData\Local\Temp\claude\C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-frosty-clarke-209639\859c4d92-4b84-49ba-bcb9-d1cabe9c75dc\scratchpad\w7_auth\Paper2_TNNLS_manuscript_authors.docx
+DOCX: C:\Users\Shlok\AppData\Local\Temp\claude\C--Users-Shlok-Downloads-Multi-Modality-Language-model--claude-worktrees-frosty-clarke-209639\7c923a60-3ca1-49ad-be26-24621fa0e61a\scratchpad\docx_cam\Paper2_TNNLS_manuscript_authors.docx
 PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\paper2-tnnls\main_camera.pdf
 == structure
 sections: 2
   section 0: columns=1 widths_twips=[] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
   section 1: columns=2 widths_twips=['5040', '5040'] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
-paragraph styles (outside tables): Text=95, References=64, Heading2=20, Equation=13, Heading1=9, TableTitle=6, FootnoteText=3, TableNote=3, FigureImage=2, FigureCaption=2, Title=1, Authors=1, Abstract=1, IndexTerms=1, ReferenceHead=1
-tables=9 (floating=6) drawings=7 OMML math zones=317 equation paragraphs=13 numbered=13 sequence_ok=True
-hyperlinks=227 (internal 161, external 66) bookmarks=147 internal links without bookmark=0 []
+paragraph styles (outside tables): References=68, Text=55, Heading2=16, Heading1=8, Equation=6, TableTitle=4, FootnoteText=3, TableNote=2, Title=1, Authors=1, Abstract=1, IndexTerms=1, FigureImage=1, FigureCaption=1, ReferenceHead=1
+tables=8 (floating=6) drawings=6 OMML math zones=198 equation paragraphs=6 numbered=6 sequence_ok=True
+hyperlinks=216 (internal 146, external 70) bookmarks=129 internal links without bookmark=0 []
 leftover sentinels: 0 []
 paragraphs with a raw LaTeX command left: 0 []
 undefined reference markers: 0 []
-headings: 30 (H1 9, H2 20)
-reference entries: 64
-table labels: ['TABLE\xa0I', 'TABLE\xa0II', 'TABLE\xa0III', 'TABLE\xa0IV']; figure captions: ['Fig.\xa01. Imag', 'Fig.\xa02. Stud', 'Fig.\xa03. Fami', 'Fig.\xa04. Stud', 'Fig.\xa05 shows', 'Fig.\xa05. Fami', 'Fig.\xa06. Stud', 'Fig.\xa07. Stud']
+headings: 25 (H1 8, H2 16)
+reference entries: 68
+table labels: ['TABLE\xa0I', 'TABLE\xa0II', 'TABLE\xa0III']; figure captions: ['Fig.\xa01. Imag', 'Fig.\xa02. Lear', 'Fig.\xa03 shows', 'Fig.\xa03. Fami', 'Fig.\xa04. Thre', 'Fig.\xa06. Expl', 'Fig.\xa05. Lear']
 == text comparison with pdftotext
-tokens: pdf=15768 docx=14922
-word recall (PDF words found in DOCX, multiset): 0.9427
-5-gram match rate (PDF 5-grams present in DOCX): 0.8818
-prose words (>= 3 letters): pdf=10715 docx=10296; recall 0.9593
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9298
-prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 22; of these 11 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 11 contain words absent from the DOCX
-   CONTENT-MISSING?  absent words tokenise | linked result true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image token
-   CONTENT-MISSING?  absent words min | items pone bin ptwo min min pone bin table preregistered
-   CONTENT-MISSING?  absent words corrup, tions | and swap corrup run formal tions detection changed
-   CONTENT-MISSING?  absent words ltest, nominal | pins audits calibration before any test item clean pairs ncal uij test pair image tokens conformal risk control share uij level flagged withheld flagged share g
-   CONTENT-MISSING?  absent words ckl, designtoken, json, spec | supplement sii algorithm decision rule the frozen lrf input output observed image tokens and the caption pair the chosen caption then ylrf otherwise tie counts 
-   CONTENT-MISSING?  absent words akxjk, ckl, xjk | own length xjk feature token for from the scores aggregates and grid position sigm akxjk ckl xjk tkl choose and otherwise and appear
-   CONTENT-MISSING?  absent words akxjk, ckl, xjk | basis sigm akxjk ckl xjk tkl where sigm
-   CONTENT-MISSING?  absent words zscore | not matched pertoken features token scores position neighbourhood withinimage rank image mean image standard deviation image zscore input uses caption the condi
-   CONTENT-MISSING?  absent words akxjk, ckl, xjk | additive model hinge basis akxjk ckl xjk tkl frozen before any test image token weights sigm fig weighted sum decision fig study
-   CONTENT-MISSING?  absent words airplane, airport, bars, building, city, dirt, floor, foliage | test made clean noisy evidence lrf weight captions and decisions unweighted correct lrf correct true round intersection surburban street with one floor homes wr
-   CONTENT-MISSING?  absent words formula, imagelevel, neighbour | computed from frozen lrf refitted and unlearned weightings linear logit features from and only uncertainty pass only onepass score only patch texture only neigh
-PDF token spans not found in DOCX: 142 (>= 6 tokens: 31; tokens in them: 919)
-   MISSING?  no result true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption visible caption token image
+tokens: pdf=12277 docx=11539
+word recall (PDF words found in DOCX, multiset): 0.9363
+5-gram match rate (PDF 5-grams present in DOCX): 0.8714
+prose words (>= 3 letters): pdf=8231 docx=7893; recall 0.9576
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9368
+prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 13; of these 5 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 8 contain words absent from the DOCX
+   CONTENT-MISSING?  absent words tokenise | model unidisc true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image token
+   CONTENT-MISSING?  absent words min | items pone bin ptwo min min pone bin the
+   CONTENT-MISSING?  absent words akxjk, ckl, designtoken, json, spec, xjk | basis sigm akxjk ckl xjk tkl algorithm decision rule the frozen lrf input output observed image tokens and the caption pair the chosen caption then ylrf otherwi
+   CONTENT-MISSING?  absent words akxjk, ckl, xjk | own length xjk feature token for from the scores aggregates and grid position sigm akxjk ckl xjk tkl choose and otherwise where sigm
+   CONTENT-MISSING?  absent words zscore | one severity pertoken features token scores position neighbourhood withinimage rank image mean image standard deviation image zscore input uses caption the cond
+   CONTENT-MISSING?  absent words akxjk, ckl, xjk | additive model hinge basis akxjk ckl xjk tkl frozen before
+   CONTENT-MISSING?  absent words airplane, airport, bars, building, city, dirt, floor, foliage | speckle noise clean noisy evidence lrf weight captions and decisions unweighted correct lrf correct true round intersection surburban street with one floor home
+   CONTENT-MISSING?  absent words dev, neighbour, ranbkj, std | inexpensive alternative weight sigm ranbkj feature value neighbour mean log feature value onepass logprobability feature value image std dev log image std dev n
+PDF token spans not found in DOCX: 123 (>= 6 tokens: 25; tokens in them: 796)
+   MISSING?  model unidisc true and wrong captions caption tokens image input damage tokenise noise jpeg splice damaged image image tokens masked diffusion model image tokens masked caption visible caption token i
+   MISSING?  is j cj v j cj v j 1 the
    MISSING?  is positive m s j y s 0 2 j 1 with a
-   MISSING?  items pone pr bin nd 1 2 b ptwo min 1 2 min pone pr bin nd 1 2 b 3 table i
-   MISSING?  not run pairs study 2 l1 l3 l4 lni llen lg learned weights
-   MISSING?  threshold is 1m li m uij 0 1 5 j 1 which does
-   MISSING?  with fcal nca1l i li the threshold is inf ncal ncal 1 fcal 1 ncal 1 6
-   MISSING?  the evidence m sg ij j yg sg 0 7 j 1 with a
-   MISSING?  pins audits a calibration before any test item clean pairs ncal 300 uij test pair image tokens j 1 m uj dj bj conformal risk control li share of uij at level flagged withheld ij 0 ij uj flagged share 
-   MISSING?  or a net change 90 interval 95 interval 0 05 margin p1 jpeg
-   MISSING?  10 p2 noise 0 1 p3 splice 128 px 0 05 0 05 net accuracy change gatem minus no gate fig 3
-   MISSING?  supplement sii algorithm 1 decision rule of the frozen lrf input output observed image tokens v j j 1 m m 1 024 and the caption pair c c the chosen caption c if m 0 then ylrf 1 otherwise c a tie count
-   MISSING?  supplement siv 2 for j 1 to m do 3 j evidence of token j section iiib each caption
-   MISSING?  own length xjk feature k of token j k sk for k 1 35 from the scores aggregates and grid position wj sigm 0 k akxjk k l ckl xjk tkl 11 6 m j wj j j wj 7 choose c if j wj j 0
-   MISSING?  hinge basis 35 q wj sigm 0 akxjk ckl xjk tkl 11 k 1 k 1 l 1 where sigm
-   MISSING?  margin are m ylrf wj j 0 j 1 m j wj j 12 j wj with a
-   MISSING?  matched to pertoken features xj 35 token scores 7 position 3 neighbourhood 8 withinimage rank 4 image mean 6 image standard deviation 6 image zscore 1 no input uses j
-   MISSING?  or the condition logistic additive model hinge basis f xj 0 akxjk k ckl xjk tkl k l 1 frozen before any test image sha256 db7fdb4e token weights wj sigm f xj j fig 1 weighted sum wj j j decision wj j 
+   MISSING?  items pone pr bin nd 1 2 b ptwo min 1 2 min pone pr bin nd 1 2 b 3
+   MISSING?  hinge basis 35 q wj sigm 0 akxjk ckl xjk tkl 4 k 1 k 1 l 1 algorithm 1 decision rule of the frozen lrf input output observed image tokens v j j 1 m m 1 024 and the caption pair c c the chosen caption 
+   MISSING?  supplement sii 2 for j 1 to m do 3 j evidence of token j section iiib each caption
+   MISSING?  own length xjk feature k of token j k sk for k 1 35 from the scores aggregates and grid position wj sigm 0 k akxjk k l ckl xjk tkl 4 6 m j wj j j wj 7 choose c if j wj j 0
+   MISSING?  margin are m ylrf wj j 0 j 1 m j wj j 5 j wj with a
+   MISSING?  one severity pertoken features xj 35 token scores 7 position 3 neighbourhood 8 withinimage rank 4 image mean 6 image standard deviation 6 image zscore 1 no input uses j
+   MISSING?  or the condition logistic additive model hinge basis f xj 0 akxjk k ckl xjk tkl k l 1 frozen before
+   MISSING?  test image sha256 db7fdb4e token weights wj sigm f xj j fig 1 weighted sum wj j j decision wj j 0 j fig 2
    MISSING?  0 1 l3 jpeg quality 10 l4 splice 128 px lni clean images llen noise
    MISSING?  120 0 0005 0 191 0 012 0 0004 0 382 0 049 0 001 confirmed onesided 0 382 not rejected 0 024 rejected holm noninferior lower
    MISSING?  300 0 673 300 0 700 300 0 697 0 767 0 750 0 757 43 15
    MISSING?  preregistered level a b l1 noise 0 1 onesided p 0 0005 l3 jpeg quality 10 holm p 0 382 l4 splice 128 px holm p 0 049 0 05 0 10 net accuracy change with minus without weights net change bar 95 interval
-   MISSING?  is made a clean i b noisy 0 1 c evidence j d lrf weight wj e captions and decisions unweighted correct lrf correct true a round intersection on a surburban street with one floor homes wrong a kitchen 
+   MISSING?  speckle noise a clean i b noisy 0 1 c evidence j d lrf weight wj e captions and decisions unweighted correct lrf correct true a round intersection on a surburban street with one floor homes wrong a ki
    MISSING?  clean images gaussian noise 0 1 jpeg quality 10 splice 128
    MISSING?  0 007 0 998 0 998 1 000 1 000 0
    MISSING?  items 300 shot noise severity 3 impulse noise severity 3 speckle noise severity 3 0 997 1 000 0 997 1 000
-   MISSING?  from b frozen lrf refitted and unlearned weightings linear logit 35 features from
-   MISSING?  d only uncertainty of b pass only onepass score only patch texture only neighbour distance only grid position only single feature selected attention pooling mil style unlearned rank weight knockouts o
-   MISSING?  and d uncertainty of b pass onepass score patch texture neighbour distance grid position by source token scores position by formula neighbourhood withinimage rank imagelevel 0 10 0 05 0 05 accuracy di
-   MISSING?  rank weight median 20 trimmed mean 0 731 0 716 0 716 0 838 0 829 0 827 0 891 0 864 0 873 0 896 0 862 0 869
-   MISSING?  style 0 742 0 791 0 800 0 793 0 840 0 884 0 871 0 838
+   MISSING?  rank weight median 67 20 trimmed mean 67 dempster combination 37 0 731 0 716 0 716 0 722
+   MISSING?  891 0 864 0 873 0 889 0 896 0 862 0 869 0 884
+   MISSING?  47 0 742 0 791 0 800 0 793 0 840 0 884 0 871 0 838
    MISSING?  891 0 931 0 911 0 851 0 893 0 920 0 922 0 864
+   MISSING?  inexpensive alternative weight w sigm f x ranbkj of 0 25 0 00 0 25 0 50 0 75 feature value neighbour mean of log 1 vj feature value onepass logprobability 5 4 3 feature value image std dev of log 1 vj
+   MISSING?  track corruption a 0 9 accuracy 0 8 0 7 unweighted sum 0 6 lrf frozen 0 05 1 2 3 gaussian noise b lrf unweighted 0 10 0 05 0 00 0 05 1 2 3 gaussian noise fig 6
 DOCX prose paragraphs (no math) with < 60% of 5-grams in the PDF: 0
