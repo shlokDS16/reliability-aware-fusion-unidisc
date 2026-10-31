@@ -1,9 +1,9 @@
 % supplement.tex -- supplementary material for the TNNLS submission (separate PDF labelled "supplementary"; excluded from the page limit).
-% Writer W2, 2026-10-30, to paper2-tnnls/SPEC.md v2.2 section 3: S-I preregistration record; S-II Study 1 secondary and descriptive families
-% with the Tier-3 table and Prop. S1 beside it; S-III family H; S-IV Study 2 exploratory material; S-V symbol crosswalk; S-VI reference
-% encoders and pixel parity; S-VII the Tier-3 ablation of Study 2. No section on the detectability limit (F20).
-% Separation rules hold here too: no table holds both a Study 1 (GATE-M) result on Study 1's items and an LRF number; the fresh-fold
-% GATE-M arm has its own table with no LRF column; no in-sample or freeze-check accuracy of the frozen LRF appears anywhere.
+% Single-study version, 2026-10-31 (ANONYMIZED approved the split; PROFESSOR-SUGGESTIONS-ANALYSIS-2026-10-31.md): the sections on the earlier study (former S-II
+% secondary and descriptive families, Tier-3 comparison and Propositions S1-S2; former S-III family H) and its tables are removed. The two-study
+% supplement is at git tag paper2-two-study-2026-10-31. Sections now: S-I preregistration record; S-II exploratory and descriptive material;
+% S-III symbol crosswalk; S-IV reference encoders and pixel parity; S-V exploratory ablation and comparison; S-VI sources of the main paper's figures and tables.
+% No in-sample or freeze-check accuracy of the frozen LRF appears anywhere; no gate arm, no GATE-M column, no CLIP/SigLIP column beside LRF.
 % Tables marked "copied from paper2/sections/results.tex" were inlined from the elsarticle draft by a script (numbers unchanged).
 % Anonymous: no author names or links. Build: latexmk -pdf -cd supplement/supplement.tex
 \documentclass[journal,onecolumn]{IEEEtran}
@@ -42,52 +42,26 @@
 \emergencystretch=2em
 
 \begin{document}
-\title{Supplementary Material for ``Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under
-Gaussian Noise in a Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc''}
+\title{Supplementary Material for ``Reliability-Aware Fusion of Token Evidence for Image-Text Verification in Unified Discrete Diffusion''}
 \author{Anonymous authors for double-anonymous review}
 \maketitle
 
 \noindent References to sections, tables, equations, and propositions of the main paper are written in words (for example ``Section
-IV-C of the main paper''); labels with an S belong to this supplement.
+IV-B of the main paper''); labels with an S belong to this supplement.
 Every number carries a source comment in the LaTeX file, with its \texttt{runs/} file and key.
-Study~1 material (S-II, S-III) and Study~2 material (S-IV, S-VI, S-VII) are kept in separate sections and separate tables.
 
 %======================================================================================================================================
 \section{Preregistration Record}\label{sup:prereg}
 
 \subsection{Pins}
-Study~1's artefacts are pinned in \cref{stab:pins1} and Study~2's in \cref{stab:pins2}.
+The artefacts of the study are pinned in \cref{stab:pins2}.
 Hashes are SHA-256 of the committed bytes (git LF convention) unless marked.
 Some working-tree files are CRLF, so a raw hash of a checked-out file can differ from the committed hash without a change of content;
 both forms are recorded where both were used.
 
 \begin{table}[!htbp]
 \centering
-\caption{Pinned Artefacts of Study 1 (pin file \texttt{runs/P2-GATE-CARD-V4/pins.json})}
-\label{stab:pins1}
-\footnotesize
-\begin{tabular}{p{0.27\linewidth}p{0.66\linewidth}}
-\toprule
-Artefact & Identifier \\
-\midrule
-% run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md sections 1.4, 9 (rows A-1, A-4, A-5, A-6); runs/P2-GATE-CARD-V4/pins.json
-Code, tests, guard & final audited commit \texttt{9c4e1e25}; moved by dated rows A-1 (\texttt{f2f7b2e1}), A-4 (\texttt{d81858c0}, Tier-3
-code added), A-5 (\texttt{8d1bee3a}, re-infilling self-check), and A-6 (\texttt{725a1b5a}, family H and Study~2 code); manifest hash
-\texttt{\seqsplit{65513677ba4d98adfa1a861db4215200ad64b78aec1cceeaf0bcdca6b4664dec}} \\
-Analysis plan with Addenda A1 to A3b.12 & \texttt{\seqsplit{e33f078c45b92b94cbf658192e2fd815f8c6eafbffe53ba39bc0dd728982afb7}} (LF) \\
-Addendum A4 (outcome book, Tier-3 comparators) & draft commit \texttt{40828e96}, revision r1 commit \texttt{f1671c91} \\
-Addendum A5 (family H) & final \texttt{b32e72a1}, revision r1 \texttt{2f62f1df}; family H code commit \texttt{5e6380b1} \\
-Fold file & LF \texttt{\seqsplit{c19db5b3b9fabdeb89e8e686c58ae6c011f746529fbf9be84f1c58c99c446786}}; CRLF working copy
-\texttt{\seqsplit{450edb543779de7ee5e6a52422fd6507ef52f15ba3b956a8b05c2e561620f311}} \\
-Hard-negative pool (family B), manifest, leak check & \texttt{cfd0f94facd0}, \texttt{070fb29a2ebc}, \texttt{91f4b7968b54} (prefixes, LF) \\
-Frozen files of E-pred & fit \texttt{c89700dbc3ba}, signal-to-noise calculator \texttt{5c535a3bda75}, test file \texttt{8d7528bbb37b} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[!htbp]
-\centering
-\caption{Hash Set of the Frozen Weighting of Study 2, Verified by the Scorer at Start}
+\caption{Hash Set of the Frozen Weighting, Verified by the Scorer at Start}
 \label{stab:pins2}
 \footnotesize
 \begin{tabular}{p{0.36\linewidth}p{0.57\linewidth}}
@@ -114,16 +88,16 @@ blob has another hash for the same content \\
 The checks named in the main paper as automated audits run in the authors' own pipeline (not independent reviews) are: the plan
 review (sign-off of the analysis plans); the adversarial review (signatures with conditions on Addenda A2 to A6 and on the build
 specification); the code, commit-order, and hash audit (pass verdicts at the final audited commits, with delta audits for every later pin;
-gate audits of family L, family LG, and the reference encoders with their parity runs; byte-identical regeneration of the committed
-outputs after every code merge); and the fold and leak checks (sign-offs of the hard-negative pool and of the Study~2 fold, check L7).
+gate-auditor checks of family L, family LG, and the reference encoders with their parity runs; byte-identical regeneration of the committed
+outputs after every code merge); and the fold and leak checks (sign-off of the fresh fold, check L7).
 These checks were run by the authors' own pipeline; none is described as independent.
 No signature says that a method works.
 
 \subsection{Families}
 \Cref{stab:families} lists every test family of the paper.
 Each family has its own level 0.05 and its own Holm correction; there is no error-rate control across families.
-% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.7 (17 families; 1 - 0.95^17 = 0.58)
-The paper has 17 families; under a global null with independence the chance of at least one false rejection is $1-0.95^{17}=0.58$.
+% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md section A6.7 (four families of this study: L, L-NI, L-LEN, LG); 1 - 0.95^4 = 0.1855
+The paper has four families; under a global null with independence the chance of at least one false rejection is $1-0.95^{4}=0.19$.
 
 \begin{table}[!htbp]
 \centering
@@ -131,41 +105,22 @@ The paper has 17 families; under a global null with independence the chance of a
 \label{stab:families}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\begin{tabular}{p{0.08\linewidth}p{0.06\linewidth}p{0.10\linewidth}p{0.36\linewidth}p{0.05\linewidth}p{0.26\linewidth}}
+% run: research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.4, A6.5, A6.7 (families L, L-NI, L-LEN, LG; n, tests, m)
+\begin{tabular}{p{0.07\linewidth}p{0.08\linewidth}p{0.44\linewidth}p{0.05\linewidth}p{0.28\linewidth}}
 \toprule
-Study & Family & $n$ & Test & $m_{\rm H}$ & Not allowed \\
+Family & $n$ & Test & $m_{\rm H}$ & Not allowed \\
 \midrule
-1 & P & 300, 500, or 300 with the evidence ratio & exact two-sided McNemar, GATE-M against none: JPEG, noise, splice & 3 & a claim in favour of
-the gate from a rejection with $c>b$; ``predicted'', ``explained'', ``caused by detection'' \\
-1 & PS & as P & same test on patch and swap & 2 & use as a demonstration that the gate works \\
-1 & S2 & 300 & exact McNemar, re-infilled flagged set against random-gate best-of-four re-infill (kept draw), patch and splice; only if $n\ge120$ & 2 & ``improves'', ``restores'', detection as mechanism \\
-1 & B & 300 pairs & exact McNemar, two-way fusion against the better single direction; untestable at ceiling 0.95 & 1 & a statement about corruption \\
-1 & R & 150 & exact McNemar per corruption with a primary rejection with $b>c$ (none: not run) & -- & any claim beyond the tested model \\
-1 & S-M, S-Z, S-DN, S-D, S-D2, S-C & as P & mechanism, evidence ratio, denoising, detection, out-of-sample detection, clean control & 3, 3, 2, 2, 2, 1 & as in the protocol \\
-1 & H, H-M & 300 (planned) & as P on SugarCrepe hard negatives; added after the primary result & 3 & see S-III \\
-2 & L & 450 & L1 exact one-sided McNemar on noise; then Holm over L3 (JPEG), L4 (splice), two-sided & 3 & ``confirmed'' except for L1 \\
-2 & L-NI & 450 & lower 90\% bootstrap bound of the clean net change against $-0.03$ & 1 & a superiority claim on clean images \\
-2 & L-LEN & 449 & exact one-sided McNemar on noise with length-matched negatives & 1 & -- \\
-2 & LG & 300 & exact one-sided McNemar, shot, impulse, speckle (severity 3) & 3 & a claim beyond the three tested noise types \\
-\midrule
-1 & E-dec, E-pred, suite & P fold & intervals or sign agreement only; no test & -- & any $p$-value in a claim \\
+L & 450 & L1 exact one-sided McNemar on noise; then Holm over L3 (JPEG), L4 (splice), two-sided & 3 & ``confirmed'' except for L1 \\
+L-NI & 450 & lower 90\% bootstrap bound of the clean net change against $-0.03$ & 1 & a superiority claim on clean images \\
+L-LEN & 449 & exact one-sided McNemar on noise with length-matched negatives & 1 & -- \\
+LG & 300 & exact one-sided McNemar, shot, impulse, speckle (severity 3) & 3 & a claim beyond the three tested noise types \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Dated Amendments}
-% run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md section 9, rows A-1 to A-9
-Row A-1 moved the Study~1 code pin for later stages; it changed two command-line flags of the stage runner and the guard settings recorded
-per chunk, and no analysis path, scoring definition, or frozen file.
-Row A-2 set a slow-item limit of three times the median item time, with a floor of 2~s, for later stages on the first author's dated
-answer; guard settings decide only whether a run continues.
-Row A-3 closed the window for tightening the second-model stage before the main analysis ran; that stage never ran.
-Row A-4 added the audited Tier-3 code, with no existing file changed.
-Row A-5 made the unchanged tokenisation self-check of the re-infilling stage run with deterministic convolution algorithms.
-Row A-6 merged the family H and Study~2 code after the re-infilling stage completed, with a byte-identical regeneration of every committed
-Study~1 output.
-Row A-7 recorded the family H preconditions before its first item.
-Row A-8 made the Study~2 self-check run with deterministic convolution algorithms after two stops before any item (pin \texttt{1871fe7d}).
+% run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md section 9, rows A-8 and A-9 (rows A-1 to A-7 concern code pins of the earlier study and are not repeated here)
+Row A-8 made the self-check of the tokenisation of the fresh-fold stage run with deterministic convolution algorithms after two stops before any item (pin \texttt{1871fe7d}).
 Row A-9 changed one test only (pin \texttt{84be25c4}); production code was byte-identical.
 
 \subsection{Time Input of the Released Configuration}\label{sup:timefree}
@@ -201,78 +156,7 @@ Raw logits are returned before the step that copies observed positions & \texttt
 \end{tabular}
 \end{table}
 
-\subsection{Protocol Details of Study 1 (Main Paper, Sections IV-A and IV-B)}\label{sup:protocol1}
-% Moved verbatim from paper2-tnnls/sections/study1.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
-% run: design constants of research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md and SAP (rungs, thresholds T >= 2.0, n_v >= 90, rules R1-R3, alpha 0.05)
-Each realistic corruption has two rungs, walked in order: JPEG quality~10, then~5; Gaussian noise with $\sigma=0.10$, then $0.20$; a
-pixel splice of $128$, then $192$~px.
-A rung passes if the size-normalised evidence $\bar\Delta/s$ falls under corruption and recovers under the changed-code gate, which keeps
-exactly the tokens whose code did not change (paired $t\ge2.0$ for both, $n_v\ge90$ items).
-The first passing rung is the operating point.
-The largest headroom discordance $D^\ast$ between the changed-code gate and no gate then sets the test size: 300 items if $D^\ast\ge29$
-(rule R1), 500 items if $18\le D^\ast<29$ (R2), and a switch of endpoint if $D^\ast<18$ (R3).
-% run: research/paper2/prereg/PREREG-GATE-v4-2026-10-28.md (design value; assumed discordance 0.10, not observed)
-The design minimum detectable net gain at $n=300$ was 0.053 unadjusted, under an assumed discordance of 10\%.
-Ties of the suspicion scores from \texttt{bf16} logits are broken by an independent uniform jitter smaller than the smallest gap between
-distinct calibration scores.
-Subtracting $D_j$ gives the Neyman--Pearson statistic only for corrupted values drawn from the position marginal, which JPEG compression,
-noise, and splices do not produce, so no statement about detection power is made.
-
-\subsection{Disclosures of Addendum A4}
-(1) The five Tier-3 comparators and their parameters (S-II) were fixed in Addendum A4, whose draft (\texttt{40828e96}) and revision r1
-(\texttt{f1671c91}) were committed before the headroom decision file of the main run was written; the addendum's author states that no
-value of the headroom or primary stage was read when it was written, which is an assertion and not an attestation.
-The reading rules for few discordant items (revisions r2 and r3 of the addendum) were added after the headroom decision file was
-committed and read, before any main-test value or Tier-3 output existed.
-(2) No $p$-value is computed for the Tier-3 comparators; there are 72 intervals and no multiplicity adjustment.
-(3) The outcome book of Addendum A4 fixed the wording of every label before the primary result existed.
-On 28 October 2026 at about 18:40 UTC the first author delegated the choice of how the submission condition reads under a null primary
-result; under that delegation the stricter reading (no question-form framing in the title, abstract, highlights, conclusion, or the opening of
-the Study 1 discussion) was adopted within the authors' study pipeline at 18:42 UTC, before any value of the main test was
-read. Decision records D0076 and D0077 document this; D0077 corrects D0076's wording (the author's message delegated the choice and did
-not itself choose a reading).
-(4) The time-input statement rests on a code reading at the pinned commit (above) and on the key check.
-(5) Family~B ran before the re-infilling family S2, which the plan allows when a fixed time inequality holds at the end of the coherence
-stage (the current time plus the planned duration of the re-infilling stage and fixed margins had to fall before a deadline fixed in
-Addendum A4); it held.
-A code reading showed that no output of family~B can reach an input of S2; the rule that B is analysed only after the S2 table exists
-is procedural, and it was followed (analysis commit \texttt{10e6bc0f}).
-
 \subsection{Full List of Deviations and Disclosures}\label{sup:deviations}
-\emph{Study 1.}
-\begin{enumerate}
-\item The sample size of S2 and B was set to 300 instead of 150 before any outcome, on the first author's dated confirmation; S2 was
-restricted to patch and splice after a 21-item dry run.
-\item The first stage of the detection measurement stopped and was resumed at item 106 of 200.
-\item Three checks of the second-model adapter are applied outside the module that holds the others and were reviewed, not executed,
-by the auditor; the second-model stage never ran.
-\item The sensitivity analyses of S2 and B read ``rejection'' as the favourable-direction rejection at the adjusted level; this can
-over-flag sensitivity to $n$, never under-flag it, and it enters no claim.
-\item The firewall for the S2 smoke test is an honour rule.
-\item The swap and patch parameters are stored in one frozen file that stands for two files named in the plan.
-\item The chance bar for the sanity corruptions is called blind on the lead analyst's assertion that no detection-pilot output from item 26 on
-was read; the first author's written co-attestation of not having looked at those outputs is dated before the analysis ran.
-\item Where the card forbids any claim from a rejection with $c>b$ and the plan prescribes ``reduced verification accuracy'', the plan
-governs, and no claim in favour of the gate is made from such a rejection.
-\item The calibration stage stopped twice on the slow-item rule of the guard (106 and then 114 rows complete), with no crash; it was
-relaunched on the first author's dated answers (row A-2); stored rows were kept unchanged.
-\item The main-test stage stopped once at 334 of 500 on the default chunk limit of the stage runner, not a guard stop, and resumed at row
-334 with the same items and flags.
-\item During the coherence stage the workstation restarted for an update after one of 100 items; the stage was continued
-on the first author's instruction and completed 100 of 100.
-\item Family~B ran before S2 under the plan's time inequality (A4 disclosure (5) above).
-\item No second-model stage ran, because no corruption had a primary rejection with $b>c$.
-\item The S2 smoke test stopped twice at the tokenisation self-check before any item, caused by process-to-process nondeterminism of
-autotuned convolutions in the image tokeniser; row A-5 fixed the self-check, and S2 reads stored codes and never re-tokenises.
-\item Family~H: the A5 disclosure (S-III) and amendment items (A5.14, A5.1 amendment item 7); decision D0087 was committed after the H3
-driver had started and before any H3 row existed.
-\item The effective-$n$ record of the S2 figure carries a reason text written at analysis time.
-\item The fold builder's notes: the image ids of the negatives and mismatches were not collected separately (no analysis uses
-them); 162 other \texttt{runs/P2-*} JSON files outside the excluded classes were not opened by the fold check.
-\item The time-input table, planned for an appendix of the main paper, is reported in this supplement instead.
-\item The exact Clopper--Pearson bounds of the family P table were added at writing (\texttt{runs/P2-PAPER-BOUNDS}, descriptive).
-\end{enumerate}
-\emph{Study 2.}
 \begin{enumerate}
 \item The L1 stage stopped twice at its tokenisation self-check before any item (directories \texttt{P2-LRF-L1.try1}, \texttt{.try2});
 row A-8 moved the pin to \texttt{1871fe7d}. Residual: the self-check certifies the layout under the deterministic backend, while the
@@ -286,780 +170,34 @@ items ran with autotuning on as in the design run, and a fresh tokenisation can 
 \item Hashes appear in CRLF and LF forms; both refer to the same content.
 \item The parity files were moved unchanged from a wrong output directory; no hash was taken before the move, and audit-time SHA-256s
 are recorded in the reference-encoder audit.
-\item The field \texttt{pixel\_parity: not run} of the main reference-encoder file is superseded by the two parity runs (S-VI).
+\item The field \texttt{pixel\_parity: not run} of the main reference-encoder file is superseded by the two parity runs (S-IV).
 % run: runs/P2-ENV/hf_cache_sizes.json:total_gb_decimal (= 5.229) (number audit N1; D0100)
 \item The download of the reference encoders was 5.2~GB against 2 to 4~GB quoted to the first author.
-\item Decision D0094: what had been seen before the re-freeze (main paper, Section V-A).
+\item Decision D0094: what had been seen before the re-freeze (main paper, Section IV-A).
 \item ``No output was read before its run was complete'' rests on the operations log.
-\item The Tier-3 ablation (S-VII) was added at writing; no ablation was preregistered.
+\item The exploratory ablation (S-V) was added at writing; no ablation was preregistered.
 % run: git commit 83ac79f8 (plan E1); runs/P2-LRF-DN/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt
-\item The denoiser comparison (S-VII, plan E1 in  \nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md}, commit \texttt{83ac79f8}) was planned in a file committed before the run, and the run was made once, on the fresh-fold images, after the confirmatory results were known. The environment lock file of the denoiser run is empty, as for the earlier Study~2 stages; the environment record of item~4 is dated before that run.
+\item The denoiser comparison (S-V, plan E1 in \texttt{\seqsplit{research/paper2/tnnls/EXPLORATORY-PLAN-BASELINES-2026-10-30.md}}, commit \texttt{83ac79f8}) was planned in a file committed before the run, and the run was made once, on the fresh-fold images, after the confirmatory results were known. The environment lock file of the denoiser run is empty, as for the earlier stages; the environment record of item~4 is dated before that run.
+% run: git commits ddcc9523 (plan E4) and 3bd115b1 (severity plan) before their runs; runs/P2-LRF-SEV/env-lock.txt (0 bytes)
+\item The Dempster-combination row (\nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-EVIDENTIAL-2026-10-31.md}) and the Gaussian-noise severity sweep (\nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md}, \cref{stab:severity}) were planned in files committed before their runs, after the confirmatory results were known; the environment lock file of the sweep run is empty, as for the denoiser run.
+% 2026-10-31 items (single-study version; lead instruction, item 8)
+\item 2026-10-31: this paper reports one of two preregistered studies; the other is not reported here; the methods state its negative primary result without its numbers. The analysis addendum (A6.12) had placed a sentence on the other study in this paper's abstract, so this is a deviation from it.
+\item 2026-10-31: the title was shortened from the title preregistered for the confirmed branch (A6.12, branch A); the claim is unchanged.
+\item 2026-10-31: the abstract contains no numbers; they are in the Results. This departs from the sentence templates of A6.12, which carried the numbers in the abstract; no claim was added.
 \end{enumerate}
 
 %======================================================================================================================================
-\section{Study 1: Secondary and Descriptive Families, and the Tier-3 Comparison}\label{sup:study1}
-\subsection{Family P: The Full Preregistered Test}\label{sup:familyP}
-% Moved from paper2-tnnls/sections/study1.tex (former main Table, label tab:familyP) by the clarity editor (edit 6, 2026-10-30, page cap).
-% run: runs/P2-GATE-M4/analysis.json:primary.per_corruption.*, outcome.label; runs/P2-PAPER-BOUNDS/p_exact_bounds.json
-\Cref{stab:familyP} gives the full test of family P; its intervals are plotted in Fig.~\ref{M-fig:p_result} of the main paper.
-
-\begin{table}[!htbp]
-\centering
-\caption{Family P: GATE-M Against No Gate on the 500 Test Items}
-\label{stab:familyP}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{\input{../tables/tab1_familyP}}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize The main paper shows the P-only summary figure; this table holds the full family P record, including the 98.33\% interval. $b$: items that GATE-M answers correctly and the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$;
-net difference $=(b-c)/n$. Paired percentile bootstrap intervals (10\,000 resamples) at 90\% (the level of the preregistered
-decision), 95\% and 98.33\% (the Holm level of the smallest-$p$ step); zero width when $n_d=0$. $p$: exact two-sided McNemar;
-$p_{\rm Holm}$: Holm over the three corruptions. The exact Clopper--Pearson 95\% bound on the absolute net change was added at
-writing and is descriptive, not preregistered. No test rejected, so nothing is bold.}
-\end{table}
-
-\Cref{stab:overview} gives the status of every Study~1 family, with no estimate and no interval (an earlier overview with estimates was
-deleted; decisions D0096 and D0102).
-Each family's estimates are in its own table or paragraph (family P in \cref{stab:familyP}; the others below and in S-III).
-None of the material in this section enters a statement about family P.
-
-\begin{table}[!htbp]
-\centering
-\caption{Study 1 Family Status Map (Status Only; No Estimates)}
-\label{stab:overview}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\textwidth}\input{../tables/supp_status_map_study1}\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Status words only, as fixed by the plan; no estimate, interval, or $p$-value. The estimates of each family are
-in its own table or paragraph.}
-\end{table}
-
-\subsection{Headroom}
-% run: runs/P2-GATE-M3/family.json:rungs.*, n_rule.*
-\Cref{stab:headroom} gives the headroom check that fixed the operating points and the test size.
-On the size-scaled ratio $z_R$, a sensitivity analysis, the second condition fails at every rung ($T_2$ from $-6.75$ to $-0.09$); the
-rule uses the size-normalised ratio.
-
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{Headroom Check on the 100 Headroom Items (No Gate Flag Computed)}
-\label{stab:headroom}
-\footnotesize
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{lcccccccc}
-\toprule
-Rung & $n_v$ & $T_1$ & $T_2$ & Passes & $D_c$ & \makecell{Changed\\codes} & \makecell{Accuracy\\drop} & \makecell{Operating\\point} \\
-\midrule
-JPEG, quality 10 & 99 & 6.03 & 3.30 & yes & 19 & 986.7 & 0.06 & yes \\
-JPEG, quality 5 & 95 & 5.16 & 1.54 & no & 26 & 1010.5 & 0.04 & -- \\
-Noise, $\sigma=0.10$ & 100 & 4.20 & 4.38 & yes & 18 & 949.4 & 0.14 & yes \\
-Noise, $\sigma=0.20$ & 100 & 3.79 & 4.27 & yes & 19 & 998.4 & 0.22 & -- \\
-Splice, 128 px & 100 & 5.33 & 4.05 & yes & 2 & 237.2 & 0.01 & yes \\
-Splice, 192 px & 100 & 7.93 & 7.34 & yes & 3 & 387.7 & 0.03 & -- \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize $n_v$: items with all values; $T_1$, $T_2$: paired
-$t$ statistics of clean minus corrupted and changed-code gate minus corrupted, on $d_R$; a rung passes if $n_v\ge90$, $T_1\ge2$, and
-$T_2\ge2$, and the first passing rung is the operating point. $D_c$: items whose correctness differs between the changed-code gate
-and no gate. Changed codes: mean number of the 1\,024 codes that differ from the clean tokenisation. Accuracy drop: clean minus
-corrupted accuracy without a gate. Rungs after a passing first rung were computed but not used. No interval is reported, so nothing is
-bold. $D^\ast=\max(19,18,2)=19$ over the operating points gives rule R2 ($18\le D^\ast<29$): 500 test items, endpoint $Y$.
-Source: \nolinkurl{runs/P2-GATE-M3/family.json}, keys \nolinkurl{rungs.*} and \nolinkurl{n_rule.*}.}
-\end{table}
-
-\subsection{Calibration and Flags}
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{Clean False-Alarm Check on the 500 Clean Test Pairs}
-\label{stab:cal}
-\footnotesize
-\begin{tabular}{ccccc}
-\toprule
-$\alpha$ & $\hat F_{\rm cal}$ & $\hat F$ (test) [95\%] & $Z_{\rm cal}$ & Reading \\
-\midrule
-0.01 & 0.0067 & 0.0064 $[0.0061,\,0.0067]$ & $-16.12$ & no evidence of violation \\
-0.05 & 0.0468 & 0.0456 $[0.0442,\,0.0470]$ & $-3.59$ & no evidence of violation \\
-0.10 & 0.0970 & 0.0956 $[0.0928,\,0.0985]$ & $-1.76$ & no evidence of violation \\
-\bottomrule
-\end{tabular}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize $\hat F$: mean over items of the flagged share of an item's 1\,024
-tokens; interval: percentile bootstrap 95\% over items (10\,000 resamples). $\hat F_{\rm cal}$: flagged share on the 300 calibration
-pairs at the fitted threshold. $Z_{\rm cal}$: calibration statistic of Section S-I; a violation is flagged above 2.13. Nothing
-is bold (no interval of a difference). Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys
-\nolinkurl{calibration.fap_check.per_alpha.*}; \nolinkurl{runs/P2-GATE-M2/threshold.json}, keys \nolinkurl{thresholds.*.r_hat}.}
-\end{table}
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{Flags of the Gate at $\alpha=0.05$ on the Corrupted Test Images (Token Level, Pooled Over the 500 Items)}
-\label{stab:flags}
-\footnotesize
-\begin{tabular}{lcccc}
-\toprule
-Corruption & Changed share & Hit rate & False-alarm proportion & Precision \\
-\midrule
-JPEG, quality 10 & 0.961 & 0.061 & 0.037 & 0.976 \\
-Noise, $\sigma=0.10$ & 0.928 & 0.033 & 0.036 & 0.922 \\
-Splice, 128 px & 0.227 & 0.049 & 0.044 & 0.248 \\
-\midrule
-Patch (sanity) & 0.062 & 0.750 & 0.050 & 0.498 \\
-Swap (sanity) & 0.150 & 0.859 & 0.089 & 0.631 \\
-\bottomrule
-\end{tabular}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Changed share: share of
-tokens whose code differs from the clean tokenisation ($\rho$). Hit rate: share of changed tokens flagged. False-alarm proportion:
-share of unchanged tokens of corrupted items flagged (not covered by the guarantee). Precision: share of flagged tokens that changed.
-Point estimates; no interval was computed, so nothing is bold. Patch and swap are the sanity corruptions of the positive control.
-Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{calibration.per_condition.*.{precision,recall,fap_on_clean_tokens}}
-and \nolinkurl{calibration.per_condition.*.prop4.rho}.}
-\end{table}
-% run: runs/P2-GATE-M4/analysis.json:calibration.split_replication.*; c1_test.*
-In 2\,000 random re-splits of calibration and test items at $\alpha=0.05$ (exploratory), the mean of $\hat F-\alpha$ was $-0.0031$, with 2.5
-and 97.5 percentiles of $-0.0055$ and $-0.0006$.
-The clean no-gate accuracy on the test fold was 0.880 (Wilson 95\% interval 0.849 to 0.906), against 0.843 (0.798 to 0.880) in the
-pilot; the intervals overlap, so the pre-stated pipeline audit was not triggered.
-For $\alpha=0.05$ on an $8\times8$ patch image about 48 false flags are expected against at most 64 true ones, so precision is at most
-0.57 even for a perfect detector, and under JPEG and noise more than nine in ten tokens change, so precision must be read against that
-base rate.
-
-\subsection{Positive Control (PS, Pipeline Check)}\label{sup:ps}
-% Moved from paper2-tnnls/sections/study1.tex (former main Table II) by the clarity editor (edit 2, 2026-10-30, lead decision); the table
-% file tables/tab_ps.tex is unchanged and its PS result sentences with their numbers stay in Section IV-C of the main paper.
-\Cref{stab:ps} is the positive-control table of Section IV-C of the main paper. It is a pipeline check and is not read beside family P.
-
-\begin{table}[!htbp]
-\centering
-\caption{Positive Control (Pipeline Check): GATE-M Against No Gate on the Sanity Corruptions}
-\label{stab:ps}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\resizebox{\textwidth}{!}{\input{../tables/tab_ps}}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Columns as in \cref{stab:familyP} ($b$: items that GATE-M answers correctly and
-the ungated rule incorrectly; $c$: the reverse; $n_d=b+c$; net difference $=(b-c)/n$); Holm over two; 95\% and 98.33\% paired
-percentile bootstrap intervals (10\,000 resamples). A pipeline check, not read beside family P; the control was not met and the plan's
-audit found no defect. Source: \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
-\nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.}
-\end{table}
-
-\subsection{Token Detection: Per-Item AUROC, the One-Pass Score, and the Rival}\label{sup:detection}
-% Moved from the main paper (former detection figure, label fig:detection, and the sentences on the one-pass score and the frozen rival) by the
-% Mask-DiFuser pass (2026-10-30, lead instruction); the former main detection table moved here by the clarity editor (edit 6). The table file
-% tables/tab_detection.tex is unchanged; numbers unchanged.
-% run: runs/P2-GATE-M1/analysis.json:table.{jpeg,noise}.{q,tbv}.{mean,lo,hi}
-\Cref{sfig:detection} and \cref{stab:detection} give the per-item AUROC of the gate's score $q_j=-u_j$, of the one-pass TbV score of the non-finetuned backbone, and of the best cheap rival.
-On noise the gate's score is below the TbV score; the marginal intervals do not overlap, which is descriptive, and no paired test was run; on JPEG the two overlap.
-% run: runs/P2-GATE-M4/analysis.json:s_d2.per_corruption.{jpeg,noise}.{diff_mean,ci95,p_holm,n_eligible}
-With the best cheap rival (the pixel variance of a token's patch, sign reversed) frozen and re-scored on the test items, $q$ minus the
-rival was $-0.198$ ($-0.211$ to $-0.186$) under JPEG and $-0.258$ ($-0.267$ to $-0.250$) under noise (Holm-adjusted $p=0.0004$).
-% run: runs/P2-GATE-M1/analysis.json:paired_q_vs_best_cheap.{jpeg,noise}.{best_cheap,rival_sign,diff_mean,ci95,p_holm}; table.*.tex_neg
-On the detection items, where the rival and its sign were selected, $q$ also lies below it (same-item selection; \cref{sfig:detection}(b)).
-
-\begin{figure}[!htbp]
-\centering
-\includegraphics[width=0.5\textwidth]{../figures/fig_detection.pdf}
-% run: runs/P2-GATE-M1/analysis.json:table.<corruption>.{q,tbv,<rival>}.{mean,lo,hi,n}; paired_q_vs_best_cheap.<corruption>.{best_cheap,rival_sign,diff_mean,ci95,p_holm}
-% run: runs/P2-GATE-M4/analysis.json:s_d2.per_corruption.{jpeg,noise}.{rival,diff_mean,ci95,n_eligible (= 492, 497),p_holm (= 0.0004)}; plotted values runs/P2-PAPER-FIGS/fig_detection.json
-\caption{Study 1, detection of changed image tokens (descriptive of the gate's score; not part of family P). (a) Mean per-item AUROC
-against changed-code labels with the 95\% percentile-bootstrap interval over items (10\,000 resamples), $n$ per row as printed: the gate's score $q_j=-u_j$, the one-pass TbV score of the non-finetuned model, and the best cheap
-rival, chosen with its sign on these same items among both orientations of every cheap score (same-item selection, so optimistic; name
-and sign in the row label). (b) Paired difference $q$ minus rival with its 95\% interval, on the detection items
-where the rival was selected (filled) and with the rival frozen and re-scored on the test items (open; JPEG and noise; 492 and 497
-items; Holm-adjusted $p=0.0004$ for both, the resolution floor of 10\,000 resamples).}
-\label{sfig:detection}
-\end{figure}
-
-\begin{table}[!htbp]
-\centering
-\caption{Detection of Changed Image Tokens on the Detection Items: Per-Item AUROC}
-\label{stab:detection}
-% run: runs/P2-GATE-M1/analysis.json:paired_q_vs_best_cheap.{jpeg,noise}.p_holm (= 0.0004)
-\footnotesize
-\resizebox{\textwidth}{!}{\input{../tables/tab_detection}}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Mean per-item AUROC against changed-code labels, 95\% percentile bootstrap intervals over items
-(10\,000 resamples). $q$: the gate's score; TbV score: one-pass observed-position score of the non-finetuned model; rival: the best
-cheap score in either orientation, chosen on these data (same-item selection, so optimistic), with its sign. Items: detection items
-entering each row. Last column: paired difference $q$ minus rival (Holm-adjusted $p=0.0004$ for JPEG and noise). Source:
-\nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*}, \nolinkurl{paired_q_vs_best_cheap.*}.}
-\end{table}
-
-\subsection{Equal-Size Gates (Descriptive) and the Evidence Ratio (S-Z)}
-% run: runs/P2-GATE-M4/analysis.json:mechanism.<cell>.y.*
-\Cref{stab:mech} reports GATE-M against the other gates of equal size, descriptively.
-On every realistic corruption GATE-M was not distinguishable from the geometry-matched and scattered random gates; under splice the
-top-$k$ gate on plain $B$ gave a higher accuracy than GATE-M ($-0.008$, 95\% interval $-0.016$ to $-0.002$); the changed-code gate
-lowered accuracy relative to no gate under JPEG ($-0.084$, $-0.122$ to $-0.046$) and raised it under noise ($0.070$, $0.036$ to $0.104$).
-
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{Equal-Size Gates on the 500 Test Items}
-\label{stab:mech}
-\footnotesize
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{lcccccc}
-\toprule
-& \multicolumn{5}{c}{GATE-M minus} & \\
-\cmidrule(lr){2-6}
-Corruption & \makecell{geometry-\\matched} & scattered & \makecell{plain-$B$\\top-$k$} & \makecell{$s_3$\\top-$k$} & \makecell{changed-\\code} & \makecell{Changed-code\\minus none} \\
-\midrule
-JPEG & $0.000$ & $-0.002$ & $0.000$ & $0.000$ & $\mathbf{0.082}$ & $\mathbf{-0.084}$ \\
-& \scriptsize$[-0.002,0.002]$ & \scriptsize$[-0.007,0.001]$ & \scriptsize$[-0.006,0.006]$ & \scriptsize$[-0.008,0.008]$ & \scriptsize$[0.044,0.120]$ & \scriptsize$[-0.122,-0.046]$ \\
-Noise & $0.001$ & $0.000$ & $-0.002$ & $0.000$ & $\mathbf{-0.070}$ & $\mathbf{0.070}$ \\
-& \scriptsize$[0.000,0.002]$ & \scriptsize$[0.000,0.000]$ & \scriptsize$[-0.006,0.000]$ & \scriptsize$[0.000,0.000]$ & \scriptsize$[-0.104,-0.036]$ & \scriptsize$[0.036,0.104]$ \\
-Splice & $-0.001$ & $-0.004$ & $\mathbf{-0.008}$ & $-0.006$ & $-0.008$ & $0.004$ \\
-& \scriptsize$[-0.009,0.007]$ & \scriptsize$[-0.011,0.002]$ & \scriptsize$[-0.016,-0.002]$ & \scriptsize$[-0.016,0.002]$ & \scriptsize$[-0.022,0.006]$ & \scriptsize$[-0.010,0.018]$ \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Accuracy of GATE-M minus each comparison gate, and of the changed-code gate minus no
-gate, with paired percentile bootstrap 95\% intervals over items (10\,000 resamples). Geometry-matched and scattered random gates are
-averaged over three seeds per item. Descriptive (exploratory); no $p$-value. Bold: the 95\% interval excludes zero.
-Source: \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{mechanism.{jpeg10,noise0.1,splice128}.y.*}.}
-\end{table}
-
-% run: runs/P2-GATE-M4/analysis.json:s_z.*; mechanism.<cell>.d.*
-GATE-M increased the evidence ratio (mean over spread of the kept $\Delta_j$) under all three corruptions (Wilcoxon signed-rank, Holm over
-three): by $0.0090$ ($0.0078$ to $0.0102$; $p_{\rm Holm}=1.9\times10^{-39}$) under JPEG, $0.0038$ ($0.0030$ to $0.0047$; $8.5\times10^{-16}$)
-under noise and $0.0078$ ($0.0069$ to $0.0087$; $2.9\times10^{-43}$) under splice.
-This is not a result about verification accuracy: the ratio rises when tokens with extreme evidence are removed for any reason.
-The geometry-matched random gate did not raise it (GATE-M minus that gate $0.0091$, $0.0040$, $0.0081$), the plain-$B$ top-$k$ gate raised
-it almost as much as GATE-M (differences $0.0008$, $0.0003$, $0.0005$), and the uncertainty top-$k$ gate less ($0.0051$, $0.0033$, $0.0045$).
-
-\subsection{Pixel Denoising (S-DN)}
-% run: runs/P2-GATE-M4/analysis.json:s_dn.*; runs/P2-GATE-CPU/denoise_check (PSNR 20.41 -> 25.75 dB noise; 26.82 -> 25.13 dB JPEG)
-The denoiser is OpenCV non-local means with one setting for all corruptions; on 20 images it raises the peak signal-to-noise ratio of the noisy image from
-20.41 to 25.75~dB and lowers that of JPEG quality~10 from 26.82 to 25.13~dB.
-Under noise the denoised copy gave higher verification accuracy than GATE-M: 0.852 against 0.676 (GATE-M minus denoised $-0.176$, 95\%
-interval $-0.224$ to $-0.130$; $p_{\rm Holm}=1.5\times10^{-12}$).
-Under JPEG no difference was detected (0.844 against 0.836; $-0.008$, $-0.042$ to $0.026$; $p_{\rm Holm}=0.74$); at this setting the
-denoiser harms JPEG images, so this row compares GATE-M with a defence that lowers image quality.
-
-\subsection{Decomposition (E-dec) and Sign Agreement (E-pred), Descriptive}
-% run: runs/P2-GATE-M4/edec.json:cells.*; runs/P2-GATE-M4/epred_score.json:cells.*, P.*
-E-dec splits the accuracy lost to corruption into the residual loss under the changed-code (oracle) gate, the recovery by GATE-M, and the
-gap to the oracle gate (\cref{stab:edec}); its parts are relative to the changed-code label, which marks encoder instability and is not an
-evidence oracle.
-E-pred compares the committed sign of the independent-token signal-to-noise change with the observed sign of $b-c$ (\cref{stab:epred}):
-agreement in 2 of 2 evaluable primary cells (95\% interval 0.158 to 1.000), the noise cell excluded for having no observed sign, and in
-0 of 1 positive-control cells; the rival rule ``always $+$'' agreed in 0 of 2.
-No cell had an observed interval that excludes zero, so the plan's refutation rule was not met.
-On the evidence ratio, which GATE-M raised, the committed sign was negative; this disagreement is reported and not read either way.
-The correlated-token proposition of the main paper is not used to interpret E-pred.
-
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{E-dec on the Accuracy Scale, Primary Cells (Descriptive; No Test)}
-\label{stab:edec}
-\footnotesize
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{lccccc}
-\toprule
-Cell & $n$ & $T$ & $U$ & $R$ & $V$ \\
-\midrule
-JPEG (P1) & 498 & $\mathbf{0.044}$ & $\mathbf{0.124}$ & $-0.002$ & $\mathbf{-0.078}$ \\
-& & \scriptsize$[0.018,0.070]$ & \scriptsize$[0.088,0.161]$ & \scriptsize$[-0.006,0.000]$ & \scriptsize$[-0.116,-0.040]$ \\
-Noise (P2) & 500 & $\mathbf{0.204}$ & $\mathbf{0.134}$ & $0.000$ & $\mathbf{0.070}$ \\
-& & \scriptsize$[0.166,0.244]$ & \scriptsize$[0.098,0.172]$ & \scriptsize$[0.000,0.000]$ & \scriptsize$[0.036,0.106]$ \\
-Splice (P3) & 500 & $0.004$ & $0.000$ & $-0.004$ & $0.008$ \\
-& & \scriptsize$[-0.006,0.014]$ & \scriptsize$[-0.016,0.016]$ & \scriptsize$[-0.012,0.004]$ & \scriptsize$[-0.006,0.024]$ \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize $T$: clean minus corrupted accuracy without a gate; $U$:
-residual loss under the oracle (changed-code) gate; $R$: realised recovery by GATE-M; $V$: gap to the oracle gate; $T=U+R+V$.
-Paired percentile bootstrap 95\% intervals over items, items resampled jointly (10\,000 resamples). $n$: complete items (two JPEG items
-have no finite changed-code value). Bold: the 95\% interval excludes zero. Source: \nolinkurl{runs/P2-GATE-M4/edec.json}, keys
-\nolinkurl{cells.{P1,P2,P3}.accuracy_scale.tau.*}.}
-\end{table}
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{E-pred, Primary Cells (Descriptive; Family E Withdrawn, No Test)}
-\label{stab:epred}
-\footnotesize
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{lcccccccc}
-\toprule
-Cell & \makecell{predicted\\sign $s_c$} & \makecell{Same-sign\\share} & $b$ & $c$ & \makecell{Net diff.\\{[95\%]}} & \makecell{observed\\sign $o_c$} & $o_c^\ast$ & Agree \\
-\midrule
-JPEG (P1) & $-$ & 1.000 & 0 & 1 & $-0.002$ & $-$ & none & yes \\
-& & & & & \scriptsize$[-0.006,0.000]$ & & & \\
-Noise (P2) & $-$ & 1.000 & 0 & 0 & $0.000$ & none & none & \makecell{excluded\\($b=c$)} \\
-& & & & & \scriptsize$[0.000,0.000]$ & & & \\
-Splice (P3) & $-$ & 1.000 & 1 & 3 & $-0.004$ & $-$ & none & yes \\
-& & & & & \scriptsize$[-0.012,0.004]$ & & & \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize $s_c$: committed sign of the plug-in signal-to-noise change
-(the independent-token condition of Lemma 1 of the main paper) from the fit chunk, with the share of fit resamples giving the same sign; $o_c$: sign of $b-c$ for GATE-M against
-none; $o_c^\ast$: the same sign only where the 95\% paired bootstrap interval of the net difference excludes zero. Net difference with
-its paired percentile bootstrap 95\% interval over items. Agreement $A/K_{\rm eval}=2/2$ (Clopper--Pearson 95\% interval 0.158 to
-1.000); rival rules: ``always $+$'' 0/2, ``$-$ for primary cells, $+$ for positive-control cells'' 2/2. No estimate is bold: no
-interval excludes zero. Positive-control cells are reported in the text. Source: \nolinkurl{runs/P2-GATE-M4/epred_score.json}, keys \nolinkurl{cells.{P1,P2,P3}} and \nolinkurl{P}.}
-\end{table}
-
-\subsection{Coherence of the Denoiser Across Mask Patterns}
-% run: runs/P2-GATE-M5/coherence.json:{median_abs_gap,p95_abs_noise_floor,n_gaps,mu,by_kind.*}
-On 100 clean calibration items (800 gaps) the median absolute order gap of the joint log-likelihood was 0.071 nats, above the numerical
-noise floor (95th percentile of repeat differences 0.000) and below the clean mean per-token evidence $\mu=0.199$, so neither pre-stated
-reading applies; by pair type (descriptive) the median gap was 0.253 for horizontally adjacent, 0.246 for vertically adjacent, and 0.032 for
-distant tokens.
-
-\subsection{Exploratory Corruption Suite}
-% run: runs/P2-GATE-SUITE/analysis.json:cells.*.{n_items,gm_vs_none.*,acc_none,acc_gm}; choice
-The suite has eight cells of 100 test items (\cref{stab:suite}); the four types and two severities were chosen by kind from a package of
-fifteen types with no recorded rationale.
-Intervals only; no $p$-value enters a claim.
-
-\begin{table}[!htbp]
-\centering
-\caption{Exploratory Corruption Suite: GATE-M Against No Gate (100 Items per Cell; Intervals Only)}
-\label{stab:suite}
-\footnotesize
-\begin{tabular}{lccccc}
-\toprule
-Cell (imagecorruptions, severity) & Acc.\ none & Acc.\ GATE-M & $b$ & $c$ & Net [95\%] \\
-\midrule
-% run: runs/P2-GATE-SUITE/analysis.json:cells.pixelate2.gm_vs_none.*
-Pixelate, 2 & 0.82 & 0.82 & 0 & 0 & $0.00$ $[0.00,\,0.00]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.pixelate4.gm_vs_none.*
-Pixelate, 4 & 0.76 & 0.76 & 0 & 0 & $0.00$ $[0.00,\,0.00]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.defocus_blur2.gm_vs_none.*
-Defocus blur, 2 & 0.82 & 0.82 & 0 & 0 & $0.00$ $[0.00,\,0.00]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.defocus_blur4.gm_vs_none.*
-Defocus blur, 4 & 0.75 & 0.76 & 1 & 0 & $0.01$ $[0.00,\,0.03]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.fog2.gm_vs_none.*
-Fog, 2 & 0.77 & 0.76 & 0 & 1 & $-0.01$ $[-0.03,\,0.00]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.fog4.gm_vs_none.*
-Fog, 4 & 0.81 & 0.80 & 0 & 1 & $-0.01$ $[-0.03,\,0.00]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.impulse_noise2.gm_vs_none.*
-Impulse noise, 2 & 0.60 & 0.61 & 1 & 0 & $0.01$ $[0.00,\,0.03]$ \\
-% run: runs/P2-GATE-SUITE/analysis.json:cells.impulse_noise4.gm_vs_none.*
-Impulse noise, 4 & 0.55 & 0.55 & 0 & 0 & $0.00$ $[0.00,\,0.00]$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Re-Infilling (S2): Detail}
-% run: runs/P2-GATE-S2/analysis.json:per_cell.*.desc.*, disclosure, note_rand_worse_than_none, sensitivity_first150
-In the flagged-set arm the four draws share one position set, while in the random-set arm each draw has its own random set, so the
-best-of-four selection acts over position sets as well as noise in the random-set arm; the direction of the net bias is not established.
-Re-infilling clean positions with caption-masked prior samples destroys caption evidence, so the random-set arm may fall below no gate.
-Against no gate, the flagged-set arm gave $0.003$ ($-0.007$ to $0.013$) under patch and $-0.003$ ($-0.017$ to $0.007$) under splice
-(descriptive).
-The share of re-infilled positions whose code equals the original clean code was below 0.04 in every arm and cell (descriptive; not
-restoration).
-The sensitivity analysis on the first 150 items rejected no hypothesis in either cell.
-
-\subsection{Family B: Fit Pairs and Minimum Detectable Gain}
-% Moved verbatim from paper2-tnnls/sections/study1.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
-% run: runs/P2-GATE-FOIL/analysis.json:fit.{n_fit,best,best_acc} (239 fit pairs; text direction 0.887 < 0.95, so testable)
-On the 239 fit pairs the better direction was the text direction (accuracy 0.887, below the untestable ceiling of 0.95).
-% run: runs/P2-GATE-FOIL/analysis.json:mde_at_achieved_n.by_pi_d.0.1 (= 0.054; assumed discordance 0.10); test.n (= 298)
-The minimum detectable net gain at the test $n$ of 298 pairs is 0.054 at an assumed discordance of 0.10.
-
-\subsection{Withholding With Exchangeably Correlated Tokens (Main Paper, Section IV-A)}\label{sup:snrcorr}
-% Moved from the main paper (former Proposition 2, its proof sketch, the paragraph after it, and the model figure) by the Mask-DiFuser pass
-% (2026-10-30, lead instruction) to make room in the 15-page main paper. Statements unchanged; only the cross-references changed (equation and
-% lemma numbers of the main paper through xr-hyper, prefix M-). Theory under stated assumptions, not validated on UniDisc; not used in Study 2.
-Neighbouring image tokens are correlated, so (\ref{M-eq:var}) of Lemma~\ref{M-lem:meanvar} in the main paper is an approximation.
-The following statement replaces independence by an exchangeable correlation; it is theory under stated assumptions and is not evaluated on the
-model, and the notation is that of Section IV-A of the main paper.
-
-\begin{proposition}[withholding with exchangeably correlated tokens]\label{sprop:snrcorr}
-Condition on the corruption labels, so that $(1-\rho)m$ tokens are clean and $\rho m$ are corrupted, with the moments and keep
-probabilities of Lemma~\ref{M-lem:meanvar} of the main paper.
-Assume (a) that for $j\neq k$ the correlation of $\Delta_j$ and $\Delta_k$ is $\gamma_0$ if both tokens are clean, $\gamma_1$ if both are
-corrupted and $\gamma_{01}$ otherwise, with values for which the covariance matrix is positive semi-definite; and (b) that the keep
-indicators $I_j$ are independent of each other and of every $\Delta_k$.
-Then $\E S_{\rm G}$ is given by (\ref{M-eq:mean}), and
-\begin{equation}
-\begin{aligned}
-\Var S_{\rm G}={}&V+(1-\rho)m\big((1-\rho)m-1\big)(1-\phi_0)^2\gamma_0\sigma^2\\
-&+\rho m(\rho m-1)(1-\phi_1)^2\gamma_1\sigma_c^2\\
-&+2\rho(1-\rho)m^2(1-\phi_0)(1-\phi_1)\gamma_{01}\sigma\sigma_c,
-\end{aligned}
-\label{seq:varcorr}
-\end{equation}
-where $V$ is the right side of (\ref{M-eq:var}).
-If moreover $\mu_c=0$ and $\E S_{\rm G}>0$ with and without the gate, the gate raises $\E S_{\rm G}/\sqrt{\Var S_{\rm G}}$ if and only if
-\begin{equation}
-\begin{aligned}
-&\rho\,\sigma_c^2\Big[(\phi_1-2\phi_0+\phi_0^2)\\
-&\qquad+(\rho m-1)\,\gamma_1\,(\phi_1-\phi_0)(2-\phi_0-\phi_1)\Big]\\
-&\quad+2\rho(1-\rho)\,m\,\gamma_{01}\,\sigma\sigma_c\,(1-\phi_0)(\phi_1-\phi_0)\\
-&\qquad>\;(1-\rho)\,\phi_0(1-\phi_0)\,(\sigma^2+\mu^2).
-\end{aligned}
-\label{seq:snrcorr}
-\end{equation}
-Consequently:
-(i) $\gamma_0$ does not enter (\ref{seq:snrcorr}), and at $\gamma_1=\gamma_{01}=0$ it is (\ref{M-eq:snr});
-(ii) a gate with $\phi_1=\phi_0$, such as a random gate, lowers the ratio for every admissible correlation, and if $\gamma_{01}\ge0$ every
-gate with $\phi_1\le\phi_0$ lowers it;
-(iii) where $\phi_1>\phi_0$, a larger $\gamma_1$ or $\gamma_{01}$ can only turn a decrease of the ratio into an increase, so positive
-correlation among corrupted tokens, or between clean and corrupted tokens, enlarges the region of $(\phi_0,\phi_1)$ in which the gate
-raises the ratio, and as $(\rho m-1)\gamma_1\to\infty$ that region tends to $\{\phi_1>\phi_0\}$;
-(iv) if $\gamma_{01}<0$, a gate that flags only clean tokens can raise the ratio;
-(v) unlike (\ref{M-eq:snr}), the condition depends on $m$.
-\end{proposition}
-
-\noindent\emph{Proof sketch.} Each of the $m(m-1)$ ordered pairs of distinct tokens adds $\E I_j\,\E I_k\,\mathrm{Cov}(\Delta_j,\Delta_k)$ to
-$\Var S_{\rm G}$, which gives the three correlation terms of (\ref{seq:varcorr}).
-With $\mu_c=0$ the gate multiplies $\E S_{\rm G}$ by $1-\phi_0$, so it raises the ratio if and only if
-$(1-\phi_0)^2\,\Var S_{\rm G}|_{\phi_0=\phi_1=0}>\Var S_{\rm G}$; the clean-pair terms scale by $(1-\phi_0)^2$ on both sides and cancel, and the
-remaining terms, divided by $m$, give (\ref{seq:snrcorr}).
-The full proof is in \cref{sup:proof-snrcorr}. \qed
-
-\Cref{sfig:frontier} draws the frontier of (\ref{seq:snrcorr}).
-The ratio in \cref{sprop:snrcorr} is the signal-to-noise ratio of the sum.
-If the per-token terms are jointly Gaussian, the accuracy $P(S_{\rm G}>0)$ given the flags is $\Phi$ of the conditional ratio, which the
-unconditional ratio approximates; without joint Gaussianity no statement about accuracy follows, and a gate can raise the ratio while
-lowering the accuracy.
-Assumption (b) is an approximation for this gate, whose flags are computed from the same token values as the evidence.
-With correlation the ratio no longer grows like $\sqrt m$; it tends to a limit set by the shared component of the per-token terms.
-E-pred does not use \cref{sprop:snrcorr}, and the proposition is not used to interpret E-pred or any other result.
-
-\begin{figure}[!htbp]
-\centering
-\includegraphics[width=0.55\textwidth]{../figures/fig2_theory.pdf}
-\caption{Model figure, no data: a model of when withholding helps an additive statistic (theory under stated assumptions, not validated
-on UniDisc). Above each curve $\phi_1=b(\phi_0;G,\chi)$ of \cref{sprop:snrcorr} (shaded), withholding raises
-$\E S_{\rm G}/\sqrt{\Var S_{\rm G}}$; $\mu_c=0$, $\gamma_{01}=0$, $\chi=\rho\sigma_c^2/[(1-\rho)(\sigma^2+\mu^2)]=1$ and
-$G=(\rho m-1)\gamma_1=0$ (independent tokens, (\ref{M-eq:snr})), 1, 4, and 16. A larger $G$ lowers the curve towards the diagonal
-$\phi_1=\phi_0$ (random withholding). Grey: every rule with $\phi_1\le\phi_0$ lowers the ratio when $\gamma_{01}\ge0$.}
-\label{sfig:frontier}
-\end{figure}
-
-\subsection{Proof of Proposition~\ref{sprop:snrcorr} (Withholding With Exchangeably Correlated Tokens)}\label{sup:proof-snrcorr}
-% Moved verbatim from paper2-tnnls/sections/appendix.tex (former Appendix A of the main paper; THEORY-ADDENDUM r1 R1.8 appendix block) by
-% the clarity editor (edit 2, 2026-10-30, lead decision); items (iii) and (iv) restored to the full text of edit 0. Cross-references to the
-% main paper go through xr-hyper (prefix M-). Theory under stated assumptions, not validated on UniDisc; not used in Study 2.
-This proof is theory under stated assumptions, not validated on UniDisc, and is not used in Study~2; the notation is that of Section IV-A
-of the main paper; (\ref{M-eq:mean}), (\ref{M-eq:var}), and (\ref{M-eq:snr}) are equations of the main paper, and the other equations and figures are those of this supplement.
-Write $m_0=(1-\rho)m$ and $m_1=\rho m$ for the numbers of clean and corrupted tokens, $k_0=1-\phi_0$ and $k_1=1-\phi_1$ for the keep
-probabilities, and $z_j\in\{0,1\}$ for the label of token $j$, so that $\E\Delta_j$ is $\mu$ or $\mu_c$ and $\Var\Delta_j$ is $\sigma^2$ or
-$\sigma_c^2$.
-The exchangeable block covariance of assumption (a) is positive semi-definite if and only if $\gamma_0\ge-1/(m_0-1)$,
-$\gamma_1\ge-1/(m_1-1)$, $\gamma_0,\gamma_1\le1$ and $\gamma_{01}^2\,m_0m_1\le\{1+(m_0-1)\gamma_0\}\{1+(m_1-1)\gamma_1\}$.
-
-\paragraph*{Variance}
-By assumption (b), $I_j$ is independent of $\Delta_j$, so
-$\Var(I_j\Delta_j)=k(\sigma_z^2+\mu_z^2)-k^2\mu_z^2=k\sigma_z^2+k(1-k)\mu_z^2$ with $k=k_{z_j}$, which are the terms of (\ref{M-eq:var}).
-For $j\neq k$, again by (b),
-$\mathrm{Cov}(I_j\Delta_j,I_k\Delta_k)=\E I_j\,\E I_k\,\E[\Delta_j\Delta_k]-\E I_j\,\E I_k\,\E\Delta_j\,\E\Delta_k=k_{z_j}k_{z_k}\,\mathrm{Cov}(\Delta_j,\Delta_k)$.
-There are $m_0(m_0-1)$ ordered clean pairs with covariance $\gamma_0\sigma^2$, $m_1(m_1-1)$ ordered corrupted pairs with covariance
-$\gamma_1\sigma_c^2$ and $2m_0m_1$ ordered mixed pairs with covariance $\gamma_{01}\sigma\sigma_c$, which gives (\ref{seq:varcorr}).
-
-\paragraph*{Condition}
-Let $V_g$ be (\ref{seq:varcorr}) at $(\phi_0,\phi_1)$ and $V_0$ its value at $\phi_0=\phi_1=0$.
-With $\mu_c=0$, $\E S_{\rm G}=m_0k_0\mu$ with the gate and $m_0\mu$ without it, so, both being positive, the gate raises the ratio if and
-only if $k_0^2V_0>V_g$.
-Collect $k_0^2V_0-V_g$ by type of term.
-The clean terms are
-$k_0^2m_0\sigma^2\{1+(m_0-1)\gamma_0\}-m_0k_0(\sigma^2+\phi_0\mu^2)-m_0(m_0-1)k_0^2\gamma_0\sigma^2=-m_0k_0\phi_0(\sigma^2+\mu^2)$,
-in which the $\gamma_0$ terms cancel.
-The corrupted terms are $m_1\sigma_c^2\{(k_0^2-k_1)+(m_1-1)\gamma_1(k_0^2-k_1^2)\}$, with $k_0^2-k_1=\phi_1-2\phi_0+\phi_0^2$ and
-$k_0^2-k_1^2=(\phi_1-\phi_0)(2-\phi_0-\phi_1)$.
-The mixed terms are $2m_0m_1\gamma_{01}\sigma\sigma_c\,k_0(k_0-k_1)$, with $k_0-k_1=\phi_1-\phi_0$.
-Dividing the sum by $m$ gives (\ref{seq:snrcorr}).
-
-\paragraph*{Consequences}
-(i) is read off (\ref{seq:snrcorr}).
-(ii) At $\phi_1=\phi_0\in(0,1)$ every correlation term vanishes and the left side is $\rho\sigma_c^2(\phi_0^2-\phi_0)<0$, below the positive
-right side.
-For $\phi_1\le\phi_0$, let $G=(\rho m-1)\gamma_1$, so that $G\ge-1$ by positive semi-definiteness.
-The bracket $(\phi_1-2\phi_0+\phi_0^2)+G(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ is linear in $G$; it equals $\phi_1-2\phi_0+\phi_0^2\le-\phi_0(1-\phi_0)$
-at $G=0$, equals $-\phi_1(1-\phi_1)\le0$ at $G=-1$, and does not increase for $G\ge0$; hence it is at most $0$.
-If $\gamma_{01}\ge0$ the mixed term is at most $0$ as well, while the right side is positive for $\phi_0\in(0,1)$.
-(iii) The derivatives of the left side with respect to $\gamma_1$ and $\gamma_{01}$ are
-$\rho\sigma_c^2(\rho m-1)(\phi_1-\phi_0)(2-\phi_0-\phi_1)$ and $2\rho(1-\rho)m\sigma\sigma_c(1-\phi_0)(\phi_1-\phi_0)$, both positive when
-$\phi_1>\phi_0$ and $\rho m>1$, and the right side does not depend on $\gamma_1$ or $\gamma_{01}$.
-For fixed $\phi_1>\phi_0$ the $\gamma_1$ term grows without bound with $(\rho m-1)\gamma_1$, which gives the limit.
-With $\gamma_{01}=0$, $x=\phi_1-\phi_0$ and $\chi=\rho\sigma_c^2/\{(1-\rho)(\sigma^2+\mu^2)\}$, (\ref{seq:snrcorr}) reads
-$Gx^2-x\{1+2G(1-\phi_0)\}+\phi_0(1-\phi_0)(1+1/\chi)<0$, so for $G>0$ the gate raises the ratio if and only if $\phi_1$ exceeds
-$b(\phi_0;G,\chi)=\phi_0+\big[1+2G(1-\phi_0)-\sqrt{\{1+2G(1-\phi_0)\}^2-4G\phi_0(1-\phi_0)(1+1/\chi)}\big]/(2G)$ (and $\phi_1\le1$), the curve of
-\cref{sfig:frontier}; as $G\to0$ it tends to the boundary $2\phi_0-\phi_0^2+\phi_0(1-\phi_0)/\chi$ of (\ref{M-eq:snr}).
-(iv) For $\gamma_{01}<0$ and $\phi_1<\phi_0$ the mixed term is positive and grows with $m$, so it can exceed the remaining terms.
-% run: runs/P2-THEORY-CHECK/output.txt (check D4: min eigenvalue 0.9500; SNR none 0.4892, gate (0.3, 0) 0.5080)
-An instance with a positive definite covariance is $m_0=900$, $m_1=100$, $\gamma_0=\gamma_1=0.05$, $\gamma_{01}=-0.045$, $\mu=0.1$, $\mu_c=0$,
-$\sigma^2=\sigma_c^2=1$: the smallest eigenvalue of the correlation matrix is 0.9500, and the ratio rises from 0.4892 without a gate to
-0.5080 with the gate $(\phi_0,\phi_1)=(0.3,0)$. The instance illustrates the algebra and is not an estimate from the model.
-(v) $m$ enters (\ref{seq:snrcorr}) through $\rho m-1$ and $m$ whenever $\gamma_1\neq0$ or $\gamma_{01}\neq0$. \qed
-
-\subsection{Cost of Study 1}
-\begin{table}[!htbp]
-\centering
-\caption{Cost per Item of the Main-Test Stage of Study 1}
-\label{stab:cost1}
-\footnotesize
-\resizebox{\textwidth}{!}{\input{../tables/tab4_cost_study1}}
-
-\vspace{2pt}
-\parbox{0.9\textwidth}{\scriptsize One laptop GPU (12~GB). Network rows: median (range); time: median (quartiles) of the busy time per
-item, excluding duty-cycle pauses; memory: maximum over items. All arms share the pass, so per-arm cost is not measured separately.
-Source: \nolinkurl{runs/P2-GATE-M4/items.jsonl}, fields \nolinkurl{n_rows}, \nolinkurl{seconds}, \nolinkurl{peak_gb}.}
-\end{table}
-
-\subsection{Exploratory (Tier 3): Hard Gate Against Detector-Free Combiners, Discounting, and Reliability Weighting of the Same Evidence}
-% run: runs/P2-GATE-M4/tier3_fusion.json (run once after analysis.json with the P section was committed; SAP Addendum A4 r3, A4.1)
-This comparison was pre-specified in Addendum A4 and is exploratory (Tier 3): intervals only, no $p$-value, 72 intervals, and no
-multiplicity adjustment; it was run once after the primary analysis was committed, on the same $\Delta_j$, items, and decision rule, and it
-cannot explain, qualify, or rescue the primary result.
-Each comparator is contrasted with the hard gate (GM, which is GATE-M).
-The reading of a contrast comes from the exact Clopper--Pearson 95\% interval for the share of discordant items won by the comparator:
-\emph{above} GM if its lower end exceeds one half, \emph{below} if its upper end is under one half, \emph{identical} if $n_d=0$, and
-\emph{not distinguishable} otherwise.
-Beside it are the net difference with a descriptive bootstrap interval and the bound used for added value: the exact 95\% upper bound $B$
-on the discordance rate for $n_d<10$, and the minimum detectable difference (MDD) for $n_d\ge10$.
-
-% run: runs/P2-GATE-M4/tier3_fusion.json:cells.*.contrasts.*_minus_GM; ps_cells.*; clean.*; cells.noise0.1.arms.{GM,MED,TM20}.acc
-% (number audit M1, 2026-10-30: the earlier first sentence "no detector-free combiner gave higher verification accuracy than the hard
-% gate" contradicted the noise rows of the table; replaced by what the table shows)
-No detector-free combiner was detectably above the hard gate on a realistic corruption; under noise the median and the 20\% trimmed
-mean scored 0.678 and 0.682 against 0.676 for the hard gate, with intervals of the difference that contain zero (\cref{stab:tier3}).
-The hard gate gave higher verification accuracy than the median under JPEG ($-0.032$, $-0.052$ to $-0.014$; exact interval for the
-discordant split 0.047 to 0.374) and splice ($-0.032$, $-0.050$ to $-0.016$; 0.001 to 0.273), and than the 20\% trimmed mean under JPEG
-($-0.020$; 0.018 to 0.428) and splice ($-0.026$; 0.000 to 0.247).
-The data do not show a difference between the hard gate and the trimmed mean at the gate's flag count under JPEG ($n_d=5$; $B=0.023$),
-noise ($n_d=2$; $B=0.014$), or splice ($n_d=3$; $B=0.017$), nor, under noise, between the hard gate and the median ($n_d=19$; MDD 0.025) or
-the 20\% trimmed mean ($n_d=9$; $B=0.034$); because each bound is at most 0.05, each counts, by the pre-stated rule, as a finding against
-the added value of the detector over a detector-free combiner on that cell.
-By limit (c) of \cref{stab:tier3}, the contrast with the trimmed mean at the gate's flag count largely repeats the primary contrast when the
-gate's score is near chance.
-Discarding and discounting the flagged tokens were not distinguishable under JPEG or splice and made the same decision on all 500 items
-under noise; discarding and reliability weighting of every token were not distinguishable on any realistic corruption ($n_d=15$, 18, and 12;
-MDD 0.022, 0.024, and 0.020).
-On the positive-control cells (\cref{stab:tier3_ps}; pipeline check only), reliability weighting of every token gave higher accuracy than
-the hard gate under swap ($0.016$, $0.004$ to $0.030$; exact interval 0.516 to 0.979); this concerns discarding against weighting on a
-sanity corruption and is not a finding about the realistic corruptions.
-
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{Exploratory (Tier 3): The Hard Gate GM (GATE-M) Against Detector-Free Combiners, Discounting, and Reliability Weighting of the Same Evidence. Limits: (a) no sign-aware detector-free estimator is computed, because the
-direction in which a corruption moves $\Delta_j$ is defined by the true caption and such a combiner would use the label; (b) SOFT-G's
-weights lie token by token between GM's and no gate's, so it is not reliability weighting of every token; (c) when the gate's score is
-near chance the flagged count is close to the false-alarm count, so TM-G approximates no gate trimmed at about that count and TM-G
-minus GM largely repeats the primary contrast; (d) at this $n$ many contrasts are uninformative, as the bound shows.}
-\label{stab:tier3}
-\footnotesize
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{llccccccl}
-\toprule
-Cell & Comparator & Acc. & $b$/$c$ & $n_d$ & $\Delta$ [95\%, descriptive] & Exact 95\% & Bound & Reading \\
-\midrule
-\multicolumn{9}{l}{JPEG, quality 10 \quad (GM 0.836; no gate 0.838; mean flagged tokens 61.8)} \\
-& MED & 0.804 & 4/20 & 24 & $\mathbf{-0.032}$ $[-0.052,-0.014]$ & 0.047--0.374 & MDD 0.027 & below GM \\
-& TM-G & 0.834 & 2/3 & 5 & $-0.002$ $[-0.010,0.006]$ & 0.053--0.853 & $B$ 0.023 & n.d.$^{\dagger}$ \\
-& TM20 & 0.816 & 2/12 & 14 & $\mathbf{-0.020}$ $[-0.034,-0.006]$ & 0.018--0.428 & MDD 0.021 & below GM \\
-& SOFT-G & 0.838 & 1/0 & 1 & $0.002$ $[0.000,0.006]$ & 0.025--1.000 & $B$ 0.011 & n.d. \\
-& SOFT-A & 0.838 & 8/7 & 15 & $0.002$ $[-0.014,0.018]$ & 0.266--0.787 & MDD 0.022 & n.d. \\
-\midrule
-\multicolumn{9}{l}{Noise, $\sigma=0.10$ \quad (GM 0.676; no gate 0.676; mean flagged tokens 33.9)} \\
-& MED & 0.678 & 10/9 & 19 & $0.002$ $[-0.016,0.020]$ & 0.289--0.756 & MDD 0.025 & n.d.$^{\dagger}$ \\
-& TM-G & 0.676 & 1/1 & 2 & $0.000$ $[-0.006,0.006]$ & 0.013--0.987 & $B$ 0.014 & n.d.$^{\dagger}$ \\
-& TM20 & 0.682 & 6/3 & 9 & $0.006$ $[-0.006,0.018]$ & 0.299--0.925 & $B$ 0.034 & n.d.$^{\dagger}$ \\
-& SOFT-G & 0.676 & 0/0 & 0 & $0.000$ & -- & $B$ 0.007 & identical \\
-& SOFT-A & 0.676 & 9/9 & 18 & $0.000$ $[-0.016,0.016]$ & 0.260--0.740 & MDD 0.024 & n.d. \\
-\midrule
-\multicolumn{9}{l}{Splice, 128 px \quad (GM 0.872; no gate 0.876; mean flagged tokens 46.0)} \\
-& MED & 0.840 & 1/17 & 18 & $\mathbf{-0.032}$ $[-0.050,-0.016]$ & 0.001--0.273 & MDD 0.024 & below GM \\
-& TM-G & 0.866 & 0/3 & 3 & $-0.006$ $[-0.014,0.000]$ & 0.000--0.708 & $B$ 0.017 & n.d.$^{\dagger}$ \\
-& TM20 & 0.846 & 0/13 & 13 & $\mathbf{-0.026}$ $[-0.040,-0.014]$ & 0.000--0.247 & MDD 0.020 & below GM \\
-& SOFT-G & 0.876 & 2/0 & 2 & $0.004$ $[0.000,0.010]$ & 0.158--1.000 & $B$ 0.014 & n.d. \\
-& SOFT-A & 0.880 & 8/4 & 12 & $0.008$ $[-0.006,0.022]$ & 0.349--0.901 & MDD 0.020 & n.d. \\
-\midrule
-\multicolumn{9}{l}{Clean pairs, cost of each combiner \quad (GM 0.882; no gate 0.880; mean flagged tokens 46.7)} \\
-& MED & 0.852 & 1/16 & 17 & $\mathbf{-0.030}$ $[-0.046,-0.014]$ & 0.001--0.287 & MDD 0.023 & below GM \\
-& TM-G & 0.874 & 1/5 & 6 & $-0.008$ $[-0.018,0.000]$ & 0.004--0.641 & $B$ 0.026 & n.d. \\
-& TM20 & 0.854 & 0/14 & 14 & $\mathbf{-0.028}$ $[-0.044,-0.014]$ & 0.000--0.232 & MDD 0.021 & below GM \\
-& SOFT-G & 0.880 & 0/1 & 1 & $-0.002$ $[-0.006,0.000]$ & 0.000--0.975 & $B$ 0.011 & n.d. \\
-& SOFT-A & 0.884 & 6/5 & 11 & $0.002$ $[-0.012,0.014]$ & 0.234--0.833 & MDD 0.019 & n.d. \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Detector-free combiners: MED, median; TM-G, trimmed mean removing $\lfloor g_i/2\rfloor$ tokens from each tail, $g_i$ the gate's
-flag count; TM20, 20\% trimmed mean. SOFT-G: discounting of the gate-flagged tokens; SOFT-A: reliability weighting of every token.
-All on the same $\Delta_j$ and items ($n=500$ per cell; primary cells and the clean cell). Acc.: accuracy of the comparator. $b$/$c$: items right only under the comparator / only under GM. $\Delta$: comparator
-minus GM with its percentile bootstrap 95\% interval (descriptive; 10\,000 resamples, one index matrix per cell). Exact: Clopper--Pearson
-95\% interval for $b/n_d$, which gives the reading. Bound: $B$ (exact 95\% upper bound on the discordance rate) for $n_d<10$, MDD for
-$n_d\ge10$. Reading: above or below GM, not distinguishable (n.d.), or identical; $\dagger$: counts as a finding against the added value
-of the detector (n.d.\ or identical for a detector-free combiner with bound at most 0.05; primary cells only). Bold: the exact interval excludes one half. 72 intervals in this
-comparison; no $p$-value and no multiplicity adjustment. Source:
-\nolinkurl{runs/P2-GATE-M4/tier3_fusion.json}, keys \nolinkurl{cells.*.arms}, \nolinkurl{cells.*.contrasts.*_minus_GM},
-\nolinkurl{clean.arms}, \nolinkurl{clean.contrasts}.}
-\end{table}
-% Copied from paper2/sections/results.tex (elsarticle draft; numbers from committed runs, see the Source in each caption) by writer W2, 2026-10-30.
-\begin{table}[!htbp]
-\centering
-\caption{Exploratory (Tier 3), Positive-Control Cells Only}
-\label{stab:tier3_ps}
-\footnotesize
-\begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{llccccccl}
-\toprule
-Cell & Comparator & Acc. & $b$/$c$ & $n_d$ & $\Delta$ [95\%, descriptive] & Exact 95\% & Bound & Reading \\
-\midrule
-\multicolumn{9}{l}{Patch \quad (GM 0.870; no gate 0.870; mean flagged tokens 96.5)} \\
-& MED & 0.846 & 2/14 & 16 & $\mathbf{-0.024}$ $[-0.040,-0.010]$ & 0.016--0.383 & MDD 0.022 & below GM \\
-& TM-G & 0.858 & 2/8 & 10 & $-0.012$ $[-0.024,0.000]$ & 0.025--0.556 & MDD 0.018 & n.d. \\
-& TM20 & 0.846 & 2/14 & 16 & $\mathbf{-0.024}$ $[-0.040,-0.010]$ & 0.016--0.383 & MDD 0.022 & below GM \\
-& SOFT-G & 0.870 & 0/0 & 0 & $0.000$ & -- & $B$ 0.007 & identical \\
-& SOFT-A & 0.880 & 8/3 & 11 & $0.010$ $[-0.002,0.024]$ & 0.390--0.940 & MDD 0.018 & n.d. \\
-\midrule
-\multicolumn{9}{l}{Swap \quad (GM 0.876; no gate 0.870; mean flagged tokens 209.7)} \\
-& MED & 0.838 & 1/20 & 21 & $\mathbf{-0.038}$ $[-0.056,-0.020]$ & 0.001--0.238 & MDD 0.025 & below GM \\
-& TM-G & 0.852 & 1/13 & 14 & $\mathbf{-0.024}$ $[-0.040,-0.010]$ & 0.002--0.339 & MDD 0.021 & below GM \\
-& TM20 & 0.846 & 0/15 & 15 & $\mathbf{-0.030}$ $[-0.046,-0.016]$ & 0.000--0.218 & MDD 0.021 & below GM \\
-& SOFT-G & 0.878 & 2/1 & 3 & $0.002$ $[-0.004,0.010]$ & 0.094--0.992 & $B$ 0.017 & n.d. \\
-& SOFT-A & 0.892 & 10/2 & 12 & $\mathbf{0.016}$ $[0.004,0.030]$ & 0.516--0.979 & MDD 0.019 & above GM \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-
-\vspace{2pt}
-\parbox{\textwidth}{\scriptsize Pipeline check; never pooled with or shown beside the primary cells. Columns, comparators, bound, reading, and bold rule as in Table~\ref{stab:tier3}; $n=500$ per cell; ``against added value'' is not
-read on these cells. Source: \nolinkurl{runs/P2-GATE-M4/tier3_fusion.json}, keys \nolinkurl{ps_cells.{patch,swap}.arms} and
-\nolinkurl{ps_cells.{patch,swap}.contrasts.*_minus_GM}.}
-\end{table}
-
-\paragraph*{Theory reference for Study 1's soft comparators; not used in Study 2}
-The following statements are theory under stated assumptions, not validated on UniDisc.
-They describe what the soft comparators above approximate under a model; they imply no ranking of the comparators, the optimal weight
-below is not a comparator and was not computed on any data, and no sentence of the paper combines them with the correlated-token
-proposition of the main paper (whose assumptions differ, see Remark (iii) below).
-Write the soft comparators' weights as $\omega_j\ge0$ and $S_\omega=\sum_j\omega_j\Delta_j$; the reported normalised mean has the sign of
-$S_\omega$.
-
-\begin{lemma}[weighted statistic]\label{slem:weighted}
-Assume the moments and correlations of the main paper's correlated-token proposition, and that within a class the $\omega_j$ are i.i.d.
-with mean $\bar\omega_z$ and second moment $\overline{\omega^2}_z$, independent across classes and of all $\Delta$. With $m_0$ clean and
-$m_1$ corrupted tokens,
-\begin{align}
-\E S_\omega&=m_0\bar\omega_0\mu+m_1\bar\omega_1\mu_c,\\
-\Var S_\omega&=m_0\{\overline{\omega^2}_0(\sigma^2+\mu^2)-\bar\omega_0^2\mu^2\}+m_1\{\overline{\omega^2}_1(\sigma_c^2+\mu_c^2)-\bar\omega_1^2\mu_c^2\}\notag\\
-&\quad+m_0(m_0-1)\bar\omega_0^2\gamma_0\sigma^2+m_1(m_1-1)\bar\omega_1^2\gamma_1\sigma_c^2+2m_0m_1\bar\omega_0\bar\omega_1\gamma_{01}\sigma\sigma_c.
-\end{align}
-The hard gate is $\omega=I$ and returns the variance of the main paper.
-\end{lemma}
-
-\begin{proposition}[signal-to-noise-optimal weights as a function of the score]\label{sprop:weights}
-Condition on the scores $u_1,\dots,u_m$ and let $\omega_j=\omega(u_j)$. Assume (W1) $\Delta_j$ is independent of $u_j$ given its label;
-(W2) the labels are independent across tokens given the scores; (W3) $\sigma_c=\sigma$ and one exchangeable correlation $\gamma$ for all
-pairs. With $\pi_1(u)$ the probability that a token with score $u$ is corrupted, $\mu(u)=(1-\pi_1(u))\mu+\pi_1(u)\mu_c$,
-$\sigma^2(u)=\sigma^2+\pi_1(1-\pi_1)(\mu-\mu_c)^2$ and $d_j=\sigma^2(u_j)-\gamma\sigma^2$:
-(a) for $\gamma=0$ and $\omega\ge0$ the optimum is $(\mu(u))_+/\sigma^2(u)$, and a 0/1 weight is optimal if and only if this function takes
-at most one non-zero value on the support of $u$ (up to scale); with $\mu_c=0$ and $\mu^2\ll\sigma^2$ it is approximately proportional to
-$1-\pi_1(u)$;
-(b) for $\gamma>0$ and $\omega\ge0$ the optimum is $\omega^\ast(u_j)\propto(\mu(u_j)-\xi)_+/d_j$ with $\xi=\gamma\sigma^2\sum_k(\mu(u_k)-\xi)_+/d_k$,
-which has a unique solution $\xi\ge0$; if some $\mu(u_k)>0$, then $\xi=0$ if and only if $\gamma=0$, and if every $\mu(u_k)\le0$, then $\xi=0$
-for every $\gamma$; correlation together with non-negativity induces a cut;
-(c) without $\omega\ge0$ the optimum is $\Sigma^{-1}\mu(u)$, which has no cut and gives negative weights to tokens with low $\mu(u)$.
-\end{proposition}
-\noindent\emph{Proof of (b).} Maximising the ratio over the cone $\omega\ge0$ is, up to scale, the convex problem
-$\min_{\omega\ge0}\tfrac12\omega^\top\Sigma\omega-\omega^\top\mu(u)$ with $\Sigma=D+\gamma\sigma^2\mathbf 1\mathbf 1^\top$; its Karush--Kuhn--Tucker conditions give
-$\omega_j=(\mu(u_j)-\xi)/d_j$ on the support with $\xi=\gamma\sigma^2\sum_k\omega_k$, and the right side of the fixed-point equation is
-continuous and non-increasing in $\xi$ while the left side increases. (a) follows from the Cauchy--Schwarz inequality. \qed
-
-\begin{corollary}[cost on a clean pair]\label{scor:clean}
-On a clean pair ($\rho=0$) any non-constant weight lowers the ratio. Given the weights, with $\nu=m\sum_j\omega_j^2/(\sum_j\omega_j)^2$ and clean
-correlation $\gamma_0$, the squared ratio relative to no weighting is $\{(1-\gamma_0)+\gamma_0m\}/\{(1-\gamma_0)\nu+\gamma_0m\}$.
-\end{corollary}
-
-Remarks.
-(i) For weights spread uniformly over a conformal $p$-value grid the limit of this ratio at $\gamma_0=0$ is 3/4 (a ratio of squared
-signal-to-noise ratios), but within an item the scores are clustered, so 3/4 is not the expected clean-cell cost of the per-token
-weighting comparator and is not compared with the clean cell above.
-(ii) The hard gate is a 0/1 weight; under (a) it is optimal only in the case stated there.
-(iii) (W3) forces $\gamma_0=\gamma_1=\gamma_{01}$ and $\sigma_c=\sigma$, which is not the case in which the frontier of \cref{sfig:frontier} moves, so the
-two statements are not jointly applicable.
-
-%======================================================================================================================================
-\section{Study 1: Family H (Added After the Primary Result)}\label{sup:H}
-% run: runs/P2-GATE-H3/family.json:n_headroom_items (= 50), n_rule.h_rule (= H-NOGO), n_rule.G_max_headroom (= null), go (= false),
-% run: downstream_claim_withdrawn (= true), inputs.code_commit (= 5e6380b1)
-In a separately labelled family added after the primary result was known (family H: SugarCrepe hard negatives on 50 pilot COCO images
-not used elsewhere; Holm over the same three corruptions), the pre-written pilot rule found no corruption with decision headroom on 50
-pilot images, so the family's test (H4) was not run, and nothing is stated about the gate on hard negatives.
-\Cref{stab:H} gives the recorded decision; the item values of the pilot are in \nolinkurl{runs/P2-GATE-H3/family.json} and are not
-interpreted here.
-
-\begin{table}[!htbp]
-\centering
-\caption{Family H (Added After the Primary Result): Recorded Decision}
-\label{stab:H}
-\footnotesize
-\input{../tables/tab_H}
-
-\vspace{2pt}
-\parbox{0.5\textwidth}{\scriptsize In a separately labelled family added after the primary result was known (family H: SugarCrepe hard
-negatives on 50 pilot COCO images not used elsewhere; Holm over the same three corruptions). Decision fields only. Source:
-\nolinkurl{runs/P2-GATE-H3/family.json}, keys \nolinkurl{n_rule.h_rule}, \nolinkurl{go}, \nolinkurl{downstream_claim_withdrawn}.}
-\end{table}
-
-\paragraph*{Disclosure}
-In a separately labelled family added after the primary result was known (family H), the following applies.
-Family~H was added on 29 October 2026, after the following had been computed and committed: the primary family (label negative) with its
-secondary families and mechanism arms (S-M, S-Z, S-DN, S-D2, S-C), the calibration check, and the clean-accuracy look; the positive-control
-family PS and the pipeline audit it triggered (no defect found); the decomposition and sign-agreement analyses (E-dec, E-pred); and the
-exploratory comparators (Tier 3).
-Of these, the analyst who designed family H read the primary family, S-M, the completeness and clean-accuracy records, parts of the
-mechanism and calibration sections, the positive-control audit, and a one-line summary of the Tier-3 result; the E-dec and E-pred outputs
-had been committed but were not opened by that analyst.
-Family~H tests the same contrast on a different population of image-caption pairs (SugarCrepe hard negatives on COCO images used nowhere
-else in this study).
-It was specified in Addendum A5 of the statistical analysis plan (draft \texttt{86064e57}; final \texttt{b32e72a1}; revision r1 \texttt{2f62f1df}) before any
-hard-negative item was scored, approved by the first author (decision D0080), signed with conditions by the adversarial review, and implemented in
-audited code (commit \texttt{5e6380b1}).
-It reuses the primary family's corruptions, severities, threshold, and arms.
-Its sample-size rule uses the gate's own unsigned discordance on 50 separate pilot images.
-Family~H is the last confirmatory family added after the primary result; it has its own Holm correction, cannot change the primary
-result, and is reported whatever its outcome, including ``not run''.
-
-\paragraph*{Caveats}
-In a separately labelled family added after the primary result was known (family H), the following caveats apply to its pool.
-SugarCrepe positives are original COCO val2017 captions of their images, and whether UniDisc saw them in training is unmeasured; SugarCrepe
-filtered its negatives against text-only models, not against UniDisc; the same image and positive recur across subsets, so one row per
-image is used; and the H images are a selected subset of val2017.
-
-%======================================================================================================================================
-\section{Study 2: Exploratory and Descriptive Material}\label{sup:study2}
+\section{Exploratory and Descriptive Material}\label{sup:study2}
 
 \subsection{Every Quantity Reported With Each Preregistered Test}\label{sup:testsfull}
 % Red-team A6: SAP A6.4 "reported with every test" requires n_d, 90 and 95 % intervals, the Clopper-Pearson interval of b/n_d, exact and
 % mid-p values; Table IV of the main paper prints a subset. Source: runs/P2-LRF-L1/a6_analysis.json (family_L.*), runs/P2-LRF-LG/a6_analysis.json (family_LG.cells.*)
-\Cref{stab:testsfull} gives, for every preregistered test of Study~2, every quantity that the analysis plan reports with each test.
+\Cref{stab:testsfull} gives, for every preregistered test, every quantity that the analysis plan reports with each test.
 These are preregistered outputs, not exploratory material.
 
 \begin{table}[!htbp]
 \centering
-\caption{Every Preregistered Test of Study 2 With All Reported Quantities}
+\caption{Every Preregistered Test With All Reported Quantities}
 \label{stab:testsfull}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -1082,7 +220,7 @@ was not a preregistered hypothesis.
 \centering
 \includegraphics[width=0.6\textwidth]{../figures/fig_margins.pdf}
 % run: runs/P2-LRF-L1/predictions.jsonl (condition, idx, m_none, m_lrf, y_none, y_lrf; sha256 = a6_analysis.json meta.l1_predictions_sha256); counts runs/P2-LRF-L1/a6_analysis.json:family_L.{L1,L-NI}.{b (= 58, 27),c (= 27, 13),n (= 450)}; values runs/P2-PAPER-FIGS/fig_margins.json
-\caption{Study 2, item-level margins on the fresh fold (descriptive; no test). Each point is one of the $n=450$ items: horizontal, the
+\caption{Item-level margins on the fresh fold (descriptive; no test). Each point is one of the $n=450$ items: horizontal, the
 margin without weighting, $S/m$; vertical, the LRF margin $M$ (\ref{M-eq:lrf-decision}) of the main paper. A decision is correct when its margin is positive
 (ties wrong), so the upper-left quadrant holds the $b$ items correct only with LRF (filled diamonds) and the lower-right the $c$ items
 correct only without weighting (open triangles); grey: same decision; line: equal margins. (a) Gaussian noise, standard deviation 0.1
@@ -1102,7 +240,7 @@ grid with exact one-sided McNemar power at least 0.8 at level 0.05, bounded to $
 
 \begin{table}[!htbp]
 \centering
-\caption{Inputs and Output of the Sample-Size Rule of Study 2 (Post Hoc Design-Item Cross-Fit; Sets the Rule Only)}
+\caption{Inputs and Output of the Sample-Size Rule (Post Hoc Design-Item Cross-Fit; Sets the Rule Only)}
 \label{stab:nrule}
 \footnotesize
 \begin{tabular}{lc}
@@ -1138,48 +276,23 @@ By length stratum the L1 net change was 0.038 when the true caption was shorter 
 On the first 300 fold items the unweighted rule lost 0.217 (95\% interval 0.163 to 0.270) under shot noise, 0.190 (0.143 to 0.240) under
 impulse noise, and 0.193 (0.143 to 0.247) under speckle noise, relative to clean images.
 
-\paragraph*{Fresh-fold GATE-M arm (descriptive, separate)}
-The fresh-fold stage also computed Study~1's GATE-M arm, at the fixed caption slot with the threshold calibrated at the true-caption layout,
-so it carries no guarantee.
-\Cref{stab:gatemfresh} reports it on its own, with no LRF number; it is descriptive and enters no claim of either study.
-
-\begin{table}[!htbp]
-\centering
-\caption{Fresh-Fold GATE-M Arm Against No Gate (Descriptive, No Guarantee, No Test; 450 Items)}
-\label{stab:gatemfresh}
-\footnotesize
-\begin{tabular}{lcccc}
-\toprule
-Condition & Acc.\ none & Acc.\ GATE-M & $b$ & $c$ \\
-\midrule
-% run: runs/P2-LRF-L1/a6_analysis.json:family_L.supplement_gatem_vs_none.clean.*
-Clean & 0.887 & 0.889 & 2 & 1 \\
-% run: runs/P2-LRF-L1/a6_analysis.json:family_L.supplement_gatem_vs_none.jpeg10.*
-JPEG, quality 10 & 0.849 & 0.847 & 0 & 1 \\
-% run: runs/P2-LRF-L1/a6_analysis.json:family_L.supplement_gatem_vs_none.noise0.1.*
-Gaussian noise, $\sigma=0.1$ & 0.733 & 0.727 & 0 & 3 \\
-% run: runs/P2-LRF-L1/a6_analysis.json:family_L.supplement_gatem_vs_none.splice128.*
-Splice, 128 px & 0.896 & 0.893 & 0 & 1 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph*{Cost of Study 2}
+\paragraph*{Cost}
 \Cref{stab:cost2} gives the cost of the fresh-fold stages; the unweighted rule is the only reference.
 
 \begin{table}[!htbp]
 \centering
-\caption{Cost per Item of the Fresh-Fold Stages of Study 2}
+\caption{Cost per Item of the Fresh-Fold Stages}
 \label{stab:cost2}
 \footnotesize
 \resizebox{\textwidth}{!}{\input{../tables/tab4_cost_study2}}
 
 \vspace{2pt}
-\parbox{0.9\textwidth}{\scriptsize As for \cref{stab:cost1}. LRF reads stored arrays on the CPU and adds no network row; no timing was
-recorded. Source: \nolinkurl{runs/P2-LRF-L1/items.jsonl}, \nolinkurl{runs/P2-LRF-LG/items.jsonl}.}
+\parbox{0.9\textwidth}{\scriptsize One laptop GPU (12~GB). Network rows: median (range); time: median (quartiles) of the busy time per item, excluding duty-cycle pauses; memory: maximum over items. Counted per scored image, the unweighted sum needs 2 passes and LRF 2 + 9 = 11 (eight complementary-mask passes and one observed-position pass; the cached null for $D$, the texture and the codebook-neighbour features need none); its weights and decision are then computed from the stored arrays on the CPU: 6.5~s for all 1\,800 image-and-condition decisions of the fresh fold (3.6~ms each, start-up included; \nolinkurl{runs/P2-LRF-TIMING/scorer_timing.json}).
+% run: runs/P2-LRF-TIMING/scorer_timing.json:{median_wall_s (= 6.49),n_decisions (= 1800),ms_per_decision (= 3.60)}; script analysis/paper2/lrf/time_scorer.py (re-scored lines identical to runs/P2-LRF-L1/predictions.jsonl)
+Source: \nolinkurl{runs/P2-LRF-RESCORE/items.jsonl} (\nolinkurl{n_rows}, median 36 per item for four conditions), \nolinkurl{runs/P2-LRF-L1/config.json} (\nolinkurl{K}), \nolinkurl{runs/P2-LRF-L1/items.jsonl}, \nolinkurl{runs/P2-LRF-LG/items.jsonl}.}
 \end{table}
 
-\subsection{Weight-Model Search, Caption-Slot Checks, and the Full Feature Table (Main Paper, Section V-B)}\label{sup:lrfdetail}
+\subsection{Weight-Model Search, Caption-Slot Checks, and the Full Feature Table (Main Paper, Section IV-B)}\label{sup:lrfdetail}
 % Moved verbatim from paper2-tnnls/sections/study2.tex by the clarity editor (edit 1, 2026-10-30); numbers unchanged.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:hpo.method (random search + synchronous successive halving, eta 3, 9 configs, 3 inner folds); epochs (= 40)
 Nine configurations of $(Q,\lambda,\text{learning rate})$ were drawn at random and pruned by synchronous successive halving (factor 3; 4,
@@ -1190,16 +303,7 @@ caption, or padding, and the scorer reproduced the stored values at the true len
 Any non-finite feature, weight, or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
 \Cref{stab:features} gives every feature by name and formula; Fig.~\ref{M-fig:lrf_weights} of the main paper groups them.
 
-\Cref{sfig:pd} shows the learned shape of the weight for the six of the 35 features with the largest learned effect range.
-
-\begin{figure}[!htbp]
-\centering
-\includegraphics[width=\textwidth]{../figures/fig4b_pd_curves.pdf}
-% run: runs/P2-PAPER-FIGS/{fig4_pd_curves.json,fig4_meta.json} (features_shown, effect_ranges); runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}
-\caption{Study 2, partial dependence of the weight $w$ on the six of 35 features with the largest learned effect range, every other
-standardised feature at its mean 0 (knots: grey ticks; line style: feature group of Fig.~\ref{M-fig:lrf_weights} of the main paper). Descriptive; not evidence that the weights track corruption.}
-\label{sfig:pd}
-\end{figure}
+Fig.~\ref{M-fig:pd} of the main paper shows the learned shape of the weight for the six of the 35 features with the largest learned effect range.
 
 \begin{table}[!htbp]
 \centering
@@ -1226,22 +330,11 @@ standardised feature at its mean 0 (knots: grey ticks; line style: feature group
 \toprule
 Preregistration or code & Paper \\
 \midrule
-\multicolumn{2}{l}{\emph{Study 1}} \\
-\texttt{alpha}, \texttt{beta} in the signal-to-noise calculator & $\phi_0$, $\phi_1$ \\
-\texttt{alpha\_obs}, \texttt{beta\_obs} & $\hat\phi_0$, $\hat\phi_1$ \\
-partition group $S_k$ & group of a token in the $K$-group partition \\
-$q_j=B_j-D_j$ (statistic \texttt{q}) & $-u_j$ \\
-GM; I-GATE; I-RAND4 & GATE-M; GATE-I; random-gate best-of-four re-infill \\
-Proposition 4 of the method specification & the independent-token condition (Lemma 1 of the main paper) \\
-Proposition 2 of the theory addendum & the correlated-token proposition, \cref{sprop:snrcorr} \\
-Proposition 3, Lemma 2, Corollary 3.1 of the theory addendum & \cref{sprop:weights}, \cref{slem:weighted}, \cref{scor:clean} \\
-\midrule
-\multicolumn{2}{l}{\emph{Study 2}} \\
 \texttt{acc\_a}, \texttt{acc\_b} in \texttt{a6\_analysis.json} & accuracy with LRF, accuracy without weighting \\
 \texttt{knots}, \texttt{ridge}, \texttt{lr}, \texttt{T} in \texttt{spec.json} & $Q$, $\lambda$, learning rate, $T$ \\
 $L_{\rm FIX}=13$ & caption-slot length 13 \\
 \texttt{y\_lrf\_L}, \texttt{y\_none\_L} & L-LEN decisions with the length-matched wrong caption \\
-feature \texttt{q} and its derived names in \texttt{spec.json} & $r_j=B_j-D_j$ (Study~2's own symbol; Study~1's $q_j$ is not used in Study~2) \\
+feature \texttt{q} and its derived names in \texttt{spec.json} & $r_j=B_j-D_j$ \\
 pixel variance in \texttt{data.py} & $v_j$ \\
 \texttt{sigmoid} in \texttt{spec.json} & $\operatorname{sigm}$, the logistic function of the weight model \\
 \bottomrule
@@ -1249,7 +342,7 @@ pixel variance in \texttt{data.py} & $v_j$ \\
 \end{table}
 
 %======================================================================================================================================
-\section{Study 2: Reference Encoders and Pixel Parity}\label{sup:baselines}
+\section{Reference Encoders and Pixel Parity}\label{sup:baselines}
 % run: runs/P2-LRF-BASELINES/baselines.json:models.{clip,siglip}.{id,revision,licence}; n_items; conditions
 The reference encoders are \nolinkurl{openai/clip-vit-large-patch14} at revision \texttt{\seqsplit{32bd64288804d66eefd0ccbe215aa642df71cc41}} and
 \nolinkurl{google/siglip-so400m-patch14-384} at revision \texttt{\seqsplit{9fdffc58afc957d1a03a25b10dba0329ab15c2a3}}, scored with the CLIP cosine score and
@@ -1262,22 +355,33 @@ clean, JPEG, noise, and splice conditions and at least 0.986 for the clean and s
 These two runs supersede the field \texttt{pixel\_parity: not run} of the main reference-encoder file, which records only that the main run
 was made without the parity option; the parity files were moved unchanged from a wrong output directory, and audit-time hashes are
 recorded.
-Agreement below one is expected from process-to-process tokenisation differences (S-I, Study~2 deviation 1); the control detects gross
+Agreement below one is expected from process-to-process tokenisation differences (S-I, deviation 1); the control detects gross
 pixel errors, not single-pixel ones.
 No committed run recorded a timing for the encoders, so their cost per item is not reported.
 
 %======================================================================================================================================
-\section{Study 2: Exploratory Ablation (Tier 3)}\label{sup:ablation}
+\section{Exploratory Ablation and Comparison}\label{sup:ablation}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.62\textwidth]{../figures/fig_ablation.pdf}
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.{d,ci95}; n_per_cell; ko_all_control; meta.{label,sign,interval}; values runs/P2-PAPER-FIGS/fig_ablation.json
+\caption{Exploratory ablation (formerly in the main text; added after the confirmatory results; intervals only, no test): paired accuracy
+difference, variant minus the frozen LRF, on the L1 noise cell ($n=450$), with the 95\% paired percentile-bootstrap interval
+(10\,000 resamples). A positive value favours the variant. Upper block: weightings refitted with LRF's
+protocol on the 500 design items only, and one unlearned rank weight. Lower block: knockouts, the frozen LRF with one feature group set to
+its design-item mean. Intervals are marginal, dependent, and unadjusted (the tables of this section give the other cells).}
+\label{sfig:ablation}
+\end{figure}
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commit 4e785aa9) and controls.json (commit facab605); plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md
 % run: decision D0095 (code audit PASS WITH FIXES; score run once)
-\emph{Label.} Exploratory; added after the primary, family~H, and Study~2 results.
+\emph{Label.} Exploratory; added after the confirmatory results.
 No ablation was preregistered.
 The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was written and then checked by an automated statistical review, and the variant list
 was committed before any variant was fitted or scored.
 \emph{Disclosure.} When the plan was written, its author had seen the fresh-fold results of the frozen LRF and of the unweighted rule,
-an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (\cref{sfig:pd}); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
+an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (Fig.~\ref{M-fig:pd} of the main paper); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
 the list was committed.
-Every listed variant is reported; no variant was selected and scored again, and the tested object of Study~2 stays the frozen LRF.
+Every listed variant is reported; no variant was selected and scored again, and the tested object stays the frozen LRF.
 
 \paragraph*{Variants}
 All fitted variants use LRF's protocol with the stated change: the same objective, optimiser, nine-configuration search with successive
@@ -1328,7 +432,7 @@ A-S-ltex, A-S-nbr, A-S-pos, A-SF, and A-UNL; among knockouts, KO-S-BD and KO-F-n
 every other knockout interval contained zero.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN].cells.{L1_jpeg10,LG_shot_noise3}.vs_LRF; rows[id=A-S-BD].cells.LG_impulse_noise3.vs_LRF; rows[id=KO-S-s3].cells.L1_jpeg10.vs_LRF
 In other cells, intervals against LRF that lay above zero were those of A-LIN under JPEG (0.020 [0.004, 0.038]), A-S-BD under impulse noise
-(0.043 [0.003, 0.083]), and KO-S-s3 under JPEG (0.011 [0.002, 0.022]); this comparison was added after the Study~2 results and is not a
+(0.043 [0.003, 0.083]), and KO-S-s3 under JPEG (0.011 [0.002, 0.022]); this comparison was added after the confirmatory results and is not a
 test. The tables give every other cell, row by row, without a summary.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-UNL].cells.L1_noise0.1.{vs_NONE,vs_LRF}
 The unlearned rank weight on $s_3$ had a paired difference from the unweighted rule of $-0.002$ [$-0.024$, 0.020] and from LRF of $-0.071$
@@ -1340,7 +444,7 @@ or the choice of design items, so they understate refit variation. The seed-spre
 
 \begin{table}[!htbp]
 \centering
-\caption{Exploratory Ablation (Added After the Primary, Family H, and Study 2 Results): Accuracy and Difference From the Frozen LRF, L1 Cells}
+\caption{Exploratory Ablation (Added After the Confirmatory Results): Accuracy and Difference From the Frozen LRF, L1 Cells}
 \label{stab:ablL1}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -1377,7 +481,7 @@ independent samples.}
 
 \vspace{2pt}
 \parbox{\textwidth}{\scriptsize Variant minus the unweighted rule; positive favours the variant. The interval of LRF against the
-unweighted rule is the preregistered one (main paper, Study~2 results table) and is not recomputed here.}
+unweighted rule is the preregistered one (main paper, table of preregistered families) and is not recomputed here.}
 \end{table}
 
 \begin{table}[!htbp]
@@ -1406,7 +510,20 @@ LRF. Descriptive; no interval.}
 \parbox{\textwidth}{\scriptsize As Table~\ref{M-tab:compare} of the main paper, with the difference from the unweighted sum (accuracy minus the unweighted sum; 95\% paired percentile bootstrap
 interval, 10\,000 resamples). Intervals are marginal and unadjusted; the rows other than the unweighted sum and LRF are exploratory, and the intervals of the ablation rows, the median and trimmed mean, and the denoise
 rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed before the fold was opened. Source: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json},
-\nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
+\nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}, \nolinkurl{runs/P2-LRF-E4/evidential.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Exploratory Gaussian-Noise Severity Sweep of the Frozen LRF and the Unweighted Sum on the 450 Fresh-Fold Images}
+\label{stab:severity}
+% run: runs/P2-LRF-SEV/sev_analysis.json:positive_control.{token_equal_fraction (= 0.9979),min_required (= 0.99)}; Qiu et al. levels 0.08-0.38: research/paper2/sources/PROF-SOURCES-ROBUST-DUALDIFF-2026-10-31.md (Qiu Table 8, p. 31)
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{../tables/supp_severity}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Exploratory, planned before the run (\nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md}); no test. $\sigma$ on $[0,1]$ pixel values; each image has one noise draw (the stream of the confirmatory noise cell), scaled by $\sigma$, so the levels differ in severity only. Levels 0 and 0.1 are the confirmatory run's cells; the others come from \nolinkurl{runs/P2-LRF-SEV}. Rebuilding the $\sigma=0.1$ images with the same draw reproduced the stored image tokens at 99.8\% agreement (threshold 99\%). $b/c$: images that LRF decided correctly and the unweighted sum wrongly, and the reverse. Gain $-$ clean gain: the per-image difference of (LRF $-$ unweighted) between the noisy and the clean image. 95\% paired percentile bootstrap intervals, 10\,000 resamples, one resampling of images shared by all levels; marginal and unadjusted. LRF was fitted at $\sigma=0.1$ only. For comparison with a corruption benchmark for image-text models, its Gaussian levels are 0.08 to 0.38 (Qiu et al., cited in the main paper).}
 \end{table}
 
 \paragraph*{Denoising before scoring (exploratory, plan E1)}
@@ -1425,7 +542,7 @@ Source: \nolinkurl{runs/P2-LRF-DN}; script \nolinkurl{paper2-tnnls/scripts/tab_b
 
 \paragraph*{Deviations entry}
 % run: git commits facab605 (scores) and 4e785aa9 (analysis); plan commit recorded in the plan file
-Tier-3 ablation (exploratory; added after the primary, family~H, and Study~2 results): plan
+Ablation (exploratory; added after the confirmatory results): plan
 \nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md} committed before any variant was scored on fresh items; variants fitted only
 on the 500 design items; every variant reported; intervals only.
 
@@ -1435,27 +552,13 @@ on the 500 design items; every variant reported; intervals only.
 Every figure and table of the main paper is computed by a script in \nolinkurl{paper2-tnnls/scripts/} that reads only committed run files.
 \begin{itemize}
 \item Fig.~\ref{M-fig:measurement} (conceptual, no data): script \nolinkurl{paper2-tnnls/scripts/fig1_measurement.py}; definitions in Section III.
-\item \Cref{sfig:frontier} (theory, no data): script \nolinkurl{paper2-tnnls/scripts/fig2_theory.py}; the shade deepens where more curves lie below,
-and a curve ends where it reaches $\phi_1=1$ or has no root.
-\item Family P table (\cref{stab:familyP}): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{primary.per_corruption.*}, \nolinkurl{outcome.label});
-\nolinkurl{runs/P2-PAPER-BOUNDS/p_exact_bounds.json}.
-\item Fig.~\ref{M-fig:p_result} (family P): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{primary.per_corruption.*}; script
-\nolinkurl{paper2-tnnls/scripts/fig3_study1_P.py}.
-\item \Cref{stab:ps} (positive control): \nolinkurl{runs/P2-GATE-M4/analysis.json} (\nolinkurl{ps.per_corruption.*},
-\nolinkurl{ps.positive_control}); \nolinkurl{runs/P2-A23-AUDIT/a23_ps_audit.json}.
-\item Fig.~\ref{M-fig:gate-method} (gate method and calibration check): \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys
-\nolinkurl{calibration.fap_check.per_alpha.*}, \nolinkurl{calibration.fap_check.critical_value}, \nolinkurl{calibration.split_replication.*};
-\nolinkurl{runs/P2-GATE-M2/threshold.json} (\nolinkurl{n_cal}); plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_gate_method.json}; script
-\nolinkurl{paper2-tnnls/scripts/fig_gate_method.py}.
-\item \Cref{sfig:detection} (token detection; values in \cref{stab:detection}): \nolinkurl{runs/P2-GATE-M1/analysis.json}, keys \nolinkurl{table.*},
-\nolinkurl{paired_q_vs_best_cheap.*}; \nolinkurl{runs/P2-GATE-M4/analysis.json}, keys \nolinkurl{s_d2.per_corruption.*}; plotted values in
-\nolinkurl{runs/P2-PAPER-FIGS/fig_detection.json}; script \nolinkurl{paper2-tnnls/scripts/fig_detection.py}.
 \item Feature groups (Fig.~\ref{M-fig:lrf_weights} of the main paper): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json}
 (\nolinkurl{features}); \nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer};
 full table in \cref{stab:features}.
-\item Fig.~\ref{M-fig:lrf_weights} (frozen weight model, schematic) and \cref{sfig:pd} (partial dependence): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}}; computed values in
-\nolinkurl{runs/P2-PAPER-FIGS/} (\nolinkurl{fig4_meta.json}, \nolinkurl{fig4_pd_curves.json}); script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of \cref{sfig:pd} runs between
+\item Fig.~\ref{M-fig:lrf_weights} (frozen weight model, schematic) and Fig.~\ref{M-fig:pd} (partial dependence): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}}; computed values in
+\nolinkurl{runs/P2-PAPER-FIGS/} (\nolinkurl{fig4_meta.json}, \nolinkurl{fig4_pd_curves.json}); script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of Fig.~\ref{M-fig:pd} runs between
 the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
+\item Fig.~\ref{M-fig:severity} (exploratory severity sweep): \nolinkurl{runs/P2-LRF-SEV/sev_analysis.json}, keys \nolinkurl{levels.*.{NONE,LRF,LRF_minus_NONE}}; plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_severity.json}; script \nolinkurl{paper2-tnnls/scripts/fig_severity.py}.
 \item Fig.~\ref{M-fig:qualitative} (three fresh-fold items): \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative.json} (selection rule, items, colour scales, attribution);
 \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (\nolinkurl{y_none}, \nolinkurl{y_lrf}, condition \nolinkurl{noise0.1}); \nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,8}.npz}
 (SHA-256 in the figure's trace file); the noisy pixels are regenerated with the runner's corruption call and seeds; colour scales are shared by the rows, $\Delta_j$ is clipped at the 99th percentile of $|\Delta_j|$, and the weights are on a square-root scale; script \nolinkurl{paper2-tnnls/scripts/fig_qualitative.py}.
@@ -1466,16 +569,16 @@ image 520324: Attribution-ShareAlike (CC BY-SA 2.0), \nolinkurl{http://farm2.sta
 image 224724: Attribution-NonCommercial (CC BY-NC 2.0), \nolinkurl{http://farm4.staticflickr.com/3543/3544616491_7cdec47006_z.jpg}
 (record: \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative_licences.json}).
 \item Algorithm~\ref{M-alg:lrf} (decision rule of the frozen LRF): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json} (\nolinkurl{family}, \nolinkurl{n_features}, \nolinkurl{caption_slot_len}, \nolinkurl{preprocessing}).
-\item Table~\ref{M-tab:compare} (comparison with alternative aggregation rules, exploratory) and \cref{stab:compare}: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}
+\item Table~\ref{M-tab:compare} (comparison with alternative aggregation rules, exploratory) and \cref{stab:compare}: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}, \nolinkurl{runs/P2-LRF-E4/evidential.json}
 (\nolinkurl{runs/P2-LRF-DN/dn_analysis.json} for the denoise rows); script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.
-\item Table~\ref{M-tab:study2} (Study 2 families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
+\item Table~\ref{M-tab:study2} (preregistered families): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json} (\nolinkurl{family_L.*});
 \nolinkurl{runs/P2-LRF-LG/a6_analysis.json} (\nolinkurl{family_LG.cells.*}).
 \item Fig.~\ref{M-fig:lrf_results} (family L and L-NI): \nolinkurl{runs/P2-LRF-L1/a6_analysis.json}, keys \nolinkurl{family_L.*}; script
 \nolinkurl{paper2-tnnls/scripts/fig5_study2_results.py}.
 \item \Cref{sfig:margins} (item-level margins, descriptive): \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (fields \nolinkurl{condition},
 \nolinkurl{idx}, \nolinkurl{m_none}, \nolinkurl{m_lrf}, \nolinkurl{y_none}, \nolinkurl{y_lrf}; SHA-256 checked against \nolinkurl{a6_analysis.json});
 plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_margins.json}; script \nolinkurl{paper2-tnnls/scripts/fig_margins.py}.
-\item Fig.~\ref{M-fig:ablation} (exploratory ablation): \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, keys
+\item Fig.~\ref{sfig:ablation} (exploratory ablation): \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, keys
 \nolinkurl{rows[*].cells.L1_noise0.1.vs_LRF.*}, \nolinkurl{ko_all_control}; plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_ablation.json};
 script \nolinkurl{paper2-tnnls/scripts/fig_ablation.py}; rows in the order of \cref{sup:ablation}.
 \item Table~\ref{M-tab:baselines} (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});

@@ -15,6 +15,7 @@ Run: "<repo>/.venv/Scripts/python.exe" -I paper2-tnnls/scripts/tab_baselines.py 
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -24,6 +25,8 @@ from tablib import bold, iv, num, row                      # noqa: E402
 
 N = 450
 A6, ABL, E2, DN = "P2-LRF-L1/a6_analysis.json", "P2-LRF-ABL-SCORE/ablation_analysis.json", "P2-LRF-E2/combiners.json", "P2-LRF-DN/dn_analysis.json"
+E4 = "P2-LRF-E4/evidential.json"          # plan E4 (EXPLORATORY-PLAN-EVIDENTIAL-2026-10-31.md); primary arm DS-l1-disc only
+_E4: dict | None = None
 # column key -> (header, a6 family_L key, ablation cell, E2/DN condition)
 COLS = [("noise", "Noise 0.1", "L1", "L1_noise0.1", "noise0.1"),
         ("jpeg", "JPEG 10", "L3", "L1_jpeg10", "jpeg10"),
@@ -34,11 +37,11 @@ DAG = r"$^{\dagger}$"
 # Row labels are plain method names (the names Fig. 7 / fig_ablation.py uses; red-team F12); the ids are only dictionary keys of the run files.
 BLOCKS = [
     [("NONE", r"Unweighted sum" + DAG, "a6")],
-    [("A-UNL", "Unlearned rank weight", "abl"), ("MED", "Median", "e2"), ("TM20", r"20\% trimmed mean", "e2")],
-    [("A-SF", "Single feature (selected)", "abl"), ("A-LIN", "Linear logit, 35 features", "abl"), ("A-S-BD", r"Additive, from $B$ and $D$ only", "abl"),
-     ("A-MIL", "Attention pooling (MIL style)", "abl")],
+    [("A-UNL", "Unlearned rank weight", "abl"), ("MED", r"Median~\cite{huber2009robust}", "e2"), ("TM20", r"20\% trimmed mean~\cite{huber2009robust}", "e2"), ("DS-l1-disc", r"Dempster combination~\cite{han2023trusted}", "e4")],
+    [("A-SF", "Single feature (selected)", "abl"), ("A-LIN", "Linear logit, 35 features", "abl"), ("A-S-BD", r"Additive, $B$ and $D$ only~\cite{hastie1990generalized}", "abl"),
+     ("A-MIL", r"Attention pooling (MIL)~\cite{ilse2018attention}", "abl")],
     [("LRF", r"LRF (frozen)" + DAG, "a6")],
-    [("DN+NONE", "Denoise, then unweighted sum", "dn"), ("DN+LRF", "Denoise, then LRF", "dn")],
+    [("DN+NONE", r"Denoise~\cite{buades2005nonlocal}, unweighted sum", "dn"), ("DN+LRF", r"Denoise~\cite{buades2005nonlocal}, LRF", "dn")],
 ]
 
 
@@ -46,6 +49,8 @@ def load():
     a6 = S.jload(A6)["family_L"]
     abl = S.jload(ABL)
     e2 = S.jload(E2)
+    global _E4
+    _E4 = S.jload(E4)
     dn = None
     p = S.RUNS / DN
     if p.exists():
@@ -71,6 +76,11 @@ def cell_value(rid: str, src: str, col, a6, abl, e2, dn):
         assert c["n"] == N
         a = c["arms"][rid]
         return dict(acc=a["acc"], diff=a["vs_NONE"]["diff"], ci=a["vs_NONE"]["ci95"], run=f"runs/{E2} cells.{cond}.arms.{rid}.{{acc,vs_NONE.diff,vs_NONE.ci95}}")
+    if src == "e4":
+        c = _E4["cells"][cond]
+        assert c["n"] == N and _E4["primary"] == rid
+        a = c["arms"][rid]
+        return dict(acc=a["acc"], diff=a["vs_NONE"]["diff"], ci=a["vs_NONE"]["ci95"], run=f"runs/{E4} cells.{cond}.arms.{rid}.{{acc,vs_NONE.diff,vs_NONE.ci95}}")
     if src == "dn":
         if dn is None or cond not in dn.get("cells", {}) or rid not in dn["cells"][cond].get("arms", {}):
             return None
@@ -160,7 +170,7 @@ def main():
             lines.append(r"\midrule")
             full.append(r"\midrule")
         for rid, name, src in blk:
-            cc, cf, runs = [name], [name], []
+            cc, cf, runs = [name], [re.sub(r"~\\cite\{[^}]*\}", "", name)], []          # the supplement has no bibliography: no \cite in the full table
             for col in COLS:
                 k = (rid, col[0])
                 if k in na:

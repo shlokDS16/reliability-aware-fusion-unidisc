@@ -1,0 +1,250 @@
+{
+ "label": "exploratory (EXPLORATORY-PLAN-SEVERITY-2026-10-31.md); no p-value, no test, no multiplicity claim; added after the preregistered Study 2 results",
+ "plan": "research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md",
+ "definitions": "NONE = y_none (unweighted sum), LRF = y_lrf (frozen weights, unchanged; fitted at noise 0.1 only); levels 0 and 0.1 from runs/P2-LRF-L1, others from the sweep run; every sweep level uses L1's noise0.1 stream (common random numbers)",
+ "sign": "LRF minus NONE; positive favours LRF; b = LRF right and NONE wrong, c = LRF wrong and NONE right",
+ "bootstrap": {
+  "n_boot": 10000,
+  "seed": "numpy.random.SeedSequence(0), one index matrix shared by all levels and contrasts",
+  "interval": "percentile, numpy.quantile 0.025 and 0.975",
+  "unit": "items"
+ },
+ "levels": {
+  "0": {
+   "condition": "clean",
+   "source": "P2-LRF-L1",
+   "n": 450,
+   "NONE": 0.8866666666666667,
+   "LRF": 0.9177777777777778,
+   "LRF_minus_NONE": {
+    "diff": 0.03111111111111111,
+    "b": 27,
+    "c": 13,
+    "ci95": [
+     0.0044444444444444444,
+     0.057777777777777775
+    ]
+   }
+  },
+  "0.05": {
+   "condition": "noise0.05",
+   "source": "P2-LRF-SEV",
+   "n": 450,
+   "NONE": 0.7933333333333333,
+   "LRF": 0.8488888888888889,
+   "LRF_minus_NONE": {
+    "diff": 0.05555555555555555,
+    "b": 46,
+    "c": 21,
+    "ci95": [
+     0.02,
+     0.09111111111111111
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.024444444444444446,
+    "ci95": [
+     -0.015555555555555555,
+     0.06444444444444444
+    ]
+   }
+  },
+  "0.1": {
+   "condition": "noise0.1",
+   "source": "P2-LRF-L1",
+   "n": 450,
+   "NONE": 0.7333333333333333,
+   "LRF": 0.8022222222222222,
+   "LRF_minus_NONE": {
+    "diff": 0.06888888888888889,
+    "b": 58,
+    "c": 27,
+    "ci95": [
+     0.028888888888888888,
+     0.10888888888888888
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.03777777777777778,
+    "ci95": [
+     -0.0044444444444444444,
+     0.08
+    ]
+   }
+  },
+  "0.2": {
+   "condition": "noise0.2",
+   "source": "P2-LRF-SEV",
+   "n": 450,
+   "NONE": 0.6488888888888888,
+   "LRF": 0.7066666666666667,
+   "LRF_minus_NONE": {
+    "diff": 0.057777777777777775,
+    "b": 57,
+    "c": 31,
+    "ci95": [
+     0.017777777777777778,
+     0.09783333333333254
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.02666666666666667,
+    "ci95": [
+     -0.02,
+     0.07555555555555556
+    ]
+   }
+  },
+  "0.3": {
+   "condition": "noise0.3",
+   "source": "P2-LRF-SEV",
+   "n": 450,
+   "NONE": 0.6,
+   "LRF": 0.6844444444444444,
+   "LRF_minus_NONE": {
+    "diff": 0.08444444444444445,
+    "b": 62,
+    "c": 24,
+    "ci95": [
+     0.044444444444444446,
+     0.12444444444444444
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.05333333333333334,
+    "ci95": [
+     0.008888888888888889,
+     0.09777777777777778
+    ]
+   }
+  }
+ },
+ "length_matched": {
+  "0": {
+   "condition": "clean",
+   "source": "P2-LRF-L1",
+   "n": 450,
+   "NONE": 0.86,
+   "LRF": 0.8666666666666667,
+   "LRF_minus_NONE": {
+    "diff": 0.006666666666666667,
+    "b": 20,
+    "c": 17,
+    "ci95": [
+     -0.02,
+     0.03333333333333333
+    ]
+   }
+  },
+  "0.05": {
+   "condition": "noise0.05",
+   "source": "P2-LRF-SEV",
+   "n": 450,
+   "NONE": 0.7622222222222222,
+   "LRF": 0.84,
+   "LRF_minus_NONE": {
+    "diff": 0.07777777777777778,
+    "b": 62,
+    "c": 27,
+    "ci95": [
+     0.03777777777777778,
+     0.11777777777777777
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.07111111111111111,
+    "ci95": [
+     0.03111111111111111,
+     0.1111111111111111
+    ]
+   }
+  },
+  "0.1": {
+   "condition": "noise0.1",
+   "source": "P2-LRF-L1",
+   "n": 450,
+   "NONE": 0.7066666666666667,
+   "LRF": 0.7822222222222223,
+   "LRF_minus_NONE": {
+    "diff": 0.07555555555555556,
+    "b": 67,
+    "c": 33,
+    "ci95": [
+     0.03333333333333333,
+     0.12
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.06888888888888889,
+    "ci95": [
+     0.022222222222222223,
+     0.11555555555555555
+    ]
+   }
+  },
+  "0.2": {
+   "condition": "noise0.2",
+   "source": "P2-LRF-SEV",
+   "n": 450,
+   "NONE": 0.6377777777777778,
+   "LRF": 0.7288888888888889,
+   "LRF_minus_NONE": {
+    "diff": 0.09111111111111111,
+    "b": 68,
+    "c": 27,
+    "ci95": [
+     0.04888888888888889,
+     0.13333333333333333
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.08444444444444445,
+    "ci95": [
+     0.03777777777777778,
+     0.13333333333333333
+    ]
+   }
+  },
+  "0.3": {
+   "condition": "noise0.3",
+   "source": "P2-LRF-SEV",
+   "n": 450,
+   "NONE": 0.6044444444444445,
+   "LRF": 0.6955555555555556,
+   "LRF_minus_NONE": {
+    "diff": 0.09111111111111111,
+    "b": 65,
+    "c": 24,
+    "ci95": [
+     0.051111111111111114,
+     0.13111111111111112
+    ]
+   },
+   "gain_minus_clean_gain": {
+    "diff": 0.08444444444444445,
+    "ci95": [
+     0.04,
+     0.13111111111111112
+    ]
+   }
+  }
+ },
+ "positive_control": {
+  "checked": true,
+  "n_items": 450,
+  "token_equal_fraction": 0.9979253472222223,
+  "items_all_tokens_equal": 74,
+  "min_required": 0.99,
+  "ok": true
+ },
+ "scorer_meta": {
+  "ok": true,
+  "n_items_rows": 450,
+  "predictions_sha256": "72db0c9d9c069b6dd488452e52936128b8392046db9f43aef8b5cc3c8acfad89"
+ },
+ "inputs": {
+  "sev_predictions_sha256": "72db0c9d9c069b6dd488452e52936128b8392046db9f43aef8b5cc3c8acfad89",
+  "l1_predictions_sha256": "e919776c351596d175211a8a3ca215e6f6a892d608cf9a049df8f2d81c0d305f",
+  "numpy": "2.5.2"
+ }
+}

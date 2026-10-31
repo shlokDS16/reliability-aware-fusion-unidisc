@@ -2,7 +2,7 @@
 % Every citation is a verified key of paper2-tnnls/references.bib, used for at most the sentence its "supports" line in
 % research/paper2/tnnls/CITATION-AUDIT-2026-10-30.md allows (sections 1-2). The eight TNNLS papers: moser2025diffusion, yang2026malfm,
 % li2026tcpfmc, chen2025uncertainty, zhang2024informative, jiang2025resisting, wang2025conformal, qiu2025counterfactual.
-% Study 2's novelty sentence is written for Study 2 alone and scoped to the logged search (NOVELTY-AUDIT-LRF-2026-10-29.md sections 1,
+% (2026-10-31, single-study version; two-study text at git tag paper2-two-study-2026-10-31.) The novelty sentence is written for the weighting alone and scoped to the logged search (NOVELTY-AUDIT-LRF-2026-10-29.md sections 1,
 % 4, 5, 7); the audit's matched-filter sentence and its section-6 sentence are NOT used (F13). Lumina-DiMOO is not called masked
 % discrete diffusion (unverified). Muddit is named once with its published title (citation audit, open item 3).
 
@@ -44,7 +44,13 @@ In multimodal learning the weights change per input: dynamic, uncertainty-driven
 low-quality data, with theory on when it is preferable to static weighting~\cite{zhang2023provable}. A recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced, and
 quality-varying settings~\cite{zhang2026lowquality}.
 Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
-methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential}.
+methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential,han2026aemrl}.
+% source: research/paper2/sources/PROF-SOURCES-FUSION-2026-10-31.md (DMMF Sec. III, conclusion pp. 12-13)
+Separate data and model uncertainties can also set each modality's weight~\cite{guo2026dmmf}, whose authors leave finer-grained
+uncertainty modelling to future work.
+% source: research/paper2/sources/DYMO-READING-2026-10-31.md (full-text reading; Alg. 1 p6, Eqs. 4-9 pp5-6)
+When modalities are missing, recovered modalities can be selected at inference by a loss-derived reward on whole
+modalities~\cite{du2026dymo}; our weights act on single tokens inside one model.
 Papers in this journal take the same view: a per-modality confidence score (an energy score) lets the fusion rely less on low-quality
 modalities~\cite{li2026tcpfmc}; evidence theory quantifies the uncertainty of each prediction and fuses evidence across propagation
 depths~\cite{chen2025uncertainty}; evidential deep learning suppresses unreliable modality-wise pseudo-labels in audio-visual video
@@ -53,7 +59,7 @@ contribute to high predictive uncertainty~\cite{qiu2025counterfactual}.
 At a finer grain, attention-based multiple-instance pooling learns instance weights from instance features under a bag-level
 loss~\cite{ilse2018attention}, and a token weight has been derived from a model's logits with and without the image, as a training-time
 reweighting~\cite{xiao2024seeing}.
-For Study~2, the closest precedents are thus learned timestep weights~\cite{clark2023zeroshot,jeong2025diffusion}, instance weights
+The closest precedents are thus learned timestep weights~\cite{clark2023zeroshot,jeong2025diffusion}, instance weights
 under a bag-level loss~\cite{ilse2018attention}, and reliability weights of modalities or views~\cite{zhang2023provable,han2023trusted}.
 Token-level confidences of a captioning vision-language model, aggregated algebraically or by a learned estimator, have also been used to
 judge whether a caption is correct for its image~\cite{petryk2024token}; that work scores the caption's tokens given the image and does
@@ -68,14 +74,17 @@ Conformal prediction gives distribution-free guarantees under exchangeability~\c
 conformal $p$-values give false-discovery control for outlier detection~\cite{bates2023outliers}, and conformal risk control bounds the
 expected value of a monotone loss~\cite{angelopoulos2024crc}.
 Conformal loss-controlling prediction, published in this journal, extends conformal prediction from miscoverage to a general loss for
-each test object, with a finite-sample guarantee under exchangeability~\cite{wang2025conformal}; Study~1 uses the expected-loss
-statement of conformal risk control instead.
+each test object, with a finite-sample guarantee under exchangeability~\cite{wang2025conformal}.
 Conformal risk control has been applied, with masking-derived CLIPScore distributions and a threshold set on foil-labelled data,
 to flag erroneous caption words given an image~\cite{gomes2025crc}.
+The weighting studied here carries no such guarantee, and its evidence is a preregistered paired test.
 
 \paragraph*{Corruption benchmarks and preregistration}
 Common-corruption benchmarks test models under non-adversarial image corruptions~\cite{hendrycks2019benchmarking}, and a
 corruption benchmark for object detection released an implementation of such corruptions at graded
-severities~\cite{michaelis2019imagecorruptions}, which Study~2 uses for its other noise types.
+severities~\cite{michaelis2019imagecorruptions}, which this paper uses for its other noise types.
+% source: research/paper2/sources/PROF-SOURCES-ROBUST-DUALDIFF-2026-10-31.md (Qiu et al. Sec. 3, 4.2, App. B, Table 8)
+For image-text models, 17 such corruptions at five severities have been benchmarked on COCO retrieval, without a unified masked
+diffusion model~\cite{qiu2024benchmarking}.
 Preregistration records the questions and the analysis plan before the outcomes are observed, which separates prediction from
 postdiction~\cite{nosek2018preregistration}; the form used here is defined in \cref{sec:setting-tests}.
