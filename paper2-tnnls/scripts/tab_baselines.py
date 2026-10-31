@@ -15,6 +15,7 @@ Run: "<repo>/.venv/Scripts/python.exe" -I paper2-tnnls/scripts/tab_baselines.py 
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -36,11 +37,11 @@ DAG = r"$^{\dagger}$"
 # Row labels are plain method names (the names Fig. 7 / fig_ablation.py uses; red-team F12); the ids are only dictionary keys of the run files.
 BLOCKS = [
     [("NONE", r"Unweighted sum" + DAG, "a6")],
-    [("A-UNL", "Unlearned rank weight", "abl"), ("MED", "Median", "e2"), ("TM20", r"20\% trimmed mean", "e2"), ("DS-l1-disc", "Dempster combination", "e4")],
-    [("A-SF", "Single feature (selected)", "abl"), ("A-LIN", "Linear logit, 35 features", "abl"), ("A-S-BD", r"Additive, from $B$ and $D$ only", "abl"),
-     ("A-MIL", "Attention pooling (MIL style)", "abl")],
+    [("A-UNL", "Unlearned rank weight", "abl"), ("MED", r"Median~\cite{huber2009robust}", "e2"), ("TM20", r"20\% trimmed mean~\cite{huber2009robust}", "e2"), ("DS-l1-disc", r"Dempster combination~\cite{han2023trusted}", "e4")],
+    [("A-SF", "Single feature (selected)", "abl"), ("A-LIN", "Linear logit, 35 features", "abl"), ("A-S-BD", r"Additive, $B$ and $D$ only~\cite{hastie1990generalized}", "abl"),
+     ("A-MIL", r"Attention pooling (MIL)~\cite{ilse2018attention}", "abl")],
     [("LRF", r"LRF (frozen)" + DAG, "a6")],
-    [("DN+NONE", "Denoise, then unweighted sum", "dn"), ("DN+LRF", "Denoise, then LRF", "dn")],
+    [("DN+NONE", r"Denoise~\cite{buades2005nonlocal}, unweighted sum", "dn"), ("DN+LRF", r"Denoise~\cite{buades2005nonlocal}, LRF", "dn")],
 ]
 
 
@@ -169,7 +170,7 @@ def main():
             lines.append(r"\midrule")
             full.append(r"\midrule")
         for rid, name, src in blk:
-            cc, cf, runs = [name], [name], []
+            cc, cf, runs = [name], [re.sub(r"~\\cite\{[^}]*\}", "", name)], []          # the supplement has no bibliography: no \cite in the full table
             for col in COLS:
                 k = (rid, col[0])
                 if k in na:
