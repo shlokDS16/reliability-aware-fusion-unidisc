@@ -1,33 +1,36 @@
-% study2.tex -- Section V, Study 2 (writer W2, 2026-10-30). Binding contract: paper2-tnnls/SPEC.md v2.2.
+% study2.tex -- Section IV, the one study (writer W2, 2026-10-30; single-study edit 2026-10-31). Binding contract: paper2-tnnls/SPEC.md v2.2.
 % Sources: SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.2-A6.6, A6.12 (branch A sentences, placement, must-not), A6.13 (disclosure, once, here)
 % plus the D0094 clause (research/ledgers/decisions.jsonl); GATE-AUDIT-FAMILY-L, -LG, -BASELINES-PARITY (2026-10-30); REDTEAM-SPEC F6-F16,
 % F21, F29; ABSTRACT-RULING (sentence forms).
-% Rules kept here: w_j only in this section; no Study 1 symbol, role or result outside the A6.13 disclosure of V-A; features by formula
+% Rules kept here: w_j only in this section; no symbol, role or result of any other study outside the provenance subsection (A6.13); features by formula
 % (tables/tab_features.tex), never by any role elsewhere; no comparison of LRF with any other method; "confirmed" only for L1; no
 % in-sample or design-item accuracy of the frozen object; "reliability-aware" is the method's name only. Every number has a "% run:".
 
-\section{Study 2: Learned Reliability-Aware Fusion of Token Evidence}\label{sec:study2}
-Study~2 answers Q2 (\cref{sec:intro}); the tested weighting of the evidence $\Delta_j$ is called learned reliability-aware fusion
+% 2026-10-31 (single-study version): section retitled; "Study 2" naming removed from the text. Labels sec:study2* are kept so that references hold.
+% The two-study text of this section is at git tag paper2-two-study-2026-10-31.
+\section{Learned Reliability-Aware Fusion of Token Evidence}\label{sec:study2}
+This section tests one weighting of the evidence $\Delta_j$ (\cref{sec:intro}); it is called learned reliability-aware fusion
 (LRF), a name that describes its design, not a measured property.
 
 \subsection{Provenance of the Tested Method}\label{sec:study2-provenance}
 % run: git commits 941a260b (SAP A6 r1, 2026-10-29 14:40), 24d36a8a (re-frozen object, 21:00:13), 4be79be8 (fresh fold, 21:01:03);
 % run: runs/P2-LRF-FROZEN-LFIX/HASHES.json:new.runs/P2-LRF-FROZEN-LFIX/model.npz (= db7fdb4e...); decision D0094 (clause on what was seen)
-Study~2 was added after Study~1 had been analysed (primary result negative), when the target venue changed.
-The method it tests was designed post hoc on Study~1's 500 test items.
-Before the design, Study~1's primary and secondary results, its positive-control audit, its exploratory comparators, and an exploratory
-learned-weighting analysis had all been seen.
+% 2026-10-31 (lead instruction, item 4): the one sentence on the origin of the design images follows; no result of the earlier study is given.
+% The disclosures of SAP A6.13 (design after the earlier analysis, families compared, re-freeze, what had been seen) are kept in generic words
+% because their substance is binding; they name no result and no study number (open issue for the lead in SINGLE-STUDY-REWRITE-2026-10-31.md).
+The 500 design images came from an earlier preregistered study of the same model that tested a different question and is reported separately.
+The method was designed after that study had been analysed, on those images, so the design was not preregistered.
+Before the design, the analysts had seen the results of that study's analyses, which are not reported here, and an exploratory
+learned-weighting analysis on the design images.
 In that analysis four learned-weighting families (a logistic generalised additive model, gradient-boosted trees, a multilayer perceptron,
 and a grid model) were compared, and the logistic generalised additive model was selected by inner cross-validation.
 Two other method designs and two other project routes were considered and not pursued.
 A first freeze was found to read the true caption's length through the layout of its inputs; the caption slot was therefore fixed, and
 the method was re-scored and re-frozen at that slot length, a choice declared before any re-frozen result existed.
-Before the re-freeze the analysts had also seen the result table of Study~1's re-infilling family, the result of its family~B, and the
-code of the decision rule of its family~H; the re-freeze protocol itself had been fixed earlier and was not changed.
-The configuration was frozen (SHA-256 \texttt{db7fdb4e\ldots}, commit \texttt{24d36a8a}) before any Study~2 image was selected.
-Study~2 was preregistered (a dated addendum to the analysis plan, commit \texttt{941a260b}) with a rule that no further confirmatory study would be added.
-All LRF numbers on Study~1's items are post hoc and exploratory and appear only in supplement S-IV.
-Study~2 tests a different method on different images and does not bear on Study~1's conclusion.
+Before the re-freeze the analysts had also seen further outputs of that earlier study; the re-freeze protocol itself had been fixed earlier and was not changed.
+The configuration was frozen (SHA-256 \texttt{db7fdb4e\ldots}, commit \texttt{24d36a8a}) before any image of the fresh fold was selected.
+The test was preregistered (a dated addendum to the analysis plan, commit \texttt{941a260b}) with a rule that no further confirmatory study would be added.
+All LRF numbers on the design images are post hoc and exploratory and appear only in supplement S-II.
 
 \subsection{The Frozen Weighting}\label{sec:study2-method}
 Reliability-weighted fusion gives each source of evidence a weight that depends on its
@@ -37,7 +40,7 @@ LRF applies this construction to the per-token evidence of a unified masked diff
 image token to a non-negative weight, and the decision is the sign of the weighted evidence.
 
 \paragraph*{Features}
-Each token has 35 features in the seven groups of \cref{fig:lrf_weights} (formulas in supplement S-IV).
+Each token has 35 features in the seven groups of \cref{fig:lrf_weights} (formulas in supplement S-II).
 One group holds seven token scores (five computed by the model with the caption masked, a patch-texture score, and a codebook-neighbour
 distance), one holds the token's grid position, and the other five summarise the scores over a neighbourhood or the image.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:inputs_never_used (Delta, Lambda, captions, z, condition identity)
@@ -65,7 +68,7 @@ with a tie counted as wrong; \cref{alg:lrf} lists the steps of the frozen rule.
 \Input{observed image tokens $\tilde v_j$, $j=1,\dots,m$ ($m=1\,024$), and the caption pair $(c^+,c^-)$}
 \Output{the chosen caption: $c^+$ if $M>0$ (then $Y_{\rm LRF}=1$), otherwise $c^-$ (a tie counts as wrong), and the margin $M$, \cref{eq:lrf-decision}}
 \Data{frozen $\mu_k,s_k$ (design-token mean and standard deviation of feature $k$), the $Q=8$ knots $t_{kl}$ of each feature as stored in the frozen model (\texttt{spec.json}), and $\beta_0,a_k,c_{kl}$ (SHA-256 \texttt{db7fdb4e\ldots})}
-compute the seven token scores (caption slot filled by 13 padding tokens) and the item-level aggregates (windows, ranks, image means; supplement S-IV)\;
+compute the seven token scores (caption slot filled by 13 padding tokens) and the item-level aggregates (windows, ranks, image means; supplement S-II)\;
 \For{$j\leftarrow1$ \KwTo $m$}{
  $\Delta_j\leftarrow$ evidence of token $j$ (\cref{sec:setting-evidence}), each caption at its own length\;
  $x_{jk}\leftarrow(\text{feature }k\text{ of token }j-\mu_k)/s_k$ for $k=1,\dots,35$, from the scores, aggregates, and grid position\;
@@ -84,7 +87,7 @@ The parameters minimise, over the item-conditions of the design set,
 a softplus loss on the margin $M_i$ of \cref{eq:lrf-decision}, which is positive when the true caption is chosen.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:T (= 0.1697); objective; hpo.method; selected_cfg.{knots,ridge,lr}; epochs (= 40); n_items (= 500)
 The temperature is $T=0.170$; optimisation is AdamW without weight decay on mini-batches of 32 item-conditions.
-The configuration selected by successive halving on three inner folds of the 500 design items (search in supplement S-IV; $Q=8$ knots,
+The configuration selected by successive halving on three inner folds of the 500 design items (search in supplement S-II; $Q=8$ knots,
 $\lambda=0.0027$, learning rate 0.0169) was refitted on all 500 items for 40 epochs with a fixed seed.
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:training_conditions (= clean, jpeg10, noise0.1, splice128)
 The training data were the 500 design images, each scored clean, after JPEG compression at quality~10, with Gaussian noise of standard
@@ -93,17 +96,17 @@ deviation 0.1, and with a 128-pixel splice; these are also the four tested condi
 \paragraph*{Fixed caption slot and hashes}
 % run: runs/P2-LRF-FROZEN-LFIX/spec.json:caption_slot_len (= 13); rescore_checks.{invariance_max_abs_diff,positive_control_max_abs_diff,n_check}
 The caption-masked scores are computed with the caption slot filled by 13 padding tokens, so they do not depend on the length of either
-caption; $\Delta_j$ keeps each caption at its own length (invariance checks in supplement S-IV).
+caption; $\Delta_j$ keeps each caption at its own length (invariance checks in supplement S-II).
 % run: runs/P2-LRF-FROZEN-LFIX/HASHES.json:new.* (model db7fdb4e..., spec 9d196d71...); pinned_vs_A6.2_table.* (all equals_table true)
 The model file and every input of the scorer are pinned by SHA-256 and checked before each item (supplement S-I).
-\Cref{fig:lrf_weights} draws the model; the learned shapes of the six features with the largest effect range are in supplement S-IV, and \cref{fig:qualitative} shows three fresh-fold items.
+\Cref{fig:lrf_weights} draws the model; the learned shapes of the six features with the largest effect range are in supplement S-II, and \cref{fig:qualitative} shows three fresh-fold items.
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_study2_weights.pdf}
 % run: runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json,HASHES.json} (features (35; group counts 7, 3, 8, 4, 6, 6, 1), knots, inputs_never_used, model.npz db7fdb4e...); values runs/P2-PAPER-FIGS/fig4_meta.json (panel_a); the partial-dependence figure of the supplement: runs/P2-PAPER-FIGS/fig4_pd_curves.json
-\caption{Study 2: learned reliability-aware fusion (LRF) and its frozen weight model (schematic; no data; fixed weight grid). Each
-image token has 35 features $x_j$ in seven groups (counts as printed; formulas in supplement S-IV); no feature uses $\Delta_j$, a caption,
+\caption{Learned reliability-aware fusion (LRF) and its frozen weight model (schematic; no data; fixed weight grid). Each
+image token has 35 features $x_j$ in seven groups (counts as printed; formulas in supplement S-II); no feature uses $\Delta_j$, a caption,
 or the identity of the condition. A logistic additive model with a hinge basis \eqref{eq:lrf-weight} gives the weight $w_j$, and the true
 caption is chosen if $\sum_jw_j\Delta_j>0$ \eqref{eq:lrf-decision}.}
 \label{fig:lrf_weights}
@@ -111,7 +114,7 @@ caption is chosen if $\sum_jw_j\Delta_j>0$ \eqref{eq:lrf-decision}.}
 
 \begin{table*}[!t]
 \centering
-\caption{Study 2 Preregistered Families on the Fresh Fold: Accuracy Without and With LRF, Discordant Counts, $p$-Values, and Decisions}
+\caption{Preregistered Families on the Fresh Fold: Accuracy Without and With LRF, Discordant Counts, $p$-Values, and Decisions}
 \label{tab:study2}
 % run: runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.{p_two (= 0.058),ci95 (= [0.0, 0.1])}; family_L.L-LEN.n (= 449)
 \footnotesize
@@ -150,7 +153,7 @@ The fold, its eight-check leak test (with an injected leak as positive control),
 authors' own pipeline (not independent reviews) before the first item.
 % run: runs/P2-LRF-PLAN/n_rule.json:{n_L (= 450),rule,reason}; runs/P2-LRF-PLAN/family.json:n_rule.test_fold (= 450)
 A preregistered power rule, committed before the first item, fixed the test size as a prefix of the ordered list, so it could not select
-items: $n_L=450$ (its inputs are in supplement S-IV).
+items: $n_L=450$ (its inputs are in supplement S-II).
 
 \paragraph*{Arms, families, and tests}
 % run: design constants of research/paper2/prereg/SAP-ADDENDUM-A6-LRF-2026-10-29.md A6.4, A6.5, A6.7 (levels, margin -0.03, severity 3, n 300)
@@ -172,12 +175,12 @@ matched to $\sigma=0.1$.
 According to the operations log, no output was read before its run was complete.
 
 \subsection{Results}\label{sec:study2-results}
-% run: runs/P2-LRF-L1/a6_analysis.json:multiplicity_note (no adjustment across families); 17 families: SAP-ADDENDUM-A6 A6.7 (D0100)
+% run: runs/P2-LRF-L1/a6_analysis.json:multiplicity_note (no adjustment across families); four families (L, L-NI, L-LEN, LG): SAP-ADDENDUM-A6 A6.7 (recomputed 2026-10-31)
 \Cref{fig:lrf_results} shows the net change and its interval for each family-L hypothesis and \cref{tab:study2} gives every preregistered test; each family is at its own level, with
 no adjustment across families (\cref{sec:setting-tests}).
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.*.{n_d,ci90,cp95_b_over_nd,p_mid_one,p_mid_two}; runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.* (table tables/supp_tests_full_study2.tex)
 The remaining quantities that the plan reports with every test ($n_d$, 90\% intervals, the Clopper--Pearson interval of $b/n_d$ and
-the mid-$p$ values) are in supplement S-IV.
+the mid-$p$ values) are in supplement S-II.
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L1.{acc_b (= 0.7333),acc_a (= 0.8022),net,ci95,p_one,label (= confirmed)}; branch.branch (= A)
 On a fresh preregistered fold, the frozen LRF raised image-direction verification accuracy under Gaussian noise ($\sigma=0.1$) from 0.733
 without reliability weighting to 0.802 (net 0.069, 95\% interval 0.029 to 0.109; exact one-sided McNemar $p=0.0005$; preregistered
@@ -192,7 +195,7 @@ On clean images LRF lost no more than three percentage points (0.03 in accuracy;
 exploratory clean interval had been seen.
 The clean-image estimate, descriptive, was positive (0.887 without weighting, 0.918 with; net 0.031); superiority on clean images was not a
 preregistered hypothesis.
-Supplement S-IV plots the discordant items of L1 and of the clean cell by margin (descriptive).
+Supplement S-II plots the discordant items of L1 and of the clean cell by margin (descriptive).
 % run: runs/P2-PAPER-FIGS/fig_qualitative.json:items[*].{kind,n_items_of_this_kind_in_fold (= 303, 58, 27),coco_val2017_image_id}; selection_rule
 % run: runs/P2-LRF-L1/predictions.jsonl (condition noise0.1; y_none, y_lrf): both wrong = 62 of 450 (303 + 58 + 27 + 62 = 450)
 \Cref{fig:qualitative} shows three items under noise, one of each of three kinds, chosen by a rule fixed before the figure was made, after the confirmatory result: both rules correct, only LRF correct, and only the
@@ -204,11 +207,11 @@ The maps are descriptive and do not show that the weights track reliability or c
 \centering
 \includegraphics[width=\textwidth]{figures/fig_qualitative.pdf}
 % run: runs/P2-PAPER-FIGS/fig_qualitative.json:{selection_rule,items[*].{kind,idx,coco_val2017_image_id,caption,neg_caption,sum_delta,sum_w_delta,n_items_of_this_kind_in_fold},colour_scales,attribution}; licences runs/P2-PAPER-FIGS/fig_qualitative_licences.json (62 both-wrong: runs/P2-LRF-L1/predictions.jsonl); decisions y_none, y_lrf of runs/P2-LRF-L1/predictions.jsonl (condition noise0.1)
-\caption{Study 2, three fresh-fold items under Gaussian noise ($\sigma=0.1$), one of each kind, chosen by a rule fixed before the figure was
+\caption{Three fresh-fold items under Gaussian noise ($\sigma=0.1$), one of each kind, chosen by a rule fixed before the figure was
 made, after the confirmatory result: the first item in fold-file order for which the unweighted rule and LRF are both correct (i), only LRF is correct (ii), and only the
 unweighted rule is correct (iii); the three kinds occur 303, 58, and 27 times among the 450 items (both rules are wrong on 62). Columns: clean image, noisy image,
-per-token evidence $\Delta_j$ and LRF weight $w_j$ on the $32\times32$ token grid (colour scales in supplement S-VIII), and the true and the wrong caption with both decisions and sums. Descriptive; not evidence
-that the weights track reliability or corruption. Images and captions are from COCO val2017~\cite{lin2014coco} (identifiers 335177, 520324, 224724; licences in supplement S-VIII); noisy panels modified.}
+per-token evidence $\Delta_j$ and LRF weight $w_j$ on the $32\times32$ token grid (colour scales in supplement S-VI), and the true and the wrong caption with both decisions and sums. Descriptive; not evidence
+that the weights track reliability or corruption. Images and captions are from COCO val2017~\cite{lin2014coco} (identifiers 335177, 520324, 224724; licences in supplement S-VI); noisy panels modified.}
 \label{fig:qualitative}
 \end{figure*}
 
@@ -240,7 +243,7 @@ The three cells are reported separately and are not pooled.
 % run: runs/P2-LRF-BASELINES/baselines.json:table.{clip,siglip}.*.acc (range 0.996 to 1.000); models.* (pinned revisions)
 For reference, CLIP ViT-L/14~\cite{radford2021clip} and SigLIP so400m~\cite{zhai2023sigmoid}, different models trained on different data, reached accuracies of 0.996 to 1.000 on the
 same items in every condition (\cref{tab:baselines}), with the same decision rule on images regenerated with the runner's corruption
-functions and seeds (supplement S-VI).
+functions and seeds (supplement S-IV).
 % run: runs/P2-LRF-BASELINES-PARITY-L1/baselines.json:pixel_parity.{min (= 0.989),threshold}; runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.{min (= 0.986),threshold}
 Pixel parity was shown: the UniDisc tokeniser's re-encoding of the regenerated images agreed with the stored codes on at least 98.6\% of
 tokens (five items per condition set; threshold 98\%).
@@ -256,14 +259,14 @@ Nearly every cell is at or next to its ceiling, so no reading beyond the stated 
 
 \vspace{2pt}
 \parbox{\columnwidth}{\scriptsize For reference only: different models trained on different data; no test and no comparison are made.
-Same first 450 fold items (300 for the severity-3 cells) and regenerated pixels; revisions and scores in supplement S-VI. Drop: clean minus corrupted accuracy of the same model on the same items, paired percentile bootstrap 95\% interval. The row
+Same first 450 fold items (300 for the severity-3 cells) and regenerated pixels; revisions and scores in supplement S-IV. Drop: clean minus corrupted accuracy of the same model on the same items, paired percentile bootstrap 95\% interval. The row
 ``Clean images, same 300 items'' was computed at writing from the stored predictions (descriptive). Cost per item was not measured.}
 \end{table}
 
-\subsection{Cost of Study 2}\label{sec:study2-cost}
+\subsection{Cost}\label{sec:study2-cost}
 % run: runs/P2-LRF-L1/items.jsonl:n_rows, seconds, peak_gb (67 rows, median 8.0 s, max 8.2 GB); runs/P2-LRF-LG/items.jsonl (42 rows, 5.0 s)
 The fresh-fold pass, which computes the unweighted rule for four conditions and stores the inputs of LRF, used 67 network rows and a median of 8.0~s per item on one 12~GB laptop GPU, with a peak memory of 8.2~GB; the stage of the other noise
-types used 42 rows and 5.0~s per item (supplement S-IV).
+types used 42 rows and 5.0~s per item (supplement S-II).
 % F2 (professor triage Q9, 2026-10-31): replaces "LRF adds no network row". Counts read from the code (exp_p2/gate/pipeline.py caption_lambdas;
 % exp_p2/run_gate_m4.py process; exp_p2/run_gate_lrf_rescore.py docstring) and checked against the stored rows.
 % run: runs/P2-LRF-RESCORE/items.jsonl:n_rows (median 36 per item = 4 conditions x 9 passes); runs/P2-LRF-L1/config.json:K (= 8); exp_p2/gate/config.py GRID (= 32, m = 1024)
@@ -274,9 +277,9 @@ LRF therefore costs $2+9=11$ passes per scored image against 2, and then compute
 The count follows the number of mask groups ($K=8$), not the $m=1\,024$ grid positions; another $K$ or grid size was not tried.
 
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
-% (2026-10-31, page cap) the ablation figure moved to supplement S-VII (label sfig:ablation).
+% (2026-10-31, page cap) the ablation figure moved to supplement S-V (label sfig:ablation).
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commits facab605, 4e785aa9; plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8)
-Exploratory; no ablation was preregistered, and supplement S-VII plots and tabulates every variant.
+Exploratory; no ablation was preregistered, and supplement S-V plots and tabulates every variant.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.ci95 (classification: A-LIN, A-S-BD, A-S-s3, A-MIL contain 0; A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF, A-UNL, KO-S-BD, KO-F-neighbourhood below 0; KO-S-nbr above 0; other KO rows contain 0)
 The following intervals contained zero: those of a linear logit on the same 35 features, of the features computed from $B$ and $D$ alone,
 of the features from the uncertainty of the $B$ pass alone, and of attention-weighted pooling in the style of gated-attention
@@ -307,9 +310,10 @@ The linear logit reached 0.884 under JPEG against 0.864 for LRF (difference 0.02
 % run: runs/P2-LRF-DN/dn_analysis.json:cells.noise0.1.arms.{DN+NONE,DN+LRF}.{acc (= 0.8444, 0.8556), vs_LRF.{diff,ci95}} (DN+NONE 0.042 [0.002, 0.082]; DN+LRF 0.053 [0.011, 0.096]); runs/P2-LRF-L1/a6_analysis.json:family_L.{L1.acc_b (= 0.7333), L1.acc_a (= 0.8022)}; plan E1 (commit 83ac79f8)
 % run: runs/P2-LRF-DN/dn_analysis.json:cells.jpeg10.arms.{DN+NONE,DN+LRF}.{acc (= 0.8533, 0.8133), vs_LRF.{diff,ci95}} (DN+NONE -0.011 [-0.044, 0.024]; DN+LRF -0.051 [-0.089, -0.013])
 Denoising before scoring (non-local means; the last two rows of \cref{tab:compare}) gave, under Gaussian noise, 0.844 with the unweighted sum and 0.856 with LRF, which is 0.042 (unadjusted 95\% interval 0.002 to 0.082) and 0.053 (0.011 to 0.096) above LRF without denoising (0.802); under JPEG quality~10 it gave 0.853 and 0.813, which are $-0.011$ ($-0.044$ to 0.024) and $-0.051$ ($-0.089$ to $-0.013$) from LRF.
-% F3 (professor triage Q3, 2026-10-31); facts as in V-A (sec:study2-provenance): four learned families, inner cross-validation on the 500 design items; shapes: supplement S-IV. No new number.
+% F3 (professor triage Q3, 2026-10-31); facts as in sec:study2-provenance: four learned families, inner cross-validation on the 500 design items; shapes: supplement S-II. No new number.
 Nothing here favours the additive form over a linear logit on the same features; the confirmed object is the frozen weighting, and the preregistered result remains the L1 test of \cref{tab:study2}.
-LRF was chosen by inner cross-validation among four learned families on the design items (\cref{sec:study2-provenance}), and the learned shapes in supplement S-IV are descriptive.
+LRF was chosen by inner cross-validation among four learned families on the design items (\cref{sec:study2-provenance}), and the learned shapes in supplement S-II are descriptive.
+% TODO-LEAD: severity sweep sentence
 
 \begin{table}[!t]
 \centering
@@ -321,8 +325,8 @@ LRF was chosen by inner cross-validation among four learned families on the desi
 
 \vspace{2pt}
 \parbox{\columnwidth}{\scriptsize $^{\dagger}$Fixed before the fold was opened (only the unweighted sum and the frozen LRF); every other row was specified and scored after the
-preregistered Study~2 results. Italics: highest accuracy in the column (ties share the mark); descriptive marks of one sample, not a test. 4 of the 9 learned refits of the exploratory ablation are shown, chosen after the fold was scored;
-all 10 are in supplement S-VII, with differences and intervals.
+preregistered results. Italics: highest accuracy in the column (ties share the mark); descriptive marks of one sample, not a test. 4 of the 9 learned refits of the exploratory ablation are shown, chosen after the fold was scored;
+all 10 are in supplement S-V, with differences and intervals.
 Median: $\operatorname{med}_j\Delta_j>0$; 20\% trimmed mean: the mean of $\Delta_j$ without its $\lfloor0.2m\rfloor$ lowest and highest values is positive ($m=1\,024$).
 Unlearned rank weight: $w_j=1-r_j$, $r_j\in[0,1]$ the within-image percentile rank of the token's uncertainty (one minus the largest predicted probability, caption masked).
 Dempster combination: per token, evidence $\max(\pm\Delta_j,0)$ with Dirichlet prior weight 2 gives an opinion, discounted by $w_j$ of the rank weight and combined over tokens by Dempster's rule; the opinions are constructed from $\Delta_j$, not learned by an evidential head.

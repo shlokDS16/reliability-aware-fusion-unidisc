@@ -78,8 +78,9 @@
 \begin{document}
 
 % ---- title and authors ---------------------------------------------------------------------------
-% Title: SAP A6.12 branch A, fixed; only capitalisation set to IEEE title case (SPEC section 1; D0092). Do not edit the words.
-\title{Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under Gaussian Noise in a Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc}
+% Title (2026-10-31, single-study version; title A approved by Shlok, research/paper2/tnnls/PROFESSOR-SUGGESTIONS-ANALYSIS-2026-10-31.md):
+% shortened from the preregistered branch-A title of SAP A6.12 with the claim unchanged; reported as deviation (b) in the Deviations list.
+\title{Reliability-Aware Fusion of Token Evidence for Image-Text Verification in Unified Discrete Diffusion}
 
 \ifanon
   \author{Anonymous authors for double-anonymous review%
@@ -110,17 +111,18 @@
 
 % TODO(index terms): 4-5 terms, alphabetical, first word capitalised, from the IEEE Thesaurus where possible.
 \begin{IEEEkeywords}
-Diffusion models, hypothesis testing, information fusion, multimodal learning.
+Denoising diffusion, discrete diffusion, information fusion, masked diffusion, multimodal learning.
 \end{IEEEkeywords}
 
 % ---- body ----------------------------------------------------------------------------------------
 \input{sections/introduction}      % I   Introduction (writer W1)
 \input{sections/related}           % II  Related work (W1)
-\input{sections/setting}           % III Shared setting: unweighted sum only (W1)
-\input{sections/study1}            % IV  Study 1: masked-likelihood token gating with conformal risk control (W2)
-\input{sections/study2}            % V   Study 2: learned reliability-aware fusion of token evidence (W2)
-\input{sections/discussion}        % VI  Discussion, Limitations, Deviations (W1)
-\input{sections/conclusion}        % VII Conclusion (W1)
+\input{sections/setting}           % III Setting: model, evidence, decision rule, preregistration
+% sections/study1.tex is kept in the repository, unreferenced: the single-study version (2026-10-31) reports the second preregistered
+% study only; the two-study version is at git tag paper2-two-study-2026-10-31.
+\input{sections/study2}            % IV  Learned reliability-aware fusion of token evidence (the one study)
+\input{sections/discussion}        % V   Discussion, Limitations, Deviations
+\input{sections/conclusion}        % VI  Conclusion
 
 % ---- appendix: none. The proof of prop:snrcorr (former Appendix A, sections/appendix.tex) moved to supplement S-II
 % (lead decision, clarity edit 2, 2026-10-30); sections/appendix.tex is kept as a record and is not input.

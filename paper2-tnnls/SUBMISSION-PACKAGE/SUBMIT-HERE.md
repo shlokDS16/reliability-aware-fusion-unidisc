@@ -34,25 +34,26 @@ Word files are not needed at review (TNNLS reviews the PDF); review-copy Word fi
 ## 2. Portal fields (IEEE Author Portal: https://ieee.atyponrex.com/journal/tnnls)
 
 - **Article type:** Full Paper (it cannot be changed after submission).
-- **Title:** Learned Reliability-Aware Fusion of Token Evidence Raised Image-Text Verification Accuracy Under Gaussian Noise in a
-  Unified Masked Diffusion Model: A Preregistered Confirmation in UniDisc
-- **Abstract** (paste; 248 words, limit 250; same as the PDF):
+- **Title:** Reliability-Aware Fusion of Token Evidence for Image-Text Verification in Unified Discrete Diffusion
+  (single-study version of 2026-10-31; this file's older text, package PDFs and Word files were built from the two-study version and must be rebuilt before upload)
+- **Abstract** (paste; 248 words, limit 250; same as the PDF, no numbers):
 
-  We report two separately preregistered studies of image-text verification under image damage in one pretrained unified masked
-  diffusion model (UniDisc, 1.4 billion parameters) on Common Objects in Context image-caption pairs. In the first, a gate discards
-  low-likelihood image tokens. In the preregistered test no improvement was detected under Joint Photographic Experts Group
-  compression at quality 10, Gaussian noise with standard deviation 0.1, and a 128-pixel splice; for each tested corruption the 90
-  percent confidence interval of the net accuracy change lay inside plus or minus 0.05 (-0.002, -0.006 to 0.000; 0.000, 0.000 to
-  0.000; -0.004, -0.010 to 0.002; 500 pairs each), so an improvement or a loss larger than 0.05 is excluded. This does not show that
-  the gate has no effect. Each negative is a random caption of an image sharing no annotated object category with the test image. In
-  the second, on a fresh preregistered fold, a frozen learned reliability-aware fusion of token evidence raised image-direction
-  verification accuracy under Gaussian noise with standard deviation 0.1 from 0.733 without reliability weighting to 0.802 (net
-  0.069, 95 percent confidence interval 0.029 to 0.109; exact one-sided McNemar test, probability value 0.0005), including with
-  length-matched negatives. On clean images it lost no more than three percentage points (90 percent confidence interval of the net
-  change 0.009 to 0.053); the margin was fixed after an exploratory clean interval had been seen. This result holds on 450
-  validation-split images not used to design or fit the frozen weighting, at that one severity.
+  Image-text verification, the choice of the true caption of an image from two candidates, becomes harder when the image is
+  damaged. We study this problem inside one frozen pretrained unified discrete diffusion model, UniDisc, which gives every
+  observed image token a probability given a caption, with no external encoder. For each token, the log-probability ratio
+  between the true and a wrong caption is evidence, and the standard rule adds the evidence of all tokens with equal weight. We
+  learn a per-token reliability weighting of this evidence from features computed without the caption, fit it on design images,
+  and freeze it. A preregistered one-sided exact paired test on fresh Common Objects in Context validation images under Gaussian
+  noise at one level confirmed that the frozen weighting raised verification accuracy, including when the wrong caption was
+  matched to the true one in length. On clean images the weighting was non-inferior within a preregistered margin; the margin
+  was fixed after an exploratory clean-image interval had been seen. Two exploratory comparisons qualify this result. A
+  classical pixel denoiser applied before scoring reached higher accuracy than the weighting under Gaussian noise, and combined
+  with the weighting it reached lower accuracy under Joint Photographic Experts Group compression. A linear logit on the same
+  features reached similar accuracy to the additive weighting. The evidence covers one model, one dataset, and one noise level;
+  it does not show that the learned weights track token reliability, or that the gain holds for other models, corruptions, or
+  severities.
 
-- **Keywords / Index Terms** (4; TNNLS asks for 4-5): Diffusion models; Hypothesis testing; Information fusion; Multimodal learning.
+- **Keywords / Index Terms** (5; TNNLS asks for 4-5): Denoising diffusion; Discrete diffusion; Information fusion; Masked diffusion; Multimodal learning.
 - **Authors** (this order; TNNLS returns papers without review if any author's contact details are missing or wrong; ORCID is
   mandatory for every author):
 
