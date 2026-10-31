@@ -1,40 +1,40 @@
-DOCX: C:\Users\Shlok\AppData\Local\Temp\tmp.hAqEOuueMU\anon\Paper2_TNNLS_supplement.docx
+DOCX: C:\Users\Shlok\AppData\Local\Temp\tmp.8h2AhtLmOS\anon\Paper2_TNNLS_supplement.docx
 PDF : C:\Users\Shlok\Downloads\Multi-Modality Language model\.claude\worktrees\frosty-clarke-209639\paper2-tnnls\supplement\supplement.pdf
 == structure
 sections: 1
   section 0: columns=1 widths_twips=[] page=8.50x11.00 in margins L0.65 R0.65 T0.70 B0.70 type=continuous
-paragraph styles (outside tables): Text=54, TableTitle=28, Heading2=10, TableNote=9, Heading1=6, FigureImage=2, FigureCaption=2, Title=1, Authors=1
-tables=14 (floating=0) drawings=2 OMML math zones=725 equation paragraphs=0 numbered=0 sequence_ok=True
-hyperlinks=21 (internal 21, external 0) bookmarks=43 internal links without bookmark=0 []
+paragraph styles (outside tables): Text=58, TableTitle=28, Heading2=11, TableNote=9, Heading1=6, FigureImage=2, FigureCaption=2, Title=1, Authors=1
+tables=14 (floating=0) drawings=2 OMML math zones=727 equation paragraphs=0 numbered=0 sequence_ok=True
+hyperlinks=23 (internal 23, external 0) bookmarks=45 internal links without bookmark=0 []
 leftover sentinels: 0 []
 paragraphs with a raw LaTeX command left: 0 []
 undefined reference markers: 0 []
-headings: 16 (H1 6, H2 10)
+headings: 17 (H1 6, H2 11)
 reference entries: 0
 table labels: ['TABLE\xa0S1', 'TABLE\xa0S2', 'TABLE\xa0S3', 'TABLE\xa0S4', 'TABLE\xa0S5', 'TABLE\xa0S6', 'TABLE\xa0S7', 'TABLE\xa0S8', 'TABLE\xa0S9', 'TABLE\xa0S10', 'TABLE\xa0S11', 'TABLE\xa0S12', 'TABLE\xa0S13', 'TABLE\xa0S14']; figure captions: ['Fig.\xa0S1 show', 'Fig.\xa0S1. Ite', 'Fig.\xa05 of th', 'Fig.\xa0S2. Exp', 'Fig.\xa01 (conc', 'Fig.\xa02 (froz', 'Fig.\xa06 (expl', 'Fig.\xa04 (thre', 'Fig.\xa03 (fami', 'Fig.\xa0S1 (ite', 'Fig.\xa0S2 (exp']
 == text comparison with pdftotext
-tokens: pdf=10178 docx=10001
-word recall (PDF words found in DOCX, multiset): 0.9809
-5-gram match rate (PDF 5-grams present in DOCX): 0.7385
-prose words (>= 3 letters): pdf=4494 docx=4403; recall 0.9782
-prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9227
-prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 9; of these 7 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 2 contain words absent from the DOCX
+tokens: pdf=10608 docx=10430
+word recall (PDF words found in DOCX, multiset): 0.9812
+5-gram match rate (PDF 5-grams present in DOCX): 0.7434
+prose words (>= 3 letters): pdf=4791 docx=4699; recall 0.9791
+prose 5-gram match rate (PDF prose 5-grams present in DOCX): 0.9192
+prose spans of the PDF not found in sequence in the DOCX (>= 4 words): 12; of these 9 have every word present in the DOCX (reading order of table cells, figure labels or math only) and 3 contain words absent from the DOCX
+   CONTENT-MISSING?  absent words nega, tives | with lengthmatched nega tives not allowed confirmed except for superiority claim clean images claim beyond
    CONTENT-MISSING?  absent words aware, edge | eight neighbours edge tbv ltex nbr aware token excluded
-   CONTENT-MISSING?  absent words imagelevel, neighbour, onepass, uncertainty | author had frozen lrf refitted and unlearned weightings linear logit features from and only uncertainty pass only onepass score only patch texture only neighbou
-PDF token spans not found in DOCX: 120 (>= 6 tokens: 38; tokens in them: 562)
+   CONTENT-MISSING?  absent words imagelevel, neighbour, onepass, uncertainty | and comparison frozen lrf refitted and unlearned weightings linear logit features from and only uncertainty pass only onepass score only patch texture only neig
+PDF token spans not found in DOCX: 124 (>= 6 tokens: 37; tokens in them: 564)
    MISSING?  model npz specification spec json tuning record hpo json feature code data py modelfamily code families py fitting code lrf py codebook untracked cached position
    MISSING?  lrf json sha256 db7fdb4e9f863a18148a4567d396c36a1bba58dc8b041f079492b10466770f37 9d196d7189dc5b6a2d6d80ed694314c6ed323cac59b0300c42c073a6e40db4b5 63cd79442078414726b327eef76e1e1397b3db1b7c3222449705a3
-   MISSING?  was byteidentical family n l lni llen 449 lg table s2
-   MISSING?  3 3 not allowed confirmed except for l1 a superiority
-   MISSING?  other two margin with lrf m correct only with lrf correct only without same decision a b gaussian noise 0
+   MISSING?  was byteidentical family n l lni llen 449 lg f1 fni flen 872 table s2
+   MISSING?  with lengthmatched nega 1 tives flickr30k not allowed confirmed except for l1 a superiority
+   MISSING?  preregistered level margin with lrf m correct only with lrf correct only without same decision a b gaussian noise 0
    MISSING?  n 450 clean images n 450 1 5 b 58 b 27 0 5 0 5 c 27 0 5 0 0 5 1 1 5 margin no weighting c 13 0 5 0 0 5 1 1 5 margin no weighting fig s1
-   MISSING?  0 058 450 450 0 803 0 704 length strata
    MISSING?  05 1 not measured 8 2 8 2 not measured
    MISSING?  masked rj bj dj s3 1 maxy p y of
    MISSING?  nb3mean b row 1 2 2 col 1 2 2 nb3mean s3 nb3mean k
    MISSING?  image zscore total itemsd ltex itemsd nbr 1 itemz q 35 rj r sd r
    MISSING?  without weighting q learning rate t captionslot length 13 llen decisions
-   MISSING?  author had frozen lrf refitted and unlearned weightings linear logit 35 features from b and d only uncertainty of b pass only onepass score only patch texture only neighbour distance only grid positio
+   MISSING?  and comparison frozen lrf refitted and unlearned weightings linear logit 35 features from b and d only uncertainty of b pass only onepass score only patch texture only neighbour distance only grid pos
    MISSING?  aspos asf amil aunl 0 920 0 922 0 893 0 913 0 896 0 900
    MISSING?  884 0 871 0 853 0 856 0 840 0 873 0 864 0 840
    MISSING?  004 0 791 0 800 0 769 0 762 0 758 0 724 0 731
