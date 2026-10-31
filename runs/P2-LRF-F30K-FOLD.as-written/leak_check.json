@@ -1,0 +1,85 @@
+{
+ "checks": [
+  {
+   "name": "F0_ids_are_integers_unique_and_match_file_names",
+   "ok": true,
+   "detail": {
+    "n": 1000
+   }
+  },
+  {
+   "name": "F0_ascending_file_name_order_and_idx_is_position",
+   "ok": true,
+   "detail": {
+    "first": [
+     "1007129816.jpg",
+     "1009434119.jpg"
+    ]
+   }
+  },
+  {
+   "name": "F0_items_subset_of_test_split",
+   "ok": true,
+   "detail": {
+    "n_test_split": 1000
+   }
+  },
+  {
+   "name": "F1_gid_free_and_distinct",
+   "ok": true,
+   "detail": {
+    "min": 9000,
+    "max": 9999,
+    "clashes": {
+     "folds.cal": 0,
+     "folds.head": 0,
+     "folds.test": 0,
+     "foil.fit": 0,
+     "foil.test": 0,
+     "hardneg.head": 0,
+     "hardneg.test": 0,
+     "lrf_fold": 0
+    }
+   }
+  },
+  {
+   "name": "F2_min_hamming_to_coco_above_threshold",
+   "ok": true,
+   "detail": {
+    "threshold": 4,
+    "min_distance_kept": 6,
+    "n_kept_within_8": 3,
+    "n_kept": 1000
+   }
+  },
+  {
+   "name": "F3_negatives_consistent_and_word_disjoint",
+   "ok": true,
+   "detail": {
+    "n_bad": 0,
+    "first": []
+   }
+  },
+  {
+   "name": "F4_only_test_fold_filled",
+   "ok": true,
+   "detail": {}
+  }
+ ],
+ "created": "2026-10-31T12:11:12",
+ "ok": true,
+ "dhash_positive_control": {
+  "n": 100,
+  "max_distance_recompressed_copy": 2,
+  "n_caught": 100,
+  "min_distance_between_different_images": 21,
+  "ok": true
+ },
+ "hamming_distribution_all_decoded_test_images": {
+  "min": 6,
+  "n_le_4": 0,
+  "n_5_to_8": 3,
+  "n_9_to_12": 26,
+  "median": 18.0
+ }
+}

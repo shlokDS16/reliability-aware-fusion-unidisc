@@ -1,0 +1,21 @@
+{
+ "endpoint": "d",
+ "family": [
+  {
+   "D_c": 18,
+   "corruption": "noise",
+   "key": "noise0.1",
+   "severity": 0.1
+  }
+ ],
+ "n_rule": {
+  "rule": "all kept items, A7.2",
+  "test_fold": 872
+ },
+ "sources": {
+  "l1_family": "runs/P2-LRF-PLAN/family.json",
+  "l1_family_sha256": "d86d62cb86747848ece3b5020c612cb0ed7c430c2a6980859046e51e7956973d",
+  "folds_f30k_sha256": "cd2199c32f19fbb4fcda077ff393dcf06cc855c4aa9f91e088c1b9d19ffa0d15"
+ },
+ "spec": "exp_p2/gate/build_f30k_fold.py"
+}
