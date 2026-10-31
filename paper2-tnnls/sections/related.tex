@@ -44,7 +44,13 @@ In multimodal learning the weights change per input: dynamic, uncertainty-driven
 low-quality data, with theory on when it is preferable to static weighting~\cite{zhang2023provable}. A recent survey organises fusion on low-quality data into noisy, incomplete, imbalanced, and
 quality-varying settings~\cite{zhang2026lowquality}.
 Trusted multi-view classification fuses per-view evidence dynamically to handle unreliable views~\cite{han2023trusted}, and evidential
-methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential}.
+methods attach an estimated importance or reliability to each modality before combining~\cite{shao2024ddef,huang2025evidential,han2026aemrl}.
+% source: research/paper2/sources/PROF-SOURCES-FUSION-2026-10-31.md (DMMF Sec. III, conclusion pp. 12-13)
+Separate data and model uncertainties can also set each modality's weight~\cite{guo2026dmmf}, whose authors leave token-level
+uncertainty open.
+% source: research/paper2/sources/DYMO-READING-2026-10-31.md (full-text reading; Alg. 1 p6, Eqs. 4-9 pp5-6)
+When modalities are missing, recovered modalities can be selected at inference by a loss-derived reward on whole
+modalities~\cite{du2026dymo}; our gate and weights act on single tokens inside one model.
 Papers in this journal take the same view: a per-modality confidence score (an energy score) lets the fusion rely less on low-quality
 modalities~\cite{li2026tcpfmc}; evidence theory quantifies the uncertainty of each prediction and fuses evidence across propagation
 depths~\cite{chen2025uncertainty}; evidential deep learning suppresses unreliable modality-wise pseudo-labels in audio-visual video
@@ -77,5 +83,8 @@ to flag erroneous caption words given an image~\cite{gomes2025crc}.
 Common-corruption benchmarks test models under non-adversarial image corruptions~\cite{hendrycks2019benchmarking}, and a
 corruption benchmark for object detection released an implementation of such corruptions at graded
 severities~\cite{michaelis2019imagecorruptions}, which Study~2 uses for its other noise types.
+% source: research/paper2/sources/PROF-SOURCES-ROBUST-DUALDIFF-2026-10-31.md (Qiu et al. Sec. 3, 4.2, App. B, Table 8)
+For image-text models, 17 such corruptions at five severities have been benchmarked on COCO retrieval, without a unified masked
+diffusion model~\cite{qiu2024benchmarking}.
 Preregistration records the questions and the analysis plan before the outcomes are observed, which separates prediction from
 postdiction~\cite{nosek2018preregistration}; the form used here is defined in \cref{sec:setting-tests}.

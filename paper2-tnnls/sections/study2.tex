@@ -274,21 +274,10 @@ LRF therefore costs $2+9=11$ passes per scored image against 2, and then compute
 The count follows the number of mask groups ($K=8$), not the $m=1\,024$ grid positions; another $K$ or grid size was not tried.
 
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.86\columnwidth]{figures/fig_ablation.pdf}
-% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.{d,ci95}; n_per_cell; ko_all_control; meta.{label,sign,interval}; values runs/P2-PAPER-FIGS/fig_ablation.json
-\caption{Study 2, exploratory ablation (added after the primary, family~H, and Study~2 results; intervals only, no test): paired accuracy
-difference, variant minus the frozen LRF, on the L1 noise cell ($n=450$), with the 95\% paired percentile-bootstrap interval
-(10\,000 resamples). A positive value favours the variant. Upper block: weightings refitted with LRF's
-protocol on the 500 design items only, and one unlearned rank weight. Lower block: knockouts, the frozen LRF with one feature group set to
-its design-item mean. Intervals are marginal, dependent, and unadjusted (supplement S-VII, with the other cells).}
-\label{fig:ablation}
-\end{figure}
+% (2026-10-31, page cap) the ablation figure moved to supplement S-VII (label sfig:ablation).
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commits facab605, 4e785aa9; plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md section 8)
-Exploratory; no ablation was preregistered, and every variant is in supplement S-VII.
+Exploratory; no ablation was preregistered, and supplement S-VII plots and tabulates every variant.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.ci95 (classification: A-LIN, A-S-BD, A-S-s3, A-MIL contain 0; A-S-tbv, A-S-ltex, A-S-nbr, A-S-pos, A-SF, A-UNL, KO-S-BD, KO-F-neighbourhood below 0; KO-S-nbr above 0; other KO rows contain 0)
-\Cref{fig:ablation} shows every variant on the noise cell.
 The following intervals contained zero: those of a linear logit on the same 35 features, of the features computed from $B$ and $D$ alone,
 of the features from the uncertainty of the $B$ pass alone, and of attention-weighted pooling in the style of gated-attention
 multiple-instance learning (MIL)~\cite{ilse2018attention}.
@@ -311,7 +300,8 @@ Exploratory; no test, and the marks in \cref{tab:compare} are descriptive.
 images: three rules without a fitted weight (a rank weight, the median, and the 20\% trimmed mean, defined in the table note) and four weightings fitted on the 500 design items
 (one feature, a linear logit on the 35 features, an additive model on two feature groups, and attention-weighted pooling~\cite{ilse2018attention}).
 % run: tables/tab_baselines.tex (Median and 20% trimmed mean rows against the Unweighted sum row, all four columns; source runs/P2-LRF-E2/combiners.json:cells.*.arms.{MED,TM20,NONE}.acc)
-The median and the trimmed mean had lower accuracy than no weighting in every condition.
+% run: runs/P2-LRF-E4/evidential.json:cells.*.arms.{DS-l1-disc,NONE}.acc (0.722/0.733, 0.838/0.849, 0.889/0.896, 0.884/0.887); plan research/paper2/tnnls/EXPLORATORY-PLAN-EVIDENTIAL-2026-10-31.md (commit ddcc9523)
+The median, the trimmed mean, and a Dempster combination of evidence-derived token opinions had lower accuracy than no weighting in every condition.
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[id=A-LIN].cells.{L1_jpeg10,L1_splice128}.{acc,vs_LRF.{d,ci95}} (jpeg d = 0.020, [0.004, 0.038]); runs/P2-LRF-L1/a6_analysis.json:family_L.{L3.acc_a (= 0.8644), L4.acc_a (= 0.9267), L-NI.acc_a (= 0.9178)}; rows[id=A-S-BD].cells.L1_clean.acc (= 0.9222)
 The linear logit reached 0.884 under JPEG against 0.864 for LRF (difference 0.020, unadjusted 95\% interval 0.004 to 0.038) and 0.931 under the splice against 0.927, and the additive model on two feature groups reached 0.922 on clean images against 0.918.
 % run: runs/P2-LRF-DN/dn_analysis.json:cells.noise0.1.arms.{DN+NONE,DN+LRF}.{acc (= 0.8444, 0.8556), vs_LRF.{diff,ci95}} (DN+NONE 0.042 [0.002, 0.082]; DN+LRF 0.053 [0.011, 0.096]); runs/P2-LRF-L1/a6_analysis.json:family_L.{L1.acc_b (= 0.7333), L1.acc_a (= 0.8022)}; plan E1 (commit 83ac79f8)
@@ -335,5 +325,6 @@ preregistered Study~2 results. Italics: highest accuracy in the column (ties sha
 all 10 are in supplement S-VII, with differences and intervals.
 Median: $\operatorname{med}_j\Delta_j>0$; 20\% trimmed mean: the mean of $\Delta_j$ without its $\lfloor0.2m\rfloor$ lowest and highest values is positive ($m=1\,024$).
 Unlearned rank weight: $w_j=1-r_j$, $r_j\in[0,1]$ the within-image percentile rank of the token's uncertainty (one minus the largest predicted probability, caption masked).
+Dempster combination: per token, evidence $\max(\pm\Delta_j,0)$ with Dirichlet prior weight 2 gives an opinion, discounted by $w_j$ of the rank weight and combined over tokens by Dempster's rule; the opinions are constructed from $\Delta_j$, not learned by an evidential head.
 Denoise: non-local-means denoising before scoring (setting fixed in advance), noise and JPEG only. LRF was not trained on denoised images; the denoise-then-LRF row applies the frozen weights outside their training distribution.}
 \end{table}

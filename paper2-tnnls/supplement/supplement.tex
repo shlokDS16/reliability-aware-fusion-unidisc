@@ -1318,6 +1318,17 @@ No committed run recorded a timing for the encoders, so their cost per item is n
 
 %======================================================================================================================================
 \section{Study 2: Exploratory Ablation (Tier 3)}\label{sup:ablation}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.62\textwidth]{../figures/fig_ablation.pdf}
+% run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json:rows[*].cells.L1_noise0.1.vs_LRF.{d,ci95}; n_per_cell; ko_all_control; meta.{label,sign,interval}; values runs/P2-PAPER-FIGS/fig_ablation.json
+\caption{Study 2, exploratory ablation (formerly in the main text) (added after the primary, family~H, and Study~2 results; intervals only, no test): paired accuracy
+difference, variant minus the frozen LRF, on the L1 noise cell ($n=450$), with the 95\% paired percentile-bootstrap interval
+(10\,000 resamples). A positive value favours the variant. Upper block: weightings refitted with LRF's
+protocol on the 500 design items only, and one unlearned rank weight. Lower block: knockouts, the frozen LRF with one feature group set to
+its design-item mean. Intervals are marginal, dependent, and unadjusted (the tables of this section give the other cells).}
+\label{sfig:ablation}
+\end{figure}
 % run: runs/P2-LRF-ABL-SCORE/ablation_analysis.json (commit 4e785aa9) and controls.json (commit facab605); plan research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md
 % run: decision D0095 (code audit PASS WITH FIXES; score run once)
 \emph{Label.} Exploratory; added after the primary, family~H, and Study~2 results.
@@ -1525,7 +1536,7 @@ image 224724: Attribution-NonCommercial (CC BY-NC 2.0), \nolinkurl{http://farm4.
 \item \Cref{sfig:margins} (item-level margins, descriptive): \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (fields \nolinkurl{condition},
 \nolinkurl{idx}, \nolinkurl{m_none}, \nolinkurl{m_lrf}, \nolinkurl{y_none}, \nolinkurl{y_lrf}; SHA-256 checked against \nolinkurl{a6_analysis.json});
 plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_margins.json}; script \nolinkurl{paper2-tnnls/scripts/fig_margins.py}.
-\item Fig.~\ref{M-fig:ablation} (exploratory ablation): \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, keys
+\item Fig.~\ref{sfig:ablation} (exploratory ablation): \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, keys
 \nolinkurl{rows[*].cells.L1_noise0.1.vs_LRF.*}, \nolinkurl{ko_all_control}; plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_ablation.json};
 script \nolinkurl{paper2-tnnls/scripts/fig_ablation.py}; rows in the order of \cref{sup:ablation}.
 \item Table~\ref{M-tab:baselines} (reference encoders): \nolinkurl{runs/P2-LRF-BASELINES/baselines.json} (\nolinkurl{table.*});
