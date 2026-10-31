@@ -27,7 +27,7 @@ A second backbone or a corruption held out of training would settle these questi
 % run: runs/P2-LRF-L1/a6_analysis.json:family_L.L4.p_holm (= 0.0486); runs/P2-LRF-LG/a6_analysis.json:family_LG.cells.impulse_noise3.p_two (= 0.058)
 % run: runs/P2-LRF-L1.try1/selfcheck.json:image_tokens_frac_equal (= 0.98828125); runs/P2-LRF-L1.try2/selfcheck.json:image_tokens_frac_equal (= 0.9892578125)
 % run: runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.min (= 0.986328125)
-One model, one dataset, and one severity per corruption were tested.
+One model, one dataset, and one severity per corruption were tested in the preregistered tests; the exploratory severity sweep adds three Gaussian levels on the same images, not new images.
 LRF was trained on the tested corruption (Gaussian noise with $\sigma=0.1$ was a training condition), so L1 tests new images, not a new
 corruption.
 No preregistered test separates corruption-specific weighting from a generic gain, since the clean-image and splice estimates were also
@@ -71,7 +71,7 @@ supersede the main reference-encoder file's field ``pixel\_parity: not run''.
 (6) The reference-encoder download was 5.2~GB, against about 2 to 4~GB quoted to the first author.
 (7) What had been seen before the re-freeze is stated in \cref{sec:study2-provenance}.
 (8) ``No output was read before its run was complete'' rests on the operations log.
-(9) The exploratory ablation, the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}, \cref{tab:compare}; plan committed before any value was computed), and the qualitative figure (\cref{fig:qualitative}; selection rule fixed after the confirmatory result) were added at writing, as exploratory additions. The plan for the denoise rows was committed before their run; the environment lock file of that run is empty, and the environment record predates it.
+(9) The exploratory ablation, the exploratory comparison with alternative aggregation rules (\cref{sec:study2-compare}, \cref{tab:compare}; plan committed before any value was computed), the qualitative figure (\cref{fig:qualitative}; selection rule fixed after the confirmatory result), the Dempster-combination row, and the severity sweep (both with plans committed before any value was computed) were added at writing, as exploratory additions. The plan for the denoise rows was committed before their run; the environment lock file of that run is empty, and the environment record predates it.
 % run: git commit 83ac79f8 (plan E1, 2026-10-30 23:31); runs/P2-LRF-DN/LAUNCH.md (2026-10-30 23:45); runs/P2-LRF-DN/predictions.jsonl (2026-10-31 00:56); runs/P2-LRF-DN/env-lock.txt (0 bytes); runs/P2-ENV/pip-freeze-2026-10-30.txt
 % 2026-10-31 deviations of the single-study version (lead instruction, item 8; reasons in PROFESSOR-SUGGESTIONS-ANALYSIS-2026-10-31.md):
 (10) 2026-10-31: this paper reports only the second of two preregistered studies; the first is reported separately. The analysis addendum

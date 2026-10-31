@@ -20,5 +20,6 @@ Two exploratory comparisons qualify this result.
 A classical pixel denoiser applied before scoring reached higher accuracy than the weighting under Gaussian noise, and combined with the
 weighting it reached lower accuracy under Joint Photographic Experts Group compression.
 A linear logit on the same features reached similar accuracy under Gaussian noise and higher accuracy under compression.
-The evidence covers one model, one dataset, and one noise level; it does not show that the learned weights track token reliability, or
-that the gain holds for other models, corruptions, or severities.
+An exploratory sweep on the same images found the gain at milder and stronger Gaussian noise as well.
+The confirmatory evidence covers one model, one dataset, and one noise level; it does not show that the learned weights track token
+reliability, or that the gain holds for other models or corruptions.

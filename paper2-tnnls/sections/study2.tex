@@ -272,8 +272,8 @@ types used 42 rows and 5.0~s per item (supplement S-II).
 % run: runs/P2-LRF-RESCORE/items.jsonl:n_rows (median 36 per item = 4 conditions x 9 passes); runs/P2-LRF-L1/config.json:K (= 8); exp_p2/gate/config.py GRID (= 32, m = 1024)
 Per scored image, the unweighted sum needs two caption-visible passes with the whole image masked, so that their outputs do not depend on the image codes (the evidence of every condition is a gather at its codes).
 LRF needs those two and nine more for its features: eight complementary-mask passes (for $B$ and the uncertainty of the $B$ pass) and one observed-position pass; $D$ comes from a cached caption-masked null of fixed slot length, and the texture and codebook-neighbour features need no pass.
-LRF therefore costs $2+9=11$ passes per scored image against 2, and then computes its weights and decision from the stored arrays on the CPU, in a time that was not measured.
-% TODO-LEAD: CPU scorer time (replace "in a time that was not measured" by the timing clause once the stored script and run exist)
+LRF therefore costs $2+9=11$ passes per scored image against 2, and then computes its weights and decision from the stored arrays on the CPU: the pinned scorer took 6.5~s for all 1\,800 image-and-condition decisions of the fresh fold (3.6~ms each, start-up included) on the authors' laptop.
+% run: runs/P2-LRF-TIMING/scorer_timing.json:{median_wall_s (= 6.49),n_decisions (= 1800),ms_per_decision (= 3.60)}; script analysis/paper2/lrf/time_scorer.py (re-scored lines identical to runs/P2-LRF-L1/predictions.jsonl)
 The count follows the number of mask groups ($K=8$), not the $m=1\,024$ grid positions; another $K$ or grid size was not tried.
 
 \subsection{Exploratory Ablation}\label{sec:study2-ablation}
@@ -313,7 +313,10 @@ Denoising before scoring (non-local means; the last two rows of \cref{tab:compar
 % F3 (professor triage Q3, 2026-10-31); facts as in sec:study2-provenance: four learned families, inner cross-validation on the 500 design items; shapes: supplement S-II. No new number.
 Nothing here favours the additive form over a linear logit on the same features; the confirmed object is the frozen weighting, and the preregistered result remains the L1 test of \cref{tab:study2}.
 LRF was chosen by inner cross-validation among four learned families on the design items (\cref{sec:study2-provenance}), and the learned shapes in supplement S-II are descriptive.
-% TODO-LEAD: severity sweep sentence
+% run: runs/P2-LRF-SEV/sev_analysis.json:levels.{0.05,0.2,0.3}.LRF_minus_NONE.{diff,ci95} (0.056 [0.020, 0.091]; 0.058 [0.018, 0.098]; 0.084 [0.044, 0.124]); levels.0.LRF_minus_NONE (0.031 [0.004, 0.058]); levels.{0.3,0.1}.gain_minus_clean_gain (0.053 [0.009, 0.098]; 0.038 [-0.004, 0.080]); positive_control.token_equal_fraction (= 0.9979)
+% plan research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md (commit 3bd115b1, amendment 1 before the GPU run); script analysis/paper2/lrf/e1_severity.py; table tables/supp_severity.tex
+In an exploratory sweep of the Gaussian noise level on the same 450 images (one noise draw per image, scaled by $\sigma$; supplement S-V), the frozen LRF exceeded the unweighted sum at $\sigma=0.05$, 0.2, and 0.3 by 0.056 (unadjusted 95\% interval 0.020 to 0.091), 0.058 (0.018 to 0.098), and 0.084 (0.044 to 0.124); no level showed a loss.
+On clean images the difference was 0.031 (0.004 to 0.058), and the excess of the gain under noise over the clean gain excluded zero only at $\sigma=0.3$ (0.053, 0.009 to 0.098; at the fitted level 0.038, $-0.004$ to 0.080), so the part of the gain that is specific to noise is clear only at the strongest level.
 
 \begin{table}[!t]
 \centering

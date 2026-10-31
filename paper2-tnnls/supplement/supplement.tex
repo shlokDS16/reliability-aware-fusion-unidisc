@@ -228,7 +228,6 @@ Counts $b$, $c$ as in Table~\ref{M-tab:study2} of the main paper.}
 \end{figure}
 
 \subsection{Exploratory and Descriptive Material}
-% TODO-LEAD: severity sweep table (tables/supp_severity.tex)
 Everything in the rest of this section is exploratory or descriptive.
 The design-item numbers below are post hoc: they set the preregistered sample-size rule only and are not a performance estimate of the
 frozen object, which has no out-of-sample estimate on the design items.
@@ -286,8 +285,8 @@ impulse noise, and 0.193 (0.143 to 0.247) under speckle noise, relative to clean
 \resizebox{\textwidth}{!}{\input{../tables/tab4_cost_study2}}
 
 \vspace{2pt}
-\parbox{0.9\textwidth}{\scriptsize One laptop GPU (12~GB). Network rows: median (range); time: median (quartiles) of the busy time per item, excluding duty-cycle pauses; memory: maximum over items. Counted per scored image, the unweighted sum needs 2 passes and LRF 2 + 9 = 11 (eight complementary-mask passes and one observed-position pass; the cached null for $D$, the texture and the codebook-neighbour features need none); its weights and decision are then computed from the stored arrays on the CPU, in a time that was not measured.
-% TODO-LEAD: CPU scorer time
+\parbox{0.9\textwidth}{\scriptsize One laptop GPU (12~GB). Network rows: median (range); time: median (quartiles) of the busy time per item, excluding duty-cycle pauses; memory: maximum over items. Counted per scored image, the unweighted sum needs 2 passes and LRF 2 + 9 = 11 (eight complementary-mask passes and one observed-position pass; the cached null for $D$, the texture and the codebook-neighbour features need none); its weights and decision are then computed from the stored arrays on the CPU: 6.5~s for all 1\,800 image-and-condition decisions of the fresh fold (3.6~ms each, start-up included; \nolinkurl{runs/P2-LRF-TIMING/scorer_timing.json}).
+% run: runs/P2-LRF-TIMING/scorer_timing.json:{median_wall_s (= 6.49),n_decisions (= 1800),ms_per_decision (= 3.60)}; script analysis/paper2/lrf/time_scorer.py (re-scored lines identical to runs/P2-LRF-L1/predictions.jsonl)
 Source: \nolinkurl{runs/P2-LRF-RESCORE/items.jsonl} (\nolinkurl{n_rows}, median 36 per item for four conditions), \nolinkurl{runs/P2-LRF-L1/config.json} (\nolinkurl{K}), \nolinkurl{runs/P2-LRF-L1/items.jsonl}, \nolinkurl{runs/P2-LRF-LG/items.jsonl}.}
 \end{table}
 
@@ -519,6 +518,18 @@ LRF. Descriptive; no interval.}
 interval, 10\,000 resamples). Intervals are marginal and unadjusted; the rows other than the unweighted sum and LRF are exploratory, and the intervals of the ablation rows, the median and trimmed mean, and the denoise
 rows come from separate runs with their own resampling seeds. $^{\dagger}$Fixed before the fold was opened. Source: \nolinkurl{runs/P2-LRF-L1/a6_analysis.json},
 \nolinkurl{runs/P2-LRF-ABL-SCORE/ablation_analysis.json}, \nolinkurl{runs/P2-LRF-E2/combiners.json}; script \nolinkurl{paper2-tnnls/scripts/tab_baselines.py}.}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Exploratory Gaussian-Noise Severity Sweep of the Frozen LRF and the Unweighted Sum on the 450 Fresh-Fold Images}
+\label{stab:severity}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{../tables/supp_severity}}
+
+\vspace{2pt}
+\parbox{\textwidth}{\scriptsize Exploratory, planned before the run (\nolinkurl{research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md}); no test. $\sigma$ on $[0,1]$ pixel values; each image has one noise draw (the stream of the confirmatory noise cell), scaled by $\sigma$, so the levels differ in severity only. Levels 0 and 0.1 are the confirmatory run's cells; the others come from \nolinkurl{runs/P2-LRF-SEV}. Rebuilding the $\sigma=0.1$ images with the same draw reproduced the stored image tokens at 99.8\% agreement (threshold 99\%). $b/c$: images that LRF decided correctly and the unweighted sum wrongly, and the reverse. Gain $-$ clean gain: the per-image difference of (LRF $-$ unweighted) between the noisy and the clean image. 95\% paired percentile bootstrap intervals, 10\,000 resamples, one resampling of images shared by all levels; marginal and unadjusted. LRF was fitted at $\sigma=0.1$ only. For comparison with a corruption benchmark for image-text models, its Gaussian levels are 0.08 to 0.38 (Qiu et al., cited in the main paper).}
 \end{table}
 
 \paragraph*{Denoising before scoring (exploratory, plan E1)}
