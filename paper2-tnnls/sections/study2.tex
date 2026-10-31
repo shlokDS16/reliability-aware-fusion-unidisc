@@ -30,7 +30,7 @@ A first freeze was found to read the true caption's length through the layout of
 the method was re-scored and re-frozen at that slot length, a choice declared before any re-frozen result existed.
 Before the re-freeze the analysts had also seen further outputs of that earlier study; the re-freeze protocol itself had been fixed earlier and was not changed.
 The configuration was frozen (SHA-256 \texttt{db7fdb4e\ldots}, commit \texttt{24d36a8a}) before any image of the fresh fold was selected.
-The test was preregistered (a dated addendum to the analysis plan, commit \texttt{941a260b}) with a rule that no further confirmatory study would be added.
+The test was preregistered (a dated addendum to the analysis plan, commit \texttt{941a260b}) with a rule that no further confirmatory study would be added; on 31 October 2026, after this test had been run, that rule was set aside for one further preregistered test of the same frozen weighting on a second dataset (\cref{sec:study2-f30k}; deviation~(14) in \cref{sec:deviations}).
 All LRF numbers on the design images are post hoc and exploratory and appear only in supplement S-II.
 
 \subsection{The Frozen Weighting}\label{sec:study2-method}
@@ -259,8 +259,9 @@ Items were excluded before any scoring if the first caption lay outside 5 to 32 
 wrong caption.
 The 872 remaining items are above the preregistered floor of 800.
 No kept image lies within Hamming distance~4 of a COCO design or fold image (64-bit difference hash; the smallest distance is 6).
-The analysis plan (supplement S-I) fixed the data, the items, and the tests in an addendum that was committed, and pushed to a code-hosting
-service, before any Flickr30K image or caption was downloaded; unlike the earlier tests, this test therefore has a third-party timestamp
+% run: research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md A7.4; runs/P2-LRF-F30K/f30k_analysis.json:F1.headline_alpha (= 0.025), F_NI.margin (= -0.03); runs/P2-PROVENANCE/a7_push_vs_data.json
+The analysis plan (supplement S-I) fixed the data, the item rule (before amendment (d)), and the tests in an addendum that was committed, and pushed to a code-hosting
+service, before any Flickr30K image or caption was downloaded; unlike the earlier tests, its original plan, before amendment (d), therefore has a third-party timestamp
 (\cref{sec:setting-tests}).
 It has three hypotheses, each its own family at its own level, with no adjustment across families.
 F1 tests LRF against the unweighted sum under Gaussian noise ($\sigma=0.1$) by the exact one-sided McNemar test at 0.05; a gain claim in the
@@ -281,7 +282,7 @@ F-LEN repeats F1 with the length-matched wrong captions.
 \vspace{2pt}
 \parbox{\columnwidth}{\scriptsize $b$: items LRF answers correctly and the unweighted rule incorrectly; $c$: the reverse; net $=(b-c)/n$.
 Intervals: 95\% paired percentile bootstrap (10\,000 resamples), except $^{\dagger}$ (F-NI): 90\%, margin $-0.03$; its test is the lower 90\%
-bound against the margin, so no $p$ is printed. $p$: exact one-sided McNemar. Bold: null rejected at the preregistered level.}
+bound against the margin, so no $p$ is printed. $p$: exact one-sided McNemar. Bold: null rejected at the preregistered level. Net is computed from unrounded accuracies.}
 \end{table}
 
 % run: runs/P2-LRF-F30K/f30k_analysis.json:F1.{acc_none (= 0.6927),acc_lrf (= 0.7924),net (= 0.0998),ci95 (= [0.0722, 0.1284]),b (= 128),c (= 41),p_one (= 6.44e-12),label (= confirmed),headline_gain_claim_allowed (= true)}
@@ -302,7 +303,7 @@ weighting, and Gaussian noise with $\sigma=0.1$ remained a training condition (\
 \subsection{Reference Encoders}\label{sec:study2-reference}
 % run: runs/P2-LRF-BASELINES/baselines.json:table.{clip,siglip}.*.acc (range 0.996 to 1.000); models.* (pinned revisions)
 For reference, CLIP ViT-L/14~\cite{radford2021clip} and SigLIP so400m~\cite{zhai2023sigmoid}, different models trained on different data, reached accuracies of 0.996 to 1.000 on the
-same items in every condition (\cref{tab:baselines}), with the same decision rule on images regenerated with the runner's corruption
+same 450 COCO fold items in every condition (\cref{tab:baselines}), with the same decision rule on images regenerated with the runner's corruption
 functions and seeds (supplement S-IV).
 % run: runs/P2-LRF-BASELINES-PARITY-L1/baselines.json:pixel_parity.{min (= 0.989),threshold}; runs/P2-LRF-BASELINES-PARITY-LG/baselines.json:pixel_parity.{min (= 0.986),threshold}
 Pixel parity was shown: the UniDisc tokeniser's re-encoding of the regenerated images agreed with the stored codes on at least 98.6\% of
@@ -371,7 +372,7 @@ The linear logit reached 0.884 under JPEG against 0.864 for LRF (difference 0.02
 % run: runs/P2-LRF-DN/dn_analysis.json:cells.jpeg10.arms.{DN+NONE,DN+LRF}.{acc (= 0.8533, 0.8133), vs_LRF.{diff,ci95}} (DN+NONE -0.011 [-0.044, 0.024]; DN+LRF -0.051 [-0.089, -0.013])
 Denoising before scoring (non-local means; the last two rows of \cref{tab:compare}) gave, under Gaussian noise, 0.844 with the unweighted sum and 0.856 with LRF, which is 0.042 (unadjusted 95\% interval 0.002 to 0.082) and 0.053 (0.011 to 0.096) above LRF without denoising (0.802); under JPEG quality~10 it gave 0.853 and 0.813, which are $-0.011$ ($-0.044$ to 0.024) and $-0.051$ ($-0.089$ to $-0.013$) from LRF.
 % F3 (professor triage Q3, 2026-10-31); facts as in sec:study2-provenance: four learned families, inner cross-validation on the 500 design items; shapes: supplement S-II. No new number.
-Nothing here favours the additive form over a linear logit on the same features; the confirmed object is the frozen weighting, and the preregistered result remains the L1 test of \cref{tab:study2}.
+Nothing here favours the additive form over a linear logit on the same features; the confirmed object is the frozen weighting, and the preregistered results remain the L1 test of \cref{tab:study2} and the F1 test of \cref{tab:f30k}.
 % 2026-10-31 (supervisor comment: justify the weighting model over simpler alternatives): the reason given is interpretability; no accuracy claim.
 The additive form is kept because each feature's learned shape can be read directly (\cref{fig:pd}); this is a reason of interpretability, not of accuracy.
 

@@ -15,7 +15,7 @@ Each image token's log-probability ratio between the true and a wrong caption is
 We learn a per-token reliability weighting of this evidence from caption-free features, fit it on design images that
 include the noise level later tested, and freeze it.
 Preregistered one-sided exact paired tests confirmed that the frozen weighting raised verification accuracy under Gaussian noise,
-on fresh Common Objects in Context validation images and, with the weighting unchanged, on Flickr30K test images, also with length-matched wrong captions.
+on fresh Common Objects in Context validation images and, with the weighting unchanged, on a second dataset, also with length-matched wrong captions.
 On clean images it was non-inferior on both datasets within a preregistered margin, fixed after an exploratory clean-image interval had been seen.
 In exploratory comparisons, a pixel denoiser before scoring did better under Gaussian noise but, combined with the weighting, worse under
 Joint Photographic Experts Group compression, and a linear logit on the same features did about as well under noise and better under compression.
