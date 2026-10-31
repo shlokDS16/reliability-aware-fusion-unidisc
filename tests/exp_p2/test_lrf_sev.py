@@ -150,7 +150,7 @@ def test_analysis_known_numbers(tmp_path):
     _preds(s / "predictions.jsonl", "noise0.05", [1] * 7 + [0] * 3, [1] * 7 + [0] * 3)   # gain 0
     _preds(s / "predictions.jsonl", "noise0.2", [1] * 5 + [0] * 5, [1] * 3 + [0] * 7)    # gain -0.2 (harm)
     _preds(s / "predictions.jsonl", "noise0.3", [1] * 4 + [0] * 6, [1] * 4 + [0] * 6)
-    res = E.analyse(s, l1)
+    res = E.analyse(s, l1, n_expected=None, need_meta=False)
     lv = res["levels"]
     assert lv["0"]["NONE"] == 0.8 and lv["0"]["LRF"] == 0.9 and lv["0"]["LRF_minus_NONE"]["diff"] == pytest.approx(0.1)
     assert lv["0.1"]["LRF_minus_NONE"]["diff"] == pytest.approx(0.3) and lv["0.1"]["source"] == "P2-LRF-L1"
@@ -158,7 +158,7 @@ def test_analysis_known_numbers(tmp_path):
     assert lv["0.2"]["gain_minus_clean_gain"]["diff"] == pytest.approx(-0.3)
     assert lv["0.1"]["gain_minus_clean_gain"]["diff"] == pytest.approx(0.2)
     assert res["levels"]["0.05"]["n"] == n
-    a, b = E.analyse(s, l1), E.analyse(s, l1)
+    a, b = E.analyse(s, l1, None, False), E.analyse(s, l1, None, False)
     assert a["levels"]["0.2"]["LRF_minus_NONE"]["ci95"] == b["levels"]["0.2"]["LRF_minus_NONE"]["ci95"]
 
 
@@ -171,4 +171,15 @@ def test_analysis_refuses_mismatched_items(tmp_path):
         _preds(s / "predictions.jsonl", c, [1, 0, 1], [1, 1, 1])
     _preds(s / "predictions.jsonl", "noise0.3", [1, 0], [1, 1])
     with pytest.raises(RuntimeError):
-        E.analyse(s, l1)
+        E.analyse(s, l1, None, False)
+
+
+def test_analysis_meta_check_and_positive_control_verdict(tmp_path):
+    (tmp_path / "lrf_score_meta.json").write_text(json.dumps(dict(conds=["noise0.05", "noise0.2", "noise0.3"], conds_absent_in_rows=[], n_items_skipped_no_arrays=0,
+                                                                  positive_control=dict(ok=True), hashes={"x": 1})), encoding="utf8")
+    assert E.check_meta(tmp_path, 450)["ok"]
+    with pytest.raises(RuntimeError):
+        E.check_meta(tmp_path, 449)
+    (tmp_path / "lrf_score_meta.json").write_text(json.dumps(dict(conds=["noise0.05"], positive_control=dict(ok=True), hashes={"x": 1})), encoding="utf8")
+    with pytest.raises(RuntimeError):
+        E.check_meta(tmp_path, 450)

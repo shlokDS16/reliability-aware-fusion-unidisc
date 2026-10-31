@@ -115,8 +115,8 @@ def check_flags(rest: list[str]) -> list[str]:
     ap = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
     ap.add_argument("--run-id", default=None)
     a, _ = ap.parse_known_args(rest)
-    if a.run_id in PROTECTED_RUN_IDS and not any("--run-id" in b for b in bad):
-        bad.append(f"--run-id must not be one of {PROTECTED_RUN_IDS} (got {a.run_id!r})")
+    if a.run_id != RUN_ID and not any("--run-id" in b for b in bad):
+        bad.append(f"--run-id must be {RUN_ID!r} (whitelist, audit F3; got {a.run_id!r})")
     return bad
 
 

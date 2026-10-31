@@ -28,6 +28,8 @@ from analysis.paper2.lrf.e1_denoise import _rows, load                          
 from exp_p2.gate import tier3_fusion as T3                                             # noqa: E402
 
 LEVELS = (("0", "clean", "l1"), ("0.05", "noise0.05", "sev"), ("0.1", "noise0.1", "l1"), ("0.2", "noise0.2", "sev"), ("0.3", "noise0.3", "sev"))
+N_EXPECTED = 450                                  # the n-rule's n_L (runs/P2-LRF-PLAN/family.json n_rule.test_fold)
+PC_MIN = 0.99                                     # plan stop rule: positive-control token agreement below this invalidates the sweep
 N_BOOT = 10000
 SEED = 0
 LABEL = "exploratory (EXPLORATORY-PLAN-SEVERITY-2026-10-31.md); no p-value, no test, no multiplicity claim; added after the preregistered Study 2 results"
@@ -78,10 +80,31 @@ def corruption_check(sev_run: Path, l1_run: Path, ids: list[int]) -> dict:
         eq += int((a == b).sum())
         items_eq += int((a == b).all())
         n += 1
-    return dict(checked=True, n_items=n, token_equal_fraction=eq / (n * 1024) if n else None, items_all_tokens_equal=items_eq)
+    frac = eq / (n * 1024) if n else None
+    return dict(checked=True, n_items=n, token_equal_fraction=frac, items_all_tokens_equal=items_eq, min_required=PC_MIN, ok=bool(frac is not None and frac >= PC_MIN))
 
 
-def analyse(sev_run: Path, l1_run: Path) -> dict:
+def check_meta(sev_run: Path, n: int, n_expected: int | None = N_EXPECTED) -> dict:
+    """The scorer's own record: the planned conditions, every item scored, its positive control passed, and the item count of the plan."""
+    meta = json.loads((sev_run / "lrf_score_meta.json").read_text(encoding="utf8"))
+    want = ["noise0.05", "noise0.2", "noise0.3"]
+    bad = []
+    if meta.get("conds") != want:
+        bad.append(f"scorer conds {meta.get('conds')} != {want}")
+    if meta.get("conds_absent_in_rows") or meta.get("n_items_skipped_no_arrays"):
+        bad.append("scorer skipped conditions or items")
+    if not (meta.get("positive_control") or {}).get("ok"):
+        bad.append("scorer positive control not ok")
+    if not meta.get("hashes"):
+        bad.append("scorer recorded no input hashes (run it with --pins runs/P2-LRF-PINS/pins.json)")
+    if n_expected is not None and n != n_expected:
+        bad.append(f"n = {n}, plan says {n_expected}")
+    if bad:
+        raise RuntimeError("; ".join(bad))
+    return dict(ok=True, n_items_rows=meta.get("n_items_rows"), predictions_sha256=meta.get("predictions_sha256"))
+
+
+def analyse(sev_run: Path, l1_run: Path, n_expected: int | None = N_EXPECTED, need_meta: bool = True) -> dict:
     sev_run, l1_run = Path(sev_run), Path(l1_run)
     lines = dict(sev=load(sev_run / "predictions.jsonl"), l1=load(l1_run / "predictions.jsonl"))
     rows = {lv: _rows(lines[src], cond) for lv, cond, src in LEVELS}
@@ -94,6 +117,8 @@ def analyse(sev_run: Path, l1_run: Path) -> dict:
     if all(r.get("y_lrf_L") is not None for lv in rows for r in rows[lv].values()):
         res["length_matched"] = _analyse(rows, "_L", {})
     res["positive_control"] = corruption_check(sev_run, l1_run, sorted(rows["0.05"]))
+    if need_meta:
+        res["scorer_meta"] = check_meta(sev_run, len(rows["0"]), n_expected)
     sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()                    # noqa: E731
     res["inputs"] = dict(sev_predictions_sha256=sha(sev_run / "predictions.jsonl"), l1_predictions_sha256=sha(l1_run / "predictions.jsonl"), numpy=np.__version__)
     return res
@@ -113,6 +138,10 @@ def main(argv=None) -> int:
         return 2
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res, indent=1), encoding="utf-8")
+    pc = res["positive_control"]
+    if pc.get("checked") is False or not pc.get("ok"):
+        print("STOP: positive control failed or not checked (plan stop rule; results written but INVALID):", pc, file=sys.stderr)
+        return 2
     for lv, c in res["levels"].items():
         print(lv, c["NONE"], c["LRF"], c["LRF_minus_NONE"])
     return 0

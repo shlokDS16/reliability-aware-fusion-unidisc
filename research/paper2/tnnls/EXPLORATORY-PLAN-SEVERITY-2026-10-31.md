@@ -46,3 +46,13 @@ from the level LRF was fitted on (sigma 0.1)? In particular: does LRF lose its g
   explicit `--max-chunks`. Per-item arrays stay untracked with a SHA-256 manifest.
 - Stop rules: any guard abort, a positive-control agreement below 0.99 of tokens, or a non-finite score stops the run; the
   stop is reported, nothing is re-run silently.
+
+## Amendment 1 (2026-10-31, after the code audit `SEV-CODE-AUDIT-2026-10-31.md`, before any GPU computation)
+- Positive control: checked after the run, in `analysis/paper2/lrf/e1_severity.py` (an encode-only control cannot stop a run
+  in progress without editing the pinned runner). Token agreement below 0.99 makes the analysis exit 2 and the sweep is
+  reported as INVALID, not as a result. The analysis also refuses n other than 450 and a scorer record without the planned
+  conditions, its positive control or the pin hashes.
+- Bootstrap: one index matrix shared by every level and contrast (the same items at every level), not one per level.
+- GATE-M is not reported for the sweep: the sweep conditions carry condition indices 0-2, so their jitter streams differ from
+  L1's noise0.1 cell. NONE and LRF do not use the jitter and are unaffected.
+- The entry point accepts only the run id P2-LRF-SEV.
