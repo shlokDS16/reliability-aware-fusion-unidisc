@@ -54,3 +54,11 @@ Addendum A6, its families or its results.
 ## A7.6 Stop rules
 - A guard abort, a failed self-check or a non-finite score stops the run; the stop is reported, nothing is re-run silently.
 - Fewer than 800 scored items after exclusions: the test is reported as "underpowered (n of 1,000)" with its result, no headline claim.
+
+## Amendment A7.2(d) (2026-10-31, before any image was scored; after the builder found the conflict)
+The pinned runner applies the SAP A2.1 caption-length rule (5 to 32 UniDisc tokens) at run time and stops a fold in which more than 10
+percent of items break it. 128 of the 1,000 first captions of the Flickr30K test split are longer than 32 tokens, so the fold as written
+would stop before item 0. Added exclusion (d): items whose true caption is outside 5 to 32 tokens are excluded at build time, the same
+rule the COCO folds obey; wrong and length-matched captions are drawn only from captions inside the range. Dry-run count before this
+amendment: 872 kept (a 0, b 0, c 0, d 128), above the 800 floor of A7.6. Nothing else changes. Builder report:
+research/paper2/tnnls/F30K-BUILD-REPORT-2026-10-31.md; the as-written build is kept as runs/P2-LRF-F30K-FOLD.as-written/ for the record.
