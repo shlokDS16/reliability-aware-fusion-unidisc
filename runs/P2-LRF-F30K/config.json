@@ -1,0 +1,80 @@
+{
+ "stage": "M4",
+ "fold": "test",
+ "n_items": 872,
+ "seed": 20261029,
+ "K": 8,
+ "alphas": [
+  0.05,
+  0.01,
+  0.1
+ ],
+ "n_geo_seeds": 3,
+ "denoise_for": [],
+ "sanity": [],
+ "duty": 0.5,
+ "spec": "research/paper2/method/GATE-METHOD-SPEC-v2-2026-10-28.md sections 4.3, 7, 11.1 M4",
+ "mem_frac": 0.75,
+ "tbv": "on",
+ "ps_params": {
+  "grid": 32,
+  "n_tokens": 1024,
+  "patch": 8,
+  "patch_rule": "max(2, grid // 4) = 8 on the 32 x 32 map",
+  "patch_share": 0.0625,
+  "swap_frac": 0.15,
+  "swap_n_positions": 154,
+  "vocab": 16384,
+  "token_rng_tag": {
+   "patch": 190,
+   "swap": 191
+  },
+  "rng": "np.random.default_rng([SEED_GATE, gid, tag])",
+  "seed_gate": 20261029,
+  "sanity_order": [
+   "patch",
+   "swap"
+  ],
+  "condition_order": "clean, each family corruption (with its denoised copy if in denoise_for), patch, swap",
+  "denoise_for": [
+   "jpeg",
+   "noise"
+  ],
+  "alphas": [
+   0.05,
+   0.01,
+   0.1
+  ]
+ },
+ "ps_frozen_sha256": null,
+ "ps_frozen_code_commit": null,
+ "folds_path": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-LRF-F30K-FOLD\\folds_f30k.json",
+ "folds_sha256": "cd2199c32f19fbb4fcda077ff393dcf06cc855c4aa9f91e088c1b9d19ffa0d15",
+ "family_run": "P2-LRF-PLAN-F30K",
+ "neg_len": true,
+ "caption_slot_len": 13,
+ "codebook_sha256": "ff15b9b5b362dc80f8a18f6e852e6e99478c0e8885646735ed16d1d80e3ae50b",
+ "dcache_di_file": "DI_n013.npy",
+ "dcache_di_sha256": "f7744253a1b997b8b9f28d9b91348e8371f1ea1e3564f6c8bfc2f10aa5b42176",
+ "dataset": "Flickr30K test split (Karpathy), Hugging Face nlphuji/flickr30k",
+ "dataset_revision": "2b239befc81b6e3f035ce6bd52f5f4d60f5625f7",
+ "image_dir": "C:\\Users\\Shlok\\.cache\\dlm_dl\\flickr30k\\test_images",
+ "image_source": "exp_p2.run_gate_lrf_f30k.make_loader (common.load_image swapped for the call)",
+ "image_manifest": "C:\\Users\\Shlok\\Downloads\\Multi-Modality Language model\\.claude\\worktrees\\frosty-clarke-209639\\runs\\P2-LRF-F30K-FOLD\\manifest.json",
+ "image_manifest_sha256": "e62edca998dcedc17165a4e219936d675019f99f01b028f601469393dd23ac18",
+ "conditions": [
+  "clean",
+  "noise0.1"
+ ],
+ "addendum": "research/paper2/prereg/SAP-ADDENDUM-A7-F30K-2026-10-31.md",
+ "licence_note": "images for non-commercial research and educational use under the Flickr Terms of Use; not redistributed; identifiers only in the repository",
+ "l1_runner": "exp_p2/run_gate_m4.py (unchanged); score with exp_p2.gate.lrf_score --conds clean,noise0.1",
+ "run_id": "P2-LRF-F30K",
+ "git_sha": "4f591484cd3600c3fbef7a91a4342903a4155e4a",
+ "created": "2026-10-31T12:28:32",
+ "python": "3.12.14 (main, Sep  1 2026, 14:17:39) [MSC v.1944 64 bit (AMD64)]",
+ "host_free": {
+  "free_ram_gb": 5.96,
+  "free_commit_gb": 31.79
+ }
+}
