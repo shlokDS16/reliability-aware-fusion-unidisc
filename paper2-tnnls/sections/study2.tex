@@ -313,11 +313,32 @@ The linear logit reached 0.884 under JPEG against 0.864 for LRF (difference 0.02
 Denoising before scoring (non-local means; the last two rows of \cref{tab:compare}) gave, under Gaussian noise, 0.844 with the unweighted sum and 0.856 with LRF, which is 0.042 (unadjusted 95\% interval 0.002 to 0.082) and 0.053 (0.011 to 0.096) above LRF without denoising (0.802); under JPEG quality~10 it gave 0.853 and 0.813, which are $-0.011$ ($-0.044$ to 0.024) and $-0.051$ ($-0.089$ to $-0.013$) from LRF.
 % F3 (professor triage Q3, 2026-10-31); facts as in sec:study2-provenance: four learned families, inner cross-validation on the 500 design items; shapes: supplement S-II. No new number.
 Nothing here favours the additive form over a linear logit on the same features; the confirmed object is the frozen weighting, and the preregistered result remains the L1 test of \cref{tab:study2}.
+% 2026-10-31 (supervisor comment: justify the weighting model over simpler alternatives): the reason given is interpretability; no accuracy claim.
+The additive form is kept because each feature's learned shape can be read directly (\cref{fig:pd}); this is a reason of interpretability, not of accuracy.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4b_pd_curves.pdf}
+% run: runs/P2-PAPER-FIGS/{fig4_pd_curves.json,fig4_meta.json} (features_shown, effect_ranges); runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}; script scripts/fig4_study2_weights.py (moved from the supplement 2026-10-31)
+\caption{Learned shapes of the frozen weight model: partial dependence of the weight $w$ on the six of 35 features with the largest learned effect range, every other
+standardised feature at its mean 0 (knots: grey ticks; line style: feature group of \cref{fig:lrf_weights}). Descriptive; not evidence that the weights track corruption.}
+\label{fig:pd}
+\end{figure*}
 LRF was chosen by inner cross-validation among four learned families on the design items (\cref{sec:study2-provenance}), and the learned shapes in supplement S-II are descriptive.
 % run: runs/P2-LRF-SEV/sev_analysis.json:levels.{0.05,0.2,0.3}.LRF_minus_NONE.{diff,ci95} (0.056 [0.020, 0.091]; 0.058 [0.018, 0.098]; 0.084 [0.044, 0.124]); levels.0.LRF_minus_NONE (0.031 [0.004, 0.058]); levels.{0.3,0.1}.gain_minus_clean_gain (0.053 [0.009, 0.098]; 0.038 [-0.004, 0.080]); positive_control.token_equal_fraction (= 0.9979)
 % plan research/paper2/tnnls/EXPLORATORY-PLAN-SEVERITY-2026-10-31.md (commit 3bd115b1, amendment 1 before the GPU run); script analysis/paper2/lrf/e1_severity.py; table tables/supp_severity.tex
-In an exploratory sweep of the Gaussian noise level on the same 450 images (one noise draw per image, scaled by $\sigma$; supplement S-V), the frozen LRF exceeded the unweighted sum at $\sigma=0.05$, 0.2, and 0.3 by 0.056 (unadjusted 95\% interval 0.020 to 0.091), 0.058 (0.018 to 0.098), and 0.084 (0.044 to 0.124); no level showed a loss.
+In an exploratory sweep of the Gaussian noise level on the same 450 images (one noise draw per image, scaled by $\sigma$; \cref{fig:severity} and supplement S-V), the frozen LRF exceeded the unweighted sum at $\sigma=0.05$, 0.2, and 0.3 by 0.056 (unadjusted 95\% interval 0.020 to 0.091), 0.058 (0.018 to 0.098), and 0.084 (0.044 to 0.124); no level showed a loss.
 On clean images the difference was 0.031 (0.004 to 0.058), and the excess of the gain under noise over the clean gain excluded zero only at $\sigma=0.3$ (0.053, 0.009 to 0.098; at the fitted level 0.038, $-0.004$ to 0.080), so the part of the gain that is specific to noise is clear only at the strongest level.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_severity.pdf}
+% run: runs/P2-PAPER-FIGS/fig_severity.json (values from runs/P2-LRF-SEV/sev_analysis.json:levels.*.{NONE,LRF,LRF_minus_NONE}); script scripts/fig_severity.py
+\caption{Exploratory Gaussian-noise severity sweep on the 450 fresh-fold images (one noise draw per image, scaled by $\sigma$): (a) accuracy of the unweighted sum and
+the frozen LRF; (b) LRF minus the unweighted sum with its unadjusted 95\% paired percentile-bootstrap interval. Dotted line: the confirmatory level $\sigma=0.1$, the only
+level LRF was trained on; levels 0 and 0.1 are the confirmatory run's cells. No test.}
+\label{fig:severity}
+\end{figure}
 
 \begin{table}[!t]
 \centering

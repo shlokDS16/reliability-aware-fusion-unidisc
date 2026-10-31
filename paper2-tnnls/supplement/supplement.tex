@@ -303,16 +303,7 @@ caption, or padding, and the scorer reproduced the stored values at the true len
 Any non-finite feature, weight, or margin stops the scorer and is treated as a pipeline defect, never as a wrong decision.
 \Cref{stab:features} gives every feature by name and formula; Fig.~\ref{M-fig:lrf_weights} of the main paper groups them.
 
-\Cref{sfig:pd} shows the learned shape of the weight for the six of the 35 features with the largest learned effect range.
-
-\begin{figure}[!htbp]
-\centering
-\includegraphics[width=\textwidth]{../figures/fig4b_pd_curves.pdf}
-% run: runs/P2-PAPER-FIGS/{fig4_pd_curves.json,fig4_meta.json} (features_shown, effect_ranges); runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}
-\caption{Partial dependence of the weight $w$ on the six of 35 features with the largest learned effect range, every other
-standardised feature at its mean 0 (knots: grey ticks; line style: feature group of Fig.~\ref{M-fig:lrf_weights} of the main paper). Descriptive; not evidence that the weights track corruption.}
-\label{sfig:pd}
-\end{figure}
+Fig.~\ref{M-fig:pd} of the main paper shows the learned shape of the weight for the six of the 35 features with the largest learned effect range.
 
 \begin{table}[!htbp]
 \centering
@@ -388,7 +379,7 @@ No ablation was preregistered.
 The plan (\nolinkurl{research/paper2/tnnls/ABLATION-PLAN-2026-10-30.md}) was written and then checked by an automated statistical review, and the variant list
 was committed before any variant was fitted or scored.
 \emph{Disclosure.} When the plan was written, its author had seen the fresh-fold results of the frozen LRF and of the unweighted rule,
-an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (\cref{sfig:pd}); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
+an exploratory cross-fit of four learned-weighting families on the design items, and the frozen LRF's shape functions (Fig.~\ref{M-fig:pd} of the main paper); the variant list was fixed after the fresh LRF and unweighted results had been seen, and no variant was fitted or scored before
 the list was committed.
 Every listed variant is reported; no variant was selected and scored again, and the tested object stays the frozen LRF.
 
@@ -564,9 +555,10 @@ Every figure and table of the main paper is computed by a script in \nolinkurl{p
 \item Feature groups (Fig.~\ref{M-fig:lrf_weights} of the main paper): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/spec.json}
 (\nolinkurl{features}); \nolinkurl{analysis_posthoc/learned_ceiling/data.py}, functions \nolinkurl{feature_names} and \nolinkurl{engineer};
 full table in \cref{stab:features}.
-\item Fig.~\ref{M-fig:lrf_weights} (frozen weight model, schematic) and \cref{sfig:pd} (partial dependence): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}}; computed values in
-\nolinkurl{runs/P2-PAPER-FIGS/} (\nolinkurl{fig4_meta.json}, \nolinkurl{fig4_pd_curves.json}); script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of \cref{sfig:pd} runs between
+\item Fig.~\ref{M-fig:lrf_weights} (frozen weight model, schematic) and Fig.~\ref{M-fig:pd} (partial dependence): \nolinkurl{runs/P2-LRF-FROZEN-LFIX/{model.npz,spec.json}}; computed values in
+\nolinkurl{runs/P2-PAPER-FIGS/} (\nolinkurl{fig4_meta.json}, \nolinkurl{fig4_pd_curves.json}); script \nolinkurl{paper2-tnnls/scripts/fig4_study2_weights.py}. Each curve of Fig.~\ref{M-fig:pd} runs between
 the lowest and highest of the eight knots of its feature; the effect range is the range of $w$ over the plotted domain.
+\item Fig.~\ref{M-fig:severity} (exploratory severity sweep): \nolinkurl{runs/P2-LRF-SEV/sev_analysis.json}, keys \nolinkurl{levels.*.{NONE,LRF,LRF_minus_NONE}}; plotted values in \nolinkurl{runs/P2-PAPER-FIGS/fig_severity.json}; script \nolinkurl{paper2-tnnls/scripts/fig_severity.py}.
 \item Fig.~\ref{M-fig:qualitative} (three fresh-fold items): \nolinkurl{runs/P2-PAPER-FIGS/fig_qualitative.json} (selection rule, items, colour scales, attribution);
 \nolinkurl{runs/P2-LRF-L1/predictions.jsonl} (\nolinkurl{y_none}, \nolinkurl{y_lrf}, condition \nolinkurl{noise0.1}); \nolinkurl{runs/P2-LRF-L1/arrays/item000{0,1,8}.npz}
 (SHA-256 in the figure's trace file); the noisy pixels are regenerated with the runner's corruption call and seeds; colour scales are shared by the rows, $\Delta_j$ is clipped at the 99th percentile of $|\Delta_j|$, and the weights are on a square-root scale; script \nolinkurl{paper2-tnnls/scripts/fig_qualitative.py}.
