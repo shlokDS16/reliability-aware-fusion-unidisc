@@ -31,6 +31,8 @@ TERMS = [
     "Subramaniyaswamy Vairavasundaram", "Vairavasundaram", "Subramaniyaswamy", "Balaji~G~N", "Balaji G N", "Balaji",
     "Ganesh Khekare", "Khekare", "Thenmozhi", "Manjula",
     "Vellore Institute of Technology", "Vellore", "Tamil Nadu", "vitstudent", "vit.ac.in",
+    # the authors' Zenodo records (reserved Paper 2 DOI in the camera branch of declaration.tex; other papers) -- red-team closure R3, 2026-10-31
+    "zenodo.23810711", "zenodo.23494300", "zenodo.22791749", "zenodo.22754072", "zenodo.23734057",
 ]
 WORD_TERMS = ["VIT", "SCSE"]   # whole-word, uppercase only (ViT, the vision transformer, is untouched)
 TEXT_EXT = {".py", ".md", ".tex", ".bib", ".bbl", ".json", ".jsonl", ".csv", ".txt", ".sh", ".cfg", ".toml", ".yaml",
